@@ -1047,29 +1047,66 @@ function DashboardContent() {
 
                   {/* This Week — lead with the sentence, not labels */}
                   {topMoves.length > 0 && (
-                    <div style={{ padding: mobile ? "18px 18px" : "22px 24px", borderRadius: 14, backgroundColor: `${B.teal}03`, borderLeft: `3px solid ${B.teal}` }}>
-                      <div style={{ fontSize: mobile ? 17 : 19, fontWeight: 500, color: B.navy, lineHeight: 1.4, marginBottom: 10 }}>
-                        {stepsDone >= stepsTotal
-                          ? "You've completed all steps. Time to reassess and see how far you've come."
-                          : nextMove
-                            ? <>This week: <strong>{nextMove.label.toLowerCase()}</strong>.</>
-                            : "Start with your first move."
-                        }
-                      </div>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        {nextScript && stepsDone < stepsTotal && (
-                          <button onClick={() => {
-                            const el = document.getElementById("phase-plan");
-                            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-                            setTimeout(() => setExpandedPlaybook(nextMove?.id || null), 500);
-                          }} style={{ fontSize: 14, fontWeight: 600, color: B.teal, background: "none", border: "none", cursor: "pointer", padding: 0, minHeight: 36 }}>
-                            Open the script &rarr;
-                          </button>
-                        )}
-                        <span style={{ fontSize: 12, color: B.taupe }}>
-                          {stepsDone > 0 && <>{stepsDone}/{stepsTotal} done · </>}{daysSince > 0 ? `Day ${daysSince}` : "Today"}
-                        </span>
-                      </div>
+                    <div style={{ padding: mobile ? "20px 18px" : "24px 28px", borderRadius: 16, backgroundColor: `${B.teal}03`, borderLeft: `3px solid ${B.teal}` }}>
+                      {stepsDone >= stepsTotal ? (
+                        <>
+                          <div style={{ fontSize: mobile ? 17 : 19, fontWeight: 500, color: B.navy, lineHeight: 1.4, marginBottom: 6 }}>
+                            You've completed every step. That's real progress.
+                          </div>
+                          <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.55 }}>
+                            Time to reassess and see how your score has changed.
+                          </p>
+                        </>
+                      ) : nextMove ? (
+                        <>
+                          <div style={{ fontSize: mobile ? 17 : 19, fontWeight: 500, color: B.navy, lineHeight: 1.4, marginBottom: 8 }}>
+                            Focus on one thing: <strong>{nextMove.label.toLowerCase()}</strong>.
+                          </div>
+                          <p style={{ fontSize: 14, color: B.muted, margin: "0 0 12px", lineHeight: 1.55 }}>
+                            You don't need to do everything at once. This is the single move that matters most right now.
+                          </p>
+                          {/* Micro-actions — the 5-minute version */}
+                          {(() => {
+                            const microSteps: Record<string, string[]> = {
+                              convert_retainer: ["Open your contacts and find your top client's name", "Draft a 2-sentence message proposing a monthly arrangement", "Send it today — the script is ready for you below"],
+                              add_client: ["Think of one person in your network who could refer work to you", "Write them a short message reconnecting", "Ask for a 15-minute call this week"],
+                              build_passive: ["List one thing you've built that others have asked about", "Outline a simple version someone could buy or subscribe to", "Set a deadline to launch it within 30 days"],
+                              lock_forward: ["Identify your top 2 clients whose agreements expire soon", "Draft a renewal or extension proposal with clear terms", "Send it before the end of this week"],
+                            };
+                            const steps = microSteps[nextMove.id];
+                            if (!steps) return null;
+                            return (
+                              <div style={{ marginBottom: 12 }}>
+                                <div style={{ fontSize: 12, fontWeight: 600, color: B.teal, marginBottom: 8 }}>YOUR NEXT 3 MOVES</div>
+                                {steps.map((s, si) => (
+                                  <div key={si} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 6 }}>
+                                    <span style={{ fontSize: 13, fontFamily: mono, fontWeight: 600, color: B.teal, flexShrink: 0, marginTop: 1 }}>{si + 1}.</span>
+                                    <span style={{ fontSize: 14, color: B.navy, lineHeight: 1.5 }}>{s}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            );
+                          })()}
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            {nextScript && (
+                              <button onClick={() => {
+                                const el = document.getElementById("phase-plan");
+                                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                                setTimeout(() => setExpandedPlaybook(nextMove?.id || null), 500);
+                              }} style={{ fontSize: 14, fontWeight: 600, color: B.teal, background: "none", border: "none", cursor: "pointer", padding: 0, minHeight: 36 }}>
+                                Open the script &rarr;
+                              </button>
+                            )}
+                            <span style={{ fontSize: 12, color: B.taupe }}>
+                              {stepsDone > 0 && <>{stepsDone}/{stepsTotal} done · </>}{daysSince > 0 ? `Day ${daysSince}` : "Today"}
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <div style={{ fontSize: mobile ? 17 : 19, fontWeight: 500, color: B.navy, lineHeight: 1.4 }}>
+                          Start with your first move. Scroll down to see the plan.
+                        </div>
+                      )}
                     </div>
                   )}
 
@@ -1389,7 +1426,8 @@ function DashboardContent() {
 
                 {roadmap.map((step, i) => {
                   const done = completedSteps.includes(i);
-                  const isFirst = i === 0 && !done;
+                  const prevDone = i === 0 || completedSteps.includes(i - 1);
+                  const isFirst = !done && prevDone && !completedSteps.includes(i);
                   const plainMilestone: Record<string, string> = {
                     add_client: "No single client carries more than half your income",
                     convert_retainer: "At least some of your income repeats automatically each month",
@@ -1409,39 +1447,53 @@ function DashboardContent() {
                     lock_forward: "You have a signed commitment for income beyond this month",
                   };
                   return (
-                    <div key={i} style={{ position: "relative", marginBottom: i < roadmap.length - 1 ? 24 : 0, opacity: done ? 0.5 : 1, transition: "opacity 300ms" }}>
+                    <div key={i} style={{ position: "relative", marginBottom: i < roadmap.length - 1 ? 20 : 0, transition: "opacity 300ms" }}>
                       {/* Timeline dot */}
-                      <button onClick={() => toggleStep(i)} style={{ position: "absolute", left: mobile ? -28 : -36, top: 2, width: 28, height: 28, borderRadius: "50%", backgroundColor: done ? B.teal : isFirst ? B.purple : `${B.teal}08`, border: `2px solid ${done ? B.teal : isFirst ? B.purple : `${B.teal}40`}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 200ms", zIndex: 1 }}>
+                      <button onClick={() => toggleStep(i)} style={{ position: "absolute", left: mobile ? -28 : -36, top: done ? 6 : isFirst ? 14 : 6, width: 28, height: 28, borderRadius: "50%", backgroundColor: done ? B.teal : isFirst ? B.purple : `${B.teal}08`, border: `2px solid ${done ? B.teal : isFirst ? B.purple : `${B.teal}40`}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 200ms", zIndex: 1 }}>
                         {done ? <span style={{ color: B.white, fontSize: 12, fontWeight: 700 }}>&#10003;</span> : <span style={{ fontSize: 12, fontWeight: 700, color: isFirst ? B.white : B.teal }}>{i + 1}</span>}
                       </button>
 
-                      <div style={{ padding: mobile ? "18px 16px" : "22px 24px", borderRadius: 14, backgroundColor: isFirst ? `${B.purple}03` : "#FAFAFA", border: `1px solid ${isFirst ? `${B.purple}15` : B.stone}` }}>
-                        {/* Start here badge for first uncompleted step */}
-                        {isFirst && (
-                          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 10 }}>START HERE</div>
-                        )}
-
-                        <div style={{ fontSize: 17, fontWeight: 600, color: done ? B.muted : B.navy, textDecoration: done ? "line-through" : "none", marginBottom: 6, lineHeight: 1.3 }}>{step.action}</div>
-                        <p style={{ fontSize: 14, color: B.muted, margin: "0 0 14px", lineHeight: 1.6 }}>{step.desc}</p>
-
-                        {/* Time + effort inline */}
-                        <div style={{ display: "flex", gap: mobile ? 8 : 16, marginBottom: 14, flexWrap: "wrap" as const }}>
-                          <span style={{ fontSize: 12, color: B.taupe }}>{step.weeks}</span>
-                          {timeEstimate[step.pid] && <span style={{ fontSize: 12, color: B.taupe }}>Takes {timeEstimate[step.pid]}</span>}
-                          <span style={{ fontSize: 12, color: B.taupe }}>{step.effortLabel}</span>
+                      {/* Completed step — compact with celebration */}
+                      {done ? (
+                        <div style={{ padding: "14px 20px", borderRadius: 12, backgroundColor: `${B.teal}04`, border: `1px solid ${B.teal}12` }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <span style={{ fontSize: 15, fontWeight: 500, color: B.teal, textDecoration: "line-through", opacity: 0.7 }}>{step.action}</span>
+                            <span style={{ fontSize: 12, fontFamily: mono, color: B.teal }}>+{step.lift} pts</span>
+                          </div>
                         </div>
+                      ) : isFirst ? (
+                        /* Active step — fully expanded */
+                        <div style={{ padding: mobile ? "20px 18px" : "24px 28px", borderRadius: 16, backgroundColor: `${B.purple}03`, border: `1px solid ${B.purple}15` }}>
+                          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 10 }}>YOUR CURRENT STEP</div>
 
-                        {/* What done looks like + milestone */}
-                        <div style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: B.white, borderLeft: `3px solid ${B.teal}` }}>
-                          <div style={{ fontSize: 13, fontWeight: 500, color: B.navy, marginBottom: 6 }}>{plainMilestone[step.pid] || step.target}</div>
-                          {successSignal[step.pid] && (
-                            <p style={{ fontSize: 13, color: B.muted, margin: "0 0 6px", lineHeight: 1.5 }}>
-                              <span style={{ fontWeight: 600, color: B.teal }}>Done when:</span> {successSignal[step.pid]}
-                            </p>
-                          )}
-                          <span style={{ fontSize: 12, fontFamily: mono, color: B.taupe }}>Score: {step.cumulativeFrom} → {step.cumulativeTo}</span>
+                          <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 6, lineHeight: 1.3 }}>{step.action}</div>
+                          <p style={{ fontSize: 14, color: B.muted, margin: "0 0 14px", lineHeight: 1.6 }}>{step.desc}</p>
+
+                          <div style={{ display: "flex", gap: mobile ? 8 : 16, marginBottom: 14, flexWrap: "wrap" as const }}>
+                            <span style={{ fontSize: 12, color: B.taupe }}>{step.weeks}</span>
+                            {timeEstimate[step.pid] && <span style={{ fontSize: 12, color: B.taupe }}>Takes {timeEstimate[step.pid]}</span>}
+                            <span style={{ fontSize: 12, color: B.taupe }}>{step.effortLabel}</span>
+                          </div>
+
+                          <div style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: B.white, borderLeft: `3px solid ${B.teal}` }}>
+                            <div style={{ fontSize: 13, fontWeight: 500, color: B.navy, marginBottom: 6 }}>{plainMilestone[step.pid] || step.target}</div>
+                            {successSignal[step.pid] && (
+                              <p style={{ fontSize: 13, color: B.muted, margin: "0 0 6px", lineHeight: 1.5 }}>
+                                <span style={{ fontWeight: 600, color: B.teal }}>Done when:</span> {successSignal[step.pid]}
+                              </p>
+                            )}
+                            <span style={{ fontSize: 12, fontFamily: mono, color: B.taupe }}>Score: {step.cumulativeFrom} → {step.cumulativeTo}</span>
+                          </div>
                         </div>
-                      </div>
+                      ) : (
+                        /* Future step — collapsed, just the title */
+                        <div style={{ padding: "14px 20px", borderRadius: 12, backgroundColor: "#FAFAFA", border: `1px solid ${B.stone}`, opacity: 0.6 }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <span style={{ fontSize: 15, fontWeight: 500, color: B.navy }}>{step.action}</span>
+                            <span style={{ fontSize: 12, color: B.taupe }}>{step.weeks}</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
