@@ -329,6 +329,13 @@ function IndustrySelector() {
           })}
         </div>
 
+        {/* Prompt when nothing selected */}
+        {!selected && (
+          <div style={{ textAlign: "center", marginTop: m ? 24 : 36, ...fadeIn(visible, 200) }}>
+            <p style={{ fontSize: 15, color: light }}>Select your industry to see the average score and primary constraint.</p>
+          </div>
+        )}
+
         {/* Reveal */}
         {selected && (
           <div style={{ maxWidth: 720, margin: "36px auto 0", padding: m ? "24px 16px" : "32px 36px", borderRadius: 16, backgroundColor: C.navy, boxShadow: "0 8px 40px rgba(14,26,43,0.12)", animation: "fadeSlideIn 400ms ease-out" }}>
