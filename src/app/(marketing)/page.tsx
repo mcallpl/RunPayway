@@ -155,18 +155,18 @@ function CtaButton({ m, variant = "light" }: { m: boolean; variant?: "light" | "
 /* ================================================================== */
 
 const INDUSTRIES = [
-  { key: "consulting", name: "Consulting", avg: 38, constraint: "You are the product", risk: "Your clients pay for your time, not a system. If you stop delivering, 85% of your income stops with you. You can't take a month off without the math changing.", cta: "Measure my income stability" },
-  { key: "real_estate", name: "Real Estate", avg: 34, constraint: "Pipeline dependency", risk: "One delayed closing or one lost listing can erase a quarter of annual earnings. Your pipeline looks full — but nothing in it is contractually yours until it closes.", cta: "Stress-test my income" },
-  { key: "sales", name: "Sales / Brokerage", avg: 31, constraint: "Nothing is guaranteed past this quarter", risk: "Last quarter was strong. But your structure doesn't carry that forward. Next quarter starts from zero unless you close again.", cta: "Stress-test my income" },
-  { key: "creative", name: "Freelance / Creative", avg: 27, constraint: "Every month starts at zero", risk: "No project means no income. No retainer means no floor. You are re-earning your entire livelihood every 30 days, and the pipeline between projects is silence.", cta: "Measure my income stability" },
-  { key: "construction", name: "Construction / Trades", avg: 29, constraint: "The next job isn't signed yet", risk: "The current project is solid. The next one is a handshake. Your income has no structural buffer between jobs — when one ends, the clock starts.", cta: "Measure my income stability" },
-  { key: "media", name: "Media / Entertainment", avg: 28, constraint: "Between projects, income is zero", risk: "Strong projects create strong months. But between them, your income is not low — it is zero. No carry. No residual. Every engagement starts from scratch.", cta: "Run my assessment" },
-  { key: "insurance", name: "Insurance", avg: 43, constraint: "New business masks renewal erosion", risk: "Strong production quarters feel like growth. But if renewals are quietly slipping underneath, your structure is compounding backwards — and you won't see it until new business slows.", cta: "Stress-test my income" },
-  { key: "legal", name: "Legal Services", avg: 40, constraint: "Three matters carry the practice", risk: "Count your top three matters. They likely carry 60-70% of your billings. When one concludes, the gap doesn't build gradually — it arrives all at once.", cta: "Measure my income stability" },
-  { key: "technology", name: "Technology", avg: 42, constraint: "One employer, one system, one decision", risk: "Your compensation feels stable because the system around it is stable. But it's one layoff, one reorg, one equity reset away from a total structural shift — and you have no second source.", cta: "Measure my income stability" },
-  { key: "finance", name: "Finance / Banking", avg: 44, constraint: "The variable component is the one that matters", risk: "Base salary creates a floor. But the bonus, the production credit, the performance component — that's where the real earnings live. And that's the part that can vanish in one cycle.", cta: "Stress-test my income" },
-  { key: "healthcare", name: "Healthcare", avg: 46, constraint: "One system, no alternatives", risk: "Steady pay from one institution feels safe until the institution restructures. When your sole employer changes compensation models, hours, or staffing — you have no structural alternative.", cta: "Measure my income stability" },
-  { key: "fitness", name: "Fitness / Wellness", avg: 30, constraint: "Clients cancel. Revenue disappears the same day.", risk: "Your income is a collection of individual decisions that can reverse without notice. One slow month, one seasonal dip, one competitor opens nearby — and the calendar empties faster than you can fill it.", cta: "Run my assessment" },
+  { key: "consulting", name: "Consulting", avg: 38, constraint: "You are the product", risk: "Your clients pay for your time, not a system. If you stop delivering, 85% of your income stops with you. You can't take a month off without the math changing.", cta: "See my score" },
+  { key: "real_estate", name: "Real Estate", avg: 34, constraint: "Pipeline dependency", risk: "One delayed closing or one lost listing can erase a quarter of annual earnings. Your pipeline looks full — but nothing in it is contractually yours until it closes.", cta: "See my score" },
+  { key: "sales", name: "Sales / Brokerage", avg: 31, constraint: "Nothing is guaranteed past this quarter", risk: "Last quarter was strong. But your structure doesn't carry that forward. Next quarter starts from zero unless you close again.", cta: "See my score" },
+  { key: "creative", name: "Freelance / Creative", avg: 27, constraint: "Every month starts at zero", risk: "No project means no income. No retainer means no floor. You are re-earning your entire livelihood every 30 days, and the pipeline between projects is silence.", cta: "See my score" },
+  { key: "construction", name: "Construction / Trades", avg: 29, constraint: "The next job isn't signed yet", risk: "The current project is solid. The next one is a handshake. Your income has no structural buffer between jobs — when one ends, the clock starts.", cta: "See my score" },
+  { key: "media", name: "Media / Entertainment", avg: 28, constraint: "Between projects, income is zero", risk: "Strong projects create strong months. But between them, your income is not low — it is zero. No carry. No residual. Every engagement starts from scratch.", cta: "See my score" },
+  { key: "insurance", name: "Insurance", avg: 43, constraint: "New business masks renewal erosion", risk: "Strong production quarters feel like growth. But if renewals are quietly slipping underneath, your structure is compounding backwards — and you won't see it until new business slows.", cta: "See my score" },
+  { key: "legal", name: "Legal Services", avg: 40, constraint: "Three matters carry the practice", risk: "Count your top three matters. They likely carry 60-70% of your billings. When one concludes, the gap doesn't build gradually — it arrives all at once.", cta: "See my score" },
+  { key: "technology", name: "Technology", avg: 42, constraint: "One employer, one system, one decision", risk: "Your compensation feels stable because the system around it is stable. But it's one layoff, one reorg, one equity reset away from a total structural shift — and you have no second source.", cta: "See my score" },
+  { key: "finance", name: "Finance / Banking", avg: 44, constraint: "The variable component is the one that matters", risk: "Base salary creates a floor. But the bonus, the production credit, the performance component — that's where the real earnings live. And that's the part that can vanish in one cycle.", cta: "See my score" },
+  { key: "healthcare", name: "Healthcare", avg: 46, constraint: "One system, no alternatives", risk: "Steady pay from one institution feels safe until the institution restructures. When your sole employer changes compensation models, hours, or staffing — you have no structural alternative.", cta: "See my score" },
+  { key: "fitness", name: "Fitness / Wellness", avg: 30, constraint: "Clients cancel. Revenue disappears the same day.", risk: "Your income is a collection of individual decisions that can reverse without notice. One slow month, one seasonal dip, one competitor opens nearby — and the calendar empties faster than you can fill it.", cta: "See my score" },
 ];
 
 
@@ -194,7 +194,7 @@ function HeroSection() {
               Your income has a structure.{m ? " " : <br />}You've never seen it.
             </h1>
             <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.7, marginBottom: 40, ...fadeIn(visible, 100) }}>
-              RunPayway&#8482; measures how your income holds under pressure — not how much you make.
+              RunPayway™ measures whether your income survives a client leaving, a slow quarter, or you not working — not how much you make.
             </p>
             <div style={{ ...fadeIn(visible, 200) }}>
               <CtaButton m={m} variant="dark" />
@@ -257,7 +257,7 @@ function HeroSection() {
 
               {/* Example label */}
               <div style={{ textAlign: "center", marginTop: 14, position: "relative", zIndex: 1 }}>
-                <span style={{ fontSize: 11, color: "rgba(244,241,234,0.30)", letterSpacing: "0.04em" }}>Example output &bull; Model RP-2.0</span>
+                <span style={{ fontSize: 11, color: "rgba(244,241,234,0.30)", letterSpacing: "0.04em" }}>Example output</span>
               </div>
             </div>
           </div>
@@ -266,7 +266,7 @@ function HeroSection() {
         {/* Credibility strip */}
         <div style={{ marginTop: m ? 36 : 56, paddingTop: m ? 20 : 28, borderTop: `1px solid rgba(14,26,43,0.05)`, textAlign: "center", ...fadeIn(visible, 400) }}>
           <p style={{ fontSize: 13, fontWeight: 500, color: light, letterSpacing: "0.02em" }}>
-            Free to start &bull; No bank connection &bull; Same answers, same score
+            Free to start &bull; No bank connection &bull; Same answers always produce the same score
           </p>
         </div>
       </div>
@@ -361,14 +361,14 @@ function HowRunPaywayIsUsed() {
     },
     {
       title: "Advisors",
-      desc: "Evaluate and explain client stability using a structured, repeatable score.",
+      desc: "Evaluate and explain client income stability using a score they can compare across clients.",
       color: C.purple,
       icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
       link: "/contact",
     },
     {
       title: "Organizations",
-      desc: "Assess income risk at scale using a deterministic measurement.",
+      desc: "Assess income risk across teams or portfolios using a fixed, rules-based measurement.",
       color: C.navy,
       icon: "M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5m-4 0h4",
       link: "/contact",
@@ -384,7 +384,7 @@ function HowRunPaywayIsUsed() {
             One system. Three use cases.
           </h2>
           <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
-            RunPayway™ measures income the same way every time. How it gets used depends on who is applying it.
+            RunPayway™ measures how income holds up — the same way, every time. How it gets used depends on who is applying it.
           </p>
         </div>
 
@@ -407,7 +407,7 @@ function HowRunPaywayIsUsed() {
         </div>
 
         <div style={{ textAlign: "center", marginTop: m ? 32 : 48, ...fadeIn(visible, 220) }}>
-          <p style={{ fontSize: 15, color: light }}>The model stays fixed. The use case changes.</p>
+          <p style={{ fontSize: 15, color: light }}>The scoring rules stay fixed. The use case changes.</p>
         </div>
       </div>
     </section>
@@ -427,7 +427,7 @@ function SameIncomeProof() {
     <section ref={ref} style={{ backgroundColor: "#FAFAFA", paddingTop: m ? 56 : 112, paddingBottom: m ? 56 : 112, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy }}>Same income. Different structure.{m ? " " : <br />}Completely different risk.</h2>
+          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy }}>Same income. Different setup.{m ? " " : <br />}Completely different risk.</h2>
         </div>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, maxWidth: 880, margin: "0 auto", ...fadeIn(visible, 120) }}>
           {/* Person A — fragile */}
@@ -443,7 +443,7 @@ function SameIncomeProof() {
               { pct: 5, color: C.teal, label: "" },
             ]} height={16} />
             <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, margin: "16px 0 24px" }}>
-              80% of income depends on one client. No contracts. No continuity. If work stops, income stops.
+              80% of income depends on one client. No contracts. Nothing repeats. If work stops, income stops.
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 0 0", borderTop: `1px solid rgba(14,26,43,0.05)` }}>
               <div style={{ position: "relative", width: 52, height: 52, flexShrink: 0 }}>
@@ -471,7 +471,7 @@ function SameIncomeProof() {
               { pct: 40, color: C.teal, label: "Protected" },
             ]} height={16} />
             <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, margin: "16px 0 24px" }}>
-              5 clients, none over 30%. 40% recurring. 3 months secured forward. Built to handle disruptions.
+              5 clients, none over 30%. 40% recurring. 3 months of income already locked in. Can absorb a client leaving or a slow quarter.
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 0 0", borderTop: `1px solid rgba(14,26,43,0.05)` }}>
               <div style={{ position: "relative", width: 52, height: 52, flexShrink: 0 }}>
@@ -519,10 +519,10 @@ function WhatStabilityUnlocks() {
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>WHEN YOU KNOW YOUR NUMBER</div>
           <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16 }}>
-            Once you see how your income is built,{m ? " " : <br />}you start making different decisions.
+            Once you see how your income is built,{m ? " " : <br />}you start making better financial decisions.
           </h2>
           <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 540, margin: "0 auto" }}>
-            The insight changes how you approach everything — not because anyone requires it, but because now you know.
+            The insight changes how you approach borrowing, planning, and risk — not because anyone requires it, but because now you know.
           </p>
         </div>
 
@@ -588,7 +588,7 @@ function TheMissingLayer() {
             Before you borrow, invest, or plan —{m ? " " : <br />}know how your income is actually built.
           </h2>
           <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
-            Credit scores look at what you've borrowed. Advisors look at what you've saved. Neither shows you how your income holds up. RunPayway does.
+            Credit scores look at what you've borrowed. Advisors look at what you've saved. Neither shows you whether your income can survive a disruption. RunPayway does.
           </p>
         </div>
 
@@ -706,10 +706,10 @@ function CommandCenterPreview() {
         <div style={{ textAlign: "center", marginBottom: m ? 48 : 80, ...fadeIn(visible) }}>
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.teal, marginBottom: 18 }}>WHAT YOU GET</div>
           <h2 style={{ fontSize: m ? 32 : 52, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.03em", color: C.navy, marginBottom: 20 }}>
-            Your score is the starting point.{m ? " " : <br />}This is what happens next.
+            Your score tells you where you stand.{m ? " " : <br />}These tools show you what to do about it.
           </h2>
           <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
-            Every tool uses your actual numbers — personalized to your industry, your biggest risk, and your goals.
+            Everything is built from your actual numbers — personalized to your industry and your biggest risk.
           </p>
         </div>
 
@@ -729,7 +729,7 @@ function CommandCenterPreview() {
               <div style={{ fontSize: 16, fontWeight: 600, color: C.sand, marginBottom: 4 }}>
                 Convert to retainer. <span style={{ fontWeight: 300, fontFamily: mono, color: C.teal }}>Highest impact</span>
               </div>
-              <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)" }}>Your highest-leverage conversation this week.</div>
+              <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)" }}>Your most important conversation this week.</div>
             </div>
 
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
@@ -767,7 +767,7 @@ function CommandCenterPreview() {
 
             <div style={{ paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
               <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", margin: 0, lineHeight: 1.55 }}>
-                Scripts with <strong style={{ color: C.sand }}>your actual numbers</strong>, objection handlers, and success signals.
+                Scripts with <strong style={{ color: C.sand }}>your actual numbers</strong>. Includes what to say if they push back, and how to tell if it worked.
               </p>
             </div>
           </div>
@@ -854,7 +854,7 @@ function FinalCtaAndTrust() {
             { title: "No bank connection", desc: "We never access your accounts." },
             { title: "No credit pull", desc: "Zero impact on your credit." },
             { title: "Private by default", desc: "Your data is never sold." },
-            { title: "Consistent", desc: "Same answers → same score." },
+            { title: "Consistent", desc: "No randomness. No variation." },
           ].map((t, i) => (
             <div key={i} style={{ textAlign: "center", padding: m ? "14px 8px" : "16px 12px", borderRadius: 10, backgroundColor: "rgba(255,255,255,0.02)" }}>
               <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.55)", marginBottom: 2 }}>{t.title}</div>
