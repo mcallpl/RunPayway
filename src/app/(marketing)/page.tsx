@@ -268,6 +268,9 @@ function HeroSection() {
           <p style={{ fontSize: 13, fontWeight: 500, color: light, letterSpacing: "0.02em" }}>
             Model RP-2.0 &bull; 6 dimensions scored &bull; Same answers, same score &bull; No bank connection &bull; Free to start
           </p>
+          <p style={{ fontSize: 12, color: "rgba(14,26,43,0.40)", marginTop: 8, letterSpacing: "0.02em" }}>
+            Built by PeopleStar Enterprises, LLC
+          </p>
         </div>
       </div>
     </header>
@@ -419,7 +422,8 @@ function SameIncomeProof() {
         {/* Self-reflection prompt */}
         <div style={{ textAlign: "center", marginTop: m ? 48 : 80, ...fadeIn(visible, 220) }}>
           <p style={{ fontSize: m ? 20 : 24, fontWeight: 500, color: C.navy, marginBottom: 8 }}>Which one looks more like yours?</p>
-          <p style={{ fontSize: 16, color: light, lineHeight: 1.6 }}>The income is the same. How it's built is not. That's what RunPayway measures.</p>
+          <p style={{ fontSize: 16, color: light, lineHeight: 1.6, marginBottom: 6 }}>The income is the same. How it's built is not. That's what RunPayway measures.</p>
+          <p style={{ fontSize: 14, color: light }}>You already know how your income works — how many sources, how much repeats, how far ahead it's locked in. That's all we need.</p>
         </div>
       </div>
     </section>
@@ -595,6 +599,9 @@ function TheMissingLayer() {
                 <p style={{ fontSize: 13, color: muted, margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
               </div>
             ))}
+            <div style={{ marginTop: 18, paddingTop: 14, borderTop: `1px solid rgba(14,26,43,0.06)` }}>
+              <p style={{ fontSize: 13, fontWeight: 500, color: C.teal, margin: 0 }}>Take your score to your next loan application or refinance conversation.</p>
+            </div>
           </div>
 
           {/* Advisory column */}
@@ -617,6 +624,9 @@ function TheMissingLayer() {
                 <p style={{ fontSize: 13, color: muted, margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
               </div>
             ))}
+            <div style={{ marginTop: 18, paddingTop: 14, borderTop: `1px solid rgba(14,26,43,0.06)` }}>
+              <p style={{ fontSize: 13, fontWeight: 500, color: C.purple, margin: 0 }}>Share your diagnostic report with your advisor at your next meeting.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -794,8 +804,26 @@ function FinalCtaAndTrust() {
         <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 44, ...fadeIn(visible, 150) }}>
           Start with the free score. Unlock the full diagnostic when you're ready to act.
         </p>
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: m ? 48 : 72, ...fadeIn(visible, 200) }}>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: m ? 36 : 48, ...fadeIn(visible, 200) }}>
           <CtaButton m={m} variant="light" />
+        </div>
+
+        {/* What happens next — address post-assessment anxiety */}
+        <div style={{ marginBottom: m ? 36 : 56, padding: m ? "16px 18px" : "18px 24px", borderRadius: 12, backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", textAlign: "left" as const, ...fadeIn(visible, 240) }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 10 }}>HERE'S EXACTLY WHAT HAPPENS</div>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
+            {[
+              "You answer 6 questions about how your income works. Takes under 2 minutes.",
+              "You get your score, stability level, and biggest risk — instantly. No waiting.",
+              "That's it. No sales call. No spam. No account required for the free score.",
+              "If you want the full diagnostic ($69), you unlock it on your terms. An advisor would charge $200+ for less.",
+            ].map((step, i) => (
+              <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <span style={{ fontSize: 13, fontFamily: mono, fontWeight: 600, color: C.teal, flexShrink: 0, marginTop: 1 }}>{i + 1}.</span>
+                <span style={{ fontSize: 14, color: "rgba(244,241,234,0.55)", lineHeight: 1.5 }}>{step}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Trust signals */}
@@ -804,7 +832,7 @@ function FinalCtaAndTrust() {
             { title: "No bank connection", desc: "We never access your accounts." },
             { title: "No credit pull", desc: "Zero impact on your credit." },
             { title: "Private by default", desc: "Your data is never sold." },
-            { title: "Consistent", desc: "Same answers \u2192 same score." },
+            { title: "Consistent", desc: "Same answers → same score." },
           ].map((t, i) => (
             <div key={i} style={{ textAlign: "center", padding: m ? "14px 8px" : "16px 12px", borderRadius: 10, backgroundColor: "rgba(255,255,255,0.02)" }}>
               <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.55)", marginBottom: 2 }}>{t.title}</div>
