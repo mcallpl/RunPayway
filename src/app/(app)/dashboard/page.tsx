@@ -808,15 +808,21 @@ function DashboardContent() {
       ],
     },
     {
-      phase: "Track Progress",
+      phase: "History",
       color: B.taupe,
       tint: "rgba(14,26,43,0.01)",
       sections: [
         {
-          title: "Progress Tracking",
+          title: "Your Structural Snapshot",
           icon: "track",
-          desc: "Toggle structural changes you have made. Your projected score updates instantly.",
-          hover: "As you implement your roadmap, toggle each change and watch your projected score shift in real time. It turns abstract progress into a number you can feel \u2014 and it tells you exactly when you have done enough to warrant a reassessment.",
+          desc: "See exactly how you answered the 6 structural dimensions \u2014 and whether anything has changed.",
+          hover: "Your assessment captured a specific moment in time. As you implement changes \u2014 sign a retainer, add a client, secure forward revenue \u2014 your structure evolves. This snapshot lets you see what has changed and when it is time to reassess.",
+        },
+        {
+          title: "Score History",
+          icon: "track",
+          desc: "Track your score across multiple assessments. See factor-level changes over time.",
+          hover: "Each reassessment adds to your timeline. See how your score moved, which dimensions improved, and how your peer benchmark evolved. Available with multiple assessments.",
         },
       ],
     },
