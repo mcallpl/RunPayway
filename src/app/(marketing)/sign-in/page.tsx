@@ -129,7 +129,7 @@ export default function SignInPage() {
       {/* ══ SIGN-IN / DASHBOARD ══ */}
       <section style={{ backgroundColor: "#FAFAFA", paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
         <div ref={formAnim.ref} style={{ maxWidth: 520, margin: "0 auto", ...fadeIn(formAnim.visible) }}>
-          <div style={{ ...cardStyle, borderRadius: 16, padding: m ? "36px 24px" : "48px 44px", boxShadow: "0 8px 32px rgba(14,26,43,0.05)" }}>
+          <div style={{ ...cardStyle, borderRadius: 16, padding: m ? "32px 16px" : "48px 44px", boxShadow: "0 8px 32px rgba(14,26,43,0.05)" }}>
 
             {!session ? (
               /* ─── Email login ─── */
@@ -148,7 +148,7 @@ export default function SignInPage() {
                   /* ─── Forgot PIN flow ─── */
                   <>
                     <div style={{ marginBottom: 24 }}>
-                      <label style={{ ...T.label, fontSize: 12, color: C.navy, display: "block", marginBottom: 10 }}>
+                      <label style={{ ...T.label, fontSize: 13, color: C.navy, display: "block", marginBottom: 10 }}>
                         Email Address
                       </label>
                       <input
@@ -163,7 +163,7 @@ export default function SignInPage() {
                       />
                     </div>
 
-                    {error && <p style={{ fontSize: 13, color: C.bandLimited, marginBottom: 16, lineHeight: 1.5 }}>{error}</p>}
+                    {error && <p style={{ fontSize: 14, color: C.bandLimited, marginBottom: 16, lineHeight: 1.5 }}>{error}</p>}
 
                     {pinSent ? (
                       <div style={{ padding: "16px 20px", borderRadius: 12, backgroundColor: "rgba(31,109,122,0.06)", border: `1px solid rgba(31,109,122,0.15)`, textAlign: "center", marginBottom: 16 }}>
@@ -195,7 +195,7 @@ export default function SignInPage() {
                   /* ─── Normal sign-in flow ─── */
                   <>
                     <div style={{ marginBottom: 20 }}>
-                      <label style={{ ...T.label, fontSize: 12, color: C.navy, display: "block", marginBottom: 10 }}>
+                      <label style={{ ...T.label, fontSize: 13, color: C.navy, display: "block", marginBottom: 10 }}>
                         Email Address
                       </label>
                       <input
@@ -213,7 +213,7 @@ export default function SignInPage() {
 
                     <div style={{ marginBottom: 24 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                        <label style={{ ...T.label, fontSize: 12, color: C.navy }}>4-Digit PIN</label>
+                        <label style={{ ...T.label, fontSize: 13, color: C.navy }}>4-Digit PIN</label>
                         <button onClick={() => { setForgotMode(true); setError(""); }} style={{ background: "none", border: "none", fontSize: 12, fontWeight: 500, color: C.purple, cursor: "pointer", padding: 0, fontFamily: sans }}>
                           Forgot PIN?
                         </button>
@@ -234,7 +234,7 @@ export default function SignInPage() {
                       />
                     </div>
 
-                    {error && <p style={{ fontSize: 13, color: C.bandLimited, marginBottom: 16, lineHeight: 1.5 }}>{error}</p>}
+                    {error && <p style={{ fontSize: 14, color: C.bandLimited, marginBottom: 16, lineHeight: 1.5 }}>{error}</p>}
 
                     <button
                       onClick={handleLookup}

@@ -27,7 +27,7 @@ class ReportErrorBoundary extends Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "60vh", padding: 40, textAlign: "center" }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "60vh", padding: 20, textAlign: "center" }}>
           <h2 style={{ fontSize: 20, fontWeight: 600, color: B.navy, marginBottom: R.paraMb }}>
             Something went wrong loading your report
           </h2>
@@ -37,7 +37,7 @@ class ReportErrorBoundary extends Component<
           <p style={{ ...T.meta, color: B.taupe, marginBottom: R.sectionGap }}>{this.state.error}</p>
           <button
             onClick={() => window.location.reload()}
-            style={{ padding: "10px 24px", ...T.body, fontWeight: 500, color: B.white, backgroundColor: B.navy, border: "none", borderRadius: 4, cursor: "pointer" }}
+            style={{ padding: "12px 24px", ...T.body, fontWeight: 500, color: B.white, backgroundColor: B.navy, border: "none", borderRadius: 8, cursor: "pointer", minHeight: 44 }}
           >
             Refresh Page
           </button>

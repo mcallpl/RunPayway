@@ -130,7 +130,7 @@ function PricingCards() {
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20, alignItems: "start", ...fadeIn(visible) }}>
 
           {/* FREE */}
-          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32, border: `1px solid ${C.border}`, display: "flex", flexDirection: "column" as const, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
+          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 16 : 32, border: `1px solid ${C.border}`, display: "flex", flexDirection: "column" as const, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: "rgba(14,26,43,0.06)" }} />
             <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginTop: 4, marginBottom: 24 }}>
               Income Stability Score&#8482;
@@ -138,7 +138,7 @@ function PricingCards() {
             <div style={{ marginBottom: 4 }}>
               <span style={{ fontSize: 44, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$0</span>
             </div>
-            <div style={{ fontSize: 13, color: light, marginBottom: 28 }}>always free</div>
+            <div style={{ fontSize: 14, color: light, marginBottom: 28 }}>always free</div>
             <div style={{ marginBottom: 28, flex: 1, color: muted }}>
               {check("Score (0\u2013100)")}
               {check("Stability band classification")}
@@ -157,7 +157,7 @@ function PricingCards() {
           </div>
 
           {/* DIAGNOSTIC (PRIMARY) */}
-          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32, border: `1px solid rgba(14,26,43,0.12)`, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", boxShadow: "0 4px 24px rgba(14,26,43,0.06)", transform: m ? "none" : "scale(1.02)" }}>
+          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 16 : 32, border: `1px solid rgba(14,26,43,0.12)`, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", boxShadow: "0 4px 24px rgba(14,26,43,0.06)", transform: m ? "none" : "scale(1.02)" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.purple}, ${C.teal})` }} />
             <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.purple, marginTop: 4, marginBottom: 24 }}>
               RunPayway&#8482; Diagnostic
@@ -165,7 +165,7 @@ function PricingCards() {
             <div style={{ marginBottom: 4 }}>
               <span style={{ fontSize: 44, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$69</span>
             </div>
-            <div style={{ fontSize: 13, color: light, marginBottom: 20 }}>one-time</div>
+            <div style={{ fontSize: 14, color: light, marginBottom: 20 }}>one-time</div>
             <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 24 }}>
               See exactly why your score is what it is — and what changes it.
             </p>
@@ -182,13 +182,13 @@ function PricingCards() {
               onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.navy; e.currentTarget.style.boxShadow = "0 2px 12px rgba(14,26,43,0.10)"; }}>
               Unlock Full Diagnostic &mdash; $69
             </a>
-            <p style={{ fontSize: 13, fontWeight: 500, color: C.teal, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
+            <p style={{ fontSize: 14, fontWeight: 500, color: C.teal, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
               If it doesn&#8217;t reveal something new, full refund.
             </p>
           </div>
 
           {/* MONITORING */}
-          <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: m ? 24 : 32, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", marginTop: m ? 16 : 0 }}>
+          <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: m ? 16 : 32, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", marginTop: m ? 16 : 0 }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
             <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginTop: 4, marginBottom: 24 }}>
               RunPayway&#8482; Monitoring
@@ -277,7 +277,7 @@ function ReportBreakdown() {
         </p>
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 16, ...fadeIn(visible, 140) }}>
           {pages.map((p, i) => (
-            <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 14, border: `1px solid ${C.border}`, backgroundColor: "#FAFAFA" }}>
+            <div key={i} style={{ padding: m ? 16 : 28, borderRadius: 14, border: `1px solid ${C.border}`, backgroundColor: "#FAFAFA" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
                 <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: `${C.teal}08`, border: `1px solid ${C.teal}12`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={p.icon} /></svg>
@@ -337,7 +337,7 @@ function TransformationProof() {
         </div>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20, ...fadeIn(visible, 120) }}>
           {results.map((r, i) => (
-            <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 14, border: `1px solid ${C.border}`, backgroundColor: C.white, marginBottom: m ? 12 : 0 }}>
+            <div key={i} style={{ padding: m ? 16 : 28, borderRadius: 14, border: `1px solid ${C.border}`, backgroundColor: C.white, marginBottom: m ? 12 : 0 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
                 <div style={{ position: "relative", width: 48, height: 48, flexShrink: 0 }}>
                   <ScoreRing score={r.before} size={48} color="rgba(14,26,43,0.12)" />
@@ -387,7 +387,7 @@ function TrustBlock() {
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={item.icon} /></svg>
               </div>
               <div style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 6 }}>{item.title}</div>
-              <p style={{ fontSize: 13, color: muted, lineHeight: 1.55, margin: 0 }}>{item.desc}</p>
+              <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, margin: 0 }}>{item.desc}</p>
             </div>
           ))}
         </div>

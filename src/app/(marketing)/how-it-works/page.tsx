@@ -147,7 +147,7 @@ function TheProcess() {
                   <span style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: C.teal }}>{step.num}</span>
                 </div>
               </div>
-              <div style={{ flex: 1, padding: m ? "20px 20px" : "24px 28px", borderRadius: 14, backgroundColor: C.white, border: `1px solid ${C.border}` }}>
+              <div style={{ flex: 1, padding: m ? "18px 16px" : "24px 28px", borderRadius: 14, backgroundColor: C.white, border: `1px solid ${C.border}` }}>
                 <div style={{ fontSize: 20, fontWeight: 600, color: C.navy, marginBottom: 12 }}>{step.title}</div>
                 <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: step.detail ? 8 : 16 }}>{step.body}</p>
                 {step.detail && <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 16 }}>{step.detail}</p>}
@@ -198,7 +198,7 @@ function TheDimensions() {
         <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: m ? 36 : 56, ...fadeIn(visible, 100) }}>Each dimension contributes independently before interaction analysis produces the final score.</p>
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: 16, ...fadeIn(visible, 160) }}>
           {dims.map((d, i) => (
-            <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 14, border: `1px solid ${C.border}`, backgroundColor: "#FAFAFA", position: "relative" as const, overflow: "hidden" }}>
+            <div key={i} style={{ padding: m ? 16 : 28, borderRadius: 14, border: `1px solid ${C.border}`, backgroundColor: "#FAFAFA", position: "relative" as const, overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${d.color}25` }} />
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
                 <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: d.color, flexShrink: 0 }} />
@@ -278,7 +278,7 @@ function ClassificationPreview() {
         <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: m ? 36 : 56, ...fadeIn(visible, 80) }}>Each band defines what your structure can absorb under disruption.</p>
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr 1fr", gap: 16, ...fadeIn(visible, 140) }}>
           {bands.map((b, i) => (
-            <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 14, border: `1px solid ${C.border}`, backgroundColor: "#FAFAFA", position: "relative" as const, overflow: "hidden" }}>
+            <div key={i} style={{ padding: m ? 16 : 28, borderRadius: 14, border: `1px solid ${C.border}`, backgroundColor: "#FAFAFA", position: "relative" as const, overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: b.color }} />
               <div style={{ fontSize: 18, fontFamily: mono, fontWeight: 500, color: b.color, marginBottom: 10 }}>{b.range}</div>
               <div style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 8 }}>{b.label}</div>

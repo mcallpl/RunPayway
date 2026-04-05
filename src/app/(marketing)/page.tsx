@@ -179,7 +179,7 @@ function HeroSection() {
 
           {/* Right — Score Card */}
           <div style={{ flexShrink: 0, marginTop: m ? 48 : 0, ...fadeIn(visible, 400) }}>
-            <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 28 : 36, maxWidth: m ? "100%" : 320, margin: m ? "0 auto" : undefined }}>
+            <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 20 : 36, maxWidth: m ? "100%" : 320, margin: m ? "0 auto" : undefined }}>
 
               {/* Score Ring */}
               <div style={{ position: "relative", width: m ? 130 : 150, height: m ? 130 : 150, margin: "0 auto 20px" }}>
@@ -258,7 +258,7 @@ function IndustrySignal() {
           ].map((ind, i) => (
             <div key={i} style={{ padding: m ? "14px 16px" : "18px 20px", borderRadius: 12, border: "1px solid rgba(244,241,234,0.08)", backgroundColor: "rgba(244,241,234,0.03)" }}>
               <div style={{ fontSize: 12, fontWeight: 600, color: "rgba(244,241,234,0.65)", marginBottom: 6, letterSpacing: "0.01em" }}>{ind.name}</div>
-              <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", lineHeight: 1.5 }}>{ind.line}</div>
+              <div style={{ fontSize: 14, color: "rgba(244,241,234,0.55)", lineHeight: 1.55 }}>{ind.line}</div>
             </div>
           ))}
         </div>
@@ -307,9 +307,9 @@ function SameIncomeProof() {
         </div>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, maxWidth: 880, margin: "0 auto", ...fadeIn(visible, 120) }}>
           {/* Person A */}
-          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 28 : 36, border: `1px solid ${C.border}`, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
+          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 20 : 36, border: `1px solid ${C.border}`, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: "rgba(155,44,44,0.20)" }} />
-            <div style={{ fontSize: 13, fontWeight: 500, color: light, marginBottom: 12 }}>$150K / year</div>
+            <div style={{ fontSize: 14, fontWeight: 500, color: light, marginBottom: 12 }}>$150K / year</div>
             <div style={{ display: "flex", flexDirection: "column" as const, gap: 10, marginBottom: 28 }}>
               {["1 client = 80% of income", "No forward contracts", "Income stops if work stops"].map((t, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}><span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: "#C0392B", flexShrink: 0, marginTop: 7 }} /><span style={{ fontSize: 14, color: muted, lineHeight: 1.6 }}>{t}</span></div>
@@ -329,9 +329,9 @@ function SameIncomeProof() {
             </div>
           </div>
           {/* Person B */}
-          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 28 : 36, border: `1px solid ${C.border}`, position: "relative" as const, overflow: "hidden" }}>
+          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 20 : 36, border: `1px solid ${C.border}`, position: "relative" as const, overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
-            <div style={{ fontSize: 13, fontWeight: 500, color: light, marginBottom: 12 }}>$150K / year</div>
+            <div style={{ fontSize: 14, fontWeight: 500, color: light, marginBottom: 12 }}>$150K / year</div>
             <div style={{ display: "flex", flexDirection: "column" as const, gap: 10, marginBottom: 28 }}>
               {["5 clients, none over 30%", "40% recurring revenue", "3 months secured forward"].map((t, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}><span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 7 }} /><span style={{ fontSize: 14, color: muted, lineHeight: 1.6 }}>{t}</span></div>
@@ -448,7 +448,7 @@ function ResultPreview() {
         <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: "#F4F1EA", textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
           Your score shows where your structure holds.{m ? " " : <br />}The diagnostic shows what weakens it.
         </h2>
-        <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 28 : 40, border: "1px solid rgba(14,26,43,0.06)", boxShadow: "0 8px 40px rgba(0,0,0,0.12)", ...fadeIn(visible, 120) }}>
+        <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 20 : 40, border: "1px solid rgba(14,26,43,0.06)", boxShadow: "0 8px 40px rgba(0,0,0,0.12)", ...fadeIn(visible, 120) }}>
           <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 24 }}>
             <div style={{ position: "relative", width: 72, height: 72, flexShrink: 0 }}>
               <ScoreRing score={72} size={72} stroke={7} color="#2B5EA7" />
@@ -461,14 +461,14 @@ function ResultPreview() {
                 <div style={{ width: 6, height: 6, borderRadius: 2, backgroundColor: "#2B5EA7" }} />
                 <span style={{ fontSize: 11, fontWeight: 600, color: "#2B5EA7" }}>Established Stability</span>
               </div>
-              <div style={{ fontSize: 13, color: muted }}>3 points to High Stability</div>
+              <div style={{ fontSize: 14, color: muted }}>3 points to High Stability</div>
             </div>
           </div>
           <div style={{ height: 1, backgroundColor: "rgba(14,26,43,0.05)", marginBottom: 20 }} />
-          <div style={{ fontSize: 13, fontWeight: 500, color: light, marginBottom: 8 }}>Primary constraint: <span style={{ color: C.navy }}>Income concentration</span></div>
+          <div style={{ fontSize: 14, fontWeight: 500, color: light, marginBottom: 8 }}>Primary constraint: <span style={{ color: C.navy }}>Income concentration</span></div>
           <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.5, marginBottom: 24 }}>Your structure is stable — but one source puts most of it at risk.</p>
           <div style={{ padding: "18px 22px", borderRadius: 12, backgroundColor: "rgba(192,57,43,0.04)", border: "1px solid rgba(192,57,43,0.08)" }}>
-            <div style={{ fontSize: 13, color: muted, marginBottom: 6 }}>If that source disappears:</div>
+            <div style={{ fontSize: 14, color: muted, marginBottom: 6 }}>If that source disappears:</div>
             <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
               <span style={{ fontSize: 22, fontWeight: 300, fontFamily: mono, color: "#C0392B" }}>72 &rarr; 44</span>
               <span style={{ fontSize: 13, fontWeight: 500, color: "#C0392B" }}>Developing Stability</span>
@@ -505,7 +505,7 @@ function CommandCenter() {
             { label: "12-Week Roadmap", desc: "Step-by-step plan with industry-specific guidance and cumulative projections.", icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" },
             { label: "Goal Mode", desc: "Pick a target band. See the minimum moves to get there.", icon: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" },
           ].map((mod, i) => (
-            <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 14, border: `1px solid ${C.border}`, backgroundColor: "#FAFAFA", transition: "border-color 200ms" }}>
+            <div key={i} style={{ padding: m ? 16 : 28, borderRadius: 14, border: `1px solid ${C.border}`, backgroundColor: "#FAFAFA", transition: "border-color 200ms" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
                 <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: `${C.teal}08`, border: `1px solid ${C.teal}10`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={mod.icon} /></svg>
@@ -548,11 +548,11 @@ function PricingSection() {
         </div>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, maxWidth: 880, margin: "0 auto", ...fadeIn(visible, 120) }}>
           {/* Free */}
-          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 28 : 32, border: `1px solid ${C.border}`, display: "flex", flexDirection: "column" as const, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
+          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 20 : 32, border: `1px solid ${C.border}`, display: "flex", flexDirection: "column" as const, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: "rgba(14,26,43,0.06)" }} />
             <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginTop: 4, marginBottom: 24 }}>Income Stability Score&#8482;</div>
             <div style={{ marginBottom: 4 }}><span style={{ fontSize: 44, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$0</span></div>
-            <div style={{ fontSize: 13, color: light, marginBottom: 28 }}>always free</div>
+            <div style={{ fontSize: 14, color: light, marginBottom: 28 }}>always free</div>
             <div style={{ marginBottom: 28, flex: 1 }}>
               {check("Score (0\u2013100)")}{check("Stability band")}{check("Primary constraint")}{check("Highest-impact improvement")}
             </div>
@@ -563,11 +563,11 @@ function PricingSection() {
             </Link>
           </div>
           {/* Diagnostic */}
-          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 28 : 32, border: `1px solid rgba(14,26,43,0.12)`, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", boxShadow: "0 4px 24px rgba(14,26,43,0.06)" }}>
+          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 20 : 32, border: `1px solid rgba(14,26,43,0.12)`, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", boxShadow: "0 4px 24px rgba(14,26,43,0.06)" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.purple}, ${C.teal})` }} />
             <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.purple, marginTop: 4, marginBottom: 24 }}>RunPayway&#8482; Diagnostic</div>
             <div style={{ marginBottom: 4 }}><span style={{ fontSize: 44, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$69</span></div>
-            <div style={{ fontSize: 13, color: light, marginBottom: 20 }}>one-time</div>
+            <div style={{ fontSize: 14, color: light, marginBottom: 20 }}>one-time</div>
             <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 24 }}>See exactly what would break your income — before it happens.</p>
             <div style={{ marginBottom: 28, flex: 1 }}>
               {check("Structural breakdown")}{check("Risk scenarios")}{check("Score drivers")}{check("Improvement plan")}{check("12-week roadmap")}
@@ -577,7 +577,7 @@ function PricingSection() {
               onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.navy; }}>
               Unlock Full Diagnostic &mdash; $69
             </a>
-            <p style={{ fontSize: 13, fontWeight: 500, color: C.teal, textAlign: "center", marginTop: 12, marginBottom: 0 }}>If it doesn&#8217;t reveal something new, full refund.</p>
+            <p style={{ fontSize: 14, fontWeight: 500, color: C.teal, textAlign: "center", marginTop: 12, marginBottom: 0 }}>If it doesn&#8217;t reveal something new, full refund.</p>
           </div>
         </div>
       </div>
@@ -609,7 +609,7 @@ function TransformationProof() {
         </div>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20, ...fadeIn(visible, 120) }}>
           {results.map((r, i) => (
-            <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 14, border: `1px solid ${C.border}`, backgroundColor: "#FAFAFA", marginBottom: m ? 12 : 0 }}>
+            <div key={i} style={{ padding: m ? 16 : 28, borderRadius: 14, border: `1px solid ${C.border}`, backgroundColor: "#FAFAFA", marginBottom: m ? 12 : 0 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
                 <div style={{ position: "relative", width: 48, height: 48, flexShrink: 0 }}>
                   <ScoreRing score={r.before} size={48} stroke={4} color="rgba(14,26,43,0.12)" />
@@ -666,7 +666,7 @@ function TrustStrip() {
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={item.icon} /></svg>
               </div>
               <div style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 6 }}>{item.title}</div>
-              <p style={{ fontSize: 13, color: muted, lineHeight: 1.55, margin: 0 }}>{item.desc}</p>
+              <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, margin: 0 }}>{item.desc}</p>
             </div>
           ))}
         </div>

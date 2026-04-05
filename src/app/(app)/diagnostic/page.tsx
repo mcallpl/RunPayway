@@ -219,7 +219,7 @@ function StepBreadcrumb({ activeStep, completedSteps = [] as number[] }: { activ
         return (
           <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 0 }}>
             <span style={{
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: isActive ? 600 : 400,
               color: isActive ? C.purple : isCompleted ? C.teal : "rgba(14,26,43,0.25)",
               letterSpacing: "0.01em",
@@ -227,7 +227,7 @@ function StepBreadcrumb({ activeStep, completedSteps = [] as number[] }: { activ
               {isCompleted ? "\u2713" : s.num} {s.label}
             </span>
             {i < steps.length - 1 && (
-              <span style={{ margin: "0 10px", color: "rgba(14,26,43,0.15)", fontSize: 11 }}>&mdash;&mdash;</span>
+              <span style={{ margin: "0 10px", color: "rgba(14,26,43,0.15)", fontSize: 12 }}>&mdash;&mdash;</span>
             )}
           </span>
         );
@@ -907,8 +907,8 @@ export default function DiagnosticPage() {
         overflowX: "hidden", width: "100%", maxWidth: "100vw",
       }}>
         <style dangerouslySetInnerHTML={{ __html: `${VIEWPORT_LOCK_CSS} @keyframes revealPulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }` }} />
-        <div style={{ position: "absolute", top: "30%", left: "50%", width: 600, height: 600, transform: "translate(-50%, -50%)", background: `radial-gradient(circle, ${revealColor}10 0%, transparent 60%)`, pointerEvents: "none" }} />
-        <div style={{ textAlign: "center", maxWidth: 480, padding: "0 24px", position: "relative", zIndex: 1 }}>
+        <div style={{ position: "absolute", top: "30%", left: "50%", width: mobile ? 360 : 600, height: mobile ? 360 : 600, transform: "translate(-50%, -50%)", background: `radial-gradient(circle, ${revealColor}10 0%, transparent 60%)`, pointerEvents: "none" }} />
+        <div style={{ textAlign: "center", maxWidth: 480, padding: mobile ? "0 16px" : "0 24px", position: "relative", zIndex: 1 }}>
 
           {/* Score number — counts up with pulse on reveal */}
           <div style={{ marginBottom: 8, animation: revealPhase >= 1 ? "revealPulse 0.6s ease-out" : "none" }}>

@@ -27,7 +27,7 @@ function StepBreadcrumb({ activeStep, completedSteps = [] as number[] }: { activ
         return (
           <span key={i} style={{ display: "inline-flex", alignItems: "center", gap: 0 }}>
             <span style={{
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: isActive ? 600 : 400,
               color: isActive ? C.purple : isCompleted ? C.teal : C.light,
               letterSpacing: "0.01em",
@@ -241,7 +241,7 @@ function CheckoutSuccessContent() {
               </div>
               <div>
                 <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 2 }}>{step.title}</div>
-                <div style={{ fontSize: 13, color: C.light, lineHeight: 1.5 }}>{step.desc}</div>
+                <div style={{ fontSize: 14, color: C.light, lineHeight: 1.55 }}>{step.desc}</div>
               </div>
             </div>
           ))}
@@ -328,7 +328,7 @@ function CheckoutSuccessContent() {
               <div style={{ marginTop: 20, padding: "16px 20px", borderRadius: 10, backgroundColor: "rgba(31,109,122,0.06)", border: "1px solid rgba(31,109,122,0.15)", textAlign: "center" }}>
                 <div style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", textTransform: "uppercase" as const, marginBottom: 8 }}>Your Monitoring Portal PIN</div>
                 <div style={{ fontSize: 32, fontWeight: 600, fontFamily: "'SF Mono', 'Fira Code', monospace", color: C.navy, letterSpacing: "0.3em" }}>{sessionStorage.getItem("rp_monitoring_pin")}</div>
-                <p style={{ fontSize: 13, color: C.muted, marginTop: 8, marginBottom: 0, lineHeight: 1.5 }}>Save this PIN. You will need it to sign in at runpayway.com/sign-in.</p>
+                <p style={{ fontSize: 14, color: C.muted, marginTop: 8, marginBottom: 0, lineHeight: 1.55 }}>Save this PIN. You will need it to sign in at runpayway.com/sign-in.</p>
               </div>
             )}
             </>

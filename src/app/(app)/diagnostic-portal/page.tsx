@@ -382,7 +382,7 @@ export default function InitializationPage() {
         display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center",
         textAlign: "center",
-        padding: "0 32px",
+        padding: mobile ? "0 16px" : "0 32px",
       }}>
         <div style={{
           opacity: readyExiting ? 0 : readyVisible ? 1 : 0,
@@ -469,7 +469,7 @@ export default function InitializationPage() {
         {/* Ambient glow */}
         <div style={{
           position: "absolute", top: "30%", left: "50%", transform: "translate(-50%, -50%)",
-          width: 600, height: 600, borderRadius: "50%",
+          width: mobile ? 300 : 600, height: mobile ? 300 : 600, borderRadius: "50%",
           background: "radial-gradient(circle, rgba(75,63,174,0.03) 0%, transparent 70%)",
           pointerEvents: "none",
         }} />
@@ -485,7 +485,7 @@ export default function InitializationPage() {
 
         {/* Content */}
         <div style={{
-          maxWidth: 520, width: "100%", padding: "0 32px",
+          maxWidth: 520, width: "100%", padding: mobile ? "0 16px" : "0 32px",
           opacity: portalRevealed ? 1 : 0,
           transform: portalRevealed ? "translateY(0)" : "translateY(20px)",
           transition: "opacity 800ms ease, transform 800ms ease",

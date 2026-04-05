@@ -219,7 +219,7 @@ function LanguageSelector({ mobile }: { mobile: boolean }) {
                   border: "none",
                   background: l.code === lang ? "rgba(75,63,174,0.06)" : "transparent",
                   cursor: isDisabled ? "default" : "pointer",
-                  fontSize: 13,
+                  fontSize: 14,
                   fontWeight: l.code === lang ? 600 : 500,
                   color: isDisabled ? "rgba(14,26,43,0.30)" : l.code === lang ? "#4B3FAE" : "rgba(14,26,43,0.70)",
                   textAlign: "left",
@@ -600,7 +600,7 @@ export default function MarketingLayout({
               backdropFilter: "blur(24px) saturate(180%)",
               WebkitBackdropFilter: "blur(24px) saturate(180%)",
               zIndex: 999,
-              padding: "32px 28px",
+              padding: "32px 16px",
               display: "flex",
               flexDirection: "column",
               overflowY: "auto",
@@ -716,7 +716,7 @@ export default function MarketingLayout({
                 style={{ height: "auto" }}
               />
             </Link>
-            <div style={{ fontSize: 13, color: "rgba(14,26,43,0.50)", marginTop: 6 }}>
+            <div style={{ fontSize: 14, color: "rgba(14,26,43,0.50)", marginTop: 6 }}>
               {t.footer.incomeStabilityScore}
             </div>
           </div>
@@ -802,7 +802,7 @@ export default function MarketingLayout({
           <div style={{ height: 1, width: "100%", background: "rgba(14,26,43,0.06)", marginBottom: 20 }} />
 
           {/* Legal strip */}
-          <div style={{ fontSize: 13, color: "rgba(14,26,43,0.45)", lineHeight: 1.8, textAlign: "center" }}>
+          <div style={{ fontSize: 14, color: "rgba(14,26,43,0.45)", lineHeight: 1.8, textAlign: "center" }}>
             {t.footer.legal}
           </div>
         </div>
