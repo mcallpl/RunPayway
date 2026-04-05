@@ -318,7 +318,7 @@ export default function MarketingLayout({
         className="sticky top-0"
         style={{
           zIndex: 1000,
-          background: scrolled ? "rgba(255,255,255,0.97)" : "#ffffff",
+          background: scrolled ? "rgba(245,244,241,0.97)" : "#F5F4F1",
           borderBottom: scrolled ? "1px solid rgba(14,26,43,0.06)" : "1px solid rgba(14,26,43,0.08)",
           transition: "background 360ms cubic-bezier(0.22, 1, 0.36, 1), border-color 360ms cubic-bezier(0.22, 1, 0.36, 1)",
           boxShadow: scrolled ? "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)" : "none",
@@ -693,7 +693,7 @@ export default function MarketingLayout({
       <footer
         id="footer"
         style={{
-          background: "#FAFAFA",
+          background: "#F5F4F1",
           borderTop: "1px solid rgba(14,26,43,0.06)",
           scrollMarginTop: 80,
         }}
