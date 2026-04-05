@@ -813,7 +813,7 @@ function FinalCtaAndTrust() {
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 10 }}>HERE'S EXACTLY WHAT HAPPENS</div>
           <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
             {[
-              "You answer 6 questions about how your income works. Takes under 2 minutes.",
+              "You describe how your income works. Takes under 2 minutes.",
               "You get your score, stability level, and biggest risk — instantly. No waiting.",
               "That's it. No sales call. No spam. No account required for the free score.",
               "If you want the full diagnostic ($69), you unlock it on your terms. Full refund if it doesn't reveal something new.",
