@@ -266,10 +266,7 @@ function HeroSection() {
         {/* Credibility strip */}
         <div style={{ marginTop: m ? 36 : 56, paddingTop: m ? 20 : 28, borderTop: `1px solid rgba(14,26,43,0.05)`, textAlign: "center", ...fadeIn(visible, 400) }}>
           <p style={{ fontSize: 13, fontWeight: 500, color: light, letterSpacing: "0.02em" }}>
-            Model RP-2.0 &bull; 6 dimensions scored &bull; Same answers, same score &bull; No bank connection &bull; Free to start
-          </p>
-          <p style={{ fontSize: 12, color: "rgba(14,26,43,0.40)", marginTop: 8, letterSpacing: "0.02em" }}>
-            Built by PeopleStar Enterprises, LLC
+            Free to start &bull; No bank connection &bull; Same answers, same score
           </p>
         </div>
       </div>
@@ -326,7 +323,7 @@ function IndustrySelector() {
         {/* Prompt when nothing selected */}
         {!selected && (
           <div style={{ textAlign: "center", marginTop: m ? 24 : 36, ...fadeIn(visible, 200) }}>
-            <p style={{ fontSize: 15, color: light }}>The assessment works for <strong style={{ color: C.navy }}>any type of income</strong> — these are examples.</p>
+            <p style={{ fontSize: 15, color: light }}>Select your industry to see what's at risk.</p>
           </div>
         )}
 
@@ -422,8 +419,7 @@ function SameIncomeProof() {
         {/* Self-reflection prompt */}
         <div style={{ textAlign: "center", marginTop: m ? 48 : 80, ...fadeIn(visible, 220) }}>
           <p style={{ fontSize: m ? 20 : 24, fontWeight: 500, color: C.navy, marginBottom: 8 }}>Which one looks more like yours?</p>
-          <p style={{ fontSize: 16, color: light, lineHeight: 1.6, marginBottom: 6 }}>The income is the same. How it's built is not. That's what RunPayway measures.</p>
-          <p style={{ fontSize: 14, color: light }}>You already know how your income works — how many sources, how much repeats, how far ahead it's locked in. That's all we need.</p>
+          <p style={{ fontSize: 16, color: light, lineHeight: 1.6 }}>The income is the same. How it's built is not. That's what RunPayway measures.</p>
         </div>
       </div>
     </section>
@@ -472,21 +468,7 @@ function WhatStabilityUnlocks() {
         </div>
 
         <div style={{ textAlign: "center", marginTop: m ? 36 : 56, ...fadeIn(visible, 220) }}>
-          <p style={{ fontSize: m ? 16 : 18, color: light, lineHeight: 1.6, marginBottom: 32 }}>This isn't about earning more. It's about <strong style={{ color: C.navy }}>knowing what you're working with</strong> before you make your next move.</p>
-          <Link href="/pricing" style={{
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-            height: 52, padding: m ? "0 28px" : "0 40px",
-            borderRadius: 12,
-            background: `linear-gradient(135deg, ${C.navy} 0%, #251e42 100%)`,
-            color: C.white, fontSize: 15, fontWeight: 600, textDecoration: "none",
-            boxShadow: elevation.cta,
-            border: "1px solid rgba(255,255,255,0.08)",
-            transition: "transform 200ms, box-shadow 200ms",
-          }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = elevation.ctaHover; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = elevation.cta; }}>
-            See What Your Score Unlocks
-          </Link>
+          <p style={{ fontSize: m ? 16 : 18, color: light, lineHeight: 1.6 }}>This isn't about earning more. It's about <strong style={{ color: C.navy }}>knowing what you're working with</strong> before you make your next move.</p>
         </div>
       </div>
     </section>
@@ -592,11 +574,10 @@ function TheMissingLayer() {
 
             {[
               { text: "Know if you can actually afford it", desc: "If one client leaving would make you miss payments, you need to see that clearly before taking on new debt." },
-              { text: "See what your tax return doesn't show you", desc: "Your earnings look fine on paper. But is that income diversified? Recurring? Locked in ahead? Now you'll know." },
-              { text: "Time it right", desc: "If your income is weak right now, strengthen it first. Apply when you're actually ready — not when you're hoping for the best." },
-              { text: "Build the habit of consistent payments", desc: "Stable income leads to consistent payments, which builds credit over time. It starts with knowing where you stand." },
+              { text: "See what your tax return doesn't show", desc: "Your earnings look fine on paper. But is that income diversified? Recurring? Locked in ahead? Now you'll know." },
+              { text: "Time it right", desc: "If your income is weak right now, strengthen it first. Apply when you're ready — not when you're hoping for the best." },
             ].map((item, i) => (
-              <div key={i} style={{ marginBottom: i < 3 ? 14 : 0 }}>
+              <div key={i} style={{ marginBottom: i < 2 ? 14 : 0 }}>
                 <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 3 }}>{item.text}</div>
                 <p style={{ fontSize: 13, color: muted, margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
               </div>
@@ -617,12 +598,11 @@ function TheMissingLayer() {
             </div>
 
             {[
-              { text: "Find your blind spots first", desc: "If 80% of your income depends on you showing up every day, any financial plan built without knowing that has a gap." },
-              { text: "Know how much reserve you actually need", desc: "A stability score of 31 means you probably need 6–12 months of buffer. A 75 might need 3. Now you know before you decide." },
+              { text: "Find your blind spots", desc: "If 80% of your income depends on you showing up every day, any plan built without knowing that has a gap." },
+              { text: "Know how much buffer you need", desc: "A stability score of 31 means 6–12 months of reserves. A 75 might need 3. Now you know before you decide." },
               { text: "Understand your real risk capacity", desc: "Your risk tolerance isn't just how you feel — it's how your income is built. Fragile income and aggressive investing don't mix." },
-              { text: "See if you're covered", desc: "If your income stops when you stop working, disability insurance isn't optional — it's critical. Your score makes that obvious." },
             ].map((item, i) => (
-              <div key={i} style={{ marginBottom: i < 3 ? 14 : 0 }}>
+              <div key={i} style={{ marginBottom: i < 2 ? 14 : 0 }}>
                 <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 3 }}>{item.text}</div>
                 <p style={{ fontSize: 13, color: muted, margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
               </div>
@@ -786,46 +766,14 @@ function FinalCtaAndTrust() {
       <div style={{ position: "absolute", top: "30%", left: "50%", width: m ? 300 : 600, height: m ? 300 : 600, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}08 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
 
-        {/* How it works — compact 3-step */}
-        <div style={{ display: "flex", gap: m ? 12 : 20, justifyContent: "center", marginBottom: m ? 48 : 64, ...fadeIn(visible) }}>
-          {[
-            { num: "01", text: "Describe how you earn" },
-            { num: "02", text: "6 dimensions scored" },
-            { num: "03", text: "One clear result" },
-          ].map((s, i) => (
-            <div key={i} style={{ textAlign: "center", flex: 1 }}>
-              <div style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: C.teal, marginBottom: 6 }}>{s.num}</div>
-              <div style={{ fontSize: m ? 13 : 14, fontWeight: 500, color: "rgba(244,241,234,0.55)", lineHeight: 1.35 }}>{s.text}</div>
-            </div>
-          ))}
-        </div>
-
-        <h2 style={{ fontSize: m ? 26 : 40, fontWeight: 500, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.sand, marginBottom: 20, ...fadeIn(visible, 100) }}>
+        <h2 style={{ fontSize: m ? 26 : 40, fontWeight: 500, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.sand, marginBottom: 20, ...fadeIn(visible) }}>
           Be prepared before your next move.{m ? " " : <br />}Not surprised after.
         </h2>
-        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 44, ...fadeIn(visible, 150) }}>
-          Start with the free score. See where your income is strong and where it's exposed — in under 2 minutes.
+        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 44, ...fadeIn(visible, 80) }}>
+          Under 2 minutes. Free to start. See where your income is strong and where it's exposed.
         </p>
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: m ? 36 : 48, ...fadeIn(visible, 200) }}>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: m ? 48 : 72, ...fadeIn(visible, 160) }}>
           <CtaButton m={m} variant="light" />
-        </div>
-
-        {/* What happens next — address post-assessment anxiety */}
-        <div style={{ marginBottom: m ? 36 : 56, padding: m ? "20px 18px" : "24px 28px", borderRadius: 16, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", textAlign: "left" as const, ...fadeIn(visible, 240) }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 10 }}>HERE'S EXACTLY WHAT HAPPENS</div>
-          <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
-            {[
-              "You describe how your income works. Takes under 2 minutes.",
-              "You get your score, stability level, and biggest risk — instantly. No waiting.",
-              "That's it. No sales call. No spam. No account required for the free score.",
-              "If you want the full diagnostic ($69), you unlock it on your terms. Full refund if it doesn't reveal something new.",
-            ].map((step, i) => (
-              <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                <span style={{ fontSize: 13, fontFamily: mono, fontWeight: 600, color: C.teal, flexShrink: 0, marginTop: 1 }}>{i + 1}.</span>
-                <span style={{ fontSize: 14, color: "rgba(244,241,234,0.55)", lineHeight: 1.5 }}>{step}</span>
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Trust signals */}
