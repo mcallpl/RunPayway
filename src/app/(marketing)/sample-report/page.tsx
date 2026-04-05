@@ -102,7 +102,7 @@ function HeroSection() {
           See exactly what the diagnostic reveals — before you buy.
         </h1>
         <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto", ...fadeIn(visible, 120) }}>
-          Four pages generated from your structure. Every number is real. The same inputs always produce the same result.
+          Four pages generated from your answers. Every number is real. Same answers always produce the same result.
         </p>
       </div>
     </header>
@@ -125,7 +125,7 @@ function ReportWalkthrough() {
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 12 }}>Four pages. Each one earns its place.</h2>
-          <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65 }}>Nothing decorative. Every section reflects how your income is actually built.</p>
+          <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65 }}>Nothing decorative. Every section shows something real about how your income works.</p>
         </div>
 
         {/* 4 report pages — clean grid, no accordions */}
@@ -173,12 +173,12 @@ function ReportWalkthrough() {
             {/* Key Takeaway */}
             <div style={{ borderLeft: `3px solid ${C.purple}`, padding: "14px 16px", borderRadius: "0 8px 8px 0", backgroundColor: "#FAFAFA", marginBottom: 20 }}>
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", color: C.purple, marginBottom: 4 }}>KEY TAKEAWAY</div>
-              <p style={{ fontSize: 15, fontWeight: 500, color: C.navy, margin: 0, lineHeight: 1.45 }}>Your structure is stable — but one client puts most of it at risk.</p>
+              <p style={{ fontSize: 15, fontWeight: 500, color: C.navy, margin: 0, lineHeight: 1.45 }}>Your income is stable — but one client puts most of it at risk.</p>
             </div>
 
             {/* Income structure bar */}
             <div style={{ marginBottom: 20 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: light, marginBottom: 8, letterSpacing: "0.04em" }}>INCOME STRUCTURE</div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: light, marginBottom: 8, letterSpacing: "0.04em" }}>HOW YOUR INCOME IS BUILT</div>
               <div style={{ display: "flex", height: 14, borderRadius: 7, overflow: "hidden", marginBottom: 10 }}>
                 <div style={{ width: "55%", backgroundColor: "rgba(192,57,43,0.30)" }} />
                 <div style={{ width: "20%", backgroundColor: "rgba(181,137,0,0.30)", borderLeft: `2px solid ${C.white}` }} />
@@ -186,9 +186,9 @@ function ReportWalkthrough() {
               </div>
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" as const }}>
                 {[
-                  { label: "Active", value: "55%", color: "#C0392B" },
-                  { label: "Semi-persistent", value: "20%", color: "#B58900" },
-                  { label: "Persistent", value: "25%", color: C.teal },
+                  { label: "Stops if you stop", value: "55%", color: "#C0392B" },
+                  { label: "Keeps coming for a while", value: "20%", color: "#B58900" },
+                  { label: "Protected", value: "25%", color: C.teal },
                 ].map((s, i) => (
                   <div key={i} style={{ display: "flex", alignItems: "center", gap: 6 }}>
                     <div style={{ width: 6, height: 6, borderRadius: 2, backgroundColor: s.color }} />
@@ -205,14 +205,14 @@ function ReportWalkthrough() {
                   <div style={{ width: 5, height: 5, borderRadius: 2, backgroundColor: C.teal }} />
                   <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: C.teal }}>STRONGEST</span>
                 </div>
-                <p style={{ fontSize: 14, color: C.navy, margin: 0, lineHeight: 1.45 }}>Low variability — consistent month to month.</p>
+                <p style={{ fontSize: 14, color: C.navy, margin: 0, lineHeight: 1.45 }}>Steady month to month — income doesn&#8217;t swing much.</p>
               </div>
               <div style={{ flex: 1, padding: "12px 14px", borderRadius: 10, backgroundColor: "#FAFAFA" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
                   <div style={{ width: 5, height: 5, borderRadius: 2, backgroundColor: "#C0392B" }} />
-                  <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: "#C0392B" }}>CONSTRAINT</span>
+                  <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: "#C0392B" }}>BIGGEST RISK</span>
                 </div>
-                <p style={{ fontSize: 14, color: C.navy, margin: 0, lineHeight: 1.45 }}>High concentration — one source carries most.</p>
+                <p style={{ fontSize: 14, color: C.navy, margin: 0, lineHeight: 1.45 }}>Too much from one source — if it goes, most of your income goes with it.</p>
               </div>
             </div>
           </div>
@@ -232,9 +232,9 @@ function ReportWalkthrough() {
 
             {/* Ranked actions with visual weight */}
             {[
-              { num: 1, action: "Reduce concentration", desc: "Diversify revenue across multiple sources", lift: "+11", effort: "High", color: "#C0392B" },
-              { num: 2, action: "Extend forward visibility", desc: "Secure commitments beyond current quarter", lift: "+8", effort: "High", color: "#C0392B" },
-              { num: 3, action: "Add recurring stream", desc: "Convert project work into recurring revenue", lift: "+5", effort: "Medium", color: "#B58900" },
+              { num: 1, action: "Spread out your income", desc: "Reduce how much depends on one source", lift: "+11", effort: "High", color: "#C0392B" },
+              { num: 2, action: "Lock in income further ahead", desc: "Secure commitments beyond the current quarter", lift: "+8", effort: "High", color: "#C0392B" },
+              { num: 3, action: "Add repeating income", desc: "Convert project work into something that recurs", lift: "+5", effort: "Medium", color: "#B58900" },
             ].map((a, i) => (
               <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "14px 0", borderBottom: i < 2 ? `1px solid rgba(14,26,43,0.05)` : "none" }}>
                 <div style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: `${a.color}08`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2 }}>
@@ -285,7 +285,7 @@ function ReportWalkthrough() {
               {[
                 { scenario: "Your largest client stops paying", projected: 44, drop: -28, severity: "Severe", color: "#C0392B" },
                 { scenario: "You cannot work for 90 days", projected: 53, drop: -19, severity: "Significant", color: "#C0392B" },
-                { scenario: "Forward commitments delayed 3 months", projected: 64, drop: -8, severity: "Moderate", color: "#B58900" },
+                { scenario: "Upcoming work gets delayed 3 months", projected: 64, drop: -8, severity: "Moderate", color: "#B58900" },
               ].map((s, i) => (
                 <div key={i} style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: "#FAFAFA" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
@@ -312,7 +312,7 @@ function ReportWalkthrough() {
             {/* Fragility summary */}
             <div style={{ marginTop: 16, padding: "12px 14px", borderRadius: 8, borderLeft: `3px solid #C0392B`, backgroundColor: "rgba(192,57,43,0.03)" }}>
               <p style={{ fontSize: 13, color: muted, margin: 0, lineHeight: 1.5 }}>
-                <strong style={{ color: C.navy }}>Fragility class: Uneven.</strong> Some parts are protected, others are not. Primary failure mode: client departure.
+                <strong style={{ color: C.navy }}>Stability type: Uneven.</strong> Some parts of your income are protected, others are not. Biggest vulnerability: losing a key client.
               </p>
             </div>
           </div>
