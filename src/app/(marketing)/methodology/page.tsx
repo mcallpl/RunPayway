@@ -73,7 +73,7 @@ function HeroSection() {
           <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 12 }}>
             The Income Stability Score&#8482; is a deterministic structural assessment. The same inputs always produce the same score.
           </p>
-          <p style={{ fontSize: 16, color: light, lineHeight: 1.6 }}>
+          <p style={{ fontSize: 15, color: light, lineHeight: 1.6 }}>
             Every rule is versioned and auditable.
           </p>
         </div>
@@ -126,7 +126,7 @@ function WhatTheModelMeasures() {
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 64 : 128, paddingBottom: m ? 64 : 128, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
         <div style={{ width: 48, height: 1, backgroundColor: C.border, margin: m ? "0 auto 36px" : "0 auto 56px" }} />
-        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.sand, marginBottom: 28, ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 28, ...fadeIn(visible) }}>
           Not how much you earn.{m ? " " : <br />}How well it holds up.
         </h2>
         <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 28, ...fadeIn(visible, 80) }}>
