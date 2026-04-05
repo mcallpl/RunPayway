@@ -13,7 +13,7 @@ const C = {
   border: "rgba(14,26,43,0.08)",
 };
 
-export default function SuiteHeader({ current }: { current: "suite" | "pressuremap" | "simulator" | "dashboard" }) {
+export default function SuiteHeader({ current }: { current: "suite" | "pressuremap" | "simulator" | "dashboard" | "access-code" }) {
   return (
     <header style={{
       borderBottom: `1px solid ${C.border}`,
@@ -51,9 +51,24 @@ export default function SuiteHeader({ current }: { current: "suite" | "pressurem
 
         {/* Right: Links */}
         <nav style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <Link href="/dashboard" style={{ fontSize: 14, fontWeight: 600, color: C.purple, textDecoration: "none", borderBottom: `2px solid ${C.purple}`, paddingBottom: 2 }}>
-            Simulator
-          </Link>
+          {([
+            { href: "/dashboard", label: "Simulator", key: "dashboard" },
+            { href: "/access-code", label: "Access Code", key: "access-code" },
+          ] as const).map(link => {
+            const isActive = current === link.key;
+            return (
+              <Link key={link.key} href={link.href} style={{
+                fontSize: 14, fontWeight: isActive ? 600 : 500,
+                color: isActive ? C.purple : C.muted,
+                textDecoration: "none",
+                borderBottom: isActive ? `2px solid ${C.purple}` : "2px solid transparent",
+                paddingBottom: 2,
+                transition: "color 150ms, border-color 150ms",
+              }}>
+                {link.label}
+              </Link>
+            );
+          })}
           <button
             onClick={() => { const e = new KeyboardEvent("keydown", { key: "k", metaKey: true }); window.dispatchEvent(e); }}
             style={{ padding: "4px 10px", borderRadius: 5, border: `1px solid ${C.border}`, background: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: C.muted }}

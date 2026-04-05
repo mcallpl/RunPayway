@@ -105,16 +105,27 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
   const offset = circ - (pct / 100) * circ;
   const color = bandColor(score);
   const bandLabel = score >= 75 ? "High" : score >= 50 ? "Established" : score >= 30 ? "Developing" : "Limited";
+  const glowSize = size * 1.5;
 
   return (
     <div style={{ position: "relative", width: size, height: size, flexShrink: 0 }}>
-      <svg width={size} height={size} style={{ transform: "rotate(-90deg)" }}>
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={B.stone} strokeWidth={stroke} />
+      {/* Ambient band-color glow */}
+      <div style={{
+        position: "absolute",
+        top: "50%", left: "50%",
+        width: glowSize, height: glowSize,
+        transform: "translate(-50%, -50%)",
+        borderRadius: "50%",
+        background: `radial-gradient(circle, ${color}12 0%, ${color}04 40%, transparent 70%)`,
+        pointerEvents: "none",
+      }} />
+      <svg width={size} height={size} style={{ transform: "rotate(-90deg)", position: "relative", zIndex: 1 }}>
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={B.stone} strokeWidth={stroke} opacity={0.5} />
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={stroke}
           strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round"
-          style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.4s" }} />
+          style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.4s", filter: `drop-shadow(0 0 6px ${color}30)` }} />
       </svg>
-      <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 2 }}>
         <span style={{ fontSize: size * 0.28, fontWeight: 300, fontFamily: mono, color: B.navy, lineHeight: 1, letterSpacing: "-0.04em" }}>{score}</span>
         <span style={{ fontSize: size * 0.08, fontWeight: 600, color, marginTop: 4, letterSpacing: "0.04em" }}>{bandLabel}</span>
       </div>
@@ -404,6 +415,20 @@ function DashboardContent() {
   }, [hydrated]);
 
   useEffect(() => { const c = () => setMobile(window.innerWidth <= 640); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
+
+  // Scroll-triggered entrance animations
+  useEffect(() => {
+    if (!hydrated || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) { entry.target.classList.add("cc-visible"); observer.unobserve(entry.target); }
+      }
+    }, { rootMargin: "0px 0px -60px 0px", threshold: 0.05 });
+    const timeout = setTimeout(() => {
+      document.querySelectorAll(".cc-section").forEach(el => observer.observe(el));
+    }, 100);
+    return () => { clearTimeout(timeout); observer.disconnect(); };
+  }, [hydrated]);
 
   // Persist saved scenarios
   useEffect(() => { localStorage.setItem("rp_saved_scenarios", JSON.stringify(savedScenarios)); }, [savedScenarios]);
@@ -954,105 +979,55 @@ function DashboardContent() {
             .d-phase{margin:0 -16px!important;padding:0 16px 24px!important;}
           }
           @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+          .cc-section { opacity: 0; transform: translateY(16px); transition: opacity 500ms ease, transform 500ms ease; }
+          .cc-section.cc-visible { opacity: 1; transform: translateY(0); }
         `}</style>
         <SuiteHeader current="dashboard" />
         {shareUrl && <a ref={shareRef} href={shareUrl} download={`runpayway-score-${dScore}.png`} style={{ display: "none" }}>dl</a>}
 
-        {/* Access Code Entry — standalone at top */}
-        <div style={{ maxWidth: 960, margin: "0 auto", padding: mobile ? "16px 16px 0" : "28px 36px 0" }}>
-          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, marginBottom: 8 }}>PASTE ACCESS CODE</div>
-          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <input value={accessCode} onChange={(e) => { setAccessCode(e.target.value); setCodeError(null); }} placeholder="Paste code from your report" onKeyDown={(e) => { if (e.key === "Enter") handleCodeSubmit(); }}
-              style={{ padding: "10px 14px", fontSize: 14, fontFamily: "monospace", border: `2px solid ${B.purple}30`, borderRadius: 10, outline: "none", flex: 1, boxSizing: "border-box" as const, minWidth: 0, minHeight: 44, backgroundColor: B.white, transition: "border-color 200ms" }}
-              onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-              onBlur={(e) => { e.currentTarget.style.borderColor = `${B.purple}30`; }} />
-            <button onClick={handleCodeSubmit} style={{ padding: "10px 24px", fontSize: 14, fontWeight: 600, color: B.white, backgroundColor: B.navy, border: "none", borderRadius: 10, cursor: "pointer", whiteSpace: "nowrap" as const, flexShrink: 0, minHeight: 44, transition: "background 150ms" }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#142338"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = B.navy; }}>Load</button>
-          </div>
-          {codeError && <div style={{ fontSize: 12, color: B.red, marginTop: 4 }}>{codeError}</div>}
-        </div>
-
-        {/* Change 1: Sticky phase nav */}
+        {/* Phase nav */}
         <PhaseNav activePhase={activePhase} mobile={mobile} />
 
         <div style={{ maxWidth: 960, margin: "0 auto", padding: mobile ? "24px 16px 100px" : "48px 36px 96px", overflow: "hidden" }}>
 
-          {/* Personalized header */}
-          {custName && (
-            <div style={{ marginBottom: 8 }}>
-              <span style={{ fontSize: 14, color: B.muted }}>{custName}&rsquo;s Command Center</span>
-              {indLabel && <span style={{ fontSize: 13, color: B.taupe }}> &middot; {indLabel}</span>}
-            </div>
-          )}
-
-          {/* ── FIRST-VISIT WELCOME ── */}
-          {showWelcome && (
-            <div style={{ padding: mobile ? "32px 24px" : "44px 48px", borderRadius: 20, background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`, marginBottom: 36, animation: "fadeSlideIn 600ms ease-out", position: "relative", boxShadow: "0 8px 32px rgba(14,26,43,0.12)" }}>
-              <button onClick={() => setShowWelcome(false)} style={{ position: "absolute", top: 16, right: 18, fontSize: 16, color: C.sandLight, background: "none", border: "none", cursor: "pointer", minHeight: 44, minWidth: 44 }}>×</button>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 16 }}>WELCOME TO YOUR COMMAND CENTER</div>
-              <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 300, color: C.sandText, lineHeight: 1.2, marginBottom: 16 }}>
-                {custName ? `${custName}, your` : "Your"} score is <span style={{ fontWeight: 600, fontFamily: mono, color: B.white }}>{dScore}</span>.
-                {bm ? ` That puts you ahead of ${bm.peer_percentile}% of ${bm.cluster_label.toLowerCase()}.` : ""}
-              </div>
-              <p style={{ fontSize: 14, color: C.sandMuted, lineHeight: 1.6, margin: "0 0 24px", maxWidth: 560 }}>
-                {gap > 0 ? `You are ${gap} points from ${nextB} Stability. Your 12-week roadmap below shows exactly how to get there.` : "You have achieved the highest stability band. Your roadmap focuses on maintaining and strengthening this position."}
-              </p>
-              <button onClick={() => setShowWelcome(false)} style={{ padding: "12px 28px", borderRadius: 8, backgroundColor: C.sandBorder, border: `1px solid ${C.sandLight}`, color: C.sandText, fontSize: 14, fontWeight: 600, cursor: "pointer", minHeight: 48 }}>
-                Show my plan →
-              </button>
-            </div>
-          )}
-
-          {/* ════════════════════════════════════════════════════════ */}
-          {/*  ORIENT — "Where am I?"                                 */}
-          {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="Your Diagnosis" color={B.purple} tint="rgba(75,63,174,0.02)" id="phase-diagnosis" mobile={mobile}>
-
-          {/* Framing sentence */}
-          <p style={{ fontSize: 14, color: B.muted, marginBottom: 24, lineHeight: 1.6 }}>
-            Your score shows where you stand. This simulator shows what changes it — and what it takes to protect it.
-          </p>
-
-          {/* 1. SCORE + BENCHMARKING */}
-          <section style={{ marginBottom: 24 }}>
-            <div style={{ padding: mobile ? "32px 24px" : "40px 44px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: mobile ? 20 : 32 }} className="d-score-hero">
-                <ScoreRing score={dScore} size={mobile ? 130 : 160} />
+          {/* ── SCORE HERO — the boardroom moment ── */}
+          <div style={{ marginBottom: 32, animation: "fadeSlideIn 600ms ease-out" }}>
+            <div style={{ padding: mobile ? "32px 24px" : "44px 48px", borderRadius: 20, background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`, position: "relative", boxShadow: "0 8px 32px rgba(14,26,43,0.12)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: mobile ? 24 : 40 }} className="d-score-hero">
+                <ScoreRing score={dScore} size={mobile ? 130 : 160} stroke={8} />
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 14, color: B.muted, marginBottom: 8 }}>{gap > 0 ? `${gap} points to ${nextB}` : "Highest band achieved"}</div>
-                  {bm && (
-                    <div style={{ padding: "12px 16px", borderRadius: 8, backgroundColor: `${B.purple}05`, border: `1px solid ${B.purple}08`, marginBottom: 16 }}>
-                      <div style={{ fontSize: 16, fontWeight: 600, color: B.navy }}>Top {100 - bm.peer_percentile}% of {bm.cluster_label}</div>
-                      <div style={{ fontSize: 14, color: dScore > bm.cluster_average_score ? B.teal : B.red, fontWeight: 600, marginTop: 4 }}>
-                        {dScore > bm.cluster_average_score ? `+${dScore - bm.cluster_average_score} above` : `${dScore - bm.cluster_average_score} below`} cluster avg ({bm.cluster_average_score})
-                      </div>
-                    </div>
-                  )}
+                  {custName && <div style={{ fontSize: 13, color: C.sandMuted, marginBottom: 4 }}>{custName}</div>}
+                  <div style={{ fontSize: mobile ? 13 : 15, color: C.sandMuted, marginBottom: 12, lineHeight: 1.55 }}>
+                    {gap > 0
+                      ? <>{dBand} Stability. <span style={{ color: C.sandText }}>{gap} points</span> to {nextB}.</>
+                      : <>Highest stability band achieved.</>
+                    }
+                    {bm && <> Top {100 - bm.peer_percentile}% of {bm.cluster_label.toLowerCase()}.</>}
+                  </div>
                   <style>{`
                     .metric-tip-wrap { position: relative; }
                     .metric-tip-wrap .metric-tip { opacity: 0; pointer-events: none; transition: opacity 180ms ease; }
                     @media(hover:hover){ .metric-tip-wrap:hover .metric-tip { opacity: 1; pointer-events: auto; } }
                   `}</style>
-                  <div style={{ display: "flex", gap: 0, border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: "#FAFAFA" }} className="d-metrics">
+                  <div style={{ display: "flex", gap: 0, borderRadius: 10, overflow: "hidden", border: `1px solid rgba(255,255,255,0.08)` }} className="d-metrics">
                     {[
-                      { label: "Runway", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? B.red : B.teal, tip: "How long your income would continue if all active work stopped. Calculated from persistence, forward visibility, labor independence, and concentration." },
-                      { label: "Top Source Risk", value: `−${riskDrop}`, color: riskDrop > 15 ? B.red : B.amber, tip: "How many points your score drops if your single largest income source disappears. A drop greater than 15 points signals dangerous concentration." },
-                      { label: "Fragility", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" ? B.teal : B.amber, tip: "How well your income structure absorbs shocks. Assessed independently from your score — you can have a stable score but a brittle structure." },
+                      { label: "Runway", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? "#E57373" : B.teal, tip: "How long your income would continue if all active work stopped." },
+                      { label: "Top Source Risk", value: `\u2212${riskDrop}`, color: riskDrop > 15 ? "#E57373" : B.amber, tip: "Points lost if your largest source disappears." },
+                      { label: "Fragility", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? "#E57373" : fragLabel === "Resilient" ? B.teal : B.amber, tip: "How well your structure absorbs shocks." },
                     ].map((m, i, arr) => (
                       <div key={m.label} className="metric-tip-wrap"
                         onClick={() => setTooltipOpen(tooltipOpen === m.label ? null : m.label)}
-                        style={{ flex: 1, padding: "12px 16px", textAlign: "center" as const, borderRight: i < arr.length - 1 ? `1px solid ${B.stone}` : "none", cursor: "pointer", WebkitTapHighlightColor: "transparent" }}>
-                        <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 4 }}>
+                        style={{ flex: 1, padding: "10px 14px", textAlign: "center" as const, borderRight: i < arr.length - 1 ? `1px solid rgba(255,255,255,0.06)` : "none", cursor: "pointer", WebkitTapHighlightColor: "transparent", backgroundColor: "rgba(255,255,255,0.03)" }}>
+                        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: C.sandMuted, marginBottom: 3 }}>
                           {m.label.toUpperCase()}
                         </div>
-                        <div style={{ fontSize: 18, fontWeight: 600, fontFamily: mono, color: m.color }}>{m.value}</div>
+                        <div style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: m.color }}>{m.value}</div>
                         <div className="metric-tip" style={{
                           position: "absolute", bottom: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)",
-                          width: mobile ? 220 : 260, padding: "12px 14px", borderRadius: 10,
-                          backgroundColor: B.navy,
-                          fontSize: 12, lineHeight: 1.5, fontWeight: 400, fontFamily: sans, color: "rgba(244,241,234,0.75)",
-                          boxShadow: "0 8px 24px rgba(14,26,43,0.30)",
+                          width: mobile ? 200 : 240, padding: "10px 12px", borderRadius: 8,
+                          backgroundColor: B.white, border: `1px solid ${B.stone}`,
+                          fontSize: 12, lineHeight: 1.5, fontWeight: 400, fontFamily: sans, color: B.navy,
+                          boxShadow: "0 4px 16px rgba(14,26,43,0.15)",
                           zIndex: 50,
                           ...(tooltipOpen === m.label ? { opacity: 1, pointerEvents: "auto" as const } : {}),
                         }}>
@@ -1061,111 +1036,92 @@ function DashboardContent() {
                       </div>
                     ))}
                   </div>
-                  <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" as const }}>
-                    <button onClick={handleShare} style={{ fontSize: 13, fontWeight: 600, color: B.purple, background: "none", border: `1px solid ${B.purple}15`, borderRadius: 8, padding: "8px 16px", cursor: "pointer", minHeight: 36 }}>Share Score ↓</button>
-                  </div>
                 </div>
               </div>
+              {/* Compact toolbar */}
+              <div style={{ display: "flex", gap: 8, marginTop: 20, justifyContent: mobile ? "center" : "flex-start", flexWrap: "wrap" as const }}>
+                <Link href="/review" style={{ fontSize: 13, fontWeight: 600, color: C.sandText, textDecoration: "none", padding: "8px 16px", borderRadius: 8, border: `1px solid rgba(255,255,255,0.12)`, backgroundColor: "rgba(255,255,255,0.04)", transition: "background 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 36 }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.08)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.04)"; }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  View Report
+                </Link>
+                <button onClick={handleShare} style={{ fontSize: 13, fontWeight: 600, color: C.sandMuted, padding: "8px 16px", borderRadius: 8, border: `1px solid rgba(255,255,255,0.08)`, backgroundColor: "transparent", cursor: "pointer", transition: "color 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 36 }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = C.sandText; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = C.sandMuted; }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                  Share
+                </button>
+                <button onClick={() => {
+                  const subject = encodeURIComponent("My Income Stability Assessment");
+                  const body = encodeURIComponent(`I completed a RunPayway Income Stability Assessment and scored ${dScore}/100 (${dBand}).\n\nThe assessment identified my root structural constraint and provided an action plan. I'd like to discuss the findings with you.\n\nYou can view the methodology at: https://peoplestar.com/RunPayway/methodology`);
+                  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+                }} style={{ fontSize: 13, fontWeight: 600, color: C.sandMuted, padding: "8px 16px", borderRadius: 8, border: `1px solid rgba(255,255,255,0.08)`, backgroundColor: "transparent", cursor: "pointer", transition: "color 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 36 }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = C.sandText; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = C.sandMuted; }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  Email Advisor
+                </button>
+                {indLabel && <span style={{ fontSize: 11, color: C.sandMuted, alignSelf: "center", marginLeft: 4 }}>{indLabel} &middot; {assessedDate || "Model RP-2.0"}</span>}
+              </div>
             </div>
-          </section>
+          </div>
 
-          {/* ── VIEW REPORT + SHARE ACTIONS ── */}
-          {(
-            <div style={{ display: "flex", gap: 12, marginBottom: 24, flexDirection: mobile ? "column" : "row" }}>
-              <Link href="/review" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 24px", borderRadius: 14, backgroundColor: B.surface, border: `1px solid ${B.stone}`, textDecoration: "none", minHeight: 48, transition: "border-color 200ms, box-shadow 200ms", boxShadow: "0 1px 3px rgba(14,26,43,0.02)" }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${B.purple}30`; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = B.stone; }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${B.purple}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="2" strokeLinecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>View Your Report</div>
-                    <div style={{ fontSize: 12, color: B.taupe }}>Full diagnostic with key findings</div>
-                  </div>
-                </div>
-                <span style={{ fontSize: 16, color: B.purple }}>→</span>
-              </Link>
-              <button onClick={handleShare} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 20px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, cursor: "pointer", minHeight: 48, transition: "border-color 200ms" }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${B.teal}30`; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = B.stone; }}>
-                <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${B.teal}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="2" strokeLinecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-                </div>
-                <div style={{ textAlign: "left" as const }}>
-                  <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>Share Score</div>
-                  <div style={{ fontSize: 12, color: B.taupe }}>Download as image</div>
-                </div>
-              </button>
-              <button onClick={() => {
-                const subject = encodeURIComponent("My Income Stability Assessment");
-                const body = encodeURIComponent(`I completed a RunPayway Income Stability Assessment and scored ${dScore}/100 (${dBand}).\n\nThe assessment identified my root structural constraint and provided an action plan. I'd like to discuss the findings with you.\n\nYou can view the methodology at: https://peoplestar.com/RunPayway/methodology`);
-                window.location.href = `mailto:?subject=${subject}&body=${body}`;
-              }} style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 20px", borderRadius: 12, backgroundColor: B.surface, border: `1px solid ${B.stone}`, cursor: "pointer", minHeight: 48, transition: "border-color 200ms" }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = `${B.navy}20`; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = B.stone; }}>
-                <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${B.navy}06`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.navy} strokeWidth="2" strokeLinecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                </div>
-                <div style={{ textAlign: "left" as const }}>
-                  <div style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>Share with Advisor</div>
-                  <div style={{ fontSize: 12, color: B.taupe }}>Email your score + findings</div>
-                </div>
-              </button>
-            </div>
-          )}
+          {/* ════════════════════════════════════════════════════════ */}
+          {/*  ORIENT — "Where am I?"                                 */}
+          {/* ════════════════════════════════════════════════════════ */}
+          <PhaseSep label="Your Diagnosis" color={B.purple} tint="rgba(75,63,174,0.02)" id="phase-diagnosis" mobile={mobile}>
 
-          {/* 2. PRESSUREMAP™ */}
-          <section>
-            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 16 }}>
+          {/* 2. PRESSUREMAP™ — elevated proprietary section */}
+          <section className="cc-section" style={{ padding: mobile ? "28px 20px" : "36px 40px", borderRadius: 20, backgroundColor: B.navy, marginBottom: 20, boxShadow: "0 4px 24px rgba(14,26,43,0.10)" }}>
+            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 20 }}>
               <div>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple }}>RUNPAYWAY&#8482; PRESSUREMAP&#8482;</div>
-                {indLabel && <p style={{ fontSize: 14, color: B.muted, margin: "4px 0 0" }}>Analysis for {indLabel.toLowerCase()} professionals.</p>}
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: B.teal }}>RUNPAYWAY&#8482; PRESSUREMAP&#8482;</div>
+                {indLabel && <p style={{ fontSize: 13, color: C.sandMuted, margin: "4px 0 0" }}>Analysis for {indLabel.toLowerCase()} professionals.</p>}
               </div>
-              <div style={{ fontSize: 11, color: B.taupe, textAlign: "right" as const }}>
-                {assessedDate && <div>Analyzed {assessedDate}</div>}
+              <div style={{ fontSize: 10, color: C.sandMuted, textAlign: "right" as const, letterSpacing: "0.04em" }}>
+                {assessedDate && <div>{assessedDate}</div>}
                 <div>Model RP-2.0</div>
               </div>
             </div>
 
-            <div style={{ padding: mobile ? "20px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderLeft: `4px solid #C0392B`, borderRadius: 12, backgroundColor: B.surface, marginBottom: 16 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: "#C0392B", marginBottom: 12 }}>ROOT CONSTRAINT</div>
-              <p style={{ fontSize: 18, fontWeight: 600, color: B.navy, margin: "0 0 12px", lineHeight: 1.4 }}>
+            <div style={{ padding: mobile ? "20px 16px" : "24px 28px", borderLeft: `4px solid #E57373`, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.04)", marginBottom: 16 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: "#E57373", marginBottom: 12 }}>ROOT CONSTRAINT</div>
+              <p style={{ fontSize: 17, fontWeight: 600, color: C.sandText, margin: "0 0 12px", lineHeight: 1.4 }}>
                 If your top source leaves, your score drops {dScore - stLCDrop < 30 && dScore >= 30 ? "into Limited Stability." : `from ${dScore} to ${dScore - stLCDrop}.`}
               </p>
-              <p style={{ fontSize: 14, color: B.muted, margin: "0 0 12px", lineHeight: 1.65 }}>{constraintNarrative(rootCon, base)}</p>
-              <p style={{ fontSize: 14, color: "#C0392B", margin: "0 0 4px", fontWeight: 500 }}>
-                Projected impact: score drops from <span style={{ fontFamily: mono }}>{dScore}</span> to <span style={{ fontFamily: mono }}>{dScore - stLCDrop}</span>.
+              <p style={{ fontSize: 14, color: C.sandMuted, margin: "0 0 12px", lineHeight: 1.65 }}>{constraintNarrative(rootCon, base)}</p>
+              <p style={{ fontSize: 13, color: "#E57373", margin: "0 0 4px", fontWeight: 500 }}>
+                Projected impact: <span style={{ fontFamily: mono }}>{dScore}</span> &rarr; <span style={{ fontFamily: mono }}>{dScore - stLCDrop}</span>
               </p>
-              {secCon && <p style={{ fontSize: 13, color: B.muted, margin: "12px 0 0" }}>Secondary constraint: {secCon.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</p>}
+              {secCon && <p style={{ fontSize: 12, color: C.sandMuted, margin: "12px 0 0" }}>Secondary: {secCon.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</p>}
             </div>
 
-            <div style={{ padding: mobile ? "24px 20px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: "#FAFAFA", marginBottom: 14 }}>
+            <div style={{ padding: mobile ? "24px 20px" : "28px 32px", borderRadius: 14, backgroundColor: "rgba(255,255,255,0.03)", marginBottom: 14 }}>
               {/* Labels above bar */}
               <div style={{ display: "flex", marginBottom: 6 }}>
                 {zones.map(z => z.pct > 0 ? <div key={`label-${z.id}`} style={{ width: `${z.pct}%` }}>{z.pct >= 10 && <span style={{ fontSize: 11, fontWeight: 600, color: z.color }}>{z.label} {z.pct}%</span>}</div> : null)}
               </div>
-              <div style={{ display: "flex", height: 10, borderRadius: 5, overflow: "hidden", marginBottom: 14 }}>
-                {zones.map(z => z.pct > 0 ? <div key={z.id} style={{ width: `${z.pct}%`, backgroundColor: `${z.color}30`, borderRight: z.id !== "persistent" ? `2px solid ${B.white}` : "none" }} /> : null)}
+              <div style={{ display: "flex", height: 12, borderRadius: 6, overflow: "hidden", marginBottom: 14 }}>
+                {zones.map(z => z.pct > 0 ? <div key={z.id} style={{ width: `${z.pct}%`, backgroundColor: `${z.color}50`, borderRight: z.id !== "persistent" ? `2px solid ${B.navy}` : "none" }} /> : null)}
               </div>
-              <p style={{ fontSize: 13, color: B.taupe, margin: 0 }}>{indData.general}</p>
+              <p style={{ fontSize: 13, color: C.sandMuted, margin: 0 }}>{indData.general}</p>
             </div>
 
             {zones.map(z => (
-              <div key={z.id} style={{ padding: mobile ? "20px 18px" : "24px 28px", border: `1px solid ${B.stone}`, borderLeft: `4px solid ${z.color}`, borderRadius: 14, backgroundColor: B.surface, marginBottom: 10, boxShadow: "0 1px 3px rgba(14,26,43,0.02)" }}>
+              <div key={z.id} style={{ padding: mobile ? "20px 18px" : "22px 24px", borderLeft: `3px solid ${z.color}`, borderRadius: 10, backgroundColor: "rgba(255,255,255,0.03)", marginBottom: 8 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                   <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
                     <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: z.color }}>{z.label.toUpperCase()}</span>
-                    <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: z.color }}>&mdash;</span>
-                    <span style={{ fontSize: 20, fontWeight: 600, fontFamily: mono, color: z.color }}>{z.pct}%</span>
-                    <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: z.sev === "critical" ? `${B.red}10` : z.sev === "elevated" ? `${B.amber}08` : `${B.teal}08`, color: z.sev === "critical" ? B.red : z.sev === "elevated" ? B.amber : B.teal }}>
+                    <span style={{ fontSize: 18, fontWeight: 600, fontFamily: mono, color: z.color }}>{z.pct}%</span>
+                    <span style={{ fontSize: 10, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: `${z.sev === "critical" ? "#E57373" : z.sev === "elevated" ? B.amber : B.teal}15`, color: z.sev === "critical" ? "#E57373" : z.sev === "elevated" ? B.amber : B.teal }}>
                       {z.sev === "critical" ? "Needs attention" : z.sev === "elevated" ? "Monitor" : "Healthy"}
                     </span>
                   </div>
-                  {z.lift > 0 && <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{z.lift} pts</span>}
+                  {z.lift > 0 && <span style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{z.lift}</span>}
                 </div>
-                <p style={{ fontSize: 14, color: B.navy, margin: "0 0 6px", lineHeight: 1.55 }}>{z.txt}</p>
-                {z.action && <div style={{ fontSize: 13, fontWeight: 600, color: B.purple }}>{z.action}</div>}
+                <p style={{ fontSize: 13, color: C.sandMuted, margin: "0 0 4px", lineHeight: 1.55 }}>{z.txt}</p>
+                {z.action && <div style={{ fontSize: 12, fontWeight: 600, color: B.teal }}>{z.action}</div>}
               </div>
             ))}
           </section>
@@ -1179,7 +1135,7 @@ function DashboardContent() {
 
           {/* 4. 12-WEEK ROADMAP — enriched */}
           {roadmap.length > 1 && (
-            <section style={{ position: "relative" }}>
+            <section className="cc-section" style={{ position: "relative" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.taupe }}>YOUR 12-WEEK ROADMAP</div>
                 {completedSteps.length > 0 && <span style={{ fontSize: 13, fontWeight: 600, color: B.teal }}>{completedSteps.length}/{roadmap.length} completed</span>}
@@ -1255,7 +1211,7 @@ function DashboardContent() {
           <PhaseSep label="Test Your Options" color={B.teal} tint="rgba(31,109,122,0.02)" id="phase-test" mobile={mobile}>
 
           {/* What-If Explorer — categorized, visual, recommended */}
-          <section>
+          <section className="cc-section">
             <button onClick={() => setWhatIfOpen(!whatIfOpen)}
               style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: mobile ? "24px 22px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: whatIfOpen ? "14px 14px 0 0" : 14, backgroundColor: B.surface, cursor: "pointer", transition: "border-radius 200ms", boxShadow: "0 1px 3px rgba(14,26,43,0.02)" }}>
               <div style={{ textAlign: "left" as const, flex: 1 }}>
@@ -1543,7 +1499,7 @@ function DashboardContent() {
           <PhaseSep label="Track Progress" color={B.taupe} tint="rgba(14,26,43,0.01)" id="phase-progress" mobile={mobile}>
 
           {/* Change 4: Merged TRACK YOUR PROGRESS section */}
-          <section style={{ marginBottom: 20, padding: mobile ? "28px 24px" : "36px 40px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+          <section className="cc-section" style={{ marginBottom: 20, padding: mobile ? "28px 24px" : "36px 40px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: B.teal, marginBottom: 10 }}>TRACK YOUR PROGRESS</div>
             <div style={{ fontSize: 16, fontWeight: 600, color: B.navy, marginBottom: 8 }}>Has anything changed?</div>
             <p style={{ fontSize: 14, color: B.muted, margin: "0 0 16px" }}>Toggle what you have done. Score updates instantly.</p>
@@ -1590,7 +1546,7 @@ function DashboardContent() {
 
           {/* ──── MONITORING FEATURES — Score History + Factor Deltas + Benchmark Evolution ──── */}
           {assessments.length >= 2 && (
-            <section style={{ marginBottom: 20, padding: mobile ? "28px 24px" : "36px 40px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+            <section className="cc-section" style={{ marginBottom: 20, padding: mobile ? "28px 24px" : "36px 40px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
               <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: B.purple, marginBottom: 10 }}>STABILITY MONITORING</div>
               <div style={{ fontSize: 16, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Score History</div>
               <p style={{ fontSize: 14, color: B.muted, margin: "0 0 20px" }}>{assessments.length} assessments tracked. {assessments.length < 3 ? `${3 - assessments.length} remaining on your plan.` : "All assessments completed."}</p>
