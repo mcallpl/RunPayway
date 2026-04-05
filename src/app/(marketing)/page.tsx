@@ -332,8 +332,7 @@ function IndustrySelector() {
         {/* Prompt when nothing selected */}
         {!selected && (
           <div style={{ textAlign: "center", marginTop: m ? 24 : 36, ...fadeIn(visible, 200) }}>
-            <p style={{ fontSize: 15, color: light, marginBottom: 4 }}>Select an industry above to see its primary structural risk.</p>
-            <p style={{ fontSize: 14, color: light }}>Don&#8217;t see yours? The assessment works for <strong style={{ color: C.navy }}>any income structure</strong> — these are examples.</p>
+            <p style={{ fontSize: 15, color: light }}>The assessment works for <strong style={{ color: C.navy }}>any income structure</strong> — these are examples.</p>
           </div>
         )}
 
