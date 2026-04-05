@@ -444,6 +444,57 @@ function SameIncomeProof() {
 
 
 /* ================================================================== */
+/* SECTION 3B — WHAT HIGH STABILITY UNLOCKS                            */
+/* ================================================================== */
+
+function WhatStabilityUnlocks() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+  const unlocks = [
+    { icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", title: "Negotiate from strength, not need", desc: "You don\u2019t take bad deals because you need the money. You choose the right ones \u2014 and walk away from the rest.", color: C.teal },
+    { icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z", title: "Charge what you\u2019re worth", desc: "When your income is stable, there\u2019s no desperation pricing. You set your rates and hold firm.", color: C.purple },
+    { icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6", title: "Take smart risks", desc: "Launch a new service. Hire someone. Turn down a bad client. Your stable base absorbs the gap while you grow.", color: C.teal },
+    { icon: "M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z", title: "Time off without panic", desc: "Vacation, emergency, parental leave \u2014 your income doesn\u2019t stop when you do.", color: C.purple },
+    { icon: "M17 20h5v-2a3 3 0 0 0-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 0 1 5.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 0 1 9.288 0M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0z", title: "Better terms from everyone", desc: "Landlords, lenders, partners, and clients treat you differently when your income is built to last.", color: C.teal },
+    { icon: "M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5m-4 0h4", title: "Build something worth more", desc: "A business with stable, diversified income is worth more than one that depends on you showing up every day.", color: C.purple },
+  ];
+  return (
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 56 : 112, paddingBottom: m ? 56 : 112, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>WHAT HIGH STABILITY UNLOCKS</div>
+          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16 }}>
+            A good credit score gets you better rates.{m ? " " : <br />}A strong stability score gets you leverage.
+          </h2>
+          <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 540, margin: "0 auto" }}>
+            When your income is built to last, everything changes \u2014 not just how much you earn, but how much control you have.
+          </p>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? 12 : 16, maxWidth: 960, margin: "0 auto", ...fadeIn(visible, 120) }}>
+          {unlocks.map((u, i) => (
+            <div key={i} style={{ padding: m ? 20 : 24, borderRadius: 14, backgroundColor: "#FAFAFA", position: "relative" as const, overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${u.color}15` }} />
+              <div style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: `${u.color}08`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 14 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={u.color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={u.icon} /></svg>
+              </div>
+              <div style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 6, lineHeight: 1.3 }}>{u.title}</div>
+              <p style={{ fontSize: 14, color: muted, margin: 0, lineHeight: 1.6 }}>{u.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ textAlign: "center", marginTop: m ? 36 : 56, ...fadeIn(visible, 220) }}>
+          <p style={{ fontSize: m ? 16 : 18, color: light, lineHeight: 1.6 }}>This isn&#8217;t about earning more. It&#8217;s about building income that <strong style={{ color: C.navy }}>works for you</strong> instead of the other way around.</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
 /* SECTION 4 — COMMAND CENTER PREVIEW                                  */
 /* ================================================================== */
 
@@ -769,6 +820,7 @@ export default function LandingPage() {
         <HeroSection />
         <IndustrySelector />
         <SameIncomeProof />
+        <WhatStabilityUnlocks />
         <CommandCenterPreview />
         <TheSystemAndCta />
       </main>

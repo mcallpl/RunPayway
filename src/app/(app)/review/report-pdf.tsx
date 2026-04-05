@@ -518,6 +518,27 @@ function page3(doc: jsPDF, d: ReportPDFData) {
     y += 14;
   }
 
+  // What Becomes Possible
+  if (fits(y, 40)) {
+    const nextTier = d.tier === "limited" ? "developing" : d.tier === "developing" ? "established" : d.tier === "established" ? "high" : null;
+    const unlocksByTier: Record<string, string[]> = {
+      developing: ["Walk away from bad deals — you're no longer one disruption from crisis", "Plan more than 30 days ahead — make decisions for next quarter, not just this week"],
+      established: ["Negotiate from strength — set rates and hold firm", "Take smart risks — your base absorbs the gap while you grow", "Time off without panic — your income keeps coming when you stop"],
+      high: ["Charge premium rates — choose only the best opportunities", "Build something worth more — stable income makes your business more valuable", "Full financial leverage — lenders and partners treat you differently"],
+    };
+    const items = nextTier ? unlocksByTier[nextTier] : unlocksByTier.high;
+    const nextLabel = nextTier === "developing" ? "Developing" : nextTier === "established" ? "Established" : "High";
+    label(doc, `WHAT BECOMES POSSIBLE${nextTier ? ` AT ${nextLabel.toUpperCase()} STABILITY` : ""}`, ML, y, "#1F6D7A");
+    y += 10;
+    sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#535D6B");
+    for (const item of (items || []).slice(0, 3)) {
+      if (!fits(y, 10)) break;
+      doc.text(S(`\u2713  ${truncate(item, 90)}`), ML, y);
+      y += 10;
+    }
+    y += 4;
+  }
+
   // Divider
   if (fits(y, 10)) {
     doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);

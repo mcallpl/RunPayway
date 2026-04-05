@@ -1301,6 +1301,46 @@ export default function ReviewPage() {
           );
         })()}
 
+        {/* ── WHAT BECOMES POSSIBLE ── */}
+        {(() => {
+          const nextTier = tier === "limited" ? "developing" : tier === "developing" ? "established" : tier === "established" ? "high" : null;
+          const unlocksByTier: Record<string, { title: string; desc: string }[]> = {
+            developing: [
+              { title: "Walk away from bad deals", desc: "You\u2019re no longer one disruption from crisis \u2014 you can say no to work that doesn\u2019t fit." },
+              { title: "Plan more than 30 days ahead", desc: "With a base forming underneath, you can start making decisions for next quarter, not just this week." },
+            ],
+            established: [
+              { title: "Negotiate from strength", desc: "Your income doesn\u2019t depend on any single client or contract. You set rates and hold firm." },
+              { title: "Take smart risks", desc: "Launch a new service, hire someone, or invest in growth \u2014 your base absorbs the gap." },
+              { title: "Time off without panic", desc: "Your income keeps coming even when you\u2019re not working. Vacation, emergency, parental leave \u2014 covered." },
+            ],
+            high: [
+              { title: "Charge premium rates", desc: "With resilient income, you choose only the best opportunities and price accordingly." },
+              { title: "Build something worth more", desc: "A business with stable, diversified income is worth significantly more \u2014 to a buyer, a lender, or a partner." },
+              { title: "Full financial leverage", desc: "Lenders, landlords, and partners treat you differently when your income is structurally sound." },
+            ],
+          };
+          const items = nextTier ? unlocksByTier[nextTier] : unlocksByTier.high;
+          const nextLabel = nextTier === "developing" ? "Developing" : nextTier === "established" ? "Established" : nextTier === "high" ? "High" : "High";
+          return (
+            <div style={{ ...reportCardStyle, marginBottom: 16, padding: mobile ? "14px 16px" : "16px 24px", borderLeft: `3px solid ${B.teal}` }}>
+              <div style={{ ...T.overline, color: B.teal, marginBottom: 4 }}>WHAT BECOMES POSSIBLE{nextTier ? ` AT ${nextLabel.toUpperCase()} STABILITY` : ""}</div>
+              <p style={{ ...T.small, color: B.muted, margin: "0 0 10px", lineHeight: 1.5 }}>
+                {nextTier ? `Reaching ${nextLabel} Stability isn\u2019t just a higher number \u2014 it changes what you can do:` : "At your level, your income gives you real leverage:"}
+              </p>
+              {items?.map((item, i) => (
+                <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: i < (items.length - 1) ? 8 : 0 }}>
+                  <span style={{ color: B.teal, fontSize: 14, flexShrink: 0, marginTop: 1 }}>&#10003;</span>
+                  <div>
+                    <span style={{ ...T.small, fontWeight: 600, color: B.navy }}>{item.title}</span>
+                    <span style={{ ...T.small, color: B.muted }}> \u2014 {item.desc}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          );
+        })()}
+
         {/* ── WHAT TO AVOID ── */}
         {v2AvoidActions && (v2AvoidActions as string[]).length > 0 && (
           <div style={{ ...reportCardStyle, marginBottom: 16, padding: mobile ? "14px 16px" : "16px 24px" }}>
