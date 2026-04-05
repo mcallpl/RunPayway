@@ -62,7 +62,7 @@ function HeroSection() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: m ? 80 : 140, paddingBottom: m ? 56 : 100, paddingLeft: px(m), paddingRight: px(m) }}>
+    <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: m ? 48 : 100, paddingBottom: m ? 48 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 780, margin: "0 auto", position: "relative", zIndex: 1 }}>
         <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20, ...fadeIn(visible) }}>How It Works</div>

@@ -204,7 +204,7 @@ function HeroSection() {
         </div>
       )}
 
-      <div style={{ maxWidth: contentW, margin: "0 auto", paddingTop: m ? 72 : 160, paddingBottom: m ? 64 : 112, paddingLeft: px(m), paddingRight: px(m), position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto", paddingTop: m ? 48 : 100, paddingBottom: m ? 56 : 88, paddingLeft: px(m), paddingRight: px(m), position: "relative", zIndex: 1 }}>
         <div style={{ display: m ? "block" : "flex", alignItems: "center", justifyContent: "space-between", gap: 72 }}>
           {/* Left — headline */}
           <div style={{ maxWidth: 540, textAlign: m ? "center" : "left", marginBottom: m ? 48 : 0 }}>

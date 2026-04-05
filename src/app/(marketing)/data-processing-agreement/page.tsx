@@ -112,7 +112,7 @@ export default function DataProcessingAgreementPage() {
     <div style={{ background: "#FAFAFA", fontFamily: sans }}>
 
       {/* HERO */}
-      <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: m ? 80 : 140, paddingBottom: m ? 56 : 100, paddingLeft: m ? 20 : 24, paddingRight: m ? 20 : 24 }}>
+      <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: m ? 48 : 100, paddingBottom: m ? 48 : 80, paddingLeft: m ? 20 : 24, paddingRight: m ? 20 : 24 }}>
         <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
         <div ref={hero.ref} style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1, opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0)" : "translateY(10px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 20 }}>

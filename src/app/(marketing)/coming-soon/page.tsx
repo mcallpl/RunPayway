@@ -47,7 +47,7 @@ function Hero() {
   const m = useMobile();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 80 : 140, paddingBottom: m ? 56 : 100, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 48 : 100, paddingBottom: m ? 48 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
         <div style={{ ...fadeIn(visible) }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
