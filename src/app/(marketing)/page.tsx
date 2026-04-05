@@ -73,6 +73,14 @@ const contentW = 1040;
 const secPad = (m: boolean) => m ? 56 : 112;
 const px = (m: boolean) => m ? 20 : 24;
 
+/* Elevation tokens — replace borders with shadow depth */
+const elevation = {
+  card: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)",
+  cardHover: "0 2px 8px rgba(14,26,43,0.06), 0 8px 32px rgba(14,26,43,0.05)",
+  cta: "0 2px 8px rgba(28,22,53,0.15), 0 8px 32px rgba(28,22,53,0.10)",
+  ctaHover: "0 4px 16px rgba(28,22,53,0.20), 0 12px 48px rgba(28,22,53,0.12)",
+};
+
 /* Score Ring SVG */
 function ScoreRing({ score, size, stroke = 8, color, trackColor = "rgba(255,255,255,0.06)" }: { score: number; size: number; stroke?: number; color: string; trackColor?: string }) {
   const r = (size - stroke) / 2;
@@ -123,7 +131,7 @@ function PressureBar({ segments, height = 14 }: { segments: { pct: number; color
   );
 }
 
-/* CTA button with "what happens next" */
+/* CTA button with magnetic styling */
 function CtaButton({ m, variant = "light" }: { m: boolean; variant?: "light" | "dark" }) {
   const isLight = variant === "light";
   return (
@@ -132,17 +140,20 @@ function CtaButton({ m, variant = "light" }: { m: boolean; variant?: "light" | "
         display: "inline-flex", alignItems: "center", justifyContent: "center",
         height: 56, width: m ? "100%" : "auto", padding: m ? "0 24px" : "0 44px",
         borderRadius: 12,
-        backgroundColor: isLight ? C.white : C.navy,
+        background: isLight
+          ? `linear-gradient(135deg, ${C.white} 0%, rgba(244,241,234,0.95) 100%)`
+          : `linear-gradient(135deg, ${C.navy} 0%, #251e42 100%)`,
         color: isLight ? C.navy : C.white,
         fontSize: m ? 15 : 16, fontWeight: 600, textDecoration: "none",
-        boxShadow: isLight ? "0 2px 16px rgba(244,241,234,0.10)" : "0 2px 16px rgba(14,26,43,0.10)",
-        transition: "background-color 200ms, box-shadow 200ms",
+        boxShadow: isLight ? "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)" : elevation.cta,
+        transition: "transform 200ms, box-shadow 200ms",
+        border: isLight ? "1px solid rgba(244,241,234,0.30)" : "1px solid rgba(255,255,255,0.08)",
       }}
-        onMouseEnter={e => { e.currentTarget.style.backgroundColor = isLight ? "#E8E5DE" : "#2a2248"; }}
-        onMouseLeave={e => { e.currentTarget.style.backgroundColor = isLight ? C.white : C.navy; }}>
+        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = isLight ? "0 4px 20px rgba(244,241,234,0.20), 0 12px 48px rgba(244,241,234,0.10)" : elevation.ctaHover; }}
+        onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = isLight ? "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)" : elevation.cta; }}>
         Get My Income Stability Score
       </Link>
-      <p style={{ fontSize: 13, color: isLight ? "rgba(244,241,234,0.35)" : light, marginTop: 12, letterSpacing: "0.02em", textAlign: m ? "center" : undefined }}>
+      <p style={{ fontSize: 13, color: isLight ? "rgba(244,241,234,0.35)" : light, marginTop: 14, letterSpacing: "0.02em", textAlign: m ? "center" : undefined }}>
         Under 2 minutes &bull; Instant result &bull; Private by default
       </p>
     </div>
@@ -180,16 +191,27 @@ function HeroSection() {
   const fadeIn = useFadeIn();
 
   return (
-    <header ref={ref} style={{ backgroundColor: C.white, position: "relative", overflow: "hidden" }}>
+    <header ref={ref} style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)", position: "relative", overflow: "hidden" }}>
+      {/* Ghosted data hint — faint score spectrum behind the hero */}
+      {!m && (
+        <div style={{ position: "absolute", top: "50%", right: "6%", transform: "translateY(-50%)", opacity: 0.035, pointerEvents: "none", display: "flex", flexDirection: "column", gap: 12, width: 180 }}>
+          {[
+            { w: "45%", c: C.teal }, { w: "72%", c: "#D4A843" }, { w: "33%", c: "#E57373" },
+            { w: "28%", c: "#E57373" }, { w: "55%", c: C.teal }, { w: "85%", c: "#E57373" },
+          ].map((b, i) => (
+            <div key={i} style={{ height: 6, borderRadius: 3, backgroundColor: b.c, width: b.w }} />
+          ))}
+        </div>
+      )}
 
-      <div style={{ maxWidth: contentW, margin: "0 auto", paddingTop: m ? 64 : 132, paddingBottom: m ? 48 : 88, paddingLeft: px(m), paddingRight: px(m), position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto", paddingTop: m ? 64 : 140, paddingBottom: m ? 56 : 96, paddingLeft: px(m), paddingRight: px(m), position: "relative", zIndex: 1 }}>
         <div style={{ display: m ? "block" : "flex", alignItems: "center", justifyContent: "space-between", gap: 64 }}>
           {/* Left — headline */}
-          <div style={{ maxWidth: 560, textAlign: m ? "center" : "left", marginBottom: m ? 40 : 0 }}>
-            <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.03em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>
+          <div style={{ maxWidth: 560, textAlign: m ? "center" : "left", marginBottom: m ? 44 : 0 }}>
+            <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.03em", color: C.navy, marginBottom: 28, ...fadeIn(visible) }}>
               Your income has a structure.{m ? " " : <br />}You&#8217;ve never seen it.
             </h1>
-            <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.7, marginBottom: 32, ...fadeIn(visible, 100) }}>
+            <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.7, marginBottom: 36, ...fadeIn(visible, 100) }}>
               RunPayway&#8482; measures how your income holds under pressure — not how much you make.
             </p>
             <div style={{ ...fadeIn(visible, 200) }}>
@@ -199,16 +221,18 @@ function HeroSection() {
 
           {/* Right — pulsing ring */}
           <div style={{ flexShrink: 0, ...fadeIn(visible, 300) }}>
-            <div style={{ width: m ? 200 : 240, height: m ? 200 : 240, margin: m ? "0 auto" : undefined, position: "relative" }}>
+            <div style={{ width: m ? 200 : 260, height: m ? 200 : 260, margin: m ? "0 auto" : undefined, position: "relative" }}>
               <style>{`
-                @keyframes ringPulse { 0%, 100% { opacity: 0.25; transform: rotate(-90deg) scale(1); } 50% { opacity: 0.5; transform: rotate(-90deg) scale(1.02); } }
+                @keyframes ringPulse { 0%, 100% { opacity: 0.20; transform: rotate(-90deg) scale(1); } 50% { opacity: 0.45; transform: rotate(-90deg) scale(1.02); } }
                 @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
               `}</style>
-              <svg width={m ? 200 : 240} height={m ? 200 : 240} style={{ animation: "ringPulse 3s ease-in-out infinite" }}>
-                <circle cx={m ? 100 : 120} cy={m ? 100 : 120} r={m ? 88 : 108} fill="none" stroke={`${C.navy}18`} strokeWidth={8} strokeDasharray="12 8" strokeLinecap="round" />
+              {/* Faint glow behind ring */}
+              <div style={{ position: "absolute", inset: -40, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
+              <svg width={m ? 200 : 260} height={m ? 200 : 260} style={{ animation: "ringPulse 3s ease-in-out infinite" }}>
+                <circle cx={m ? 100 : 130} cy={m ? 100 : 130} r={m ? 88 : 118} fill="none" stroke={`${C.navy}15`} strokeWidth={8} strokeDasharray="12 8" strokeLinecap="round" />
               </svg>
               <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                <span style={{ fontSize: m ? 40 : 48, fontWeight: 300, fontFamily: mono, color: `${C.navy}12`, lineHeight: 1 }}>?</span>
+                <span style={{ fontSize: m ? 42 : 52, fontWeight: 300, fontFamily: mono, color: `${C.navy}10`, lineHeight: 1 }}>?</span>
                 <span style={{ fontSize: 12, color: light, marginTop: 8 }}>Your score</span>
               </div>
             </div>
@@ -216,12 +240,15 @@ function HeroSection() {
         </div>
 
         {/* Credibility strip */}
-        <div style={{ marginTop: m ? 36 : 56, paddingTop: m ? 20 : 28, borderTop: `1px solid ${C.border}`, textAlign: "center", ...fadeIn(visible, 400) }}>
+        <div style={{ marginTop: m ? 40 : 64, paddingTop: m ? 20 : 28, borderTop: `1px solid rgba(14,26,43,0.06)`, textAlign: "center", ...fadeIn(visible, 400) }}>
           <p style={{ fontSize: 14, fontWeight: 500, color: light, letterSpacing: "0.02em" }}>
             Model RP-2.0 &bull; 6 structural dimensions &bull; Deterministic output &bull; No bank connection
           </p>
         </div>
       </div>
+
+      {/* Smooth gradient transition to dark section */}
+      <div style={{ height: m ? 80 : 120, background: `linear-gradient(180deg, #FAFAFA 0%, ${C.navy} 100%)`, marginTop: -1 }} />
     </header>
   );
 }
@@ -241,7 +268,7 @@ function IndustrySelector() {
   const bandLabel = (s: number) => s >= 75 ? "High Stability" : s >= 50 ? "Established" : s >= 30 ? "Developing" : "Limited";
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 48 : 72, paddingBottom: m ? 56 : 88, paddingLeft: px(m), paddingRight: px(m), borderTop: "1px solid rgba(244,241,234,0.04)" }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 32 : 48, paddingBottom: m ? 56 : 88, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 24 : 36, ...fadeIn(visible) }}>
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 12 }}>EXPLORE</div>
@@ -273,7 +300,7 @@ function IndustrySelector() {
 
         {/* Reveal */}
         {selected && (
-          <div style={{ maxWidth: 720, margin: "36px auto 0", padding: m ? "24px 16px" : "32px 36px", borderRadius: 16, backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", animation: "fadeSlideIn 400ms ease-out" }}>
+          <div style={{ maxWidth: 720, margin: "36px auto 0", padding: m ? "24px 16px" : "32px 36px", borderRadius: 16, backgroundColor: "rgba(255,255,255,0.04)", boxShadow: "0 4px 24px rgba(0,0,0,0.15)", animation: "fadeSlideIn 400ms ease-out" }}>
             <div style={{ display: m ? "block" : "flex", gap: 32, alignItems: "center" }}>
               {/* Score ring */}
               <div style={{ flexShrink: 0, textAlign: "center", marginBottom: m ? 24 : 0 }}>
@@ -320,8 +347,8 @@ function SameIncomeProof() {
         </div>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, maxWidth: 880, margin: "0 auto", ...fadeIn(visible, 120) }}>
           {/* Person A — fragile */}
-          <div style={{ borderRadius: 16, padding: m ? 20 : 32, border: `1px solid ${C.border}`, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: "rgba(155,44,44,0.25)" }} />
+          <div style={{ borderRadius: 16, padding: m ? 20 : 32, backgroundColor: C.white, boxShadow: elevation.card, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: "rgba(155,44,44,0.30)" }} />
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 20 }}>
               <div style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>$150K / year</div>
               <div style={{ fontSize: 13, color: light }}>Freelance Consultant</div>
@@ -348,7 +375,7 @@ function SameIncomeProof() {
             </div>
           </div>
           {/* Person B — structured */}
-          <div style={{ borderRadius: 16, padding: m ? 20 : 32, border: `1px solid ${C.border}`, position: "relative" as const, overflow: "hidden" }}>
+          <div style={{ borderRadius: 16, padding: m ? 20 : 32, backgroundColor: C.white, boxShadow: elevation.card, position: "relative" as const, overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 20 }}>
               <div style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>$150K / year</div>
@@ -377,12 +404,14 @@ function SameIncomeProof() {
           </div>
         </div>
 
-        {/* Self-reflection prompt */}
-        <div style={{ textAlign: "center", marginTop: m ? 32 : 52, ...fadeIn(visible, 220) }}>
-          <p style={{ fontSize: m ? 18 : 20, fontWeight: 500, color: C.navy, marginBottom: 4 }}>Which structure looks more like yours?</p>
+        {/* Self-reflection prompt — generous whitespace above */}
+        <div style={{ textAlign: "center", marginTop: m ? 40 : 64, ...fadeIn(visible, 220) }}>
+          <p style={{ fontSize: m ? 18 : 22, fontWeight: 500, color: C.navy, marginBottom: 6 }}>Which structure looks more like yours?</p>
           <p style={{ fontSize: 15, color: light }}>The income is the same. The structure is not. That&#8217;s what RunPayway measures.</p>
         </div>
       </div>
+      {/* Smooth transition to dark section */}
+      <div style={{ height: m ? 80 : 120, background: `linear-gradient(180deg, #FAFAFA 0%, ${C.navy} 100%)` }} />
     </section>
   );
 }
@@ -398,7 +427,7 @@ function TheSystemAndCta() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: m ? 72 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 32 : 48, paddingBottom: m ? 72 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "30%", left: "50%", width: m ? 300 : 600, height: m ? 300 : 600, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}08 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 880, margin: "0 auto", position: "relative", zIndex: 1 }}>
 
@@ -484,7 +513,7 @@ function TheSystemAndCta() {
               { title: "Private by default", desc: "Your data is never sold." },
               { title: "Deterministic", desc: "Same inputs \u2192 same score." },
             ].map((t, i) => (
-              <div key={i} style={{ textAlign: "center", padding: m ? "14px 8px" : "16px 12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.05)" }}>
+              <div key={i} style={{ textAlign: "center", padding: m ? "14px 8px" : "16px 12px", borderRadius: 10, backgroundColor: "rgba(255,255,255,0.02)" }}>
                 <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.55)", marginBottom: 2 }}>{t.title}</div>
                 <div style={{ fontSize: 12, color: "rgba(244,241,234,0.30)" }}>{t.desc}</div>
               </div>
