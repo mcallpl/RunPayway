@@ -436,10 +436,10 @@ function WhatStabilityUnlocks() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   const unlocks = [
-    { icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", title: "Negotiate from strength, not need", desc: "You don\u2019t take bad deals because you need the money. You choose the right ones \u2014 and walk away from the rest.", color: C.teal },
-    { icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z", title: "Charge what you\u2019re worth", desc: "When your income is stable, there\u2019s no desperation pricing. You set your rates and hold firm.", color: C.purple },
+    { icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", title: "Negotiate from strength, not need", desc: "You don&#8217;t take bad deals because you need the money. You choose the right ones — and walk away from the rest.", color: C.teal },
+    { icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z", title: "Charge what you&#8217;re worth", desc: "When your income is stable, there&#8217;s no desperation pricing. You set your rates and hold firm.", color: C.purple },
     { icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6", title: "Take smart risks", desc: "Launch a new service. Hire someone. Turn down a bad client. Your stable base absorbs the gap while you grow.", color: C.teal },
-    { icon: "M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z", title: "Time off without panic", desc: "Vacation, emergency, parental leave \u2014 your income doesn\u2019t stop when you do.", color: C.purple },
+    { icon: "M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z", title: "Time off without panic", desc: "Vacation, emergency, parental leave — your income doesn&#8217;t stop when you do.", color: C.purple },
     { icon: "M17 20h5v-2a3 3 0 0 0-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 0 1 5.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 0 1 9.288 0M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0z", title: "Better terms from everyone", desc: "Landlords, lenders, partners, and clients treat you differently when your income is built to last.", color: C.teal },
     { icon: "M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5m-4 0h4", title: "Build something worth more", desc: "A business with stable, diversified income is worth more than one that depends on you showing up every day.", color: C.purple },
   ];
@@ -452,7 +452,7 @@ function WhatStabilityUnlocks() {
             A good credit score gets you better rates.{m ? " " : <br />}A strong stability score gets you leverage.
           </h2>
           <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 540, margin: "0 auto" }}>
-            When your income is built to last, everything changes \u2014 not just how much you earn, but how much control you have.
+            When your income is built to last, everything changes — not just how much you earn, but how much control you have.
           </p>
         </div>
 
@@ -504,42 +504,35 @@ function TheMissingLayer() {
   const layers = [
     {
       label: "FINANCIAL ADVISORY",
-      title: "Manages what you\u2019ve saved",
-      desc: "Advisors build plans around your assets \u2014 but don\u2019t measure whether the income funding those assets is structurally sound.",
-      color: "rgba(244,241,234,0.20)",
-      textColor: "rgba(244,241,234,0.45)",
+      title: "Manages what you&#8217;ve saved",
+      desc: "Advisors build plans around your assets — but don&#8217;t measure whether the income funding those assets is built to last.",
       faded: true,
     },
     {
       label: "CREDIT SCORE",
-      title: "Measures what you\u2019ve borrowed",
-      desc: "Lenders pull your credit to evaluate borrowing history \u2014 but have no way to measure how your income holds up under pressure.",
-      color: "rgba(244,241,234,0.20)",
-      textColor: "rgba(244,241,234,0.45)",
+      title: "Measures what you&#8217;ve borrowed",
+      desc: "Lenders pull your credit to evaluate borrowing history — but have no way to measure how your income holds up under pressure.",
       faded: true,
     },
     {
-      label: "RUNPAYWAY\u2122",
+      label: "RUNPAYWAY&#8482;",
       title: "Measures how your income is built",
       desc: "The foundational layer. Before anyone evaluates your finances, they should know whether the income underneath is stable, diversified, and built to last.",
-      color: C.teal,
-      textColor: C.sand,
       faded: false,
     },
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 64 : 112, paddingBottom: m ? 64 : 112, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", bottom: "-20%", left: "50%", width: m ? 400 : 700, height: m ? 400 : 700, transform: "translateX(-50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.teal}08 0%, transparent 70%)`, pointerEvents: "none" }} />
-      <div style={{ maxWidth: 800, margin: "0 auto", position: "relative", zIndex: 1 }}>
+    <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 64 : 112, paddingBottom: m ? 64 : 112, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 800, margin: "0 auto" }}>
 
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>THE MISSING LAYER</div>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.sand, marginBottom: 16 }}>
+          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16 }}>
             Credit scores and advisors{m ? " " : <br />}both skip the same thing.
           </h2>
-          <p style={{ fontSize: m ? 16 : 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
-            Nobody measured how your income is actually built \u2014 until now. RunPayway is the foundation that everything else should sit on.
+          <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
+            Nobody measured how your income is actually built — until now. RunPayway is the foundation that everything else should sit on.
           </p>
         </div>
 
@@ -551,19 +544,20 @@ function TheMissingLayer() {
               <div key={i} style={{
                 padding: m ? "20px 18px" : "24px 28px",
                 borderRadius: i === 0 ? "14px 14px 0 0" : i === layers.length - 1 ? "0 0 14px 14px" : 0,
-                backgroundColor: isFoundation ? `${C.teal}12` : "rgba(255,255,255,0.02)",
-                borderLeft: isFoundation ? `3px solid ${C.teal}` : "3px solid rgba(255,255,255,0.06)",
-                borderBottom: i < layers.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none",
+                backgroundColor: isFoundation ? `${C.teal}08` : C.white,
+                borderLeft: isFoundation ? `3px solid ${C.teal}` : `3px solid rgba(14,26,43,0.06)`,
+                borderBottom: i < layers.length - 1 ? `1px solid rgba(14,26,43,0.06)` : "none",
+                boxShadow: isFoundation ? "0 2px 12px rgba(31,109,122,0.08)" : "none",
                 position: "relative" as const,
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 }}>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: isFoundation ? C.teal : "rgba(244,241,234,0.25)", marginBottom: 6 }}>{layer.label}</div>
-                    <div style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: isFoundation ? C.sand : "rgba(244,241,234,0.35)", marginBottom: 4, lineHeight: 1.3 }}>{layer.title}</div>
-                    <p style={{ fontSize: 14, color: isFoundation ? "rgba(244,241,234,0.55)" : "rgba(244,241,234,0.25)", margin: 0, lineHeight: 1.55 }}>{layer.desc}</p>
+                    <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: isFoundation ? C.teal : light, marginBottom: 6 }}>{layer.label}</div>
+                    <div style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: isFoundation ? C.navy : "rgba(14,26,43,0.40)", marginBottom: 4, lineHeight: 1.3 }}>{layer.title}</div>
+                    <p style={{ fontSize: 14, color: isFoundation ? muted : "rgba(14,26,43,0.35)", margin: 0, lineHeight: 1.55 }}>{layer.desc}</p>
                   </div>
                   {isFoundation && (
-                    <div style={{ flexShrink: 0, width: 44, height: 44, borderRadius: 12, backgroundColor: `${C.teal}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <div style={{ flexShrink: 0, width: 44, height: 44, borderRadius: 12, backgroundColor: `${C.teal}12`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
                     </div>
                   )}
@@ -575,8 +569,8 @@ function TheMissingLayer() {
 
         {/* Bridge statement */}
         <div style={{ textAlign: "center", marginTop: m ? 28 : 40, marginBottom: m ? 40 : 64, ...fadeIn(visible, 220) }}>
-          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.40)", lineHeight: 1.6 }}>
-            A credit score tells a lender what you&#8217;ve done. RunPayway tells <em>everyone</em> \u2014 including you \u2014 what your income can <strong style={{ color: C.sand }}>withstand</strong>.
+          <p style={{ fontSize: 15, color: light, lineHeight: 1.6 }}>
+            A credit score tells a lender what you&#8217;ve done. RunPayway tells <em>everyone</em> — including you — what your income can <strong style={{ color: C.navy }}>withstand</strong>.
           </p>
         </div>
 
@@ -584,45 +578,45 @@ function TheMissingLayer() {
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 20, maxWidth: 880, margin: "0 auto", ...fadeIn(visible, 300) }}>
 
           {/* Credit column */}
-          <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", marginBottom: m ? 16 : 0 }}>
+          <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: C.white, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", marginBottom: m ? 16 : 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
-              <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.teal}12`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.teal}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
               </div>
-              <span style={{ fontSize: 15, fontWeight: 600, color: C.sand }}>How it strengthens your credit</span>
+              <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>How it strengthens your credit</span>
             </div>
 
             {[
-              { text: "Know before you borrow", desc: "If one client leaving would make you miss payments, you need to know that before taking on debt \u2014 not after." },
-              { text: "Show lenders what tax returns can\u2019t", desc: "Self-employed income looks messy on paper. A stability score proves it\u2019s diversified, recurring, and locked in ahead." },
-              { text: "Time your applications", desc: "Don\u2019t apply when your structure is weak. Improve your stability first, then apply when your income can actually support the debt." },
-              { text: "Stable income = better credit over time", desc: "Consistent payments build credit history. Your stability score measures your ability to keep paying \u2014 the thing credit scores ultimately reflect." },
+              { text: "Know before you borrow", desc: "If one client leaving would make you miss payments, you need to know that before taking on debt — not after." },
+              { text: "Show lenders what tax returns can&#8217;t", desc: "Self-employed income looks messy on paper. A stability score proves it&#8217;s diversified, recurring, and locked in ahead." },
+              { text: "Time your applications", desc: "Don&#8217;t apply when your structure is weak. Improve your stability first, then apply when your income can actually support the debt." },
+              { text: "Stable income = better credit over time", desc: "Consistent payments build credit history. Your stability score measures your ability to keep paying — the thing credit scores ultimately reflect." },
             ].map((item, i) => (
               <div key={i} style={{ marginBottom: i < 3 ? 14 : 0 }}>
-                <div style={{ fontSize: 14, fontWeight: 600, color: C.sand, marginBottom: 3 }}>{item.text}</div>
-                <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
+                <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 3 }}>{item.text}</div>
+                <p style={{ fontSize: 13, color: muted, margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
               </div>
             ))}
           </div>
 
           {/* Advisory column */}
-          <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+          <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: C.white, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
-              <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.purple}12`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.purple}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
               </div>
-              <span style={{ fontSize: 15, fontWeight: 600, color: C.sand }}>How it helps your advisor</span>
+              <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>How it helps your advisor</span>
             </div>
 
             {[
-              { text: "Reveal the hidden single point of failure", desc: "Advisors build plans assuming income continues. If 80% depends on you showing up every day, that plan has a gap they can\u2019t see without this." },
-              { text: "Size the emergency fund correctly", desc: "A score of 31 needs 6\u201312 months of reserves. A score of 75 might need 3. RunPayway tells your advisor how much buffer you actually need." },
-              { text: "Set real investment risk tolerance", desc: "Risk tolerance isn\u2019t just psychological \u2014 it\u2019s structural. Fragile income plus aggressive investing is dangerous, no matter what a questionnaire says." },
+              { text: "Reveal the hidden single point of failure", desc: "Advisors build plans assuming income continues. If 80% depends on you showing up every day, that plan has a gap they can&#8217;t see without this." },
+              { text: "Size the emergency fund correctly", desc: "A score of 31 needs 6–12 months of reserves. A score of 75 might need 3. RunPayway tells your advisor how much buffer you actually need." },
+              { text: "Set real investment risk tolerance", desc: "Risk tolerance isn&#8217;t just psychological — it&#8217;s structural. Fragile income plus aggressive investing is dangerous, no matter what a questionnaire says." },
               { text: "Flag insurance gaps", desc: "High dependence on your own labor means disability insurance is critical. Your stability score surfaces gaps an advisor would otherwise miss." },
             ].map((item, i) => (
               <div key={i} style={{ marginBottom: i < 3 ? 14 : 0 }}>
-                <div style={{ fontSize: 14, fontWeight: 600, color: C.sand, marginBottom: 3 }}>{item.text}</div>
-                <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
+                <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 3 }}>{item.text}</div>
+                <p style={{ fontSize: 13, color: muted, margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
               </div>
             ))}
           </div>
@@ -728,9 +722,9 @@ function CommandCenterPreview() {
             <div style={{ position: "relative", paddingLeft: 20, marginBottom: 14 }}>
               <div style={{ position: "absolute", left: 5, top: 0, bottom: 0, width: 2, backgroundColor: "rgba(255,255,255,0.06)" }} />
               {[
-                { week: "WK 1\u20132", action: "Convert to retainer", score: "62" },
-                { week: "WK 3\u20134", action: "Add a new client", score: "70" },
-                { week: "WK 5\u20138", action: "Build passive stream", score: "75" },
+                { week: "WK 1–2", action: "Convert to retainer", score: "62" },
+                { week: "WK 3–4", action: "Add a new client", score: "70" },
+                { week: "WK 5–8", action: "Build passive stream", score: "75" },
               ].map((step, i) => (
                 <div key={i} style={{ position: "relative", marginBottom: 12 }}>
                   <div style={{ position: "absolute", left: -16, top: 3, width: 10, height: 10, borderRadius: "50%", backgroundColor: i === 0 ? C.teal : "transparent", border: `2px solid ${i === 0 ? C.teal : "rgba(255,255,255,0.15)"}` }} />
@@ -881,7 +875,7 @@ function StickyMobileCta() {
 const PRODUCT_SCHEMA = {
   "@context": "https://schema.org", "@type": "Product",
   name: "RunPayway™ Income Stability Score™",
-  description: "An assessment that measures how stable your income is \u2014 not how much you make.",
+  description: "An assessment that measures how stable your income is — not how much you make.",
   brand: { "@type": "Brand", name: "RunPayway™" },
   offers: [
     { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Income Stability Score™", description: "Score, band, primary constraint, and one recommended direction." },
