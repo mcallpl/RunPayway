@@ -112,17 +112,17 @@ export default function DataProcessingAgreementPage() {
     <div style={{ background: "#FAFAFA", fontFamily: sans }}>
 
       {/* HERO */}
-      <header style={{ backgroundColor: C.navy, position: "relative", overflow: "hidden", paddingTop: m ? 80 : 140, paddingBottom: m ? 56 : 100, paddingLeft: m ? 20 : 24, paddingRight: m ? 20 : 24 }}>
+      <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: m ? 80 : 140, paddingBottom: m ? 56 : 100, paddingLeft: m ? 20 : 24, paddingRight: m ? 20 : 24 }}>
         <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
         <div ref={hero.ref} style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1, opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0)" : "translateY(10px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 20 }}>
             <span style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal }}>Data Processing Agreement</span>
             <span style={{ fontSize: 10, fontWeight: 500, color: "rgba(244,241,234,0.40)", padding: "3px 8px", borderRadius: 4, border: "1px solid rgba(244,241,234,0.10)" }}>Enterprise</span>
           </div>
-          <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.03em", lineHeight: 1.08, marginBottom: 20 }}>
+          <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, color: C.navy, letterSpacing: "-0.03em", lineHeight: 1.08, marginBottom: 20 }}>
             Data Processing Agreement
           </h1>
-          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
+          <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
             This agreement governs how RunPayway&#8482; processes Personal Data on behalf of enterprise customers under applicable data protection laws.
           </p>
         </div>
@@ -170,13 +170,13 @@ export default function DataProcessingAgreementPage() {
       <section style={{ backgroundColor: C.navy, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: m ? 20 : 24, paddingRight: m ? 20 : 24, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "50%", left: "50%", width: 400, height: 400, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
         <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-          <div style={{ fontSize: m ? 24 : 32, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>
+          <div style={{ fontSize: m ? 24 : 32, fontWeight: 600, color: C.navy, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>
             RunPayway&#8482;
           </div>
           <p style={{ fontSize: 14, color: "rgba(244,241,234,0.40)", lineHeight: 1.6, marginBottom: 16 }}>
             Structural income measurement system.
           </p>
-          <p style={{ fontSize: 12, color: "rgba(244,241,234,0.45)", letterSpacing: "0.04em" }}>
+          <p style={{ fontSize: 12, color: light, letterSpacing: "0.04em" }}>
             Model RP-2.0 &middot; Deterministic &middot; Version-controlled
           </p>
         </div>

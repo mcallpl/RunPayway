@@ -35,7 +35,7 @@ function useInView(threshold = 0) {
 /* ================================================================== */
 
 const muted = "rgba(14,26,43,0.68)";
-const border = "#E5E7EB";
+const light = "rgba(14,26,43,0.52)";const border = "#E5E7EB";
 
 /* ================================================================== */
 /* CONTENT COMPONENTS                                                  */
@@ -92,19 +92,19 @@ export default function AcceptableUsePolicyPage() {
     <div style={{ background: "#FAFAFA", fontFamily: sans }}>
 
       {/* HERO */}
-      <header style={{ backgroundColor: C.navy, position: "relative", overflow: "hidden", paddingTop: mobile ? 80 : 140, paddingBottom: mobile ? 56 : 100, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24 }}>
+      <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: mobile ? 80 : 140, paddingBottom: mobile ? 56 : 100, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24 }}>
         <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
         <div ref={heroAnim.ref} style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1, opacity: heroAnim.visible ? 1 : 0, transform: heroAnim.visible ? "translateY(0)" : "translateY(10px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
           <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
             {t.acceptableUse.heroTag}
           </div>
-          <h1 style={{ fontSize: mobile ? 36 : 52, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.03em", lineHeight: 1.08, marginBottom: 20 }}>
+          <h1 style={{ fontSize: mobile ? 36 : 52, fontWeight: 600, color: C.navy, letterSpacing: "-0.03em", lineHeight: 1.08, marginBottom: 20 }}>
             {t.acceptableUse.heroTitle}
           </h1>
-          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 12 }}>
+          <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 12 }}>
             {t.acceptableUse.heroSubtitle}
           </p>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", letterSpacing: "0.03em" }}>
+          <p style={{ fontSize: 13, color: light, letterSpacing: "0.03em" }}>
             {t.acceptableUse.heroModel}
           </p>
         </div>
@@ -137,13 +137,13 @@ export default function AcceptableUsePolicyPage() {
       <section style={{ backgroundColor: C.navy, paddingTop: mobile ? 56 : 80, paddingBottom: mobile ? 56 : 80, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "50%", left: "50%", width: 400, height: 400, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
         <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-          <div style={{ fontSize: mobile ? 24 : 32, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>
+          <div style={{ fontSize: mobile ? 24 : 32, fontWeight: 600, color: C.navy, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>
             {t.acceptableUse.closingBrand}
           </div>
           <p style={{ fontSize: 14, color: "rgba(244,241,234,0.40)", lineHeight: 1.6, marginBottom: 16 }}>
             {t.acceptableUse.closingSubtitle}
           </p>
-          <p style={{ fontSize: 12, color: "rgba(244,241,234,0.45)", letterSpacing: "0.04em" }}>
+          <p style={{ fontSize: 12, color: light, letterSpacing: "0.04em" }}>
             {t.acceptableUse.closingPowered}
           </p>
         </div>

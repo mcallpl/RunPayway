@@ -65,19 +65,19 @@ function HeroSection() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <header ref={ref} style={{ backgroundColor: C.navy, position: "relative", overflow: "hidden", paddingTop: m ? 80 : 140, paddingBottom: m ? 56 : 100, paddingLeft: px(m), paddingRight: px(m) }}>
+    <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: m ? 80 : 140, paddingBottom: m ? 56 : 100, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F4F1EA", marginBottom: 24, ...fadeIn(visible) }}>
+        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.03em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>
           Your income will be tested.{m ? " " : <br />}This shows whether it holds.
         </h1>
-        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 100) }}>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 100) }}>
           Measure the structural integrity of your income before conditions force the answer.
         </p>
-        <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.55, marginBottom: 32, ...fadeIn(visible, 180) }}>
+        <p style={{ fontSize: 14, color: muted, lineHeight: 1.55, marginBottom: 32, ...fadeIn(visible, 180) }}>
           Free score instantly. Full diagnostic for $69. Track your structure over time for $149/year.
         </p>
-        <p style={{ fontSize: 12, color: "rgba(244,241,234,0.45)", letterSpacing: "0.04em", ...fadeIn(visible, 260) }}>
+        <p style={{ fontSize: 12, color: light, letterSpacing: "0.04em", ...fadeIn(visible, 260) }}>
           No bank connection &bull; Instant results &bull; Full refund guarantee
         </p>
       </div>
@@ -457,7 +457,7 @@ function FinalCta() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "50%", left: "50%", width: 500, height: 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 20, ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.navy, marginBottom: 20, ...fadeIn(visible) }}>
           Your income already has a structure.{m ? " " : <br />}Now you can see it clearly.
         </h2>
         <p style={{ fontSize: 16, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>Start with the free score.</p>

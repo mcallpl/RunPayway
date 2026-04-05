@@ -207,16 +207,16 @@ export default function FaqPage() {
       `}</style>
 
       {/* HERO */}
-      <header style={{ backgroundColor: C.navy, position: "relative", overflow: "hidden", paddingTop: mobile ? 80 : 140, paddingBottom: mobile ? 56 : 100, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24 }}>
+      <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: mobile ? 80 : 140, paddingBottom: mobile ? 56 : 100, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24 }}>
         <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
         <div ref={heroAnim.ref} style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1, opacity: heroAnim.visible ? 1 : 0, transform: heroAnim.visible ? "translateY(0)" : "translateY(10px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
           <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
             {t.faqPage.heroTag}
           </div>
-          <h1 style={{ fontSize: mobile ? 36 : 52, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.03em", lineHeight: 1.08, marginBottom: 20 }}>
+          <h1 style={{ fontSize: mobile ? 36 : 52, fontWeight: 600, color: C.navy, letterSpacing: "-0.03em", lineHeight: 1.08, marginBottom: 20 }}>
             {t.faqPage.heroTitle}
           </h1>
-          <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, maxWidth: 560, margin: "0 auto" }}>
+          <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, maxWidth: 560, margin: "0 auto" }}>
             {t.faqPage.heroSubtitle}
           </p>
         </div>
@@ -235,10 +235,10 @@ export default function FaqPage() {
       <section style={{ backgroundColor: C.navy, paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: "50%", left: "50%", width: 500, height: 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
         <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-          <div style={{ fontSize: mobile ? 28 : 36, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>
+          <div style={{ fontSize: mobile ? 28 : 36, fontWeight: 600, color: C.navy, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>
             {t.faqPage.closingSubtitle}
           </div>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", letterSpacing: "0.04em", marginBottom: 28 }}>
+          <p style={{ fontSize: 13, color: light, letterSpacing: "0.04em", marginBottom: 28 }}>
             {t.faqPage.poweredBy}
           </p>
           <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 52, padding: "0 40px", borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: 16, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms, box-shadow 200ms", boxShadow: "0 2px 12px rgba(244,241,234,0.10)" }}

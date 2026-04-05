@@ -95,15 +95,13 @@ function HeroSection() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <header ref={ref} style={{ backgroundColor: C.navy, position: "relative", overflow: "hidden", paddingTop: m ? 72 : 140, paddingBottom: m ? 56 : 100, paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ position: "absolute", top: "-20%", right: "-10%", width: m ? 300 : 600, height: m ? 300 : 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}08 0%, transparent 70%)`, pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: "-30%", left: "-15%", width: m ? 250 : 500, height: m ? 250 : 500, borderRadius: "50%", background: `radial-gradient(circle, ${C.teal}06 0%, transparent 70%)`, pointerEvents: "none" }} />
+    <header ref={ref} style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: m ? 72 : 140, paddingBottom: m ? 56 : 100, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
         <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20, ...fadeIn(visible) }}>Sample Report</div>
-        <h1 style={{ fontSize: m ? 32 : 52, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.03em", color: C.sand, marginBottom: 24, ...fadeIn(visible, 80) }}>
+        <h1 style={{ fontSize: m ? 32 : 52, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.03em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 80) }}>
           See exactly what the diagnostic reveals — before you buy.
         </h1>
-        <p style={{ fontSize: m ? 16 : 18, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 20, ...fadeIn(visible, 160) }}>
+        <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.65, marginBottom: 20, ...fadeIn(visible, 160) }}>
           Four pages. Generated from your structure. Every number is real. The same inputs always produce the same result.
         </p>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: m ? 16 : 24, flexWrap: "wrap" as const, ...fadeIn(visible, 240) }}>

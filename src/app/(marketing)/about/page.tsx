@@ -62,18 +62,18 @@ function HeroSection() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <header ref={ref} style={{ backgroundColor: C.navy, position: "relative", overflow: "hidden", paddingTop: m ? 80 : 140, paddingBottom: m ? 56 : 100, paddingLeft: px(m), paddingRight: px(m) }}>
+    <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: m ? 80 : 140, paddingBottom: m ? 56 : 100, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: "-30%", left: "-15%", width: 500, height: 500, borderRadius: "50%", background: `radial-gradient(circle, ${C.teal}05 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 780, margin: "0 auto", position: "relative", zIndex: 1 }}>
         <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20, ...fadeIn(visible) }}>About RunPayway&#8482;</div>
-        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F4F1EA", marginBottom: 28, ...fadeIn(visible, 80) }}>
+        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.03em", color: C.navy, marginBottom: 28, ...fadeIn(visible, 80) }}>
           The standard for measuring income structure.
         </h1>
-        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, maxWidth: 560, marginBottom: 12, ...fadeIn(visible, 180) }}>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, maxWidth: 560, marginBottom: 12, ...fadeIn(visible, 180) }}>
           RunPayway&#8482; produces the Income Stability Score&#8482; — a deterministic structural assessment of how income holds under change.
         </p>
-        <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, maxWidth: 560, ...fadeIn(visible, 240) }}>
+        <p style={{ fontSize: 14, color: light, lineHeight: 1.6, maxWidth: 560, ...fadeIn(visible, 240) }}>
           Built for anyone whose income is not structurally guaranteed.
         </p>
       </div>
@@ -154,13 +154,13 @@ function WhyThisExists() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "50%", left: "50%", width: 500, height: 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 720, margin: "0 auto", position: "relative", zIndex: 1 }}>
-        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 28, ...fadeIn(visible) }}>Why this exists</h2>
-        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>Credit scores measure borrowing history.</p>
-        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 20, ...fadeIn(visible, 100) }}>Income verification confirms past earnings.</p>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 28, ...fadeIn(visible) }}>Why this exists</h2>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>Credit scores measure borrowing history.</p>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 20, ...fadeIn(visible, 100) }}>Income verification confirms past earnings.</p>
         <p style={{ fontSize: 18, fontWeight: 500, color: "#F4F1EA", lineHeight: 1.5, marginBottom: 28, ...fadeIn(visible, 160) }}>
           But nothing measured the structural durability of how income is built.
         </p>
-        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 28, ...fadeIn(visible, 200) }}>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 28, ...fadeIn(visible, 200) }}>
           Income is not tested when it is stable. It is tested when conditions change. RunPayway&#8482; was created to measure how your structure responds — before that happens.
         </p>
         <div style={{ padding: "24px 28px", borderRadius: 14, backgroundColor: "rgba(244,241,234,0.04)", border: "1px solid rgba(244,241,234,0.08)", borderLeft: `3px solid ${C.teal}`, ...fadeIn(visible, 260) }}>
@@ -253,10 +253,10 @@ function FinalCta() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "50%", left: "50%", width: 500, height: 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 20, ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.navy, marginBottom: 20, ...fadeIn(visible) }}>
           Now apply the system to your own structure.
         </h2>
-        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 36, ...fadeIn(visible, 80) }}>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 36, ...fadeIn(visible, 80) }}>
           The assessment takes under 2 minutes. Every result is generated from your inputs.
         </p>
         <div style={{ ...fadeIn(visible, 180) }}>

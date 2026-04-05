@@ -62,11 +62,11 @@ function HeroSection() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <header ref={ref} style={{ backgroundColor: C.navy, position: "relative", overflow: "hidden", paddingTop: m ? 80 : 140, paddingBottom: m ? 56 : 100, paddingLeft: px(m), paddingRight: px(m) }}>
+    <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: m ? 80 : 140, paddingBottom: m ? 56 : 100, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 780, margin: "0 auto", position: "relative", zIndex: 1 }}>
         <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20, ...fadeIn(visible) }}>Methodology</div>
-        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F4F1EA", marginBottom: 28, ...fadeIn(visible, 80) }}>
+        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.03em", color: C.navy, marginBottom: 28, ...fadeIn(visible, 80) }}>
           Fixed rules. Deterministic scoring.{m ? " " : <br />}Every result reproducible.
         </h1>
         <div style={{ maxWidth: 560, ...fadeIn(visible, 180) }}>
@@ -258,7 +258,7 @@ function InteractionEffects() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "50%", left: "50%", width: 500, height: 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 720, margin: "0 auto", position: "relative", zIndex: 1 }}>
-        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 24, ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>
           Weaknesses compound.{m ? " " : <br />}The model captures that.
         </h2>
         <p style={{ fontSize: 16, color: "rgba(244,241,234,0.55)", lineHeight: 1.65, marginBottom: 20, ...fadeIn(visible, 80) }}>
@@ -450,13 +450,13 @@ function MeasurementPositioning() {
   return (
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
-        <h2 style={{ fontSize: m ? 28 : 36, fontWeight: 600, lineHeight: 1.15, color: "#F4F1EA", marginBottom: 16, ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 28 : 36, fontWeight: 600, lineHeight: 1.15, color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
           A measurement system — not a financial product.
         </h2>
-        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 12, ...fadeIn(visible, 80) }}>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 12, ...fadeIn(visible, 80) }}>
           RunPayway&#8482; is designed as a structural measurement system.
         </p>
-        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 20, ...fadeIn(visible, 120) }}>
+        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 20, ...fadeIn(visible, 120) }}>
           It does not provide financial, legal, or investment advice.
         </p>
         <p style={{ fontSize: 16, fontWeight: 500, color: "#F4F1EA", ...fadeIn(visible, 180) }}>
