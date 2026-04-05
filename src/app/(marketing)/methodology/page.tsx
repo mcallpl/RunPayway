@@ -96,12 +96,16 @@ function WhatMakesItDifferent() {
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20, marginBottom: m ? 48 : 72, ...fadeIn(visible, 100) }}>
           {[
-            { title: "Not a credit score", desc: "Credit scores measure borrowing history. This measures how income holds under disruption. Different inputs. Different purpose." },
-            { title: "Not a forecast", desc: "The model does not predict what will happen. It measures how your current structure would respond if conditions changed today." },
-            { title: "Not subjective", desc: "No advisor, no algorithm, no interpretation layer touches the score. Fixed rules produce fixed results. Every time." },
+            { title: "Not a credit score", desc: "Credit scores measure borrowing history. This measures how income holds under disruption. Different inputs. Different purpose.", icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", color: C.teal },
+            { title: "Not a forecast", desc: "The model does not predict what will happen. It measures how your current structure would respond if conditions changed today.", icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6", color: C.purple },
+            { title: "Not subjective", desc: "No advisor, no algorithm, no interpretation layer touches the score. Fixed rules produce fixed results. Every time.", icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 0 0 4.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 0 1-15.357-2m15.357 2H15", color: C.navy },
           ].map((item, i) => (
-            <div key={i} style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 28, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", marginBottom: m ? 16 : 0 }}>
-              <div style={{ fontSize: 17, fontWeight: 600, color: C.navy, marginBottom: 10, lineHeight: 1.3 }}>{item.title}</div>
+            <div key={i} style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 28, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${item.color}20` }} />
+              <div style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: `${item.color}08`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={item.color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={item.icon} /></svg>
+              </div>
+              <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 10, lineHeight: 1.3 }}>{item.title}</div>
               <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>{item.desc}</p>
             </div>
           ))}
@@ -110,34 +114,43 @@ function WhatMakesItDifferent() {
         {/* Versioning + Classification side by side */}
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 20, ...fadeIn(visible, 200) }}>
           {/* Versioning */}
-          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 28, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", marginBottom: m ? 16 : 0 }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.purple, marginBottom: 16 }}>HOW VERSIONING WORKS</div>
+          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 28, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${C.purple}20` }} />
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.purple, marginBottom: 20 }}>HOW VERSIONING WORKS</div>
             {[
-              { label: "Model is locked", desc: "Every version is immutable once deployed." },
-              { label: "Scores are comparable", desc: "Same version = directly comparable results." },
-              { label: "Changes increment", desc: "Any rule change creates a new model version." },
-              { label: "Every result is stamped", desc: "The model version is permanently recorded." },
+              { label: "Model is locked", desc: "Every version is immutable once deployed.", icon: "M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 0 0-8 0v4h8z" },
+              { label: "Scores are comparable", desc: "Same version = directly comparable results.", icon: "M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6M15 19v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6M9 13V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v8" },
+              { label: "Changes increment", desc: "Any rule change creates a new model version.", icon: "M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" },
+              { label: "Every result is stamped", desc: "The model version is permanently recorded.", icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" },
             ].map((item, i) => (
-              <div key={i} style={{ marginBottom: 14 }}>
-                <div style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 2 }}>{item.label}</div>
-                <p style={{ fontSize: 14, color: muted, margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
+              <div key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start", marginBottom: 18 }}>
+                <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${C.purple}06`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={item.icon} /></svg>
+                </div>
+                <div>
+                  <div style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 2 }}>{item.label}</div>
+                  <p style={{ fontSize: 14, color: muted, margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
+                </div>
               </div>
             ))}
           </div>
 
           {/* Classification */}
-          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 28, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)" }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 16 }}>FOUR BANDS &bull; FIXED THRESHOLDS</div>
+          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 28, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", position: "relative" as const, overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #9B2C2C, #92640A, #2B5EA7, ${C.teal})` }} />
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 20 }}>FOUR BANDS &bull; FIXED THRESHOLDS</div>
             {[
               { range: "0\u201329", label: "Limited", desc: "A single disruption can materially change the structure.", color: "#9B2C2C" },
               { range: "30\u201349", label: "Developing", desc: "Not yet structurally protected.", color: "#92640A" },
               { range: "50\u201374", label: "Established", desc: "Absorbs most common disruptions.", color: "#2B5EA7" },
               { range: "75\u2013100", label: "High", desc: "Resilient under sustained pressure.", color: C.teal },
             ].map((b, i) => (
-              <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "10px 0", borderBottom: i < 3 ? "1px solid rgba(14,26,43,0.05)" : "none" }}>
-                <span style={{ fontSize: 14, fontFamily: mono, fontWeight: 600, color: b.color, minWidth: 44, flexShrink: 0 }}>{b.range}</span>
+              <div key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "12px 14px", borderRadius: 10, backgroundColor: `${b.color}04`, marginBottom: i < 3 ? 8 : 0 }}>
+                <div style={{ width: 40, height: 24, borderRadius: 6, backgroundColor: `${b.color}12`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 700, color: b.color }}>{b.range}</span>
+                </div>
                 <div>
-                  <span style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>{b.label}</span>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: b.color }}>{b.label}</span>
                   <span style={{ fontSize: 14, color: muted }}> — {b.desc}</span>
                 </div>
               </div>
@@ -170,8 +183,13 @@ function Integrity() {
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: m ? 32 : 48, ...fadeIn(visible, 100) }}>
           {/* Guarantees */}
-          <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.03)", marginBottom: m ? 16 : 0 }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 20 }}>THE MODEL GUARANTEES</div>
+          <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.03)", borderLeft: `3px solid ${C.teal}`, marginBottom: m ? 16 : 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${C.teal}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round"><path d="M9 12l2 2 4-4" /><circle cx="12" cy="12" r="10" /></svg>
+              </div>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal }}>THE MODEL GUARANTEES</div>
+            </div>
             {[
               "Same inputs always produce the same score",
               "No human override in scoring",
@@ -180,15 +198,20 @@ function Integrity() {
               "Scores under the same version are directly comparable",
             ].map((item, i) => (
               <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 14 }}>
-                <span style={{ color: C.teal, fontSize: 13, flexShrink: 0, marginTop: 2 }}>&#10003;</span>
+                <span style={{ color: C.teal, fontSize: 14, flexShrink: 0, marginTop: 1 }}>&#10003;</span>
                 <span style={{ fontSize: 15, color: "rgba(244,241,234,0.65)", lineHeight: 1.5 }}>{item}</span>
               </div>
             ))}
           </div>
 
           {/* Exclusions */}
-          <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.03)" }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.40)", marginBottom: 20 }}>THE MODEL DOES NOT</div>
+          <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.03)", borderLeft: "3px solid rgba(244,241,234,0.10)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.04)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(244,241,234,0.35)" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+              </div>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.40)" }}>THE MODEL DOES NOT</div>
+            </div>
             {[
               "Access bank accounts or financial data",
               "Use machine learning or probabilistic models in scoring",
@@ -197,7 +220,7 @@ function Integrity() {
               "Provide financial, legal, or investment advice",
             ].map((item, i) => (
               <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 14 }}>
-                <span style={{ color: "rgba(244,241,234,0.30)", fontSize: 13, flexShrink: 0, marginTop: 2 }}>&mdash;</span>
+                <span style={{ color: "rgba(244,241,234,0.25)", fontSize: 14, flexShrink: 0, marginTop: 1 }}>&times;</span>
                 <span style={{ fontSize: 15, color: "rgba(244,241,234,0.50)", lineHeight: 1.5 }}>{item}</span>
               </div>
             ))}
