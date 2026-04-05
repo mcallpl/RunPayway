@@ -460,8 +460,8 @@ function WhatStabilityUnlocks() {
 
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 12 : 16, maxWidth: 760, margin: "0 auto", ...fadeIn(visible, 120) }}>
           {unlocks.map((u, i) => (
-            <div key={i} style={{ padding: m ? 20 : 24, borderRadius: 14, backgroundColor: "#FAFAFA", position: "relative" as const, overflow: "hidden" }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${u.color}15` }} />
+            <div key={i} style={{ padding: m ? 20 : 28, borderRadius: 16, backgroundColor: C.white, boxShadow: elevation.card, position: "relative" as const, overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${u.color}30` }} />
               <div style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: `${u.color}08`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 14 }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={u.color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={u.icon} /></svg>
               </div>
@@ -545,12 +545,13 @@ function TheMissingLayer() {
             return (
               <div key={i} style={{
                 padding: m ? "20px 18px" : "24px 28px",
-                borderRadius: i === 0 ? "14px 14px 0 0" : i === layers.length - 1 ? "0 0 14px 14px" : 0,
-                backgroundColor: isFoundation ? `${C.teal}08` : C.white,
+                borderRadius: i === 0 ? "16px 16px 0 0" : i === layers.length - 1 ? "0 0 16px 16px" : 0,
+                backgroundColor: isFoundation ? `${C.teal}06` : C.white,
                 borderLeft: isFoundation ? `3px solid ${C.teal}` : `3px solid rgba(14,26,43,0.06)`,
                 borderBottom: i < layers.length - 1 ? `1px solid rgba(14,26,43,0.06)` : "none",
-                boxShadow: isFoundation ? "0 2px 12px rgba(31,109,122,0.08)" : "none",
+                boxShadow: isFoundation ? elevation.card : "none",
                 position: "relative" as const,
+                overflow: "hidden" as const,
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 }}>
                   <div style={{ flex: 1 }}>
@@ -580,7 +581,8 @@ function TheMissingLayer() {
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 20, maxWidth: 880, margin: "0 auto", ...fadeIn(visible, 300) }}>
 
           {/* Before borrowing */}
-          <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: C.white, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", marginBottom: m ? 16 : 0 }}>
+          <div style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, boxShadow: elevation.card, position: "relative" as const, overflow: "hidden", marginBottom: m ? 16 : 0 }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${C.teal}30` }} />
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
               <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.teal}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
@@ -605,7 +607,8 @@ function TheMissingLayer() {
           </div>
 
           {/* Before financial planning */}
-          <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: C.white, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)" }}>
+          <div style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, boxShadow: elevation.card, position: "relative" as const, overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${C.purple}30` }} />
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
               <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.purple}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" /></svg>
@@ -809,7 +812,7 @@ function FinalCtaAndTrust() {
         </div>
 
         {/* What happens next — address post-assessment anxiety */}
-        <div style={{ marginBottom: m ? 36 : 56, padding: m ? "16px 18px" : "18px 24px", borderRadius: 12, backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", textAlign: "left" as const, ...fadeIn(visible, 240) }}>
+        <div style={{ marginBottom: m ? 36 : 56, padding: m ? "20px 18px" : "24px 28px", borderRadius: 16, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", textAlign: "left" as const, ...fadeIn(visible, 240) }}>
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 10 }}>HERE'S EXACTLY WHAT HAPPENS</div>
           <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
             {[
