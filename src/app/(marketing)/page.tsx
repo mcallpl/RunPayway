@@ -447,7 +447,147 @@ function SameIncomeProof() {
 
 
 /* ================================================================== */
-/* SECTION 4 — THE SYSTEM (steps first, then visualization)            */
+/* SECTION 4 — COMMAND CENTER PREVIEW                                  */
+/* ================================================================== */
+
+function CommandCenterPreview() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+  return (
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>COMMAND CENTER</div>
+          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 14 }}>
+            Your score is the starting point.{m ? " " : <br />}This is what happens next.
+          </h2>
+          <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
+            Every tool runs on your actual structure — personalized to your industry, your constraint, and your numbers.
+          </p>
+        </div>
+
+        {/* Three preview cards */}
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20, maxWidth: 960, margin: "0 auto", ...fadeIn(visible, 120) }}>
+
+          {/* Card 1 — This Week */}
+          <div style={{ backgroundColor: "#FAFAFA", borderRadius: 16, padding: m ? 24 : 28, boxShadow: elevation.card, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${C.teal}25` }} />
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+              <div style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: `${C.teal}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg>
+              </div>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: C.teal }}>THIS WEEK</span>
+            </div>
+
+            {/* Mock priority */}
+            <div style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: C.white, border: `1px solid ${C.teal}12`, marginBottom: 14 }}>
+              <div style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 4 }}>
+                Convert to retainer. <span style={{ fontWeight: 300, fontFamily: mono, color: C.teal }}>+11</span>
+              </div>
+              <div style={{ fontSize: 13, color: muted }}>Your highest-leverage conversation this week.</div>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: 12, color: light }}>Day 7 &middot; 0/4 steps</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: C.teal }}>Open script &rarr;</span>
+            </div>
+
+            <div style={{ marginTop: 16, paddingTop: 12, borderTop: `1px solid rgba(14,26,43,0.05)` }}>
+              <p style={{ fontSize: 13, color: muted, margin: 0, lineHeight: 1.5 }}>
+                Every time you open the Command Center, it tells you the <strong style={{ color: C.navy }}>one thing</strong> that matters most right now.
+              </p>
+            </div>
+          </div>
+
+          {/* Card 2 — Negotiation Playbook */}
+          <div style={{ backgroundColor: "#FAFAFA", borderRadius: 16, padding: m ? 24 : 28, boxShadow: elevation.card, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${C.purple}25` }} />
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+              <div style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: `${C.purple}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="2" strokeLinecap="round"><path d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5m-1.414-9.414a2 2 0 1 1 2.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+              </div>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: C.purple }}>NEGOTIATION PLAYBOOK</span>
+            </div>
+
+            {/* Mock script snippet */}
+            <div style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: C.white, border: `1px solid rgba(14,26,43,0.06)`, marginBottom: 12 }}>
+              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: C.purple, marginBottom: 6 }}>WHO TO TALK TO</div>
+              <div style={{ fontSize: 13, color: C.navy, marginBottom: 10 }}>Your largest or most active client</div>
+              <div style={{ fontSize: 13, color: muted, lineHeight: 1.55, fontStyle: "italic" }}>
+                &ldquo;I wanted to propose something that several of my long-term clients have found valuable — an ongoing advisory retainer...&rdquo;
+              </div>
+            </div>
+
+            <div style={{ display: "flex", gap: 8 }}>
+              <span style={{ fontSize: 11, fontWeight: 600, color: C.teal, padding: "3px 8px", borderRadius: 6, backgroundColor: `${C.teal}06` }}>+11 pts</span>
+              <span style={{ fontSize: 11, fontWeight: 600, color: light, padding: "3px 8px", borderRadius: 6, backgroundColor: "#F0F0F0" }}>Copy to clipboard</span>
+            </div>
+
+            <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid rgba(14,26,43,0.05)` }}>
+              <p style={{ fontSize: 13, color: muted, margin: 0, lineHeight: 1.5 }}>
+                Word-for-word scripts with <strong style={{ color: C.navy }}>your actual numbers</strong>, objection handlers, and success signals.
+              </p>
+            </div>
+          </div>
+
+          {/* Card 3 — 12-Week Roadmap */}
+          <div style={{ backgroundColor: "#FAFAFA", borderRadius: 16, padding: m ? 24 : 28, boxShadow: elevation.card, position: "relative" as const, overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${C.navy}20` }} />
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+              <div style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: `${C.navy}06`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.navy} strokeWidth="2" strokeLinecap="round"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg>
+              </div>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: C.navy }}>12-WEEK ROADMAP</span>
+            </div>
+
+            {/* Mock milestone */}
+            <div style={{ position: "relative", paddingLeft: 20, marginBottom: 14 }}>
+              <div style={{ position: "absolute", left: 5, top: 0, bottom: 0, width: 2, backgroundColor: "rgba(14,26,43,0.06)" }} />
+              {[
+                { week: "WK 1\u20132", action: "Convert to retainer", score: "62" },
+                { week: "WK 3\u20134", action: "Add a new client", score: "70" },
+                { week: "WK 5\u20138", action: "Build passive stream", score: "75" },
+              ].map((step, i) => (
+                <div key={i} style={{ position: "relative", marginBottom: 10 }}>
+                  <div style={{ position: "absolute", left: -16, top: 3, width: 10, height: 10, borderRadius: "50%", backgroundColor: i === 0 ? C.teal : "#FAFAFA", border: `2px solid ${i === 0 ? C.teal : "rgba(14,26,43,0.12)"}` }} />
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                    <div>
+                      <span style={{ fontSize: 11, color: light }}>{step.week}</span>
+                      <div style={{ fontSize: 13, fontWeight: 500, color: C.navy }}>{step.action}</div>
+                    </div>
+                    <span style={{ fontSize: 13, fontFamily: mono, fontWeight: 600, color: C.teal }}>{step.score}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ padding: "10px 12px", borderRadius: 8, backgroundColor: C.white, border: `1px solid ${C.teal}10` }}>
+              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: C.teal, marginBottom: 2 }}>MILESTONE</div>
+              <div style={{ fontSize: 12, color: C.navy }}>Concentration drops from 72% to below 57%</div>
+            </div>
+
+            <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid rgba(14,26,43,0.05)` }}>
+              <p style={{ fontSize: 13, color: muted, margin: 0, lineHeight: 1.5 }}>
+                Dynamic milestones calculated from <strong style={{ color: C.navy }}>your starting numbers</strong>. Not generic advice.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom line */}
+        <div style={{ textAlign: "center", marginTop: m ? 32 : 48, ...fadeIn(visible, 220) }}>
+          <p style={{ fontSize: m ? 16 : 18, fontWeight: 500, color: C.navy, marginBottom: 6 }}>All included with the $69 diagnostic.</p>
+          <p style={{ fontSize: 15, color: light }}>Lifetime access. Updates every time you come back.</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
+/* SECTION 5 — THE SYSTEM (steps first, then visualization)            */
 /*           + FINAL CTA + TRUST (merged, no standalone trust section) */
 /* ================================================================== */
 
@@ -621,6 +761,7 @@ export default function LandingPage() {
         <HeroSection />
         <IndustrySelector />
         <SameIncomeProof />
+        <CommandCenterPreview />
         <TheSystemAndCta />
       </main>
       <StickyMobileCta />
