@@ -217,6 +217,8 @@ export default function InitializationPage() {
   const [showReadyScreen, setShowReadyScreen] = useState(false);
   const [readyVisible, setReadyVisible] = useState(false);
   const [readyExiting, setReadyExiting] = useState(false);
+  const [mobile, setMobile] = useState(false);
+  useEffect(() => { const c = () => setMobile(window.innerWidth <= 640); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
 
   const goToStep = useCallback((nextStep: number) => {
     setTransitioning(true);
