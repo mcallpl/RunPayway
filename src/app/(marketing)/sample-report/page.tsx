@@ -133,8 +133,16 @@ function ReportWalkthrough() {
 
           {/* PAGE 01 — Cover & Score */}
           <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: m ? 28 : 36, textAlign: "center", position: "relative", overflow: "hidden" }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.40)", marginBottom: 4 }}>PAGE 01</div>
-            <div style={{ fontSize: 17, fontWeight: 600, color: C.sand, marginBottom: 20 }}>Cover &amp; Score</div>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #2B5EA7, ${C.teal})` }} />
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: "rgba(43,94,167,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2B5EA7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6M15 19v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6M9 13V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v8" /></svg>
+              </div>
+              <div style={{ textAlign: "left" as const }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.40)" }}>PAGE 01</div>
+                <div style={{ fontSize: 17, fontWeight: 600, color: C.sand }}>Cover &amp; Score</div>
+              </div>
+            </div>
             <div style={{ position: "relative", width: m ? 120 : 140, height: m ? 120 : 140, margin: "0 auto 16px" }}>
               <ScoreRing score={animatedScore} size={m ? 120 : 140} stroke={8} color="#2B5EA7" />
               <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
@@ -150,9 +158,17 @@ function ReportWalkthrough() {
           </div>
 
           {/* PAGE 02 — Key Findings */}
-          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)" }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 4 }}>PAGE 02</div>
-            <div style={{ fontSize: 17, fontWeight: 600, color: C.navy, marginBottom: 20 }}>Key Findings</div>
+          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", position: "relative" as const, overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${C.purple}20` }} />
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+              <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.purple}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z" /></svg>
+              </div>
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: C.teal }}>PAGE 02</div>
+                <div style={{ fontSize: 17, fontWeight: 600, color: C.navy }}>Key Findings</div>
+              </div>
+            </div>
 
             {/* Key Takeaway */}
             <div style={{ borderLeft: `3px solid ${C.purple}`, padding: "14px 16px", borderRadius: "0 8px 8px 0", backgroundColor: "#FAFAFA", marginBottom: 20 }}>
@@ -202,9 +218,17 @@ function ReportWalkthrough() {
           </div>
 
           {/* PAGE 03 — Stability Plan */}
-          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)" }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 4 }}>PAGE 03</div>
-            <div style={{ fontSize: 17, fontWeight: 600, color: C.navy, marginBottom: 20 }}>Stability Plan</div>
+          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", position: "relative" as const, overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${C.teal}20` }} />
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+              <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.teal}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" /></svg>
+              </div>
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: C.teal }}>PAGE 03</div>
+                <div style={{ fontSize: 17, fontWeight: 600, color: C.navy }}>Stability Plan</div>
+              </div>
+            </div>
 
             {/* Ranked actions with visual weight */}
             {[
@@ -244,9 +268,17 @@ function ReportWalkthrough() {
           </div>
 
           {/* PAGE 04 — Stress Testing */}
-          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)" }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 4 }}>PAGE 04</div>
-            <div style={{ fontSize: 17, fontWeight: 600, color: C.navy, marginBottom: 20 }}>Stress Testing</div>
+          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", position: "relative" as const, overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: "rgba(192,57,43,0.20)" }} />
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+              <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: "rgba(192,57,43,0.06)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C0392B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+              </div>
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: C.teal }}>PAGE 04</div>
+                <div style={{ fontSize: 17, fontWeight: 600, color: C.navy }}>Stress Testing</div>
+              </div>
+            </div>
 
             {/* Scenario cards with visual score drops */}
             <div style={{ display: "flex", flexDirection: "column" as const, gap: 10 }}>
