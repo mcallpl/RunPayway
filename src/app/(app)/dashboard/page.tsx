@@ -108,21 +108,11 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
 
   return (
     <div style={{ position: "relative", width: size, height: size, flexShrink: 0 }}>
-      {/* Ambient band-color glow */}
-      <div style={{
-        position: "absolute",
-        top: "50%", left: "50%",
-        width: glowSize, height: glowSize,
-        transform: "translate(-50%, -50%)",
-        borderRadius: "50%",
-        background: `radial-gradient(circle, ${color}12 0%, ${color}04 40%, transparent 70%)`,
-        pointerEvents: "none",
-      }} />
       <svg width={size} height={size} style={{ transform: "rotate(-90deg)", position: "relative", zIndex: 1 }}>
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(14,26,43,0.06)" strokeWidth={stroke} />
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={stroke}
           strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round"
-          style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.4s", filter: `drop-shadow(0 0 6px ${color}30)` }} />
+          style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.4s" }} />
       </svg>
       <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 2 }}>
         <span style={{ fontSize: size * 0.28, fontWeight: 300, fontFamily: mono, color: B.navy, lineHeight: 1, letterSpacing: "-0.04em" }}>{score}</span>
