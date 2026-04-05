@@ -96,13 +96,19 @@ function TheSystemSection() {
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20, marginBottom: m ? 48 : 80, ...fadeIn(visible, 100) }}>
           {[
-            { num: "01", title: "Structural intake", desc: "You describe how your income is organized — sources, contracts, concentration, and dependencies. Under 2 minutes. No bank connection. No financial documents." },
-            { num: "02", title: "Deterministic scoring", desc: "Six structural dimensions are evaluated independently using fixed definitions. The model combines them into a single score from 0 to 100. Same inputs always produce the same result." },
-            { num: "03", title: "Standardized output", desc: "Score, stability band, primary constraint, stress test, and distance to next band. The diagnostic adds structural interpretation, scenario framing, and action prioritization." },
+            { num: "01", title: "Structural intake", desc: "You describe how your income is organized — sources, contracts, concentration, and dependencies. Under 2 minutes. No bank connection. No financial documents.", icon: "M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5m-1.414-9.414a2 2 0 1 1 2.828 2.828L11.828 15H9v-2.828l8.586-8.586z", color: C.teal },
+            { num: "02", title: "Deterministic scoring", desc: "Six structural dimensions are evaluated independently using fixed definitions. The model combines them into a single score from 0 to 100. Same inputs always produce the same result.", icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 0 0 4.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 0 1-15.357-2m15.357 2H15", color: C.purple },
+            { num: "03", title: "Standardized output", desc: "Score, stability band, primary constraint, stress test, and distance to next band. The diagnostic adds structural interpretation, scenario framing, and action prioritization.", icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2", color: C.navy },
           ].map((s, i) => (
-            <div key={i} style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 28, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", marginBottom: m ? 16 : 0 }}>
-              <div style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: C.teal, marginBottom: 12 }}>{s.num}</div>
-              <div style={{ fontSize: 17, fontWeight: 600, color: C.navy, marginBottom: 10, lineHeight: 1.3 }}>{s.title}</div>
+            <div key={i} style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 28, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${s.color}20` }} />
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+                <div style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: `${s.color}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={s.color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={s.icon} /></svg>
+                </div>
+                <span style={{ fontSize: 13, fontWeight: 700, fontFamily: mono, color: s.color }}>{s.num}</span>
+              </div>
+              <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 10, lineHeight: 1.3 }}>{s.title}</div>
               <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>{s.desc}</p>
             </div>
           ))}
@@ -114,20 +120,23 @@ function TheSystemSection() {
           <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65 }}>Each is scored independently before interaction effects determine the final score.</p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: 12, ...fadeIn(visible, 280) }}>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: 14, ...fadeIn(visible, 280) }}>
           {[
-            { name: "Recurrence", desc: "Income that renews without new acquisition.", color: C.teal },
-            { name: "Concentration", desc: "Reliance on the largest income source.", color: "#C0392B" },
-            { name: "Diversification", desc: "Number of independent sources contributing.", color: C.teal },
-            { name: "Forward Visibility", desc: "Income secured ahead of time.", color: C.teal },
-            { name: "Earnings Consistency", desc: "Variation in income over time.", color: "#B58900" },
-            { name: "Labor Independence", desc: "Income that continues without active work.", color: "#B58900" },
+            { name: "Recurrence", desc: "Income that renews without new acquisition.", color: C.teal, tag: "Structure" },
+            { name: "Concentration", desc: "Reliance on the largest income source.", color: "#C0392B", tag: "Stability" },
+            { name: "Diversification", desc: "Number of independent sources contributing.", color: C.teal, tag: "Structure" },
+            { name: "Forward Visibility", desc: "Income secured ahead of time.", color: C.teal, tag: "Structure" },
+            { name: "Earnings Consistency", desc: "Variation in income over time.", color: "#B58900", tag: "Stability" },
+            { name: "Labor Independence", desc: "Income that continues without active work.", color: "#B58900", tag: "Stability" },
           ].map((d, i) => (
-            <div key={i} style={{ backgroundColor: C.white, borderRadius: 12, padding: m ? "16px 16px" : "18px 20px", boxShadow: "0 1px 2px rgba(14,26,43,0.03)", position: "relative" as const, overflow: "hidden" }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, backgroundColor: `${d.color}30` }} />
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-                <div style={{ width: 6, height: 6, borderRadius: 2, backgroundColor: d.color, flexShrink: 0 }} />
-                <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>{d.name}</span>
+            <div key={i} style={{ backgroundColor: C.white, borderRadius: 12, padding: m ? "16px 16px" : "18px 20px", boxShadow: "0 1px 3px rgba(14,26,43,0.03)", position: "relative" as const, overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${d.color}25` }} />
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: d.color, flexShrink: 0 }} />
+                  <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>{d.name}</span>
+                </div>
+                <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", color: d.color, padding: "2px 6px", borderRadius: 4, backgroundColor: `${d.color}08` }}>{d.tag}</span>
               </div>
               <p style={{ fontSize: 14, color: muted, lineHeight: 1.55, margin: 0 }}>{d.desc}</p>
             </div>
@@ -157,32 +166,32 @@ function Architecture() {
         </div>
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: m ? 24 : 36, ...fadeIn(visible, 100) }}>
-          <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.03)", marginBottom: m ? 16 : 0 }}>
+          <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.03)", borderLeft: `3px solid ${C.teal}`, marginBottom: m ? 16 : 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-              <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${C.teal}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <span style={{ fontSize: 12, fontWeight: 700, fontFamily: mono, color: C.teal }}>01</span>
+              <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.teal}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 0 0 4.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 0 1-15.357-2m15.357 2H15" /></svg>
               </div>
-              <span style={{ fontSize: 16, fontWeight: 600, color: C.sand }}>Deterministic Core</span>
+              <span style={{ fontSize: 17, fontWeight: 600, color: C.sand }}>Deterministic Core</span>
             </div>
-            <p style={{ fontSize: 15, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 16 }}>Produces the score from structural inputs only.</p>
+            <p style={{ fontSize: 15, color: "rgba(244,241,234,0.55)", lineHeight: 1.6, marginBottom: 16 }}>Produces the score from structural inputs only. No contextual input can alter the result.</p>
             <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 8 }}>
               {["Score", "Band", "Constraint", "Stress test"].map((item, i) => (
-                <span key={i} style={{ fontSize: 13, color: "rgba(244,241,234,0.55)", padding: "4px 10px", borderRadius: 6, backgroundColor: "rgba(255,255,255,0.04)" }}>{item}</span>
+                <span key={i} style={{ fontSize: 13, fontWeight: 500, color: "rgba(244,241,234,0.60)", padding: "5px 12px", borderRadius: 6, backgroundColor: "rgba(255,255,255,0.05)" }}>{item}</span>
               ))}
             </div>
           </div>
 
-          <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.03)" }}>
+          <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.03)", borderLeft: `3px solid ${C.purple}` }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-              <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${C.purple}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <span style={{ fontSize: 12, fontWeight: 700, fontFamily: mono, color: C.purple }}>02</span>
+              <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.purple}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" /></svg>
               </div>
-              <span style={{ fontSize: 16, fontWeight: 600, color: C.sand }}>Outcome Layer</span>
+              <span style={{ fontSize: 17, fontWeight: 600, color: C.sand }}>Outcome Layer</span>
             </div>
-            <p style={{ fontSize: 15, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 16 }}>Applies context to improve interpretation.</p>
+            <p style={{ fontSize: 15, color: "rgba(244,241,234,0.55)", lineHeight: 1.6, marginBottom: 16 }}>Applies context to improve interpretation. Does not modify the score.</p>
             <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 8 }}>
               {["Industry patterns", "Scenario framing", "Action prioritization"].map((item, i) => (
-                <span key={i} style={{ fontSize: 13, color: "rgba(244,241,234,0.55)", padding: "4px 10px", borderRadius: 6, backgroundColor: "rgba(255,255,255,0.04)" }}>{item}</span>
+                <span key={i} style={{ fontSize: 13, fontWeight: 500, color: "rgba(244,241,234,0.60)", padding: "5px 12px", borderRadius: 6, backgroundColor: "rgba(255,255,255,0.05)" }}>{item}</span>
               ))}
             </div>
           </div>
