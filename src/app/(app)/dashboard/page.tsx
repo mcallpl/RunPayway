@@ -983,36 +983,47 @@ function DashboardContent() {
               <div style={{ display: "flex", alignItems: "center", gap: mobile ? 16 : 40 }} className="d-score-hero">
                 <ScoreRing score={dScore} size={mobile ? 110 : 160} stroke={mobile ? 7 : 8} />
                 <div style={{ flex: 1 }}>
-                  {custName && <div style={{ fontSize: 14, color: B.muted, marginBottom: 4 }}>{custName}</div>}
-                  <div style={{ fontSize: mobile ? 14 : 15, color: B.muted, marginBottom: 12, lineHeight: 1.55 }}>
-                    {gap > 0
-                      ? <>{dBand}. <span style={{ fontWeight: 600, color: B.navy }}>{gap} points</span> to {nextB}.</>
-                      : <>Highest stability band achieved.</>
-                    }
-                    {bm && <> Top {100 - bm.peer_percentile}% of {bm.cluster_label.toLowerCase()}.</>}
+                  {/* Name + industry + date */}
+                  <div style={{ marginBottom: 12 }}>
+                    {custName && <span style={{ fontSize: 16, fontWeight: 600, color: B.navy }}>{custName}</span>}
+                    {custName && indLabel && <span style={{ fontSize: 14, color: B.taupe }}> &middot; </span>}
+                    {indLabel && <span style={{ fontSize: 14, color: B.taupe }}>{indLabel}</span>}
+                    {assessedDate && <span style={{ fontSize: 13, color: B.taupe }}> &middot; {assessedDate}</span>}
                   </div>
+
+                  {/* Band + gap — as a personalized sentence */}
+                  <div style={{ fontSize: mobile ? 15 : 17, color: B.navy, marginBottom: 16, lineHeight: 1.5 }}>
+                    {gap > 0
+                      ? <>Your income scores in the <span style={{ fontWeight: 600, color: bandColor(dScore) }}>{dBand.replace(" Stability", "")}</span> band. <span style={{ fontWeight: 600 }}>{gap} points</span> to {nextB}.</>
+                      : <><span style={{ fontWeight: 600, color: B.teal }}>Highest stability band achieved.</span> Your structure is resilient under sustained pressure.</>
+                    }
+                    {bm && <> You are ahead of <span style={{ fontWeight: 600 }}>{bm.peer_percentile}%</span> of {bm.cluster_label.toLowerCase()}.</>}
+                  </div>
+
+                  {/* Metrics — with context labels */}
                   <style>{`
                     .metric-tip-wrap { position: relative; }
                     .metric-tip-wrap .metric-tip { opacity: 0; pointer-events: none; transition: opacity 180ms ease; }
                     @media(hover:hover){ .metric-tip-wrap:hover .metric-tip { opacity: 1; pointer-events: auto; } }
                   `}</style>
-                  <div style={{ display: "flex", gap: 0, borderRadius: 10, overflow: "hidden", border: `1px solid ${B.stone}` }} className="d-metrics">
+                  <div style={{ display: "flex", gap: 10, marginBottom: 4, flexWrap: "wrap" as const }} className="d-metrics">
                     {[
-                      { label: "Runway", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? B.red : B.teal, tip: "How long your income would continue if all active work stopped." },
-                      { label: "Top Source Risk", value: `\u2212${riskDrop}`, color: riskDrop > 15 ? B.red : B.amber, tip: "Points lost if your largest source disappears." },
-                      { label: "Fragility", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" ? B.teal : B.amber, tip: "How well your structure absorbs shocks." },
-                    ].map((m, i, arr) => (
+                      { label: "Runway", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? B.red : B.teal, status: contMo < 1 ? "Critical" : contMo < 3 ? "Short" : "Adequate", tip: "How long income continues if all active work stops." },
+                      { label: "Source Risk", value: `\u2212${riskDrop}`, color: riskDrop > 15 ? B.red : B.amber, status: riskDrop > 20 ? "High" : riskDrop > 10 ? "Moderate" : "Low", tip: "Score drop if your largest source disappears." },
+                      { label: "Fragility", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" || fragLabel === "Supported" ? B.teal : B.amber, status: "", tip: "How well your structure absorbs shocks." },
+                    ].map((m, i) => (
                       <div key={m.label} className="metric-tip-wrap"
                         onClick={() => setTooltipOpen(tooltipOpen === m.label ? null : m.label)}
-                        style={{ flex: 1, padding: "10px 14px", textAlign: "center" as const, borderRight: i < arr.length - 1 ? `1px solid ${B.stone}` : "none", cursor: "pointer", WebkitTapHighlightColor: "transparent", backgroundColor: "#FAFAFA" }}>
-                        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: B.taupe, marginBottom: 3 }}>
+                        style={{ flex: 1, minWidth: mobile ? 80 : 100, padding: "12px 14px", textAlign: "center" as const, cursor: "pointer", WebkitTapHighlightColor: "transparent", backgroundColor: "#FAFAFA", borderRadius: 10, border: `1px solid ${B.stone}` }}>
+                        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 4 }}>
                           {m.label.toUpperCase()}
                         </div>
-                        <div style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: m.color }}>{m.value}</div>
+                        <div style={{ fontSize: 18, fontWeight: 600, fontFamily: mono, color: m.color, marginBottom: m.status ? 2 : 0 }}>{m.value}</div>
+                        {m.status && <div style={{ fontSize: 11, fontWeight: 500, color: m.color }}>{m.status}</div>}
                         <div className="metric-tip" style={{
                           position: "absolute", bottom: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)",
-                          width: mobile ? 200 : 240, padding: "10px 12px", borderRadius: 8,
-                          backgroundColor: B.navy, border: "none",
+                          width: mobile ? 200 : 220, padding: "10px 12px", borderRadius: 8,
+                          backgroundColor: B.navy,
                           fontSize: 12, lineHeight: 1.5, fontWeight: 400, fontFamily: sans, color: "rgba(244,241,234,0.75)",
                           boxShadow: "0 4px 16px rgba(14,26,43,0.25)",
                           zIndex: 50,
@@ -1025,8 +1036,9 @@ function DashboardContent() {
                   </div>
                 </div>
               </div>
-              {/* Compact toolbar */}
-              <div style={{ display: "flex", gap: 8, marginTop: 20, justifyContent: mobile ? "center" : "flex-start", flexWrap: "wrap" as const }}>
+
+              {/* Actions bar */}
+              <div style={{ display: "flex", gap: 8, marginTop: 20, paddingTop: 16, borderTop: `1px solid ${B.stone}`, justifyContent: mobile ? "center" : "flex-start", flexWrap: "wrap" as const }}>
                 <Link href="/review" style={{ fontSize: 13, fontWeight: 600, color: B.navy, textDecoration: "none", padding: "8px 16px", borderRadius: 8, border: `1px solid ${B.stone}`, backgroundColor: B.surface, transition: "background 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44 }}
                   onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#F5F4F1"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = B.surface; }}>
@@ -1049,7 +1061,6 @@ function DashboardContent() {
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                   Email Advisor
                 </button>
-                {indLabel && <span style={{ fontSize: 11, color: B.taupe, alignSelf: "center", marginLeft: 4 }}>{indLabel} &middot; {assessedDate || "Model RP-2.0"}</span>}
               </div>
             </div>
           </div>
