@@ -75,7 +75,6 @@ const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace'
 const muted = "rgba(14,26,43,0.68)";
 const light = "rgba(14,26,43,0.62)";
 const contentW = 1040;
-const secPad = (m: boolean) => m ? 56 : 112;
 const px = (m: boolean) => m ? 20 : 24;
 
 /* Elevation tokens — replace borders with shadow depth */
@@ -98,21 +97,6 @@ function ScoreRing({ score, size, stroke = 8, color, trackColor = "rgba(255,255,
         strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round"
         style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1)", filter: `drop-shadow(0 0 4px ${color}40)` }} />
     </svg>
-  );
-}
-
-/* Animated dimension bar */
-function DimensionBar({ label, value, color, visible, delay }: { label: string; value: number; color: string; visible: boolean; delay: number }) {
-  return (
-    <div style={{ marginBottom: 14 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 5 }}>
-        <span style={{ fontSize: 13, fontWeight: 500, color: "rgba(244,241,234,0.55)" }}>{label}</span>
-        <span style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color }}>{value}%</span>
-      </div>
-      <div style={{ height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
-        <div style={{ height: "100%", borderRadius: 3, backgroundColor: color, width: visible ? `${value}%` : "0%", transition: `width 1s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`, boxShadow: `0 0 8px ${color}30` }} />
-      </div>
-    </div>
   );
 }
 
@@ -172,15 +156,15 @@ function CtaButton({ m, variant = "light" }: { m: boolean; variant?: "light" | "
 
 const INDUSTRIES = [
   { key: "consulting", name: "Consulting", avg: 38, constraint: "You are the product", risk: "Your clients pay for your time, not a system. If you stop delivering, 85% of your income stops with you. You can't take a month off without the math changing.", cta: "Measure my income stability" },
-  { key: "real_estate", name: "Real Estate", avg: 34, constraint: "Pipeline dependency", risk: "One delayed closing or one lost listing can erase a quarter of annual earnings. Your pipeline looks full — but nothing in it is contractually yours until it closes.", cta: "Stress-test my income structure" },
-  { key: "sales", name: "Sales / Brokerage", avg: 31, constraint: "Nothing is guaranteed past this quarter", risk: "Last quarter was strong. But your structure doesn't carry that forward. Next quarter starts from zero unless you close again.", cta: "Stress-test my income structure" },
+  { key: "real_estate", name: "Real Estate", avg: 34, constraint: "Pipeline dependency", risk: "One delayed closing or one lost listing can erase a quarter of annual earnings. Your pipeline looks full — but nothing in it is contractually yours until it closes.", cta: "Stress-test my income" },
+  { key: "sales", name: "Sales / Brokerage", avg: 31, constraint: "Nothing is guaranteed past this quarter", risk: "Last quarter was strong. But your structure doesn't carry that forward. Next quarter starts from zero unless you close again.", cta: "Stress-test my income" },
   { key: "creative", name: "Freelance / Creative", avg: 27, constraint: "Every month starts at zero", risk: "No project means no income. No retainer means no floor. You are re-earning your entire livelihood every 30 days, and the pipeline between projects is silence.", cta: "Measure my income stability" },
   { key: "construction", name: "Construction / Trades", avg: 29, constraint: "The next job isn't signed yet", risk: "The current project is solid. The next one is a handshake. Your income has no structural buffer between jobs — when one ends, the clock starts.", cta: "Measure my income stability" },
   { key: "media", name: "Media / Entertainment", avg: 28, constraint: "Between projects, income is zero", risk: "Strong projects create strong months. But between them, your income is not low — it is zero. No carry. No residual. Every engagement starts from scratch.", cta: "Run my assessment" },
-  { key: "insurance", name: "Insurance", avg: 43, constraint: "New business masks renewal erosion", risk: "Strong production quarters feel like growth. But if renewals are quietly slipping underneath, your structure is compounding backwards — and you won't see it until new business slows.", cta: "Stress-test my income structure" },
+  { key: "insurance", name: "Insurance", avg: 43, constraint: "New business masks renewal erosion", risk: "Strong production quarters feel like growth. But if renewals are quietly slipping underneath, your structure is compounding backwards — and you won't see it until new business slows.", cta: "Stress-test my income" },
   { key: "legal", name: "Legal Services", avg: 40, constraint: "Three matters carry the practice", risk: "Count your top three matters. They likely carry 60-70% of your billings. When one concludes, the gap doesn't build gradually — it arrives all at once.", cta: "Measure my income stability" },
   { key: "technology", name: "Technology", avg: 42, constraint: "One employer, one system, one decision", risk: "Your compensation feels stable because the system around it is stable. But it's one layoff, one reorg, one equity reset away from a total structural shift — and you have no second source.", cta: "Measure my income stability" },
-  { key: "finance", name: "Finance / Banking", avg: 44, constraint: "The variable component is the one that matters", risk: "Base salary creates a floor. But the bonus, the production credit, the performance component — that's where the real earnings live. And that's the part that can vanish in one cycle.", cta: "Stress-test my income structure" },
+  { key: "finance", name: "Finance / Banking", avg: 44, constraint: "The variable component is the one that matters", risk: "Base salary creates a floor. But the bonus, the production credit, the performance component — that's where the real earnings live. And that's the part that can vanish in one cycle.", cta: "Stress-test my income" },
   { key: "healthcare", name: "Healthcare", avg: 46, constraint: "One system, no alternatives", risk: "Steady pay from one institution feels safe until the institution restructures. When your sole employer changes compensation models, hours, or staffing — you have no structural alternative.", cta: "Measure my income stability" },
   { key: "fitness", name: "Fitness / Wellness", avg: 30, constraint: "Clients cancel. Revenue disappears the same day.", risk: "Your income is a collection of individual decisions that can reverse without notice. One slow month, one seasonal dip, one competitor opens nearby — and the calendar empties faster than you can fill it.", cta: "Run my assessment" },
 ];
@@ -255,8 +239,8 @@ function HeroSection() {
               <div style={{ display: "flex", gap: 0, borderRadius: 8, overflow: "hidden", border: "1px solid rgba(255,255,255,0.06)", marginBottom: 16, position: "relative", zIndex: 1 }}>
                 {[
                   { label: "RUNWAY", value: "4.2 mo", color: C.teal },
-                  { label: "RISK", value: "\u221218", color: "#E57373" },
-                  { label: "FRAGILITY", value: "Uneven", color: "#D4A843" },
+                  { label: "IF TOP CLIENT LEAVES", value: "\u221218", color: "#E57373" },
+                  { label: "STABILITY TYPE", value: "Uneven", color: "#D4A843" },
                 ].map((metric, i, arr) => (
                   <div key={i} style={{ flex: 1, padding: "8px 0", textAlign: "center", borderRight: i < arr.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none", backgroundColor: "rgba(255,255,255,0.02)" }}>
                     <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 3 }}>{metric.label}</div>
@@ -486,7 +470,21 @@ function WhatStabilityUnlocks() {
         </div>
 
         <div style={{ textAlign: "center", marginTop: m ? 36 : 56, ...fadeIn(visible, 220) }}>
-          <p style={{ fontSize: m ? 16 : 18, color: light, lineHeight: 1.6 }}>This isn&#8217;t about earning more. It&#8217;s about building income that <strong style={{ color: C.navy }}>works for you</strong> instead of the other way around.</p>
+          <p style={{ fontSize: m ? 16 : 18, color: light, lineHeight: 1.6, marginBottom: 32 }}>This isn&#8217;t about earning more. It&#8217;s about building income that <strong style={{ color: C.navy }}>works for you</strong> instead of the other way around.</p>
+          <Link href="/pricing" style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            height: 52, padding: m ? "0 28px" : "0 40px",
+            borderRadius: 12,
+            background: `linear-gradient(135deg, ${C.navy} 0%, #251e42 100%)`,
+            color: C.white, fontSize: 15, fontWeight: 600, textDecoration: "none",
+            boxShadow: elevation.cta,
+            border: "1px solid rgba(255,255,255,0.08)",
+            transition: "transform 200ms, box-shadow 200ms",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = elevation.ctaHover; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = elevation.cta; }}>
+            See What Your Score Unlocks
+          </Link>
         </div>
       </div>
     </section>
@@ -644,26 +642,25 @@ function CommandCenterPreview() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 64 : 120, paddingBottom: m ? 64 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", top: "20%", left: "50%", width: m ? 400 : 800, height: m ? 400 : 800, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
+    <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 64 : 120, paddingBottom: m ? 64 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ maxWidth: contentW, margin: "0 auto", position: "relative", zIndex: 1 }}>
 
         {/* Hero headline */}
         <div style={{ textAlign: "center", marginBottom: m ? 48 : 80, ...fadeIn(visible) }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.teal, marginBottom: 18 }}>COMMAND CENTER</div>
-          <h2 style={{ fontSize: m ? 32 : 52, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.03em", color: C.sand, marginBottom: 20 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.teal, marginBottom: 18 }}>WHAT YOU GET</div>
+          <h2 style={{ fontSize: m ? 32 : 52, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.03em", color: C.navy, marginBottom: 20 }}>
             Your score is the starting point.{m ? " " : <br />}This is what happens next.
           </h2>
-          <p style={{ fontSize: m ? 16 : 18, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
+          <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
             Every tool uses your actual numbers — personalized to your industry, your biggest risk, and your goals.
           </p>
         </div>
 
-        {/* Three preview cards — dark glass */}
+        {/* Three preview cards */}
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, maxWidth: 960, margin: "0 auto", ...fadeIn(visible, 120) }}>
 
           {/* Card 1 — This Week */}
-          <div style={{ backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 16, padding: m ? 24 : 28, border: "1px solid rgba(255,255,255,0.06)", marginBottom: m ? 16 : 0 }}>
+          <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: m ? 24 : 28, border: "1px solid rgba(255,255,255,0.06)", marginBottom: m ? 16 : 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 18 }}>
               <div style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: `${C.teal}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg>
@@ -673,7 +670,7 @@ function CommandCenterPreview() {
 
             <div style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", marginBottom: 14 }}>
               <div style={{ fontSize: 16, fontWeight: 600, color: C.sand, marginBottom: 4 }}>
-                Convert to retainer. <span style={{ fontWeight: 300, fontFamily: mono, color: C.teal }}>+11</span>
+                Convert to retainer. <span style={{ fontWeight: 300, fontFamily: mono, color: C.teal }}>Highest impact</span>
               </div>
               <div style={{ fontSize: 13, color: "rgba(244,241,234,0.50)" }}>Your highest-leverage conversation this week.</div>
             </div>
@@ -691,7 +688,7 @@ function CommandCenterPreview() {
           </div>
 
           {/* Card 2 — Negotiation Playbook */}
-          <div style={{ backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 16, padding: m ? 24 : 28, border: "1px solid rgba(255,255,255,0.06)", marginBottom: m ? 16 : 0 }}>
+          <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: m ? 24 : 28, border: "1px solid rgba(255,255,255,0.06)", marginBottom: m ? 16 : 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 18 }}>
               <div style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: `${C.purple}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="2" strokeLinecap="round"><path d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5m-1.414-9.414a2 2 0 1 1 2.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
@@ -708,7 +705,7 @@ function CommandCenterPreview() {
             </div>
 
             <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-              <span style={{ fontSize: 11, fontWeight: 600, color: C.teal, padding: "3px 10px", borderRadius: 6, backgroundColor: `${C.teal}12` }}>+11 pts</span>
+              <span style={{ fontSize: 11, fontWeight: 600, color: C.teal, padding: "3px 10px", borderRadius: 6, backgroundColor: `${C.teal}12` }}>Highest impact</span>
               <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(244,241,234,0.50)", padding: "3px 10px", borderRadius: 6, backgroundColor: "rgba(255,255,255,0.04)" }}>Copy</span>
             </div>
 
@@ -720,7 +717,7 @@ function CommandCenterPreview() {
           </div>
 
           {/* Card 3 — 12-Week Roadmap */}
-          <div style={{ backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 16, padding: m ? 24 : 28, border: "1px solid rgba(255,255,255,0.06)" }}>
+          <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: m ? 24 : 28, border: "1px solid rgba(255,255,255,0.06)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 18 }}>
               <div style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.sand} strokeWidth="2" strokeLinecap="round"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg>
@@ -763,20 +760,20 @@ function CommandCenterPreview() {
 
         {/* CTA */}
         <div style={{ textAlign: "center", marginTop: m ? 48 : 72, ...fadeIn(visible, 220) }}>
-          <p style={{ fontSize: m ? 18 : 22, fontWeight: 500, color: C.sand, marginBottom: 8 }}>All included with the $69 diagnostic.</p>
-          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.45)", marginBottom: 32 }}>Lifetime access. Updates every time you come back.</p>
+          <p style={{ fontSize: m ? 18 : 22, fontWeight: 500, color: C.navy, marginBottom: 8 }}>All included with the $69 diagnostic.</p>
+          <p style={{ fontSize: 15, color: muted, marginBottom: 32 }}>Lifetime access. Updates every time you come back.</p>
           <Link href="/pricing" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: 56, padding: m ? "0 28px" : "0 44px",
             borderRadius: 12,
-            background: `linear-gradient(135deg, ${C.white} 0%, rgba(244,241,234,0.95) 100%)`,
-            color: C.navy, fontSize: m ? 15 : 16, fontWeight: 600, textDecoration: "none",
-            boxShadow: "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)",
-            border: "1px solid rgba(244,241,234,0.30)",
+            background: `linear-gradient(135deg, ${C.navy} 0%, #251e42 100%)`,
+            color: C.white, fontSize: m ? 15 : 16, fontWeight: 600, textDecoration: "none",
+            boxShadow: elevation.cta,
+            border: "1px solid rgba(255,255,255,0.08)",
             transition: "transform 200ms, box-shadow 200ms",
           }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(244,241,234,0.20), 0 12px 48px rgba(244,241,234,0.10)"; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)"; }}>
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = elevation.ctaHover; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = elevation.cta; }}>
             See Pricing
           </Link>
         </div>
@@ -791,103 +788,52 @@ function CommandCenterPreview() {
 /*           + FINAL CTA + TRUST (merged, no standalone trust section) */
 /* ================================================================== */
 
-function TheSystemAndCta() {
+function FinalCtaAndTrust() {
   const { ref, visible } = useInView();
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 64 : 120, paddingBottom: m ? 72 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 64 : 112, paddingBottom: m ? 72 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "30%", left: "50%", width: m ? 300 : 600, height: m ? 300 : 600, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}08 0%, transparent 70%)`, pointerEvents: "none" }} />
-      <div style={{ maxWidth: 880, margin: "0 auto", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
 
-        {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: m ? 48 : 72, ...fadeIn(visible) }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 16 }}>THE SYSTEM</div>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 500, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.sand, marginBottom: 20 }}>
-            Not a budget. Not a forecast.{m ? " " : <br />}A measurement of how your income is built.
-          </h2>
-          <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.7, maxWidth: 560, margin: "0 auto" }}>
-            RunPayway™ evaluates 6 dimensions of how your income is built. Fixed rules. Same answers always produce the same score.
-          </p>
-        </div>
-
-        {/* Steps first (context), then visualization (proof) */}
-        <div style={{ display: m ? "block" : "flex", gap: 40, marginBottom: m ? 56 : 88, ...fadeIn(visible, 100) }}>
-          {/* Left — 3 steps (context comes first) */}
-          <div style={{ flex: 1, display: "flex", flexDirection: "column" as const, gap: 16, marginBottom: m ? 24 : 0 }}>
-            {[
-              { num: "01", title: "Describe how you earn", desc: "Your income sources, contracts, how spread out they are, and what you depend on. Under 2 minutes." },
-              { num: "02", title: "6 dimensions scored", desc: "How much repeats, how spread out it is, how far ahead you can see, how steady it is, and how much depends on you." },
-              { num: "03", title: "One clear result", desc: "Score from 0\u2013100. Stability level. Your biggest risk. What to focus on next." },
-            ].map((s, i) => (
-              <div key={i} style={{ padding: m ? "18px 16px" : "20px 20px", borderRadius: 12, backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", flex: 1, display: "flex", flexDirection: "column" as const, justifyContent: "center" }}>
-                <div style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: C.teal, marginBottom: 8 }}>{s.num}</div>
-                <div style={{ fontSize: 16, fontWeight: 600, color: C.sand, marginBottom: 6, lineHeight: 1.3 }}>{s.title}</div>
-                <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", margin: 0, lineHeight: 1.55 }}>{s.desc}</p>
-              </div>
-            ))}
-          </div>
-          {/* Right — animated 6 dimensions (proof) */}
-          <div style={{ flex: 1, padding: m ? "24px 16px" : "28px 24px", borderRadius: 14, backgroundColor: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 20 }}>6 DIMENSIONS</div>
-            <DimensionBar label="Income That Repeats" value={45} color={C.teal} visible={visible} delay={300} />
-            <DimensionBar label="Reliance on Top Source" value={72} color="#D4A843" visible={visible} delay={450} />
-            <DimensionBar label="Number of Sources" value={33} color="#E57373" visible={visible} delay={600} />
-            <DimensionBar label="Income Locked In Ahead" value={28} color="#E57373" visible={visible} delay={750} />
-            <DimensionBar label="Month-to-Month Steadiness" value={55} color={C.teal} visible={visible} delay={900} />
-            <DimensionBar label="Income Without You Working" value={85} color="#E57373" visible={visible} delay={1050} />
-            <div style={{ marginTop: 16, paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.06)", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-              <span style={{ fontSize: 12, color: "rgba(244,241,234,0.50)" }}>Composite score</span>
-              <span style={{ fontSize: 24, fontWeight: 300, fontFamily: mono, color: C.sand }}>{visible ? "42" : "\u2014"}</span>
+        {/* How it works — compact 3-step */}
+        <div style={{ display: "flex", gap: m ? 12 : 20, justifyContent: "center", marginBottom: m ? 48 : 64, ...fadeIn(visible) }}>
+          {[
+            { num: "01", text: "Describe how you earn" },
+            { num: "02", text: "6 dimensions scored" },
+            { num: "03", text: "One clear result" },
+          ].map((s, i) => (
+            <div key={i} style={{ textAlign: "center", flex: 1 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: C.teal, marginBottom: 6 }}>{s.num}</div>
+              <div style={{ fontSize: m ? 13 : 14, fontWeight: 500, color: "rgba(244,241,234,0.55)", lineHeight: 1.35 }}>{s.text}</div>
             </div>
-          </div>
+          ))}
         </div>
 
-        {/* What you get */}
-        <div style={{ marginBottom: m ? 64 : 104, ...fadeIn(visible, 200) }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, textAlign: "center", marginBottom: 20 }}>INCLUDED WITH YOUR DIAGNOSTIC</div>
-          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 12 }}>
-            {[
-              { title: "Negotiation Playbook", desc: "Word-for-word scripts with your data, objection handlers, and success signals." },
-              { title: "12-Week Roadmap", desc: "Visual timeline with dynamic milestones from your actual numbers." },
-              { title: "PressureMap\u2122", desc: "Your income shown in three zones — what stops if you stop, what keeps coming, and what\u2019s protected." },
-              { title: "What-If Simulator", desc: "Model changes before you commit. See the exact score impact." },
-            ].map((t, i) => (
-              <div key={i} style={{ padding: m ? "16px 14px" : "18px 20px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.06)", backgroundColor: "rgba(255,255,255,0.02)" }}>
-                <div style={{ fontSize: 15, fontWeight: 600, color: C.sand, marginBottom: 4 }}>{t.title}</div>
-                <p style={{ fontSize: 14, color: "rgba(244,241,234,0.45)", margin: 0, lineHeight: 1.55 }}>{t.desc}</p>
-              </div>
-            ))}
-          </div>
+        <h2 style={{ fontSize: m ? 26 : 40, fontWeight: 500, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.sand, marginBottom: 20, ...fadeIn(visible, 100) }}>
+          Your income is already being tested.{m ? " " : <br />}Now you can see how it holds.
+        </h2>
+        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 44, ...fadeIn(visible, 150) }}>
+          Start with the free score. Unlock the full diagnostic when you&#8217;re ready to act.
+        </p>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: m ? 48 : 72, ...fadeIn(visible, 200) }}>
+          <CtaButton m={m} variant="light" />
         </div>
 
-        {/* ── FINAL CTA ── */}
-        <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", ...fadeIn(visible, 300) }}>
-          <div style={{ width: 56, height: 1, background: `linear-gradient(90deg, transparent, ${C.teal}30, transparent)`, margin: "0 auto 48px" }} />
-          <h2 style={{ fontSize: m ? 26 : 40, fontWeight: 500, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.sand, marginBottom: 20 }}>
-            Your income is already being tested.{m ? " " : <br />}Now you can see how it holds.
-          </h2>
-          <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 44 }}>
-            Start with the free score. Unlock the full diagnostic when you&#8217;re ready to act.
-          </p>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: m ? 48 : 72 }}>
-            <CtaButton m={m} variant="light" />
-          </div>
-
-          {/* Trust signals — woven into CTA area */}
-          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr 1fr", gap: m ? 12 : 16 }}>
-            {[
-              { title: "No bank connection", desc: "We never access your accounts." },
-              { title: "No credit pull", desc: "Zero impact on your credit." },
-              { title: "Private by default", desc: "Your data is never sold." },
-              { title: "Consistent", desc: "Same answers \u2192 same score." },
-            ].map((t, i) => (
-              <div key={i} style={{ textAlign: "center", padding: m ? "14px 8px" : "16px 12px", borderRadius: 10, backgroundColor: "rgba(255,255,255,0.02)" }}>
-                <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.55)", marginBottom: 2 }}>{t.title}</div>
-                <div style={{ fontSize: 12, color: "rgba(244,241,234,0.45)" }}>{t.desc}</div>
-              </div>
-            ))}
-          </div>
+        {/* Trust signals */}
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr 1fr", gap: m ? 12 : 16, ...fadeIn(visible, 280) }}>
+          {[
+            { title: "No bank connection", desc: "We never access your accounts." },
+            { title: "No credit pull", desc: "Zero impact on your credit." },
+            { title: "Private by default", desc: "Your data is never sold." },
+            { title: "Consistent", desc: "Same answers \u2192 same score." },
+          ].map((t, i) => (
+            <div key={i} style={{ textAlign: "center", padding: m ? "14px 8px" : "16px 12px", borderRadius: 10, backgroundColor: "rgba(255,255,255,0.02)" }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.55)", marginBottom: 2 }}>{t.title}</div>
+              <div style={{ fontSize: 12, color: "rgba(244,241,234,0.45)" }}>{t.desc}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -964,7 +910,7 @@ export default function LandingPage() {
         <WhatStabilityUnlocks />
         <TheMissingLayer />
         <CommandCenterPreview />
-        <TheSystemAndCta />
+        <FinalCtaAndTrust />
       </main>
       <StickyMobileCta />
     </div>
