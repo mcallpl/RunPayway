@@ -145,7 +145,7 @@ function WhatMakesItDifferent() {
               { range: "50\u201374", label: "Established", desc: "Absorbs most common disruptions.", color: "#2B5EA7" },
               { range: "75\u2013100", label: "High", desc: "Resilient under sustained pressure.", color: C.teal },
             ].map((b, i) => (
-              <div key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "12px 14px", borderRadius: 10, backgroundColor: `${b.color}04`, marginBottom: i < 3 ? 8 : 0 }}>
+              <div key={i} style={{ display: "flex", gap: m ? 10 : 14, alignItems: "flex-start", padding: m ? "10px 12px" : "12px 14px", borderRadius: 10, backgroundColor: `${b.color}04`, marginBottom: i < 3 ? 8 : 0 }}>
                 <div style={{ width: 40, height: 24, borderRadius: 6, backgroundColor: `${b.color}12`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 700, color: b.color }}>{b.range}</span>
                 </div>
@@ -228,7 +228,7 @@ function Integrity() {
         </div>
 
         {/* Boundary statement */}
-        <div style={{ padding: m ? "16px 16px" : "18px 24px", borderRadius: 10, borderLeft: `3px solid ${C.teal}`, backgroundColor: "rgba(255,255,255,0.02)", ...fadeIn(visible, 200) }}>
+        <div style={{ padding: m ? "18px 20px" : "18px 24px", borderRadius: 10, borderLeft: `3px solid ${C.teal}`, backgroundColor: "rgba(255,255,255,0.02)", ...fadeIn(visible, 200) }}>
           <p style={{ fontSize: 16, fontWeight: 500, color: C.sand, margin: 0, lineHeight: 1.5 }}>
             RunPayway&#8482; is a measurement system — not a financial product. It defines how income stability is measured, not how decisions are made.
           </p>

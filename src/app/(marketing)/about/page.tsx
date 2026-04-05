@@ -169,7 +169,7 @@ function TheSystem() {
         </div>
 
         {/* Positioning statement */}
-        <div style={{ padding: m ? "16px 16px" : "20px 24px", borderRadius: 10, borderLeft: `3px solid ${C.teal}`, backgroundColor: "rgba(255,255,255,0.02)", ...fadeIn(visible, 200) }}>
+        <div style={{ padding: m ? "18px 20px" : "20px 24px", borderRadius: 10, borderLeft: `3px solid ${C.teal}`, backgroundColor: "rgba(255,255,255,0.02)", ...fadeIn(visible, 200) }}>
           <p style={{ fontSize: 16, fontWeight: 500, color: C.sand, margin: 0, lineHeight: 1.5 }}>
             RunPayway&#8482; is a measurement system — not a financial product. It defines how income stability is measured, not how decisions are made. The score belongs entirely to the individual who takes it.
           </p>
