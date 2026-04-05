@@ -709,9 +709,8 @@ function CommandCenterPreview() {
               </div>
             </div>
 
-            <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
-              <span style={{ fontSize: 11, fontWeight: 600, color: C.teal, padding: "3px 10px", borderRadius: 6, backgroundColor: `${C.teal}12` }}>Highest impact</span>
-              <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(244,241,234,0.50)", padding: "3px 10px", borderRadius: 6, backgroundColor: "rgba(255,255,255,0.04)" }}>Copy</span>
+            <div style={{ marginBottom: 16 }}>
+              <span style={{ fontSize: 11, fontWeight: 600, color: C.teal }}>Ready to copy and send</span>
             </div>
 
             <div style={{ paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
@@ -752,7 +751,7 @@ function CommandCenterPreview() {
 
             <div style={{ padding: "10px 14px", borderRadius: 8, backgroundColor: "rgba(255,255,255,0.03)", border: `1px solid ${C.teal}15` }}>
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: C.teal, marginBottom: 3 }}>MILESTONE</div>
-              <div style={{ fontSize: 13, color: C.sand }}>Concentration drops from 72% to below 57%</div>
+              <div style={{ fontSize: 13, color: C.sand }}>No single client carries more than half your income</div>
             </div>
 
             <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
@@ -893,7 +892,7 @@ const PRODUCT_SCHEMA = {
   brand: { "@type": "Brand", name: "RunPayway™" },
   offers: [
     { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Income Stability Score™", description: "Score, band, primary constraint, and one recommended direction." },
-    { "@type": "Offer", price: "69", priceCurrency: "USD", name: "RunPayway™ Diagnostic Report", description: "Full diagnostic with PressureMap™, Command Center, scripts, and 12-week roadmap." },
+    { "@type": "Offer", price: "69", priceCurrency: "USD", name: "RunPayway™ Diagnostic Report", description: "Full diagnostic with personalized scripts, 12-week roadmap, and income analysis." },
   ],
 };
 

@@ -139,12 +139,12 @@ function PricingCards() {
               See exactly why your score is what it is — and what changes it.
             </p>
             <div style={{ marginBottom: 28, flex: 1, color: muted }}>
-              {check("Negotiation Playbook — word-for-word scripts built from your data")}
-              {check("12-week roadmap with milestones based on your numbers")}
-              {check("PressureMap\u2122 — see which income stops, recurs, or is protected")}
-              {check("What-If Simulator — model changes before you make them")}
-              {check("Weekly priority briefing — your #1 action this week")}
-              {check("Lifetime access to all your tools")}
+              {check("See exactly where your income is strong and where it's exposed")}
+              {check("Word-for-word scripts telling you who to talk to and what to say")}
+              {check("12-week roadmap with milestones based on your actual numbers")}
+              {check("Your #1 action each week — plus the micro-steps to get it done")}
+              {check("Test changes before you make them — see the exact score impact")}
+              {check("Lifetime access — comes back every time you do")}
             </div>
             <a href={STRIPE} style={{
               display: "flex", alignItems: "center", justifyContent: "center",
@@ -188,7 +188,7 @@ function PricingCards() {
               Start Monitoring &mdash; $149/yr
             </Link>
             <p style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", textAlign: "center", marginTop: 12, marginBottom: 0 }}>
-              Full Command Center access included.
+              Full diagnostic tools included.
             </p>
           </div>
         </div>
