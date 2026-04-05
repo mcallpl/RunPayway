@@ -119,13 +119,13 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
         pointerEvents: "none",
       }} />
       <svg width={size} height={size} style={{ transform: "rotate(-90deg)", position: "relative", zIndex: 1 }}>
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(244,241,234,0.10)" strokeWidth={stroke} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(14,26,43,0.06)" strokeWidth={stroke} />
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={stroke}
           strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round"
-          style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.4s", filter: `drop-shadow(0 0 6px ${color}40)` }} />
+          style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.4s", filter: `drop-shadow(0 0 6px ${color}30)` }} />
       </svg>
       <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 2 }}>
-        <span style={{ fontSize: size * 0.28, fontWeight: 300, fontFamily: mono, color: C.sandText, lineHeight: 1, letterSpacing: "-0.04em" }}>{score}</span>
+        <span style={{ fontSize: size * 0.28, fontWeight: 300, fontFamily: mono, color: B.navy, lineHeight: 1, letterSpacing: "-0.04em" }}>{score}</span>
         <span style={{ fontSize: size * 0.08, fontWeight: 600, color, marginTop: 4, letterSpacing: "0.04em" }}>{bandLabel}</span>
       </div>
     </div>
@@ -983,16 +983,16 @@ function DashboardContent() {
 
         <div style={{ maxWidth: 960, margin: "0 auto", padding: mobile ? "20px 16px 120px" : "48px 36px 96px", overflow: "hidden" }}>
 
-          {/* ── SCORE HERO — the boardroom moment ── */}
+          {/* ── SCORE HERO — clean white ── */}
           <div style={{ marginBottom: 32, animation: "fadeSlideIn 600ms ease-out" }}>
-            <div style={{ padding: mobile ? "28px 20px" : "44px 48px", borderRadius: mobile ? 16 : 20, background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`, position: "relative", boxShadow: "0 8px 32px rgba(14,26,43,0.12)" }}>
+            <div style={{ padding: mobile ? "28px 20px" : "40px 44px", borderRadius: mobile ? 16 : 20, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: mobile ? 16 : 40 }} className="d-score-hero">
                 <ScoreRing score={dScore} size={mobile ? 110 : 160} stroke={mobile ? 7 : 8} />
                 <div style={{ flex: 1 }}>
-                  {custName && <div style={{ fontSize: 14, color: C.sandMuted, marginBottom: 4 }}>{custName}</div>}
-                  <div style={{ fontSize: mobile ? 14 : 15, color: C.sandMuted, marginBottom: 12, lineHeight: 1.55 }}>
+                  {custName && <div style={{ fontSize: 14, color: B.muted, marginBottom: 4 }}>{custName}</div>}
+                  <div style={{ fontSize: mobile ? 14 : 15, color: B.muted, marginBottom: 12, lineHeight: 1.55 }}>
                     {gap > 0
-                      ? <>{dBand}. <span style={{ color: C.sandText }}>{gap} points</span> to {nextB}.</>
+                      ? <>{dBand}. <span style={{ fontWeight: 600, color: B.navy }}>{gap} points</span> to {nextB}.</>
                       : <>Highest stability band achieved.</>
                     }
                     {bm && <> Top {100 - bm.peer_percentile}% of {bm.cluster_label.toLowerCase()}.</>}
@@ -1002,25 +1002,25 @@ function DashboardContent() {
                     .metric-tip-wrap .metric-tip { opacity: 0; pointer-events: none; transition: opacity 180ms ease; }
                     @media(hover:hover){ .metric-tip-wrap:hover .metric-tip { opacity: 1; pointer-events: auto; } }
                   `}</style>
-                  <div style={{ display: "flex", gap: 0, borderRadius: 10, overflow: "hidden", border: `1px solid rgba(255,255,255,0.08)` }} className="d-metrics">
+                  <div style={{ display: "flex", gap: 0, borderRadius: 10, overflow: "hidden", border: `1px solid ${B.stone}` }} className="d-metrics">
                     {[
-                      { label: "Runway", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? "#E57373" : B.teal, tip: "How long your income would continue if all active work stopped." },
-                      { label: "Top Source Risk", value: `\u2212${riskDrop}`, color: riskDrop > 15 ? "#E57373" : B.amber, tip: "Points lost if your largest source disappears." },
-                      { label: "Fragility", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? "#E57373" : fragLabel === "Resilient" ? B.teal : B.amber, tip: "How well your structure absorbs shocks." },
+                      { label: "Runway", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? B.red : B.teal, tip: "How long your income would continue if all active work stopped." },
+                      { label: "Top Source Risk", value: `\u2212${riskDrop}`, color: riskDrop > 15 ? B.red : B.amber, tip: "Points lost if your largest source disappears." },
+                      { label: "Fragility", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" ? B.teal : B.amber, tip: "How well your structure absorbs shocks." },
                     ].map((m, i, arr) => (
                       <div key={m.label} className="metric-tip-wrap"
                         onClick={() => setTooltipOpen(tooltipOpen === m.label ? null : m.label)}
-                        style={{ flex: 1, padding: "10px 14px", textAlign: "center" as const, borderRight: i < arr.length - 1 ? `1px solid rgba(255,255,255,0.06)` : "none", cursor: "pointer", WebkitTapHighlightColor: "transparent", backgroundColor: "rgba(255,255,255,0.03)" }}>
-                        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: C.sandMuted, marginBottom: 3 }}>
+                        style={{ flex: 1, padding: "10px 14px", textAlign: "center" as const, borderRight: i < arr.length - 1 ? `1px solid ${B.stone}` : "none", cursor: "pointer", WebkitTapHighlightColor: "transparent", backgroundColor: "#FAFAFA" }}>
+                        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: B.taupe, marginBottom: 3 }}>
                           {m.label.toUpperCase()}
                         </div>
                         <div style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: m.color }}>{m.value}</div>
                         <div className="metric-tip" style={{
                           position: "absolute", bottom: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)",
                           width: mobile ? 200 : 240, padding: "10px 12px", borderRadius: 8,
-                          backgroundColor: B.white, border: `1px solid ${B.stone}`,
-                          fontSize: 12, lineHeight: 1.5, fontWeight: 400, fontFamily: sans, color: B.navy,
-                          boxShadow: "0 4px 16px rgba(14,26,43,0.15)",
+                          backgroundColor: B.navy, border: "none",
+                          fontSize: 12, lineHeight: 1.5, fontWeight: 400, fontFamily: sans, color: "rgba(244,241,234,0.75)",
+                          boxShadow: "0 4px 16px rgba(14,26,43,0.25)",
                           zIndex: 50,
                           ...(tooltipOpen === m.label ? { opacity: 1, pointerEvents: "auto" as const } : {}),
                         }}>
@@ -1033,15 +1033,15 @@ function DashboardContent() {
               </div>
               {/* Compact toolbar */}
               <div style={{ display: "flex", gap: 8, marginTop: 20, justifyContent: mobile ? "center" : "flex-start", flexWrap: "wrap" as const }}>
-                <Link href="/review" style={{ fontSize: 13, fontWeight: 600, color: C.sandText, textDecoration: "none", padding: "8px 16px", borderRadius: 8, border: `1px solid rgba(255,255,255,0.12)`, backgroundColor: "rgba(255,255,255,0.04)", transition: "background 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44 }}
-                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.08)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.04)"; }}>
+                <Link href="/review" style={{ fontSize: 13, fontWeight: 600, color: B.navy, textDecoration: "none", padding: "8px 16px", borderRadius: 8, border: `1px solid ${B.stone}`, backgroundColor: B.surface, transition: "background 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44 }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#F5F4F1"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = B.surface; }}>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                   View Report
                 </Link>
-                <button onClick={handleShare} style={{ fontSize: 13, fontWeight: 600, color: C.sandMuted, padding: "8px 16px", borderRadius: 8, border: `1px solid rgba(255,255,255,0.08)`, backgroundColor: "transparent", cursor: "pointer", transition: "color 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44 }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = C.sandText; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = C.sandMuted; }}>
+                <button onClick={handleShare} style={{ fontSize: 13, fontWeight: 600, color: B.muted, padding: "8px 16px", borderRadius: 8, border: `1px solid ${B.stone}`, backgroundColor: "transparent", cursor: "pointer", transition: "color 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44 }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = B.navy; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = B.muted; }}>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                   Share
                 </button>
@@ -1049,13 +1049,13 @@ function DashboardContent() {
                   const subject = encodeURIComponent("My Income Stability Assessment");
                   const body = encodeURIComponent(`I completed a RunPayway™ Income Stability Score™ assessment and scored ${dScore}/100 (${dBand}).\n\nThe assessment identified my root structural constraint and provided an action plan. I'd like to discuss the findings with you.\n\nYou can view the methodology at: https://peoplestar.com/RunPayway/methodology`);
                   window.location.href = `mailto:?subject=${subject}&body=${body}`;
-                }} style={{ fontSize: 13, fontWeight: 600, color: C.sandMuted, padding: "8px 16px", borderRadius: 8, border: `1px solid rgba(255,255,255,0.08)`, backgroundColor: "transparent", cursor: "pointer", transition: "color 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44 }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = C.sandText; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.color = C.sandMuted; }}>
+                }} style={{ fontSize: 13, fontWeight: 600, color: B.muted, padding: "8px 16px", borderRadius: 8, border: `1px solid ${B.stone}`, backgroundColor: "transparent", cursor: "pointer", transition: "color 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44 }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = B.navy; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = B.muted; }}>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                   Email Advisor
                 </button>
-                {indLabel && <span style={{ fontSize: 11, color: C.sandMuted, alignSelf: "center", marginLeft: 4 }}>{indLabel} &middot; {assessedDate || "Model RP-2.0"}</span>}
+                {indLabel && <span style={{ fontSize: 11, color: B.taupe, alignSelf: "center", marginLeft: 4 }}>{indLabel} &middot; {assessedDate || "Model RP-2.0"}</span>}
               </div>
             </div>
           </div>
@@ -1065,44 +1065,44 @@ function DashboardContent() {
           {/* ════════════════════════════════════════════════════════ */}
           <PhaseSep label="Your Diagnosis" color={B.purple} tint="rgba(75,63,174,0.02)" id="phase-diagnosis" mobile={mobile}>
 
-          {/* 2. PRESSUREMAP™ — elevated proprietary section */}
-          <section className="cc-section" style={{ padding: mobile ? "28px 20px" : "36px 40px", borderRadius: 20, backgroundColor: B.navy, marginBottom: 20, boxShadow: "0 4px 24px rgba(14,26,43,0.10)" }}>
+          {/* 2. PRESSUREMAP™ */}
+          <section className="cc-section" style={{ padding: mobile ? "28px 20px" : "36px 40px", borderRadius: 20, backgroundColor: B.surface, border: `1px solid ${B.stone}`, marginBottom: 20, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
             <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 20 }}>
               <div>
                 <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: B.teal }}>RUNPAYWAY&#8482; PRESSUREMAP&#8482;</div>
-                {indLabel && <p style={{ fontSize: 15, color: C.sandMuted, margin: "6px 0 0" }}>Analysis for {indLabel.toLowerCase()} professionals.</p>}
+                {indLabel && <p style={{ fontSize: 15, color: B.muted, margin: "6px 0 0" }}>Analysis for {indLabel.toLowerCase()} professionals.</p>}
               </div>
-              <div style={{ fontSize: 10, color: C.sandMuted, textAlign: "right" as const, letterSpacing: "0.04em" }}>
+              <div style={{ fontSize: 10, color: B.taupe, textAlign: "right" as const, letterSpacing: "0.04em" }}>
                 {assessedDate && <div>{assessedDate}</div>}
                 <div>Model RP-2.0</div>
               </div>
             </div>
 
-            <div style={{ padding: mobile ? "20px 16px" : "24px 28px", borderLeft: `4px solid #E57373`, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.04)", marginBottom: 16 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: "#E57373", marginBottom: 12 }}>ROOT CONSTRAINT</div>
-              <p style={{ fontSize: 18, fontWeight: 600, color: C.sandText, margin: "0 0 12px", lineHeight: 1.4 }}>
+            <div style={{ padding: mobile ? "20px 16px" : "24px 28px", borderLeft: `4px solid ${B.red}`, borderRadius: 12, backgroundColor: "#FAFAFA", marginBottom: 16 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.red, marginBottom: 12 }}>ROOT CONSTRAINT</div>
+              <p style={{ fontSize: 18, fontWeight: 600, color: B.navy, margin: "0 0 12px", lineHeight: 1.4 }}>
                 If your top source leaves, your score drops {dScore - stLCDrop < 30 && dScore >= 30 ? "into Limited Stability." : `from ${dScore} to ${dScore - stLCDrop}.`}
               </p>
-              <p style={{ fontSize: 15, color: C.sandMuted, margin: "0 0 12px", lineHeight: 1.65 }}>{constraintNarrative(rootCon, base)}</p>
-              <p style={{ fontSize: 14, color: "#E57373", margin: "0 0 4px", fontWeight: 500 }}>
+              <p style={{ fontSize: 15, color: B.muted, margin: "0 0 12px", lineHeight: 1.65 }}>{constraintNarrative(rootCon, base)}</p>
+              <p style={{ fontSize: 14, color: B.red, margin: "0 0 4px", fontWeight: 500 }}>
                 Projected impact: <span style={{ fontFamily: mono }}>{dScore}</span> &rarr; <span style={{ fontFamily: mono }}>{dScore - stLCDrop}</span>
               </p>
-              {secCon && <p style={{ fontSize: 12, color: C.sandMuted, margin: "12px 0 0" }}>Secondary: {secCon.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</p>}
+              {secCon && <p style={{ fontSize: 12, color: B.muted, margin: "12px 0 0" }}>Secondary: {secCon.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</p>}
             </div>
 
-            <div style={{ padding: mobile ? "24px 20px" : "28px 32px", borderRadius: 14, backgroundColor: "rgba(255,255,255,0.03)", marginBottom: 14 }}>
+            <div style={{ padding: mobile ? "24px 20px" : "28px 32px", borderRadius: 14, backgroundColor: "#FAFAFA", marginBottom: 14 }}>
               {/* Labels above bar */}
               <div style={{ display: "flex", marginBottom: 6 }}>
                 {zones.map(z => z.pct > 0 ? <div key={`label-${z.id}`} style={{ width: `${z.pct}%` }}>{z.pct >= 10 && <span style={{ fontSize: 11, fontWeight: 600, color: z.color }}>{z.label} {z.pct}%</span>}</div> : null)}
               </div>
               <div style={{ display: "flex", height: 12, borderRadius: 6, overflow: "hidden", marginBottom: 14 }}>
-                {zones.map(z => z.pct > 0 ? <div key={z.id} style={{ width: `${z.pct}%`, backgroundColor: `${z.color}50`, borderRight: z.id !== "persistent" ? `2px solid ${B.navy}` : "none" }} /> : null)}
+                {zones.map(z => z.pct > 0 ? <div key={z.id} style={{ width: `${z.pct}%`, backgroundColor: `${z.color}30`, borderRight: z.id !== "persistent" ? `2px solid ${B.white}` : "none" }} /> : null)}
               </div>
-              <p style={{ fontSize: 13, color: C.sandMuted, margin: 0 }}>{indData.general}</p>
+              <p style={{ fontSize: 13, color: B.taupe, margin: 0 }}>{indData.general}</p>
             </div>
 
             {zones.map(z => (
-              <div key={z.id} style={{ padding: mobile ? "18px 16px" : "22px 24px", borderLeft: `3px solid ${z.color}`, borderRadius: 10, backgroundColor: "rgba(255,255,255,0.03)", marginBottom: 8 }}>
+              <div key={z.id} style={{ padding: mobile ? "18px 16px" : "22px 24px", borderLeft: `3px solid ${z.color}`, borderRadius: 10, backgroundColor: "#FAFAFA", marginBottom: 8 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                   <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
                     <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: z.color }}>{z.label.toUpperCase()}</span>
@@ -1113,7 +1113,7 @@ function DashboardContent() {
                   </div>
                   {z.lift > 0 && <span style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{z.lift}</span>}
                 </div>
-                <p style={{ fontSize: 14, color: C.sandMuted, margin: "0 0 4px", lineHeight: 1.6 }}>{z.txt}</p>
+                <p style={{ fontSize: 14, color: B.muted, margin: "0 0 4px", lineHeight: 1.6 }}>{z.txt}</p>
                 {z.action && <div style={{ fontSize: 14, fontWeight: 600, color: B.teal }}>{z.action}</div>}
               </div>
             ))}
@@ -1125,6 +1125,119 @@ function DashboardContent() {
           {/*  DECIDE — "What should I do?"                           */}
           {/* ════════════════════════════════════════════════════════ */}
           <PhaseSep label="Your Plan" color={B.navy} tint="rgba(14,26,43,0.015)" id="phase-plan" mobile={mobile}>
+
+          {/* ── NEGOTIATION PLAYBOOK — white, in Your Plan ── */}
+          {(() => {
+            const constraintLabels: Record<string, string> = {
+              high_concentration: "Income Concentration", weak_forward_visibility: "Forward Visibility",
+              high_labor_dependence: "Labor Dependence", low_persistence: "Low Persistence",
+              low_source_diversity: "Source Diversity", high_variability: "Income Variability",
+              weak_durability: "Weak Durability", shallow_continuity: "Shallow Continuity",
+            };
+            const playbookMoves = topMoves.slice(0, 3).map(move => {
+              const sc = scripts.find(s =>
+                (move.id === "convert_retainer" && s.id.includes("retainer")) ||
+                (move.id === "add_client" && (s.id.includes("diversi") || s.id.includes("referral"))) ||
+                (move.id === "build_passive" && s.id.includes("referral")) ||
+                (move.id === "lock_forward" && s.id.includes("retainer"))
+              ) || scripts[0];
+              const personalize = (text: string) => text
+                .replace(/\[Client Name\]/g, custName ? "your client" : "[Client Name]")
+                .replace(/\[Contact Name\]/g, "[Contact Name]").replace(/\[Partner Name\]/g, "[Partner Name]")
+                .replace(/\[Broker Name\]/g, "[Contact Name]")
+                .replace(/\[X\]/g, String(Math.max(2, Math.round(base.source_diversity_count))))
+                .replace(/\[X hours\]/g, "10 hours").replace(/\[X years\]/g, "5+ years")
+                .replace(/\[X properties[^\]]*\]/g, "multiple properties").replace(/\[\$ amount\]/g, "$2,500")
+                .replace(/\[project name\]/g, "recent engagement")
+                .replace(/\[current industry\]/g, indLabel.toLowerCase() || "your industry")
+                .replace(/\[new vertical\]/g, "an adjacent vertical")
+                .replace(/\[their (company|service|clients)\]/g, "their organization")
+                .replace(/\[your (service|expertise area)\]/g, "your area of focus");
+              return {
+                id: move.id, lift: move.lift, projected: move.projected, band: move.resBand,
+                effort: move.effort, speed: move.speed,
+                title: sc?.title || move.label, context: sc?.context || move.description,
+                script: sc ? personalize(sc.script) : "",
+                dataPoints: [
+                  move.id === "convert_retainer" ? `${base.income_persistence_pct}% of your income currently recurs` : null,
+                  move.id === "add_client" ? `Your top source carries ${base.largest_source_pct}% of income` : null,
+                  move.id === "build_passive" ? `${base.labor_dependence_pct}% depends on your active work` : null,
+                  move.id === "lock_forward" ? `Only ${base.forward_secured_pct}% is secured forward` : null,
+                  `Current score: ${dScore} (${dBand})`, `Projected: ${move.projected} (+${move.lift})`,
+                ].filter(Boolean) as string[],
+              };
+            });
+            if (playbookMoves.length === 0) return null;
+            const copyPB = (text: string, id: string) => { navigator.clipboard.writeText(text).then(() => { setCopiedPlaybook(id); setTimeout(() => setCopiedPlaybook(null), 2500); }); };
+
+            return (
+              <section className="cc-section" style={{ marginBottom: 24, padding: mobile ? "28px 20px" : "36px 40px", borderRadius: 20, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
+                  <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${B.teal}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5m-1.414-9.414a2 2 0 1 1 2.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: B.teal }}>NEGOTIATION PLAYBOOK</div>
+                    <div style={{ fontSize: 14, color: B.muted }}>Scripts built from your structure</div>
+                  </div>
+                </div>
+                <div style={{ fontSize: mobile ? 20 : 24, fontWeight: 600, color: B.navy, lineHeight: 1.25, marginBottom: 8, marginTop: 20 }}>
+                  Your constraint is {constraintLabels[rootCon]?.toLowerCase() || rootCon.replace(/_/g, " ")}.
+                </div>
+                <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.6, margin: "0 0 24px", maxWidth: 560 }}>
+                  These are the exact conversations that move your score. Each script is tailored to {indLabel.toLowerCase() || "your industry"} and uses your actual numbers.
+                </p>
+                <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
+                  {playbookMoves.map((play, i) => {
+                    const isExp = expandedPlaybook === play.id;
+                    return (
+                      <div key={play.id} style={{ borderRadius: 14, backgroundColor: "#FAFAFA", border: `1px solid ${B.stone}`, overflow: "hidden" }}>
+                        <button onClick={() => setExpandedPlaybook(isExp ? null : play.id)}
+                          style={{ width: "100%", padding: mobile ? "18px 16px" : "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, background: "none", border: "none", cursor: "pointer", textAlign: "left" as const, minHeight: 44 }}>
+                          <div style={{ flex: 1 }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4, flexWrap: "wrap" as const }}>
+                              <div style={{ width: 24, height: 24, borderRadius: 6, backgroundColor: `${B.teal}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <span style={{ fontSize: 12, fontWeight: 700, color: B.teal }}>{i + 1}</span>
+                              </div>
+                              <span style={{ fontSize: 16, fontWeight: 600, color: B.navy }}>{play.title}</span>
+                            </div>
+                            <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.5 }}>{play.context}</p>
+                          </div>
+                          <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0, marginTop: 4 }}>
+                            <span style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{play.lift}</span>
+                            <span style={{ fontSize: 14, color: B.taupe, transition: "transform 200ms", transform: isExp ? "rotate(180deg)" : "rotate(0deg)" }}>&#9660;</span>
+                          </div>
+                        </button>
+                        {isExp && (
+                          <div style={{ padding: mobile ? "0 16px 20px" : "0 24px 24px" }}>
+                            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" as const, marginBottom: 16 }}>
+                              {play.dataPoints.map((dp, j) => (
+                                <span key={j} style={{ fontSize: 12, color: B.muted, padding: "4px 10px", borderRadius: 6, backgroundColor: B.white, border: `1px solid ${B.stone}` }}>{dp}</span>
+                              ))}
+                              <span style={{ fontSize: 12, fontWeight: 600, color: B.teal, padding: "4px 10px", borderRadius: 6, backgroundColor: `${B.teal}06` }}>{play.effort} effort &middot; {play.speed}</span>
+                            </div>
+                            {play.script && (
+                              <div style={{ position: "relative" }}>
+                                <pre style={{ fontSize: 14, color: B.navy, lineHeight: 1.65, whiteSpace: "pre-wrap" as const, margin: 0, padding: mobile ? "16px 14px" : "20px 24px", backgroundColor: B.white, borderRadius: 10, border: `1px solid ${B.stone}`, fontFamily: sans }}>{play.script}</pre>
+                                <button onClick={() => copyPB(play.script, play.id)}
+                                  style={{ position: "absolute", top: 10, right: 10, fontSize: 13, fontWeight: 600, color: copiedPlaybook === play.id ? B.teal : B.muted, backgroundColor: copiedPlaybook === play.id ? `${B.teal}08` : "#FAFAFA", border: `1px solid ${B.stone}`, borderRadius: 8, padding: "8px 14px", cursor: "pointer", minHeight: 36, transition: "all 200ms" }}>
+                                  {copiedPlaybook === play.id ? "Copied!" : "Copy"}
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div style={{ marginTop: 16, paddingTop: 14, borderTop: `1px solid ${B.stone}`, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: 8 }}>
+                  <span style={{ fontSize: 13, color: B.taupe }}>Scripts are starting points. Adapt tone and details to your voice.</span>
+                  <span style={{ fontSize: 12, color: B.taupe, fontFamily: mono }}>Model RP-2.0 &middot; {indLabel}</span>
+                </div>
+              </section>
+            );
+          })()}
 
           {/* 4. 12-WEEK ROADMAP — enriched */}
           {roadmap.length > 1 && (
@@ -1483,162 +1596,6 @@ function DashboardContent() {
               );
             })()}
           </section>
-
-          {/* ── NEGOTIATION PLAYBOOK — the wow tool ── */}
-          {(() => {
-            const constraintLabels: Record<string, string> = {
-              high_concentration: "Income Concentration",
-              weak_forward_visibility: "Forward Visibility",
-              high_labor_dependence: "Labor Dependence",
-              low_persistence: "Low Persistence",
-              low_source_diversity: "Source Diversity",
-              high_variability: "Income Variability",
-              weak_durability: "Weak Durability",
-              shallow_continuity: "Shallow Continuity",
-            };
-
-            const playbookMoves = topMoves.slice(0, 3).map(move => {
-              const sc = scripts.find(s =>
-                (move.id === "convert_retainer" && s.id.includes("retainer")) ||
-                (move.id === "add_client" && (s.id.includes("diversi") || s.id.includes("referral"))) ||
-                (move.id === "build_passive" && s.id.includes("referral")) ||
-                (move.id === "lock_forward" && s.id.includes("retainer"))
-              ) || scripts[0];
-
-              const personalize = (text: string) => {
-                return text
-                  .replace(/\[Client Name\]/g, custName ? `your client` : "[Client Name]")
-                  .replace(/\[Contact Name\]/g, "[Contact Name]")
-                  .replace(/\[Partner Name\]/g, "[Partner Name]")
-                  .replace(/\[Broker Name\]/g, "[Contact Name]")
-                  .replace(/\[X\]/g, String(Math.max(2, Math.round(base.source_diversity_count))))
-                  .replace(/\[X hours\]/g, "10 hours")
-                  .replace(/\[X years\]/g, "5+ years")
-                  .replace(/\[X properties[^\]]*\]/g, "multiple properties")
-                  .replace(/\[\$ amount\]/g, "$2,500")
-                  .replace(/\[project name\]/g, "recent engagement")
-                  .replace(/\[current industry\]/g, indLabel.toLowerCase() || "your industry")
-                  .replace(/\[new vertical\]/g, "an adjacent vertical")
-                  .replace(/\[their (company|service|clients)\]/g, "their organization")
-                  .replace(/\[your (service|expertise area)\]/g, "your area of focus");
-              };
-
-              return {
-                id: move.id,
-                action: move.label,
-                lift: move.lift,
-                projected: move.projected,
-                band: move.resBand,
-                effort: move.effort,
-                speed: move.speed,
-                constraint: constraintLabels[rootCon] || rootCon.replace(/_/g, " "),
-                title: sc?.title || move.label,
-                context: sc?.context || move.description,
-                script: sc ? personalize(sc.script) : "",
-                dataPoints: [
-                  move.id === "convert_retainer" ? `${base.income_persistence_pct}% of your income currently recurs` : null,
-                  move.id === "add_client" ? `Your top source carries ${base.largest_source_pct}% of income` : null,
-                  move.id === "build_passive" ? `${base.labor_dependence_pct}% depends on your active work` : null,
-                  move.id === "lock_forward" ? `Only ${base.forward_secured_pct}% is secured forward` : null,
-                  `Current score: ${dScore} (${dBand})`,
-                  `Projected after this move: ${move.projected} (+${move.lift})`,
-                ].filter(Boolean) as string[],
-              };
-            });
-
-            if (playbookMoves.length === 0) return null;
-
-            const copyPlaybookScript = (text: string, id: string) => {
-              navigator.clipboard.writeText(text).then(() => {
-                setCopiedPlaybook(id);
-                setTimeout(() => setCopiedPlaybook(null), 2500);
-              });
-            };
-
-            return (
-              <section className="cc-section" style={{ marginTop: 24 }}>
-                <div style={{ padding: mobile ? "28px 20px" : "36px 40px", borderRadius: 20, background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`, boxShadow: "0 4px 24px rgba(14,26,43,0.10)", position: "relative", overflow: "hidden" }}>
-                  <div style={{ position: "absolute", top: "-20%", right: "-10%", width: mobile ? 200 : 400, height: mobile ? 200 : 400, borderRadius: "50%", background: `radial-gradient(circle, ${B.teal}08 0%, transparent 70%)`, pointerEvents: "none" }} />
-
-                  <div style={{ position: "relative", zIndex: 1 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
-                      <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${B.teal}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5m-1.414-9.414a2 2 0 1 1 2.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
-                      </div>
-                      <div>
-                        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: B.teal }}>NEGOTIATION PLAYBOOK</div>
-                        <div style={{ fontSize: 14, color: C.sandMuted }}>Scripts built from your structure</div>
-                      </div>
-                    </div>
-
-                    <div style={{ fontSize: mobile ? 20 : 24, fontWeight: 600, color: C.sandText, lineHeight: 1.25, marginBottom: 8, marginTop: 20 }}>
-                      Your constraint is {constraintLabels[rootCon]?.toLowerCase() || rootCon.replace(/_/g, " ")}.
-                    </div>
-                    <p style={{ fontSize: 15, color: C.sandMuted, lineHeight: 1.6, margin: "0 0 28px", maxWidth: 560 }}>
-                      These are the exact conversations that move your score. Each script is tailored to {indLabel.toLowerCase() || "your industry"} and uses your actual numbers. Copy, adapt to your voice, and use them.
-                    </p>
-
-                    <div style={{ display: "flex", flexDirection: "column" as const, gap: 14 }}>
-                      {playbookMoves.map((play, i) => {
-                        const isExpanded = expandedPlaybook === play.id;
-                        return (
-                          <div key={play.id} style={{ borderRadius: 14, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", overflow: "hidden" }}>
-                            {/* Header — always visible */}
-                            <button onClick={() => setExpandedPlaybook(isExpanded ? null : play.id)}
-                              style={{ width: "100%", padding: mobile ? "18px 16px" : "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, background: "none", border: "none", cursor: "pointer", textAlign: "left" as const }}>
-                              <div style={{ flex: 1 }}>
-                                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6, flexWrap: "wrap" as const }}>
-                                  <div style={{ width: 24, height: 24, borderRadius: 6, backgroundColor: `${B.teal}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <span style={{ fontSize: 12, fontWeight: 700, color: B.teal }}>{i + 1}</span>
-                                  </div>
-                                  <span style={{ fontSize: 16, fontWeight: 600, color: C.sandText }}>{play.title}</span>
-                                </div>
-                                <p style={{ fontSize: 14, color: C.sandMuted, margin: 0, lineHeight: 1.5 }}>{play.context}</p>
-                              </div>
-                              <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0, marginTop: 4 }}>
-                                <span style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{play.lift}</span>
-                                <span style={{ fontSize: 14, color: C.sandMuted, transition: "transform 200ms", transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)" }}>&#9660;</span>
-                              </div>
-                            </button>
-
-                            {/* Expanded — script + data */}
-                            {isExpanded && (
-                              <div style={{ padding: mobile ? "0 16px 20px" : "0 24px 24px" }}>
-                                {/* Data points from their assessment */}
-                                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" as const, marginBottom: 16 }}>
-                                  {play.dataPoints.map((dp, j) => (
-                                    <span key={j} style={{ fontSize: 12, color: C.sandMuted, padding: "4px 10px", borderRadius: 6, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}>{dp}</span>
-                                  ))}
-                                  <span style={{ fontSize: 12, fontWeight: 600, color: B.teal, padding: "4px 10px", borderRadius: 6, backgroundColor: `${B.teal}10` }}>{play.effort} effort &middot; {play.speed}</span>
-                                </div>
-
-                                {/* The script */}
-                                {play.script && (
-                                  <div style={{ position: "relative" }}>
-                                    <pre style={{ fontSize: 14, color: "rgba(244,241,234,0.75)", lineHeight: 1.65, whiteSpace: "pre-wrap" as const, margin: 0, padding: mobile ? "16px 14px" : "20px 24px", backgroundColor: "rgba(255,255,255,0.02)", borderRadius: 10, border: "1px solid rgba(255,255,255,0.06)", fontFamily: sans }}>{play.script}</pre>
-                                    <button onClick={() => copyPlaybookScript(play.script, play.id)}
-                                      style={{ position: "absolute", top: 10, right: 10, fontSize: 13, fontWeight: 600, color: copiedPlaybook === play.id ? B.teal : C.sandMuted, backgroundColor: copiedPlaybook === play.id ? `${B.teal}15` : "rgba(255,255,255,0.06)", border: "none", borderRadius: 8, padding: "8px 14px", cursor: "pointer", minHeight: 36, transition: "all 200ms" }}>
-                                      {copiedPlaybook === play.id ? "Copied!" : "Copy"}
-                                    </button>
-                                  </div>
-                                )}
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {/* Footer */}
-                    <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid rgba(255,255,255,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: 8 }}>
-                      <span style={{ fontSize: 13, color: C.sandMuted }}>Scripts are starting points. Adapt tone and details to your voice.</span>
-                      <span style={{ fontSize: 12, color: "rgba(244,241,234,0.30)", fontFamily: mono }}>Model RP-2.0 &middot; {indLabel}</span>
-                    </div>
-                  </div>
-                </div>
-              </section>
-            );
-          })()}
 
           </PhaseSep>
 
