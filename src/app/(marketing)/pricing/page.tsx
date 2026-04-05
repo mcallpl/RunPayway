@@ -139,12 +139,12 @@ function PricingCards() {
               See exactly why your score is what it is — and what changes it.
             </p>
             <div style={{ marginBottom: 28, flex: 1, color: muted }}>
-              {check("Full structural breakdown across all six dimensions")}
-              {check("PressureMap\u2122 structural intelligence")}
-              {check("Ranked disruption scenarios with exact score drops")}
-              {check("Highest-impact actions with projected score movement")}
-              {check("12-week execution roadmap with industry scripts")}
-              {check("Command Center with What-If Simulator")}
+              {check("Negotiation Playbook — scripts with your data and objection handlers")}
+              {check("12-week roadmap with dynamic milestones from your numbers")}
+              {check("PressureMap\u2122 — income zones and structural vulnerability")}
+              {check("What-If Simulator and Goal Mode")}
+              {check("Weekly priority briefing with share and copy")}
+              {check("Lifetime Command Center access")}
             </div>
             <a href={STRIPE} style={{
               display: "flex", alignItems: "center", justifyContent: "center",
@@ -218,7 +218,7 @@ function FaqSection() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const faqs = [
     { q: "What do I get for free?", a: "Your score out of 100, your stability band, your primary structural constraint, distance to next band, and your industry percentile benchmark. No account required." },
-    { q: "What does the Diagnostic include?", a: "A full structural breakdown of your score across all six dimensions, PressureMap\u2122 analysis, ranked disruption scenarios, highest-impact actions with projected score movement, a 12-week execution roadmap with industry-specific scripts, and Command Center access with the What-If Simulator." },
+    { q: "What does the Diagnostic include?", a: "A full structural breakdown across six dimensions, PressureMap\u2122 analysis, ranked disruption scenarios, a Negotiation Playbook with personalized scripts and objection handlers, a 12-week roadmap with dynamic milestones from your actual numbers, a weekly priority briefing, and lifetime Command Center access with the What-If Simulator." },
     { q: "What does Monitoring include?", a: "Three full assessments within 12 months, score history timeline, factor-level change tracking, benchmark evolution over time, and monitoring portal access. Full Command Center access included." },
     { q: "How is the score calculated?", a: "The score is produced by a deterministic model that evaluates six structural dimensions of your income. The model is fixed, versioned, and produces identical output for identical inputs. No AI or subjective interpretation is involved in scoring." },
     { q: "Is my information confidential?", a: "Yes. There is no bank connection, no credit pull, and no external data access. Your result is based entirely on the information you provide. Your data is never sold." },

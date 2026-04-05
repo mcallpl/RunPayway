@@ -648,10 +648,10 @@ function TheSystemAndCta() {
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, textAlign: "center", marginBottom: 20 }}>INCLUDED WITH YOUR DIAGNOSTIC</div>
           <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 12 }}>
             {[
-              { title: "PressureMap\u2122", desc: "See exactly where your income is vulnerable and where it is protected." },
-              { title: "What-If Simulator", desc: "Model structural changes before you commit. See the exact score impact." },
-              { title: "12-Week Roadmap", desc: "Sequenced action plan with industry-specific scripts." },
-              { title: "Goal Mode", desc: "Pick a target band. See the minimum moves required to reach it." },
+              { title: "Negotiation Playbook", desc: "Word-for-word scripts with your data, objection handlers, and success signals." },
+              { title: "12-Week Roadmap", desc: "Visual timeline with dynamic milestones from your actual numbers." },
+              { title: "PressureMap\u2122", desc: "Your income broken into three zones — what stops, what recurs, what is protected." },
+              { title: "What-If Simulator", desc: "Model changes before you commit. See the exact score impact." },
             ].map((t, i) => (
               <div key={i} style={{ padding: m ? "16px 14px" : "18px 20px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.06)", backgroundColor: "rgba(255,255,255,0.02)" }}>
                 <div style={{ fontSize: 15, fontWeight: 600, color: C.sand, marginBottom: 4 }}>{t.title}</div>
