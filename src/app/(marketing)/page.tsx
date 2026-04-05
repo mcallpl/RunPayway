@@ -30,17 +30,20 @@ function useMobile(bp = 768) {
 
 function useAnimatedCounter(target: number, trigger: boolean, duration = 1500) {
   const [value, setValue] = useState(0);
-  const animated = useRef(false);
   const rafId = useRef(0);
+  const prevTarget = useRef(0);
   useEffect(() => {
-    if (!trigger || animated.current) return;
-    animated.current = true;
+    if (!trigger) { setValue(0); return; }
+    if (target === prevTarget.current && value === target) return;
+    prevTarget.current = target;
+    cancelAnimationFrame(rafId.current);
     const start = performance.now();
+    const startValue = value;
     const step = (now: number) => {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      setValue(Math.round(eased * target));
+      setValue(Math.round(startValue + (target - startValue) * eased));
       if (progress < 1) rafId.current = requestAnimationFrame(step);
     };
     rafId.current = requestAnimationFrame(step);
@@ -304,11 +307,11 @@ function IndustrySelector() {
               {/* Score ring */}
               <div style={{ flexShrink: 0, textAlign: "center", marginBottom: m ? 24 : 0 }}>
                 <div style={{ position: "relative", width: m ? 120 : 140, height: m ? 120 : 140, margin: "0 auto" }}>
-                  <div style={{ position: "absolute", inset: -16, borderRadius: "50%", background: `radial-gradient(circle, ${bandColor(selected.avg)}15 0%, transparent 60%)`, pointerEvents: "none" }} />
+                  <div style={{ position: "absolute", inset: -16, borderRadius: "50%", background: `radial-gradient(circle, ${bandColor(animatedScore)}15 0%, transparent 60%)`, pointerEvents: "none" }} />
                   <ScoreRing score={animatedScore} size={m ? 120 : 140} stroke={7} color={bandColor(animatedScore)} />
                   <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
                     <span style={{ fontSize: m ? 36 : 42, fontWeight: 300, fontFamily: mono, color: C.sand, lineHeight: 1 }}>{animatedScore}</span>
-                    <span style={{ fontSize: 11, fontWeight: 600, color: bandColor(selected.avg), marginTop: 4 }}>{bandLabel(selected.avg)}</span>
+                    <span style={{ fontSize: 11, fontWeight: 600, color: bandColor(animatedScore), marginTop: 4 }}>{bandLabel(animatedScore)}</span>
                   </div>
                 </div>
                 <div style={{ fontSize: 12, color: "rgba(244,241,234,0.50)", marginTop: 8 }}>{selected.name} average</div>
