@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback, Suspense } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { simulateScore, SIMULATOR_PRESETS, projectTimeline } from "@/lib/engine/v2/simulate";
 import type { CanonicalInput } from "@/lib/engine/v2/types";
 import type { TimelinePoint } from "@/lib/engine/v2/simulate";
@@ -486,10 +486,15 @@ function DashboardContent() {
     try { const recs = JSON.parse(localStorage.getItem("rp_records") || "[]"); setAssessments(recs.sort((a: { assessment_date_utc: string; issued_timestamp_utc?: string }, b: { assessment_date_utc: string; issued_timestamp_utc?: string }) => new Date(b.assessment_date_utc || b.issued_timestamp_utc || "").getTime() - new Date(a.assessment_date_utc || a.issued_timestamp_utc || "").getTime())); } catch { /* */ }
     try { setCheckedItems(JSON.parse(localStorage.getItem("rp_reassess_checks") || "[]")); } catch { /* */ }
     try { setCompletedSteps(JSON.parse(localStorage.getItem("rp_roadmap_steps") || "[]")); } catch { /* */ }
-    // Detect paid status
+    // Detect paid status — redirect free users away from Command Center
     try {
       const ps = JSON.parse(sessionStorage.getItem("rp_purchase_session") || localStorage.getItem("rp_purchase_session") || "{}");
-      if (ps.plan_key && ps.plan_key !== "free") setIsPaid(true);
+      if (ps.plan_key && ps.plan_key !== "free") {
+        setIsPaid(true);
+      } else if (ps.plan_key === "free") {
+        window.location.replace("/free-score");
+        return;
+      }
     } catch { /* */ }
     const hasVisited = localStorage.getItem("rp_cc_visited");
     const hasData = !!stored && stored !== "null";

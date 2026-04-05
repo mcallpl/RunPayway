@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
       bandInterpretationText: body.bandInterpretationText || "",
       peerPercentileLabel: body.peerPercentileLabel || "",
       riskScenarioDrop: body.riskScenarioDrop || 0,
+      planKey: body.planKey || undefined,
     };
 
     const result = await sendReportEmail(data);

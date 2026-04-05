@@ -30,6 +30,7 @@ export interface ReportEmailData {
   bandInterpretationText: string;
   peerPercentileLabel: string;
   riskScenarioDrop?: number;
+  planKey?: string;
 }
 
 /**
@@ -131,7 +132,9 @@ function buildReportEmailHtml(data: ReportEmailData): string {
                       </tr>
                     </table>
                     ${data.bandInterpretationText ? `<p style="font-size:13px; color:${muted}; line-height:1.6; margin:12px 0 0;">${data.bandInterpretationText}</p>` : ""}
-                    <p style="font-size:13px; color:${brandTeal}; line-height:1.6; margin:14px 0 0; font-weight:600;">Your personal Stability Simulator is included &mdash; scan the QR code on your report to model scenarios anytime. This access is yours for life.</p>
+                    ${data.planKey === "free"
+                      ? `<p style="font-size:13px; color:${brandTeal}; line-height:1.6; margin:14px 0 0; font-weight:600;">Want to see what's behind your score? The full diagnostic reveals your biggest risks, a personalized action plan, and exactly what to change first.</p>`
+                      : `<p style="font-size:13px; color:${brandTeal}; line-height:1.6; margin:14px 0 0; font-weight:600;">Your personal Stability Simulator is included &mdash; scan the QR code on your report to model scenarios anytime. This access is yours for life.</p>`}
                   </td>
                 </tr>
               </table>
@@ -176,12 +179,21 @@ function buildReportEmailHtml(data: ReportEmailData): string {
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="background-color:${sand}; border-radius:8px; padding:20px 24px;">
+                    ${data.planKey === "free" ? `
+                    <p style="font-size:13px; font-weight:600; color:${brandNavy}; margin:0 0 6px;">Go deeper with the full diagnostic</p>
+                    ${data.primaryConstraintLabel ? `<p style="font-size:12px; color:${brandNavy}; line-height:1.6; margin:0 0 12px; font-weight:500;">Your biggest area to improve: ${data.primaryConstraintLabel.toLowerCase()}. The diagnostic shows you exactly what to change and gives you the tools to do it.</p>` : ""}
+                    <p style="font-size:12px; color:${muted}; line-height:1.6; margin:0 0 16px;">
+                      The $69 diagnostic includes a personalized action plan, risk scenarios, a 12-week roadmap with your actual numbers, and ready-to-use negotiation scripts. Full refund if it doesn't reveal something new.
+                    </p>
+                    <a href="https://peoplestar.com/RunPayway/pricing" style="display:inline-block; padding:10px 24px; background-color:${brandNavy}; color:#ffffff; font-size:13px; font-weight:600; text-decoration:none; border-radius:12px;">See What the Diagnostic Includes</a>
+                    ` : `
                     <p style="font-size:13px; font-weight:600; color:${brandNavy}; margin:0 0 6px;">Your full report is ready</p>
                     ${data.primaryConstraintLabel ? `<p style="font-size:12px; color:${brandNavy}; line-height:1.6; margin:0 0 12px; font-weight:500;">Your biggest opportunity: ${data.primaryConstraintLabel.toLowerCase()}. See your full report for the specific changes that would raise your score the most.</p>` : ""}
                     <p style="font-size:12px; color:${muted}; line-height:1.6; margin:0 0 16px;">
                       Your diagnostic report includes an interactive stability simulator, risk scenarios, projected improvements, an action plan with specific targets and ready-to-use scripts, and tradeoff analysis.
                     </p>
                     <a href="https://peoplestar.com/RunPayway/review" style="display:inline-block; padding:10px 24px; background-color:${brandNavy}; color:#ffffff; font-size:13px; font-weight:600; text-decoration:none; border-radius:12px;">View Full Report</a>
+                    `}
                   </td>
                 </tr>
               </table>

@@ -464,8 +464,9 @@ export default function ReviewPage() {
       try {
         const purchaseRaw = sessionStorage.getItem("rp_purchase_session");
         const profileRaw = sessionStorage.getItem("rp_profile");
+        const purchaseData = purchaseRaw ? safeJsonParse<Record<string, string>>(purchaseRaw, {}) : {};
         const email =
-          (purchaseRaw ? safeJsonParse<Record<string, string>>(purchaseRaw, {}).customer_email : null) ||
+          (purchaseData.customer_email) ||
           (profileRaw ? safeJsonParse<Record<string, string>>(profileRaw, {}).recipient_email : null);
         if (email) {
           setEmailStatus("sending");
@@ -486,6 +487,7 @@ export default function ReviewPage() {
               bandInterpretationText: parsed.band_interpretation_text,
               peerPercentileLabel: parsed.peer_stability_percentile_label,
               riskScenarioDrop: parsed.risk_scenario_drop,
+              planKey: purchaseData.plan_key || undefined,
             }),
           })
             .then((res) => res.ok ? setEmailStatus("sent") : setEmailStatus("error"))
