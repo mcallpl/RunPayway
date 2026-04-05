@@ -889,10 +889,10 @@ export default function ReviewPage() {
       }));
 
       // Build action categories from lift scenarios
-      const actionCategories = (v2Lift?.lift_scenarios || []).filter(s => s.lift > 0).sort((a, b) => b.lift - a.lift).slice(0, 3).map(s => ({
+      const actionCategories = (v2Lift?.lift_scenarios || []).filter(s => s.lift > 0).sort((a, b) => b.lift - a.lift).slice(0, 3).map((s, i) => ({
         tag: `STEP`, tagColor: B.purple,
         title: s.label, how: s.change_description || "",
-        scoreChange: `+${s.lift} points`,
+        scoreChange: i === 0 ? "Highest impact" : i === 1 ? "Second priority" : "Third priority",
       }));
 
       // Build roadmap
@@ -959,11 +959,35 @@ export default function ReviewPage() {
         fragilityColor,
         failureMode: v2Fragility?.primary_failure_mode,
         actionCategories,
-        combinedLift: v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 ? {
-          projectedScore: v2Lift.combined_top_two.projected_score,
-          lift: v2Lift.combined_top_two.lift,
-          bandShift: v2Lift.combined_top_two.band_shift ? v2Lift.combined_top_two.projected_band : undefined,
-        } : undefined,
+        combinedLift: v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 ? (() => {
+          const proj = v2Lift.combined_top_two.projected_score;
+          const cur = v2Lift.combined_top_two.original_score;
+          const nextBandMin = cur < 30 ? 30 : cur < 50 ? 50 : cur < 75 ? 75 : null;
+          const bandShiftVal = v2Lift.combined_top_two.band_shift;
+          const projBand = v2Lift.combined_top_two.projected_band;
+          let progressText = "";
+          if (bandShiftVal) {
+            progressText = `Together, these changes would move you to ${projBand}.`;
+          } else if (nextBandMin) {
+            const gapBefore = nextBandMin - cur;
+            const gapAfter = nextBandMin - proj;
+            const closedPct = Math.round(((gapBefore - gapAfter) / gapBefore) * 100);
+            const nextBandLabel = nextBandMin === 30 ? "Developing" : nextBandMin === 50 ? "Established" : "High";
+            if (closedPct > 0) {
+              progressText = `Together, these changes close ${closedPct}% of the gap to ${nextBandLabel} Stability (score: ${cur} to ${proj}).`;
+            } else {
+              progressText = `Together, these changes would raise your score from ${cur} to ${proj}.`;
+            }
+          } else {
+            progressText = `Together, these changes would raise your score from ${cur} to ${proj}.`;
+          }
+          return {
+            projectedScore: proj,
+            lift: v2Lift.combined_top_two.lift,
+            bandShift: bandShiftVal ? projBand : undefined,
+            progressText,
+          };
+        })() : undefined,
         tradeoff: v2TradeoffNarratives?.[0] ? {
           actionLabel: v2TradeoffNarratives[0].action_label,
           upside: v2TradeoffNarratives[0].upside,
@@ -1196,7 +1220,7 @@ export default function ReviewPage() {
         <ReportHeader />
         <h1 style={{ ...T.pageTitle, marginBottom: 4 }}>Stability Plan</h1>
         <p style={{ ...T.small, color: B.muted, marginBottom: 16, lineHeight: 1.5 }}>
-          Based on your score of <span style={{ fontFamily: mono }}>{score}/100</span>, these are your highest-impact changes. Full action plan and scripts in your Command Center.
+          Based on your score of <span style={{ fontFamily: mono }}>{score}/100</span>, these are the changes that matter most. Full action plan and scripts in your Command Center.
         </p>
 
         {/* ── 3 ACTION STEPS ── */}
@@ -1234,13 +1258,9 @@ export default function ReviewPage() {
                   return (
                     <div key={scenario.scenario_id} style={{ ...reportCardStyle, padding: "12px 18px", borderLeft: `3px solid ${stepColors[idx]}`, display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
                       <div style={{ flex: 1 }}>
-                        <div style={{ ...T.overline, color: stepColors[idx], marginBottom: 2 }}>STEP {idx + 1}</div>
+                        <div style={{ ...T.overline, color: stepColors[idx], marginBottom: 2 }}>STEP {idx + 1}{idx === 0 ? " — HIGHEST IMPACT" : ""}</div>
                         <div style={{ ...T.sectionLabel, color: B.navy, marginBottom: 2 }}>{goal}</div>
                         <p style={{ ...T.small, color: B.muted, margin: 0, lineHeight: 1.45 }}>{action.length > 100 ? action.substring(0, 100) + "..." : action}</p>
-                      </div>
-                      <div style={{ textAlign: "right" as const, flexShrink: 0 }}>
-                        <div style={{ fontSize: 22, fontWeight: 300, color: stepColors[idx], lineHeight: 1, fontFamily: mono }}>+{scenario.lift}</div>
-                        <div style={{ fontSize: 11, color: B.muted }}>pts</div>
                       </div>
                     </div>
                   );
@@ -1250,15 +1270,36 @@ export default function ReviewPage() {
           );
         })()}
 
-        {/* ── COMBINED IMPACT — brief ── */}
-        {v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 && (
-          <div style={{ border: "1px solid rgba(14,26,43,0.08)", borderRadius: 6, padding: "12px 18px", marginBottom: 16 }}>
-            <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 4 }}>Combined Impact</div>
-            <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.5 }}>
-              Together, these changes would raise your score to <span style={{ fontWeight: 700, color: B.teal, fontFamily: mono }}>{v2Lift.combined_top_two.projected_score}</span> <span style={{ fontFamily: mono }}>(+{v2Lift.combined_top_two.lift})</span>.{v2Lift.combined_top_two.band_shift ? ` Moves to ${v2Lift.combined_top_two.projected_band}.` : ""}
-            </p>
-          </div>
-        )}
+        {/* ── COMBINED IMPACT — band progress framing ── */}
+        {v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 && (() => {
+          const proj = v2Lift.combined_top_two.projected_score;
+          const cur = v2Lift.combined_top_two.original_score;
+          const nextBandMin = cur < 30 ? 30 : cur < 50 ? 50 : cur < 75 ? 75 : null;
+          const bandShift = v2Lift.combined_top_two.band_shift;
+          const projectedBand = v2Lift.combined_top_two.projected_band;
+          let progressText = "";
+          if (bandShift) {
+            progressText = `Together, these changes would move you to ${projectedBand} — a meaningful shift in how your income holds up.`;
+          } else if (nextBandMin) {
+            const gapBefore = nextBandMin - cur;
+            const gapAfter = nextBandMin - proj;
+            const closedPct = Math.round(((gapBefore - gapAfter) / gapBefore) * 100);
+            const nextBandLabel = nextBandMin === 30 ? "Developing" : nextBandMin === 50 ? "Established" : "High";
+            if (closedPct > 0) {
+              progressText = `Together, these changes close ${closedPct}% of the gap to ${nextBandLabel} Stability (score: ${cur} → ${proj}).`;
+            } else {
+              progressText = `Together, these changes would raise your score from ${cur} to ${proj}.`;
+            }
+          } else {
+            progressText = `Together, these changes would raise your score from ${cur} to ${proj}.`;
+          }
+          return (
+            <div style={{ border: "1px solid rgba(14,26,43,0.08)", borderRadius: 6, padding: "12px 18px", marginBottom: 16 }}>
+              <div style={{ ...T.sectionLabel, color: B.teal, marginBottom: 4 }}>Where These Steps Take You</div>
+              <p style={{ ...T.small, color: B.navy, margin: 0, lineHeight: 1.5 }}>{progressText}</p>
+            </div>
+          );
+        })()}
 
         {/* ── WHAT TO AVOID ── */}
         {v2AvoidActions && (v2AvoidActions as string[]).length > 0 && (

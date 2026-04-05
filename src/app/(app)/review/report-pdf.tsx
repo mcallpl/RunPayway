@@ -67,6 +67,7 @@ export interface ReportPDFData {
   combinedLift?: {
     projectedScore: number; lift: number;
     bandShift?: string; explanation?: string;
+    progressText?: string;
   };
   tradeoff?: {
     actionLabel: string; upside: string;
@@ -486,32 +487,34 @@ function page3(doc: jsPDF, d: ReportPDFData) {
   doc.text("Stability Plan", ML, y);
   y += 14;
   sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
-  doc.text("Take Action Now to Secure Your Future", ML, y);
+  doc.text("Based on your score, these are your highest-impact changes.", ML, y);
   y += 16;
 
-  // Action steps — max 3, compact cards to prevent overflow
+  // Action steps — max 3, compact cards with priority labels instead of points
   const stepColors = ["#4B3FAE", "#1F6D7A", "#1C1635"];
+  const stepLabels = ["STEP 1 — HIGHEST IMPACT", "STEP 2", "STEP 3"];
   const actions = d.actionCategories.slice(0, 3);
   for (let i = 0; i < actions.length; i++) {
     const a = actions[i];
     const h = 42;
     if (!fits(y, h)) break;
     card(doc, ML, y, CW, h, stepColors[i]);
-    label(doc, `STEP ${i + 1}`, ML + 10, y + 10, stepColors[i]);
+    label(doc, stepLabels[i], ML + 10, y + 10, stepColors[i]);
     sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#1C1635");
     doc.text(truncate(a.title, 65), ML + 10, y + 21);
     sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#535D6B");
     doc.text(truncate(a.how, 85), ML + 10, y + 31);
-    sf(doc, "InterSB"); doc.setFontSize(8); doc.setTextColor("#1F6D7A");
-    doc.text(S(`Impact: ${a.scoreChange}`), ML + CW - 10, y + 10, { align: "right" });
     y += h + 5;
   }
 
-  // Combined lift
-  if (d.combinedLift && fits(y, 16)) {
-    sf(doc, "InterSB"); doc.setFontSize(8.5); doc.setTextColor("#1C1635");
-    const cText = `Combined Impact: ${d.combinedLift.projectedScore} (+${d.combinedLift.lift} points)${d.combinedLift.bandShift ? ` - moves to ${d.combinedLift.bandShift}` : ""}`;
-    doc.text(S(cText), ML, y);
+  // Combined lift — framed as band progress
+  if (d.combinedLift && fits(y, 20)) {
+    sf(doc, "InterSB"); doc.setFontSize(8.5); doc.setTextColor("#1F6D7A");
+    doc.text(S("Where These Steps Take You"), ML, y);
+    y += 10;
+    sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#1C1635");
+    const cText = d.combinedLift.progressText || `Together, these changes would raise your score from ${d.combinedLift.projectedScore - d.combinedLift.lift} to ${d.combinedLift.projectedScore}.`;
+    doc.text(S(truncate(cText, 100)), ML, y);
     y += 14;
   }
 
