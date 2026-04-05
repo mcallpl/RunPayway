@@ -68,7 +68,7 @@ function useFadeIn() {
 const C = { navy: "#1C1635", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
 const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
 const muted = "rgba(14,26,43,0.68)";
-const light = "rgba(14,26,43,0.52)";
+const light = "rgba(14,26,43,0.62)";
 const contentW = 1040;
 const secPad = (m: boolean) => m ? 56 : 112;
 const px = (m: boolean) => m ? 20 : 24;
@@ -147,7 +147,7 @@ function ReportWalkthrough() {
               <ScoreRing score={animatedScore} size={m ? 120 : 140} stroke={8} color="#2B5EA7" />
               <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
                 <span style={{ fontSize: m ? 36 : 42, fontWeight: 300, fontFamily: mono, color: C.sand, lineHeight: 1 }}>{animatedScore}</span>
-                <span style={{ fontSize: 12, color: "rgba(244,241,234,0.35)", marginTop: 4 }}>/100</span>
+                <span style={{ fontSize: 12, color: "rgba(244,241,234,0.50)", marginTop: 4 }}>/100</span>
               </div>
             </div>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 14px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.12)", marginBottom: 12 }}>
@@ -349,14 +349,14 @@ function WhatYouGetAndCta() {
             background: `linear-gradient(135deg, ${C.white} 0%, rgba(244,241,234,0.95) 100%)`,
             color: C.navy, fontSize: m ? 15 : 16, fontWeight: 600, textDecoration: "none",
             boxShadow: "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)",
-            border: "1px solid rgba(244,241,234,0.30)",
+            border: "1px solid rgba(244,241,234,0.45)",
             transition: "transform 200ms, box-shadow 200ms",
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(244,241,234,0.20), 0 12px 48px rgba(244,241,234,0.10)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)"; }}>
             Start Your Free Assessment
           </Link>
-          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.30)", marginTop: 14, letterSpacing: "0.02em" }}>
+          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.45)", marginTop: 14, letterSpacing: "0.02em" }}>
             Under 2 minutes &bull; Instant result &bull; Private by default
           </p>
         </div>

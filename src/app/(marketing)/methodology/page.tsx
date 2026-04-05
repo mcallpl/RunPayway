@@ -47,7 +47,7 @@ function useFadeIn() {
 const C = { navy: "#1C1635", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
 const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
 const muted = "rgba(14,26,43,0.68)";
-const light = "rgba(14,26,43,0.52)";
+const light = "rgba(14,26,43,0.62)";
 const contentW = 1040;
 const px = (m: boolean) => m ? 20 : 24;
 
@@ -208,7 +208,7 @@ function Integrity() {
           <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.03)", borderLeft: "3px solid rgba(244,241,234,0.10)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
               <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.04)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(244,241,234,0.35)" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(244,241,234,0.50)" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
               </div>
               <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.40)" }}>THE MODEL DOES NOT</div>
             </div>
@@ -264,14 +264,14 @@ function FinalCta() {
             background: `linear-gradient(135deg, ${C.white} 0%, rgba(244,241,234,0.95) 100%)`,
             color: C.navy, fontSize: m ? 15 : 16, fontWeight: 600, textDecoration: "none",
             boxShadow: "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)",
-            border: "1px solid rgba(244,241,234,0.30)",
+            border: "1px solid rgba(244,241,234,0.45)",
             transition: "transform 200ms, box-shadow 200ms",
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(244,241,234,0.20), 0 12px 48px rgba(244,241,234,0.10)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)"; }}>
             Start Your Free Assessment
           </Link>
-          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.30)", marginTop: 14, letterSpacing: "0.02em" }}>
+          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.45)", marginTop: 14, letterSpacing: "0.02em" }}>
             Under 2 minutes &bull; Instant result &bull; Private by default
           </p>
         </div>

@@ -47,7 +47,7 @@ function useFadeIn() {
 const C = { navy: "#1C1635", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
 const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
 const muted = "rgba(14,26,43,0.68)";
-const light = "rgba(14,26,43,0.52)";
+const light = "rgba(14,26,43,0.62)";
 const contentW = 1040;
 const px = (m: boolean) => m ? 20 : 24;
 
@@ -205,14 +205,14 @@ function FinalCta() {
             background: `linear-gradient(135deg, ${C.white} 0%, rgba(244,241,234,0.95) 100%)`,
             color: C.navy, fontSize: m ? 15 : 16, fontWeight: 600, textDecoration: "none",
             boxShadow: "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)",
-            border: "1px solid rgba(244,241,234,0.30)",
+            border: "1px solid rgba(244,241,234,0.45)",
             transition: "transform 200ms, box-shadow 200ms",
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(244,241,234,0.20), 0 12px 48px rgba(244,241,234,0.10)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)"; }}>
             Start Your Free Assessment
           </Link>
-          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.30)", marginTop: 14, letterSpacing: "0.02em" }}>
+          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.45)", marginTop: 14, letterSpacing: "0.02em" }}>
             Under 2 minutes &bull; Instant result &bull; Private by default
           </p>
         </div>

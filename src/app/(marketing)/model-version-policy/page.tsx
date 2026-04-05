@@ -34,7 +34,7 @@ function useInView(threshold = 0) {
 /* ================================================================== */
 
 const muted = "rgba(14,26,43,0.68)";
-const light = "rgba(14,26,43,0.52)";const border = "#E5E7EB";
+const light = "rgba(14,26,43,0.62)";const border = "#E5E7EB";
 
 /* ================================================================== */
 /* CONTENT COMPONENTS                                                  */

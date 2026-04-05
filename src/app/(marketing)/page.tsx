@@ -68,7 +68,7 @@ function useFadeIn() {
 const C = { navy: "#1C1635", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
 const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
 const muted = "rgba(14,26,43,0.68)";
-const light = "rgba(14,26,43,0.52)";
+const light = "rgba(14,26,43,0.62)";
 const contentW = 1040;
 const secPad = (m: boolean) => m ? 56 : 112;
 const px = (m: boolean) => m ? 20 : 24;
@@ -147,13 +147,13 @@ function CtaButton({ m, variant = "light" }: { m: boolean; variant?: "light" | "
         fontSize: m ? 15 : 16, fontWeight: 600, textDecoration: "none",
         boxShadow: isLight ? "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)" : elevation.cta,
         transition: "transform 200ms, box-shadow 200ms",
-        border: isLight ? "1px solid rgba(244,241,234,0.30)" : "1px solid rgba(255,255,255,0.08)",
+        border: isLight ? "1px solid rgba(244,241,234,0.45)" : "1px solid rgba(255,255,255,0.08)",
       }}
         onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = isLight ? "0 4px 20px rgba(244,241,234,0.20), 0 12px 48px rgba(244,241,234,0.10)" : elevation.ctaHover; }}
         onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = isLight ? "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)" : elevation.cta; }}>
         Get My Income Stability Score
       </Link>
-      <p style={{ fontSize: 13, color: isLight ? "rgba(244,241,234,0.35)" : light, marginTop: 14, letterSpacing: "0.02em", textAlign: m ? "center" : undefined }}>
+      <p style={{ fontSize: 13, color: isLight ? "rgba(244,241,234,0.50)" : light, marginTop: 14, letterSpacing: "0.02em", textAlign: m ? "center" : undefined }}>
         Under 2 minutes &bull; Instant result &bull; Private by default
       </p>
     </div>
@@ -311,7 +311,7 @@ function IndustrySelector() {
                     <span style={{ fontSize: 11, fontWeight: 600, color: bandColor(selected.avg), marginTop: 4 }}>{bandLabel(selected.avg)}</span>
                   </div>
                 </div>
-                <div style={{ fontSize: 12, color: "rgba(244,241,234,0.35)", marginTop: 8 }}>{selected.name} average</div>
+                <div style={{ fontSize: 12, color: "rgba(244,241,234,0.50)", marginTop: 8 }}>{selected.name} average</div>
               </div>
               {/* Risk */}
               <div style={{ flex: 1 }}>
@@ -465,7 +465,7 @@ function TheSystemAndCta() {
             <DimensionBar label="Income Variability" value={55} color={C.teal} visible={visible} delay={900} />
             <DimensionBar label="Labor Dependence" value={85} color="#E57373" visible={visible} delay={1050} />
             <div style={{ marginTop: 16, paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.06)", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-              <span style={{ fontSize: 12, color: "rgba(244,241,234,0.35)" }}>Composite score</span>
+              <span style={{ fontSize: 12, color: "rgba(244,241,234,0.50)" }}>Composite score</span>
               <span style={{ fontSize: 24, fontWeight: 300, fontFamily: mono, color: C.sand }}>{visible ? "42" : "\u2014"}</span>
             </div>
           </div>
@@ -512,7 +512,7 @@ function TheSystemAndCta() {
             ].map((t, i) => (
               <div key={i} style={{ textAlign: "center", padding: m ? "14px 8px" : "16px 12px", borderRadius: 10, backgroundColor: "rgba(255,255,255,0.02)" }}>
                 <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.55)", marginBottom: 2 }}>{t.title}</div>
-                <div style={{ fontSize: 12, color: "rgba(244,241,234,0.30)" }}>{t.desc}</div>
+                <div style={{ fontSize: 12, color: "rgba(244,241,234,0.45)" }}>{t.desc}</div>
               </div>
             ))}
           </div>

@@ -22,7 +22,7 @@ const C = {
 const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
 const sans = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 const muted = "rgba(14,26,43,0.68)";
-const light = "rgba(14,26,43,0.52)";
+const light = "rgba(14,26,43,0.62)";
 
 const STRIPE = "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05";
 

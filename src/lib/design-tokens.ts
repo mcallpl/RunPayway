@@ -14,7 +14,7 @@ export const C = {
   white: "#FFFFFF",
   amber: "#C49A6C",
   muted: "rgba(14,26,43,0.68)",
-  light: "rgba(14,26,43,0.52)",
+  light: "rgba(14,26,43,0.62)",
   border: "rgba(14,26,43,0.08)",
   softBorder: "#EAEAEA",
 

@@ -895,7 +895,7 @@ function DashboardContent() {
                 {/* Section cards */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   {phase.sections.map((sec, si) => (
-                    <div key={si} className="cc-teaser-card" tabIndex={0}
+                    <div key={si} className="cc-teaser-card"
                       style={{
                         padding: mobile ? "22px 20px" : "28px 32px",
                         borderRadius: 14,

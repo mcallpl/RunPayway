@@ -310,6 +310,13 @@ export default function MarketingLayout({
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#FAFAFA" }}>
+      {/* Skip to main content — WCAG 2.4.1 */}
+      <a href="#main-content" style={{ position: "absolute", left: "-9999px", top: "auto", width: 1, height: 1, overflow: "hidden", zIndex: 9999, padding: "12px 24px", backgroundColor: "#1C1635", color: "#F4F1EA", fontSize: 14, fontWeight: 600, textDecoration: "none", borderRadius: 8 }}
+        onFocus={e => { e.currentTarget.style.position = "fixed"; e.currentTarget.style.left = "16px"; e.currentTarget.style.top = "16px"; e.currentTarget.style.width = "auto"; e.currentTarget.style.height = "auto"; }}
+        onBlur={e => { e.currentTarget.style.position = "absolute"; e.currentTarget.style.left = "-9999px"; e.currentTarget.style.width = "1px"; e.currentTarget.style.height = "1px"; }}>
+        Skip to main content
+      </a>
+
       {/* Injected animation styles */}
       <style dangerouslySetInnerHTML={{ __html: HEADER_STYLES }} />
 
@@ -687,7 +694,7 @@ export default function MarketingLayout({
 
       <ScrollToTop />
       {/* Content */}
-      <main className="flex-1">{children}</main>
+      <main id="main-content" className="flex-1">{children}</main>
 
       {/* Footer */}
       <footer

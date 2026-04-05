@@ -108,7 +108,7 @@ export default function SimulatorTeaser({ variant = "default" }: { variant?: "de
         <span style={{ fontSize: isCompact ? 10 : 11, fontWeight: 600, color: "#F4F1EA", letterSpacing: "-0.01em" }}>
           Included with your report
         </span>
-        <span style={{ fontSize: 11, color: "rgba(244,241,234,0.35)" }}>&rarr;</span>
+        <span style={{ fontSize: 11, color: "rgba(244,241,234,0.50)" }}>&rarr;</span>
       </Link>
     </div>
   );

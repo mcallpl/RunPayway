@@ -89,10 +89,11 @@ function AccessCodeContent() {
             backgroundColor: B.surface,
             boxShadow: "0 2px 8px rgba(14,26,43,0.03)",
           }}>
-            <label style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: B.taupe, display: "block", marginBottom: 10 }}>
+            <label htmlFor="access-code-input" style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: B.taupe, display: "block", marginBottom: 10 }}>
               PASTE CODE
             </label>
             <textarea
+              id="access-code-input"
               value={code}
               onChange={(e) => { setCode(e.target.value); setError(null); }}
               placeholder="Paste the full code from your report..."
