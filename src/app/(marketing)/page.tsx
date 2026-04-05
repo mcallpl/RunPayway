@@ -200,14 +200,14 @@ function HeroSection() {
         @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
 
-      <div style={{ maxWidth: contentW, margin: "0 auto", paddingTop: m ? 36 : 56, paddingBottom: m ? 36 : 48, paddingLeft: px(m), paddingRight: px(m), position: "relative", zIndex: 1 }}>
-        <div style={{ display: m ? "block" : "flex", alignItems: "center", justifyContent: "space-between", gap: 56 }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto", paddingTop: m ? 40 : 72, paddingBottom: m ? 40 : 64, paddingLeft: px(m), paddingRight: px(m), position: "relative", zIndex: 1 }}>
+        <div style={{ display: m ? "block" : "flex", alignItems: "center", justifyContent: "space-between", gap: 64 }}>
           {/* Left — headline */}
-          <div style={{ maxWidth: 520, textAlign: m ? "center" : "left", marginBottom: m ? 40 : 0 }}>
-            <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.035em", color: C.navy, marginBottom: 28, ...fadeIn(visible) }}>
+          <div style={{ maxWidth: 520, textAlign: m ? "center" : "left", marginBottom: m ? 44 : 0 }}>
+            <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.035em", color: C.navy, marginBottom: 32, ...fadeIn(visible) }}>
               Your income has a structure.{m ? " " : <br />}You&#8217;ve never seen it.
             </h1>
-            <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.7, marginBottom: 36, ...fadeIn(visible, 100) }}>
+            <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.7, marginBottom: 40, ...fadeIn(visible, 100) }}>
               RunPayway&#8482; measures how your income holds under pressure — not how much you make.
             </p>
             <div style={{ ...fadeIn(visible, 200) }}>
@@ -272,8 +272,8 @@ function HeroSection() {
           </div>
         </div>
 
-        {/* Credibility strip — tighter, part of the hero */}
-        <div style={{ marginTop: m ? 32 : 44, textAlign: "center", ...fadeIn(visible, 400) }}>
+        {/* Credibility strip */}
+        <div style={{ marginTop: m ? 36 : 56, paddingTop: m ? 20 : 28, borderTop: `1px solid rgba(14,26,43,0.05)`, textAlign: "center", ...fadeIn(visible, 400) }}>
           <p style={{ fontSize: 13, fontWeight: 500, color: light, letterSpacing: "0.02em" }}>
             Model RP-2.0 &bull; 6 structural dimensions &bull; Deterministic output &bull; No bank connection
           </p>
@@ -298,9 +298,9 @@ function IndustrySelector() {
   const bandLabel = (s: number) => s >= 75 ? "High Stability" : s >= 50 ? "Established" : s >= 30 ? "Developing" : "Limited";
 
   return (
-    <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 64 : 96, paddingBottom: m ? 64 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>EXPLORE</div>
           <h2 style={{ fontSize: m ? 24 : 34, fontWeight: 500, lineHeight: 1.2, letterSpacing: "-0.02em", color: C.navy }}>
             See what your industry&#8217;s income structure looks like.
@@ -371,9 +371,9 @@ function SameIncomeProof() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: "#FAFAFA", paddingTop: m ? 64 : 128, paddingBottom: m ? 64 : 128, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: "#FAFAFA", paddingTop: m ? 56 : 112, paddingBottom: m ? 56 : 112, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 72, ...fadeIn(visible) }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy }}>Same income. Different structure.{m ? " " : <br />}Completely different risk.</h2>
         </div>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, maxWidth: 880, margin: "0 auto", ...fadeIn(visible, 120) }}>
@@ -456,14 +456,14 @@ function TheSystemAndCta() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 140, paddingBottom: m ? 80 : 140, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 64 : 120, paddingBottom: m ? 72 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "30%", left: "50%", width: m ? 300 : 600, height: m ? 300 : 600, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}08 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 880, margin: "0 auto", position: "relative", zIndex: 1 }}>
 
-        {/* Header — extra breathing room */}
-        <div style={{ textAlign: "center", marginBottom: m ? 56 : 80, ...fadeIn(visible) }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 18 }}>THE SYSTEM</div>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 500, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.sand, marginBottom: 24 }}>
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: m ? 48 : 72, ...fadeIn(visible) }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 16 }}>THE SYSTEM</div>
+          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 500, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.sand, marginBottom: 20 }}>
             Not a budget. Not a forecast.{m ? " " : <br />}A structural measurement.
           </h2>
           <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.7, maxWidth: 560, margin: "0 auto" }}>
