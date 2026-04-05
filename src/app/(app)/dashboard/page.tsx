@@ -1110,19 +1110,13 @@ function DashboardContent() {
                     </div>
                   )}
 
-                  {/* Actions — subtle, bottom-right */}
-                  <div style={{ display: "flex", gap: 8, justifyContent: mobile ? "center" : "flex-end", marginTop: 20 }}>
-                    <Link href="/review" style={{ fontSize: 13, fontWeight: 500, color: B.taupe, textDecoration: "none", padding: "7px 14px", borderRadius: 8, display: "inline-flex", alignItems: "center", minHeight: 36, transition: "color 150ms" }}
+                  {/* View Report — single action */}
+                  <div style={{ marginTop: 20, textAlign: mobile ? "center" : "right" as const }}>
+                    <Link href="/review" style={{ fontSize: 13, fontWeight: 500, color: B.taupe, textDecoration: "none", display: "inline-flex", alignItems: "center", minHeight: 36, transition: "color 150ms" }}
                       onMouseEnter={(e) => { e.currentTarget.style.color = B.navy; }}
                       onMouseLeave={(e) => { e.currentTarget.style.color = B.taupe; }}>
-                      View Report
+                      View full report &rarr;
                     </Link>
-                    <button onClick={handleShare} style={{ fontSize: 13, fontWeight: 500, color: B.taupe, padding: "7px 14px", borderRadius: 8, background: "none", border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", minHeight: 36 }}>
-                      Share
-                    </button>
-                    <button onClick={copyBriefing} style={{ fontSize: 13, fontWeight: 500, color: B.taupe, padding: "7px 14px", borderRadius: 8, background: "none", border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", minHeight: 36 }}>
-                      Copy Briefing
-                    </button>
                   </div>
                 </div>
               </div>
@@ -1188,6 +1182,8 @@ function DashboardContent() {
               <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>{constraintNarrative(rootCon, base)}</p>
             </div>
           </section>
+
+          {/* Removed: secondary constraint, model stamps — noise that doesn't answer "what does this do for me?" */}
 
           {/* Stress tests — what could go wrong */}
           <section style={{ marginBottom: 24 }}>
@@ -1397,28 +1393,6 @@ function DashboardContent() {
                 {completedSteps.length > 0 && <p style={{ fontSize: 14, color: B.teal, fontWeight: 500, margin: 0 }}>{completedSteps.length} of {roadmap.length} complete</p>}
               </div>
 
-              {/* Score trajectory */}
-              <div style={{ padding: mobile ? "16px 16px" : "20px 24px", borderRadius: 14, backgroundColor: "#FAFAFA", marginBottom: 24 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: B.navy }}>Score trajectory</span>
-                  <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal }}>{dScore} → {dScore + totalLift}</span>
-                </div>
-                {/* Visual trajectory with milestone dots */}
-                <div style={{ position: "relative", height: 8, borderRadius: 4, backgroundColor: "rgba(14,26,43,0.04)", marginBottom: 12 }}>
-                  <div style={{ height: "100%", borderRadius: 4, background: `linear-gradient(90deg, ${B.purple} 0%, ${B.teal} 100%)`, width: `${Math.min(100, ((dScore + totalLift) / 100) * 100)}%`, transition: "width 400ms ease" }} />
-                  {/* Milestone dots */}
-                  {roadmap.map((step, i) => (
-                    <div key={i} style={{ position: "absolute", top: -3, left: `${Math.min(98, (step.cumulativeTo / 100) * 100)}%`, width: 14, height: 14, borderRadius: "50%", backgroundColor: completedSteps.includes(i) ? B.teal : B.surface, border: `2px solid ${completedSteps.includes(i) ? B.teal : B.purple}`, transform: "translateX(-50%)" }} />
-                  ))}
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: 12, fontFamily: mono, color: B.taupe }}>Now: {dScore}</span>
-                  {roadmap.map((step, i) => (
-                    <span key={i} style={{ fontSize: 11, fontFamily: mono, color: completedSteps.includes(i) ? B.teal : B.taupe }}>{step.cumulativeTo}</span>
-                  ))}
-                </div>
-              </div>
-
               {/* Timeline steps */}
               <div style={{ position: "relative", paddingLeft: mobile ? 28 : 36 }}>
                 {/* Vertical timeline line */}
@@ -1576,212 +1550,22 @@ function DashboardContent() {
                   })}
                 </div>
 
-                {/* GOAL MODE — reverse simulator */}
-                <div style={{ marginBottom: 24 }}>
-                  <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: B.purple, marginBottom: 12 }}>GOAL MODE</div>
-                  <div style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, color: B.navy, marginBottom: 8 }}>See the minimum moves required to reach the next level.</div>
-                  <p style={{ fontSize: 14, color: B.muted, margin: "0 0 14px", lineHeight: 1.6 }}>
-                    Not guesses. Score-based path modeling.
-                  </p>
-                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" as const, marginBottom: 16 }}>
-                    {[
-                      { label: "Developing", target: 30, color: B.bandDeveloping },
-                      { label: "Established", target: 50, color: B.bandEstablished },
-                      { label: "High", target: 75, color: B.bandHigh },
-                    ].filter(g => g.target > dScore).map(g => (
-                      <button key={g.target} onClick={() => setGoalTarget(goalTarget === g.target ? null : g.target)}
-                        style={{
-                          padding: "10px 20px", borderRadius: 10, cursor: "pointer",
-                          border: `1px solid ${goalTarget === g.target ? g.color + "50" : B.stone}`,
-                          backgroundColor: goalTarget === g.target ? g.color + "08" : "transparent",
-                          transition: "all 200ms",
-                        }}>
-                        <span style={{ fontSize: 14, fontWeight: 600, color: goalTarget === g.target ? g.color : B.muted }}>{g.label} ({g.target}+)</span>
-                      </button>
-                    ))}
-                    {dScore >= 75 && (
-                      <div style={{ padding: "10px 20px", borderRadius: 10, border: `1px solid ${B.teal}20`, backgroundColor: `${B.teal}05` }}>
-                        <span style={{ fontSize: 14, fontWeight: 600, color: B.teal }}>You are already in the highest band.</span>
-                      </div>
-                    )}
-                  </div>
-                  {goalTarget && (() => {
-                    // Find minimum combination of moves to reach target
-                    const gMoves = SIMULATOR_PRESETS.filter(p => !["lose_top_client", "cant_work_90_days"].includes(p.id));
-                    const ranked = gMoves.map(p => {
-                      const res = simulateScore(p.modify(base), qScore);
-                      return { ...p, projected: res.overall_score, lift: res.overall_score - dScore, band: res.band };
-                    }).filter(p => p.lift > 0).sort((a, b) => b.lift - a.lift);
+                {/* Removed: Goal Mode, Save Paths, Compare Paths, Timeline projections
+                   — didn't answer "what is this going to do for me?" */}
 
-                    // Try single moves first
-                    const single = ranked.find(m => m.projected >= goalTarget);
-                    if (single) {
-                      return (
-                        <div style={{ padding: mobile ? "20px 16px" : "20px 24px", borderRadius: 12, border: `1px solid ${B.teal}20`, backgroundColor: `${B.teal}04` }}>
-                          <div style={{ fontSize: 12, fontWeight: 600, color: B.teal, marginBottom: 8 }}>1 move gets you there</div>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                            <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{single.label}</span>
-                            <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal }}>{dScore} → {single.projected}</span>
-                          </div>
-                          <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>{single.description}</p>
-                        </div>
-                      );
-                    }
-
-                    // Try two-move combinations
-                    let bestCombo: { moves: typeof ranked; projected: number } | null = null;
-                    for (let i = 0; i < ranked.length; i++) {
-                      for (let j = i + 1; j < ranked.length; j++) {
-                        const combined = ranked[j].modify(ranked[i].modify(base));
-                        const res = simulateScore(combined, qScore);
-                        if (res.overall_score >= goalTarget && (!bestCombo || res.overall_score < bestCombo.projected)) {
-                          bestCombo = { moves: [ranked[i], ranked[j]], projected: res.overall_score };
-                        }
-                      }
-                    }
-
-                    if (bestCombo) {
-                      return (
-                        <div style={{ padding: mobile ? "20px 16px" : "20px 24px", borderRadius: 12, border: `1px solid ${B.teal}20`, backgroundColor: `${B.teal}04` }}>
-                          <div style={{ fontSize: 12, fontWeight: 600, color: B.teal, marginBottom: 12 }}>2 moves get you there</div>
-                          {bestCombo.moves.map((m, i) => (
-                            <div key={m.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < bestCombo!.moves.length - 1 ? `1px solid ${B.stone}` : "none" }}>
-                              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                                <div style={{ width: 22, height: 22, borderRadius: 6, backgroundColor: `${B.teal}12`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: B.teal, flexShrink: 0 }}>{i + 1}</div>
-                                <span style={{ fontSize: 14, fontWeight: 500, color: B.navy }}>{m.label}</span>
-                              </div>
-                              <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{m.lift}</span>
-                            </div>
-                          ))}
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 12, paddingTop: 12, borderTop: `1px solid ${B.teal}15` }}>
-                            <span style={{ fontSize: 13, color: B.muted }}>Projected score</span>
-                            <span style={{ fontSize: 18, fontWeight: 300, fontFamily: mono, color: B.teal }}>{bestCombo.projected}</span>
-                          </div>
-                        </div>
-                      );
-                    }
-
-                    // Can't reach target — show closest
-                    const bestSingle = ranked[0];
-                    if (!bestSingle) return null;
-                    // Try all combinations for the best possible
-                    let bestPossible = bestSingle.projected;
-                    let bestMoveSet = [bestSingle];
-                    for (let i = 0; i < ranked.length; i++) {
-                      for (let j = i + 1; j < ranked.length; j++) {
-                        const combined = ranked[j].modify(ranked[i].modify(base));
-                        const res = simulateScore(combined, qScore);
-                        if (res.overall_score > bestPossible) {
-                          bestPossible = res.overall_score;
-                          bestMoveSet = [ranked[i], ranked[j]];
-                        }
-                      }
-                    }
-                    return (
-                      <div style={{ padding: mobile ? "20px 16px" : "20px 24px", borderRadius: 12, border: `1px solid ${B.amber}20`, backgroundColor: `${B.amber}04` }}>
-                        <div style={{ fontSize: 12, fontWeight: 600, color: B.amber, marginBottom: 8 }}>Closest achievable: {bestPossible}/100</div>
-                        <p style={{ fontSize: 14, color: B.muted, margin: "0 0 12px", lineHeight: 1.55 }}>
-                          The target of {goalTarget} requires more than these changes alone. Your best path reaches {bestPossible}, which is {goalTarget - bestPossible} points short. A reassessment after implementing changes may close the remaining gap.
-                        </p>
-                        {bestMoveSet.map((m, i) => (
-                          <div key={m.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: i < bestMoveSet.length - 1 ? `1px solid ${B.stone}` : "none" }}>
-                            <span style={{ fontSize: 14, fontWeight: 500, color: B.navy }}>{m.label}</span>
-                            <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{m.lift}</span>
-                          </div>
-                        ))}
-                      </div>
-                    );
-                  })()}
-                </div>
-
-                {/* SCENARIO RESULT — visual bar + detail */}
+                {/* SCENARIO RESULT — clean, answers "what would this do for me?" */}
                 {effectivePreset && aPO && (
-                  <div style={{ padding: mobile ? "28px 20px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: 14, marginBottom: 16, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
-                    <div style={{ fontSize: 16, fontWeight: 600, color: B.navy, marginBottom: 12 }}>{aPO.label}</div>
-
-                    {/* Visual before/after bar */}
-                    <div style={{ marginBottom: 16 }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
-                        <div style={{ flex: 1, height: 8, borderRadius: 4, backgroundColor: B.stone, position: "relative", overflow: "hidden" }}>
-                          <div style={{ position: "absolute", top: 0, left: 0, height: "100%", borderRadius: 4, backgroundColor: bandColor(dScore), width: `${dScore}%`, opacity: 0.3 }} />
-                          <div style={{ position: "absolute", top: 0, left: 0, height: "100%", borderRadius: 4, backgroundColor: sDelta >= 0 ? B.teal : B.red, width: `${sResult.overall_score}%`, transition: "width 400ms ease" }} />
-                        </div>
-                      </div>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: mobile ? "wrap" as const : "nowrap" as const, gap: mobile ? 4 : 0 }}>
-                        <span style={{ fontSize: 13, color: B.taupe }}>Current: <span style={{ fontWeight: 600, fontFamily: mono, color: B.navy }}>{dScore}</span></span>
-                        <span style={{ fontSize: 20, fontWeight: 300, fontFamily: mono, color: sDelta >= 0 ? B.teal : B.red }}>{sResult.overall_score}</span>
-                        <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: sDelta >= 0 ? B.teal : B.red }}>{sDelta > 0 ? "+" : ""}{sDelta} pts</span>
-                      </div>
-                      {sResult.band !== dBand && <div style={{ fontSize: 13, fontWeight: 600, color: B.purple, marginTop: 4 }}>Band shift: {dBand} → {sResult.band}</div>}
-                    </div>
-
-                    {/* Save path */}
-                    {savedScenarios.length < 3 && sDelta !== 0 && (
-                      <button onClick={() => setSavedScenarios(prev => [...prev, { name: aPO.label, score: sResult.overall_score, band: sResult.band, lift: sDelta }])}
-                        style={{ fontSize: 13, fontWeight: 600, color: B.teal, backgroundColor: `${B.teal}06`, border: `1px solid ${B.teal}18`, borderRadius: 8, padding: "11px 20px", cursor: "pointer", minHeight: 44, marginBottom: 16, width: mobile ? "100%" : "auto" }}>
-                        Save Path ({3 - savedScenarios.length} left)
-                      </button>
-                    )}
-
-                    {/* Timeline — short milestone summaries */}
-                    {sTL.length > 0 && (
-                      <div>
-                        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 12 }}>PROJECTED TRAJECTORY</div>
-                        <div style={{ display: "flex", gap: 8, flexDirection: mobile ? "column" : "row" }}>
-                          <div style={{ flex: mobile ? 1 : 0, padding: "12px 16px", border: `1px solid ${B.stone}`, borderRadius: 8, textAlign: "center" as const, minHeight: 48 }}>
-                            <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe }}>NOW</div>
-                            <div style={{ fontSize: 20, fontWeight: 300, fontFamily: mono, color: B.navy }}>{dScore}</div>
-                          </div>
-                          {sTL.map(pt => {
-                            const milestone = pt.delta > 0
-                              ? pt.month <= 3 ? "Early momentum" : pt.month <= 6 ? "Changes taking hold" : "Fully embedded"
-                              : pt.month <= 3 ? "Immediate impact" : pt.month <= 6 ? "Full damage" : "New baseline";
-                            return (
-                              <div key={pt.month} style={{ flex: 1, padding: "12px 16px", border: `1px solid ${B.stone}`, borderRadius: 8, textAlign: "center" as const, minHeight: 48 }}>
-                                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe }}>{pt.label.toUpperCase()}</div>
-                                <div style={{ fontSize: 20, fontWeight: 300, fontFamily: mono, color: pt.delta >= 0 ? B.teal : B.red }}>{pt.score}</div>
-                                <div style={{ fontSize: 12, color: B.muted, marginTop: 4 }}>{milestone}</div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* COMPARE PATHS — with context */}
-                {savedScenarios.length > 0 && (
-                  <div style={{ padding: mobile ? "24px 16px" : "24px 28px", border: `1px solid ${B.stone}`, borderRadius: 12 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-                      <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: B.purple }}>COMPARE PATHS</div>
-                      <button onClick={() => setSavedScenarios([])} style={{ fontSize: 14, color: B.muted, background: "none", border: "none", cursor: "pointer", textDecoration: "underline", minHeight: 44 }}>Clear</button>
-                    </div>
-                    <div style={{ display: "flex", gap: 12 }} className="d-compare">
-                      <div style={{ flex: 1, padding: "20px 16px", borderRadius: 12, border: `1px solid ${B.stone}`, textAlign: "center" as const }}>
-                        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 8 }}>CURRENT</div>
-                        <div style={{ fontSize: 28, fontWeight: 300, fontFamily: mono, color: B.navy }}>{dScore}</div>
-                        <div style={{ fontSize: 13, fontWeight: 600, color: bandColor(dScore), marginTop: 4 }}>{dBand}</div>
-                      </div>
-                      {savedScenarios.map((s, i) => (
-                        <div key={i} style={{ flex: 1, padding: "20px 16px", borderRadius: 12, border: `1px solid ${B.teal}18`, backgroundColor: `${B.teal}03`, textAlign: "center" as const, position: "relative" }}>
-                          <button onClick={() => setSavedScenarios(prev => prev.filter((_, j) => j !== i))} style={{ position: "absolute", top: 4, right: 4, fontSize: 16, color: B.taupe, background: "none", border: "none", cursor: "pointer", minHeight: 44, minWidth: 44, display: "flex", alignItems: "center", justifyContent: "center" }}>&times;</button>
-                          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 8 }}>PATH {String.fromCharCode(65 + i)}</div>
-                          <div style={{ fontSize: 28, fontWeight: 300, fontFamily: mono, color: s.lift >= 0 ? B.teal : B.red }}>{s.score}</div>
-                          <div style={{ fontSize: 13, fontWeight: 600, color: bandColor(s.score), marginTop: 4 }}>{s.band}</div>
-                          <div style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: s.lift >= 0 ? B.teal : B.red, marginTop: 8 }}>{s.lift > 0 ? "+" : ""}{s.lift}</div>
-                          <div style={{ fontSize: 13, color: B.navy, marginTop: 4, fontWeight: 500 }}>{s.name}</div>
-                        </div>
-                      ))}
-                    </div>
-                    {savedScenarios.length >= 2 && (() => {
-                      const best = savedScenarios.reduce((a, b) => a.score > b.score ? a : b);
-                      return (
-                        <p style={{ fontSize: 13, color: B.teal, fontWeight: 500, marginTop: 12, textAlign: "center" as const }}>
-                          Best path: <span style={{ fontWeight: 600 }}>{best.name}</span> — reaches {best.score}/100 ({best.band})
-                        </p>
-                      );
-                    })()}
+                  <div style={{ padding: mobile ? "22px 20px" : "24px 28px", borderRadius: 16, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${sDelta >= 0 ? B.teal : B.red}` }}>
+                    <p style={{ fontSize: 16, fontWeight: 500, color: B.navy, margin: "0 0 8px", lineHeight: 1.4 }}>
+                      {sDelta > 0
+                        ? `If you ${aPO.label.toLowerCase()}, your score goes from ${dScore} to ${sResult.overall_score}.`
+                        : sDelta < 0
+                        ? `If ${aPO.label.toLowerCase().replace("lose ", "you lose ").replace("can't", "you can't")}, your score drops from ${dScore} to ${sResult.overall_score}.`
+                        : `${aPO.label} would not change your score.`
+                      }
+                    </p>
+                    {sResult.band !== dBand && <p style={{ fontSize: 14, fontWeight: 500, color: sDelta >= 0 ? B.teal : B.red, margin: "0 0 6px" }}>That moves you to {sResult.band}.</p>}
+                    <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.55 }}>{aPO.description}</p>
                   </div>
                 )}
               </div>
@@ -1910,21 +1694,7 @@ function DashboardContent() {
             </section>
           )}
 
-          {/* Assessment timing */}
-          <div style={{ display: "flex", gap: 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
-            <div style={{ flex: 1, padding: mobile ? "20px 16px" : "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface }}>
-              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: daysSince > 60 ? "#C0392B" : B.taupe, marginBottom: 8 }}>{daysSince > 0 ? `${daysSince} DAYS SINCE ASSESSMENT` : "ASSESSED TODAY"}</div>
-              <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>
-                {daysSince === 0 ? "Start with your #1 priority above." : daysSince <= 14 ? "Focus on the first phase of your roadmap." : daysSince <= 45 ? "You should be in Week 3–4. Made any changes yet?" : daysSince <= 90 ? "If you followed your roadmap, you may be ready to reassess." : "Over 90 days. A reassessment will show what has changed."}
-              </p>
-            </div>
-            <button onClick={() => { const s = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record"); if (!s) return; const b = new Blob([s], { type: "application/json" }); const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href = u; a.download = "runpayway-assessment.json"; a.click(); URL.revokeObjectURL(u); }}
-              style={{ fontSize: 14, fontWeight: 500, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 8, padding: mobile ? "12px 16px" : "12px 20px", cursor: "pointer", textAlign: "center" as const, minHeight: 44 }}>
-              Download Assessment Data
-            </button>
-          </div>
-
-          {/* ── YOUR STRUCTURE WHEN YOU WERE ASSESSED ── */}
+          {/* ── YOUR INCOME WHEN YOU WERE ASSESSED ── */}
           <section className="cc-section" style={{ marginTop: 24, padding: mobile ? "28px 20px" : "36px 40px", borderRadius: 20, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
               <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${B.purple}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -2196,10 +1966,9 @@ function DashboardContent() {
             );
           })()}
 
-          {/* FOOTER */}
+          {/* Minimal footer */}
           <div style={{ paddingTop: 32, textAlign: "center" }}>
-            <p style={{ fontSize: 14, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; PeopleStar Enterprises</p>
-            <p style={{ fontSize: 12, color: `${B.taupe}80`, margin: 0 }}>Fixed rules &middot; Same answers, same score &middot; Private by default</p>
+            <p style={{ fontSize: 12, color: `${B.taupe}60`, margin: 0 }}>RunPayway™ &middot; PeopleStar Enterprises</p>
           </div>
         </div>
       </div>
