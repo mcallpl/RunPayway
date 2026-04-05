@@ -1906,6 +1906,43 @@ function DashboardContent() {
 
           </PhaseSep>
 
+          {/* ── RECORD CARD ── */}
+          {(() => {
+            const recordId = (r?.record_id as string) || "";
+            const modelVer = (r?.model_version as string) || "RP-2.0";
+            const shortId = recordId.length > 8 ? recordId.slice(0, 8) : recordId;
+            const [copiedRecord, setCopiedRecord] = useState(false);
+            const copyId = () => { if (recordId) { navigator.clipboard.writeText(recordId); setCopiedRecord(true); setTimeout(() => setCopiedRecord(false), 2000); } };
+            if (!recordId || recordId.startsWith("sim-")) return null;
+            return (
+              <div style={{ marginTop: 32, padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 14, backgroundColor: "#FAFAFA", border: `1px solid ${B.stone}`, textAlign: "center" }}>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 12 }}>ASSESSMENT RECORD</div>
+                <div style={{ display: "flex", justifyContent: "center", gap: mobile ? 16 : 32, flexWrap: "wrap" as const, marginBottom: 14 }}>
+                  {[
+                    { label: "Score", value: String(dScore), color: bandColor(dScore) },
+                    { label: "Band", value: dBand.replace(" Stability", ""), color: bandColor(dScore) },
+                    { label: "Model", value: modelVer, color: B.navy },
+                    { label: "Record", value: shortId, color: B.purple },
+                  ].map((f, i) => (
+                    <div key={i}>
+                      <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 2 }}>{f.label.toUpperCase()}</div>
+                      <div style={{ fontSize: 15, fontWeight: 600, fontFamily: mono, color: f.color }}>{f.value}</div>
+                    </div>
+                  ))}
+                  {assessedDate && (
+                    <div>
+                      <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 2 }}>ASSESSED</div>
+                      <div style={{ fontSize: 14, fontWeight: 500, color: B.navy }}>{assessedDate}</div>
+                    </div>
+                  )}
+                </div>
+                <button onClick={copyId} style={{ fontSize: 12, fontWeight: 600, color: copiedRecord ? B.teal : B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 6, padding: "6px 14px", cursor: "pointer", minHeight: 32, transition: "color 150ms" }}>
+                  {copiedRecord ? "Record ID copied" : "Copy Record ID"}
+                </button>
+              </div>
+            );
+          })()}
+
           {/* FOOTER */}
           <div style={{ paddingTop: 32, textAlign: "center" }}>
             <p style={{ fontSize: 14, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; PeopleStar Enterprises</p>
