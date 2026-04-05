@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import logoWhite from "../../../public/runpayway-logo-white.png";
 
 /* ================================================================== */
 /* UTILITIES                                                           */
@@ -220,6 +222,11 @@ function HeroSection() {
             <div style={{ backgroundColor: C.navy, borderRadius: 20, padding: m ? "28px 24px" : "32px 28px", position: "relative", overflow: "hidden" }}>
               {/* Subtle glow */}
               <div style={{ position: "absolute", top: "-30%", right: "-20%", width: 200, height: 200, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}12 0%, transparent 70%)`, pointerEvents: "none" }} />
+
+              {/* Logo */}
+              <div style={{ marginBottom: 16, position: "relative", zIndex: 1 }}>
+                <Image src={logoWhite} alt="RunPayway" height={18} style={{ opacity: 0.5 }} />
+              </div>
 
               {/* Score ring + number */}
               <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 20, position: "relative", zIndex: 1 }}>
