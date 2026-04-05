@@ -110,10 +110,10 @@ function PricingCards() {
             <div style={{ fontSize: 14, color: light, marginBottom: 28 }}>always free</div>
             <div style={{ marginBottom: 28, flex: 1, color: muted }}>
               {check("Score (0\u2013100)")}
-              {check("Stability band classification")}
-              {check("Primary structural constraint")}
-              {check("Distance to next band")}
-              {check("Industry percentile benchmark")}
+              {check("Stability level")}
+              {check("Your biggest income risk")}
+              {check("How close you are to the next level")}
+              {check("How you compare to your industry")}
             </div>
             <Link href="/begin" style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 12, backgroundColor: C.white, color: C.navy, border: `1px solid ${C.navy}`, fontSize: 15, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms" }}
               onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#f5f4f1"; }}
@@ -139,12 +139,12 @@ function PricingCards() {
               See exactly why your score is what it is — and what changes it.
             </p>
             <div style={{ marginBottom: 28, flex: 1, color: muted }}>
-              {check("Negotiation Playbook — scripts with your data and objection handlers")}
-              {check("12-week roadmap with dynamic milestones from your numbers")}
-              {check("PressureMap\u2122 — income zones and structural vulnerability")}
-              {check("What-If Simulator and Goal Mode")}
-              {check("Weekly priority briefing with share and copy")}
-              {check("Lifetime Command Center access")}
+              {check("Negotiation Playbook — word-for-word scripts built from your data")}
+              {check("12-week roadmap with milestones based on your numbers")}
+              {check("PressureMap\u2122 — see which income stops, recurs, or is protected")}
+              {check("What-If Simulator — model changes before you make them")}
+              {check("Weekly priority briefing — your #1 action this week")}
+              {check("Lifetime access to all your tools")}
             </div>
             <a href={STRIPE} style={{
               display: "flex", alignItems: "center", justifyContent: "center",
@@ -174,12 +174,12 @@ function PricingCards() {
               <span style={{ fontSize: 48, fontWeight: 600, fontFamily: mono, color: C.sand, lineHeight: 1 }}>$149</span>
               <span style={{ fontSize: 14, color: "rgba(244,241,234,0.40)", marginLeft: 8 }}>/year</span>
             </div>
-            <div style={{ fontSize: 15, color: "rgba(244,241,234,0.45)", marginBottom: 24 }}>Track how your structure evolves over time.</div>
+            <div style={{ fontSize: 15, color: "rgba(244,241,234,0.45)", marginBottom: 24 }}>Track how your income stability changes over time.</div>
             <div style={{ marginBottom: 28, flex: 1, color: "rgba(244,241,234,0.60)" }}>
               {check("3 full assessments within 12 months", C.teal)}
               {check("Score history timeline", C.teal)}
-              {check("Factor-level change tracking", C.teal)}
-              {check("Benchmark evolution over time", C.teal)}
+              {check("See what changed in each area", C.teal)}
+              {check("Track how you compare over time", C.teal)}
               {check("Monitoring portal access", C.teal)}
             </div>
             <Link href={STRIPE_ANNUAL} style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: 15, fontWeight: 600, textDecoration: "none", transition: "transform 200ms, box-shadow 200ms", boxShadow: "0 2px 8px rgba(244,241,234,0.10)" }}

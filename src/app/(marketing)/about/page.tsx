@@ -65,10 +65,10 @@ function HeroSection() {
       <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
         <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>About</div>
         <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.03em", color: C.navy, marginBottom: 16, ...fadeIn(visible, 60) }}>
-          The standard for measuring{m ? " " : <br />}income structure.
+          The standard for measuring{m ? " " : <br />}income stability.
         </h1>
         <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto", ...fadeIn(visible, 120) }}>
-          RunPayway&#8482; produces the Income Stability Score&#8482; — a deterministic structural assessment of how income holds under change. Built for anyone whose income is not structurally guaranteed.
+          RunPayway&#8482; produces the Income Stability Score&#8482; — a measurement of how well your income holds up when things change. Built for anyone whose paycheck isn&#8217;t automatically guaranteed.
         </p>
       </div>
     </header>
@@ -96,9 +96,9 @@ function WhatWhoWhy() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6M15 19v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6M9 13V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v8" /></svg>
             </div>
             <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 10 }}>WHAT WE DO</div>
-            <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.3 }}>Measure the structural durability of income.</div>
+            <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.3 }}>Measure how well your income holds up.</div>
             <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>
-              RunPayway™ evaluates six structural dimensions of how income is built — not how much you earn. The result is a score from 0 to 100 that reflects how your income holds under disruption.
+              RunPayway™ evaluates six areas of how your income is built — not how much you earn. The result is a score from 0 to 100 that shows how your income handles disruption.
             </p>
           </div>
 
@@ -109,7 +109,7 @@ function WhatWhoWhy() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
             </div>
             <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.purple, marginBottom: 10 }}>WHO IT&#8217;S FOR</div>
-            <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.3 }}>Anyone whose income is not guaranteed by structure.</div>
+            <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.3 }}>Anyone whose income isn&#8217;t automatically guaranteed.</div>
             <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>
               Consultants, freelancers, business owners, commission earners, contractors, and professionals in any industry where income depends on ongoing decisions — not permanent contracts.
             </p>
@@ -124,7 +124,7 @@ function WhatWhoWhy() {
             <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.navy, marginBottom: 10 }}>WHY IT EXISTS</div>
             <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.3 }}>Nothing else measures this.</div>
             <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>
-              Credit scores measure borrowing history. Income verification confirms past earnings. But nothing measured the structural durability of how income is built — until now.
+              Credit scores measure borrowing history. Income verification confirms past earnings. But nothing measured how well your income is actually built to last — until now.
             </p>
           </div>
         </div>
@@ -153,7 +153,7 @@ function TheSystem() {
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 16, marginBottom: m ? 32 : 48, ...fadeIn(visible, 100) }}>
           {[
-            { title: "Deterministic", desc: "Same inputs always produce the same score. No randomness. No variation.", icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 0 0 4.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 0 1-15.357-2m15.357 2H15", color: C.teal },
+            { title: "Consistent", desc: "Same answers always produce the same score. No randomness. No variation.", icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 0 0 4.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 0 1-15.357-2m15.357 2H15", color: C.teal },
             { title: "Versioned", desc: "Every model version is locked. If the rules change, the model increments.", icon: "M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 0 0-8 0v4h8z", color: C.purple },
             { title: "Private", desc: "No bank connection. No credit pull. Your data is never sold or shared.", icon: "M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z", color: C.teal },
             { title: "No AI in scoring", desc: "Fixed rules produce fixed results. No machine learning. No subjective judgment.", icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", color: C.purple },
@@ -192,7 +192,7 @@ function FinalCta() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 56 : 96, paddingBottom: m ? 64 : 112, paddingLeft: px(m), paddingRight: px(m), borderTop: "1px solid rgba(244,241,234,0.04)" }}>
       <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center" }}>
         <h2 style={{ fontSize: m ? 26 : 40, fontWeight: 500, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.sand, marginBottom: 16, ...fadeIn(visible) }}>
-          Now apply the system{m ? " " : <br />}to your own structure.
+          Now see how your income measures up.
         </h2>
         <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 36, ...fadeIn(visible, 60) }}>
           Under 2 minutes. Every result generated from your inputs.

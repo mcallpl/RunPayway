@@ -176,13 +176,13 @@ const INDUSTRIES = [
   { key: "sales", name: "Sales / Brokerage", avg: 31, constraint: "Nothing is guaranteed past this quarter", risk: "Last quarter was strong. But your structure doesn't carry that forward. Next quarter starts from zero unless you close again.", cta: "Stress-test my income structure" },
   { key: "creative", name: "Freelance / Creative", avg: 27, constraint: "Every month starts at zero", risk: "No project means no income. No retainer means no floor. You are re-earning your entire livelihood every 30 days, and the pipeline between projects is silence.", cta: "Measure my income stability" },
   { key: "construction", name: "Construction / Trades", avg: 29, constraint: "The next job isn't signed yet", risk: "The current project is solid. The next one is a handshake. Your income has no structural buffer between jobs — when one ends, the clock starts.", cta: "Measure my income stability" },
-  { key: "media", name: "Media / Entertainment", avg: 28, constraint: "Between projects, income is zero", risk: "Strong projects create strong months. But between them, your income is not low — it is zero. No carry. No residual. Every engagement starts from scratch.", cta: "Run my structural assessment" },
+  { key: "media", name: "Media / Entertainment", avg: 28, constraint: "Between projects, income is zero", risk: "Strong projects create strong months. But between them, your income is not low — it is zero. No carry. No residual. Every engagement starts from scratch.", cta: "Run my assessment" },
   { key: "insurance", name: "Insurance", avg: 43, constraint: "New business masks renewal erosion", risk: "Strong production quarters feel like growth. But if renewals are quietly slipping underneath, your structure is compounding backwards — and you won't see it until new business slows.", cta: "Stress-test my income structure" },
   { key: "legal", name: "Legal Services", avg: 40, constraint: "Three matters carry the practice", risk: "Count your top three matters. They likely carry 60-70% of your billings. When one concludes, the gap doesn't build gradually — it arrives all at once.", cta: "Measure my income stability" },
   { key: "technology", name: "Technology", avg: 42, constraint: "One employer, one system, one decision", risk: "Your compensation feels stable because the system around it is stable. But it's one layoff, one reorg, one equity reset away from a total structural shift — and you have no second source.", cta: "Measure my income stability" },
   { key: "finance", name: "Finance / Banking", avg: 44, constraint: "The variable component is the one that matters", risk: "Base salary creates a floor. But the bonus, the production credit, the performance component — that's where the real earnings live. And that's the part that can vanish in one cycle.", cta: "Stress-test my income structure" },
   { key: "healthcare", name: "Healthcare", avg: 46, constraint: "One system, no alternatives", risk: "Steady pay from one institution feels safe until the institution restructures. When your sole employer changes compensation models, hours, or staffing — you have no structural alternative.", cta: "Measure my income stability" },
-  { key: "fitness", name: "Fitness / Wellness", avg: 30, constraint: "Clients cancel. Revenue disappears the same day.", risk: "Your income is a collection of individual decisions that can reverse without notice. One slow month, one seasonal dip, one competitor opens nearby — and the calendar empties faster than you can fill it.", cta: "Run my structural assessment" },
+  { key: "fitness", name: "Fitness / Wellness", avg: 30, constraint: "Clients cancel. Revenue disappears the same day.", risk: "Your income is a collection of individual decisions that can reverse without notice. One slow month, one seasonal dip, one competitor opens nearby — and the calendar empties faster than you can fill it.", cta: "Run my assessment" },
 ];
 
 
@@ -267,8 +267,8 @@ function HeroSection() {
 
               {/* Constraint hint */}
               <div style={{ padding: "10px 12px", borderRadius: 8, borderLeft: `2px solid #E57373`, backgroundColor: "rgba(255,255,255,0.02)", position: "relative", zIndex: 1 }}>
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", color: "#E57373", marginBottom: 3 }}>ROOT CONSTRAINT</div>
-                <div style={{ fontSize: 13, color: "rgba(244,241,234,0.55)", lineHeight: 1.4 }}>Income concentration — one source carries most of the structure.</div>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.06em", color: "#E57373", marginBottom: 3 }}>BIGGEST RISK</div>
+                <div style={{ fontSize: 13, color: "rgba(244,241,234,0.55)", lineHeight: 1.4 }}>Too much income from one source — if it stops, most of your earnings stop with it.</div>
               </div>
 
               {/* Example label */}
@@ -282,7 +282,7 @@ function HeroSection() {
         {/* Credibility strip */}
         <div style={{ marginTop: m ? 36 : 56, paddingTop: m ? 20 : 28, borderTop: `1px solid rgba(14,26,43,0.05)`, textAlign: "center", ...fadeIn(visible, 400) }}>
           <p style={{ fontSize: 13, fontWeight: 500, color: light, letterSpacing: "0.02em" }}>
-            Model RP-2.0 &bull; 6 structural dimensions &bull; Deterministic output &bull; No bank connection
+            Model RP-2.0 &bull; 6 dimensions scored &bull; Same answers, same score &bull; No bank connection
           </p>
         </div>
       </div>
@@ -310,7 +310,7 @@ function IndustrySelector() {
         <div style={{ textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>EXPLORE</div>
           <h2 style={{ fontSize: m ? 24 : 34, fontWeight: 500, lineHeight: 1.2, letterSpacing: "-0.02em", color: C.navy }}>
-            See what your industry&#8217;s income structure looks like.
+            See what income stability looks like in your industry.
           </h2>
         </div>
 
@@ -339,7 +339,7 @@ function IndustrySelector() {
         {/* Prompt when nothing selected */}
         {!selected && (
           <div style={{ textAlign: "center", marginTop: m ? 24 : 36, ...fadeIn(visible, 200) }}>
-            <p style={{ fontSize: 15, color: light }}>The assessment works for <strong style={{ color: C.navy }}>any income structure</strong> — these are examples.</p>
+            <p style={{ fontSize: 15, color: light }}>The assessment works for <strong style={{ color: C.navy }}>any type of income</strong> — these are examples.</p>
           </div>
         )}
 
@@ -415,7 +415,7 @@ function SameIncomeProof() {
               { pct: 40, color: C.teal, label: "Protected" },
             ]} height={16} />
             <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, margin: "16px 0 24px" }}>
-              5 clients, none over 30%. 40% recurring. 3 months secured forward. Structure absorbs disruption.
+              5 clients, none over 30%. 40% recurring. 3 months secured forward. Built to handle disruptions.
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 0 0", borderTop: `1px solid rgba(14,26,43,0.05)` }}>
               <div style={{ position: "relative", width: 52, height: 52, flexShrink: 0 }}>
@@ -434,8 +434,8 @@ function SameIncomeProof() {
 
         {/* Self-reflection prompt */}
         <div style={{ textAlign: "center", marginTop: m ? 48 : 80, ...fadeIn(visible, 220) }}>
-          <p style={{ fontSize: m ? 20 : 24, fontWeight: 500, color: C.navy, marginBottom: 8 }}>Which structure looks more like yours?</p>
-          <p style={{ fontSize: 16, color: light, lineHeight: 1.6 }}>The income is the same. The structure is not. That&#8217;s what RunPayway measures.</p>
+          <p style={{ fontSize: m ? 20 : 24, fontWeight: 500, color: C.navy, marginBottom: 8 }}>Which one looks more like yours?</p>
+          <p style={{ fontSize: 16, color: light, lineHeight: 1.6 }}>The income is the same. How it&#8217;s built is not. That&#8217;s what RunPayway measures.</p>
         </div>
       </div>
     </section>
@@ -463,7 +463,7 @@ function CommandCenterPreview() {
             Your score is the starting point.{m ? " " : <br />}This is what happens next.
           </h2>
           <p style={{ fontSize: m ? 16 : 18, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
-            Every tool runs on your actual structure — personalized to your industry, your constraint, and your numbers.
+            Every tool uses your actual numbers — personalized to your industry, your biggest risk, and your goals.
           </p>
         </div>
 
@@ -612,10 +612,10 @@ function TheSystemAndCta() {
         <div style={{ textAlign: "center", marginBottom: m ? 48 : 72, ...fadeIn(visible) }}>
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 16 }}>THE SYSTEM</div>
           <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 500, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.sand, marginBottom: 20 }}>
-            Not a budget. Not a forecast.{m ? " " : <br />}A structural measurement.
+            Not a budget. Not a forecast.{m ? " " : <br />}A measurement of how your income is built.
           </h2>
           <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.7, maxWidth: 560, margin: "0 auto" }}>
-            RunPayway™ evaluates 6 fixed structural dimensions of your income. A deterministic model. Same inputs always produce the same score.
+            RunPayway™ evaluates 6 dimensions of how your income is built. Fixed rules. Same answers always produce the same score.
           </p>
         </div>
 
@@ -624,9 +624,9 @@ function TheSystemAndCta() {
           {/* Left — 3 steps (context comes first) */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column" as const, gap: 16, marginBottom: m ? 24 : 0 }}>
             {[
-              { num: "01", title: "Describe your structure", desc: "Sources, contracts, concentration, and dependencies. Under 2 minutes." },
-              { num: "02", title: "6 fixed dimensions scored", desc: "Persistence, concentration, diversification, forward visibility, variability, labor dependence." },
-              { num: "03", title: "One standardized result", desc: "Score 0\u2013100. Band classification. Primary constraint. Recommended direction." },
+              { num: "01", title: "Describe how you earn", desc: "Your income sources, contracts, how spread out they are, and what you depend on. Under 2 minutes." },
+              { num: "02", title: "6 dimensions scored", desc: "How much repeats, how spread out it is, how far ahead you can see, how steady it is, and how much depends on you." },
+              { num: "03", title: "One clear result", desc: "Score from 0\u2013100. Stability level. Your biggest risk. What to focus on next." },
             ].map((s, i) => (
               <div key={i} style={{ padding: m ? "18px 16px" : "20px 20px", borderRadius: 12, backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", flex: 1, display: "flex", flexDirection: "column" as const, justifyContent: "center" }}>
                 <div style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: C.teal, marginBottom: 8 }}>{s.num}</div>
@@ -637,13 +637,13 @@ function TheSystemAndCta() {
           </div>
           {/* Right — animated 6 dimensions (proof) */}
           <div style={{ flex: 1, padding: m ? "24px 16px" : "28px 24px", borderRadius: 14, backgroundColor: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 20 }}>6 STRUCTURAL DIMENSIONS</div>
-            <DimensionBar label="Income Persistence" value={45} color={C.teal} visible={visible} delay={300} />
-            <DimensionBar label="Source Concentration" value={72} color="#D4A843" visible={visible} delay={450} />
-            <DimensionBar label="Source Diversity" value={33} color="#E57373" visible={visible} delay={600} />
-            <DimensionBar label="Forward Visibility" value={28} color="#E57373" visible={visible} delay={750} />
-            <DimensionBar label="Income Variability" value={55} color={C.teal} visible={visible} delay={900} />
-            <DimensionBar label="Labor Dependence" value={85} color="#E57373" visible={visible} delay={1050} />
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 20 }}>6 DIMENSIONS</div>
+            <DimensionBar label="Income That Repeats" value={45} color={C.teal} visible={visible} delay={300} />
+            <DimensionBar label="Reliance on Top Source" value={72} color="#D4A843" visible={visible} delay={450} />
+            <DimensionBar label="Number of Sources" value={33} color="#E57373" visible={visible} delay={600} />
+            <DimensionBar label="Income Locked In Ahead" value={28} color="#E57373" visible={visible} delay={750} />
+            <DimensionBar label="Month-to-Month Steadiness" value={55} color={C.teal} visible={visible} delay={900} />
+            <DimensionBar label="Income Without You Working" value={85} color="#E57373" visible={visible} delay={1050} />
             <div style={{ marginTop: 16, paddingTop: 14, borderTop: "1px solid rgba(255,255,255,0.06)", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
               <span style={{ fontSize: 12, color: "rgba(244,241,234,0.50)" }}>Composite score</span>
               <span style={{ fontSize: 24, fontWeight: 300, fontFamily: mono, color: C.sand }}>{visible ? "42" : "\u2014"}</span>
@@ -658,7 +658,7 @@ function TheSystemAndCta() {
             {[
               { title: "Negotiation Playbook", desc: "Word-for-word scripts with your data, objection handlers, and success signals." },
               { title: "12-Week Roadmap", desc: "Visual timeline with dynamic milestones from your actual numbers." },
-              { title: "PressureMap\u2122", desc: "Your income broken into three zones — what stops, what recurs, what is protected." },
+              { title: "PressureMap\u2122", desc: "Your income shown in three zones — what stops if you stop, what keeps coming, and what\u2019s protected." },
               { title: "What-If Simulator", desc: "Model changes before you commit. See the exact score impact." },
             ].map((t, i) => (
               <div key={i} style={{ padding: m ? "16px 14px" : "18px 20px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.06)", backgroundColor: "rgba(255,255,255,0.02)" }}>
@@ -688,7 +688,7 @@ function TheSystemAndCta() {
               { title: "No bank connection", desc: "We never access your accounts." },
               { title: "No credit pull", desc: "Zero impact on your credit." },
               { title: "Private by default", desc: "Your data is never sold." },
-              { title: "Deterministic", desc: "Same inputs \u2192 same score." },
+              { title: "Consistent", desc: "Same answers \u2192 same score." },
             ].map((t, i) => (
               <div key={i} style={{ textAlign: "center", padding: m ? "14px 8px" : "16px 12px", borderRadius: 10, backgroundColor: "rgba(255,255,255,0.02)" }}>
                 <div style={{ fontSize: 13, fontWeight: 600, color: "rgba(244,241,234,0.55)", marginBottom: 2 }}>{t.title}</div>
@@ -743,7 +743,7 @@ function StickyMobileCta() {
 const PRODUCT_SCHEMA = {
   "@context": "https://schema.org", "@type": "Product",
   name: "RunPayway™ Income Stability Score™",
-  description: "A structural assessment that measures how stable your income structure is \u2014 not how much you make.",
+  description: "An assessment that measures how stable your income is \u2014 not how much you make.",
   brand: { "@type": "Brand", name: "RunPayway™" },
   offers: [
     { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Income Stability Score™", description: "Score, band, primary constraint, and one recommended direction." },

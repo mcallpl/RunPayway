@@ -68,7 +68,7 @@ function HeroSection() {
           Fixed rules. Versioned logic.{m ? " " : <br />}Every result reproducible.
         </h1>
         <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto", ...fadeIn(visible, 120) }}>
-          The Income Stability Score&#8482; is produced by a deterministic model. No AI. No subjective judgment. Same inputs always produce the same score.
+          The Income Stability Score&#8482; is produced by fixed rules. No AI. No subjective judgment. Same answers always produce the same score.
         </p>
       </div>
     </header>
@@ -90,14 +90,14 @@ function WhatMakesItDifferent() {
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 12 }}>What makes this different from other assessments.</h2>
           <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 560, margin: "0 auto" }}>
-            Most financial tools measure what happened. RunPayway™ measures how your income is built — and whether that structure survives change.
+            Most financial tools measure what happened. RunPayway™ measures how your income is built — and whether it holds up when things change.
           </p>
         </div>
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20, marginBottom: m ? 48 : 72, ...fadeIn(visible, 100) }}>
           {[
             { title: "Not a credit score", desc: "Credit scores measure borrowing history. This measures how income holds under disruption. Different inputs. Different purpose.", icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", color: C.teal },
-            { title: "Not a forecast", desc: "The model does not predict what will happen. It measures how your current structure would respond if conditions changed today.", icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6", color: C.purple },
+            { title: "Not a forecast", desc: "The model does not predict what will happen. It measures how your current income would hold up if conditions changed today.", icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6", color: C.purple },
             { title: "Not subjective", desc: "No advisor, no algorithm, no interpretation layer touches the score. Fixed rules produce fixed results. Every time.", icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 0 0 4.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 0 1-15.357-2m15.357 2H15", color: C.navy },
           ].map((item, i) => (
             <div key={i} style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 28, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
@@ -140,10 +140,10 @@ function WhatMakesItDifferent() {
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #9B2C2C, #92640A, #2B5EA7, ${C.teal})` }} />
             <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 20 }}>FOUR BANDS &bull; FIXED THRESHOLDS</div>
             {[
-              { range: "0\u201329", label: "Limited", desc: "A single disruption can materially change the structure.", color: "#9B2C2C" },
-              { range: "30\u201349", label: "Developing", desc: "Not yet structurally protected.", color: "#92640A" },
-              { range: "50\u201374", label: "Established", desc: "Absorbs most common disruptions.", color: "#2B5EA7" },
-              { range: "75\u2013100", label: "High", desc: "Resilient under sustained pressure.", color: C.teal },
+              { range: "0\u201329", label: "Limited", desc: "One disruption could seriously impact your income.", color: "#9B2C2C" },
+              { range: "30\u201349", label: "Developing", desc: "Your income isn\u2019t protected yet.", color: "#92640A" },
+              { range: "50\u201374", label: "Established", desc: "Can handle most common disruptions.", color: "#2B5EA7" },
+              { range: "75\u2013100", label: "High", desc: "Holds up even under sustained pressure.", color: C.teal },
             ].map((b, i) => (
               <div key={i} style={{ display: "flex", gap: m ? 10 : 14, alignItems: "flex-start", padding: m ? "10px 12px" : "12px 14px", borderRadius: 10, backgroundColor: `${b.color}04`, marginBottom: i < 3 ? 8 : 0 }}>
                 <div style={{ width: 40, height: 24, borderRadius: 6, backgroundColor: `${b.color}12`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -193,7 +193,7 @@ function Integrity() {
             {[
               "Same inputs always produce the same score",
               "No human override in scoring",
-              "No contextual input alters the result",
+              "Nothing outside your answers affects the result",
               "Every assessment stamped with model version",
               "Scores under the same version are directly comparable",
             ].map((item, i) => (
@@ -214,7 +214,7 @@ function Integrity() {
             </div>
             {[
               "Access bank accounts or financial data",
-              "Use machine learning or probabilistic models in scoring",
+              "Use machine learning or probability-based models in scoring",
               "Apply subjective judgment at any stage",
               "Make predictive claims about future income",
               "Provide financial, legal, or investment advice",
@@ -251,10 +251,10 @@ function FinalCta() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 60 : 104, paddingBottom: m ? 64 : 112, paddingLeft: px(m), paddingRight: px(m), borderTop: "1px solid rgba(244,241,234,0.04)" }}>
       <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center" }}>
         <h2 style={{ fontSize: m ? 26 : 40, fontWeight: 500, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.sand, marginBottom: 16, ...fadeIn(visible) }}>
-          The model is fixed.{m ? " " : <br />}Now apply it to your own structure.
+          The rules are fixed.{m ? " " : <br />}Now see how your income measures up.
         </h2>
         <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 36, ...fadeIn(visible, 60) }}>
-          Under 2 minutes. Every result generated from your inputs using a versioned system.
+          Under 2 minutes. Same answers always give the same result.
         </p>
         <div style={{ ...fadeIn(visible, 120) }}>
           <Link href="/pricing" style={{
