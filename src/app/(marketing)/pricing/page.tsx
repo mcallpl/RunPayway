@@ -70,7 +70,7 @@ function HeroSection() {
           The score is free.{m ? " " : <br />}The diagnostic shows what to change.
         </h1>
         <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 480, margin: "0 auto", ...fadeIn(visible, 120) }}>
-          No bank connection. No credit pull. Full refund if it doesn&#8217;t reveal something new.
+          No bank connection. No credit pull. Full refund if it doesn't reveal something new.
         </p>
       </div>
     </header>
@@ -109,7 +109,7 @@ function PricingCards() {
             </div>
             <div style={{ fontSize: 14, color: light, marginBottom: 28 }}>always free</div>
             <div style={{ marginBottom: 28, flex: 1, color: muted }}>
-              {check("Score (0\u2013100)")}
+              {check("Score (0–100)")}
               {check("Stability level")}
               {check("Your biggest income risk")}
               {check("How close you are to the next level")}
@@ -160,7 +160,7 @@ function PricingCards() {
               Unlock Full Diagnostic &mdash; $69
             </a>
             <p style={{ fontSize: 14, fontWeight: 500, color: C.teal, textAlign: "center", marginTop: 14, marginBottom: 0 }}>
-              If it doesn&#8217;t reveal something new, full refund.
+              If it doesn't reveal something new, full refund.
             </p>
           </div>
 
@@ -219,12 +219,12 @@ function FaqSection() {
   const faqs = [
     { q: "What do I get for free?", a: "Your Income Stability Score\u2122 from 0 to 100, your stability band classification, the primary structural constraint suppressing your score, distance to the next band, and your industry percentile benchmark. Takes under 2 minutes. No account required." },
     { q: "What does the $69 Diagnostic unlock?", a: "Everything in the free score, plus: a Negotiation Playbook with word-for-word scripts personalized to your industry and constraint, objection handlers and success signals for each conversation, a 12-week roadmap with dynamic milestones calculated from your actual numbers, a PressureMap\u2122 showing your three income zones, a weekly priority briefing that updates every time you return, a What-If Simulator to model changes before you commit, and lifetime access to the Command Center." },
-    { q: "What is the Negotiation Playbook?", a: "The Playbook generates ready-to-use conversation scripts based on your specific constraint, industry, and structural data. Each script includes who to talk to, when to use it, the exact words to say, how to handle pushback, and what a successful response looks like. Your actual percentages are embedded in each script \u2014 not a template." },
-    { q: "How are the roadmap milestones personalized?", a: "Each milestone references your actual starting numbers. Instead of \u2018diversify your income,\u2019 you see \u2018Concentration drops from 72% to below 57%.\u2019 Score checkpoints at every stage show your projected score after each step. The milestones update as you complete steps." },
+    { q: "What is the Negotiation Playbook?", a: "The Playbook generates ready-to-use conversation scripts based on your specific constraint, industry, and structural data. Each script includes who to talk to, when to use it, the exact words to say, how to handle pushback, and what a successful response looks like. Your actual percentages are embedded in each script — not a template." },
+    { q: "How are the roadmap milestones personalized?", a: "Each milestone references your actual starting numbers. Instead of 'diversify your income,' you see 'Concentration drops from 72% to below 57%.' Score checkpoints at every stage show your projected score after each step. The milestones update as you complete steps." },
     { q: "What does Monitoring include?", a: "Three full assessments within 12 months. Score history timeline showing your progression. Factor-level delta tracking between assessments. Benchmark evolution against peers over time. Email and PIN authentication for your monitoring portal. Full Command Center access included with every assessment." },
-    { q: "How is the score calculated?", a: "A deterministic model evaluates six structural dimensions of your income: recurrence, concentration, diversification, forward visibility, earnings consistency, and labor independence. The model is fixed and versioned \u2014 same inputs always produce the same score. No AI, no machine learning, no subjective interpretation." },
+    { q: "How is the score calculated?", a: "A deterministic model evaluates six structural dimensions of your income: recurrence, concentration, diversification, forward visibility, earnings consistency, and labor independence. The model is fixed and versioned — same inputs always produce the same score. No AI, no machine learning, no subjective interpretation." },
     { q: "Do you access my bank accounts or credit?", a: "No. There is no bank connection, no credit pull, and no access to any financial accounts. Your score is calculated entirely from the structural information you provide. Your data is never sold or shared." },
-    { q: "What if the diagnostic doesn\u2019t reveal anything new?", a: "Full refund. If the diagnostic does not surface at least one structural insight you did not already know, you get your money back. No conditions, no questions." },
+    { q: "What if the diagnostic doesn't reveal anything new?", a: "Full refund. If the diagnostic does not surface at least one structural insight you did not already know, you get your money back. No conditions, no questions." },
   ];
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 60 : 104, paddingBottom: m ? 60 : 104, paddingLeft: px(m), paddingRight: px(m) }}>
@@ -273,7 +273,7 @@ function FinalCta() {
           Your income already has a structure.{m ? " " : <br />}Now you can see it clearly.
         </h2>
         <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 36, ...fadeIn(visible, 60) }}>
-          Start with the free score. Unlock the diagnostic when you&#8217;re ready to act.
+          Start with the free score. Unlock the diagnostic when you're ready to act.
         </p>
         <div style={{ ...fadeIn(visible, 140) }}>
           <Link href="/begin" style={{

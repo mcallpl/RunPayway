@@ -42,8 +42,8 @@ const border = "#E5E7EB";
 
 const sections = [
   { title: "1. Definitions", items: [
-    "\"Controller\" means the entity that determines the purposes and means of Processing Personal Data \u2014 the Customer.",
-    "\"Processor\" means the entity that Processes Personal Data on behalf of the Controller \u2014 PeopleStar Enterprises, LLC (RunPayway\u2122).",
+    "\"Controller\" means the entity that determines the purposes and means of Processing Personal Data — the Customer.",
+    "\"Processor\" means the entity that Processes Personal Data on behalf of the Controller — PeopleStar Enterprises, LLC (RunPayway\u2122).",
     "\"Personal Data\" means any information relating to an identified or identifiable natural person, as provided by the Customer through the RunPayway\u2122 platform.",
     "\"Processing\" means any operation performed on Personal Data, including collection, storage, use, scoring, and deletion.",
     "\"Sub-processor\" means any third party engaged by the Processor to Process Personal Data.",

@@ -205,7 +205,7 @@ function ReportWalkthrough() {
                   <div style={{ width: 5, height: 5, borderRadius: 2, backgroundColor: C.teal }} />
                   <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: C.teal }}>STRONGEST</span>
                 </div>
-                <p style={{ fontSize: 14, color: C.navy, margin: 0, lineHeight: 1.45 }}>Steady month to month — income doesn&#8217;t swing much.</p>
+                <p style={{ fontSize: 14, color: C.navy, margin: 0, lineHeight: 1.45 }}>Steady month to month — income doesn't swing much.</p>
               </div>
               <div style={{ flex: 1, padding: "12px 14px", borderRadius: 10, backgroundColor: "#FAFAFA" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
@@ -339,7 +339,7 @@ function WhatYouGetAndCta() {
           Your report will look like this —{m ? " " : <br />}but every number will be yours.
         </h2>
         <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 36, ...fadeIn(visible, 60) }}>
-          Start with the free score. Unlock the full diagnostic when you&#8217;re ready to act.
+          Start with the free score. Unlock the full diagnostic when you're ready to act.
         </p>
         <div style={{ ...fadeIn(visible, 120) }}>
           <Link href="/pricing" style={{

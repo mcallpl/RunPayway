@@ -65,7 +65,7 @@ function HeroSection() {
       <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
         <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>New Releases</div>
         <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.03em", color: C.navy, marginBottom: 16, ...fadeIn(visible, 60) }}>
-          What we&#8217;ve shipped.{m ? " " : <br />}What&#8217;s next.
+          What we've shipped.{m ? " " : <br />}What's next.
         </h1>
         <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto", ...fadeIn(visible, 120) }}>
           RunPayway&#8482; is actively developed. Every update is versioned, tested, and deployed without disrupting existing assessments.
@@ -233,7 +233,7 @@ function RoadmapSection() {
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 12 }}>Roadmap.</h2>
-          <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65 }}>What we&#8217;re building next. Timelines are targets, not promises.</p>
+          <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65 }}>What we're building next. Timelines are targets, not promises.</p>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" as const, gap: m ? 16 : 20, maxWidth: 800, margin: "0 auto" }}>

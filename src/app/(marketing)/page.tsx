@@ -191,7 +191,7 @@ function HeroSection() {
           {/* Left — headline */}
           <div style={{ maxWidth: 520, textAlign: m ? "center" : "left", marginBottom: m ? 44 : 0 }}>
             <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.035em", color: C.navy, marginBottom: 32, ...fadeIn(visible) }}>
-              Your income has a structure.{m ? " " : <br />}You&#8217;ve never seen it.
+              Your income has a structure.{m ? " " : <br />}You've never seen it.
             </h1>
             <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.7, marginBottom: 40, ...fadeIn(visible, 100) }}>
               RunPayway&#8482; measures how your income holds under pressure — not how much you make.
@@ -333,7 +333,7 @@ function IndustrySelector() {
             <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: "#E57373", marginBottom: 10 }}>{selected.constraint.toUpperCase()}</div>
             <p style={{ fontSize: m ? 16 : 17, color: "rgba(244,241,234,0.70)", lineHeight: 1.65, margin: "0 0 20px" }}>{selected.risk}</p>
             <Link href="/begin" style={{ fontSize: 15, fontWeight: 600, color: C.teal, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44 }}>
-              {selected.cta} — it&#8217;s free &rarr;
+              {selected.cta} — it's free &rarr;
             </Link>
           </div>
         )}
@@ -419,7 +419,7 @@ function SameIncomeProof() {
         {/* Self-reflection prompt */}
         <div style={{ textAlign: "center", marginTop: m ? 48 : 80, ...fadeIn(visible, 220) }}>
           <p style={{ fontSize: m ? 20 : 24, fontWeight: 500, color: C.navy, marginBottom: 8 }}>Which one looks more like yours?</p>
-          <p style={{ fontSize: 16, color: light, lineHeight: 1.6 }}>The income is the same. How it&#8217;s built is not. That&#8217;s what RunPayway measures.</p>
+          <p style={{ fontSize: 16, color: light, lineHeight: 1.6 }}>The income is the same. How it's built is not. That's what RunPayway measures.</p>
         </div>
       </div>
     </section>
@@ -436,8 +436,8 @@ function WhatStabilityUnlocks() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   const unlocks = [
-    { icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", title: "Negotiate from strength, not need", desc: "You don&#8217;t take bad deals because you need the money. You choose the right ones — and walk away from the rest.", color: C.teal },
-    { icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z", title: "Charge what you&#8217;re worth", desc: "When your income is stable, there&#8217;s no desperation pricing. You set your rates and hold firm.", color: C.purple },
+    { icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", title: "Negotiate from strength, not need", desc: "You don't take bad deals because you need the money. You choose the right ones — and walk away from the rest.", color: C.teal },
+    { icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z", title: "Charge what you're worth", desc: "When your income is stable, there's no desperation pricing. You set your rates and hold firm.", color: C.purple },
     { icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6", title: "Take smart risks", desc: "Launch a new service. Hire someone. Turn down a bad client. Your stable base absorbs the gap while you grow.", color: C.teal },
     { icon: "M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5m-4 0h4", title: "Build something worth more", desc: "A business with stable, diversified income is worth more than one that depends on you showing up every day.", color: C.purple },
   ];
@@ -468,7 +468,7 @@ function WhatStabilityUnlocks() {
         </div>
 
         <div style={{ textAlign: "center", marginTop: m ? 36 : 56, ...fadeIn(visible, 220) }}>
-          <p style={{ fontSize: m ? 16 : 18, color: light, lineHeight: 1.6, marginBottom: 32 }}>This isn&#8217;t about earning more. It&#8217;s about building income that <strong style={{ color: C.navy }}>works for you</strong> instead of the other way around.</p>
+          <p style={{ fontSize: m ? 16 : 18, color: light, lineHeight: 1.6, marginBottom: 32 }}>This isn't about earning more. It's about building income that <strong style={{ color: C.navy }}>works for you</strong> instead of the other way around.</p>
           <Link href="/pricing" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: 52, padding: m ? "0 28px" : "0 40px",
@@ -502,13 +502,13 @@ function TheMissingLayer() {
   const layers = [
     {
       label: "FINANCIAL ADVISORY",
-      title: "Manages what you&#8217;ve saved",
-      desc: "Advisors build plans around your assets — but don&#8217;t measure whether the income funding those assets is built to last.",
+      title: "Manages what you've saved",
+      desc: "Advisors build plans around your assets — but don't measure whether the income funding those assets is built to last.",
       faded: true,
     },
     {
       label: "CREDIT SCORE",
-      title: "Measures what you&#8217;ve borrowed",
+      title: "Measures what you've borrowed",
       desc: "Lenders pull your credit to evaluate borrowing history — but have no way to measure how your income holds up under pressure.",
       faded: true,
     },
@@ -568,7 +568,7 @@ function TheMissingLayer() {
         {/* Bridge statement */}
         <div style={{ textAlign: "center", marginTop: m ? 28 : 40, marginBottom: m ? 40 : 64, ...fadeIn(visible, 220) }}>
           <p style={{ fontSize: 15, color: light, lineHeight: 1.6 }}>
-            A credit score tells a lender what you&#8217;ve done. RunPayway tells <em>everyone</em> — including you — what your income can <strong style={{ color: C.navy }}>withstand</strong>.
+            A credit score tells a lender what you've done. RunPayway tells <em>everyone</em> — including you — what your income can <strong style={{ color: C.navy }}>withstand</strong>.
           </p>
         </div>
 
@@ -586,8 +586,8 @@ function TheMissingLayer() {
 
             {[
               { text: "Know before you borrow", desc: "If one client leaving would make you miss payments, you need to know that before taking on debt — not after." },
-              { text: "Show lenders what tax returns can&#8217;t", desc: "Self-employed income looks messy on paper. A stability score proves it&#8217;s diversified, recurring, and locked in ahead." },
-              { text: "Time your applications", desc: "Don&#8217;t apply when your structure is weak. Improve your stability first, then apply when your income can actually support the debt." },
+              { text: "Show lenders what tax returns can't", desc: "Self-employed income looks messy on paper. A stability score proves it's diversified, recurring, and locked in ahead." },
+              { text: "Time your applications", desc: "Don't apply when your structure is weak. Improve your stability first, then apply when your income can actually support the debt." },
               { text: "Stable income = better credit over time", desc: "Consistent payments build credit history. Your stability score measures your ability to keep paying — the thing credit scores ultimately reflect." },
             ].map((item, i) => (
               <div key={i} style={{ marginBottom: i < 3 ? 14 : 0 }}>
@@ -607,9 +607,9 @@ function TheMissingLayer() {
             </div>
 
             {[
-              { text: "Reveal the hidden single point of failure", desc: "Advisors build plans assuming income continues. If 80% depends on you showing up every day, that plan has a gap they can&#8217;t see without this." },
+              { text: "Reveal the hidden single point of failure", desc: "Advisors build plans assuming income continues. If 80% depends on you showing up every day, that plan has a gap they can't see without this." },
               { text: "Size the emergency fund correctly", desc: "A score of 31 needs 6–12 months of reserves. A score of 75 might need 3. RunPayway tells your advisor how much buffer you actually need." },
-              { text: "Set real investment risk tolerance", desc: "Risk tolerance isn&#8217;t just psychological — it&#8217;s structural. Fragile income plus aggressive investing is dangerous, no matter what a questionnaire says." },
+              { text: "Set real investment risk tolerance", desc: "Risk tolerance isn't just psychological — it's structural. Fragile income plus aggressive investing is dangerous, no matter what a questionnaire says." },
               { text: "Flag insurance gaps", desc: "High dependence on your own labor means disability insurance is critical. Your stability score surfaces gaps an advisor would otherwise miss." },
             ].map((item, i) => (
               <div key={i} style={{ marginBottom: i < 3 ? 14 : 0 }}>
@@ -752,7 +752,7 @@ function CommandCenterPreview() {
 
         {/* Pricing note */}
         <div style={{ textAlign: "center", marginTop: m ? 36 : 56, ...fadeIn(visible, 220) }}>
-          <p style={{ fontSize: 15, color: muted, margin: 0 }}>All included with the $69 diagnostic. Lifetime access. <strong style={{ color: C.teal }}>Full refund if it doesn&#8217;t reveal something new.</strong></p>
+          <p style={{ fontSize: 15, color: muted, margin: 0 }}>All included with the $69 diagnostic. Lifetime access. <strong style={{ color: C.teal }}>Full refund if it doesn't reveal something new.</strong></p>
         </div>
       </div>
     </section>
@@ -792,7 +792,7 @@ function FinalCtaAndTrust() {
           Your income is already being tested.{m ? " " : <br />}Now you can see how it holds.
         </h2>
         <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 44, ...fadeIn(visible, 150) }}>
-          Start with the free score. Unlock the full diagnostic when you&#8217;re ready to act.
+          Start with the free score. Unlock the full diagnostic when you're ready to act.
         </p>
         <div style={{ display: "flex", justifyContent: "center", marginBottom: m ? 48 : 72, ...fadeIn(visible, 200) }}>
           <CtaButton m={m} variant="light" />

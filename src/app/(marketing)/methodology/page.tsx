@@ -140,10 +140,10 @@ function WhatMakesItDifferent() {
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #9B2C2C, #92640A, #2B5EA7, ${C.teal})` }} />
             <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 20 }}>FOUR BANDS &bull; FIXED THRESHOLDS</div>
             {[
-              { range: "0\u201329", label: "Limited", desc: "One disruption could seriously impact your income.", color: "#9B2C2C" },
-              { range: "30\u201349", label: "Developing", desc: "Your income isn\u2019t protected yet.", color: "#92640A" },
-              { range: "50\u201374", label: "Established", desc: "Can handle most common disruptions.", color: "#2B5EA7" },
-              { range: "75\u2013100", label: "High", desc: "Holds up even under sustained pressure.", color: C.teal },
+              { range: "0–29", label: "Limited", desc: "One disruption could seriously impact your income.", color: "#9B2C2C" },
+              { range: "30–49", label: "Developing", desc: "Your income isn't protected yet.", color: "#92640A" },
+              { range: "50–74", label: "Established", desc: "Can handle most common disruptions.", color: "#2B5EA7" },
+              { range: "75–100", label: "High", desc: "Holds up even under sustained pressure.", color: C.teal },
             ].map((b, i) => (
               <div key={i} style={{ display: "flex", gap: m ? 10 : 14, alignItems: "flex-start", padding: m ? "10px 12px" : "12px 14px", borderRadius: 10, backgroundColor: `${b.color}04`, marginBottom: i < 3 ? 8 : 0 }}>
                 <div style={{ width: 40, height: 24, borderRadius: 6, backgroundColor: `${b.color}12`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>

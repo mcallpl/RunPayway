@@ -35,7 +35,7 @@ function StepBreadcrumb({ activeStep, completedSteps = [] as number[] }: { activ
               {isCompleted ? "\u2713" : s.num} {s.label}
             </span>
             {i < steps.length - 1 && (
-              <span style={{ margin: "0 10px", color: C.border, fontSize: 11 }}>\u2014\u2014</span>
+              <span style={{ margin: "0 10px", color: C.border, fontSize: 11 }}>——</span>
             )}
           </span>
         );

@@ -68,7 +68,7 @@ function HeroSection() {
           The standard for measuring{m ? " " : <br />}income stability.
         </h1>
         <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto", ...fadeIn(visible, 120) }}>
-          RunPayway&#8482; produces the Income Stability Score&#8482; — a measurement of how well your income holds up when things change. Built for anyone whose paycheck isn&#8217;t automatically guaranteed.
+          RunPayway&#8482; produces the Income Stability Score&#8482; — a measurement of how well your income holds up when things change. Built for anyone whose paycheck isn't automatically guaranteed.
         </p>
       </div>
     </header>
@@ -108,8 +108,8 @@ function WhatWhoWhy() {
             <div style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: `${C.purple}08`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
             </div>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.purple, marginBottom: 10 }}>WHO IT&#8217;S FOR</div>
-            <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.3 }}>Anyone whose income isn&#8217;t automatically guaranteed.</div>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.purple, marginBottom: 10 }}>WHO IT'S FOR</div>
+            <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.3 }}>Anyone whose income isn't automatically guaranteed.</div>
             <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>
               Consultants, freelancers, business owners, commission earners, contractors, and professionals in any industry where income depends on ongoing decisions — not permanent contracts.
             </p>
@@ -124,7 +124,7 @@ function WhatWhoWhy() {
             <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.navy, marginBottom: 10 }}>WHY IT EXISTS</div>
             <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.3 }}>The layer that comes before credit and advisory.</div>
             <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>
-              Credit scores measure borrowing history. Advisors manage what you&#8217;ve saved. But neither measures the thing underneath &#8212; whether the income itself is built to last. RunPayway is that foundation.
+              Credit scores measure borrowing history. Advisors manage what you've saved. But neither measures the thing underneath — whether the income itself is built to last. RunPayway is that foundation.
             </p>
           </div>
         </div>
