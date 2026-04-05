@@ -495,6 +495,99 @@ function WhatStabilityUnlocks() {
 
 
 /* ================================================================== */
+/* SECTION 3C — THE MISSING LAYER                                      */
+/* ================================================================== */
+
+function TheMissingLayer() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+
+  const layers = [
+    {
+      label: "FINANCIAL ADVISORY",
+      title: "Manages what you\u2019ve saved",
+      desc: "Advisors build plans around your assets \u2014 but don\u2019t measure whether the income funding those assets is structurally sound.",
+      color: "rgba(244,241,234,0.20)",
+      textColor: "rgba(244,241,234,0.45)",
+      faded: true,
+    },
+    {
+      label: "CREDIT SCORE",
+      title: "Measures what you\u2019ve borrowed",
+      desc: "Lenders pull your credit to evaluate borrowing history \u2014 but have no way to measure how your income holds up under pressure.",
+      color: "rgba(244,241,234,0.20)",
+      textColor: "rgba(244,241,234,0.45)",
+      faded: true,
+    },
+    {
+      label: "RUNPAYWAY\u2122",
+      title: "Measures how your income is built",
+      desc: "The foundational layer. Before anyone evaluates your finances, they should know whether the income underneath is stable, diversified, and built to last.",
+      color: C.teal,
+      textColor: C.sand,
+      faded: false,
+    },
+  ];
+
+  return (
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 64 : 112, paddingBottom: m ? 64 : 112, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
+      <div style={{ position: "absolute", bottom: "-20%", left: "50%", width: m ? 400 : 700, height: m ? 400 : 700, transform: "translateX(-50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.teal}08 0%, transparent 70%)`, pointerEvents: "none" }} />
+      <div style={{ maxWidth: 800, margin: "0 auto", position: "relative", zIndex: 1 }}>
+
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>THE MISSING LAYER</div>
+          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.sand, marginBottom: 16 }}>
+            Credit scores and advisors{m ? " " : <br />}both skip the same thing.
+          </h2>
+          <p style={{ fontSize: m ? 16 : 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
+            Nobody measured how your income is actually built \u2014 until now. RunPayway is the foundation that everything else should sit on.
+          </p>
+        </div>
+
+        {/* Stacked layers — bottom = foundation */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 0, maxWidth: 680, margin: "0 auto", ...fadeIn(visible, 120) }}>
+          {layers.map((layer, i) => {
+            const isFoundation = !layer.faded;
+            return (
+              <div key={i} style={{
+                padding: m ? "20px 18px" : "24px 28px",
+                borderRadius: i === 0 ? "14px 14px 0 0" : i === layers.length - 1 ? "0 0 14px 14px" : 0,
+                backgroundColor: isFoundation ? `${C.teal}12` : "rgba(255,255,255,0.02)",
+                borderLeft: isFoundation ? `3px solid ${C.teal}` : "3px solid rgba(255,255,255,0.06)",
+                borderBottom: i < layers.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none",
+                position: "relative" as const,
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: isFoundation ? C.teal : "rgba(244,241,234,0.25)", marginBottom: 6 }}>{layer.label}</div>
+                    <div style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: isFoundation ? C.sand : "rgba(244,241,234,0.35)", marginBottom: 4, lineHeight: 1.3 }}>{layer.title}</div>
+                    <p style={{ fontSize: 14, color: isFoundation ? "rgba(244,241,234,0.55)" : "rgba(244,241,234,0.25)", margin: 0, lineHeight: 1.55 }}>{layer.desc}</p>
+                  </div>
+                  {isFoundation && (
+                    <div style={{ flexShrink: 0, width: 44, height: 44, borderRadius: 12, backgroundColor: `${C.teal}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Arrow label */}
+        <div style={{ textAlign: "center", marginTop: m ? 28 : 40, ...fadeIn(visible, 220) }}>
+          <p style={{ fontSize: 15, color: "rgba(244,241,234,0.40)", lineHeight: 1.6 }}>
+            A credit score tells a lender what you&#8217;ve done. RunPayway tells <em>everyone</em> \u2014 including you \u2014 what your income can <strong style={{ color: C.sand }}>withstand</strong>.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================== */
 /* SECTION 4 — COMMAND CENTER PREVIEW                                  */
 /* ================================================================== */
 
@@ -821,6 +914,7 @@ export default function LandingPage() {
         <IndustrySelector />
         <SameIncomeProof />
         <WhatStabilityUnlocks />
+        <TheMissingLayer />
         <CommandCenterPreview />
         <TheSystemAndCta />
       </main>
