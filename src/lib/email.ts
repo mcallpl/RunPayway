@@ -207,7 +207,7 @@ function buildReportEmailHtml(data: ReportEmailData): string {
                 RunPayway™ · Income Stability Score™ · Model RP-2.0
               </p>
               <p style="font-size:10px; color:${light}; margin:0;">
-                Confidential — Prepared for ${data.assessmentTitle || "Assessment Subject"} · support@runpayway.com
+                Confidential — Prepared for ${data.assessmentTitle || "Assessment Subject"} · <a href="https://peoplestar.com/RunPayway/contact" style="color:${light}; text-decoration:none;">Contact Us</a>
               </p>
             </td>
           </tr>
