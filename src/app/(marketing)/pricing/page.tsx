@@ -51,7 +51,7 @@ const light = "rgba(14,26,43,0.62)";
 const contentW = 1040;
 const px = (m: boolean) => m ? 20 : 24;
 const STRIPE = process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05";
-const STRIPE_ANNUAL = process.env.NEXT_PUBLIC_STRIPE_ANNUAL_URL || "https://buy.stripe.com/dR6bKT7kQ9UQflS005";
+const STRIPE_ANNUAL = process.env.NEXT_PUBLIC_STRIPE_ANNUAL_URL || "/checkout-placeholder?plan=monitoring";
 
 
 /* ================================================================== */
