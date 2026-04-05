@@ -122,9 +122,9 @@ function WhatWhoWhy() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
             </div>
             <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.navy, marginBottom: 10 }}>WHY IT EXISTS</div>
-            <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.3 }}>The layer that comes before credit and advisory.</div>
+            <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.3 }}>The insight nobody else gives you.</div>
             <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>
-              Credit scores measure borrowing history. Advisors manage what you've saved. But neither measures the thing underneath — whether the income itself is built to last. RunPayway is that foundation.
+              Credit scores measure borrowing history. Advisors manage what you've saved. But nobody shows you whether the income itself is built to last. RunPayway gives you that clarity — and what you do with it is up to you.
             </p>
           </div>
         </div>

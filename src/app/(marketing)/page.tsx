@@ -519,7 +519,7 @@ function TheMissingLayer() {
     {
       label: "RUNPAYWAY&#8482;",
       title: "Measures how your income is built",
-      desc: "The foundational layer. Before anyone evaluates your finances, they should know whether the income underneath is stable, diversified, and built to last.",
+      desc: "Now you can see for yourself whether your income is stable, diversified, and built to last — and decide what to do with that insight.",
       faded: false,
     },
   ];
@@ -531,10 +531,10 @@ function TheMissingLayer() {
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>THE MISSING LAYER</div>
           <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16 }}>
-            Credit scores and advisors{m ? " " : <br />}both skip the same thing.
+            There's something no one{m ? " " : <br />}is measuring for you.
           </h2>
           <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
-            Nobody measured how your income is actually built — until now. RunPayway is the foundation that everything else should sit on.
+            Credit scores measure borrowing. Advisors manage savings. But nobody gives you a clear picture of how your income itself is built — until now.
           </p>
         </div>
 
@@ -572,7 +572,7 @@ function TheMissingLayer() {
         {/* Bridge statement */}
         <div style={{ textAlign: "center", marginTop: m ? 28 : 40, marginBottom: m ? 40 : 64, ...fadeIn(visible, 220) }}>
           <p style={{ fontSize: 15, color: light, lineHeight: 1.6 }}>
-            A credit score tells a lender what you've done. RunPayway tells <em>everyone</em> — including you — what your income can <strong style={{ color: C.navy }}>withstand</strong>.
+            Credit scores look backward. RunPayway shows you what your income can actually <strong style={{ color: C.navy }}>withstand</strong> — so you can make better decisions going forward.
           </p>
         </div>
 
@@ -585,12 +585,12 @@ function TheMissingLayer() {
               <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.teal}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
               </div>
-              <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>How it strengthens your credit</span>
+              <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>How this helps with credit decisions</span>
             </div>
 
             {[
               { text: "Know before you borrow", desc: "If one client leaving would make you miss payments, you need to know that before taking on debt — not after." },
-              { text: "Show lenders what tax returns can't", desc: "Self-employed income looks messy on paper. A stability score proves it's diversified, recurring, and locked in ahead." },
+              { text: "Understand what a lender can't see", desc: "Tax returns show what you earned. Your stability score shows you whether that income is diversified, recurring, and locked in ahead." },
               { text: "Time your applications", desc: "Don't apply when your structure is weak. Improve your stability first, then apply when your income can actually support the debt." },
               { text: "Stable income = better credit over time", desc: "Consistent payments build credit history. Your stability score measures your ability to keep paying — the thing credit scores ultimately reflect." },
             ].map((item, i) => (
@@ -600,7 +600,7 @@ function TheMissingLayer() {
               </div>
             ))}
             <div style={{ marginTop: 18, paddingTop: 14, borderTop: `1px solid rgba(14,26,43,0.06)` }}>
-              <p style={{ fontSize: 13, fontWeight: 500, color: C.teal, margin: 0 }}>Take your score to your next loan application or refinance conversation.</p>
+              <p style={{ fontSize: 13, fontWeight: 500, color: C.teal, margin: 0 }}>Know where you stand before you walk into any borrowing conversation.</p>
             </div>
           </div>
 
@@ -610,14 +610,14 @@ function TheMissingLayer() {
               <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.purple}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
               </div>
-              <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>How it helps your advisor</span>
+              <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>What you can bring to your advisor</span>
             </div>
 
             {[
-              { text: "Reveal the hidden single point of failure", desc: "Advisors build plans assuming income continues. If 80% depends on you showing up every day, that plan has a gap they can't see without this." },
-              { text: "Size the emergency fund correctly", desc: "A score of 31 needs 6–12 months of reserves. A score of 75 might need 3. RunPayway tells your advisor how much buffer you actually need." },
-              { text: "Set real investment risk tolerance", desc: "Risk tolerance isn't just psychological — it's structural. Fragile income plus aggressive investing is dangerous, no matter what a questionnaire says." },
-              { text: "Flag insurance gaps", desc: "High dependence on your own labor means disability insurance is critical. Your stability score surfaces gaps an advisor would otherwise miss." },
+              { text: "See what your advisor can't", desc: "If 80% of your income depends on you showing up every day, you need to know that — so you can raise it, or plan around it." },
+              { text: "Know how much buffer you actually need", desc: "A score of 31 suggests 6–12 months of reserves. A score of 75 might need 3. Now you know what to ask for." },
+              { text: "Understand your real risk tolerance", desc: "Risk tolerance isn't just psychological — it's structural. If your income is fragile, you'll want to know before choosing investments." },
+              { text: "Spot your own insurance gaps", desc: "If your income stops when you stop working, disability coverage matters more than you think. Your score makes that visible." },
             ].map((item, i) => (
               <div key={i} style={{ marginBottom: i < 3 ? 14 : 0 }}>
                 <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 3 }}>{item.text}</div>
@@ -625,7 +625,7 @@ function TheMissingLayer() {
               </div>
             ))}
             <div style={{ marginTop: 18, paddingTop: 14, borderTop: `1px solid rgba(14,26,43,0.06)` }}>
-              <p style={{ fontSize: 13, fontWeight: 500, color: C.purple, margin: 0 }}>Share your diagnostic report with your advisor at your next meeting.</p>
+              <p style={{ fontSize: 13, fontWeight: 500, color: C.purple, margin: 0 }}>Walk into your next advisory meeting knowing exactly where your income is strong and where it's exposed.</p>
             </div>
           </div>
         </div>
@@ -816,7 +816,7 @@ function FinalCtaAndTrust() {
               "You answer 6 questions about how your income works. Takes under 2 minutes.",
               "You get your score, stability level, and biggest risk — instantly. No waiting.",
               "That's it. No sales call. No spam. No account required for the free score.",
-              "If you want the full diagnostic ($69), you unlock it on your terms. An advisor would charge $200+ for less.",
+              "If you want the full diagnostic ($69), you unlock it on your terms. Full refund if it doesn't reveal something new.",
             ].map((step, i) => (
               <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
                 <span style={{ fontSize: 13, fontFamily: mono, fontWeight: 600, color: C.teal, flexShrink: 0, marginTop: 1 }}>{i + 1}.</span>
