@@ -182,11 +182,11 @@ function PricingCards() {
               {check("Benchmark evolution over time", C.teal)}
               {check("Monitoring portal access", C.teal)}
             </div>
-            <a href={STRIPE_ANNUAL} style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: 15, fontWeight: 600, textDecoration: "none", transition: "transform 200ms, box-shadow 200ms", boxShadow: "0 2px 8px rgba(244,241,234,0.10)" }}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
+            <Link href={STRIPE_ANNUAL} style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: 15, fontWeight: 600, textDecoration: "none", transition: "transform 200ms, box-shadow 200ms", boxShadow: "0 2px 8px rgba(244,241,234,0.10)" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}>
               Start Monitoring &mdash; $149/yr
-            </a>
+            </Link>
             <p style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", textAlign: "center", marginTop: 12, marginBottom: 0 }}>
               Full Command Center access included.
             </p>
