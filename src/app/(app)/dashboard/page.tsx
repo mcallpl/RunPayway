@@ -382,6 +382,8 @@ function DashboardContent() {
   const [goalTarget, setGoalTarget] = useState<number | null>(null);
   const [tooltipOpen, setTooltipOpen] = useState<string | null>(null);
   const [isPaid, setIsPaid] = useState(false);
+  const [copiedPlaybook, setCopiedPlaybook] = useState<string | null>(null);
+  const [expandedPlaybook, setExpandedPlaybook] = useState<string | null>(null);
 
   /* ── IntersectionObserver for phase nav ── */
   useEffect(() => {
@@ -1481,6 +1483,162 @@ function DashboardContent() {
               );
             })()}
           </section>
+
+          {/* ── NEGOTIATION PLAYBOOK — the wow tool ── */}
+          {(() => {
+            const constraintLabels: Record<string, string> = {
+              high_concentration: "Income Concentration",
+              weak_forward_visibility: "Forward Visibility",
+              high_labor_dependence: "Labor Dependence",
+              low_persistence: "Low Persistence",
+              low_source_diversity: "Source Diversity",
+              high_variability: "Income Variability",
+              weak_durability: "Weak Durability",
+              shallow_continuity: "Shallow Continuity",
+            };
+
+            const playbookMoves = topMoves.slice(0, 3).map(move => {
+              const sc = scripts.find(s =>
+                (move.id === "convert_retainer" && s.id.includes("retainer")) ||
+                (move.id === "add_client" && (s.id.includes("diversi") || s.id.includes("referral"))) ||
+                (move.id === "build_passive" && s.id.includes("referral")) ||
+                (move.id === "lock_forward" && s.id.includes("retainer"))
+              ) || scripts[0];
+
+              const personalize = (text: string) => {
+                return text
+                  .replace(/\[Client Name\]/g, custName ? `your client` : "[Client Name]")
+                  .replace(/\[Contact Name\]/g, "[Contact Name]")
+                  .replace(/\[Partner Name\]/g, "[Partner Name]")
+                  .replace(/\[Broker Name\]/g, "[Contact Name]")
+                  .replace(/\[X\]/g, String(Math.max(2, Math.round(base.source_diversity_count))))
+                  .replace(/\[X hours\]/g, "10 hours")
+                  .replace(/\[X years\]/g, "5+ years")
+                  .replace(/\[X properties[^\]]*\]/g, "multiple properties")
+                  .replace(/\[\$ amount\]/g, "$2,500")
+                  .replace(/\[project name\]/g, "recent engagement")
+                  .replace(/\[current industry\]/g, indLabel.toLowerCase() || "your industry")
+                  .replace(/\[new vertical\]/g, "an adjacent vertical")
+                  .replace(/\[their (company|service|clients)\]/g, "their organization")
+                  .replace(/\[your (service|expertise area)\]/g, "your area of focus");
+              };
+
+              return {
+                id: move.id,
+                action: move.label,
+                lift: move.lift,
+                projected: move.projected,
+                band: move.resBand,
+                effort: move.effort,
+                speed: move.speed,
+                constraint: constraintLabels[rootCon] || rootCon.replace(/_/g, " "),
+                title: sc?.title || move.label,
+                context: sc?.context || move.description,
+                script: sc ? personalize(sc.script) : "",
+                dataPoints: [
+                  move.id === "convert_retainer" ? `${base.income_persistence_pct}% of your income currently recurs` : null,
+                  move.id === "add_client" ? `Your top source carries ${base.largest_source_pct}% of income` : null,
+                  move.id === "build_passive" ? `${base.labor_dependence_pct}% depends on your active work` : null,
+                  move.id === "lock_forward" ? `Only ${base.forward_secured_pct}% is secured forward` : null,
+                  `Current score: ${dScore} (${dBand})`,
+                  `Projected after this move: ${move.projected} (+${move.lift})`,
+                ].filter(Boolean) as string[],
+              };
+            });
+
+            if (playbookMoves.length === 0) return null;
+
+            const copyPlaybookScript = (text: string, id: string) => {
+              navigator.clipboard.writeText(text).then(() => {
+                setCopiedPlaybook(id);
+                setTimeout(() => setCopiedPlaybook(null), 2500);
+              });
+            };
+
+            return (
+              <section className="cc-section" style={{ marginTop: 24 }}>
+                <div style={{ padding: mobile ? "28px 20px" : "36px 40px", borderRadius: 20, background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`, boxShadow: "0 4px 24px rgba(14,26,43,0.10)", position: "relative", overflow: "hidden" }}>
+                  <div style={{ position: "absolute", top: "-20%", right: "-10%", width: mobile ? 200 : 400, height: mobile ? 200 : 400, borderRadius: "50%", background: `radial-gradient(circle, ${B.teal}08 0%, transparent 70%)`, pointerEvents: "none" }} />
+
+                  <div style={{ position: "relative", zIndex: 1 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
+                      <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${B.teal}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5m-1.414-9.414a2 2 0 1 1 2.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: B.teal }}>NEGOTIATION PLAYBOOK</div>
+                        <div style={{ fontSize: 14, color: C.sandMuted }}>Scripts built from your structure</div>
+                      </div>
+                    </div>
+
+                    <div style={{ fontSize: mobile ? 20 : 24, fontWeight: 600, color: C.sandText, lineHeight: 1.25, marginBottom: 8, marginTop: 20 }}>
+                      Your constraint is {constraintLabels[rootCon]?.toLowerCase() || rootCon.replace(/_/g, " ")}.
+                    </div>
+                    <p style={{ fontSize: 15, color: C.sandMuted, lineHeight: 1.6, margin: "0 0 28px", maxWidth: 560 }}>
+                      These are the exact conversations that move your score. Each script is tailored to {indLabel.toLowerCase() || "your industry"} and uses your actual numbers. Copy, adapt to your voice, and use them.
+                    </p>
+
+                    <div style={{ display: "flex", flexDirection: "column" as const, gap: 14 }}>
+                      {playbookMoves.map((play, i) => {
+                        const isExpanded = expandedPlaybook === play.id;
+                        return (
+                          <div key={play.id} style={{ borderRadius: 14, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", overflow: "hidden" }}>
+                            {/* Header — always visible */}
+                            <button onClick={() => setExpandedPlaybook(isExpanded ? null : play.id)}
+                              style={{ width: "100%", padding: mobile ? "18px 16px" : "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, background: "none", border: "none", cursor: "pointer", textAlign: "left" as const }}>
+                              <div style={{ flex: 1 }}>
+                                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6, flexWrap: "wrap" as const }}>
+                                  <div style={{ width: 24, height: 24, borderRadius: 6, backgroundColor: `${B.teal}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <span style={{ fontSize: 12, fontWeight: 700, color: B.teal }}>{i + 1}</span>
+                                  </div>
+                                  <span style={{ fontSize: 16, fontWeight: 600, color: C.sandText }}>{play.title}</span>
+                                </div>
+                                <p style={{ fontSize: 14, color: C.sandMuted, margin: 0, lineHeight: 1.5 }}>{play.context}</p>
+                              </div>
+                              <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0, marginTop: 4 }}>
+                                <span style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{play.lift}</span>
+                                <span style={{ fontSize: 14, color: C.sandMuted, transition: "transform 200ms", transform: isExpanded ? "rotate(180deg)" : "rotate(0deg)" }}>&#9660;</span>
+                              </div>
+                            </button>
+
+                            {/* Expanded — script + data */}
+                            {isExpanded && (
+                              <div style={{ padding: mobile ? "0 16px 20px" : "0 24px 24px" }}>
+                                {/* Data points from their assessment */}
+                                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" as const, marginBottom: 16 }}>
+                                  {play.dataPoints.map((dp, j) => (
+                                    <span key={j} style={{ fontSize: 12, color: C.sandMuted, padding: "4px 10px", borderRadius: 6, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}>{dp}</span>
+                                  ))}
+                                  <span style={{ fontSize: 12, fontWeight: 600, color: B.teal, padding: "4px 10px", borderRadius: 6, backgroundColor: `${B.teal}10` }}>{play.effort} effort &middot; {play.speed}</span>
+                                </div>
+
+                                {/* The script */}
+                                {play.script && (
+                                  <div style={{ position: "relative" }}>
+                                    <pre style={{ fontSize: 14, color: "rgba(244,241,234,0.75)", lineHeight: 1.65, whiteSpace: "pre-wrap" as const, margin: 0, padding: mobile ? "16px 14px" : "20px 24px", backgroundColor: "rgba(255,255,255,0.02)", borderRadius: 10, border: "1px solid rgba(255,255,255,0.06)", fontFamily: sans }}>{play.script}</pre>
+                                    <button onClick={() => copyPlaybookScript(play.script, play.id)}
+                                      style={{ position: "absolute", top: 10, right: 10, fontSize: 13, fontWeight: 600, color: copiedPlaybook === play.id ? B.teal : C.sandMuted, backgroundColor: copiedPlaybook === play.id ? `${B.teal}15` : "rgba(255,255,255,0.06)", border: "none", borderRadius: 8, padding: "8px 14px", cursor: "pointer", minHeight: 36, transition: "all 200ms" }}>
+                                      {copiedPlaybook === play.id ? "Copied!" : "Copy"}
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Footer */}
+                    <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px solid rgba(255,255,255,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: 8 }}>
+                      <span style={{ fontSize: 13, color: C.sandMuted }}>Scripts are starting points. Adapt tone and details to your voice.</span>
+                      <span style={{ fontSize: 12, color: "rgba(244,241,234,0.30)", fontFamily: mono }}>Model RP-2.0 &middot; {indLabel}</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            );
+          })()}
 
           </PhaseSep>
 
