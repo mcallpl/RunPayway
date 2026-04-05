@@ -147,6 +147,65 @@ function PhaseNav({ activePhase, mobile }: { activePhase: string; mobile: boolea
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  if (mobile) {
+    // Bottom horizontal nav on mobile — avoids content overlap
+    return (
+      <div style={{
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 100,
+        display: "flex",
+        justifyContent: "space-around",
+        alignItems: "center",
+        backgroundColor: "rgba(255,255,255,0.96)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        borderTop: "1px solid rgba(14,26,43,0.08)",
+        padding: "8px 0 max(8px, env(safe-area-inset-bottom))",
+      }}>
+        {PHASE_NAV.map(p => {
+          const isActive = activePhase === p.id;
+          return (
+            <button
+              key={p.id}
+              onClick={() => scrollTo(p.id)}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 4,
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                padding: "6px 12px",
+                minHeight: 44,
+                minWidth: 44,
+              }}
+              aria-label={p.label}
+            >
+              <div style={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                backgroundColor: isActive ? p.color : p.color + "40",
+                transition: "background-color 200ms",
+              }} />
+              <span style={{
+                fontSize: 10,
+                fontWeight: isActive ? 700 : 500,
+                color: isActive ? p.color : B.taupe,
+                letterSpacing: "0.02em",
+                transition: "color 200ms",
+              }}>{p.label}</span>
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+
   return (
     <div style={{
       position: "fixed",
@@ -156,7 +215,7 @@ function PhaseNav({ activePhase, mobile }: { activePhase: string; mobile: boolea
       zIndex: 100,
       display: "flex",
       flexDirection: "column",
-      gap: mobile ? 16 : 12,
+      gap: 12,
       alignItems: "flex-end",
     }}>
       {PHASE_NAV.map(p => {
@@ -172,7 +231,7 @@ function PhaseNav({ activePhase, mobile }: { activePhase: string; mobile: boolea
               background: isActive ? B.surface : "rgba(255,255,255,0.92)",
               border: `1px solid ${isActive ? p.color + "30" : "rgba(14,26,43,0.06)"}`,
               borderRadius: 20,
-              padding: mobile ? "5px 10px 5px 7px" : "6px 14px 6px 8px",
+              padding: "6px 14px 6px 8px",
               cursor: "pointer",
               transition: "all 200ms",
               boxShadow: isActive ? `0 2px 8px ${p.color}18` : "0 1px 4px rgba(0,0,0,0.06)",
@@ -180,18 +239,18 @@ function PhaseNav({ activePhase, mobile }: { activePhase: string; mobile: boolea
             aria-label={p.label}
           >
             <div style={{
-              width: mobile ? 10 : 8,
-              height: mobile ? 10 : 8,
+              width: 8,
+              height: 8,
               borderRadius: "50%",
               backgroundColor: isActive ? p.color : p.color + "40",
               flexShrink: 0,
               transition: "background-color 200ms",
             }} />
             <span style={{
-              fontSize: mobile ? 9 : 11,
+              fontSize: 11,
               fontWeight: isActive ? 700 : 500,
               color: isActive ? p.color : B.taupe,
-              letterSpacing: mobile ? "0.02em" : "0.04em",
+              letterSpacing: "0.04em",
               whiteSpace: "nowrap" as const,
               transition: "color 200ms",
             }}>{p.label}</span>
@@ -414,9 +473,14 @@ function DashboardContent() {
       try {
         const d = JSON.parse(atob(urlCode));
         if (typeof d.p === "number" && typeof d.c === "number" && typeof d.l === "number") {
-          const nr = { record_id: `sim-${Date.now()}`, authorization_code: "", model_version: "RP-2.0", assessment_date_utc: new Date().toISOString(), issued_timestamp_utc: new Date().toISOString(), final_score: 0, stability_band: "", assessment_title: d.n || "", classification: "", operating_structure: "", primary_income_model: d.m || "", industry_sector: d.i || "", _v2: { normalized_inputs: { income_persistence_pct: d.p, largest_source_pct: d.c, source_diversity_count: d.s, forward_secured_pct: d.f, income_variability_level: d.v || "moderate", labor_dependence_pct: d.l }, quality: { quality_score: d.q || 5 } } };
+          const nr = { record_id: `sim-${Date.now()}`, authorization_code: "", model_version: "RP-2.0", assessment_date_utc: new Date().toISOString(), issued_timestamp_utc: new Date().toISOString(), final_score: d.o || 0, stability_band: d.b || "", assessment_title: d.n || "", classification: "", operating_structure: "", primary_income_model: d.m || "", industry_sector: d.i || "", _v2: { normalized_inputs: { income_persistence_pct: d.p, largest_source_pct: d.c, source_diversity_count: d.s, forward_secured_pct: d.f, income_variability_level: d.v || "moderate", labor_dependence_pct: d.l }, quality: { quality_score: d.q || 5 } } };
           sessionStorage.setItem("rp_record", JSON.stringify(nr));
           sessionStorage.setItem("rp_sim_code", urlCode);
+          // Access code comes from paid report — grant full access
+          setIsPaid(true);
+          const codeSession = { plan_key: "single_assessment", status: "paid", checkout_provider: "access_code" };
+          sessionStorage.setItem("rp_purchase_session", JSON.stringify(codeSession));
+          localStorage.setItem("rp_purchase_session", JSON.stringify(codeSession));
           setRecord(nr);
           if (!localStorage.getItem("rp_cc_visited")) { setShowWelcome(true); }
           localStorage.setItem("rp_cc_visited", "1");
@@ -454,8 +518,12 @@ function DashboardContent() {
     try {
       const d = JSON.parse(atob(trimmed));
       if (typeof d.p !== "number" || typeof d.c !== "number" || typeof d.l !== "number") { setCodeError("Invalid code."); return; }
-      const nr = { record_id: `sim-${Date.now()}`, authorization_code: "", model_version: "RP-2.0", assessment_date_utc: new Date().toISOString(), issued_timestamp_utc: new Date().toISOString(), final_score: 0, stability_band: "", assessment_title: d.n || "", classification: "", operating_structure: "", primary_income_model: d.m || "", industry_sector: d.i || "", _v2: { normalized_inputs: { income_persistence_pct: d.p, largest_source_pct: d.c, source_diversity_count: d.s, forward_secured_pct: d.f, income_variability_level: d.v || "moderate", labor_dependence_pct: d.l }, quality: { quality_score: d.q || 5 } } };
+      const nr = { record_id: `sim-${Date.now()}`, authorization_code: "", model_version: "RP-2.0", assessment_date_utc: new Date().toISOString(), issued_timestamp_utc: new Date().toISOString(), final_score: d.o || 0, stability_band: d.b || "", assessment_title: d.n || "", classification: "", operating_structure: "", primary_income_model: d.m || "", industry_sector: d.i || "", _v2: { normalized_inputs: { income_persistence_pct: d.p, largest_source_pct: d.c, source_diversity_count: d.s, forward_secured_pct: d.f, income_variability_level: d.v || "moderate", labor_dependence_pct: d.l }, quality: { quality_score: d.q || 5 } } };
       sessionStorage.setItem("rp_record", JSON.stringify(nr)); sessionStorage.setItem("rp_sim_code", trimmed);
+      // Access code comes from paid report — grant full access
+      const codeSession = { plan_key: "single_assessment", status: "paid", checkout_provider: "access_code" };
+      sessionStorage.setItem("rp_purchase_session", JSON.stringify(codeSession));
+      localStorage.setItem("rp_purchase_session", JSON.stringify(codeSession));
       window.location.reload();
     } catch { setCodeError("Invalid code. Copy the full code from your report."); }
   };
@@ -719,7 +787,7 @@ function DashboardContent() {
         {/* Change 1: Sticky phase nav */}
         <PhaseNav activePhase={activePhase} mobile={mobile} />
 
-        <div style={{ maxWidth: 960, margin: "0 auto", padding: mobile ? "24px 16px 60px" : "48px 36px 96px", overflow: "hidden" }}>
+        <div style={{ maxWidth: 960, margin: "0 auto", padding: mobile ? "24px 16px 100px" : "48px 36px 96px", overflow: "hidden" }}>
 
           {/* Personalized header */}
           {!isDemo && custName && (
@@ -1095,7 +1163,7 @@ function DashboardContent() {
                 {/* GOAL MODE — reverse simulator */}
                 <div style={{ marginBottom: 24 }}>
                   <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 12 }}>GOAL MODE</div>
-                  <div style={{ fontSize: 18, fontWeight: 600, color: B.navy, marginBottom: 8 }}>See the minimum structural moves required to cross a band.</div>
+                  <div style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, color: B.navy, marginBottom: 8 }}>See the minimum structural moves required to cross a band.</div>
                   <p style={{ fontSize: 14, color: B.muted, margin: "0 0 14px", lineHeight: 1.6 }}>
                     Not guesses. Score-based path modeling.
                   </p>
@@ -1223,7 +1291,7 @@ function DashboardContent() {
                           <div style={{ position: "absolute", top: 0, left: 0, height: "100%", borderRadius: 4, backgroundColor: sDelta >= 0 ? B.teal : B.red, width: `${sResult.overall_score}%`, transition: "width 400ms ease" }} />
                         </div>
                       </div>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: mobile ? "wrap" as const : "nowrap" as const, gap: mobile ? 4 : 0 }}>
                         <span style={{ fontSize: 13, color: B.taupe }}>Current: <span style={{ fontWeight: 600, fontFamily: mono, color: B.navy }}>{dScore}</span></span>
                         <span style={{ fontSize: 20, fontWeight: 300, fontFamily: mono, color: sDelta >= 0 ? B.teal : B.red }}>{sResult.overall_score}</span>
                         <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: sDelta >= 0 ? B.teal : B.red }}>{sDelta > 0 ? "+" : ""}{sDelta} pts</span>
@@ -1234,7 +1302,7 @@ function DashboardContent() {
                     {/* Save path */}
                     {savedScenarios.length < 3 && sDelta !== 0 && (
                       <button onClick={() => setSavedScenarios(prev => [...prev, { name: aPO.label, score: sResult.overall_score, band: sResult.band, lift: sDelta }])}
-                        style={{ fontSize: 13, fontWeight: 600, color: B.teal, backgroundColor: `${B.teal}06`, border: `1px solid ${B.teal}18`, borderRadius: 8, padding: "11px 20px", cursor: "pointer", minHeight: 44, marginBottom: 16 }}>
+                        style={{ fontSize: 13, fontWeight: 600, color: B.teal, backgroundColor: `${B.teal}06`, border: `1px solid ${B.teal}18`, borderRadius: 8, padding: "11px 20px", cursor: "pointer", minHeight: 44, marginBottom: 16, width: mobile ? "100%" : "auto" }}>
                         Save Path ({3 - savedScenarios.length} left)
                       </button>
                     )}
@@ -1244,7 +1312,7 @@ function DashboardContent() {
                       <div>
                         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 12 }}>PROJECTED TRAJECTORY</div>
                         <div style={{ display: "flex", gap: 8, flexDirection: mobile ? "column" : "row" }}>
-                          <div style={{ flex: 0, padding: "12px 16px", border: `1px solid ${B.stone}`, borderRadius: 8, textAlign: "center" as const, minHeight: 48 }}>
+                          <div style={{ flex: mobile ? 1 : 0, padding: "12px 16px", border: `1px solid ${B.stone}`, borderRadius: 8, textAlign: "center" as const, minHeight: 48 }}>
                             <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe }}>NOW</div>
                             <div style={{ fontSize: 20, fontWeight: 300, fontFamily: mono, color: B.navy }}>{dScore}</div>
                           </div>

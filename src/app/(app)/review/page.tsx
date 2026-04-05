@@ -867,6 +867,7 @@ export default function ReviewPage() {
         p: v2ni.income_persistence_pct, c: v2ni.largest_source_pct, s: v2ni.source_diversity_count,
         f: v2ni.forward_secured_pct, v: v2ni.income_variability_level, l: v2ni.labor_dependence_pct,
         q: v2q, n: record.assessment_title || "", i: record.industry_sector || "", m: record.primary_income_model || "",
+        o: record.final_score || 0, b: record.stability_band || "",
       })) : "";
 
       // Build ranked factors
