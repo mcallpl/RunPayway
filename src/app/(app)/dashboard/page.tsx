@@ -304,14 +304,14 @@ function constraintNarrative(c: string, i: CanonicalInput): string {
     low_persistence: `Only ${i.income_persistence_pct}% of your income repeats automatically. The rest must be re-earned from scratch each month.`,
     low_source_diversity: `You have ${i.source_diversity_count} income source${i.source_diversity_count === 1 ? "" : "s"}. A single client decision has outsized power over your stability.`,
     high_variability: `Your income variability is ${i.income_variability_level}. Month-to-month swings make it harder to plan, save, and invest.`,
-    weak_durability: `Your income quality score indicates structural fragility. The contracts and agreements backing your income may not withstand market pressure.`,
+    weak_durability: `Your income quality score indicates fragility. The contracts and agreements backing your income may not withstand market pressure.`,
     shallow_continuity: `Your income runway is critically short. If active work stops, income drops to near zero within weeks. Building any continuity buffer is the priority.`,
   };
   if (n[c]) return n[c];
   // Anti-fallback: never return generic text. Use the constraint key to generate a meaningful sentence.
   const readable = c.replace(/_/g, " ");
   console.warn(`[RunPayway] Missing constraint narrative for: "${c}". Add it to constraintNarrative().`);
-  return `Your primary structural factor — ${readable} — is the biggest lever for improving your score. Addressing this directly will have more impact than any other change.`;
+  return `Your primary area — ${readable} — is the biggest lever for improving your score. Addressing this directly will have more impact than any other change.`;
 }
 
 /* ================================================================== */
@@ -606,7 +606,7 @@ function DashboardContent() {
         ? `Only ${persInc}% would continue if you stopped entirely. The ${indName.toLowerCase()} average is ${indData.greenAvg}%. Building this zone is the single most durable improvement available.`
         : persInc < 25
         ? `${persInc}% protected gives some runway. ${persInc > indData.greenAvg ? `You are ${persInc - indData.greenAvg}% ahead of the ${indName.toLowerCase()} average.` : `Most ${indName.toLowerCase()} professionals average ${indData.greenAvg}% — you are ${indData.greenAvg - persInc}% behind.`}`
-        : `${persInc}% protected is a structural advantage in ${indName.toLowerCase()}. This zone keeps generating revenue through disruptions, illness, and market shifts.`,
+        : `${persInc}% protected is a real advantage in ${indName.toLowerCase()}. This zone keeps generating revenue through disruptions, illness, and market shifts.`,
       peer: `${Math.abs(persInc - indData.greenAvg)}% ${persInc > indData.greenAvg ? "above" : "below"} ${indName.toLowerCase()} avg (${indData.greenAvg}%)`,
       action: grnAction ? `Fix: ${grnAction.label}` : null },
   ];
@@ -620,7 +620,7 @@ function DashboardContent() {
   const scriptFor = (pid: string) => { if (!scripts.length) return null; if (pid === "convert_retainer") return scripts.find(s => s.id.includes("retainer")) || scripts[0]; if (pid === "add_client") return scripts.find(s => s.id.includes("diversi") || s.id.includes("referral")) || scripts[1]; if (pid === "build_passive") return scripts[2] || scripts[0]; return scripts[0]; };
 
   /* ── Roadmap — enriched with success criteria, zone connection, effort, cumulative progress ── */
-  const phases = [{ weeks: "Week 1–2", effortLabel: "Quick win" }, { weeks: "Week 3–4", effortLabel: "Active effort" }, { weeks: "Week 5–8", effortLabel: "Structural shift" }, { weeks: "Week 9–12", effortLabel: "Compound & maintain" }];
+  const phases = [{ weeks: "Week 1–2", effortLabel: "Quick win" }, { weeks: "Week 3–4", effortLabel: "Active effort" }, { weeks: "Week 5–8", effortLabel: "Bigger changes" }, { weeks: "Week 9–12", effortLabel: "Compound & maintain" }];
 
   const zoneForPreset: Record<string, string> = {
     add_client: "Reduces active income exposure (red zone)",
@@ -694,7 +694,7 @@ function DashboardContent() {
   const gap = nextT - dScore;
 
   /* ── Reassessment — merged with progress check (Change 4) ── */
-  const returnMsg = qCount >= 2 ? "You have made enough structural changes to warrant a reassessment." : topMoves[0] ? `Come back after you ${topMoves[0].label.toLowerCase()}. Worth +${topMoves[0].lift} points.` : "Come back after making a structural change.";
+  const returnMsg = qCount >= 2 ? "You have made enough changes to warrant a reassessment." : topMoves[0] ? `Come back after you ${topMoves[0].label.toLowerCase()}. Worth +${topMoves[0].lift} points.` : "Come back after making a change.";
 
   const copyScript = (txt: string, id: string) => { navigator.clipboard.writeText(txt).then(() => { setCopiedScript(id); setTimeout(() => setCopiedScript(null), 2000); }); };
 
@@ -730,7 +730,7 @@ function DashboardContent() {
               Loading Command Center
             </div>
             <div style={{ fontSize: 14, fontWeight: 400, color: C.muted, lineHeight: 1.5 }}>
-              Preparing structural analysis &bull; Model RP-2.0
+              Analyzing your income &bull; Model RP-2.0
             </div>
             <div style={{ marginTop: 40, display: "flex", flexDirection: "column", gap: 12 }}>
               <div style={{ height: 12, borderRadius: 6, backgroundColor: C.border, width: "100%" }} />
@@ -760,19 +760,19 @@ function DashboardContent() {
           title: "Income Stability Score\u2122",
           icon: "ring",
           desc: "Your score from 0 to 100. Your stability band. Your distance to the next level.",
-          hover: "Most people have never seen their income reduced to one honest number. This score strips away the narratives you tell yourself and shows what would actually survive if something changed. Three key metrics \u2014 Runway, Top Source Risk, and Fragility \u2014 tell you exactly where you stand.",
+          hover: "Most people have never seen their income reduced to one honest number. This score strips away the narratives you tell yourself and shows what would actually survive if something changed. Three key metrics — Income Buffer, Top Source Risk, and Stability Type — tell you exactly where you stand.",
         },
         {
           title: "PressureMap\u2122",
           icon: "map",
           desc: "Your income broken into three zones: what stops, what recurs, and what is protected.",
-          hover: "Income that stops if you stop. Income that recurs but can be cancelled. Income that continues no matter what. Most people discover that the zone they assumed was safe is actually the most fragile. The PressureMap\u2122 shows the structure you have been avoiding.",
+          hover: "Income that stops if you stop. Income that recurs but can be cancelled. Income that continues no matter what. Most people discover that the zone they assumed was safe is actually the most exposed. The PressureMap™ shows what you have been avoiding.",
         },
         {
-          title: "Root Constraint",
+          title: "Biggest Risk",
           icon: "target",
-          desc: "The single structural weakness doing the most damage to your score.",
-          hover: "Every income structure has a bottleneck \u2014 one factor suppressing your score more than all the others combined. This identifies the exact lever that moves the needle, so you stop wasting effort on changes that feel productive but change nothing.",
+          desc: "The single area doing the most damage to your score.",
+          hover: "Every income setup has a bottleneck — one area suppressing your score more than all the others combined. This identifies the exact lever that moves the needle, so you stop wasting effort on changes that feel productive but change nothing.",
         },
       ],
     },
@@ -785,13 +785,13 @@ function DashboardContent() {
           title: "Negotiation Playbook",
           icon: "script",
           desc: "Word-for-word scripts built from your constraint, your industry, and your actual numbers.",
-          hover: "Knowing what to do is not the hard part. The hard part is knowing what to say. Each script tells you who to talk to, when to use it, the exact words, how to handle pushback, and what a successful response looks like. Personalized with your structural data \u2014 not a template.",
+          hover: "Knowing what to do is not the hard part. The hard part is knowing what to say. Each script tells you who to talk to, when to use it, the exact words, how to handle pushback, and what a successful response looks like. Personalized with your actual numbers — not a template.",
         },
         {
           title: "12-Week Roadmap",
           icon: "path",
           desc: "A visual timeline with dynamic milestones calculated from your starting numbers.",
-          hover: "Not generic advice. Each milestone references your actual percentages: \u2018Concentration drops from 72% to below 57%.\u2019 Score checkpoints at every stage. Completion tracking that shows your progress in real time.",
+          hover: "Not generic advice. Each milestone references your actual percentages: 'Reliance on top source drops from 72% to below 57%.' Score checkpoints at every stage. Completion tracking that shows your progress in real time.",
         },
       ],
     },
@@ -803,13 +803,13 @@ function DashboardContent() {
         {
           title: "What-If Simulator",
           icon: "sim",
-          desc: "Model structural changes before you commit. See the exact score impact.",
+          desc: "Model changes before you commit. See the exact score impact.",
           hover: "Add a client, convert to a retainer, build a passive stream. See exactly how each move changes your score, your band, and your trajectory. Save paths. Compare outcomes. You stop guessing and start engineering.",
         },
         {
           title: "Goal Mode",
           icon: "goal",
-          desc: "Pick a target band. See the minimum structural moves required to reach it.",
+          desc: "Pick a target level. See the minimum moves required to reach it.",
           hover: "Goal Mode works backwards from the target. It finds the fewest changes needed to cross the threshold. Sometimes it is one move. Sometimes the math says you need two. Either way, you know before you start.",
         },
       ],
@@ -820,15 +820,15 @@ function DashboardContent() {
       tint: "rgba(14,26,43,0.01)",
       sections: [
         {
-          title: "Your Structural Snapshot",
+          title: "Your Snapshot",
           icon: "track",
-          desc: "See exactly how you answered the 6 structural dimensions \u2014 and whether anything has changed.",
-          hover: "Your assessment captured a specific moment in time. As you implement changes \u2014 sign a retainer, add a client, secure forward revenue \u2014 your structure evolves. This snapshot lets you see what has changed and when it is time to reassess.",
+          desc: "See exactly how you answered the 6 dimensions — and whether anything has changed.",
+          hover: "Your assessment captured a specific moment in time. As you implement changes — sign a retainer, add a client, lock in forward revenue — things evolve. This snapshot lets you see what has changed and when it is time to reassess.",
         },
         {
           title: "Score History",
           icon: "track",
-          desc: "Track your score across multiple assessments. See factor-level changes over time.",
+          desc: "Track your score across multiple assessments. See what changed in each area over time.",
           hover: "Each reassessment adds to your timeline. See how your score moved, which dimensions improved, and how your peer benchmark evolved. Available with multiple assessments.",
         },
       ],
@@ -857,10 +857,10 @@ function DashboardContent() {
             <div style={{ textAlign: "center", marginBottom: mobile ? 36 : 48, animation: "fadeSlideIn 600ms ease-out" }}>
               <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", color: B.teal, marginBottom: 16 }}>COMMAND CENTER</div>
               <h1 style={{ fontSize: mobile ? 28 : 36, fontWeight: 300, color: B.navy, margin: "0 0 14px", lineHeight: 1.25, letterSpacing: "-0.02em" }}>
-                The control room for your income structure.
+                Everything about how your income is built — in one place.
               </h1>
               <p style={{ fontSize: 17, color: B.navy, opacity: 0.6, margin: "0 0 32px", lineHeight: 1.65, maxWidth: 520, marginLeft: "auto", marginRight: "auto" }}>
-                Your full diagnostic, simulator, roadmap, and progress tracker — all in one place. Complete an assessment to unlock everything below.
+                Your diagnostic, simulator, action plan, and progress tracker. Complete an assessment to unlock everything below.
               </p>
               <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" as const }}>
                 <a href={STRIPE_URL} style={{
@@ -930,10 +930,10 @@ function DashboardContent() {
             <div style={{ textAlign: "center", padding: mobile ? "40px 24px" : "56px 48px", borderRadius: 20, background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`, boxShadow: "0 8px 32px rgba(14,26,43,0.12)" }}>
               <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 16 }}>READY?</div>
               <h2 style={{ fontSize: mobile ? 22 : 28, fontWeight: 300, color: C.sandText, margin: "0 0 14px", lineHeight: 1.3 }}>
-                Find out what your income would actually survive.
+                See what your income can actually withstand.
               </h2>
               <p style={{ fontSize: 16, color: C.sandMuted, margin: "0 0 28px", lineHeight: 1.65, maxWidth: 460, marginLeft: "auto", marginRight: "auto" }}>
-                One assessment. Every section above populates with your real data. No samples. No hypotheticals. Just the structural truth.
+                One assessment. Every section above populates with your real data. No samples. No hypotheticals. Just the truth about how your income is built.
               </p>
               <a href={STRIPE_URL} style={{
                 display: "inline-flex", alignItems: "center", justifyContent: "center",
@@ -946,7 +946,7 @@ function DashboardContent() {
             {/* Footer */}
             <div style={{ paddingTop: 32, textAlign: "center" }}>
               <p style={{ fontSize: 14, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; PeopleStar Enterprises</p>
-              <p style={{ fontSize: 12, color: `${B.taupe}80`, margin: 0 }}>Deterministic system &middot; Structural output &middot; Version-controlled logic</p>
+              <p style={{ fontSize: 12, color: `${B.taupe}80`, margin: 0 }}>Fixed rules &middot; Same answers, same score &middot; Private by default</p>
             </div>
           </div>
         </div>
@@ -1030,9 +1030,9 @@ function DashboardContent() {
                   `}</style>
                   <div style={{ display: "flex", gap: 8, marginBottom: 20, flexWrap: "wrap" as const }} className="d-metrics">
                     {[
-                      { label: "Runway", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? B.red : B.teal, tip: "How long income continues if all active work stops." },
-                      { label: "Source Risk", value: `\u2212${riskDrop}`, color: riskDrop > 15 ? B.red : B.amber, tip: "Score drop if your largest source disappears." },
-                      { label: "Fragility", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" || fragLabel === "Supported" ? B.teal : B.amber, tip: "How well your structure absorbs shocks." },
+                      { label: "Income Buffer", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? B.red : B.teal, tip: "How long income continues if all active work stops." },
+                      { label: "If Top Source Leaves", value: `\u2212${riskDrop}`, color: riskDrop > 15 ? B.red : B.amber, tip: "Score drop if your largest source disappears." },
+                      { label: "Stability Type", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" || fragLabel === "Supported" ? B.teal : B.amber, tip: "How well your income handles disruptions." },
                     ].map((m) => (
                       <div key={m.label} className="metric-tip-wrap"
                         onClick={() => setTooltipOpen(tooltipOpen === m.label ? null : m.label)}
@@ -1062,7 +1062,7 @@ function DashboardContent() {
                           ? "All steps complete. Consider reassessing."
                           : nextMove
                             ? <>{nextMove.label}. <span style={{ fontWeight: 300, fontFamily: mono, color: B.teal }}>+{nextMove.lift}</span></>
-                            : "Start your first structural move."
+                            : "Start your first move."
                         }
                       </div>
                       {nextScript && stepsDone < stepsTotal && (
@@ -1115,7 +1115,7 @@ function DashboardContent() {
             </div>
 
             <div style={{ padding: mobile ? "20px 16px" : "24px 28px", borderLeft: `4px solid ${B.red}`, borderRadius: 12, backgroundColor: "#FAFAFA", marginBottom: 16 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.red, marginBottom: 12 }}>ROOT CONSTRAINT</div>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.red, marginBottom: 12 }}>BIGGEST RISK</div>
               <p style={{ fontSize: 18, fontWeight: 600, color: B.navy, margin: "0 0 12px", lineHeight: 1.4 }}>
                 If your top source leaves, your score drops {dScore - stLCDrop < 30 && dScore >= 30 ? "into Limited Stability." : `from ${dScore} to ${dScore - stLCDrop}.`}
               </p>
@@ -1273,10 +1273,10 @@ function DashboardContent() {
                         </button>
                         {isExp && (
                           <div style={{ padding: mobile ? "0 16px 20px" : "0 24px 24px" }}>
-                            {/* Structural briefing — why this matters for YOU */}
+                            {/* Why this matters for YOU */}
                             {play.briefing && (
                               <div style={{ padding: "14px 16px", borderRadius: 10, borderLeft: `3px solid ${B.teal}`, backgroundColor: `${B.teal}04`, marginBottom: 16 }}>
-                                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: B.teal, marginBottom: 4 }}>WHY THIS MATTERS FOR YOUR STRUCTURE</div>
+                                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: B.teal, marginBottom: 4 }}>WHY THIS MATTERS FOR YOU</div>
                                 <p style={{ fontSize: 14, color: B.navy, margin: 0, lineHeight: 1.55 }}>{play.briefing}</p>
                               </div>
                             )}
@@ -1496,7 +1496,7 @@ function DashboardContent() {
                 {/* GOAL MODE — reverse simulator */}
                 <div style={{ marginBottom: 24 }}>
                   <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: B.purple, marginBottom: 12 }}>GOAL MODE</div>
-                  <div style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, color: B.navy, marginBottom: 8 }}>See the minimum structural moves required to cross a band.</div>
+                  <div style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, color: B.navy, marginBottom: 8 }}>See the minimum moves required to reach the next level.</div>
                   <p style={{ fontSize: 14, color: B.muted, margin: "0 0 14px", lineHeight: 1.6 }}>
                     Not guesses. Score-based path modeling.
                   </p>
@@ -1598,7 +1598,7 @@ function DashboardContent() {
                       <div style={{ padding: mobile ? "20px 16px" : "20px 24px", borderRadius: 12, border: `1px solid ${B.amber}20`, backgroundColor: `${B.amber}04` }}>
                         <div style={{ fontSize: 12, fontWeight: 600, color: B.amber, marginBottom: 8 }}>Closest achievable: {bestPossible}/100</div>
                         <p style={{ fontSize: 14, color: B.muted, margin: "0 0 12px", lineHeight: 1.55 }}>
-                          The target of {goalTarget} requires more than structural changes alone. Your best path reaches {bestPossible}, which is {goalTarget - bestPossible} points short. A reassessment after implementing changes may close the remaining gap.
+                          The target of {goalTarget} requires more than these changes alone. Your best path reaches {bestPossible}, which is {goalTarget - bestPossible} points short. A reassessment after implementing changes may close the remaining gap.
                         </p>
                         {bestMoveSet.map((m, i) => (
                           <div key={m.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: i < bestMoveSet.length - 1 ? `1px solid ${B.stone}` : "none" }}>
@@ -1773,15 +1773,15 @@ function DashboardContent() {
                 const lNi = latest._v2?.normalized_inputs as Record<string, number> | undefined;
                 if (!fNi || !lNi) return null;
                 const factors = [
-                  { key: "income_persistence_pct", label: "Recurrence" },
-                  { key: "largest_source_pct", label: "Concentration", invert: true },
-                  { key: "source_diversity_count", label: "Diversification" },
-                  { key: "forward_secured_pct", label: "Forward Visibility" },
-                  { key: "labor_dependence_pct", label: "Labor Independence", invert: true },
+                  { key: "income_persistence_pct", label: "Income That Repeats" },
+                  { key: "largest_source_pct", label: "Reliance on Top Source", invert: true },
+                  { key: "source_diversity_count", label: "Number of Sources" },
+                  { key: "forward_secured_pct", label: "Income Locked In Ahead" },
+                  { key: "labor_dependence_pct", label: "Income Without You Working", invert: true },
                 ];
                 return (
                   <div style={{ marginBottom: 20 }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.navy, marginBottom: 12 }}>FACTOR-LEVEL CHANGES</div>
+                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.navy, marginBottom: 12 }}>WHAT CHANGED IN EACH AREA</div>
                     {factors.map(f => {
                       const fVal = (fNi[f.key] as number) ?? 0;
                       const lVal = (lNi[f.key] as number) ?? 0;
@@ -1853,7 +1853,7 @@ function DashboardContent() {
             <div style={{ flex: 1, padding: mobile ? "20px 16px" : "20px 24px", border: `1px solid ${B.stone}`, borderRadius: 12, backgroundColor: B.surface }}>
               <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: daysSince > 60 ? "#C0392B" : B.taupe, marginBottom: 8 }}>{daysSince > 0 ? `${daysSince} DAYS SINCE ASSESSMENT` : "ASSESSED TODAY"}</div>
               <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>
-                {daysSince === 0 ? "Start with your #1 priority above." : daysSince <= 14 ? "Focus on the first phase of your roadmap." : daysSince <= 45 ? "You should be in Week 3\u20134. Made a structural change?" : daysSince <= 90 ? "If you followed your roadmap, you may be ready to reassess." : "Over 90 days. A reassessment will show how your structure changed."}
+                {daysSince === 0 ? "Start with your #1 priority above." : daysSince <= 14 ? "Focus on the first phase of your roadmap." : daysSince <= 45 ? "You should be in Week 3–4. Made any changes yet?" : daysSince <= 90 ? "If you followed your roadmap, you may be ready to reassess." : "Over 90 days. A reassessment will show what has changed."}
               </p>
             </div>
             <button onClick={() => { const s = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record"); if (!s) return; const b = new Blob([s], { type: "application/json" }); const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href = u; a.download = "runpayway-assessment.json"; a.click(); URL.revokeObjectURL(u); }}
@@ -1869,7 +1869,7 @@ function DashboardContent() {
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg>
               </div>
               <div>
-                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: B.purple }}>YOUR STRUCTURE WHEN YOU WERE ASSESSED</div>
+                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: B.purple }}>YOUR INCOME WHEN YOU WERE ASSESSED</div>
                 {assessedDate && <div style={{ fontSize: 13, color: B.taupe }}>{assessedDate}</div>}
               </div>
             </div>
@@ -2137,7 +2137,7 @@ function DashboardContent() {
           {/* FOOTER */}
           <div style={{ paddingTop: 32, textAlign: "center" }}>
             <p style={{ fontSize: 14, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; PeopleStar Enterprises</p>
-            <p style={{ fontSize: 12, color: `${B.taupe}80`, margin: 0 }}>Deterministic system &middot; Structural output &middot; Version-controlled logic</p>
+            <p style={{ fontSize: 12, color: `${B.taupe}80`, margin: 0 }}>Fixed rules &middot; Same answers, same score &middot; Private by default</p>
           </div>
         </div>
       </div>
