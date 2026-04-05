@@ -575,11 +575,59 @@ function TheMissingLayer() {
           })}
         </div>
 
-        {/* Arrow label */}
-        <div style={{ textAlign: "center", marginTop: m ? 28 : 40, ...fadeIn(visible, 220) }}>
+        {/* Bridge statement */}
+        <div style={{ textAlign: "center", marginTop: m ? 28 : 40, marginBottom: m ? 40 : 64, ...fadeIn(visible, 220) }}>
           <p style={{ fontSize: 15, color: "rgba(244,241,234,0.40)", lineHeight: 1.6 }}>
             A credit score tells a lender what you&#8217;ve done. RunPayway tells <em>everyone</em> \u2014 including you \u2014 what your income can <strong style={{ color: C.sand }}>withstand</strong>.
           </p>
+        </div>
+
+        {/* Two-column: how RunPayway strengthens credit + advisory */}
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 20, maxWidth: 880, margin: "0 auto", ...fadeIn(visible, 300) }}>
+
+          {/* Credit column */}
+          <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", marginBottom: m ? 16 : 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
+              <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.teal}12`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+              </div>
+              <span style={{ fontSize: 15, fontWeight: 600, color: C.sand }}>How it strengthens your credit</span>
+            </div>
+
+            {[
+              { text: "Know before you borrow", desc: "If one client leaving would make you miss payments, you need to know that before taking on debt \u2014 not after." },
+              { text: "Show lenders what tax returns can\u2019t", desc: "Self-employed income looks messy on paper. A stability score proves it\u2019s diversified, recurring, and locked in ahead." },
+              { text: "Time your applications", desc: "Don\u2019t apply when your structure is weak. Improve your stability first, then apply when your income can actually support the debt." },
+              { text: "Stable income = better credit over time", desc: "Consistent payments build credit history. Your stability score measures your ability to keep paying \u2014 the thing credit scores ultimately reflect." },
+            ].map((item, i) => (
+              <div key={i} style={{ marginBottom: i < 3 ? 14 : 0 }}>
+                <div style={{ fontSize: 14, fontWeight: 600, color: C.sand, marginBottom: 3 }}>{item.text}</div>
+                <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Advisory column */}
+          <div style={{ padding: m ? 24 : 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
+              <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.purple}12`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+              </div>
+              <span style={{ fontSize: 15, fontWeight: 600, color: C.sand }}>How it helps your advisor</span>
+            </div>
+
+            {[
+              { text: "Reveal the hidden single point of failure", desc: "Advisors build plans assuming income continues. If 80% depends on you showing up every day, that plan has a gap they can\u2019t see without this." },
+              { text: "Size the emergency fund correctly", desc: "A score of 31 needs 6\u201312 months of reserves. A score of 75 might need 3. RunPayway tells your advisor how much buffer you actually need." },
+              { text: "Set real investment risk tolerance", desc: "Risk tolerance isn\u2019t just psychological \u2014 it\u2019s structural. Fragile income plus aggressive investing is dangerous, no matter what a questionnaire says." },
+              { text: "Flag insurance gaps", desc: "High dependence on your own labor means disability insurance is critical. Your stability score surfaces gaps an advisor would otherwise miss." },
+            ].map((item, i) => (
+              <div key={i} style={{ marginBottom: i < 3 ? 14 : 0 }}>
+                <div style={{ fontSize: 14, fontWeight: 600, color: C.sand, marginBottom: 3 }}>{item.text}</div>
+                <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
