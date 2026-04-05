@@ -69,16 +69,16 @@ function HeroSection() {
       <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
         <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20, ...fadeIn(visible) }}>Pricing</div>
-        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.03em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 80) }}>
+        <h1 style={{ fontSize: m ? 36 : 52, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.03em", color: C.navy, marginBottom: 28, ...fadeIn(visible, 80) }}>
           Your income will be tested.{m ? " " : <br />}This shows whether it holds.
         </h1>
-        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 16, ...fadeIn(visible, 100) }}>
+        <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.65, marginBottom: 20, ...fadeIn(visible, 100) }}>
           Measure the structural integrity of your income before conditions force the answer.
         </p>
-        <p style={{ fontSize: 14, color: muted, lineHeight: 1.55, marginBottom: 32, ...fadeIn(visible, 180) }}>
+        <p style={{ fontSize: 15, color: light, lineHeight: 1.6, marginBottom: 36, ...fadeIn(visible, 180) }}>
           Free score instantly. Full diagnostic for $69. Track your structure over time for $149/year.
         </p>
-        <p style={{ fontSize: 12, color: light, letterSpacing: "0.04em", ...fadeIn(visible, 260) }}>
+        <p style={{ fontSize: 14, color: light, letterSpacing: "0.03em", ...fadeIn(visible, 260) }}>
           No bank connection &bull; Instant results &bull; Full refund guarantee
         </p>
       </div>
@@ -96,14 +96,14 @@ function ValueFrame() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 48 : 80, paddingBottom: m ? 48 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
         <div style={{ width: 48, height: 1, backgroundColor: C.border, margin: "0 auto 48px" }} />
-        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>
           The score shows where you stand.{m ? " " : <br />}The diagnostic shows what breaks — and what to fix.
         </h2>
-        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 12, ...fadeIn(visible, 80) }}>Without the diagnostic, you see the number.</p>
-        <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.65, ...fadeIn(visible, 140) }}>With it, you see the structure behind it.</p>
+        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 12, ...fadeIn(visible, 80) }}>Without the diagnostic, you see the number.</p>
+        <p style={{ fontSize: 17, fontWeight: 500, color: C.navy, lineHeight: 1.65, ...fadeIn(visible, 140) }}>With it, you see the structure behind it.</p>
       </div>
     </section>
   );
@@ -126,14 +126,14 @@ function PricingCards() {
   );
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: "#FAFAFA", paddingTop: m ? 64 : 128, paddingBottom: m ? 64 : 128, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20, alignItems: "start", ...fadeIn(visible) }}>
 
           {/* FREE */}
-          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 16 : 32, border: `1px solid ${C.border}`, display: "flex", flexDirection: "column" as const, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
+          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 20 : 32, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", display: "flex", flexDirection: "column" as const, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: "rgba(14,26,43,0.06)" }} />
-            <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginTop: 4, marginBottom: 24 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginTop: 4, marginBottom: 24 }}>
               Income Stability Score&#8482;
             </div>
             <div style={{ marginBottom: 4 }}>
@@ -158,9 +158,9 @@ function PricingCards() {
           </div>
 
           {/* DIAGNOSTIC (PRIMARY) */}
-          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 16 : 32, border: `1px solid rgba(14,26,43,0.12)`, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", boxShadow: "0 4px 24px rgba(14,26,43,0.06)", transform: m ? "none" : "scale(1.02)" }}>
+          <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 20 : 32, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", boxShadow: "0 2px 8px rgba(14,26,43,0.06), 0 8px 32px rgba(14,26,43,0.05)", transform: m ? "none" : "scale(1.02)" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.purple}, ${C.teal})` }} />
-            <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.purple, marginTop: 4, marginBottom: 24 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.purple, marginTop: 4, marginBottom: 24 }}>
               RunPayway&#8482; Diagnostic
             </div>
             <div style={{ marginBottom: 4 }}>
@@ -189,9 +189,9 @@ function PricingCards() {
           </div>
 
           {/* MONITORING */}
-          <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: m ? 16 : 32, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", marginTop: m ? 16 : 0 }}>
+          <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: m ? 20 : 32, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", marginTop: m ? 16 : 0 }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
-            <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginTop: 4, marginBottom: 24 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginTop: 4, marginBottom: 24 }}>
               RunPayway&#8482; Monitoring
             </div>
             <div style={{ marginBottom: 4 }}>
@@ -231,23 +231,23 @@ function WhyUpgrade() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 64 : 128, paddingBottom: m ? 64 : 128, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
         <div style={{ width: 48, height: 1, backgroundColor: C.border, margin: m ? "0 auto 36px" : "0 auto 56px" }} />
-        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>Why people upgrade</h2>
-        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 24, ...fadeIn(visible, 80) }}>The score shows where you stand.</p>
-        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 120) }}>The diagnostic shows:</p>
+        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 28, ...fadeIn(visible) }}>Why people upgrade</h2>
+        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 24, ...fadeIn(visible, 80) }}>The score shows where you stand.</p>
+        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 120) }}>The diagnostic shows:</p>
         <div style={{ marginBottom: 28, ...fadeIn(visible, 160) }}>
           {["what is fragile", "what breaks first", "what to fix first"].map((item, i) => (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}>
               <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-              <span style={{ fontSize: 16, fontWeight: 500, color: C.navy }}>{item}</span>
+              <span style={{ fontSize: 17, fontWeight: 500, color: C.navy }}>{item}</span>
             </div>
           ))}
         </div>
         <div style={{ padding: "20px 28px", borderRadius: 14, backgroundColor: C.white, border: `1px solid ${C.border}`, display: "inline-block", ...fadeIn(visible, 220) }}>
-          <p style={{ fontSize: 16, color: light, marginBottom: 4 }}>Without it, you&#8217;re guessing.</p>
-          <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, margin: 0 }}>With it, you&#8217;re executing.</p>
+          <p style={{ fontSize: 17, color: light, marginBottom: 6 }}>Without it, you&#8217;re guessing.</p>
+          <p style={{ fontSize: 17, fontWeight: 500, color: C.navy, margin: 0 }}>With it, you&#8217;re executing.</p>
         </div>
       </div>
     </section>
@@ -270,25 +270,25 @@ function ReportBreakdown() {
     { num: "04", title: "Stress Testing", desc: "Disruption scenarios, score drops, fragility analysis.", icon: "M13 10V3L4 14h7v7l9-11h-7z" },
   ];
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 64 : 128, paddingBottom: m ? 64 : 128, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>Four pages. Nothing withheld.</h2>
-        <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, marginBottom: m ? 36 : 56, maxWidth: 560, ...fadeIn(visible, 80) }}>
+        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 20, ...fadeIn(visible) }}>Four pages. Nothing withheld.</h2>
+        <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: m ? 40 : 64, maxWidth: 560, ...fadeIn(visible, 80) }}>
           Every section generated from your structural inputs and interpreted through your industry and income model.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 16, ...fadeIn(visible, 140) }}>
           {pages.map((p, i) => (
-            <div key={i} style={{ padding: m ? 16 : 28, borderRadius: 14, border: `1px solid ${C.border}`, backgroundColor: "#FAFAFA" }}>
+            <div key={i} style={{ padding: m ? 20 : 28, borderRadius: 14, backgroundColor: "#FAFAFA", boxShadow: "0 1px 3px rgba(14,26,43,0.03)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
-                <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: `${C.teal}08`, border: `1px solid ${C.teal}12`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <div style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: `${C.teal}08`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={p.icon} /></svg>
                 </div>
                 <div>
-                  <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.10em", color: C.teal }}>{p.num}</div>
+                  <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.08em", color: C.teal }}>{p.num}</div>
                   <div style={{ fontSize: 16, fontWeight: 600, color: C.navy }}>{p.title}</div>
                 </div>
               </div>
-              <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, margin: 0 }}>{p.desc}</p>
+              <p style={{ fontSize: 15, color: muted, lineHeight: 1.6, margin: 0 }}>{p.desc}</p>
             </div>
           ))}
         </div>
@@ -376,18 +376,18 @@ function TrustBlock() {
     { title: "Deterministic system", desc: "Same inputs \u2192 same score.", icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 0 0 4.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 0 1-15.357-2m15.357 2H15" },
   ];
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 64 : 112, paddingBottom: m ? 64 : 112, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
           Designed as a measurement system — not a financial tool.
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr 1fr", gap: 16, ...fadeIn(visible, 100) }}>
           {items.map((item, i) => (
-            <div key={i} style={{ textAlign: "center", padding: m ? 20 : 28, borderRadius: 14, backgroundColor: "#FAFAFA", border: `1px solid ${C.border}` }}>
+            <div key={i} style={{ textAlign: "center", padding: m ? 20 : 28, borderRadius: 14, backgroundColor: C.white, boxShadow: "0 1px 3px rgba(14,26,43,0.03)" }}>
               <div style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: `${C.navy}06`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px" }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={item.icon} /></svg>
               </div>
-              <div style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 6 }}>{item.title}</div>
+              <div style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 6 }}>{item.title}</div>
               <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, margin: 0 }}>{item.desc}</p>
             </div>
           ))}
@@ -416,9 +416,9 @@ function FaqSection() {
     { q: "What is the refund policy?", a: "If the diagnostic does not reveal at least one structural insight you did not already know, you receive a full refund. No conditions." },
   ];
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 64 : 128, paddingBottom: m ? 64 : 128, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 820, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>Frequently Asked Questions</h2>
+        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, textAlign: "center", marginBottom: m ? 36 : 64, ...fadeIn(visible) }}>Frequently Asked Questions</h2>
         <div style={{ ...fadeIn(visible, 80) }}>
           {faqs.map((faq, i) => {
             const isOpen = openFaq === i;
@@ -433,7 +433,7 @@ function FaqSection() {
                   </svg>
                 </button>
                 <div style={{ maxHeight: isOpen ? 400 : 0, overflow: "hidden", transition: "max-height 300ms ease" }}>
-                  <p style={{ fontSize: 14, color: muted, lineHeight: 1.65, margin: 0, paddingBottom: 22 }}>{faq.a}</p>
+                  <p style={{ fontSize: 15, color: muted, lineHeight: 1.65, margin: 0, paddingBottom: 24 }}>{faq.a}</p>
                 </div>
               </div>
             );
@@ -455,13 +455,13 @@ function FinalCta() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", top: "50%", left: "50%", width: 500, height: 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
-      <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-        <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.navy, marginBottom: 20, ...fadeIn(visible) }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 140, paddingBottom: m ? 72 : 140, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
+      <div style={{ position: "absolute", top: "50%", left: "50%", width: m ? 300 : 500, height: m ? 300 : 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
+      <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
+        <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 500, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.sand, marginBottom: 20, ...fadeIn(visible) }}>
           Your income already has a structure.{m ? " " : <br />}Now you can see it clearly.
         </h2>
-        <p style={{ fontSize: 16, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>Start with the free score.</p>
+        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 8, ...fadeIn(visible, 60) }}>Start with the free score.</p>
         <p style={{ fontSize: 16, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 40, ...fadeIn(visible, 100) }}>Unlock the diagnostic when you&#8217;re ready to act.</p>
         <div style={{ ...fadeIn(visible, 180) }}>
           <Link href="/begin" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 56, padding: "0 48px", borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: 16, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms, box-shadow 200ms", boxShadow: "0 2px 16px rgba(244,241,234,0.10)" }}
