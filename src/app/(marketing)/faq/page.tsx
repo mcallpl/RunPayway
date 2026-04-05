@@ -76,6 +76,9 @@ function getFaqCategories(t: Translations): FaqCategory[] { return [
     items: [
       { q: t.faqPage.cat4Q1, a: (<><p>{t.faqPage.cat4A1P1}</p><p>{t.faqPage.cat4A1P2}</p><p>{t.faqPage.cat4A1P3}</p></>) },
       { q: t.faqPage.cat4Q2, a: (<><p>{t.faqPage.cat4A2P1}</p><p>{t.faqPage.cat4A2P2}</p><p>{t.faqPage.cat4A2P3}</p></>) },
+      { q: t.faqPage.cat4Q3, a: (<><p>{t.faqPage.cat4A3P1}</p><p>{t.faqPage.cat4A3P2}</p></>) },
+      { q: t.faqPage.cat4Q4, a: (<><p>{t.faqPage.cat4A4P1}</p><p>{t.faqPage.cat4A4P2}</p></>) },
+      { q: t.faqPage.cat4Q5, a: (<><p>{t.faqPage.cat4A5P1}</p><p>{t.faqPage.cat4A5P2}</p></>) },
     ],
   },
   {

@@ -698,6 +698,15 @@ export interface Translations {
     cat4A2P1: string;
     cat4A2P2: string;
     cat4A2P3: string;
+    cat4Q3: string;
+    cat4A3P1: string;
+    cat4A3P2: string;
+    cat4Q4: string;
+    cat4A4P1: string;
+    cat4A4P2: string;
+    cat4Q5: string;
+    cat4A5P1: string;
+    cat4A5P2: string;
     cat5Title: string;
     cat5Q1: string;
     cat5A1P1: string;
