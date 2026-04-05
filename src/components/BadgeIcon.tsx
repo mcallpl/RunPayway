@@ -3,7 +3,7 @@
 const C = {
   purple: "#4B3FAE",
   teal: "#1F6D7A",
-  navy: "#0E1A2B",
+  navy: "#1C1635",
   amber: "#DC7814",
   red: "#9B2C2C",
 };

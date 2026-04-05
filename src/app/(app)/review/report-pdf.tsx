@@ -223,7 +223,7 @@ function mh(doc: jsPDF, text: string, w: number, sz: number, font = "Inter", lh 
 function dt(doc: jsPDF, text: string, x: number, y: number, w: number, sz: number,
   opts?: { font?: string; color?: string; lh?: number; align?: "left"|"center"|"right"; maxLines?: number }): number {
   const font = opts?.font || "Inter";
-  const color = opts?.color || "#0E1A2B";
+  const color = opts?.color || "#1C1635";
   const lh = opts?.lh || 1.45;
   sf(doc, font); doc.setFontSize(sz); doc.setTextColor(color);
   let lines: string[] = doc.splitTextToSize(S(text), w);
@@ -265,12 +265,12 @@ function footer(doc: jsPDF, section: string, page: number) {
 
 /** Draw interior page header — score badge top right */
 function header(doc: jsPDF, score?: number, band?: string, bandColor?: string) {
-  sf(doc, "InterB"); doc.setFontSize(8); doc.setTextColor("#0E1A2B");
+  sf(doc, "InterB"); doc.setFontSize(8); doc.setTextColor("#1C1635");
   doc.text("RUNPAYWAY(TM)", ML, 40);
 
   // Score badge top right
   if (score !== undefined) {
-    sf(doc, "InterB"); doc.setFontSize(18); doc.setTextColor("#0E1A2B");
+    sf(doc, "InterB"); doc.setFontSize(18); doc.setTextColor("#1C1635");
     doc.text(String(score), ML + CW, 38, { align: "right" });
     const scoreW = doc.getTextWidth(String(score));
     sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#6B6155");
@@ -310,12 +310,12 @@ function fits(y: number, h: number): boolean {
 
 async function page1(doc: jsPDF, d: ReportPDFData) {
   // ── TOP BAR — thin accent line ──
-  doc.setFillColor("#0E1A2B");
+  doc.setFillColor("#1C1635");
   doc.rect(0, 0, W, 3, "F");
 
   // ── LEFT-ALIGNED HEADER BLOCK ──
   let y = 56;
-  sf(doc, "InterB"); doc.setFontSize(8); doc.setTextColor("#0E1A2B");
+  sf(doc, "InterB"); doc.setFontSize(8); doc.setTextColor("#1C1635");
   doc.text("RUNPAYWAY(TM)", ML, y, { charSpace: 1.5 });
   sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#6B6155");
   doc.text("Income Stability Score(TM)  -  Model RP-2.0", ML + CW, y, { align: "right" });
@@ -327,7 +327,7 @@ async function page1(doc: jsPDF, d: ReportPDFData) {
 
   // ── REPORT TITLE — large, left-aligned ──
   y += 40;
-  sf(doc, "InterB"); doc.setFontSize(32); doc.setTextColor("#0E1A2B");
+  sf(doc, "InterB"); doc.setFontSize(32); doc.setTextColor("#1C1635");
   doc.text("Income Stability", ML, y);
   y += 36;
   doc.text("Report", ML, y);
@@ -350,7 +350,7 @@ async function page1(doc: jsPDF, d: ReportPDFData) {
   sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#6B6155");
   doc.text("Prepared for", ML, y);
   y += 14;
-  sf(doc, "InterSB"); doc.setFontSize(16); doc.setTextColor("#0E1A2B");
+  sf(doc, "InterSB"); doc.setFontSize(16); doc.setTextColor("#1C1635");
   doc.text(S(d.assessmentTitle), ML, y);
   y += 14;
   sf(doc, "Inter"); doc.setFontSize(9.5); doc.setTextColor("#6B6155");
@@ -358,7 +358,7 @@ async function page1(doc: jsPDF, d: ReportPDFData) {
 
   // ── SCORE BLOCK — right side, vertically centered with name ──
   const scoreBlockY = y - 28;
-  sf(doc, "InterB"); doc.setFontSize(56); doc.setTextColor("#0E1A2B");
+  sf(doc, "InterB"); doc.setFontSize(56); doc.setTextColor("#1C1635");
   doc.text(String(d.finalScore), ML + CW, scoreBlockY + 20, { align: "right" });
   sf(doc, "Inter"); doc.setFontSize(14); doc.setTextColor("#6B6155");
   doc.text("/100", ML + CW, scoreBlockY + 36, { align: "right" });
@@ -390,7 +390,7 @@ async function page1(doc: jsPDF, d: ReportPDFData) {
 
   // ── SIMULATOR ACCESS ──
   y += 28;
-  sf(doc, "InterB"); doc.setFontSize(8); doc.setTextColor("#0E1A2B");
+  sf(doc, "InterB"); doc.setFontSize(8); doc.setTextColor("#1C1635");
   doc.text("RUNPAYWAY(TM) STABILITY SUITE ACCESS", ML, y, { charSpace: 0.5 });
   y += 12;
   sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
@@ -403,7 +403,7 @@ async function page1(doc: jsPDF, d: ReportPDFData) {
   card(doc, ML, y, CW, codeH);
 
   // Access code text
-  doc.setFont("Courier", "normal"); doc.setFontSize(6.5); doc.setTextColor("#0E1A2B");
+  doc.setFont("Courier", "normal"); doc.setFontSize(6.5); doc.setTextColor("#1C1635");
   for (let i = 0; i < codeLines.length; i++) {
     doc.text(codeLines[i], ML + 10, y + 8 + i * 9);
   }
@@ -423,7 +423,7 @@ function page2(doc: jsPDF, d: ReportPDFData) {
   let y = Y0;
 
   // Page title
-  sf(doc, "InterB"); doc.setFontSize(14); doc.setTextColor("#0E1A2B");
+  sf(doc, "InterB"); doc.setFontSize(14); doc.setTextColor("#1C1635");
   doc.text("Key Findings", ML, y);
 
   y += 18;
@@ -462,7 +462,7 @@ function page2(doc: jsPDF, d: ReportPDFData) {
   doc.line(ML, y, ML + CW, y);
   y += 12;
   // Dark gradient card
-  doc.setFillColor("#0E1A2B");
+  doc.setFillColor("#1C1635");
   doc.roundedRect(ML, y, CW, 44, 3, 3, "F");
   label(doc, "RUNPAYWAY(TM) STABILITY SUITE", ML + 10, y + 12, "#1F6D7A");
   sf(doc, "InterSB"); doc.setFontSize(10); doc.setTextColor("#F4F1EA");
@@ -482,7 +482,7 @@ function page3(doc: jsPDF, d: ReportPDFData) {
   header(doc, d.finalScore, d.stabilityBand, d.bandColor);
   let y = Y0;
 
-  sf(doc, "InterB"); doc.setFontSize(14); doc.setTextColor("#0E1A2B");
+  sf(doc, "InterB"); doc.setFontSize(14); doc.setTextColor("#1C1635");
   doc.text("Stability Plan", ML, y);
   y += 14;
   sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
@@ -490,7 +490,7 @@ function page3(doc: jsPDF, d: ReportPDFData) {
   y += 16;
 
   // Action steps — max 3, compact cards to prevent overflow
-  const stepColors = ["#4B3FAE", "#1F6D7A", "#0E1A2B"];
+  const stepColors = ["#4B3FAE", "#1F6D7A", "#1C1635"];
   const actions = d.actionCategories.slice(0, 3);
   for (let i = 0; i < actions.length; i++) {
     const a = actions[i];
@@ -498,7 +498,7 @@ function page3(doc: jsPDF, d: ReportPDFData) {
     if (!fits(y, h)) break;
     card(doc, ML, y, CW, h, stepColors[i]);
     label(doc, `STEP ${i + 1}`, ML + 10, y + 10, stepColors[i]);
-    sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#0E1A2B");
+    sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#1C1635");
     doc.text(truncate(a.title, 65), ML + 10, y + 21);
     sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#535D6B");
     doc.text(truncate(a.how, 85), ML + 10, y + 31);
@@ -509,7 +509,7 @@ function page3(doc: jsPDF, d: ReportPDFData) {
 
   // Combined lift
   if (d.combinedLift && fits(y, 16)) {
-    sf(doc, "InterSB"); doc.setFontSize(8.5); doc.setTextColor("#0E1A2B");
+    sf(doc, "InterSB"); doc.setFontSize(8.5); doc.setTextColor("#1C1635");
     const cText = `Combined Impact: ${d.combinedLift.projectedScore} (+${d.combinedLift.lift} points)${d.combinedLift.bandShift ? ` - moves to ${d.combinedLift.bandShift}` : ""}`;
     doc.text(S(cText), ML, y);
     y += 14;
@@ -530,7 +530,7 @@ function page3(doc: jsPDF, d: ReportPDFData) {
       if (!fits(y, 18)) break;
       sf(doc, "InterB"); doc.setFontSize(7); doc.setTextColor("#4B3FAE");
       doc.text(truncate(row.week, 12), ML, y);
-      sf(doc, "InterSB"); doc.setFontSize(8.5); doc.setTextColor("#0E1A2B");
+      sf(doc, "InterSB"); doc.setFontSize(8.5); doc.setTextColor("#1C1635");
       doc.text(truncate(row.action, 50), ML + 56, y);
       sf(doc, "Inter"); doc.setFontSize(7.5); doc.setTextColor("#535D6B");
       doc.text(truncate(row.detail, 75), ML + 56, y + 9);
@@ -561,7 +561,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
   header(doc, d.finalScore, d.stabilityBand, d.bandColor);
   let y = Y0;
 
-  sf(doc, "InterB"); doc.setFontSize(12.5); doc.setTextColor("#0E1A2B");
+  sf(doc, "InterB"); doc.setFontSize(12.5); doc.setTextColor("#1C1635");
   doc.text("Stress Testing", ML, y);
   y += 14;
   sf(doc, "Inter"); doc.setFontSize(9); doc.setTextColor("#535D6B");
@@ -570,14 +570,14 @@ function page4(doc: jsPDF, d: ReportPDFData) {
 
   // 3 scenario cards with risk + solution
   const scenarios = d.scenarios.slice(0, 3);
-  const sBorders = ["#9B2C2C", "#92640A", "#0E1A2B"];
+  const sBorders = ["#9B2C2C", "#92640A", "#1C1635"];
   for (let i = 0; i < scenarios.length; i++) {
     const sc = scenarios[i];
     const h = 48;
     check(y, h, `P4-sc${i}`);
     card(doc, ML, y, CW, h, sBorders[i]);
     label(doc, `SCENARIO ${i + 1}: ${truncate(cleanTitle(sc.title), 45).toUpperCase()}`, ML + 10, y + 10, sBorders[i]);
-    sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#0E1A2B");
+    sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#1C1635");
     doc.text(S(`Risk: Score drops by ${sc.scoreDrop} points (${sc.originalScore} to ${sc.scenarioScore})`), ML + 10, y + 22);
     if (sc.bandShift) {
       sf(doc, "Inter"); doc.setFontSize(7.5); doc.setTextColor("#9B2C2C");
@@ -605,7 +605,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
   if (y + 52 <= YL) {
     card(doc, ML, y, cw2, 52, "#9B2C2C");
     label(doc, "IF BIGGEST SOURCE GOES AWAY", ML + 8, y + 10);
-    sf(doc, "InterB"); doc.setFontSize(16); doc.setTextColor("#0E1A2B");
+    sf(doc, "InterB"); doc.setFontSize(16); doc.setTextColor("#1C1635");
     doc.text(`${d.score} to ${d.riskScenarioScore}`, ML + 8, y + 28);
     sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
     doc.text(S(`-${d.riskScenarioDrop} points`), ML + 8, y + 40);
@@ -613,7 +613,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
     const rx = ML + cw2 + 12;
     card(doc, rx, y, cw2, 52, "#92640A");
     label(doc, "IF YOU STOP WORKING", rx + 8, y + 10);
-    sf(doc, "InterB"); doc.setFontSize(16); doc.setTextColor("#0E1A2B");
+    sf(doc, "InterB"); doc.setFontSize(16); doc.setTextColor("#1C1635");
     doc.text(S(d.continuityDisplay), rx + 8, y + 28);
     sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
     doc.text(truncate(d.continuityText, 50), rx + 8, y + 40);
@@ -624,7 +624,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
   if (y + 50 <= YL) {
     doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
     doc.line(ML, y, ML + CW, y); y += 10;
-    sf(doc, "InterB"); doc.setFontSize(10); doc.setTextColor("#0E1A2B");
+    sf(doc, "InterB"); doc.setFontSize(10); doc.setTextColor("#1C1635");
     doc.text("Why This Report Delivers Real Value", ML, y);
     y += 12;
     const valueText = "This report provides actionable steps, personalized recommendations, and the RunPayway(TM) Command Center to future-proof your income. Clear guidance, interactive tools, and an ongoing plan to create lasting financial stability.";
@@ -636,7 +636,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
   if (y + 24 <= YL) {
     label(doc, "WHEN TO RETAKE", ML, y);
     y += 10;
-    sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#0E1A2B");
+    sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#1C1635");
     doc.text(S(`${d.reassessDate} (${d.reassessDaysLeft} days from now)`), ML, y);
     y += 14;
   }
@@ -645,13 +645,13 @@ function page4(doc: jsPDF, d: ReportPDFData) {
   if (y + 60 <= YL) {
     doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
     doc.line(ML, y, ML + CW, y); y += 12;
-    label(doc, "COMMAND CENTER ACCESS", ML, y, "#0E1A2B");
+    label(doc, "COMMAND CENTER ACCESS", ML, y, "#1C1635");
     y += 10;
     sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#535D6B");
     doc.text("Use this code at runpayway.com/dashboard to access your Command Center.", ML, y);
     y += 12;
     card(doc, ML, y, CW, 28);
-    doc.setFont("Courier", "normal"); doc.setFontSize(6); doc.setTextColor("#0E1A2B");
+    doc.setFont("Courier", "normal"); doc.setFontSize(6); doc.setTextColor("#1C1635");
     const backCodeLines: string[] = doc.splitTextToSize(S(d.accessCode), CW - 20);
     for (let i = 0; i < Math.min(backCodeLines.length, 2); i++) {
       doc.text(backCodeLines[i], ML + 10, y + 10 + i * 8);

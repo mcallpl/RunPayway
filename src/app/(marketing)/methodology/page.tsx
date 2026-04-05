@@ -44,7 +44,7 @@ function useFadeIn() {
 /* DESIGN SYSTEM                                                       */
 /* ================================================================== */
 
-const C = { navy: "#0E1A2B", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
+const C = { navy: "#1C1635", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
 const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
 const muted = "rgba(14,26,43,0.68)";
 const light = "rgba(14,26,43,0.52)";

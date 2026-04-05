@@ -1473,7 +1473,7 @@ export default function ReviewPage() {
           disabled={currentPage === 0}
           style={{
             background: "none", border: "none", cursor: currentPage === 0 ? "default" : "pointer",
-            fontSize: mobile ? 16 : 18, color: currentPage === 0 ? "rgba(14,26,43,0.15)" : "#0E1A2B",
+            fontSize: mobile ? 16 : 18, color: currentPage === 0 ? "rgba(14,26,43,0.15)" : "#1C1635",
             padding: mobile ? "8px 8px" : "8px 12px",
           }}
           aria-label="Previous page"
@@ -1491,7 +1491,7 @@ export default function ReviewPage() {
                 width: currentPage === i ? (mobile ? 18 : 24) : (mobile ? 6 : 8),
                 height: mobile ? 6 : 8,
                 borderRadius: 4,
-                backgroundColor: currentPage === i ? "#0E1A2B" : "rgba(14,26,43,0.15)",
+                backgroundColor: currentPage === i ? "#1C1635" : "rgba(14,26,43,0.15)",
                 border: "none",
                 cursor: "pointer",
                 transition: "all 200ms ease",
@@ -1503,7 +1503,7 @@ export default function ReviewPage() {
         </div>
 
         {/* Page label */}
-        <span style={{ fontSize: mobile ? 12 : 13, color: "#0E1A2B", fontWeight: 500 }}>{pageNames[currentPage]}</span>
+        <span style={{ fontSize: mobile ? 12 : 13, color: "#1C1635", fontWeight: 500 }}>{pageNames[currentPage]}</span>
 
         {/* Right arrow */}
         <button
@@ -1511,7 +1511,7 @@ export default function ReviewPage() {
           disabled={currentPage === totalPages - 1}
           style={{
             background: "none", border: "none", cursor: currentPage === totalPages - 1 ? "default" : "pointer",
-            fontSize: mobile ? 16 : 18, color: currentPage === totalPages - 1 ? "rgba(14,26,43,0.15)" : "#0E1A2B",
+            fontSize: mobile ? 16 : 18, color: currentPage === totalPages - 1 ? "rgba(14,26,43,0.15)" : "#1C1635",
             padding: mobile ? "8px 8px" : "8px 12px",
           }}
           aria-label="Next page"

@@ -34,7 +34,7 @@ export default function UnlockPage() {
       style={{
         position: "fixed",
         inset: 0,
-        background: "linear-gradient(135deg, #0E1A2B 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
+        background: "linear-gradient(135deg, #1C1635 0%, #1A1540 40%, #4B3FAE 70%, #1F6D7A 100%)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

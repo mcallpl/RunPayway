@@ -5,7 +5,7 @@ import Link from "next/link";
 /* ── Shared simulator teaser — CSS-rendered mini UI preview ── */
 
 const B = {
-  navy: "#0E1A2B",
+  navy: "#1C1635",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
 };

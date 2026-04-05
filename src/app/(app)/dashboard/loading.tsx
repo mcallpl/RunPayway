@@ -41,7 +41,7 @@ export default function DashboardLoading() {
         <div style={{
           fontSize: 18,
           fontWeight: 500,
-          color: "#0E1A2B",
+          color: "#1C1635",
           marginBottom: 8,
           lineHeight: 1.4,
         }}>

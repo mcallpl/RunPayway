@@ -42,7 +42,7 @@ export default function CookieConsent() {
         left: 0,
         right: 0,
         zIndex: 9999,
-        background: "#0E1A2B",
+        background: "#1C1635",
         borderTop: "1px solid rgba(255,255,255,0.08)",
         padding: "20px 24px",
         display: "flex",

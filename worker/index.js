@@ -362,7 +362,7 @@ async function handleSendEmail(body, env, corsHeaders) {
     });
   }
 
-  const navy = "#0E1A2B";
+  const navy = "#1C1635";
   const purple = "#4B3FAE";
   const teal = "#1F6D7A";
   const muted = "rgba(14,26,43,0.58)";
@@ -611,14 +611,14 @@ async function handleContact(body, env, corsHeaders) {
       reply_to: body.email,
       subject: `[RunPayway Contact] ${(body.subject || "General Inquiry").replace(/[\r\n]/g, "")} - ${(body.name || "").replace(/[\r\n]/g, "")}`,
       html: `<div style="font-family:sans-serif;max-width:600px;">
-<h2 style="color:#0E1A2B;margin:0 0 16px;">New Contact Form Submission</h2>
+<h2 style="color:#1C1635;margin:0 0 16px;">New Contact Form Submission</h2>
 <table style="width:100%;border-collapse:collapse;">
-<tr><td style="padding:8px 0;color:#6B6155;width:100px;">Name</td><td style="padding:8px 0;color:#0E1A2B;font-weight:500;">${body.name}</td></tr>
-<tr><td style="padding:8px 0;color:#6B6155;">Email</td><td style="padding:8px 0;color:#0E1A2B;font-weight:500;">${body.email}</td></tr>
-<tr><td style="padding:8px 0;color:#6B6155;">Subject</td><td style="padding:8px 0;color:#0E1A2B;font-weight:500;">${body.subject || "General"}</td></tr>
+<tr><td style="padding:8px 0;color:#6B6155;width:100px;">Name</td><td style="padding:8px 0;color:#1C1635;font-weight:500;">${body.name}</td></tr>
+<tr><td style="padding:8px 0;color:#6B6155;">Email</td><td style="padding:8px 0;color:#1C1635;font-weight:500;">${body.email}</td></tr>
+<tr><td style="padding:8px 0;color:#6B6155;">Subject</td><td style="padding:8px 0;color:#1C1635;font-weight:500;">${body.subject || "General"}</td></tr>
 </table>
 <div style="margin:16px 0;padding:16px;background:#F8F6F1;border-radius:8px;border:1px solid #E8E5DE;">
-<p style="margin:0;color:#0E1A2B;line-height:1.6;">${body.message.replace(/\n/g, "<br/>")}</p>
+<p style="margin:0;color:#1C1635;line-height:1.6;">${body.message.replace(/\n/g, "<br/>")}</p>
 </div>
 <p style="font-size:12px;color:#6B6155;margin:16px 0 0;">Reply directly to this email to respond to ${body.name}.</p>
 </div>`,
@@ -740,19 +740,19 @@ async function handleFollowUpCron(env) {
 function followUpDay7(name, score, band, topAction, recordId) {
   const link = recordId ? `https://peoplestar.com/RunPayway/dashboard?record=${encodeURIComponent(recordId)}` : "https://peoplestar.com/RunPayway/dashboard";
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
-<body style="margin:0;padding:0;background:#0E1A2B;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#0E1A2B;"><tr><td style="height:32px;"></td></tr>
+<body style="margin:0;padding:0;background:#1C1635;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#1C1635;"><tr><td style="height:32px;"></td></tr>
 <tr><td align="center" style="padding:0 16px;">
 <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
 <tr><td style="padding:28px 40px 24px;"><img src="https://peoplestar.com/RunPayway/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="height:auto;filter:brightness(0) invert(1);opacity:0.85;"/></td></tr>
 <tr><td style="padding:0 40px;"><table width="100%"><tr><td style="background:linear-gradient(90deg,#4B3FAE,#1F6D7A);height:2px;border-radius:1px;"></td></tr></table></td></tr>
 <tr><td style="padding:0 12px;"><table width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="background:#ffffff;padding:44px 40px 40px;border-radius:12px;">
-<p style="font-size:22px;font-weight:300;color:#0E1A2B;margin:0 0 12px;">${name}, your Command Center is waiting.</p>
-<p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 24px;">Your Income Stability Score is <strong style="color:#0E1A2B;">${score}/100</strong> (${band}). Your 12-week roadmap, PressureMap, and What-If Simulator are ready.</p>
+<p style="font-size:22px;font-weight:300;color:#1C1635;margin:0 0 12px;">${name}, your Command Center is waiting.</p>
+<p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 24px;">Your Income Stability Score is <strong style="color:#1C1635;">${score}/100</strong> (${band}). Your 12-week roadmap, PressureMap, and What-If Simulator are ready.</p>
 ${topAction ? `<div style="border-left:3px solid #4B3FAE;padding:16px 20px;background:rgba(75,63,174,0.04);border-radius:0 8px 8px 0;margin-bottom:24px;">
 <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#4B3FAE;margin-bottom:6px;">YOUR #1 PRIORITY</div>
-<div style="font-size:15px;font-weight:600;color:#0E1A2B;">${topAction}</div></div>` : ""}
+<div style="font-size:15px;font-weight:600;color:#1C1635;">${topAction}</div></div>` : ""}
 <table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr><td style="background:#4B3FAE;border-radius:10px;">
 <a href="${link}" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Open Your Command Center</a>
 </td></tr></table>
@@ -766,17 +766,17 @@ ${topAction ? `<div style="border-left:3px solid #4B3FAE;padding:16px 20px;backg
 function followUpDay30(name, score, topAction, daysSince, recordId) {
   const link = recordId ? `https://peoplestar.com/RunPayway/dashboard?record=${encodeURIComponent(recordId)}` : "https://peoplestar.com/RunPayway/dashboard";
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
-<body style="margin:0;padding:0;background:#0E1A2B;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#0E1A2B;"><tr><td style="height:32px;"></td></tr>
+<body style="margin:0;padding:0;background:#1C1635;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#1C1635;"><tr><td style="height:32px;"></td></tr>
 <tr><td align="center" style="padding:0 16px;">
 <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
 <tr><td style="padding:28px 40px 24px;"><img src="https://peoplestar.com/RunPayway/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="height:auto;filter:brightness(0) invert(1);opacity:0.85;"/></td></tr>
 <tr><td style="padding:0 40px;"><table width="100%"><tr><td style="background:linear-gradient(90deg,#4B3FAE,#1F6D7A);height:2px;border-radius:1px;"></td></tr></table></td></tr>
 <tr><td style="padding:0 12px;"><table width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="background:#ffffff;padding:44px 40px 40px;border-radius:12px;">
-<p style="font-size:22px;font-weight:300;color:#0E1A2B;margin:0 0 12px;">${daysSince} days since your assessment.</p>
-<p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 16px;">Your score of <strong style="color:#0E1A2B;">${score}</strong> reflects your income structure \u2014 not market conditions. The only way to change it is to make a structural change.</p>
-<p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 24px;">${topAction ? `Your highest-leverage move is still: <strong style="color:#0E1A2B;">${topAction}</strong>. ` : ""}Use the Simulator to model the impact before you commit.</p>
+<p style="font-size:22px;font-weight:300;color:#1C1635;margin:0 0 12px;">${daysSince} days since your assessment.</p>
+<p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 16px;">Your score of <strong style="color:#1C1635;">${score}</strong> reflects your income structure \u2014 not market conditions. The only way to change it is to make a structural change.</p>
+<p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 24px;">${topAction ? `Your highest-leverage move is still: <strong style="color:#1C1635;">${topAction}</strong>. ` : ""}Use the Simulator to model the impact before you commit.</p>
 <table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr><td style="background:#4B3FAE;border-radius:10px;">
 <a href="${link}" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Open the Simulator</a>
 </td></tr></table>
@@ -789,18 +789,18 @@ function followUpDay30(name, score, topAction, daysSince, recordId) {
 
 function followUpDay90(name, daysSince, _recordId) {
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
-<body style="margin:0;padding:0;background:#0E1A2B;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#0E1A2B;"><tr><td style="height:32px;"></td></tr>
+<body style="margin:0;padding:0;background:#1C1635;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#1C1635;"><tr><td style="height:32px;"></td></tr>
 <tr><td align="center" style="padding:0 16px;">
 <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
 <tr><td style="padding:28px 40px 24px;"><img src="https://peoplestar.com/RunPayway/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="height:auto;filter:brightness(0) invert(1);opacity:0.85;"/></td></tr>
 <tr><td style="padding:0 40px;"><table width="100%"><tr><td style="background:linear-gradient(90deg,#4B3FAE,#1F6D7A);height:2px;border-radius:1px;"></td></tr></table></td></tr>
 <tr><td style="padding:0 12px;"><table width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="background:#ffffff;padding:44px 40px 40px;border-radius:12px;">
-<p style="font-size:22px;font-weight:300;color:#0E1A2B;margin:0 0 12px;">It has been ${daysSince} days.</p>
+<p style="font-size:22px;font-weight:300;color:#1C1635;margin:0 0 12px;">It has been ${daysSince} days.</p>
 <p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 16px;">If you have made structural changes to your income \u2014 signed a retainer, added a client, built a recurring stream \u2014 your score may have improved. There is only one way to find out.</p>
 <p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 24px;">A new assessment will show you exactly how much progress you have made and where to focus next.</p>
-<table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr><td style="background:#0E1A2B;border-radius:10px;">
+<table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr><td style="background:#1C1635;border-radius:10px;">
 <a href="https://peoplestar.com/RunPayway/pricing" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Reassess Your Score</a>
 </td></tr></table>
 <div style="border-left:3px solid #1F6D7A;padding:16px 20px;background:rgba(31,109,122,0.04);border-radius:0 8px 8px 0;margin-top:24px;">

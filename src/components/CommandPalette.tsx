@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 const B = {
-  navy: "#0E1A2B",
+  navy: "#1C1635",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
   muted: "rgba(14,26,43,0.52)",

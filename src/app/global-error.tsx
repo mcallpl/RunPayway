@@ -27,7 +27,7 @@ export default function GlobalError({
             padding: "40px 32px",
             boxShadow: "0 4px 24px rgba(14,26,43,0.06)",
           }}>
-            <h1 style={{ fontSize: 22, fontWeight: 700, color: "#0E1A2B", marginBottom: 12 }}>
+            <h1 style={{ fontSize: 22, fontWeight: 700, color: "#1C1635", marginBottom: 12 }}>
               Something went wrong
             </h1>
             <p style={{ fontSize: 14, color: "#6B7280", lineHeight: 1.6, marginBottom: 20 }}>
@@ -64,7 +64,7 @@ export default function GlobalError({
                   fontSize: 14,
                   fontWeight: 600,
                   color: "#FFFFFF",
-                  backgroundColor: "#0E1A2B",
+                  backgroundColor: "#1C1635",
                   border: "none",
                   borderRadius: 8,
                   cursor: "pointer",

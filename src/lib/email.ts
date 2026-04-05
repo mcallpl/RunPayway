@@ -76,7 +76,7 @@ export async function sendReportEmail(data: ReportEmailData): Promise<{
 
 function buildReportEmailHtml(data: ReportEmailData): string {
   const shortId = data.recordId.slice(0, 8);
-  const brandNavy = "#0E1A2B";
+  const brandNavy = "#1C1635";
   const brandPurple = "#4B3FAE";
   const brandTeal = "#1F6D7A";
   const muted = "rgba(14,26,43,0.58)";
