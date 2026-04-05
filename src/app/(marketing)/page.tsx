@@ -355,23 +355,30 @@ function HowRunPaywayIsUsed() {
   const useCases = [
     {
       title: "Individuals",
-      desc: "Understand how their income is built, where it is exposed, and what to strengthen first.",
+      desc: "See exactly where your income is strong and where it's exposed. Get a score from 0 to 100, your biggest risk, and a step-by-step plan to strengthen it.",
+      action: "Takes under 2 minutes",
       color: C.teal,
       icon: "M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7z",
+      link: "/begin",
+      linkText: "Get your free score",
     },
     {
       title: "Advisors",
-      desc: "Evaluate and explain client income stability using a score they can compare across clients.",
+      desc: "Know which clients have fragile income before it becomes a problem. Run the same assessment across your book — each client gets a score you can explain, compare, and track over time.",
+      action: "Per-client scoring for your practice",
       color: C.purple,
       icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
       link: "/contact",
+      linkText: "Get in touch",
     },
     {
       title: "Organizations",
-      desc: "Assess income risk across teams or portfolios using a fixed, rules-based measurement.",
+      desc: "Evaluate income risk across a workforce, contractor base, or client portfolio. Every assessment uses the same fixed rules — so results are comparable at scale.",
+      action: "Volume licensing available",
       color: C.navy,
       icon: "M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5m-4 0h4",
       link: "/contact",
+      linkText: "Get in touch",
     },
   ];
 
@@ -397,9 +404,12 @@ function HowRunPaywayIsUsed() {
               </div>
               <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 8 }}>{uc.title}</div>
               <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>{uc.desc}</p>
+              {(uc as { action?: string }).action && (
+                <p style={{ fontSize: 13, color: light, margin: "10px 0 0", fontWeight: 500 }}>{(uc as { action: string }).action}</p>
+              )}
               {(uc as { link?: string }).link && (
-                <Link href={(uc as { link: string }).link} style={{ fontSize: 14, fontWeight: 500, color: uc.color, textDecoration: "none", marginTop: 14, display: "inline-block" }}>
-                  Get in touch &rarr;
+                <Link href={(uc as { link: string }).link} style={{ fontSize: 14, fontWeight: 600, color: uc.color, textDecoration: "none", marginTop: 14, display: "inline-block" }}>
+                  {(uc as { linkText?: string }).linkText || "Get in touch"} &rarr;
                 </Link>
               )}
             </div>
