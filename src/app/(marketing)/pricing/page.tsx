@@ -100,7 +100,7 @@ function PricingCards() {
 
           {/* FREE */}
           <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", display: "flex", flexDirection: "column" as const, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${C.teal}30` }} />
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: C.teal }} />
             <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginTop: 4, marginBottom: 20 }}>
               Income Stability Score&#8482;
             </div>
