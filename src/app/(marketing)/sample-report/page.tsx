@@ -152,59 +152,137 @@ function ReportWalkthrough() {
           {/* PAGE 02 — Key Findings */}
           <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)" }}>
             <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 4 }}>PAGE 02</div>
-            <div style={{ fontSize: 17, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Key Findings</div>
-            <div style={{ borderLeft: `3px solid ${C.purple}`, padding: "12px 14px", borderRadius: "0 8px 8px 0", backgroundColor: "#FAFAFA", marginBottom: 16 }}>
-              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: C.purple, marginBottom: 4 }}>KEY TAKEAWAY</div>
+            <div style={{ fontSize: 17, fontWeight: 600, color: C.navy, marginBottom: 20 }}>Key Findings</div>
+
+            {/* Key Takeaway */}
+            <div style={{ borderLeft: `3px solid ${C.purple}`, padding: "14px 16px", borderRadius: "0 8px 8px 0", backgroundColor: "#FAFAFA", marginBottom: 20 }}>
+              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", color: C.purple, marginBottom: 4 }}>KEY TAKEAWAY</div>
               <p style={{ fontSize: 15, fontWeight: 500, color: C.navy, margin: 0, lineHeight: 1.45 }}>Your structure is stable — but one client puts most of it at risk.</p>
             </div>
-            <div style={{ display: "flex", height: 10, borderRadius: 5, overflow: "hidden", marginBottom: 12 }}>
-              <div style={{ width: "55%", backgroundColor: "rgba(192,57,43,0.25)" }} />
-              <div style={{ width: "20%", backgroundColor: "rgba(181,137,0,0.25)", borderLeft: `2px solid ${C.white}` }} />
-              <div style={{ width: "25%", backgroundColor: "rgba(31,109,122,0.30)", borderLeft: `2px solid ${C.white}` }} />
+
+            {/* Income structure bar */}
+            <div style={{ marginBottom: 20 }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: light, marginBottom: 8, letterSpacing: "0.04em" }}>INCOME STRUCTURE</div>
+              <div style={{ display: "flex", height: 14, borderRadius: 7, overflow: "hidden", marginBottom: 10 }}>
+                <div style={{ width: "55%", backgroundColor: "rgba(192,57,43,0.30)" }} />
+                <div style={{ width: "20%", backgroundColor: "rgba(181,137,0,0.30)", borderLeft: `2px solid ${C.white}` }} />
+                <div style={{ width: "25%", backgroundColor: "rgba(31,109,122,0.35)", borderLeft: `2px solid ${C.white}` }} />
+              </div>
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" as const }}>
+                {[
+                  { label: "Active", value: "55%", color: "#C0392B" },
+                  { label: "Semi-persistent", value: "20%", color: "#B58900" },
+                  { label: "Persistent", value: "25%", color: C.teal },
+                ].map((s, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <div style={{ width: 6, height: 6, borderRadius: 2, backgroundColor: s.color }} />
+                    <span style={{ fontSize: 13, color: muted }}>{s.label}: <strong style={{ fontFamily: mono, color: C.navy }}>{s.value}</strong></span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <p style={{ fontSize: 14, color: muted, margin: 0 }}>Structure breakdown, strengths, and root constraint.</p>
+
+            {/* Strength + Constraint */}
+            <div style={{ display: "flex", gap: 10, flexDirection: m ? "column" as const : "row" as const }}>
+              <div style={{ flex: 1, padding: "12px 14px", borderRadius: 10, backgroundColor: "#FAFAFA" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
+                  <div style={{ width: 5, height: 5, borderRadius: 2, backgroundColor: C.teal }} />
+                  <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: C.teal }}>STRONGEST</span>
+                </div>
+                <p style={{ fontSize: 14, color: C.navy, margin: 0, lineHeight: 1.45 }}>Low variability — consistent month to month.</p>
+              </div>
+              <div style={{ flex: 1, padding: "12px 14px", borderRadius: 10, backgroundColor: "#FAFAFA" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
+                  <div style={{ width: 5, height: 5, borderRadius: 2, backgroundColor: "#C0392B" }} />
+                  <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: "#C0392B" }}>CONSTRAINT</span>
+                </div>
+                <p style={{ fontSize: 14, color: C.navy, margin: 0, lineHeight: 1.45 }}>High concentration — one source carries most.</p>
+              </div>
+            </div>
           </div>
 
           {/* PAGE 03 — Stability Plan */}
           <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)" }}>
             <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 4 }}>PAGE 03</div>
-            <div style={{ fontSize: 17, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Stability Plan</div>
+            <div style={{ fontSize: 17, fontWeight: 600, color: C.navy, marginBottom: 20 }}>Stability Plan</div>
+
+            {/* Ranked actions with visual weight */}
             {[
-              { action: "Reduce concentration", lift: "+11" },
-              { action: "Extend forward visibility", lift: "+8" },
-              { action: "Add recurring stream", lift: "+5" },
+              { num: 1, action: "Reduce concentration", desc: "Diversify revenue across multiple sources", lift: "+11", effort: "High", color: "#C0392B" },
+              { num: 2, action: "Extend forward visibility", desc: "Secure commitments beyond current quarter", lift: "+8", effort: "High", color: "#C0392B" },
+              { num: 3, action: "Add recurring stream", desc: "Convert project work into recurring revenue", lift: "+5", effort: "Medium", color: "#B58900" },
             ].map((a, i) => (
-              <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < 2 ? `1px solid rgba(14,26,43,0.05)` : "none" }}>
-                <span style={{ fontSize: 14, color: C.navy }}>{a.action}</span>
-                <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: C.teal }}>{a.lift}</span>
+              <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "14px 0", borderBottom: i < 2 ? `1px solid rgba(14,26,43,0.05)` : "none" }}>
+                <div style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: `${a.color}08`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2 }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: a.color }}>{a.num}</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 2 }}>
+                    <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>{a.action}</span>
+                    <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: C.teal, flexShrink: 0, marginLeft: 8 }}>{a.lift}</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ fontSize: 13, color: muted }}>{a.desc}</span>
+                    <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.04em", color: a.color, padding: "2px 6px", borderRadius: 4, backgroundColor: `${a.color}08`, flexShrink: 0 }}>{a.effort}</span>
+                  </div>
+                </div>
               </div>
             ))}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 14, paddingTop: 12, borderTop: `1px solid rgba(14,26,43,0.06)` }}>
-              <span style={{ fontSize: 13, color: light }}>Projected</span>
-              <span style={{ fontSize: 20, fontWeight: 300, fontFamily: mono, color: C.teal }}>72 &rarr; 96</span>
+
+            {/* Projected outcome */}
+            <div style={{ marginTop: 16, padding: "14px 16px", borderRadius: 10, backgroundColor: `${C.teal}06`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: C.teal, marginBottom: 2 }}>IF ALL THREE IMPLEMENTED</div>
+                <span style={{ fontSize: 13, color: muted }}>Combined projected impact</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
+                <span style={{ fontSize: 14, fontFamily: mono, color: light }}>72</span>
+                <span style={{ fontSize: 12, color: light }}>&rarr;</span>
+                <span style={{ fontSize: 24, fontWeight: 300, fontFamily: mono, color: C.teal }}>96</span>
+              </div>
             </div>
           </div>
 
           {/* PAGE 04 — Stress Testing */}
           <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 32, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)" }}>
             <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 4 }}>PAGE 04</div>
-            <div style={{ fontSize: 17, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Stress Testing</div>
-            {[
-              { scenario: "Top client leaves", score: "44", drop: "-28", color: "#C0392B" },
-              { scenario: "Can\u2019t work 90 days", score: "53", drop: "-19", color: "#C0392B" },
-              { scenario: "Commitments delayed", score: "64", drop: "-8", color: "#B58900" },
-            ].map((s, i) => (
-              <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < 2 ? `1px solid rgba(14,26,43,0.05)` : "none" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <div style={{ width: 6, height: 6, borderRadius: 2, backgroundColor: s.color, flexShrink: 0 }} />
-                  <span style={{ fontSize: 14, color: C.navy }}>{s.scenario}</span>
+            <div style={{ fontSize: 17, fontWeight: 600, color: C.navy, marginBottom: 20 }}>Stress Testing</div>
+
+            {/* Scenario cards with visual score drops */}
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: 10 }}>
+              {[
+                { scenario: "Your largest client stops paying", projected: 44, drop: -28, severity: "Severe", color: "#C0392B" },
+                { scenario: "You cannot work for 90 days", projected: 53, drop: -19, severity: "Significant", color: "#C0392B" },
+                { scenario: "Forward commitments delayed 3 months", projected: 64, drop: -8, severity: "Moderate", color: "#B58900" },
+              ].map((s, i) => (
+                <div key={i} style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: "#FAFAFA" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <div style={{ width: 6, height: 6, borderRadius: 2, backgroundColor: s.color, flexShrink: 0 }} />
+                      <span style={{ fontSize: 14, fontWeight: 500, color: C.navy }}>{s.scenario}</span>
+                    </div>
+                    <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.04em", color: s.color, padding: "2px 8px", borderRadius: 4, backgroundColor: `${s.color}08`, flexShrink: 0 }}>{s.severity}</span>
+                  </div>
+                  {/* Score drop bar */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <div style={{ flex: 1, height: 6, borderRadius: 3, backgroundColor: "rgba(14,26,43,0.04)", overflow: "hidden" }}>
+                      <div style={{ height: "100%", borderRadius: 3, backgroundColor: s.color, width: `${s.projected}%`, opacity: 0.5 }} />
+                    </div>
+                    <div style={{ display: "flex", alignItems: "baseline", gap: 4, flexShrink: 0 }}>
+                      <span style={{ fontSize: 18, fontWeight: 300, fontFamily: mono, color: s.color }}>{s.projected}</span>
+                      <span style={{ fontSize: 12, fontWeight: 600, fontFamily: mono, color: s.color }}>{s.drop}</span>
+                    </div>
+                  </div>
                 </div>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-                  <span style={{ fontSize: 14, fontFamily: mono, color: s.color }}>{s.score}</span>
-                  <span style={{ fontSize: 12, fontFamily: mono, color: s.color }}>{s.drop}</span>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* Fragility summary */}
+            <div style={{ marginTop: 16, padding: "12px 14px", borderRadius: 8, borderLeft: `3px solid #C0392B`, backgroundColor: "rgba(192,57,43,0.03)" }}>
+              <p style={{ fontSize: 13, color: muted, margin: 0, lineHeight: 1.5 }}>
+                <strong style={{ color: C.navy }}>Fragility class: Uneven.</strong> Some parts are protected, others are not. Primary failure mode: client departure.
+              </p>
+            </div>
           </div>
         </div>
       </div>
