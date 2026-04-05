@@ -191,7 +191,7 @@ function HeroSection() {
   const fadeIn = useFadeIn();
 
   return (
-    <header ref={ref} style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)", position: "relative", overflow: "hidden" }}>
+    <header ref={ref} style={{ backgroundColor: C.white, position: "relative", overflow: "hidden" }}>
       {/* Ghosted data hint — faint score spectrum behind the hero */}
       {!m && (
         <div style={{ position: "absolute", top: "50%", right: "6%", transform: "translateY(-50%)", opacity: 0.035, pointerEvents: "none", display: "flex", flexDirection: "column", gap: 12, width: 180 }}>
@@ -247,8 +247,6 @@ function HeroSection() {
         </div>
       </div>
 
-      {/* Smooth gradient transition to dark section */}
-      <div style={{ height: m ? 80 : 120, background: `linear-gradient(180deg, #FAFAFA 0%, ${C.navy} 100%)`, marginTop: -1 }} />
     </header>
   );
 }
@@ -268,11 +266,11 @@ function IndustrySelector() {
   const bandLabel = (s: number) => s >= 75 ? "High Stability" : s >= 50 ? "Established" : s >= 30 ? "Developing" : "Limited";
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 32 : 48, paddingBottom: m ? 56 : 88, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 56 : 88, paddingBottom: m ? 56 : 88, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 24 : 36, ...fadeIn(visible) }}>
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 12 }}>EXPLORE</div>
-          <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 500, lineHeight: 1.2, letterSpacing: "-0.02em", color: C.sand }}>
+          <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 500, lineHeight: 1.2, letterSpacing: "-0.02em", color: C.navy }}>
             See what your industry&#8217;s income structure looks like.
           </h2>
         </div>
@@ -285,14 +283,15 @@ function IndustrySelector() {
               <button key={ind.key} onClick={() => setSelected(isActive ? null : ind)}
                 style={{
                   padding: m ? "12px 10px" : "14px 16px", borderRadius: 10, cursor: "pointer",
-                  border: `1px solid ${isActive ? C.teal + "50" : "rgba(255,255,255,0.06)"}`,
-                  backgroundColor: isActive ? `${C.teal}12` : "rgba(255,255,255,0.02)",
+                  border: `1px solid ${isActive ? C.teal + "40" : "rgba(14,26,43,0.08)"}`,
+                  backgroundColor: isActive ? `${C.teal}08` : C.white,
+                  boxShadow: isActive ? `0 0 0 1px ${C.teal}20` : "0 1px 3px rgba(14,26,43,0.03)",
                   transition: "all 200ms", textAlign: "left", minHeight: 44,
                 }}
-                onMouseEnter={e => { if (!isActive) e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)"; }}
-                onMouseLeave={e => { if (!isActive) e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)"; }}
+                onMouseEnter={e => { if (!isActive) { e.currentTarget.style.borderColor = "rgba(14,26,43,0.15)"; e.currentTarget.style.boxShadow = elevation.card; } }}
+                onMouseLeave={e => { if (!isActive) { e.currentTarget.style.borderColor = "rgba(14,26,43,0.08)"; e.currentTarget.style.boxShadow = "0 1px 3px rgba(14,26,43,0.03)"; } }}
               >
-                <span style={{ fontSize: 14, fontWeight: isActive ? 600 : 500, color: isActive ? C.sand : "rgba(244,241,234,0.65)" }}>{ind.name}</span>
+                <span style={{ fontSize: 14, fontWeight: isActive ? 600 : 500, color: isActive ? C.navy : muted }}>{ind.name}</span>
               </button>
             );
           })}
@@ -300,7 +299,7 @@ function IndustrySelector() {
 
         {/* Reveal */}
         {selected && (
-          <div style={{ maxWidth: 720, margin: "36px auto 0", padding: m ? "24px 16px" : "32px 36px", borderRadius: 16, backgroundColor: "rgba(255,255,255,0.04)", boxShadow: "0 4px 24px rgba(0,0,0,0.15)", animation: "fadeSlideIn 400ms ease-out" }}>
+          <div style={{ maxWidth: 720, margin: "36px auto 0", padding: m ? "24px 16px" : "32px 36px", borderRadius: 16, backgroundColor: C.navy, boxShadow: "0 8px 40px rgba(14,26,43,0.12)", animation: "fadeSlideIn 400ms ease-out" }}>
             <div style={{ display: m ? "block" : "flex", gap: 32, alignItems: "center" }}>
               {/* Score ring */}
               <div style={{ flexShrink: 0, textAlign: "center", marginBottom: m ? 24 : 0 }}>
@@ -410,8 +409,6 @@ function SameIncomeProof() {
           <p style={{ fontSize: 15, color: light }}>The income is the same. The structure is not. That&#8217;s what RunPayway measures.</p>
         </div>
       </div>
-      {/* Smooth transition to dark section */}
-      <div style={{ height: m ? 80 : 120, background: `linear-gradient(180deg, #FAFAFA 0%, ${C.navy} 100%)` }} />
     </section>
   );
 }
@@ -427,7 +424,7 @@ function TheSystemAndCta() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 32 : 48, paddingBottom: m ? 72 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: m ? 72 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "30%", left: "50%", width: m ? 300 : 600, height: m ? 300 : 600, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}08 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 880, margin: "0 auto", position: "relative", zIndex: 1 }}>
 
