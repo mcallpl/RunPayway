@@ -876,19 +876,11 @@ function DashboardContent() {
               </div>
             </div>
 
-            {/* Access Code — compact */}
-            <div style={{ padding: mobile ? "20px 20px" : "20px 28px", borderRadius: 14, border: `1px solid ${B.stone}`, backgroundColor: B.surface, marginBottom: mobile ? 32 : 48, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, marginBottom: 8 }}>ALREADY HAVE A REPORT?</div>
-              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <input value={accessCode} onChange={(e) => { setAccessCode(e.target.value); setCodeError(null); }} placeholder="Paste your Access Code" onKeyDown={(e) => { if (e.key === "Enter") handleCodeSubmit(); }}
-                  style={{ padding: "10px 14px", fontSize: 14, fontFamily: "monospace", border: `2px solid ${B.purple}30`, borderRadius: 10, outline: "none", flex: 1, boxSizing: "border-box" as const, minWidth: 0, minHeight: 44, backgroundColor: B.white, transition: "border-color 200ms" }}
-                  onFocus={(e) => { e.currentTarget.style.borderColor = B.purple; }}
-                  onBlur={(e) => { e.currentTarget.style.borderColor = `${B.purple}30`; }} />
-                <button onClick={handleCodeSubmit} style={{ padding: "10px 24px", fontSize: 14, fontWeight: 600, color: B.white, backgroundColor: B.navy, border: "none", borderRadius: 10, cursor: "pointer", whiteSpace: "nowrap" as const, flexShrink: 0, minHeight: 44, transition: "background 150ms" }}
-                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#142338"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = B.navy; }}>Load</button>
-              </div>
-              {codeError && <div style={{ fontSize: 12, color: B.red, marginTop: 4 }}>{codeError}</div>}
+            {/* Access Code link */}
+            <div style={{ textAlign: "center", marginBottom: mobile ? 32 : 48 }}>
+              <Link href="/access-code" style={{ fontSize: 14, fontWeight: 500, color: B.muted, textDecoration: "none", borderBottom: `1px solid ${B.stone}`, paddingBottom: 2, transition: "color 150ms" }}>
+                Already have a report? Enter your access code &rarr;
+              </Link>
             </div>
 
             {/* Phase teasers */}
