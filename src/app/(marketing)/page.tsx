@@ -180,22 +180,20 @@ function HeroSection() {
   const fadeIn = useFadeIn();
 
   return (
-    <header ref={ref} style={{ backgroundColor: C.navy, position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", top: "-20%", right: "-10%", width: m ? 400 : 800, height: m ? 400 : 800, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}10 0%, transparent 70%)`, pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: "-30%", left: "-15%", width: m ? 300 : 600, height: m ? 300 : 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.teal}08 0%, transparent 70%)`, pointerEvents: "none" }} />
+    <header ref={ref} style={{ backgroundColor: C.white, position: "relative", overflow: "hidden" }}>
 
-      <div style={{ maxWidth: contentW, margin: "0 auto", paddingTop: m ? 72 : 148, paddingBottom: m ? 56 : 100, paddingLeft: px(m), paddingRight: px(m), position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto", paddingTop: m ? 64 : 132, paddingBottom: m ? 48 : 88, paddingLeft: px(m), paddingRight: px(m), position: "relative", zIndex: 1 }}>
         <div style={{ display: m ? "block" : "flex", alignItems: "center", justifyContent: "space-between", gap: 64 }}>
           {/* Left — headline */}
           <div style={{ maxWidth: 560, textAlign: m ? "center" : "left", marginBottom: m ? 40 : 0 }}>
-            <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.03em", color: C.sand, marginBottom: 24, ...fadeIn(visible) }}>
+            <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.03em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>
               Your income has a structure.{m ? " " : <br />}You&#8217;ve never seen it.
             </h1>
-            <p style={{ fontSize: m ? 16 : 18, color: "rgba(244,241,234,0.55)", lineHeight: 1.7, marginBottom: 32, ...fadeIn(visible, 100) }}>
+            <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.7, marginBottom: 32, ...fadeIn(visible, 100) }}>
               RunPayway&#8482; measures how your income holds under pressure — not how much you make.
             </p>
             <div style={{ ...fadeIn(visible, 200) }}>
-              <CtaButton m={m} variant="light" />
+              <CtaButton m={m} variant="dark" />
             </div>
           </div>
 
@@ -203,23 +201,23 @@ function HeroSection() {
           <div style={{ flexShrink: 0, ...fadeIn(visible, 300) }}>
             <div style={{ width: m ? 200 : 240, height: m ? 200 : 240, margin: m ? "0 auto" : undefined, position: "relative" }}>
               <style>{`
-                @keyframes ringPulse { 0%, 100% { opacity: 0.3; transform: rotate(-90deg) scale(1); } 50% { opacity: 0.6; transform: rotate(-90deg) scale(1.02); } }
+                @keyframes ringPulse { 0%, 100% { opacity: 0.25; transform: rotate(-90deg) scale(1); } 50% { opacity: 0.5; transform: rotate(-90deg) scale(1.02); } }
                 @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
               `}</style>
               <svg width={m ? 200 : 240} height={m ? 200 : 240} style={{ animation: "ringPulse 3s ease-in-out infinite" }}>
-                <circle cx={m ? 100 : 120} cy={m ? 100 : 120} r={m ? 88 : 108} fill="none" stroke={`${C.purple}30`} strokeWidth={8} strokeDasharray="12 8" strokeLinecap="round" />
+                <circle cx={m ? 100 : 120} cy={m ? 100 : 120} r={m ? 88 : 108} fill="none" stroke={`${C.navy}18`} strokeWidth={8} strokeDasharray="12 8" strokeLinecap="round" />
               </svg>
               <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-                <span style={{ fontSize: m ? 40 : 48, fontWeight: 300, fontFamily: mono, color: "rgba(244,241,234,0.15)", lineHeight: 1 }}>?</span>
-                <span style={{ fontSize: 12, color: "rgba(244,241,234,0.25)", marginTop: 8 }}>Your score</span>
+                <span style={{ fontSize: m ? 40 : 48, fontWeight: 300, fontFamily: mono, color: `${C.navy}12`, lineHeight: 1 }}>?</span>
+                <span style={{ fontSize: 12, color: light, marginTop: 8 }}>Your score</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Credibility strip */}
-        <div style={{ marginTop: m ? 36 : 56, paddingTop: m ? 20 : 28, borderTop: "1px solid rgba(244,241,234,0.06)", textAlign: "center", ...fadeIn(visible, 400) }}>
-          <p style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.35)", letterSpacing: "0.02em" }}>
+        <div style={{ marginTop: m ? 36 : 56, paddingTop: m ? 20 : 28, borderTop: `1px solid ${C.border}`, textAlign: "center", ...fadeIn(visible, 400) }}>
+          <p style={{ fontSize: 14, fontWeight: 500, color: light, letterSpacing: "0.02em" }}>
             Model RP-2.0 &bull; 6 structural dimensions &bull; Deterministic output &bull; No bank connection
           </p>
         </div>
@@ -315,7 +313,7 @@ function SameIncomeProof() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: "#FAFAFA", paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 14 }}>Same income. Different structure.{m ? " " : <br />}Completely different risk.</h2>
