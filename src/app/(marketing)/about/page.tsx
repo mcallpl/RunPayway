@@ -61,7 +61,7 @@ function HeroSection() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <header ref={ref} style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: m ? 48 : 100, paddingBottom: m ? 48 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
+    <header ref={ref} style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: m ? 36 : 56, paddingBottom: m ? 36 : 56, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
         <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20, ...fadeIn(visible) }}>About</div>
         <h1 style={{ fontSize: m ? 36 : 52, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.03em", color: C.navy, marginBottom: 32, ...fadeIn(visible, 80) }}>

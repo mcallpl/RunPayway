@@ -62,26 +62,15 @@ function HeroSection() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: m ? 48 : 100, paddingBottom: m ? 48 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
-      <div style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20, ...fadeIn(visible) }}>Methodology</div>
-        <h1 style={{ fontSize: m ? 36 : 52, fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.03em", color: C.navy, marginBottom: 28, ...fadeIn(visible, 80) }}>
+    <header style={{ backgroundColor: C.white, paddingTop: m ? 36 : 56, paddingBottom: m ? 36 : 56, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>Methodology</div>
+        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.03em", color: C.navy, marginBottom: 20, ...fadeIn(visible, 60) }}>
           Fixed rules. Deterministic scoring.{m ? " " : <br />}Every result reproducible.
         </h1>
-        <div style={{ maxWidth: 560, margin: "0 auto", ...fadeIn(visible, 180) }}>
-          <p style={{ fontSize: 17, color: muted, lineHeight: 1.65, marginBottom: 12 }}>
-            The Income Stability Score&#8482; is a deterministic structural assessment. The same inputs always produce the same score.
-          </p>
-          <p style={{ fontSize: 15, color: light, lineHeight: 1.6 }}>
-            Every rule is versioned and auditable.
-          </p>
-        </div>
-        <div style={{ marginTop: m ? 40 : 56, paddingTop: m ? 24 : 32, borderTop: `1px solid rgba(14,26,43,0.06)`, ...fadeIn(visible, 300) }}>
-          <p style={{ fontSize: 12, letterSpacing: "0.04em", color: light }}>
-            RunPayway&#8482; Structural Income Classification System &bull; Model RP-2.0 &bull; Deterministic &bull; Version-controlled &bull; Audit-reproducible
-          </p>
-        </div>
+        <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto", ...fadeIn(visible, 120) }}>
+          The Income Stability Score&#8482; is a deterministic structural assessment. The same inputs always produce the same score. Every rule is versioned and auditable.
+        </p>
       </div>
     </header>
   );

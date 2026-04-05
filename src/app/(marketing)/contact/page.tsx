@@ -93,7 +93,7 @@ export default function ContactPage() {
     <div style={{ background: "#FAFAFA", fontFamily: sans }}>
 
       {/* HERO */}
-      <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: mobile ? 48 : 100, paddingBottom: mobile ? 48 : 80, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24 }}>
+      <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: mobile ? 36 : 56, paddingBottom: mobile ? 36 : 56, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24 }}>
         <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
         <div ref={heroAnim.ref} style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1, ...fade(heroAnim.visible) }}>
           <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>

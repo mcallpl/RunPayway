@@ -65,21 +65,14 @@ function HeroSection() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: m ? 48 : 100, paddingBottom: m ? 48 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
-      <div style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20, ...fadeIn(visible) }}>Pricing</div>
-        <h1 style={{ fontSize: m ? 36 : 52, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.03em", color: C.navy, marginBottom: 28, ...fadeIn(visible, 80) }}>
+    <header style={{ backgroundColor: C.white, paddingTop: m ? 36 : 56, paddingBottom: m ? 36 : 56, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>Pricing</div>
+        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.03em", color: C.navy, marginBottom: 20, ...fadeIn(visible, 60) }}>
           Your income will be tested.{m ? " " : <br />}This shows whether it holds.
         </h1>
-        <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.65, marginBottom: 20, ...fadeIn(visible, 100) }}>
+        <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto", ...fadeIn(visible, 120) }}>
           Measure the structural integrity of your income before conditions force the answer.
-        </p>
-        <p style={{ fontSize: 15, color: light, lineHeight: 1.6, marginBottom: 36, ...fadeIn(visible, 180) }}>
-          Free score instantly. Full diagnostic for $69. Track your structure over time for $149/year.
-        </p>
-        <p style={{ fontSize: 14, color: light, letterSpacing: "0.03em", ...fadeIn(visible, 260) }}>
-          No bank connection &bull; Instant results &bull; Full refund guarantee
         </p>
       </div>
     </header>
