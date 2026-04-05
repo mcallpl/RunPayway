@@ -1023,8 +1023,13 @@ function DashboardContent() {
                           ? <><span style={{ fontWeight: 600, color: bandColor(dScore) }}>{dBand.replace(" Stability", "")}</span> band. <span style={{ fontWeight: 600, color: B.navy }}>{gap} pts</span> to {nextB}.</>
                           : <span style={{ fontWeight: 600, color: B.teal }}>Highest band achieved.</span>
                         }
-                        {bm && <> Top {100 - bm.peer_percentile}% of peers.</>}
                       </div>
+                      {bm && indLabel && (
+                        <div style={{ fontSize: 13, color: B.teal, fontWeight: 500, marginTop: 4 }}>
+                          Top {100 - Math.round(bm.peer_percentile)}% of {indLabel.toLowerCase()} professionals.
+                          {bm.cluster_average_score > 0 && <span style={{ color: B.taupe, fontWeight: 400 }}> Industry avg: <span style={{ fontFamily: mono }}>{bm.cluster_average_score}</span></span>}
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -1132,27 +1137,39 @@ function DashboardContent() {
               {secCon && <p style={{ fontSize: 12, color: B.muted, margin: "12px 0 0" }}>Secondary: {secCon.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</p>}
             </div>
 
+            {/* Industry insight — elevated */}
+            {indData.general && (
+              <div style={{ padding: mobile ? "16px 16px" : "18px 22px", borderRadius: 12, borderLeft: `3px solid ${B.teal}`, backgroundColor: `${B.teal}04`, marginBottom: 16 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, marginBottom: 6 }}>INDUSTRY INSIGHT — {indLabel.toUpperCase()}</div>
+                <p style={{ fontSize: 15, fontWeight: 500, color: B.navy, margin: 0, lineHeight: 1.5 }}>{indData.general}</p>
+              </div>
+            )}
+
             <div style={{ padding: mobile ? "24px 20px" : "28px 32px", borderRadius: 14, backgroundColor: "#FAFAFA", marginBottom: 14 }}>
               {/* Labels above bar */}
               <div style={{ display: "flex", marginBottom: 6 }}>
                 {zones.map(z => z.pct > 0 ? <div key={`label-${z.id}`} style={{ width: `${z.pct}%` }}>{z.pct >= 10 && <span style={{ fontSize: 11, fontWeight: 600, color: z.color }}>{z.label} {z.pct}%</span>}</div> : null)}
               </div>
-              <div style={{ display: "flex", height: 12, borderRadius: 6, overflow: "hidden", marginBottom: 14 }}>
+              <div style={{ display: "flex", height: 12, borderRadius: 6, overflow: "hidden", marginBottom: 6 }}>
                 {zones.map(z => z.pct > 0 ? <div key={z.id} style={{ width: `${z.pct}%`, backgroundColor: `${z.color}30`, borderRight: z.id !== "persistent" ? `2px solid ${B.white}` : "none" }} /> : null)}
               </div>
-              <p style={{ fontSize: 13, color: B.taupe, margin: 0 }}>{indData.general}</p>
             </div>
 
+            {/* Zone cards — with industry-specific descriptions visible */}
             {zones.map(z => (
-              <div key={z.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: mobile ? "14px 14px" : "14px 20px", borderLeft: `3px solid ${z.color}`, borderRadius: 10, backgroundColor: "#FAFAFA", marginBottom: 6 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: z.color }}>{z.label.toUpperCase()}</span>
-                  <span style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: z.color }}>{z.pct}%</span>
-                  <span style={{ fontSize: 10, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: `${z.sev === "critical" ? "#E57373" : z.sev === "elevated" ? B.amber : B.teal}12`, color: z.sev === "critical" ? "#E57373" : z.sev === "elevated" ? B.amber : B.teal }}>
-                    {z.sev === "critical" ? "Needs attention" : z.sev === "elevated" ? "Monitor" : "Healthy"}
-                  </span>
+              <div key={z.id} style={{ padding: mobile ? "16px 14px" : "18px 22px", borderLeft: `3px solid ${z.color}`, borderRadius: 10, backgroundColor: "#FAFAFA", marginBottom: 8 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: z.color }}>{z.label.toUpperCase()}</span>
+                    <span style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: z.color }}>{z.pct}%</span>
+                    <span style={{ fontSize: 10, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: `${z.sev === "critical" ? "#E57373" : z.sev === "elevated" ? B.amber : B.teal}12`, color: z.sev === "critical" ? "#E57373" : z.sev === "elevated" ? B.amber : B.teal }}>
+                      {z.sev === "critical" ? "Needs attention" : z.sev === "elevated" ? "Monitor" : "Healthy"}
+                    </span>
+                  </div>
+                  {z.lift > 0 && <span style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{z.lift}</span>}
                 </div>
-                {z.lift > 0 && <span style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{z.lift}</span>}
+                <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.55 }}>{z.txt}</p>
+                {z.peer && <p style={{ fontSize: 12, color: B.taupe, margin: "8px 0 0", fontFamily: mono }}>{z.peer}</p>}
               </div>
             ))}
           </section>
@@ -1268,7 +1285,7 @@ function DashboardContent() {
                   </div>
                   <div>
                     <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: B.teal }}>NEGOTIATION PLAYBOOK</div>
-                    <div style={{ fontSize: 14, color: B.muted }}>Scripts built from your structure</div>
+                    <div style={{ fontSize: 14, color: B.muted }}>Scripts built for {indLabel.toLowerCase() || "your industry"}</div>
                   </div>
                 </div>
                 <div style={{ fontSize: mobile ? 20 : 24, fontWeight: 600, color: B.navy, lineHeight: 1.25, marginBottom: 8, marginTop: 20 }}>
@@ -1291,7 +1308,8 @@ function DashboardContent() {
                               </div>
                               <span style={{ fontSize: 16, fontWeight: 600, color: B.navy }}>{play.title}</span>
                             </div>
-                            <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.5 }}>{play.context}</p>
+                            <p style={{ fontSize: 14, color: B.muted, margin: "0 0 6px", lineHeight: 1.5 }}>{play.context}</p>
+                            {play.who && !isExp && <p style={{ fontSize: 13, color: B.teal, margin: 0, fontWeight: 500 }}>Talk to: {play.who.length > 80 ? play.who.substring(0, 80) + "..." : play.who}</p>}
                           </div>
                           <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0, marginTop: 4 }}>
                             <span style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{play.lift}</span>
