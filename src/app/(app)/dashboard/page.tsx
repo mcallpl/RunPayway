@@ -1005,100 +1005,85 @@ function DashboardContent() {
             };
 
             return (
-              <div style={{ marginBottom: 28, animation: "fadeSlideIn 600ms ease-out" }}>
-                <div style={{ padding: mobile ? "24px 20px" : "32px 36px", borderRadius: mobile ? 16 : 20, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+              <div style={{ marginBottom: 36, animation: "fadeSlideIn 600ms ease-out" }}>
+                <div style={{ padding: mobile ? "28px 22px" : "40px 44px", borderRadius: mobile ? 16 : 24, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
 
-                  {/* Top row: Score ring + context */}
-                  <div style={{ display: "flex", alignItems: "center", gap: mobile ? 16 : 32, marginBottom: 20 }} className="d-score-hero">
-                    <ScoreRing score={dScore} size={mobile ? 90 : 120} stroke={mobile ? 6 : 7} />
+                  {/* Top row: Score ring + context — generous spacing */}
+                  <div style={{ display: "flex", alignItems: "center", gap: mobile ? 20 : 40, marginBottom: 28 }} className="d-score-hero">
+                    <ScoreRing score={dScore} size={mobile ? 100 : 140} stroke={mobile ? 6 : 7} />
                     <div style={{ flex: 1 }}>
-                      <div style={{ marginBottom: 6 }}>
-                        {custName && <span style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{custName}</span>}
+                      <div style={{ marginBottom: 8 }}>
+                        {custName && <span style={{ fontSize: 17, fontWeight: 600, color: B.navy }}>{custName}</span>}
                         {custName && indLabel && <span style={{ color: B.taupe }}> · </span>}
-                        {indLabel && <span style={{ fontSize: 13, color: B.taupe }}>{indLabel}</span>}
-                        {assessedDate && <span style={{ fontSize: 12, color: B.taupe }}> · {assessedDate}</span>}
+                        {indLabel && <span style={{ fontSize: 14, color: B.taupe }}>{indLabel}</span>}
                       </div>
-                      <div style={{ fontSize: mobile ? 14 : 15, color: B.muted, lineHeight: 1.5 }}>
+                      <div style={{ fontSize: mobile ? 15 : 17, color: B.muted, lineHeight: 1.55, marginBottom: 6 }}>
                         {gap > 0
-                          ? <><span style={{ fontWeight: 600, color: bandColor(dScore) }}>{dBand.replace(" Stability", "")}</span> band. <span style={{ fontWeight: 600, color: B.navy }}>{gap} pts</span> to {nextB}.</>
+                          ? <>{gap} points from <span style={{ fontWeight: 600, color: B.navy }}>{nextB} Stability</span>.</>
                           : <span style={{ fontWeight: 600, color: B.teal }}>Highest band achieved.</span>
                         }
                       </div>
                       {bm && indLabel && (
-                        <div style={{ fontSize: 13, color: B.teal, fontWeight: 500, marginTop: 4 }}>
-                          Top {100 - Math.round(bm.peer_percentile)}% of {indLabel.toLowerCase()} professionals.
-                          {bm.cluster_average_score > 0 && <span style={{ color: B.taupe, fontWeight: 400 }}> Industry avg: <span style={{ fontFamily: mono }}>{bm.cluster_average_score}</span></span>}
+                        <div style={{ fontSize: 14, color: B.teal, fontWeight: 500 }}>
+                          Top {100 - Math.round(bm.peer_percentile)}% of {indLabel.toLowerCase()} professionals
                         </div>
                       )}
                     </div>
                   </div>
 
-                  {/* Metrics row */}
-                  <style>{`
-                    .metric-tip-wrap { position: relative; }
-                    .metric-tip-wrap .metric-tip { opacity: 0; pointer-events: none; transition: opacity 180ms ease; }
-                    @media(hover:hover){ .metric-tip-wrap:hover .metric-tip { opacity: 1; pointer-events: auto; } }
-                  `}</style>
-                  <div style={{ display: "flex", gap: 8, marginBottom: 20, flexWrap: "wrap" as const }} className="d-metrics">
+                  {/* Metrics — clean, no tooltips cluttering */}
+                  <div style={{ display: "flex", gap: 12, marginBottom: 28 }} className="d-metrics">
                     {[
-                      { label: "Income Buffer", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? B.red : B.teal, tip: "How long income continues if all active work stops." },
-                      { label: "If Top Source Leaves", value: `\u2212${riskDrop}`, color: riskDrop > 15 ? B.red : B.amber, tip: "Score drop if your largest source disappears." },
-                      { label: "Stability Type", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" || fragLabel === "Supported" ? B.teal : B.amber, tip: "How well your income handles disruptions." },
+                      { label: "Income Buffer", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? B.red : B.teal },
+                      { label: "If Top Source Leaves", value: `−${riskDrop} pts`, color: riskDrop > 15 ? B.red : B.amber },
+                      { label: "Stability Type", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" || fragLabel === "Supported" ? B.teal : B.amber },
                     ].map((m) => (
-                      <div key={m.label} className="metric-tip-wrap"
-                        onClick={() => setTooltipOpen(tooltipOpen === m.label ? null : m.label)}
-                        style={{ flex: 1, minWidth: mobile ? 80 : 90, padding: "10px 12px", textAlign: "center" as const, cursor: "pointer", WebkitTapHighlightColor: "transparent", backgroundColor: "#FAFAFA", borderRadius: 8, border: `1px solid ${B.stone}` }}>
-                        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 3 }}>{m.label.toUpperCase()}</div>
-                        <div style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: m.color }}>{m.value}</div>
-                        <div className="metric-tip" style={{ position: "absolute", bottom: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)", width: mobile ? 200 : 220, padding: "10px 12px", borderRadius: 8, backgroundColor: B.navy, fontSize: 12, lineHeight: 1.5, fontWeight: 400, fontFamily: sans, color: "rgba(244,241,234,0.75)", boxShadow: "0 4px 16px rgba(14,26,43,0.25)", zIndex: 50, ...(tooltipOpen === m.label ? { opacity: 1, pointerEvents: "auto" as const } : {}) }}>
-                          {m.tip}
-                        </div>
+                      <div key={m.label} style={{ flex: 1, padding: mobile ? "12px 10px" : "14px 16px", textAlign: "center" as const, borderRadius: 10, backgroundColor: "#FAFAFA" }}>
+                        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 4 }}>{m.label.toUpperCase()}</div>
+                        <div style={{ fontSize: 18, fontWeight: 600, fontFamily: mono, color: m.color }}>{m.value}</div>
                       </div>
                     ))}
                   </div>
 
-                  {/* This Week priority */}
+                  {/* This Week — lead with the sentence, not labels */}
                   {topMoves.length > 0 && (
-                    <div style={{ padding: mobile ? "16px 16px" : "18px 20px", borderRadius: 12, backgroundColor: `${B.teal}04`, border: `1px solid ${B.teal}10`, marginBottom: 16 }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                          <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: B.teal }}>THIS WEEK</span>
-                        </div>
-                        <div style={{ fontSize: 13, color: B.taupe }}>
-                          {daysSince === 0 ? "Today" : `Day ${daysSince}`} · <span style={{ fontWeight: 600, color: stepsDone > 0 ? B.teal : B.muted }}>{stepsDone}/{stepsTotal}</span>
-                        </div>
-                      </div>
-                      <div style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, color: B.navy, lineHeight: 1.3, marginBottom: 8 }}>
+                    <div style={{ padding: mobile ? "18px 18px" : "22px 24px", borderRadius: 14, backgroundColor: `${B.teal}03`, borderLeft: `3px solid ${B.teal}` }}>
+                      <div style={{ fontSize: mobile ? 17 : 19, fontWeight: 500, color: B.navy, lineHeight: 1.4, marginBottom: 10 }}>
                         {stepsDone >= stepsTotal
-                          ? "All steps complete. Consider reassessing."
+                          ? "You've completed all steps. Time to reassess and see how far you've come."
                           : nextMove
-                            ? <>{nextMove.label}. <span style={{ fontWeight: 300, fontFamily: mono, color: B.teal }}>+{nextMove.lift}</span></>
-                            : "Start your first move."
+                            ? <>This week: <strong>{nextMove.label.toLowerCase()}</strong>.</>
+                            : "Start with your first move."
                         }
                       </div>
-                      {nextScript && stepsDone < stepsTotal && (
-                        <button onClick={() => {
-                          const el = document.getElementById("phase-plan");
-                          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-                          setTimeout(() => setExpandedPlaybook(nextMove?.id || null), 500);
-                        }} style={{ fontSize: 13, fontWeight: 600, color: B.teal, background: "none", border: "none", cursor: "pointer", padding: 0, minHeight: 32 }}>
-                          Open script &rarr;
-                        </button>
-                      )}
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        {nextScript && stepsDone < stepsTotal && (
+                          <button onClick={() => {
+                            const el = document.getElementById("phase-plan");
+                            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                            setTimeout(() => setExpandedPlaybook(nextMove?.id || null), 500);
+                          }} style={{ fontSize: 14, fontWeight: 600, color: B.teal, background: "none", border: "none", cursor: "pointer", padding: 0, minHeight: 36 }}>
+                            Open the script &rarr;
+                          </button>
+                        )}
+                        <span style={{ fontSize: 12, color: B.taupe }}>
+                          {stepsDone > 0 && <>{stepsDone}/{stepsTotal} done · </>}{daysSince > 0 ? `Day ${daysSince}` : "Today"}
+                        </span>
+                      </div>
                     </div>
                   )}
 
-                  {/* Actions */}
-                  <div style={{ display: "flex", gap: 8, justifyContent: mobile ? "center" : "flex-start", flexWrap: "wrap" as const }}>
-                    <Link href="/review" style={{ fontSize: 13, fontWeight: 600, color: B.navy, textDecoration: "none", padding: "7px 14px", borderRadius: 8, border: `1px solid ${B.stone}`, backgroundColor: B.surface, transition: "background 150ms", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 36 }}
-                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#F5F4F1"; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = B.surface; }}>
+                  {/* Actions — subtle, bottom-right */}
+                  <div style={{ display: "flex", gap: 8, justifyContent: mobile ? "center" : "flex-end", marginTop: 20 }}>
+                    <Link href="/review" style={{ fontSize: 13, fontWeight: 500, color: B.taupe, textDecoration: "none", padding: "7px 14px", borderRadius: 8, display: "inline-flex", alignItems: "center", minHeight: 36, transition: "color 150ms" }}
+                      onMouseEnter={(e) => { e.currentTarget.style.color = B.navy; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.color = B.taupe; }}>
                       View Report
                     </Link>
-                    <button onClick={handleShare} style={{ fontSize: 13, fontWeight: 600, color: B.muted, padding: "7px 14px", borderRadius: 8, border: `1px solid ${B.stone}`, backgroundColor: "transparent", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 36 }}>
+                    <button onClick={handleShare} style={{ fontSize: 13, fontWeight: 500, color: B.taupe, padding: "7px 14px", borderRadius: 8, background: "none", border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", minHeight: 36 }}>
                       Share
                     </button>
-                    <button onClick={copyBriefing} style={{ fontSize: 13, fontWeight: 600, color: B.muted, padding: "7px 14px", borderRadius: 8, border: `1px solid ${B.stone}`, backgroundColor: "transparent", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, minHeight: 36 }}>
+                    <button onClick={copyBriefing} style={{ fontSize: 13, fontWeight: 500, color: B.taupe, padding: "7px 14px", borderRadius: 8, background: "none", border: "none", cursor: "pointer", display: "inline-flex", alignItems: "center", minHeight: 36 }}>
                       Copy Briefing
                     </button>
                   </div>
@@ -1113,83 +1098,71 @@ function DashboardContent() {
           <PhaseSep label="Your Diagnosis" color={B.purple} tint="rgba(75,63,174,0.02)" id="phase-diagnosis" mobile={mobile}>
 
           {/* 2. PRESSUREMAP™ */}
-          <section className="cc-section" style={{ padding: mobile ? "28px 20px" : "36px 40px", borderRadius: 20, backgroundColor: B.surface, border: `1px solid ${B.stone}`, marginBottom: 20, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
-            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 20 }}>
-              <div>
-                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: B.teal }}>RUNPAYWAY&#8482; PRESSUREMAP&#8482;</div>
-                {indLabel && <p style={{ fontSize: 15, color: B.muted, margin: "6px 0 0" }}>Analysis for {indLabel.toLowerCase()} professionals.</p>}
+          <section className="cc-section" style={{ padding: mobile ? "32px 22px" : "44px 48px", borderRadius: 24, backgroundColor: B.surface, border: `1px solid ${B.stone}`, marginBottom: 24, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+
+            {/* Header — clean, confident */}
+            <div style={{ marginBottom: 28 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 10 }}>PRESSUREMAP™{indLabel ? ` — ${indLabel.toUpperCase()}` : ""}</div>
+              <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 500, color: B.navy, margin: 0, lineHeight: 1.35 }}>
+                {activeInc >= 60
+                  ? `${activeInc}% of your income stops the moment you stop. Here's how that breaks down.`
+                  : persInc >= 30
+                  ? `${persInc}% of your income is protected. Here's where the rest stands.`
+                  : `Your income splits into three zones. Here's what each one means for you.`
+                }
+              </p>
+            </div>
+
+            {/* Visual bar — larger, more breathing room */}
+            <div style={{ marginBottom: 28 }}>
+              <div style={{ display: "flex", height: 16, borderRadius: 8, overflow: "hidden", marginBottom: 10 }}>
+                {zones.map(z => z.pct > 0 ? <div key={z.id} style={{ width: `${z.pct}%`, backgroundColor: `${z.color}35`, borderRight: z.id !== "persistent" ? `2px solid ${B.white}` : "none" }} /> : null)}
               </div>
-              <div style={{ fontSize: 10, color: B.taupe, textAlign: "right" as const, letterSpacing: "0.04em" }}>
-                {assessedDate && <div>{assessedDate}</div>}
-                <div>Model RP-2.0</div>
+              <div style={{ display: "flex" }}>
+                {zones.map(z => z.pct > 0 ? <div key={`label-${z.id}`} style={{ width: `${z.pct}%` }}>{z.pct >= 10 && <span style={{ fontSize: 12, fontWeight: 600, color: z.color }}>{z.label} <span style={{ fontFamily: mono }}>{z.pct}%</span></span>}</div> : null)}
               </div>
             </div>
 
-            <div style={{ padding: mobile ? "20px 16px" : "24px 28px", borderLeft: `4px solid ${B.red}`, borderRadius: 12, backgroundColor: "#FAFAFA", marginBottom: 16 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.red, marginBottom: 12 }}>BIGGEST RISK</div>
-              <p style={{ fontSize: 18, fontWeight: 600, color: B.navy, margin: "0 0 12px", lineHeight: 1.4 }}>
-                If your top source leaves, your score drops {dScore - stLCDrop < 30 && dScore >= 30 ? "into Limited Stability." : `from ${dScore} to ${dScore - stLCDrop}.`}
-              </p>
-              <p style={{ fontSize: 15, color: B.muted, margin: "0 0 12px", lineHeight: 1.65 }}>{constraintNarrative(rootCon, base)}</p>
-              <p style={{ fontSize: 14, color: B.red, margin: "0 0 4px", fontWeight: 500 }}>
-                Projected impact: <span style={{ fontFamily: mono }}>{dScore}</span> &rarr; <span style={{ fontFamily: mono }}>{dScore - stLCDrop}</span>
-              </p>
-              {secCon && <p style={{ fontSize: 12, color: B.muted, margin: "12px 0 0" }}>Secondary: {secCon.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</p>}
-            </div>
-
-            {/* Industry insight — elevated */}
+            {/* Industry insight — one confident sentence */}
             {indData.general && (
-              <div style={{ padding: mobile ? "16px 16px" : "18px 22px", borderRadius: 12, borderLeft: `3px solid ${B.teal}`, backgroundColor: `${B.teal}04`, marginBottom: 16 }}>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, marginBottom: 6 }}>INDUSTRY INSIGHT — {indLabel.toUpperCase()}</div>
-                <p style={{ fontSize: 15, fontWeight: 500, color: B.navy, margin: 0, lineHeight: 1.5 }}>{indData.general}</p>
-              </div>
+              <p style={{ fontSize: 15, fontWeight: 500, color: B.teal, margin: "0 0 28px", lineHeight: 1.5, borderLeft: `3px solid ${B.teal}`, paddingLeft: 16 }}>
+                {indData.general}
+              </p>
             )}
 
-            <div style={{ padding: mobile ? "24px 20px" : "28px 32px", borderRadius: 14, backgroundColor: "#FAFAFA", marginBottom: 14 }}>
-              {/* Labels above bar */}
-              <div style={{ display: "flex", marginBottom: 6 }}>
-                {zones.map(z => z.pct > 0 ? <div key={`label-${z.id}`} style={{ width: `${z.pct}%` }}>{z.pct >= 10 && <span style={{ fontSize: 11, fontWeight: 600, color: z.color }}>{z.label} {z.pct}%</span>}</div> : null)}
-              </div>
-              <div style={{ display: "flex", height: 12, borderRadius: 6, overflow: "hidden", marginBottom: 6 }}>
-                {zones.map(z => z.pct > 0 ? <div key={z.id} style={{ width: `${z.pct}%`, backgroundColor: `${z.color}30`, borderRight: z.id !== "persistent" ? `2px solid ${B.white}` : "none" }} /> : null)}
-              </div>
+            {/* Zone cards — insight-first, data secondary */}
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
+              {zones.map(z => (
+                <div key={z.id} style={{ padding: mobile ? "18px 16px" : "22px 28px", borderRadius: 14, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${z.color}` }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
+                    <span style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{z.label} — <span style={{ fontFamily: mono, color: z.color }}>{z.pct}%</span></span>
+                    {z.peer && <span style={{ fontSize: 12, color: B.taupe }}>{z.peer}</span>}
+                  </div>
+                  <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>{z.txt}</p>
+                </div>
+              ))}
             </div>
 
-            {/* Zone cards — with industry-specific descriptions visible */}
-            {zones.map(z => (
-              <div key={z.id} style={{ padding: mobile ? "16px 14px" : "18px 22px", borderLeft: `3px solid ${z.color}`, borderRadius: 10, backgroundColor: "#FAFAFA", marginBottom: 8 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: z.color }}>{z.label.toUpperCase()}</span>
-                    <span style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: z.color }}>{z.pct}%</span>
-                    <span style={{ fontSize: 10, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: `${z.sev === "critical" ? "#E57373" : z.sev === "elevated" ? B.amber : B.teal}12`, color: z.sev === "critical" ? "#E57373" : z.sev === "elevated" ? B.amber : B.teal }}>
-                      {z.sev === "critical" ? "Needs attention" : z.sev === "elevated" ? "Monitor" : "Healthy"}
-                    </span>
-                  </div>
-                  {z.lift > 0 && <span style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{z.lift}</span>}
-                </div>
-                <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.55 }}>{z.txt}</p>
-                {z.peer && <p style={{ fontSize: 12, color: B.taupe, margin: "8px 0 0", fontFamily: mono }}>{z.peer}</p>}
-              </div>
-            ))}
+            {/* Biggest risk — clean, below zones */}
+            <div style={{ marginTop: 24, padding: mobile ? "20px 18px" : "24px 28px", borderRadius: 14, backgroundColor: `${B.red}04`, borderLeft: `3px solid ${B.red}` }}>
+              <p style={{ fontSize: mobile ? 16 : 18, fontWeight: 500, color: B.navy, margin: "0 0 8px", lineHeight: 1.4 }}>
+                If your top source leaves, your score drops {dScore - stLCDrop < 30 && dScore >= 30 ? "into Limited Stability." : `from ${dScore} to ${dScore - stLCDrop}.`}
+              </p>
+              <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>{constraintNarrative(rootCon, base)}</p>
+            </div>
           </section>
 
           {/* Stress tests — what could go wrong */}
           <section style={{ marginBottom: 24 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: "#C0392B", marginBottom: 8 }}>WHAT COULD GO WRONG</div>
-            <p style={{ fontSize: 14, color: B.muted, marginBottom: 16 }}>How your income holds up under real disruptions.</p>
-            <div style={{ display: "flex", gap: 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
+            <div style={{ display: "flex", gap: mobile ? 12 : 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
               {[
-                { label: "Your biggest client stops paying", desc: "Your largest income source disappears — along with everything tied to it.", val: `\u2212${dScore - stLC.overall_score}`, drop: stLC.overall_score },
-                { label: "You cannot work for 90 days", desc: "Illness, injury, or interruption stops active work — only passive and pre-committed income continues.", val: `\u2212${dScore - stNW.overall_score}`, drop: stNW.overall_score },
+                { label: "Your biggest client stops paying", insight: `Your score drops to ${stLC.overall_score}.${stLC.overall_score < 30 && dScore >= 30 ? " That puts you in Limited Stability." : ""}`, val: `${dScore} → ${stLC.overall_score}` },
+                { label: "You can't work for 90 days", insight: `Your score drops to ${stNW.overall_score}.${stNW.overall_score < 30 && dScore >= 30 ? " That puts you in Limited Stability." : ""}`, val: `${dScore} → ${stNW.overall_score}` },
               ].map(row => (
-                <div key={row.label} style={{ flex: 1, padding: "24px 28px", border: `1px solid ${B.stone}`, borderRadius: 14, backgroundColor: "#FAFAFA", boxShadow: "0 1px 3px rgba(14,26,43,0.02)" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
-                    <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{row.label}</span>
-                    <span style={{ fontSize: 18, fontWeight: 600, fontFamily: mono, color: "#C0392B" }}>{row.val}</span>
-                  </div>
-                  <p style={{ fontSize: 14, color: B.muted, margin: "0 0 8px", lineHeight: 1.6 }}>{row.desc}</p>
-                  <span style={{ fontSize: 13, fontFamily: mono, color: B.taupe }}>{dScore} &rarr; {row.drop}</span>
+                <div key={row.label} style={{ flex: 1, padding: mobile ? "22px 18px" : "26px 28px", borderRadius: 16, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${B.red}` }}>
+                  <p style={{ fontSize: 15, fontWeight: 500, color: B.navy, margin: "0 0 6px", lineHeight: 1.4 }}>{row.label}</p>
+                  <p style={{ fontSize: 14, color: B.muted, margin: "0 0 8px", lineHeight: 1.55 }}>{row.insight}</p>
+                  <span style={{ fontSize: 13, fontFamily: mono, color: B.red }}>{row.val}</span>
                 </div>
               ))}
             </div>
@@ -1278,22 +1251,16 @@ function DashboardContent() {
             const copyPB = (text: string, id: string) => { navigator.clipboard.writeText(text).then(() => { setCopiedPlaybook(id); setTimeout(() => setCopiedPlaybook(null), 2500); }); };
 
             return (
-              <section className="cc-section" style={{ marginBottom: 24, padding: mobile ? "28px 20px" : "36px 40px", borderRadius: 20, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${B.teal}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5m-1.414-9.414a2 2 0 1 1 2.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: B.teal }}>NEGOTIATION PLAYBOOK</div>
-                    <div style={{ fontSize: 14, color: B.muted }}>Scripts built for {indLabel.toLowerCase() || "your industry"}</div>
-                  </div>
+              <section className="cc-section" style={{ marginBottom: 24, padding: mobile ? "32px 22px" : "44px 48px", borderRadius: 24, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+                <div style={{ marginBottom: 28 }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 10 }}>NEGOTIATION PLAYBOOK{indLabel ? ` — ${indLabel.toUpperCase()}` : ""}</div>
+                  <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 500, color: B.navy, margin: "0 0 10px", lineHeight: 1.35 }}>
+                    {playbookMoves.length} conversations that would move your score. Here's exactly what to say.
+                  </p>
+                  <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.6, margin: 0 }}>
+                    Each script uses your actual numbers and is written for {indLabel.toLowerCase() || "your industry"}.
+                  </p>
                 </div>
-                <div style={{ fontSize: mobile ? 20 : 24, fontWeight: 600, color: B.navy, lineHeight: 1.25, marginBottom: 8, marginTop: 20 }}>
-                  Your constraint is {constraintLabels[rootCon]?.toLowerCase() || rootCon.replace(/_/g, " ")}.
-                </div>
-                <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.6, margin: "0 0 24px", maxWidth: 560 }}>
-                  These are the exact conversations that move your score. Each script is tailored to {indLabel.toLowerCase() || "your industry"} and uses your actual numbers.
-                </p>
                 <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
                   {playbookMoves.map((play, i) => {
                     const isExp = expandedPlaybook === play.id;
@@ -1384,16 +1351,13 @@ function DashboardContent() {
 
           {/* 4. 12-WEEK ROADMAP — timeline with dynamic milestones */}
           {roadmap.length > 1 && (
-            <section className="cc-section" style={{ padding: mobile ? "28px 20px" : "36px 40px", borderRadius: 20, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
-                <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${B.purple}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg>
-                </div>
-                <div>
-                  <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: B.purple }}>12-WEEK ROADMAP</div>
-                  <div style={{ fontSize: 14, color: B.muted }}>Your execution timeline</div>
-                </div>
-                {completedSteps.length > 0 && <span style={{ fontSize: 13, fontWeight: 600, color: B.teal, marginLeft: "auto" }}>{completedSteps.length}/{roadmap.length} done</span>}
+            <section className="cc-section" style={{ padding: mobile ? "32px 22px" : "44px 48px", borderRadius: 24, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+              <div style={{ marginBottom: 24 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple, marginBottom: 10 }}>12-WEEK ROADMAP</div>
+                <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 500, color: B.navy, margin: "0 0 6px", lineHeight: 1.35 }}>
+                  {totalLift > 0 ? `${roadmap.length} moves. ${dScore} → ${dScore + totalLift}. Here's the order.` : "Your execution timeline."}
+                </p>
+                {completedSteps.length > 0 && <p style={{ fontSize: 14, color: B.teal, fontWeight: 500, margin: 0 }}>{completedSteps.length} of {roadmap.length} complete</p>}
               </div>
 
               {/* Score trajectory */}
