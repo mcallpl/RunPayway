@@ -24,7 +24,7 @@ interface FollowUpRequest {
 }
 
 const SUBJECTS: Record<string, string> = {
-  day7: "Have you explored your Command Center yet?",
+  day7: "Have you explored your Dashboard yet?",
   day30: "30 days since your assessment — here's what to focus on",
   day90: "It's time to see how much you've improved",
 };
@@ -42,15 +42,15 @@ function getEmailHtml(data: FollowUpRequest): { subject: string; html: string } 
           <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: #1F6D7A; text-transform: uppercase; margin-bottom: 20px;">RUNPAYWAY™</div>
           <h1 style="font-size: 24px; font-weight: 300; color: #1C1635; letter-spacing: -0.02em; margin-bottom: 16px;">Hi ${displayName},</h1>
           <p style="font-size: 15px; color: rgba(14,26,43,0.55); line-height: 1.65; margin-bottom: 20px;">
-            Your Income Stability Score is <strong style="color: #1C1635;">${score}/100</strong> (${band}). Your Command Center has your 12-week roadmap, PressureMap™, and ready-to-use scripts — have you opened it yet?
+            Your Income Stability Score is <strong style="color: #1C1635;">${score}/100</strong> (${band}). Your Dashboard has your 12-week roadmap, PressureMap™, and ready-to-use scripts — have you opened it yet?
           </p>
           <div style="border: 1px solid rgba(14,26,43,0.08); border-left: 3px solid #4B3FAE; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px;">
             <div style="font-size: 10px; font-weight: 600; letter-spacing: 0.10em; color: #4B3FAE; margin-bottom: 6px;">YOUR #1 PRIORITY</div>
             <div style="font-size: 15px; font-weight: 600; color: #1C1635;">${topAction || "Open your PressureMap™ to see where your income is most vulnerable"}</div>
             ${topActionLift ? `<div style="font-size: 13px; color: #1F6D7A; font-weight: 500; margin-top: 4px;">Potential impact: +${topActionLift} points</div>` : ""}
           </div>
-          <a href="https://peoplestar.com/RunPayway/dashboard" style="display: inline-block; padding: 14px 28px; background: #1C1635; color: #FFFFFF; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none;">Open Your Command Center &rarr;</a>
-          <p style="font-size: 12px; color: rgba(14,26,43,0.30); margin-top: 32px; line-height: 1.5;">RunPayway™ — A proprietary financial diagnostic tool by PeopleStar Enterprises.</p>
+          <a href="https://peoplestar.com/RunPayway/dashboard" style="display: inline-block; padding: 14px 28px; background: #1C1635; color: #FFFFFF; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none;">Open Your Dashboard &rarr;</a>
+          <p style="font-size: 12px; color: rgba(14,26,43,0.30); margin-top: 32px; line-height: 1.5;">RunPayway™ — A proprietary financial diagnostic tool by PeopleStar Enterprises, INC.</p>
         </div>`,
     };
   }
@@ -70,7 +70,7 @@ function getEmailHtml(data: FollowUpRequest): { subject: string; html: string } 
             ${topAction ? `Your highest-leverage move is still: <strong style="color: #1C1635;">${topAction}</strong>.` : "Have you made any structural changes since your assessment?"} Use the Simulator to model the impact before you commit.
           </p>
           <a href="https://peoplestar.com/RunPayway/simulator" style="display: inline-block; padding: 14px 28px; background: #1C1635; color: #FFFFFF; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none;">Open the Simulator &rarr;</a>
-          <p style="font-size: 12px; color: rgba(14,26,43,0.30); margin-top: 32px;">RunPayway™ by PeopleStar Enterprises.</p>
+          <p style="font-size: 12px; color: rgba(14,26,43,0.30); margin-top: 32px;">RunPayway™ by PeopleStar Enterprises, INC.</p>
         </div>`,
     };
   }
@@ -89,7 +89,7 @@ function getEmailHtml(data: FollowUpRequest): { subject: string; html: string } 
           A new assessment will show you exactly how much progress you have made and where to focus next.
         </p>
         <a href="https://peoplestar.com/RunPayway/pricing" style="display: inline-block; padding: 14px 28px; background: linear-gradient(135deg, #1C1635, #4B3FAE); color: #FFFFFF; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none;">Reassess Your Score &rarr;</a>
-        <p style="font-size: 12px; color: rgba(14,26,43,0.30); margin-top: 32px;">RunPayway™ by PeopleStar Enterprises.</p>
+        <p style="font-size: 12px; color: rgba(14,26,43,0.30); margin-top: 32px;">RunPayway™ by PeopleStar Enterprises, INC.</p>
       </div>`,
   };
 }

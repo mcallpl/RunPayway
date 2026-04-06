@@ -685,7 +685,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
 
   // Fine print
   if (y + 20 <= YL) {
-    const fp = "RunPayway(TM) - a proprietary structural income diagnostic developed by PeopleStar Enterprises. Model RP-2.0. Structural inputs only. Not financial advice. Scores are deterministic.";
+    const fp = "RunPayway(TM) - a proprietary income diagnostic developed by PeopleStar Enterprises, INC. Model RP-2.0. Not financial advice. Same answers always produce the same score.";
     dt(doc, fp, ML, y, CW, 7.5, { color: "#6B6155", lh: 1.3 });
   }
 

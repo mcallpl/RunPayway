@@ -953,7 +953,7 @@ function DashboardContent() {
 
             {/* Footer */}
             <div style={{ paddingTop: 32, textAlign: "center" }}>
-              <p style={{ fontSize: 14, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; PeopleStar Enterprises</p>
+              <p style={{ fontSize: 14, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; PeopleStar Enterprises, INC.</p>
               <p style={{ fontSize: 12, color: `${B.taupe}80`, margin: 0 }}>Fixed rules &middot; Same answers, same score &middot; Private by default</p>
             </div>
           </div>
@@ -1971,7 +1971,7 @@ function DashboardContent() {
 
           {/* Minimal footer */}
           <div style={{ paddingTop: 32, textAlign: "center" }}>
-            <p style={{ fontSize: 12, color: `${B.taupe}60`, margin: 0 }}>RunPayway™ &middot; PeopleStar Enterprises</p>
+            <p style={{ fontSize: 12, color: `${B.taupe}60`, margin: 0 }}>RunPayway™ &middot; PeopleStar Enterprises, INC.</p>
           </div>
         </div>
       </div>

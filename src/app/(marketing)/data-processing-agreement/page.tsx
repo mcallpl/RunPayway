@@ -43,7 +43,7 @@ const border = "#E5E7EB";
 const sections = [
   { title: "1. Definitions", items: [
     "\"Controller\" means the entity that determines the purposes and means of Processing Personal Data — the Customer.",
-    "\"Processor\" means the entity that Processes Personal Data on behalf of the Controller — PeopleStar Enterprises, LLC (RunPayway\u2122).",
+    "\"Processor\" means the entity that Processes Personal Data on behalf of the Controller — PeopleStar Enterprises, INC. (RunPayway\u2122).",
     "\"Personal Data\" means any information relating to an identified or identifiable natural person, as provided by the Customer through the RunPayway\u2122 platform.",
     "\"Processing\" means any operation performed on Personal Data, including collection, storage, use, scoring, and deletion.",
     "\"Sub-processor\" means any third party engaged by the Processor to Process Personal Data.",
@@ -132,7 +132,7 @@ export default function DataProcessingAgreementPage() {
       <section style={{ paddingTop: m ? 56 : 112, paddingBottom: m ? 56 : 112, paddingLeft: m ? 20 : 24, paddingRight: m ? 20 : 24 }}>
         <div ref={content.ref} style={{ maxWidth: 820, margin: "0 auto" }}>
           <p style={{ fontSize: 13, color: light, marginBottom: m ? 32 : 48, opacity: content.visible ? 1 : 0, transform: content.visible ? "translateY(0)" : "translateY(10px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
-            Effective Date: April 2, 2026 &middot; PeopleStar Enterprises, LLC &middot; Orange County, California, USA
+            Effective Date: April 2, 2026 &middot; PeopleStar Enterprises, INC. &middot; Orange County, California, USA
           </p>
 
           <div style={{ display: "flex", flexDirection: "column" as const, gap: m ? 16 : 20 }}>
@@ -160,7 +160,7 @@ export default function DataProcessingAgreementPage() {
               For enterprise inquiries or to execute this agreement, contact us through our contact page.
             </p>
             <p style={{ fontSize: 13, color: light }}>
-              RunPayway&#8482; is a product of PeopleStar Enterprises, LLC. Model RP-2.0. This document is provided for informational purposes and does not constitute legal advice.
+              RunPayway&#8482; is a product of PeopleStar Enterprises, INC.. Model RP-2.0. This document is provided for informational purposes and does not constitute legal advice.
             </p>
           </div>
         </div>
