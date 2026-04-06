@@ -484,8 +484,11 @@ export default function DiagnosticPage() {
         setTimeout(() => setTransitioning(false), 350);
       }, 550);
     } else {
-      // Last question — unlock after brief delay
-      setTimeout(() => setTransitioning(false), 350);
+      // Last question — auto-advance to review
+      setTimeout(() => {
+        setTransitioning(false);
+        setShowReview(true);
+      }, 550);
     }
   }, [currentQuestion, transitioning]);
 
