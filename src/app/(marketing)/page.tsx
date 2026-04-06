@@ -364,7 +364,7 @@ function HowRunPaywayIsUsed() {
     },
     {
       title: "Advisors",
-      desc: "Know which clients have fragile income before it becomes a problem. Run the same assessment across your book — each client gets a score you can explain, compare, and track over time.",
+      desc: "Prevent client failure before it happens. Standardize income risk across your book. Explain decisions with a fixed, repeatable model.",
       action: "Per-client scoring for your practice",
       color: C.purple,
       icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
@@ -373,7 +373,7 @@ function HowRunPaywayIsUsed() {
     },
     {
       title: "Organizations",
-      desc: "Evaluate income risk across a workforce, contractor base, or client portfolio. Every assessment uses the same fixed rules — so results are comparable at scale.",
+      desc: "Compare thousands of profiles using one rule set. Remove subjectivity from income evaluation. Deploy at scale via API or batch scoring.",
       action: "Volume licensing available",
       color: C.navy,
       icon: "M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5m-4 0h4",
