@@ -510,48 +510,39 @@ function SameIncomeProof() {
 
 
 /* ================================================================== */
-/* SECTION 3B — WHAT HIGH STABILITY UNLOCKS                            */
+/* SECTION 3B — WHAT CHANGES ONCE YOU SEE YOUR SCORE                   */
 /* ================================================================== */
 
-function WhatStabilityUnlocks() {
+function WhatChanges() {
   const { ref, visible } = useInView();
   const m = useMobile();
   const fadeIn = useFadeIn();
-  const unlocks = [
-    { icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", title: "Negotiate from strength, not need", desc: "You don't take bad deals because you need the money. You choose the right ones — and walk away from the rest.", color: C.teal },
-    { icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z", title: "Charge what you're worth", desc: "When your income is stable, there's no desperation pricing. You set your rates and hold firm.", color: C.purple },
-    { icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6", title: "Take smart risks", desc: "Launch a new service. Hire someone. Turn down a bad client. Your stable base absorbs the gap while you grow.", color: C.teal },
-    { icon: "M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5m-4 0h4", title: "Build something worth more", desc: "A business with stable, diversified income is worth more than one that depends on you showing up every day.", color: C.purple },
-  ];
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 56 : 112, paddingBottom: m ? 56 : 112, paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: contentW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>WHEN YOU KNOW YOUR NUMBER</div>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16 }}>
-            Once you see how your income is built,{m ? " " : <br />}you start making better financial decisions.
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 56 : 104, paddingBottom: m ? 56 : 104, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 720, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>WHAT CHANGES</div>
+          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy }}>
+            Once you see your score,{m ? " " : <br />}you stop guessing.
           </h2>
-          <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 540, margin: "0 auto" }}>
-            The insight changes how you approach borrowing, planning, and risk — not because anyone requires it, but because now you know.
-          </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 12 : 16, maxWidth: 760, margin: "0 auto", ...fadeIn(visible, 120) }}>
-          {unlocks.map((u, i) => (
-            <div key={i} style={{ padding: m ? 20 : 28, borderRadius: 16, backgroundColor: C.white, boxShadow: elevation.card, position: "relative" as const, overflow: "hidden" }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${u.color}30` }} />
-              <div style={{ width: 40, height: 40, borderRadius: 10, backgroundColor: `${u.color}08`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 14 }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={u.color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={u.icon} /></svg>
-              </div>
-              <div style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 6, lineHeight: 1.3 }}>{u.title}</div>
-              <p style={{ fontSize: 14, color: muted, margin: 0, lineHeight: 1.6 }}>{u.desc}</p>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 0, maxWidth: 600, margin: "0 auto", ...fadeIn(visible, 120) }}>
+          {[
+            { text: "You see where your income is strong — and where it's exposed", color: C.teal },
+            { text: "You know what would happen if your top client left or you couldn't work", color: "#C0392B" },
+            { text: "You act before problems show up — not after", color: C.navy },
+          ].map((item, i) => (
+            <div key={i} style={{ display: "flex", gap: 16, alignItems: "flex-start", padding: "18px 0", borderBottom: i < 2 ? `1px solid rgba(14,26,43,0.06)` : "none" }}>
+              <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: item.color, flexShrink: 0, marginTop: 8 }} />
+              <p style={{ fontSize: m ? 16 : 18, fontWeight: 500, color: C.navy, margin: 0, lineHeight: 1.5 }}>{item.text}</p>
             </div>
           ))}
         </div>
 
-        <div style={{ textAlign: "center", marginTop: m ? 36 : 56, ...fadeIn(visible, 220) }}>
-          <p style={{ fontSize: m ? 16 : 18, color: light, lineHeight: 1.6 }}>This isn't about earning more. It's about <strong style={{ color: C.navy }}>knowing what you're working with</strong> before you make your next move.</p>
-        </div>
+        <p style={{ fontSize: 15, color: light, textAlign: "center", marginTop: m ? 32 : 48, ...fadeIn(visible, 220) }}>
+          Credit scores look backward. Advisors manage what you've saved. RunPayway shows you whether your income can survive what's next.
+        </p>
       </div>
     </section>
   );
@@ -559,140 +550,40 @@ function WhatStabilityUnlocks() {
 
 
 /* ================================================================== */
-/* SECTION 3C — THE MISSING LAYER                                      */
+/* SECTION 3C — SYSTEM INTEGRITY                                       */
 /* ================================================================== */
 
-function TheMissingLayer() {
+function SystemIntegrity() {
   const { ref, visible } = useInView();
   const m = useMobile();
   const fadeIn = useFadeIn();
-
-  const layers = [
-    {
-      label: "FINANCIAL ADVISORY",
-      title: "Looks at what you've saved",
-      desc: "Financial planning focuses on your assets and goals — but doesn't ask whether the income funding them will still be there next year.",
-      faded: true,
-    },
-    {
-      label: "CREDIT SCORE",
-      title: "Looks at what you've borrowed",
-      desc: "Credit decisions are based on your past payments — but don't account for whether your income can keep supporting them.",
-      faded: true,
-    },
-    {
-      label: "RUNPAYWAY™",
-      title: "Shows you how your income is built",
-      desc: "Before you make your next financial decision, see for yourself whether your income is stable, diversified, and built to last.",
-      faded: false,
-    },
-  ];
-
   return (
-    <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 64 : 112, paddingBottom: m ? 64 : 112, paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 800, margin: "0 auto" }}>
-
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>KNOW BEFORE YOU ACT</div>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16 }}>
-            Before you borrow, invest, or plan —{m ? " " : <br />}know how your income is actually built.
+    <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 680, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 36 : 48, ...fadeIn(visible) }}>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>SYSTEM INTEGRITY</div>
+          <h2 style={{ fontSize: m ? 24 : 34, fontWeight: 700, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy }}>
+            Fixed rules. No interpretation.
           </h2>
-          <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
-            Credit scores look at what you've borrowed. Advisors look at what you've saved. Neither shows you whether your income can survive a disruption. RunPayway does.
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: 12, maxWidth: 540, margin: "0 auto", marginBottom: m ? 28 : 40, ...fadeIn(visible, 100) }}>
+          {[
+            { label: "Model", value: "RP-2.0" },
+            { label: "Ruleset", value: "Fixed" },
+            { label: "Output", value: "Deterministic" },
+          ].map((item, i) => (
+            <div key={i} style={{ padding: m ? "14px 12px" : "16px 16px", borderRadius: 12, backgroundColor: C.white, boxShadow: elevation.card, textAlign: "center" as const }}>
+              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: light, marginBottom: 4 }}>{item.label.toUpperCase()}</div>
+              <div style={{ fontSize: 17, fontWeight: 600, fontFamily: mono, color: C.navy }}>{item.value}</div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ textAlign: "center", ...fadeIn(visible, 200) }}>
+          <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>
+            Same answers always produce the same score. No randomness. No interpretation drift.
           </p>
-        </div>
-
-        {/* Stacked layers — bottom = foundation */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 0, maxWidth: 680, margin: "0 auto", ...fadeIn(visible, 120) }}>
-          {layers.map((layer, i) => {
-            const isFoundation = !layer.faded;
-            return (
-              <div key={i} style={{
-                padding: m ? "20px 18px" : "24px 28px",
-                borderRadius: i === 0 ? "16px 16px 0 0" : i === layers.length - 1 ? "0 0 16px 16px" : 0,
-                backgroundColor: isFoundation ? `${C.teal}06` : C.white,
-                borderLeft: isFoundation ? `3px solid ${C.teal}` : `3px solid rgba(14,26,43,0.06)`,
-                borderBottom: i < layers.length - 1 ? `1px solid rgba(14,26,43,0.06)` : "none",
-                boxShadow: isFoundation ? elevation.card : "none",
-                position: "relative" as const,
-                overflow: "hidden" as const,
-              }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16 }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: isFoundation ? C.teal : light, marginBottom: 6 }}>{layer.label}</div>
-                    <div style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: isFoundation ? C.navy : "rgba(14,26,43,0.40)", marginBottom: 4, lineHeight: 1.3 }}>{layer.title}</div>
-                    <p style={{ fontSize: 14, color: isFoundation ? muted : "rgba(14,26,43,0.35)", margin: 0, lineHeight: 1.55 }}>{layer.desc}</p>
-                  </div>
-                  {isFoundation && (
-                    <div style={{ flexShrink: 0, width: 44, height: 44, borderRadius: 12, backgroundColor: `${C.teal}12`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Bridge statement */}
-        <div style={{ textAlign: "center", marginTop: m ? 28 : 40, marginBottom: m ? 40 : 64, ...fadeIn(visible, 220) }}>
-          <p style={{ fontSize: 15, color: light, lineHeight: 1.6 }}>
-            The best financial decisions start with knowing what your income can actually <strong style={{ color: C.navy }}>withstand</strong>. That's what RunPayway shows you — before you act.
-          </p>
-        </div>
-
-        {/* Two-column: how RunPayway strengthens credit + advisory */}
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 20, maxWidth: 880, margin: "0 auto", ...fadeIn(visible, 300) }}>
-
-          {/* Before borrowing */}
-          <div style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, boxShadow: elevation.card, position: "relative" as const, overflow: "hidden", marginBottom: m ? 16 : 0 }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${C.teal}30` }} />
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
-              <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.teal}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-              </div>
-              <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>Before you borrow</span>
-            </div>
-
-            {[
-              { text: "Know if you can actually afford it", desc: "If one client leaving would make you miss payments, you need to see that clearly before taking on new debt." },
-              { text: "See what your tax return doesn't show", desc: "Your earnings look fine on paper. But is that income diversified? Recurring? Locked in ahead? Now you'll know." },
-              { text: "Time it right", desc: "If your income is weak right now, strengthen it first. Apply when you're ready — not when you're hoping for the best." },
-            ].map((item, i) => (
-              <div key={i} style={{ marginBottom: i < 2 ? 14 : 0 }}>
-                <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 3 }}>{item.text}</div>
-                <p style={{ fontSize: 13, color: muted, margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
-              </div>
-            ))}
-            <div style={{ marginTop: 18, paddingTop: 14, borderTop: `1px solid rgba(14,26,43,0.06)` }}>
-              <p style={{ fontSize: 13, fontWeight: 500, color: C.teal, margin: 0 }}>Be prepared before you take action — not surprised after.</p>
-            </div>
-          </div>
-
-          {/* Before financial planning */}
-          <div style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, boxShadow: elevation.card, position: "relative" as const, overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${C.purple}30` }} />
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
-              <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: `${C.purple}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" /></svg>
-              </div>
-              <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>Before you plan</span>
-            </div>
-
-            {[
-              { text: "Find your blind spots", desc: "If 80% of your income depends on you showing up every day, any plan built without knowing that has a gap." },
-              { text: "Know how much buffer you need", desc: "A stability score of 31 means 6–12 months of reserves. A 75 might need 3. Now you know before you decide." },
-              { text: "Understand your real risk capacity", desc: "Your risk tolerance isn't just how you feel — it's how your income is built. Fragile income and aggressive investing don't mix." },
-            ].map((item, i) => (
-              <div key={i} style={{ marginBottom: i < 2 ? 14 : 0 }}>
-                <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 3 }}>{item.text}</div>
-                <p style={{ fontSize: 13, color: muted, margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
-              </div>
-            ))}
-            <div style={{ marginTop: 18, paddingTop: 14, borderTop: `1px solid rgba(14,26,43,0.06)` }}>
-              <p style={{ fontSize: 13, fontWeight: 500, color: C.purple, margin: 0 }}>Know yourself before you make the next big financial decision.</p>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -945,8 +836,8 @@ export default function LandingPage() {
         <IndustrySelector />
         <HowRunPaywayIsUsed />
         <SameIncomeProof />
-        <WhatStabilityUnlocks />
-        <TheMissingLayer />
+        <WhatChanges />
+        <SystemIntegrity />
         <CommandCenterPreview />
         <FinalCtaAndTrust />
       </main>
