@@ -561,29 +561,26 @@ function SystemIntegrity() {
     <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 36 : 48, ...fadeIn(visible) }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>SYSTEM INTEGRITY</div>
-          <h2 style={{ fontSize: m ? 24 : 34, fontWeight: 700, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy }}>
-            Fixed rules. No interpretation.
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>HOW THE SCORING WORKS</div>
+          <h2 style={{ fontSize: m ? 24 : 34, fontWeight: 500, lineHeight: 1.2, letterSpacing: "-0.02em", color: C.navy, marginBottom: 12 }}>
+            Your score isn't an opinion.{m ? " " : <br />}It's a fixed calculation.
           </h2>
+          <p style={{ fontSize: m ? 15 : 16, color: muted, lineHeight: 1.6, maxWidth: 480, margin: "0 auto" }}>
+            No AI. No advisor judgment. No algorithm that changes week to week. The same answers will always produce the same score.
+          </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: 12, maxWidth: 540, margin: "0 auto", marginBottom: m ? 28 : 40, ...fadeIn(visible, 100) }}>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: 12, maxWidth: 480, margin: "0 auto", ...fadeIn(visible, 120) }}>
           {[
             { label: "Model", value: "RP-2.0" },
             { label: "Ruleset", value: "Fixed" },
             { label: "Output", value: "Deterministic" },
           ].map((item, i) => (
-            <div key={i} style={{ padding: m ? "14px 12px" : "16px 16px", borderRadius: 12, backgroundColor: C.white, boxShadow: elevation.card, textAlign: "center" as const }}>
+            <div key={i} style={{ padding: "16px 16px", borderRadius: 12, backgroundColor: C.white, boxShadow: elevation.card, textAlign: "center" as const }}>
               <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: light, marginBottom: 4 }}>{item.label.toUpperCase()}</div>
               <div style={{ fontSize: 17, fontWeight: 600, fontFamily: mono, color: C.navy }}>{item.value}</div>
             </div>
           ))}
-        </div>
-
-        <div style={{ textAlign: "center", ...fadeIn(visible, 200) }}>
-          <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>
-            Same answers always produce the same score. No randomness. No interpretation drift.
-          </p>
         </div>
       </div>
     </section>
