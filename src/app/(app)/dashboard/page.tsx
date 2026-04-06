@@ -506,7 +506,7 @@ function DashboardContent() {
   }, [searchParams]);
 
   useEffect(() => {
-    const t = setTimeout(() => setMinTimeElapsed(true), 1500);
+    const t = setTimeout(() => setMinTimeElapsed(true), 600);
     return () => clearTimeout(t);
   }, []);
 
