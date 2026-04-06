@@ -34,7 +34,7 @@ export const C = {
 // ─── TYPOGRAPHY ─────────────────────────────────────────────
 
 export const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
-export const sans = "'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif";
+export const sans = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
 export const T = {
   h1: {
