@@ -1707,6 +1707,7 @@ function DashboardContent() {
                 {assessedDate && <div style={{ fontSize: 13, color: B.taupe }}>{assessedDate}</div>}
               </div>
             </div>
+            <p style={{ fontSize: 14, color: B.muted, margin: "0 0 20px", lineHeight: 1.5 }}>Tap any area below to see what may have changed since your assessment.</p>
 
             <div style={{ display: "flex", flexDirection: "column" as const, gap: 0 }}>
               {(() => {
