@@ -581,7 +581,7 @@ function TheMissingLayer() {
       faded: true,
     },
     {
-      label: "RUNPAYWAY&#8482;",
+      label: "RUNPAYWAY™",
       title: "Shows you how your income is built",
       desc: "Before you make your next financial decision, see for yourself whether your income is stable, diversified, and built to last.",
       faded: false,
