@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { trackPurchaseClick } from "@/lib/analytics";
 
 /* ================================================================== */
 /* UTILITIES                                                           */
@@ -146,7 +147,7 @@ function PricingCards() {
               {check("Test changes before you make them — see the exact score impact")}
               {check("Lifetime access — comes back every time you do")}
             </div>
-            <a href={STRIPE} style={{
+            <a href={STRIPE} onClick={() => trackPurchaseClick("diagnostic_69")} style={{
               display: "flex", alignItems: "center", justifyContent: "center",
               height: 56, borderRadius: 12,
               background: `linear-gradient(135deg, ${C.navy} 0%, #251e42 100%)`,
@@ -182,7 +183,7 @@ function PricingCards() {
               {check("Track how you compare over time", C.teal)}
               {check("Monitoring portal access", C.teal)}
             </div>
-            <Link href={STRIPE_ANNUAL} style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: 15, fontWeight: 600, textDecoration: "none", transition: "transform 200ms, box-shadow 200ms", boxShadow: "0 2px 8px rgba(244,241,234,0.10)" }}
+            <Link href={STRIPE_ANNUAL} onClick={() => trackPurchaseClick("monitoring_149")} style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: 15, fontWeight: 600, textDecoration: "none", transition: "transform 200ms, box-shadow 200ms", boxShadow: "0 2px 8px rgba(244,241,234,0.10)" }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}>
               Start Monitoring &mdash; $149/yr

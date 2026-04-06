@@ -7,6 +7,7 @@ import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import logoWhite from "../../../../public/runpayway-logo-white.png";
 import { getRemaining, getRemainingServer } from "@/lib/monitoring";
 import { C, T, mono, sans, sp, padX, cardStyle, ctaButton, canHover, h2Style, body, bodySm } from "@/lib/design-tokens";
+import { trackAssessmentStart } from "@/lib/analytics";
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
@@ -420,6 +421,7 @@ export default function InitializationPage() {
               className="cta-tick"
               onClick={() => {
                 setReadyExiting(true);
+                trackAssessmentStart(sessionStorage.getItem("rp_industry") || undefined);
                 setTimeout(() => router.push("/diagnostic"), 1200);
               }}
               style={{

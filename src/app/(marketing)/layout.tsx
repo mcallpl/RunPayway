@@ -8,6 +8,7 @@ import CookieConsent from "@/components/CookieConsent";
 import ScrollToTop from "@/components/ScrollToTop";
 import { useLanguage } from "@/lib/i18n";
 import type { LangCode } from "@/lib/i18n";
+import { trackPageView } from "@/lib/analytics";
 import { C } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */
@@ -265,6 +266,9 @@ export default function MarketingLayout({
   const mobile = useMobile();
   const { t } = useLanguage();
   const moreDropdown = useAnimatedDropdown();
+
+  // Track page views
+  useEffect(() => { trackPageView(); }, []);
 
   const submitWaitlist = async () => {
     if (!waitlistEmail || !waitlistEmail.includes("@")) return;

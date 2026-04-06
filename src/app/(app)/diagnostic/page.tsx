@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import { C, mono, sans } from "@/lib/design-tokens";
+import { trackAssessmentComplete } from "@/lib/analytics";
 // Dynamic imports — loaded at runtime only (prevents static export bundling issues with zod/crypto)
 const loadV2Engine = () => import("@/lib/client-engine-v2");
 const loadAdapter = () => import("@/lib/v2-to-v1-adapter");
@@ -777,6 +778,10 @@ export default function DiagnosticPage() {
         assessment_date_utc: adapted.assessment_date_utc,
         issued_timestamp_utc: adapted.issued_timestamp_utc,
       });
+      trackAssessmentComplete(
+        (adapted.final_score as number) || 0,
+        (adapted.industry_sector as string) || undefined,
+      );
       localStorage.setItem("rp_records", JSON.stringify(stored));
 
       clearAnswerStorage();
