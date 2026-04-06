@@ -51,7 +51,7 @@ const light = "rgba(14,26,43,0.62)";
 const contentW = 1040;
 const px = (m: boolean) => m ? 20 : 24;
 const STRIPE = process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05";
-const STRIPE_ANNUAL = process.env.NEXT_PUBLIC_STRIPE_ANNUAL_URL || "/create-account";
+const STRIPE_ANNUAL = process.env.NEXT_PUBLIC_STRIPE_ANNUAL_URL || "https://buy.stripe.com/14A14fbB67MIcZQ3EB2Nq06";
 
 
 /* ================================================================== */
@@ -221,7 +221,7 @@ function FaqSection() {
     { q: "What does the $69 Diagnostic unlock?", a: "Everything in the free score, plus: a Negotiation Playbook with word-for-word scripts personalized to your industry and constraint, objection handlers and success signals for each conversation, a 12-week roadmap with dynamic milestones calculated from your actual numbers, a PressureMap\u2122 showing your three income zones, a weekly priority briefing that updates every time you return, a What-If Simulator to model changes before you commit, and lifetime access to the Command Center." },
     { q: "What is the Negotiation Playbook?", a: "The Playbook generates ready-to-use conversation scripts based on your specific constraint, industry, and structural data. Each script includes who to talk to, when to use it, the exact words to say, how to handle pushback, and what a successful response looks like. Your actual percentages are embedded in each script — not a template." },
     { q: "How are the roadmap milestones personalized?", a: "Each milestone references your actual starting numbers. Instead of 'diversify your income,' you see 'Concentration drops from 72% to below 57%.' Score checkpoints at every stage show your projected score after each step. The milestones update as you complete steps." },
-    { q: "What does Monitoring include?", a: "Three full assessments within 12 months. Score history timeline showing your progression. Factor-level delta tracking between assessments. Benchmark evolution against peers over time. Email and PIN authentication for your monitoring portal. Full Command Center access included with every assessment." },
+    { q: "What does Monitoring include?", a: "Three full assessments within 12 months. Score history timeline showing your progression. See what changed in each area between assessments. Benchmark evolution against peers over time. Email and PIN authentication for your monitoring portal. Full dashboard access included with every assessment." },
     { q: "How is the score calculated?", a: "A deterministic model evaluates six structural dimensions of your income: recurrence, concentration, diversification, forward visibility, earnings consistency, and labor independence. The model is fixed and versioned — same inputs always produce the same score. No AI, no machine learning, no subjective interpretation." },
     { q: "Do you access my bank accounts or credit?", a: "No. There is no bank connection, no credit pull, and no access to any financial accounts. Your score is calculated entirely from the structural information you provide. Your data is never sold or shared." },
     { q: "What if the diagnostic doesn't reveal anything new?", a: "Full refund. If the diagnostic does not surface at least one structural insight you did not already know, you get your money back. No conditions, no questions." },
