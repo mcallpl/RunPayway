@@ -536,15 +536,15 @@ function SystemIntegrity() {
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: 12, maxWidth: 480, margin: "0 auto", ...fadeIn(visible, 120) }}>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr 1fr" : "1fr 1fr 1fr", gap: m ? 10 : 14, maxWidth: 520, margin: "0 auto", ...fadeIn(visible, 120) }}>
           {[
             { label: "Model", value: "RP-2.0" },
             { label: "Ruleset", value: "Fixed" },
             { label: "Output", value: "Deterministic" },
           ].map((item, i) => (
-            <div key={i} style={{ padding: "16px 16px", borderRadius: 12, backgroundColor: C.white, boxShadow: elevation.card, textAlign: "center" as const }}>
-              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: light, marginBottom: 4 }}>{item.label.toUpperCase()}</div>
-              <div style={{ fontSize: 17, fontWeight: 600, fontFamily: mono, color: C.navy }}>{item.value}</div>
+            <div key={i} style={{ padding: m ? "14px 10px" : "18px 20px", borderRadius: 12, backgroundColor: C.white, boxShadow: elevation.card, textAlign: "center" as const }}>
+              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: light, marginBottom: 5 }}>{item.label.toUpperCase()}</div>
+              <div style={{ fontSize: m ? 14 : 15, fontWeight: 600, fontFamily: mono, color: C.navy }}>{item.value}</div>
             </div>
           ))}
         </div>
