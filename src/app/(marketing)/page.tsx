@@ -353,65 +353,31 @@ function HowRunPaywayIsUsed() {
   const fadeIn = useFadeIn();
 
   const useCases = [
-    {
-      title: "Individuals",
-      desc: "See exactly where your income is strong and where it's exposed. Get a score from 0 to 100, your biggest risk, and a step-by-step plan to strengthen it.",
-      action: "Takes under 2 minutes",
-      color: C.teal,
-      icon: "M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7z",
-      link: "/begin",
-      linkText: "Get your free score",
-    },
-    {
-      title: "Advisors",
-      desc: "Prevent client failure before it happens. Standardize income risk across your book. Explain decisions with a fixed, repeatable model.",
-      action: "Per-client scoring for your practice",
-      color: C.purple,
-      icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
-      link: "/contact",
-      linkText: "Get in touch",
-    },
-    {
-      title: "Organizations",
-      desc: "Compare thousands of profiles using one rule set. Remove subjectivity from income evaluation. Deploy at scale via API or batch scoring.",
-      action: "Volume licensing available",
-      color: C.navy,
-      icon: "M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5m-4 0h4",
-      link: "/contact",
-      linkText: "Get in touch",
-    },
+    { title: "Individuals", subtitle: "Get your score", desc: "See where your income is strong, where it's exposed, and what to strengthen first.", color: C.teal, link: "/begin", linkText: "Start free" },
+    { title: "Advisors", subtitle: "Evaluate clients", desc: "Prevent client failure before it happens. Standardize income risk across your book.", color: C.purple, link: "/contact", linkText: "Get in touch" },
+    { title: "Organizations", subtitle: "Assess at scale", desc: "Compare profiles using one rule set. Remove subjectivity. Deploy via API.", color: C.navy, link: "/contact", linkText: "Get in touch" },
   ];
 
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 56 : 104, paddingBottom: m ? 56 : 104, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 880, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>HOW RUNPAYWAY IS USED</div>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16 }}>
+          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy }}>
             One system. Three use cases.
           </h2>
-          <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
-            RunPayway™ measures how income holds up — the same way, every time. How it gets used depends on who is applying it.
-          </p>
         </div>
 
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, ...fadeIn(visible, 120) }}>
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20, ...fadeIn(visible, 120) }}>
           {useCases.map((uc, i) => (
-            <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, boxShadow: elevation.card, position: "relative" as const, overflow: "hidden", marginBottom: m ? 12 : 0 }}>
+            <div key={i} style={{ padding: m ? 28 : 32, borderRadius: 16, backgroundColor: C.white, boxShadow: elevation.card, position: "relative" as const, overflow: "hidden", marginBottom: m ? 14 : 0 }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${uc.color}30` }} />
-              <div style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: `${uc.color}08`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={uc.color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={uc.icon} /></svg>
-              </div>
-              <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 8 }}>{uc.title}</div>
-              <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>{uc.desc}</p>
-              {(uc as { action?: string }).action && (
-                <p style={{ fontSize: 13, color: light, margin: "10px 0 0", fontWeight: 500 }}>{(uc as { action: string }).action}</p>
-              )}
-              {(uc as { link?: string }).link && (
-                <Link href={(uc as { link: string }).link} style={{ fontSize: 14, fontWeight: 600, color: uc.color, textDecoration: "none", marginTop: 14, display: "inline-block" }}>
-                  {(uc as { linkText?: string }).linkText || "Get in touch"} &rarr;
-                </Link>
-              )}
+              <div style={{ fontSize: 19, fontWeight: 600, color: C.navy, marginBottom: 4 }}>{uc.title}</div>
+              <div style={{ fontSize: 14, fontWeight: 500, color: uc.color, marginBottom: 16 }}>{uc.subtitle}</div>
+              <p style={{ fontSize: 15, color: muted, margin: "0 0 20px", lineHeight: 1.6 }}>{uc.desc}</p>
+              <Link href={uc.link} style={{ fontSize: 14, fontWeight: 600, color: uc.color, textDecoration: "none" }}>
+                {uc.linkText} &rarr;
+              </Link>
             </div>
           ))}
         </div>
