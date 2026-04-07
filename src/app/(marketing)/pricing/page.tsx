@@ -404,44 +404,22 @@ function OutcomesSection() {
           ))}
         </div>
 
-        {/* Price justification */}
+        {/* Price justification + sample report */}
         <div style={{ textAlign: "center", marginTop: m ? 40 : 56, ...fadeIn(visible, 180) }}>
           <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 8 }}>One decision can cost more than this.</p>
-          <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.6, maxWidth: explanatoryW, margin: "0 auto" }}>
+          <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.6, maxWidth: explanatoryW, margin: "0 auto 24px" }}>
             Understanding your income structure before acting prevents mistakes that cost far more than the diagnostic.
           </p>
+          <Link href="/sample-report" style={{
+            fontSize: 15, fontWeight: 600, color: C.teal, textDecoration: "none",
+            display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44,
+            transition: "opacity 200ms",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.opacity = "0.7"; }}
+            onMouseLeave={e => { e.currentTarget.style.opacity = "1"; }}>
+            See how the system reads income &rarr;
+          </Link>
         </div>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================ */
-/* SECTION 6 — SAMPLE REPORT CTA                                     */
-/* ================================================================ */
-
-function SampleReportCta() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-
-  return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
-      <div style={{ maxWidth: narrowW, margin: "0 auto", textAlign: "center" }}>
-        <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>
-          See how the system reads income
-        </h2>
-        <Link href="/sample-report" style={{
-          fontSize: 16, fontWeight: 600, color: C.teal, textDecoration: "none",
-          display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44,
-          transition: "opacity 200ms",
-          ...fadeIn(visible, 80),
-        }}
-          onMouseEnter={e => { e.currentTarget.style.opacity = "0.7"; }}
-          onMouseLeave={e => { e.currentTarget.style.opacity = "1"; }}>
-          View a sample report &rarr;
-        </Link>
       </div>
     </section>
   );
@@ -572,7 +550,6 @@ export default function PricingPage() {
         <PricingCards />
         <PositioningStrip />
         <OutcomesSection />
-        <SampleReportCta />
         <FaqSection />
         <FinalCta />
       </main>
