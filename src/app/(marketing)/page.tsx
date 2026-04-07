@@ -714,9 +714,13 @@ function IndustryProfiles() {
 
         {!selected && (
           <div style={{ textAlign: "center", marginTop: m ? 24 : 36, ...fadeIn(visible, 200) }}>
-            <p style={{ fontSize: 15, color: C.textMuted }}>Select your industry to see its structural constraint.</p>
+            <p style={{ fontSize: 15, color: C.textMuted }}>Select an industry to see its structural constraint.</p>
           </div>
         )}
+
+        <p style={{ fontSize: 14, color: C.textMuted, textAlign: "center", marginTop: m ? 32 : 44, lineHeight: 1.6, maxWidth: explanatoryW, marginLeft: "auto", marginRight: "auto" }}>
+          These are representative examples. Structural Income applies to anyone whose income depends on how it&rsquo;s built — not just how much it is.
+        </p>
 
         {selected && (
           <div style={{ maxWidth: narrowW, margin: "36px auto 0", padding: m ? "24px 20px" : "28px 36px", borderRadius: 20, backgroundColor: C.navy, boxShadow: "0 8px 40px rgba(14,26,43,0.12)" }}>
