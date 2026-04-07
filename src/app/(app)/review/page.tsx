@@ -682,7 +682,7 @@ export default function ReviewPage() {
 
   // ── LAYER 3: Distance to next band ──
   const nextBandThreshold = score < 30 ? 30 : score < 50 ? 50 : score < 75 ? 75 : 100;
-  const nextBandName = score < 30 ? "Developing" : score < 50 ? "Established" : score < 75 ? "High" : null;
+  const nextBandName = score < 30 ? "Developing Stability" : score < 50 ? "Established Stability" : score < 75 ? "High Stability" : null;
   const distanceToNext = nextBandThreshold - score;
   const bandDistance: "CLOSE" | "MODERATE" | "FAR" | "TOP_BAND" =
     tier === "high" ? "TOP_BAND" :
@@ -974,7 +974,7 @@ export default function ReviewPage() {
             const gapBefore = nextBandMin - cur;
             const gapAfter = nextBandMin - proj;
             const closedPct = Math.round(((gapBefore - gapAfter) / gapBefore) * 100);
-            const nextBandLabel = nextBandMin === 30 ? "Developing" : nextBandMin === 50 ? "Established" : "High";
+            const nextBandLabel = nextBandMin === 30 ? "Developing Stability" : nextBandMin === 50 ? "Established Stability" : "High Stability";
             if (closedPct > 0) {
               progressText = `Together, these changes close ${closedPct}% of the gap to ${nextBandLabel} Stability (score: ${cur} to ${proj}).`;
             } else {
@@ -1286,7 +1286,7 @@ export default function ReviewPage() {
             const gapBefore = nextBandMin - cur;
             const gapAfter = nextBandMin - proj;
             const closedPct = Math.round(((gapBefore - gapAfter) / gapBefore) * 100);
-            const nextBandLabel = nextBandMin === 30 ? "Developing" : nextBandMin === 50 ? "Established" : "High";
+            const nextBandLabel = nextBandMin === 30 ? "Developing Stability" : nextBandMin === 50 ? "Established Stability" : "High Stability";
             if (closedPct > 0) {
               progressText = `Together, these changes close ${closedPct}% of the gap to ${nextBandLabel} Stability (score: ${cur} → ${proj}).`;
             } else {
@@ -1323,7 +1323,7 @@ export default function ReviewPage() {
             ],
           };
           const items = nextTier ? unlocksByTier[nextTier] : unlocksByTier.high;
-          const nextLabel = nextTier === "developing" ? "Developing" : nextTier === "established" ? "Established" : nextTier === "high" ? "High" : "High";
+          const nextLabel = nextTier === "developing" ? "Developing Stability" : nextTier === "established" ? "Established Stability" : nextTier === "high" ? "High Stability" : "High Stability";
           return (
             <div style={{ ...reportCardStyle, marginBottom: 16, padding: mobile ? "14px 16px" : "16px 24px", borderLeft: `3px solid ${B.teal}` }}>
               <div style={{ ...T.overline, color: B.teal, marginBottom: 4 }}>WHAT BECOMES POSSIBLE{nextTier ? ` AT ${nextLabel.toUpperCase()} STABILITY` : ""}</div>

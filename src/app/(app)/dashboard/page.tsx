@@ -103,7 +103,7 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
   const pct = Math.min(100, Math.max(0, score));
   const offset = circ - (pct / 100) * circ;
   const color = bandColor(score);
-  const bandLabel = score >= 75 ? "High" : score >= 50 ? "Established" : score >= 30 ? "Developing" : "Limited";
+  const bandLabel = score >= 75 ? "High Stability" : score >= 50 ? "Established Stability" : score >= 30 ? "Developing Stability" : "Limited Stability";
   const glowSize = size * 1.5;
 
   return (
@@ -692,7 +692,7 @@ function DashboardContent() {
 
   /* ── Progress ── */
   const nextT = dScore < 30 ? 30 : dScore < 50 ? 50 : dScore < 75 ? 75 : 100;
-  const nextB = dScore < 30 ? "Developing" : dScore < 50 ? "Established" : dScore < 75 ? "High" : "Maximum";
+  const nextB = dScore < 30 ? "Developing Stability" : dScore < 50 ? "Established Stability" : dScore < 75 ? "High Stability" : "Maximum";
   const gap = nextT - dScore;
 
   /* ── Reassessment — merged with progress check (Change 4) ── */

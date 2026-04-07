@@ -904,7 +904,7 @@ export default function DiagnosticPage() {
   /* ================================================================ */
   if (showReveal) {
     const revealColor = revealScore >= 75 ? C.bandHigh : revealScore >= 50 ? C.bandEstablished : revealScore >= 30 ? C.bandDeveloping : C.bandLimited;
-    const nextBand = revealScore < 30 ? "Developing" : revealScore < 50 ? "Established" : revealScore < 75 ? "High" : null;
+    const nextBand = revealScore < 30 ? "Developing Stability" : revealScore < 50 ? "Established Stability" : revealScore < 75 ? "High Stability" : null;
     const gap = nextBand ? (revealScore < 30 ? 30 : revealScore < 50 ? 50 : 75) - revealScore : 0;
     const bandMessage = BAND_MESSAGES[revealBand] || "";
 

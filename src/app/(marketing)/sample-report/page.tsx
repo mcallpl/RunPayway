@@ -225,7 +225,7 @@ function Page01() {
                 {/* Meta grid */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                   {[
-                    { label: "STABILITY BAND", value: "Established" },
+                    { label: "STABILITY BAND", value: "Established Stability" },
                     { label: "DISTANCE TO NEXT", value: "3 pts" },
                     { label: "STRUCTURAL TYPE", value: "Uneven" },
                     { label: "ACCESS CODE", value: "RP-7X2K" },

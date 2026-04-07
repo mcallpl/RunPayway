@@ -527,8 +527,8 @@ function page3(doc: jsPDF, d: ReportPDFData) {
       high: ["Charge premium rates — choose only the best opportunities", "Build something worth more — stable income makes your business more valuable", "Full financial leverage — lenders and partners treat you differently"],
     };
     const items = nextTier ? unlocksByTier[nextTier] : unlocksByTier.high;
-    const nextLabel = nextTier === "developing" ? "Developing" : nextTier === "established" ? "Established" : "High";
-    label(doc, `WHAT BECOMES POSSIBLE${nextTier ? ` AT ${nextLabel.toUpperCase()} STABILITY` : ""}`, ML, y, "#1F6D7A");
+    const nextLabel = nextTier === "developing" ? "Developing Stability" : nextTier === "established" ? "Established Stability" : "High Stability";
+    label(doc, `WHAT BECOMES POSSIBLE${nextTier ? ` AT ${nextLabel.toUpperCase()}` : ""}`, ML, y, "#1F6D7A");
     y += 10;
     sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#535D6B");
     for (const item of (items || []).slice(0, 3)) {
