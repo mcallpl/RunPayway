@@ -157,9 +157,18 @@ function CtaMicrocopy({ variant = "dark" }: { variant?: "dark" | "light" }) {
 /* ================================================================ */
 
 const INDUSTRIES = [
-  "Consulting", "Real Estate", "Sales / Brokerage", "Freelance / Creative",
-  "Construction / Trades", "Media / Entertainment", "Insurance", "Legal Services",
-  "Technology", "Finance / Banking", "Healthcare", "Fitness / Wellness",
+  { key: "consulting", name: "Consulting", constraint: "You are the product", desc: "Your clients pay for your time, not a system. If you stop delivering, 85% of your income stops with you." },
+  { key: "real_estate", name: "Real Estate", constraint: "Pipeline dependency", desc: "One delayed closing or one lost listing can erase a quarter of annual earnings. Nothing is contractually yours until it closes." },
+  { key: "sales", name: "Sales / Brokerage", constraint: "Nothing carries forward", desc: "Last quarter was strong. But your structure doesn't carry that forward. Next quarter starts from zero unless you close again." },
+  { key: "creative", name: "Freelance / Creative", constraint: "Every month starts at zero", desc: "No project means no income. No retainer means no floor. You are re-earning your entire livelihood every 30 days." },
+  { key: "construction", name: "Construction / Trades", constraint: "The next job isn't signed yet", desc: "The current project is solid. The next one is a handshake. Your income has no structural buffer between jobs." },
+  { key: "media", name: "Media / Entertainment", constraint: "Between projects, income is zero", desc: "Strong projects create strong months. But between them, your income is not low — it is zero. No carry. No residual." },
+  { key: "insurance", name: "Insurance", constraint: "New business masks renewal erosion", desc: "Strong production quarters feel like growth. But if renewals are slipping underneath, your structure is compounding backwards." },
+  { key: "legal", name: "Legal Services", constraint: "Three matters carry the practice", desc: "Count your top three matters. They likely carry 60–70% of your billings. When one concludes, the gap arrives all at once." },
+  { key: "technology", name: "Technology", constraint: "One employer, one system, one decision", desc: "Your compensation feels stable because the system around it is stable. But it's one layoff away from a total structural shift." },
+  { key: "finance", name: "Finance / Banking", constraint: "The variable component is the one that matters", desc: "Base salary creates a floor. But the bonus, the production credit — that's where real earnings live. And that part can vanish in one cycle." },
+  { key: "healthcare", name: "Healthcare", constraint: "One system, no alternatives", desc: "Steady pay from one institution feels safe until the institution restructures. When your sole employer changes models, you have no alternative." },
+  { key: "fitness", name: "Fitness / Wellness", constraint: "Clients cancel. Revenue disappears the same day.", desc: "Your income is a collection of individual decisions that can reverse without notice. One slow month and the calendar empties." },
 ];
 
 
@@ -668,6 +677,7 @@ function IndustryProfiles() {
   const { ref, visible } = useInView();
   const m = useMobile();
   const fadeIn = useFadeIn();
+  const [selected, setSelected] = useState<typeof INDUSTRIES[0] | null>(null);
 
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
@@ -679,23 +689,41 @@ function IndustryProfiles() {
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "repeat(4, 1fr)", gap: m ? 10 : 12, maxWidth: 960, margin: "0 auto", ...fadeIn(visible, 100) }}>
-          {INDUSTRIES.map((name, i) => (
-            <Link key={i} href="/begin" style={{
-              display: "flex", alignItems: "center",
-              height: 56, padding: "0 20px",
-              borderRadius: 14,
-              backgroundColor: C.white,
-              border: `1px solid ${C.borderSoft}`,
-              fontSize: 15, fontWeight: 500, color: C.navy,
-              textDecoration: "none",
-              transition: "border-color 200ms, box-shadow 200ms",
-            }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.20)"; e.currentTarget.style.boxShadow = "0 2px 8px rgba(14,26,43,0.04)"; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.boxShadow = "none"; }}>
-              {name}
-            </Link>
-          ))}
+          {INDUSTRIES.map((ind) => {
+            const isActive = selected?.key === ind.key;
+            return (
+              <button key={ind.key} onClick={() => setSelected(isActive ? null : ind)}
+                style={{
+                  display: "flex", alignItems: "center",
+                  height: 56, padding: "0 20px",
+                  borderRadius: 14,
+                  backgroundColor: isActive ? `${C.teal}08` : C.white,
+                  border: `1px solid ${isActive ? C.teal + "40" : C.borderSoft}`,
+                  boxShadow: isActive ? `0 0 0 1px ${C.teal}20` : "none",
+                  fontSize: 15, fontWeight: isActive ? 600 : 500, color: C.navy,
+                  cursor: "pointer", textAlign: "left" as const,
+                  transition: "border-color 200ms, box-shadow 200ms",
+                }}
+                onMouseEnter={e => { if (!isActive) { e.currentTarget.style.borderColor = "rgba(14,26,43,0.20)"; e.currentTarget.style.boxShadow = "0 2px 8px rgba(14,26,43,0.04)"; } }}
+                onMouseLeave={e => { if (!isActive) { e.currentTarget.style.borderColor = C.borderSoft; e.currentTarget.style.boxShadow = "none"; } }}>
+                {ind.name}
+              </button>
+            );
+          })}
         </div>
+
+        {!selected && (
+          <div style={{ textAlign: "center", marginTop: m ? 24 : 36, ...fadeIn(visible, 200) }}>
+            <p style={{ fontSize: 15, color: C.textMuted }}>Select your industry to see its structural constraint.</p>
+          </div>
+        )}
+
+        {selected && (
+          <div style={{ maxWidth: narrowW, margin: "36px auto 0", padding: m ? "24px 20px" : "28px 36px", borderRadius: 20, backgroundColor: C.navy, boxShadow: "0 8px 40px rgba(14,26,43,0.12)" }}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.risk, marginBottom: 10 }}>{selected.constraint.toUpperCase()}</div>
+            <p style={{ fontSize: m ? 16 : 17, color: C.sandMuted, lineHeight: 1.65, margin: 0 }}>{selected.desc}</p>
+          </div>
+        )}
       </div>
     </section>
   );
