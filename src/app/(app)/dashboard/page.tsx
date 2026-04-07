@@ -868,7 +868,7 @@ function DashboardContent() {
                 Everything about how your income is built — in one place.
               </h1>
               <p style={{ fontSize: 17, color: B.navy, opacity: 0.6, margin: "0 0 32px", lineHeight: 1.65, maxWidth: 520, marginLeft: "auto", marginRight: "auto" }}>
-                Your diagnostic, simulator, action plan, and progress tracker. Complete an assessment to unlock everything below.
+                Your report, simulator, action plan, and progress tracker. Complete an assessment to unlock everything below.
               </p>
               <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" as const }}>
                 <a href={STRIPE_URL} style={{
