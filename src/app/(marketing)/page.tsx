@@ -719,7 +719,7 @@ function IndustryProfiles() {
         )}
 
         <p style={{ fontSize: 14, color: C.textMuted, textAlign: "center", marginTop: m ? 32 : 44, lineHeight: 1.6, maxWidth: explanatoryW, marginLeft: "auto", marginRight: "auto" }}>
-          These are representative examples. Structural Income applies to anyone whose income depends on how it&rsquo;s built — not just how much it is.
+          Every industry has a structure. These are just a few.
         </p>
 
         {selected && (
