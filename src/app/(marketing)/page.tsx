@@ -70,17 +70,17 @@ function useFadeIn() {
 /* DESIGN SYSTEM                                                       */
 /* ================================================================== */
 
-const C = { navy: "#1C1635", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
+const C = { navy: "#0E1A2B", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
 const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
-const muted = "rgba(14,26,43,0.68)";
-const light = "rgba(14,26,43,0.62)";
-const contentW = 1040;
+const muted = "#5C6670";
+const light = "rgba(14,26,43,0.55)";
+const contentW = 1120;
 const px = (m: boolean) => m ? 20 : 24;
 
 /* Elevation tokens — replace borders with shadow depth */
 const elevation = {
-  card: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)",
-  cardHover: "0 2px 8px rgba(14,26,43,0.06), 0 8px 32px rgba(14,26,43,0.05)",
+  card: "0 1px 2px rgba(14,26,43,0.03), 0 2px 8px rgba(14,26,43,0.02)",
+  cardHover: "0 2px 6px rgba(14,26,43,0.05), 0 6px 24px rgba(14,26,43,0.04)",
   cta: "0 2px 8px rgba(28,22,53,0.15), 0 8px 32px rgba(28,22,53,0.10)",
   ctaHover: "0 4px 16px rgba(28,22,53,0.20), 0 12px 48px rgba(28,22,53,0.12)",
 };
@@ -140,10 +140,10 @@ function CtaButton({ m, variant = "light" }: { m: boolean; variant?: "light" | "
       }}
         onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = isLight ? "0 4px 20px rgba(244,241,234,0.20), 0 12px 48px rgba(244,241,234,0.10)" : elevation.ctaHover; }}
         onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = isLight ? "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)" : elevation.cta; }}>
-        Get My Income Stability Score
+        Get Your Structural Income Report
       </Link>
       <p style={{ fontSize: 13, color: isLight ? "rgba(244,241,234,0.50)" : light, marginTop: 14, letterSpacing: "0.02em", textAlign: m ? "center" : undefined }}>
-        Free &bull; Under 2 minutes &bull; No account required
+        Free &bull; Under 2 minutes &bull; No financial accounts required
       </p>
     </div>
   );
@@ -186,15 +186,15 @@ function HeroSection() {
         @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
 
-      <div style={{ maxWidth: contentW, margin: "0 auto", paddingTop: m ? 40 : 72, paddingBottom: m ? 40 : 64, paddingLeft: px(m), paddingRight: px(m), position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: contentW, margin: "0 auto", paddingTop: m ? 48 : 96, paddingBottom: m ? 48 : 80, paddingLeft: px(m), paddingRight: px(m), position: "relative", zIndex: 1 }}>
         <div style={{ display: m ? "block" : "flex", alignItems: "center", justifyContent: "space-between", gap: 64 }}>
           {/* Left — headline */}
           <div style={{ maxWidth: 520, textAlign: m ? "center" : "left", marginBottom: m ? 44 : 0 }}>
-            <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.035em", color: C.navy, marginBottom: 32, ...fadeIn(visible) }}>
-              Your income has a structure.{m ? " " : <br />}You've never seen it.
+            <h1 style={{ fontSize: m ? 42 : 68, fontWeight: 600, lineHeight: m ? 1.08 : 1.05, letterSpacing: "-0.02em", color: C.navy, marginBottom: 32, ...fadeIn(visible) }}>
+              Your income has a structure.{m ? " " : <br />}Most people never see it.
             </h1>
             <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.7, marginBottom: 40, ...fadeIn(visible, 100) }}>
-              RunPayway™ measures whether your income survives a client leaving, a slow quarter, or you not working — not how much you make.
+              RunPayway shows whether your income holds under pressure — a client leaving, a slow quarter, or you stepping away.
             </p>
             <div style={{ ...fadeIn(visible, 200) }}>
               <CtaButton m={m} variant="dark" />
@@ -289,12 +289,12 @@ function IndustrySelector() {
   const bandLabel = (s: number) => s >= 75 ? "High Stability" : s >= 50 ? "Established" : s >= 30 ? "Developing" : "Limited";
 
   return (
-    <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 64 : 96, paddingBottom: m ? 64 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>EXPLORE</div>
-          <h2 style={{ fontSize: m ? 24 : 34, fontWeight: 500, lineHeight: 1.2, letterSpacing: "-0.02em", color: C.navy }}>
-            See what income stability looks like in your industry.
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>BY INDUSTRY</div>
+          <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.18, letterSpacing: "-0.02em", color: C.navy }}>
+            See what income stability looks like in your field.
           </h2>
         </div>
 
@@ -353,9 +353,9 @@ function HowRunPaywayIsUsed() {
   const fadeIn = useFadeIn();
 
   const useCases = [
-    { title: "Individuals", subtitle: "Get your score", desc: "See where your income is strong, where it's exposed, and what to strengthen first.", color: C.teal, link: "/begin", linkText: "Start free" },
-    { title: "Advisors", subtitle: "Evaluate clients", desc: "Prevent client failure before it happens. Standardize income risk across your book.", color: C.purple, link: "/contact", linkText: "Get in touch" },
-    { title: "Organizations", subtitle: "Assess at scale", desc: "Compare profiles using one rule set. Remove subjectivity. Deploy via API.", color: C.navy, link: "/contact", linkText: "Get in touch" },
+    { title: "Individuals", subtitle: "Get your score", desc: "See where your income is strong, where it's exposed, and what to strengthen first.", color: C.teal, link: "/begin", linkText: "Begin assessment" },
+    { title: "Advisors", subtitle: "Evaluate clients", desc: "Prevent client failure before it happens. Standardize income risk across your book.", color: C.purple, link: "/contact", linkText: "Request access" },
+    { title: "Organizations", subtitle: "Assess at scale", desc: "Compare profiles using one rule set. Remove subjectivity. Deploy via API.", color: C.navy, link: "/contact", linkText: "Request access" },
   ];
 
   return (
@@ -400,14 +400,16 @@ function SameIncomeProof() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: "#FAFAFA", paddingTop: m ? 56 : 112, paddingBottom: m ? 56 : 112, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 128, paddingBottom: m ? 72 : 128, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy }}>Same income. Different setup.{m ? " " : <br />}Completely different risk.</h2>
+        <div style={{ textAlign: "center", marginBottom: m ? 48 : 80, ...fadeIn(visible) }}>
+          <p style={{ fontSize: m ? 15 : 16, fontWeight: 600, letterSpacing: "0.10em", color: C.teal, marginBottom: 16, textTransform: "uppercase" as const }}>THE REAL DIFFERENCE</p>
+          <h2 style={{ fontSize: m ? 32 : 52, fontWeight: 600, lineHeight: 1.06, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16 }}>Income amount is not the full picture.</h2>
+          <p style={{ fontSize: m ? 17 : 20, color: muted, lineHeight: 1.5 }}>Same income. Different setup. Completely different risk.</p>
         </div>
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, maxWidth: 880, margin: "0 auto", ...fadeIn(visible, 120) }}>
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 28, maxWidth: 960, margin: "0 auto", ...fadeIn(visible, 120) }}>
           {/* Person A — fragile */}
-          <div style={{ borderRadius: 16, padding: m ? 20 : 32, backgroundColor: C.white, boxShadow: elevation.card, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
+          <div style={{ borderRadius: 16, padding: m ? 24 : 36, backgroundColor: C.white, boxShadow: elevation.card, marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: "rgba(155,44,44,0.30)" }} />
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 20 }}>
               <div style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>$150K / year</div>
@@ -435,7 +437,7 @@ function SameIncomeProof() {
             </div>
           </div>
           {/* Person B — structured */}
-          <div style={{ borderRadius: 16, padding: m ? 20 : 32, backgroundColor: C.white, boxShadow: elevation.card, position: "relative" as const, overflow: "hidden" }}>
+          <div style={{ borderRadius: 16, padding: m ? 24 : 36, backgroundColor: C.white, boxShadow: elevation.card, position: "relative" as const, overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 20 }}>
               <div style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>$150K / year</div>
@@ -484,31 +486,32 @@ function WhatChanges() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 56 : 104, paddingBottom: m ? 56 : 104, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 64 : 96, paddingBottom: m ? 64 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>WHAT CHANGES</div>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy }}>
-            Once you see your score,{m ? " " : <br />}you stop guessing.
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.navy }}>
+            Once you see your structure,{m ? " " : <br />}you stop guessing.
           </h2>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 0, maxWidth: 600, margin: "0 auto", ...fadeIn(visible, 120) }}>
           {[
-            { text: "You see where your income is strong — and where it's exposed", color: C.teal },
-            { text: "You know what would happen if your top client left or you couldn't work", color: "#C0392B" },
+            { text: "You see where your income holds — and where it breaks", color: C.teal },
+            { text: "You understand what happens under real pressure", color: "#C0392B" },
             { text: "You act before problems show up — not after", color: C.navy },
           ].map((item, i) => (
-            <div key={i} style={{ display: "flex", gap: 16, alignItems: "flex-start", padding: "18px 0", borderBottom: i < 2 ? `1px solid rgba(14,26,43,0.06)` : "none" }}>
+            <div key={i} style={{ display: "flex", gap: 16, alignItems: "flex-start", padding: "20px 0", borderBottom: i < 2 ? `1px solid rgba(14,26,43,0.06)` : "none" }}>
               <div style={{ width: 8, height: 8, borderRadius: "50%", backgroundColor: item.color, flexShrink: 0, marginTop: 8 }} />
               <p style={{ fontSize: m ? 16 : 18, fontWeight: 500, color: C.navy, margin: 0, lineHeight: 1.5 }}>{item.text}</p>
             </div>
           ))}
         </div>
 
-        <p style={{ fontSize: 15, color: light, textAlign: "center", marginTop: m ? 32 : 48, ...fadeIn(visible, 220) }}>
-          Credit scores look backward. Advisors manage what you've saved. RunPayway shows you whether your income can survive what's next.
-        </p>
+        {/* Mid-page CTA */}
+        <div style={{ textAlign: "center", marginTop: m ? 44 : 64, ...fadeIn(visible, 220) }}>
+          <CtaButton m={m} variant="dark" />
+        </div>
       </div>
     </section>
   );
@@ -524,30 +527,30 @@ function SystemIntegrity() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 64 : 96, paddingBottom: m ? 64 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 36 : 48, ...fadeIn(visible) }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>HOW THE SCORING WORKS</div>
-          <h2 style={{ fontSize: m ? 24 : 34, fontWeight: 500, lineHeight: 1.2, letterSpacing: "-0.02em", color: C.navy, marginBottom: 12 }}>
-            Your score isn't an opinion.{m ? " " : <br />}It's a fixed calculation.
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16 }}>
+            A fixed system.{m ? " " : <br />}Not a changing opinion.
           </h2>
-          <p style={{ fontSize: m ? 15 : 16, color: muted, lineHeight: 1.6, maxWidth: 480, margin: "0 auto" }}>
-            No AI. No advisor judgment. No algorithm that changes week to week. The same answers will always produce the same score.
-          </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr 1fr" : "1fr 1fr 1fr", gap: m ? 10 : 14, maxWidth: 520, margin: "0 auto", ...fadeIn(visible, 120) }}>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr 1fr" : "1fr 1fr 1fr", gap: m ? 10 : 16, maxWidth: 520, margin: "0 auto", marginBottom: m ? 32 : 44, ...fadeIn(visible, 120) }}>
           {[
             { label: "Model", value: "RP-2.0" },
             { label: "Ruleset", value: "Fixed" },
             { label: "Output", value: "Deterministic" },
           ].map((item, i) => (
-            <div key={i} style={{ padding: m ? "14px 10px" : "18px 20px", borderRadius: 12, backgroundColor: C.white, boxShadow: elevation.card, textAlign: "center" as const }}>
-              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: light, marginBottom: 5 }}>{item.label.toUpperCase()}</div>
-              <div style={{ fontSize: m ? 14 : 15, fontWeight: 600, fontFamily: mono, color: C.navy }}>{item.value}</div>
+            <div key={i} style={{ padding: m ? "16px 10px" : "22px 20px", borderRadius: 16, backgroundColor: C.white, boxShadow: elevation.card, textAlign: "center" as const }}>
+              <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: light, marginBottom: 6 }}>{item.label.toUpperCase()}</div>
+              <div style={{ fontSize: m ? 15 : 17, fontWeight: 600, fontFamily: mono, color: C.navy }}>{item.value}</div>
             </div>
           ))}
         </div>
+
+        <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.6, textAlign: "center", maxWidth: 480, margin: "0 auto", ...fadeIn(visible, 200) }}>
+          Same inputs produce the same result.{m ? " " : <br />}No variation. No interpretation.
+        </p>
       </div>
     </section>
   );
@@ -563,14 +566,14 @@ function CommandCenterPreview() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 64 : 120, paddingBottom: m ? 64 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 64 : 96, paddingBottom: m ? 64 : 96, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ maxWidth: contentW, margin: "0 auto", position: "relative", zIndex: 1 }}>
 
         {/* Hero headline */}
         <div style={{ textAlign: "center", marginBottom: m ? 48 : 80, ...fadeIn(visible) }}>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.teal, marginBottom: 18 }}>WHAT YOU GET</div>
-          <h2 style={{ fontSize: m ? 32 : 52, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.03em", color: C.navy, marginBottom: 20 }}>
-            Your score tells you where you stand.{m ? " " : <br />}These tools show you what to do about it.
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.teal, marginBottom: 18 }}>GUIDED OUTPUTS</div>
+          <h2 style={{ fontSize: m ? 30 : 44, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 20 }}>
+            Your structure tells you where you stand.{m ? " " : <br />}These outputs show you what to do about it.
           </h2>
           <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto" }}>
             Everything is built from your actual numbers — personalized to your industry and your biggest risk.
@@ -698,15 +701,15 @@ function FinalCtaAndTrust() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 64 : 112, paddingBottom: m ? 72 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 112, paddingBottom: m ? 80 : 120, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "30%", left: "50%", width: m ? 300 : 600, height: m ? 300 : 600, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}08 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
 
-        <h2 style={{ fontSize: m ? 26 : 40, fontWeight: 500, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.sand, marginBottom: 20, ...fadeIn(visible) }}>
-          Be prepared before your next move.{m ? " " : <br />}Not surprised after.
+        <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.sand, marginBottom: 20, ...fadeIn(visible) }}>
+          Know your income{m ? " " : <br />}before you rely on it.
         </h2>
-        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 44, ...fadeIn(visible, 80) }}>
-          Under 2 minutes. Free to start. See where your income is strong and where it's exposed.
+        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65, marginBottom: 44, ...fadeIn(visible, 80) }}>
+          See how your income is built — and whether it holds when it matters.
         </p>
         <div style={{ display: "flex", justifyContent: "center", marginBottom: m ? 48 : 72, ...fadeIn(visible, 160) }}>
           <CtaButton m={m} variant="light" />
@@ -758,7 +761,7 @@ function StickyMobileCta() {
         height: 48, borderRadius: 10, backgroundColor: C.white, color: C.navy,
         fontSize: 15, fontWeight: 600, textDecoration: "none",
       }}>
-        Get My Income Stability Score
+        Get Your Structural Income Report
       </Link>
     </div>
   );
@@ -796,11 +799,10 @@ export default function LandingPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(PRODUCT_SCHEMA) }} />
       <main id="main-content">
         <HeroSection />
-        <IndustrySelector />
-        <HowRunPaywayIsUsed />
         <SameIncomeProof />
         <WhatChanges />
         <SystemIntegrity />
+        <IndustrySelector />
         <CommandCenterPreview />
         <FinalCtaAndTrust />
       </main>

@@ -65,7 +65,7 @@ const HEADER_STYLES = `
 }
 .dropdown-item:hover {
   background: rgba(75, 63, 174, 0.04);
-  color: #1C1635;
+  color: #0E1A2B;
   padding-left: 24px;
 }
 .mobile-overlay {
@@ -312,7 +312,7 @@ export default function MarketingLayout({
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#FAFAFA" }}>
       {/* Skip to main content — WCAG 2.4.1 */}
-      <a href="#main-content" style={{ position: "absolute", left: "-9999px", top: "auto", width: 1, height: 1, overflow: "hidden", zIndex: 9999, padding: "12px 24px", backgroundColor: "#1C1635", color: "#F4F1EA", fontSize: 14, fontWeight: 600, textDecoration: "none", borderRadius: 8 }}
+      <a href="#main-content" style={{ position: "absolute", left: "-9999px", top: "auto", width: 1, height: 1, overflow: "hidden", zIndex: 9999, padding: "12px 24px", backgroundColor: "#0E1A2B", color: "#F4F1EA", fontSize: 14, fontWeight: 600, textDecoration: "none", borderRadius: 8 }}
         onFocus={e => { e.currentTarget.style.position = "fixed"; e.currentTarget.style.left = "16px"; e.currentTarget.style.top = "16px"; e.currentTarget.style.width = "auto"; e.currentTarget.style.height = "auto"; }}
         onBlur={e => { e.currentTarget.style.position = "absolute"; e.currentTarget.style.left = "-9999px"; e.currentTarget.style.width = "1px"; e.currentTarget.style.height = "1px"; }}>
         Skip to main content
@@ -382,7 +382,7 @@ export default function MarketingLayout({
                       transition: "color 280ms cubic-bezier(0.22, 1, 0.36, 1)",
                       paddingBottom: 2,
                     }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = "#1C1635"; }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.65)"; }}
                   >
                     {link.label}
@@ -402,7 +402,7 @@ export default function MarketingLayout({
                     style={{
                       fontSize: 15,
                       fontWeight: 500,
-                      color: moreDropdown.visible ? "#1C1635" : "rgba(14,26,43,0.65)",
+                      color: moreDropdown.visible ? "#0E1A2B" : "rgba(14,26,43,0.65)",
                       background: "none",
                       border: "none",
                       cursor: "pointer",
@@ -545,7 +545,7 @@ export default function MarketingLayout({
                   width: 26,
                   height: 2,
                   borderRadius: 1,
-                  backgroundColor: "#1C1635",
+                  backgroundColor: "#0E1A2B",
                   transition: "transform 360ms cubic-bezier(0.22, 1, 0.36, 1), opacity 360ms cubic-bezier(0.22, 1, 0.36, 1)",
                   transform: menuOpen ? "rotate(45deg) translateY(5.5px)" : "none",
                 }}
@@ -556,7 +556,7 @@ export default function MarketingLayout({
                   width: 26,
                   height: 2,
                   borderRadius: 1,
-                  backgroundColor: "#1C1635",
+                  backgroundColor: "#0E1A2B",
                   marginTop: 6,
                   transition: "opacity 280ms cubic-bezier(0.22, 1, 0.36, 1), transform 280ms cubic-bezier(0.22, 1, 0.36, 1)",
                   opacity: menuOpen ? 0 : 1,
@@ -569,7 +569,7 @@ export default function MarketingLayout({
                   width: 26,
                   height: 2,
                   borderRadius: 1,
-                  backgroundColor: "#1C1635",
+                  backgroundColor: "#0E1A2B",
                   marginTop: 6,
                   transition: "transform 360ms cubic-bezier(0.22, 1, 0.36, 1), opacity 360ms cubic-bezier(0.22, 1, 0.36, 1)",
                   transform: menuOpen ? "rotate(-45deg) translateY(-5.5px)" : "none",
@@ -599,7 +599,7 @@ export default function MarketingLayout({
               display: "flex",
               flexDirection: "column",
               overflowY: "auto",
-              color: "#1C1635",
+              color: "#0E1A2B",
             }}
           >
             <nav style={{ display: "flex", flexDirection: "column", gap: 0 }}>
@@ -612,7 +612,7 @@ export default function MarketingLayout({
                   style={{
                     fontSize: 16,
                     fontWeight: 600,
-                    color: "#1C1635",
+                    color: "#0E1A2B",
                     padding: "18px 0",
                     borderBottom: "1px solid rgba(14,26,43,0.06)",
                     display: "flex",
@@ -621,7 +621,7 @@ export default function MarketingLayout({
                     transition: "color 200ms ease, padding-left 200ms cubic-bezier(0.22, 1, 0.36, 1)",
                   }}
                   onTouchStart={(e) => { e.currentTarget.style.paddingLeft = "8px"; e.currentTarget.style.color = "#4B3FAE"; }}
-                  onTouchEnd={(e) => { e.currentTarget.style.paddingLeft = "0px"; e.currentTarget.style.color = "#1C1635"; }}
+                  onTouchEnd={(e) => { e.currentTarget.style.paddingLeft = "0px"; e.currentTarget.style.color = "#0E1A2B"; }}
                 >
                   {link.label}
                 </Link>
@@ -730,7 +730,7 @@ export default function MarketingLayout({
           >
             {/* Product */}
             <div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: "#1C1635", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.product}</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.product}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {[
                   { href: "/how-it-works", label: t.nav.howItWorks },
@@ -741,7 +741,7 @@ export default function MarketingLayout({
                 ].map((link) => (
                   <Link key={link.label} href={link.href}
                     style={{ fontSize: 14, color: "rgba(14,26,43,0.62)", lineHeight: 1.4, transition: "color 160ms ease" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = "#1C1635"; }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}>
                     {link.label}
                   </Link>
@@ -751,7 +751,7 @@ export default function MarketingLayout({
 
             {/* Company */}
             <div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: "#1C1635", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.company}</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.company}</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {[
                   { href: "/about", label: t.nav.about },
@@ -761,7 +761,7 @@ export default function MarketingLayout({
                 ].map((link) => (
                   <Link key={link.label} href={link.href}
                     style={{ fontSize: 14, color: "rgba(14,26,43,0.62)", lineHeight: 1.4, transition: "color 160ms ease" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = "#1C1635"; }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}>
                     {link.label}
                   </Link>
@@ -771,7 +771,7 @@ export default function MarketingLayout({
 
             {/* Legal */}
             <div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: "#1C1635", letterSpacing: "0.02em", marginBottom: 16 }}>Legal</div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>Legal</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {[
                   { href: "/privacy-policy", label: t.footer.privacyPolicy },
@@ -784,7 +784,7 @@ export default function MarketingLayout({
                 ].map((link) => (
                   <Link key={link.label} href={link.href}
                     style={{ fontSize: 14, color: "rgba(14,26,43,0.62)", lineHeight: 1.4, transition: "color 160ms ease" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = "#1C1635"; }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.50)"; }}>
                     {link.label}
                   </Link>

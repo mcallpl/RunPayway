@@ -7,7 +7,7 @@
 // ─── COLORS ─────────────────────────────────────────────────
 
 export const C = {
-  navy: "#1C1635",
+  navy: "#0E1A2B",
   purple: "#4B3FAE",
   teal: "#1F6D7A",
   sand: "#F4F1EA",
@@ -38,8 +38,8 @@ export const sans = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Rob
 
 export const T = {
   h1: {
-    desktop: { fontSize: 56, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.02em" },
-    mobile: { fontSize: 36, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.02em" },
+    desktop: { fontSize: 68, fontWeight: 600, lineHeight: 1.05, letterSpacing: "-0.02em" },
+    mobile: { fontSize: 42, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.02em" },
   },
   h2: {
     desktop: { fontSize: 40, fontWeight: 600, lineHeight: 1.18, letterSpacing: "-0.02em" },
@@ -66,7 +66,7 @@ export const T = {
 
 export const sp = (n: number) => n * 8;
 
-export const maxW = 1080;
+export const maxW = 1120;
 export const padX = { desktop: 40, mobile: 20 };
 export const textMax = 720;
 
@@ -84,10 +84,10 @@ export const bodySm = (m: boolean) => m ? T.bodySm.mobile : T.bodySm.desktop;
 // ─── COMPONENT STYLES ───────────────────────────────────────
 
 export const cardStyle = {
-  borderRadius: 12,
+  borderRadius: 16,
   border: `1px solid ${C.softBorder}`,
   backgroundColor: C.white,
-  boxShadow: "0 1px 3px rgba(14,26,43,0.04)",
+  boxShadow: "0 1px 2px rgba(14,26,43,0.03), 0 2px 8px rgba(14,26,43,0.02)",
 } as const;
 
 export const ctaButton = {

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --rp-navy: #1C1635;
+  --rp-navy: #0E1A2B;
   --rp-purple: #4B3FAE;
   --rp-teal: #1F6D7A;
   --rp-sand: #F7F6F3;
@@ -288,7 +288,7 @@ select, input[type="text"], input[type="email"] {
   /* Reset body for print */
   html, body {
     background: white !important;
-    color: #1C1635 !important;
+    color: #0E1A2B !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     margin: 0 !important;
