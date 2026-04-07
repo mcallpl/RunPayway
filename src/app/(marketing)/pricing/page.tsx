@@ -281,9 +281,9 @@ function PricingCards() {
         <span style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$149</span>
         <span style={{ fontSize: 14, color: C.textMuted, marginLeft: 8 }}>/year</span>
       </div>
-      <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 20 }}>ongoing visibility</div>
+      <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 20 }}>3 full assessments per year</div>
       <p style={{ fontSize: 15, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 12 }}>
-        Track how your income structure evolves over time.
+        Reassess your structure three times a year and track how it evolves.
       </p>
       <p style={{ fontSize: 14, fontWeight: 500, color: C.teal, marginBottom: 24 }}>
         Because structure changes — even when income doesn&rsquo;t.
