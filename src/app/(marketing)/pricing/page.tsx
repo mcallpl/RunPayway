@@ -212,7 +212,7 @@ function PricingCards() {
       <div style={{ fontSize: 12, fontWeight: 600, color: C.teal, marginBottom: 16 }}>Most used</div>
 
       <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.navy, marginBottom: 20 }}>
-        RunPayway&#8482; Diagnostic
+        RunPayway&#8482; Command Center
       </div>
       <div style={{ marginBottom: 4 }}>
         <span style={{ fontSize: 36, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$69</span>
@@ -261,13 +261,13 @@ function PricingCards() {
       }}
         onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; }}
         onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
-        Unlock Full Diagnostic &mdash; $69
+        Unlock Command Center &mdash; $69
       </a>
       <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, textAlign: "center", marginTop: 14, marginBottom: 0 }}>
         One payment. Lifetime access.
       </p>
       <p style={{ fontSize: 14, fontWeight: 600, color: C.teal, textAlign: "center", marginTop: 8, marginBottom: 0 }}>
-        If it doesn&rsquo;t reveal something new, you don&rsquo;t pay. No questions.
+        If it doesn&rsquo;t reveal something new, you don&rsquo;t pay.
       </p>
     </div>
   );
@@ -319,7 +319,7 @@ function PricingCards() {
         Start Monitoring &mdash; $149/year
       </a>
       <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
-        Includes full diagnostic access.
+        Includes full Command Center access.
       </p>
     </div>
   );
@@ -381,7 +381,7 @@ function PositioningStrip() {
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 16, maxWidth: 480, margin: "0 auto", ...fadeIn(visible, 140) }}>
           {[
             { bold: "The score", rest: "shows where you stand." },
-            { bold: "The diagnostic", rest: "shows what defines it." },
+            { bold: "The Command Center", rest: "shows what defines it." },
             { bold: "Monitoring", rest: "tracks how it changes." },
           ].map((line, i) => (
             <p key={i} style={{ fontSize: 17, color: C.textSecondary, lineHeight: 1.6, margin: 0, textAlign: "center" }}>
@@ -415,7 +415,7 @@ function OutcomesSection() {
       <div style={{ maxWidth: 960, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy }}>
-            What the diagnostic gives you
+            What the Command Center gives you
           </h2>
         </div>
 
@@ -432,7 +432,7 @@ function OutcomesSection() {
         <div style={{ textAlign: "center", marginTop: m ? 40 : 56, ...fadeIn(visible, 180) }}>
           <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 8 }}>One decision can cost more than this.</p>
           <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.6, maxWidth: explanatoryW, margin: "0 auto 24px" }}>
-            Understanding your income structure before acting prevents mistakes that cost far more than the diagnostic.
+            Understanding your income structure before acting prevents mistakes that cost far more than $69.
           </p>
           <Link href="/sample-report" style={{
             fontSize: 15, fontWeight: 600, color: C.teal, textDecoration: "none",
@@ -462,13 +462,13 @@ function FaqSection() {
 
   const faqs = [
     { q: "What do I get for free?", a: "A complete structural score and classification. No cost. No account required." },
-    { q: "What does the $69 Diagnostic unlock?", a: "A full breakdown of what defines your score — and the exact actions that change it." },
+    { q: "What does the $69 unlock?", a: "The Command Center — a full breakdown of what defines your score, personalized scripts, a 12-week roadmap, and the exact actions that change it." },
     { q: "What is the Negotiation Playbook?", a: "Scripts based on your actual income structure, designed to improve stability." },
     { q: "How are roadmap milestones personalized?", a: "They are generated directly from your inputs — not templates or assumptions." },
     { q: "What does Monitoring include?", a: "Multiple assessments, change tracking, and visibility over time." },
     { q: "How is the score calculated?", a: "Using fixed rules applied consistently to your answers." },
     { q: "Do you access my bank or credit?", a: "No. RunPayway does not connect to financial accounts." },
-    { q: "What if the diagnostic doesn\u2019t reveal anything new?", a: "You receive a full refund." },
+    { q: "What if it doesn\u2019t reveal anything new?", a: "You receive a full refund." },
   ];
 
   return (
