@@ -254,15 +254,13 @@ function WhatIsMeasured() {
 
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 14 : 20, ...fadeIn(visible, 100) }}>
           {dimensions.map((d, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 14, padding: m ? "18px 16px" : "22px 24px", borderRadius: 16, backgroundColor: C.sand, border: `1px solid rgba(14,26,43,0.04)` }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: tagColor(d.tag), flexShrink: 0, marginTop: 8 }} />
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-                  <span style={{ fontSize: 16, fontWeight: 600, color: C.navy, lineHeight: 1.35 }}>{d.name}</span>
-                  <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: tagColor(d.tag), padding: "2px 8px", borderRadius: 4, backgroundColor: `${tagColor(d.tag)}08` }}>{d.tag}</span>
-                </div>
-                <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.55, margin: 0 }}>{d.desc}</p>
+            <div key={i} style={{ padding: m ? "22px 20px" : "26px 28px", borderRadius: 18, backgroundColor: C.white, boxShadow: cardShadow, position: "relative" as const, overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: tagColor(d.tag) }} />
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                <span style={{ fontSize: 16, fontWeight: 600, color: C.navy, lineHeight: 1.35 }}>{d.name}</span>
+                <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: tagColor(d.tag), padding: "2px 8px", borderRadius: 4, backgroundColor: `${tagColor(d.tag)}08` }}>{d.tag}</span>
               </div>
+              <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.55, margin: 0 }}>{d.desc}</p>
             </div>
           ))}
         </div>
@@ -295,7 +293,8 @@ function ScoreVsDiagnostic() {
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: m ? 24 : 36, ...fadeIn(visible, 100) }}>
           {/* The Score */}
-          <div style={{ padding: m ? 28 : 32, borderRadius: 20, backgroundColor: C.white, boxShadow: cardShadow, marginBottom: m ? 20 : 0 }}>
+          <div style={{ padding: m ? 28 : 32, borderRadius: 20, backgroundColor: C.white, boxShadow: cardShadow, marginBottom: m ? 20 : 0, position: "relative" as const, overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.teal }} />
             <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12 }}>The Score</div>
             <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.6, marginBottom: 20 }}>
               Calculated from your answers only. Nothing else influences it.
@@ -311,7 +310,8 @@ function ScoreVsDiagnostic() {
           </div>
 
           {/* The Diagnostic */}
-          <div style={{ padding: m ? 28 : 32, borderRadius: 20, backgroundColor: C.white, boxShadow: cardShadow }}>
+          <div style={{ padding: m ? 28 : 32, borderRadius: 20, backgroundColor: C.white, boxShadow: cardShadow, position: "relative" as const, overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.purple }} />
             <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12 }}>The Diagnostic</div>
             <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.6, marginBottom: 20 }}>
               Adds interpretation without altering the score.
