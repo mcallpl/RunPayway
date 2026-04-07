@@ -85,21 +85,18 @@ function HeroSection() {
   const fadeIn = useFadeIn();
 
   return (
-    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 56 : 88, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
-      <div style={{ maxWidth: narrowW, margin: "0 auto", textAlign: "center" }}>
+    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 148, paddingBottom: m ? 48 : 72, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+      <div style={{ maxWidth: innerW, margin: "0 auto", textAlign: "center" }}>
         <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
           PRICING
         </div>
-        <h1 style={{ fontSize: m ? 38 : 56, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
+        <h1 style={{ fontSize: m ? 42 : 68, fontWeight: 700, lineHeight: 0.98, letterSpacing: "-0.04em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
           Start with the score.{m ? " " : <br />}Unlock what changes it.
         </h1>
-        <p style={{ fontSize: m ? 18 : 20, fontWeight: 400, lineHeight: 1.55, color: C.textSecondary, maxWidth: 580, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
+        <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.45, color: C.textSecondary, maxWidth: 680, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
           RunPayway reveals how your income is built — and whether it holds under pressure.
         </p>
-        <p style={{ fontSize: m ? 16 : 17, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 0, ...fadeIn(visible, 140) }}>
-          The score is free. The diagnostic shows what determines it.
-        </p>
-        <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, marginTop: 20, ...fadeIn(visible, 180) }}>
+        <p style={{ fontSize: 16, fontWeight: 500, color: C.textMuted, marginTop: 16, ...fadeIn(visible, 140) }}>
           No financial accounts. No credit pull. Private by default.
         </p>
       </div>
@@ -166,164 +163,191 @@ function PricingCards() {
     </div>
   );
 
+  /* Card renderers */
+  const freeCard = (order?: number) => (
+    <div style={{ backgroundColor: C.white, borderRadius: 18, padding: m ? 28 : 32, border: `1px solid rgba(14,26,43,0.06)`, display: "flex", flexDirection: "column" as const, order: m ? order : undefined }}>
+      <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
+        Income Stability Score&#8482;
+      </div>
+      <div style={{ marginBottom: 4 }}>
+        <span style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$0</span>
+      </div>
+      <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 24 }}>always available</div>
+      <p style={{ fontSize: 15, fontWeight: 500, color: C.navy, lineHeight: 1.5, marginBottom: 24 }}>
+        Your baseline measurement. No cost. No commitment.
+      </p>
+      <div style={{ marginBottom: 28, flex: 1, color: C.textSecondary }}>
+        {check("Structural Income Score (0\u2013100)")}
+        {check("Stability classification")}
+        {check("Primary structural risk")}
+        {check("Distance to next level")}
+        {check("Industry-relative position")}
+      </div>
+      <Link href="/begin" style={{
+        display: "flex", alignItems: "center", justifyContent: "center",
+        height: 56, borderRadius: 14,
+        backgroundColor: C.white, color: C.navy,
+        border: `1px solid ${C.borderSoft}`,
+        fontSize: 16, fontWeight: 600, textDecoration: "none",
+        transition: "background-color 200ms",
+      }}
+        onMouseEnter={e => { e.currentTarget.style.backgroundColor = C.sand; }}
+        onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; }}>
+        Get Your Free Score
+      </Link>
+      <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
+        Takes under 2 minutes. No account. No financial access.
+      </p>
+      <p style={{ fontSize: 13, fontWeight: 600, color: C.navy, textAlign: "center", marginTop: 10, marginBottom: 0 }}>
+        Most people have never measured this.
+      </p>
+    </div>
+  );
+
+  const diagnosticCard = (order?: number) => (
+    <div style={{ backgroundColor: C.white, borderRadius: 18, padding: m ? 36 : 32, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", boxShadow: "0 16px 40px rgba(14,26,43,0.10)", border: `1.5px solid rgba(14,26,43,0.18)`, order: m ? order : undefined }}>
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.teal }} />
+
+      {/* Most used tag */}
+      <div style={{ fontSize: 12, fontWeight: 600, color: C.teal, marginBottom: 16 }}>Most used</div>
+
+      <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.navy, marginBottom: 20 }}>
+        RunPayway&#8482; Diagnostic
+      </div>
+      <div style={{ marginBottom: 4 }}>
+        <span style={{ fontSize: 36, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$69</span>
+      </div>
+      <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 20 }}>one-time access</div>
+      <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 12 }}>
+        See exactly what defines your score — and what changes it.
+      </p>
+      <p style={{ fontSize: 14, fontWeight: 500, color: C.teal, marginBottom: 20 }}>
+        This is where most users realize what they&rsquo;ve been missing.
+      </p>
+
+      <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 20, marginBottom: 20 }} />
+
+      <div style={{ marginBottom: 20, flex: 1, color: C.textSecondary }}>
+        {check("Identify where your income holds — and where it breaks")}
+        {check("See what actually limits your stability")}
+        {check("Know the single move that shifts your structure fastest")}
+        {check("Test changes before you make them")}
+      </div>
+
+      {/* What changes after unlock */}
+      <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 20, marginBottom: 24 }}>
+        <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: C.navy, marginBottom: 12 }}>WHAT CHANGES AFTER YOU UNLOCK THIS</div>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
+          {[
+            "You stop guessing what matters",
+            "You act before problems appear",
+            "You improve structure intentionally",
+          ].map((line, i) => (
+            <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+              <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 7 }} />
+              <span style={{ fontSize: 14, fontWeight: 500, color: C.textSecondary, lineHeight: 1.45 }}>{line}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <a href={STRIPE} onClick={() => trackPurchaseClick("diagnostic_69")} style={{
+        display: "flex", alignItems: "center", justifyContent: "center",
+        height: 60, borderRadius: 14, width: "100%",
+        backgroundColor: C.navy, color: C.white,
+        fontSize: 18, fontWeight: 600, textDecoration: "none",
+        boxShadow: ctaShadow,
+        transition: "transform 200ms, box-shadow 200ms",
+      }}
+        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; }}
+        onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
+        Unlock Full Diagnostic &mdash; $69
+      </a>
+      <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, textAlign: "center", marginTop: 14, marginBottom: 0 }}>
+        One payment. Lifetime access.
+      </p>
+      <p style={{ fontSize: 14, fontWeight: 600, color: C.teal, textAlign: "center", marginTop: 8, marginBottom: 0 }}>
+        If it doesn&rsquo;t reveal something new, you don&rsquo;t pay.
+      </p>
+    </div>
+  );
+
+  const monitoringCard = (order?: number) => (
+    <div style={{ backgroundColor: C.white, borderRadius: 18, padding: m ? 28 : 32, border: `1px solid rgba(14,26,43,0.06)`, display: "flex", flexDirection: "column" as const, order: m ? order : undefined }}>
+      <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.navy, marginBottom: 20 }}>
+        RunPayway&#8482; Monitoring
+      </div>
+      <div style={{ marginBottom: 4 }}>
+        <span style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$149</span>
+        <span style={{ fontSize: 14, color: C.textMuted, marginLeft: 8 }}>/year</span>
+      </div>
+      <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 20 }}>ongoing visibility</div>
+      <p style={{ fontSize: 15, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 12 }}>
+        Track how your income structure evolves over time.
+      </p>
+      <p style={{ fontSize: 14, fontWeight: 500, color: C.teal, marginBottom: 24 }}>
+        Because structure changes — even when income doesn&rsquo;t.
+      </p>
+      <div style={{ marginBottom: 20, flex: 1, color: C.textSecondary }}>
+        {check("Reassess your structure across the year")}
+        {check("Track how your score actually moves")}
+        {check("See what improved — and what didn\u2019t")}
+        {check("Compare your structure over time")}
+        {check("Maintain continuous visibility")}
+      </div>
+
+      {/* Best for */}
+      <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 20, marginBottom: 24 }}>
+        <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: C.textMuted, marginBottom: 12 }}>BEST FOR</div>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 6 }}>
+          {["Self-employed", "Variable income earners", "Anyone actively improving structure"].map((line, i) => (
+            <span key={i} style={{ fontSize: 14, fontWeight: 500, color: C.textSecondary, lineHeight: 1.45 }}>{line}</span>
+          ))}
+        </div>
+      </div>
+
+      <a href={STRIPE_ANNUAL} onClick={() => trackPurchaseClick("monitoring_149")} style={{
+        display: "flex", alignItems: "center", justifyContent: "center",
+        height: 56, borderRadius: 14,
+        backgroundColor: C.white, color: C.navy,
+        border: `1px solid ${C.borderSoft}`,
+        fontSize: 16, fontWeight: 600, textDecoration: "none",
+        transition: "background-color 200ms",
+      }}
+        onMouseEnter={e => { e.currentTarget.style.backgroundColor = C.sand; }}
+        onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
+        Start Monitoring &mdash; $149/year
+      </a>
+      <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
+        Includes full diagnostic access.
+      </p>
+    </div>
+  );
+
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 48 : 96, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, alignItems: "start", ...fadeIn(visible) }}>
-
-          {/* ─── FREE SCORE ─── */}
-          <div style={{ backgroundColor: C.white, borderRadius: 18, padding: m ? 28 : 32, boxShadow: cardShadow, display: "flex", flexDirection: "column" as const, marginBottom: m ? 20 : 0, position: "relative" as const, overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.teal }} />
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginTop: 4, marginBottom: 20 }}>
-              Income Stability Score&#8482;
-            </div>
-            <div style={{ marginBottom: 4 }}>
-              <span style={{ fontSize: 48, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$0</span>
-            </div>
-            <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 24 }}>always available</div>
-            <p style={{ fontSize: 15, fontWeight: 500, color: C.navy, lineHeight: 1.5, marginBottom: 24 }}>
-              Your baseline measurement. No cost. No commitment.
-            </p>
-            <div style={{ marginBottom: 28, flex: 1, color: C.textSecondary }}>
-              {check("Structural Income Score (0\u2013100)")}
-              {check("Stability classification")}
-              {check("Primary structural risk")}
-              {check("Distance to next level")}
-              {check("Industry-relative position")}
-            </div>
-            <Link href="/begin" style={{
-              display: "flex", alignItems: "center", justifyContent: "center",
-              height: 56, borderRadius: 14,
-              backgroundColor: C.white, color: C.navy,
-              border: `1px solid ${C.borderSoft}`,
-              fontSize: 16, fontWeight: 600, textDecoration: "none",
-              transition: "background-color 200ms",
-            }}
-              onMouseEnter={e => { e.currentTarget.style.backgroundColor = C.sand; }}
-              onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; }}>
-              Get Your Free Score
-            </Link>
-            <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
-              Takes under 2 minutes. No account. No financial access.
-            </p>
-            <p style={{ fontSize: 13, fontWeight: 600, color: C.navy, textAlign: "center", marginTop: 10, marginBottom: 0 }}>
-              Most people have never measured this.
-            </p>
-          </div>
-
-          {/* ─── DIAGNOSTIC (PRIMARY) ─── */}
-          <div style={{ backgroundColor: C.white, borderRadius: 18, padding: m ? 28 : 32, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", boxShadow: "0 12px 40px rgba(14,26,43,0.10)", transform: m ? "none" : "scale(1.03)", border: `1px solid rgba(14,26,43,0.08)` }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.purple }} />
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.purple, marginTop: 4, marginBottom: 20 }}>
-              RunPayway&#8482; Diagnostic
-            </div>
-            <div style={{ marginBottom: 4 }}>
-              <span style={{ fontSize: 48, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$69</span>
-            </div>
-            <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 20 }}>one-time access</div>
-            <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 12 }}>
-              See exactly what defines your score — and what changes it.
-            </p>
-            <p style={{ fontSize: 14, fontWeight: 500, color: C.teal, marginBottom: 24 }}>
-              This is where most users realize what they&rsquo;ve been missing.
-            </p>
-            <div style={{ marginBottom: 20, flex: 1, color: C.textSecondary }}>
-              {check("Identify where your income holds — and where it breaks")}
-              {check("See what actually limits your stability")}
-              {check("Get exact scripts tied to your situation")}
-              {check("Follow a 12-week plan built from your inputs")}
-              {check("Know the single move that shifts your structure fastest")}
-              {check("Test changes before you make them")}
-            </div>
-
-            {/* What changes after unlock */}
-            <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 20, marginBottom: 24 }}>
-              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: C.navy, marginBottom: 12 }}>WHAT CHANGES AFTER YOU UNLOCK THIS</div>
-              <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
-                {[
-                  "You stop guessing what matters",
-                  "You stop reacting to income drops",
-                  "You start improving structure intentionally",
-                ].map((line, i) => (
-                  <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-                    <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.purple, flexShrink: 0, marginTop: 7 }} />
-                    <span style={{ fontSize: 14, fontWeight: 500, color: C.textSecondary, lineHeight: 1.45 }}>{line}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <a href={STRIPE} onClick={() => trackPurchaseClick("diagnostic_69")} style={{
-              display: "flex", alignItems: "center", justifyContent: "center",
-              height: 60, borderRadius: 14,
-              backgroundColor: C.navy, color: C.white,
-              fontSize: 18, fontWeight: 600, textDecoration: "none",
-              boxShadow: ctaShadow,
-              transition: "transform 200ms, box-shadow 200ms",
-            }}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
-              Unlock Full Diagnostic &mdash; $69
-            </a>
-            <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, textAlign: "center", marginTop: 14, marginBottom: 0 }}>
-              One payment. Lifetime access.
-            </p>
-            <p style={{ fontSize: 14, fontWeight: 600, color: C.teal, textAlign: "center", marginTop: 8, marginBottom: 0 }}>
-              If it doesn&rsquo;t reveal something new, you don&rsquo;t pay.
-            </p>
-          </div>
-
-          {/* ─── MONITORING ─── */}
-          <div style={{ backgroundColor: C.white, borderRadius: 18, padding: m ? 28 : 32, boxShadow: cardShadow, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", marginTop: m ? 20 : 0 }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.navy }} />
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.navy, marginTop: 4, marginBottom: 20 }}>
-              RunPayway&#8482; Monitoring
-            </div>
-            <div style={{ marginBottom: 4 }}>
-              <span style={{ fontSize: 48, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$149</span>
-              <span style={{ fontSize: 14, color: C.textMuted, marginLeft: 8 }}>/year</span>
-            </div>
-            <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 20 }}>ongoing visibility</div>
-            <p style={{ fontSize: 15, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 12 }}>
-              Track how your income structure evolves over time.
-            </p>
-            <p style={{ fontSize: 14, fontWeight: 500, color: C.teal, marginBottom: 24 }}>
-              Because structure changes — even when income doesn&rsquo;t.
-            </p>
-            <div style={{ marginBottom: 20, flex: 1, color: C.textSecondary }}>
-              {check("Reassess your structure across the year")}
-              {check("Track how your score actually moves")}
-              {check("See what improved — and what didn\u2019t")}
-              {check("Compare your structure over time")}
-              {check("Maintain continuous visibility")}
-            </div>
-
-            {/* Best for */}
-            <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 20, marginBottom: 24 }}>
-              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: C.textMuted, marginBottom: 12 }}>BEST FOR</div>
-              <div style={{ display: "flex", flexDirection: "column" as const, gap: 6 }}>
-                {["Self-employed", "Variable income earners", "Anyone actively improving structure"].map((line, i) => (
-                  <span key={i} style={{ fontSize: 14, fontWeight: 500, color: C.textSecondary, lineHeight: 1.45 }}>{line}</span>
-                ))}
-              </div>
-            </div>
-
-            <a href={STRIPE_ANNUAL} onClick={() => trackPurchaseClick("monitoring_149")} style={{
-              display: "flex", alignItems: "center", justifyContent: "center",
-              height: 56, borderRadius: 14,
-              backgroundColor: C.navy, color: C.white,
-              fontSize: 16, fontWeight: 600, textDecoration: "none",
-              transition: "transform 200ms, box-shadow 200ms",
-              boxShadow: ctaShadow,
-            }}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
-              Start Monitoring &mdash; $149/year
-            </a>
-            <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
-              Includes full diagnostic access.
-            </p>
-          </div>
+        <div style={{
+          display: m ? "flex" : "grid",
+          flexDirection: m ? "column" as const : undefined,
+          gridTemplateColumns: m ? undefined : "1fr 1.2fr 1fr",
+          gap: 24,
+          alignItems: "stretch",
+          ...fadeIn(visible),
+        }}>
+          {m ? (
+            <>
+              {diagnosticCard(1)}
+              {freeCard(2)}
+              {monitoringCard(3)}
+            </>
+          ) : (
+            <>
+              {freeCard()}
+              {diagnosticCard()}
+              {monitoringCard()}
+            </>
+          )}
         </div>
 
         {/* Cross-card strip */}
@@ -493,26 +517,13 @@ function FinalCta() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center" }}>
         <h2 style={{ fontSize: m ? 34 : 52, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.sandText, marginBottom: 20, ...fadeIn(visible) }}>
-          Your income already has a structure.
+          Know your income{m ? " " : <br />}before you rely on it.
         </h2>
         <p style={{ fontSize: m ? 20 : 24, fontWeight: 400, lineHeight: 1.45, color: C.sandMuted, marginBottom: 32, ...fadeIn(visible, 80) }}>
-          Now you can see it clearly — and decide what to do next.
+          Measure how your income is built — and whether it holds when it matters.
         </p>
 
-        {/* Ladder */}
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 16, maxWidth: 360, margin: "0 auto 40px", textAlign: "left", ...fadeIn(visible, 120) }}>
-          {[
-            { bold: "Start with the score.", rest: "See where you stand." },
-            { bold: "Unlock the diagnostic.", rest: "Understand what determines it." },
-            { bold: "Track it over time.", rest: "See how your structure evolves." },
-          ].map((line, i) => (
-            <p key={i} style={{ fontSize: 15, color: C.sandMuted, lineHeight: 1.55, margin: 0 }}>
-              <strong style={{ fontWeight: 600, color: C.sandText }}>{line.bold}</strong><br />{line.rest}
-            </p>
-          ))}
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", ...fadeIn(visible, 200) }}>
+        <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", ...fadeIn(visible, 120) }}>
           <Link href="/begin" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: m ? 56 : 60, width: m ? "100%" : "auto",
@@ -525,10 +536,10 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
-            Begin your assessment
+            Get Your Structural Income Report
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 16 }}>
-            Under 2 minutes &bull; Instant result &bull; Private by default
+            Under 2 minutes &bull; Private by default
           </p>
         </div>
       </div>
