@@ -1,19 +1,17 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import Link from "next/link";
-import { useLanguage } from "@/lib/i18n";
-import type { Translations } from "@/lib/i18n/types";
-import { C, mono, sans } from "@/lib/design-tokens";
+import Fuse from "fuse.js";
 
-/* ================================================================== */
-/* UTILITIES                                                           */
-/* ================================================================== */
+/* ================================================================ */
+/* UTILITIES                                                         */
+/* ================================================================ */
 
-function useMobile(breakpoint = 768) {
-  const [mobile, setMobile] = useState(false);
-  useEffect(() => { const c = () => setMobile(window.innerWidth <= breakpoint); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, [breakpoint]);
-  return mobile;
+function useMobile(bp = 768) {
+  const [m, setM] = useState(false);
+  useEffect(() => { const c = () => setM(window.innerWidth <= bp); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, [bp]);
+  return m;
 }
 
 function useInView(threshold = 0) {
@@ -31,227 +29,518 @@ function useInView(threshold = 0) {
   return { ref, visible };
 }
 
-/* ================================================================== */
-/* DESIGN TOKENS                                                       */
-/* ================================================================== */
-
-const muted = "rgba(14,26,43,0.68)";
-const light = "rgba(14,26,43,0.62)";
-const border = "#E5E7EB";
-const contentW = 1040;
-
-/* ================================================================== */
-/* FAQ DATA                                                            */
-/* ================================================================== */
-
-interface FaqCategory { title: string; items: { q: string; a: React.ReactNode }[] }
-
-function getFaqCategories(t: Translations): FaqCategory[] { return [
-  {
-    title: t.faqPage.cat1Title,
-    items: [
-      { q: t.faqPage.cat1Q1, a: (<><p>{t.faqPage.cat1A1P1}</p><p>{t.faqPage.cat1A1P2}</p><p>{t.faqPage.cat1A1P3}</p></>) },
-      { q: t.faqPage.cat1Q2, a: (<><p>{t.faqPage.cat1A2P1}</p><ul><li>{t.faqPage.cat1A2Li1}</li><li>{t.faqPage.cat1A2Li2}</li><li>{t.faqPage.cat1A2Li3}</li><li>{t.faqPage.cat1A2Li4}</li><li>{t.faqPage.cat1A2Li5}</li><li>{t.faqPage.cat1A2Li6}</li></ul><p>{t.faqPage.cat1A2P2}</p></>) },
-      { q: t.faqPage.cat1Q3, a: (<><p>{t.faqPage.cat1A3P1}</p><p>{t.faqPage.cat1A3P2}</p><div className="faq-table"><div className="faq-table-row faq-table-header"><span>{t.faqPage.cat1A3ThBand}</span><span>{t.faqPage.cat1A3ThRange}</span></div><div className="faq-table-row"><span>{t.report.limited}</span><span>0–29</span></div><div className="faq-table-row"><span>{t.report.developing}</span><span>30–49</span></div><div className="faq-table-row"><span>{t.report.established}</span><span>50–74</span></div><div className="faq-table-row"><span>{t.report.high}</span><span>75–100</span></div></div><p>{t.faqPage.cat1A3P3}</p></>) },
-      { q: t.faqPage.cat1Q4, a: (<><p>{t.faqPage.cat1A4P1}</p><p>{t.faqPage.cat1A4P2}</p><p>{t.faqPage.cat1A4P3}</p></>) },
-    ],
-  },
-  {
-    title: t.faqPage.cat2Title,
-    items: [
-      { q: t.faqPage.cat2Q1, a: (<><p>{t.faqPage.cat2A1P1}</p><p>{t.faqPage.cat2A1P2}</p></>) },
-      { q: t.faqPage.cat2Q2, a: (<><p>{t.faqPage.cat2A2P1}</p><p>{t.faqPage.cat2A2P2}</p></>) },
-      { q: t.faqPage.cat2Q3, a: (<><p>{t.faqPage.cat2A3P1}</p><p>{t.faqPage.cat2A3P2}</p><p>{t.faqPage.cat2A3P3}</p></>) },
-    ],
-  },
-  {
-    title: t.faqPage.cat3Title,
-    items: [
-      { q: t.faqPage.cat3Q1, a: (<><p>{t.faqPage.cat3A1P1}</p><ul><li>{t.faqPage.cat3A1Li1}</li><li>{t.faqPage.cat3A1Li2}</li><li>{t.faqPage.cat3A1Li3}</li><li>{t.faqPage.cat3A1Li4}</li><li>{t.faqPage.cat3A1Li5}</li><li>{t.faqPage.cat3A1Li6}</li><li>{t.faqPage.cat3A1Li7}</li><li>{t.faqPage.cat3A1Li8}</li></ul><p>{t.faqPage.cat3A1P2}</p></>) },
-      { q: t.faqPage.cat3Q2, a: (<><p>{t.faqPage.cat3A2P1}</p><p>{t.faqPage.cat3A2P2}</p><p>{t.faqPage.cat3A2P3}</p></>) },
-    ],
-  },
-  {
-    title: t.faqPage.cat4Title,
-    items: [
-      { q: t.faqPage.cat4Q1, a: (<><p>{t.faqPage.cat4A1P1}</p><p>{t.faqPage.cat4A1P2}</p><p>{t.faqPage.cat4A1P3}</p></>) },
-      { q: t.faqPage.cat4Q2, a: (<><p>{t.faqPage.cat4A2P1}</p><p>{t.faqPage.cat4A2P2}</p><p>{t.faqPage.cat4A2P3}</p></>) },
-      { q: t.faqPage.cat4Q3, a: (<><p>{t.faqPage.cat4A3P1}</p><p>{t.faqPage.cat4A3P2}</p></>) },
-      { q: t.faqPage.cat4Q4, a: (<><p>{t.faqPage.cat4A4P1}</p><p>{t.faqPage.cat4A4P2}</p></>) },
-      { q: t.faqPage.cat4Q5, a: (<><p>{t.faqPage.cat4A5P1}</p><p>{t.faqPage.cat4A5P2}</p></>) },
-    ],
-  },
-  {
-    title: t.faqPage.cat5Title,
-    items: [
-      { q: t.faqPage.cat5Q1, a: (<><p>{t.faqPage.cat5A1P1}</p><p>{t.faqPage.cat5A1P2}</p><p>{t.faqPage.cat5A1P3}</p></>) },
-      { q: t.faqPage.cat5Q2, a: (<><p>{t.faqPage.cat5A2P1}</p><p>{t.faqPage.cat5A2P2}</p><p>{t.faqPage.cat5A2P3}</p></>) },
-    ],
-  },
-  {
-    title: t.faqPage.cat6Title,
-    items: [
-      { q: t.faqPage.cat6Q1, a: (<><p>{t.faqPage.cat6A1P1}</p><p>{t.faqPage.cat6A1P2}</p></>) },
-      { q: t.faqPage.cat6Q2, a: (<><p>{t.faqPage.cat6A2P1}</p><p>{t.faqPage.cat6A2P2}</p></>) },
-    ],
-  },
-  {
-    title: t.faqPage.cat7Title,
-    items: [
-      { q: t.faqPage.cat7Q1, a: (<><p>{t.faqPage.cat7A1P1}</p><p>{t.faqPage.cat7A1P2}</p><p><Link href="/contact" style={{ color: C.purple, fontWeight: 500 }}>{t.faqPage.cat7A1P3}</Link></p></>) },
-      { q: t.faqPage.cat7Q2, a: (<><p>{t.faqPage.cat7A2P1}</p><p>{t.faqPage.cat7A2P2}</p><p><Link href="/contact" style={{ color: C.purple, fontWeight: 500 }}>{t.faqPage.cat7A2P3}</Link></p></>) },
-      { q: t.faqPage.cat7Q3, a: (<><p>{t.faqPage.cat7A3P1}</p><p>{t.faqPage.cat7A3P2}</p></>) },
-      { q: t.faqPage.cat7Q4, a: (<><p>{t.faqPage.cat7A4P1}</p><p>{t.faqPage.cat7A4P2}</p></>) },
-      { q: t.faqPage.cat7Q5, a: (<><p>{t.faqPage.cat7A5P1}</p><p>{t.faqPage.cat7A5P2}</p><p><Link href="/contact" style={{ color: C.purple, fontWeight: 500 }}>{t.faqPage.cat7A5P3}</Link></p></>) },
-    ],
-  },
-  {
-    title: t.faqPage.cat8Title,
-    items: [
-      { q: t.faqPage.cat8Q1, a: (<><p>{t.faqPage.cat8A1P1}</p><p>{t.faqPage.cat8A1P2}</p><p><Link href="/contact" style={{ color: C.purple, fontWeight: 500 }}>{t.faqPage.cat8A1P3}</Link></p></>) },
-      { q: t.faqPage.cat8Q2, a: (<><p>{t.faqPage.cat8A2P1}</p><p>{t.faqPage.cat8A2P2}</p><p>{t.faqPage.cat8A2P3}</p></>) },
-      { q: t.faqPage.cat8Q3, a: (<><p>{t.faqPage.cat8A3P1}</p><p>{t.faqPage.cat8A3P2}</p><p><Link href="/contact" style={{ color: C.purple, fontWeight: 500 }}>{t.faqPage.cat8A3P3}</Link></p></>) },
-    ],
-  },
-]; }
-
-
-/* ================================================================== */
-/* ACCORDION                                                           */
-/* ================================================================== */
-
-function AccordionItem({ question, children, isOpen, onToggle, mobile }: { question: string; children: React.ReactNode; isOpen: boolean; onToggle: () => void; mobile: boolean }) {
-  return (
-    <div style={{
-      background: C.white, borderRadius: 14,
-      border: `1px solid ${isOpen ? "rgba(75,63,174,0.15)" : border}`,
-      overflow: "hidden",
-      transition: "border-color 200ms ease",
-      boxShadow: isOpen ? "0 2px 12px rgba(75,63,174,0.04)" : "0 1px 3px rgba(14,26,43,0.02)",
-    }}>
-      <button onClick={onToggle} style={{
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        width: "100%", padding: mobile ? "18px 22px" : "22px 28px",
-        background: "transparent", border: "none", cursor: "pointer", textAlign: "left",
-        transition: "background 180ms ease",
-      }}>
-        <span style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, color: C.navy, lineHeight: 1.4, paddingRight: 16 }}>{question}</span>
-        <span style={{ flexShrink: 0, width: 28, height: 28, borderRadius: 8, backgroundColor: isOpen ? `${C.purple}08` : "rgba(14,26,43,0.03)", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 200ms ease, background-color 200ms ease", transform: isOpen ? "rotate(180deg)" : "rotate(0deg)" }}>
-          <svg width="12" height="7" viewBox="0 0 12 7" fill="none"><path d="M1 1L6 6L11 1" stroke={isOpen ? C.purple : light} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-        </span>
-      </button>
-      {isOpen && (
-        <div style={{ padding: mobile ? "0 22px 22px" : "0 28px 28px" }}>
-          <div style={{ height: 1, background: border, marginBottom: 18 }} />
-          <div className="faq-answer">{children}</div>
-        </div>
-      )}
-    </div>
-  );
+function useReducedMotion() {
+  const [r, setR] = useState(false);
+  useEffect(() => { setR(window.matchMedia("(prefers-reduced-motion: reduce)").matches); }, []);
+  return r;
 }
 
-function FaqCategorySection({ cat, openItems, toggleItem, mobile }: { cat: FaqCategory; openItems: Record<string, boolean>; toggleItem: (key: string) => void; mobile: boolean }) {
-  const catAnim = useInView();
-  return (
-    <div ref={catAnim.ref}>
-      <div style={{
-        display: "flex", alignItems: "center", gap: 14, marginBottom: 20,
-        opacity: catAnim.visible ? 1 : 0, transform: catAnim.visible ? "translateY(0)" : "translateY(10px)",
-        transition: "opacity 500ms ease-out, transform 500ms ease-out",
-      }}>
-        <div style={{ width: 4, height: 24, borderRadius: 2, backgroundColor: C.purple, opacity: 0.30, flexShrink: 0 }} />
-        <span style={{ fontSize: 11, fontWeight: 700, color: C.purple, letterSpacing: "0.14em", textTransform: "uppercase" as const }}>{cat.title}</span>
-        <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, ${C.purple}10 0%, transparent 100%)` }} />
-      </div>
-      <div style={{
-        display: "flex", flexDirection: "column" as const, gap: 10,
-        opacity: catAnim.visible ? 1 : 0, transform: catAnim.visible ? "translateY(0)" : "translateY(10px)",
-        transition: "opacity 500ms ease-out 100ms, transform 500ms ease-out 100ms",
-      }}>
-        {cat.items.map((item, i) => {
-          const key = `${cat.title}-${i}`;
-          return <AccordionItem key={key} question={item.q} isOpen={!!openItems[key]} onToggle={() => toggleItem(key)} mobile={mobile}>{item.a}</AccordionItem>;
-        })}
-      </div>
-    </div>
-  );
+function useFadeIn() {
+  const reduced = useReducedMotion();
+  return (visible: boolean, delay = 0): React.CSSProperties =>
+    reduced ? {} : {
+      opacity: visible ? 1 : 0,
+      transform: visible ? "translateY(0)" : "translateY(16px)",
+      transition: `opacity 600ms cubic-bezier(0.22,1,0.36,1) ${delay}ms, transform 600ms cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
+    };
 }
 
 
-/* ================================================================== */
-/* PAGE                                                                */
-/* ================================================================== */
+/* ================================================================ */
+/* DESIGN SYSTEM                                                     */
+/* ================================================================ */
 
-export default function FaqPage() {
-  const mobile = useMobile();
-  const { t } = useLanguage();
-  const heroAnim = useInView();
-  const [openItems, setOpenItems] = useState<Record<string, boolean>>({});
-  const FAQ_CATEGORIES = getFaqCategories(t);
-  const toggleItem = (key: string) => { setOpenItems((prev) => ({ ...prev, [key]: !prev[key] })); };
+const C = {
+  navy: "#0E1A2B",
+  teal: "#1F6D7A",
+  sand: "#F4F1EA",
+  white: "#FFFFFF",
+  textSecondary: "#5E6873",
+  textMuted: "#7B848E",
+  borderSoft: "#D9D6CF",
+  sandText: "#F4F1EA",
+  sandMuted: "rgba(244,241,234,0.55)",
+  sandLight: "rgba(244,241,234,0.40)",
+};
+
+const innerW = 1120;
+const narrowW = 720;
+const explanatoryW = 640;
+const sectionPx = (m: boolean) => m ? 20 : 48;
+
+
+/* ================================================================ */
+/* FAQ DATA                                                          */
+/* ================================================================ */
+
+interface FaqItem {
+  id: string;
+  category: string;
+  categoryLabel: string;
+  question: string;
+  answer: string;
+  keywords: string[];
+}
+
+const FAQ_DATA: FaqItem[] = [
+  // --- Income Stability Score ---
+  { id: "score-measure", category: "score", categoryLabel: "Income Stability Score\u2122", question: "What does the Income Stability Score\u2122 measure?", answer: "It measures how your income is built\u2014and how it holds under change. The score reflects structure, stability, and continuity. Not income size.", keywords: ["score meaning", "what is score", "income stability", "structure", "rating", "number"] },
+  { id: "score-factors", category: "score", categoryLabel: "Income Stability Score\u2122", question: "What factors influence the score?", answer: "Six structural dimensions: recurring income, source concentration, number of sources, forward visibility, earnings variability, and income continuity. Each is evaluated using fixed rules.", keywords: ["factors", "dimensions", "what affects score", "how calculated", "six areas"] },
+  { id: "score-good", category: "score", categoryLabel: "Income Stability Score\u2122", question: "What does a good score look like?", answer: "Higher scores indicate stronger structure: less dependency, more continuity, greater resilience under disruption. There is no \u201cperfect\u201d score\u2014only stronger or weaker structures.", keywords: ["good score", "high score", "best score", "what is good", "range"] },
+  { id: "score-predict", category: "score", categoryLabel: "Income Stability Score\u2122", question: "Does the score predict future income?", answer: "No. It evaluates how your income is structured\u2014not what will happen.", keywords: ["predict", "future", "forecast", "guarantee"] },
+
+  // --- Assessment ---
+  { id: "assess-time", category: "assessment", categoryLabel: "Assessment", question: "How long does the assessment take?", answer: "Under 2 minutes.", keywords: ["how long", "time", "duration", "minutes"] },
+  { id: "assess-info", category: "assessment", categoryLabel: "Assessment", question: "What information is required?", answer: "You describe how your income works: sources, concentration, variability, and continuity. No financial documents are required.", keywords: ["what info", "required", "documents", "bank", "information needed"] },
+  { id: "assess-retake", category: "assessment", categoryLabel: "Assessment", question: "Can I retake the assessment?", answer: "Yes. Each assessment reflects the inputs at that time.", keywords: ["retake", "again", "redo", "repeat"] },
+
+  // --- Report ---
+  { id: "report-included", category: "report", categoryLabel: "Assessment Report", question: "What is included in the report?", answer: "Score and stability classification, structural breakdown, primary constraint, stress testing, and action plan. Each section is generated from your inputs.", keywords: ["report contents", "what is included", "report sections", "what do I get"] },
+  { id: "report-calculated", category: "report", categoryLabel: "Assessment Report", question: "How is the score calculated?", answer: "Using fixed rules defined in the Structural Stability Model. The same inputs always produce the same score.", keywords: ["how calculated", "calculation", "formula", "method", "deterministic"] },
+
+  // --- Command Center ---
+  { id: "cc-what", category: "command-center", categoryLabel: "Command Center", question: "What is the Command Center?", answer: "A structured interface for applying your results.", keywords: ["command center", "dashboard", "what is it"] },
+  { id: "cc-playbook", category: "command-center", categoryLabel: "Command Center", question: "What is the Negotiation Playbook?", answer: "Scripts based on your income structure to reduce dependency and improve stability.", keywords: ["negotiation", "playbook", "scripts", "what to say"] },
+  { id: "cc-thisweek", category: "command-center", categoryLabel: "Command Center", question: "What is the \u2018This Week\u2019 briefing?", answer: "A short set of actions based on your highest-impact change.", keywords: ["this week", "briefing", "weekly", "actions"] },
+  { id: "cc-roadmap", category: "command-center", categoryLabel: "Command Center", question: "How are roadmap milestones personalized?", answer: "They are generated directly from your inputs\u2014not templates.", keywords: ["roadmap", "milestones", "personalized", "12 week"] },
+  { id: "cc-pressuremap", category: "command-center", categoryLabel: "Command Center", question: "What is PressureMap\u2122?", answer: "A structured view of where your income is most exposed.", keywords: ["pressuremap", "pressure", "exposure", "risk map"] },
+
+  // --- Privacy ---
+  { id: "privacy-data", category: "privacy", categoryLabel: "Privacy and Data", question: "How is my data handled?", answer: "Your inputs are used only to generate your score and report.", keywords: ["data", "privacy", "how used", "what happens to data"] },
+  { id: "privacy-shared", category: "privacy", categoryLabel: "Privacy and Data", question: "Is my information shared?", answer: "No. RunPayway does not sell or share your data.", keywords: ["shared", "sold", "third party", "sell data"] },
+
+  // --- Pricing ---
+  { id: "pricing-diff", category: "pricing", categoryLabel: "Pricing", question: "What is the difference between the free score and the full report?", answer: "The score shows your position. The report shows what defines it\u2014and what changes it.", keywords: ["free vs paid", "difference", "what do I get", "pricing", "cost"] },
+  { id: "pricing-account", category: "pricing", categoryLabel: "Pricing", question: "Do I need an account?", answer: "No.", keywords: ["account", "sign up", "registration", "login"] },
+
+  // --- Enterprise ---
+  { id: "ent-multiple", category: "enterprise", categoryLabel: "Enterprise", question: "Can RunPayway assess multiple income profiles?", answer: "Yes. The system can evaluate multiple individuals using the same model.", keywords: ["multiple", "team", "bulk", "organization"] },
+  { id: "ent-volume", category: "enterprise", categoryLabel: "Enterprise", question: "Does RunPayway offer volume access?", answer: "Yes. Structured access can be provided for teams and organizations.", keywords: ["volume", "enterprise", "team access", "organization"] },
+  { id: "ent-share", category: "enterprise", categoryLabel: "Enterprise", question: "Can assessment records be shared?", answer: "Yes. Reports can be shared at the discretion of the individual.", keywords: ["share", "send", "export", "advisor"] },
+  { id: "ent-soc2", category: "enterprise", categoryLabel: "Enterprise", question: "Is RunPayway SOC 2 compliant?", answer: "Compliance status depends on current infrastructure.", keywords: ["soc 2", "compliance", "security", "certified"] },
+  { id: "ent-integrate", category: "enterprise", categoryLabel: "Enterprise", question: "Can we integrate RunPayway into workflows?", answer: "Integration options can be discussed for enterprise use.", keywords: ["integrate", "api", "workflow", "embed"] },
+
+  // --- Licensing ---
+  { id: "lic-score", category: "licensing", categoryLabel: "Licensing", question: "Can the score be licensed?", answer: "Yes. Licensing options are available for organizations.", keywords: ["license", "licensing", "use score"] },
+  { id: "lic-api", category: "licensing", categoryLabel: "Licensing", question: "How does licensing differ from API access?", answer: "Licensing defines usage rights. API access enables system integration.", keywords: ["license vs api", "api", "difference", "access"] },
+  { id: "lic-whitelabel", category: "licensing", categoryLabel: "Licensing", question: "Is white-label reporting available?", answer: "Options may be available depending on use case.", keywords: ["white label", "whitelabel", "branded", "custom"] },
+];
+
+const CATEGORIES = [
+  { key: "score", label: "Income Stability Score\u2122" },
+  { key: "assessment", label: "Assessment" },
+  { key: "report", label: "Report" },
+  { key: "command-center", label: "Command Center" },
+  { key: "privacy", label: "Privacy" },
+  { key: "pricing", label: "Pricing" },
+  { key: "enterprise", label: "Enterprise" },
+  { key: "licensing", label: "Licensing" },
+];
+
+const SYNONYMS: Record<string, string[]> = {
+  score: ["rating", "number", "result"],
+  income: ["earnings", "revenue", "money"],
+  stability: ["reliability", "consistency"],
+  structure: ["setup", "composition", "build"],
+  report: ["document", "pdf", "output"],
+  assessment: ["test", "quiz", "evaluation"],
+  privacy: ["data", "security", "information"],
+  cost: ["price", "pricing", "fee", "charge"],
+};
+
+
+/* ================================================================ */
+/* SEARCH ENGINE                                                     */
+/* ================================================================ */
+
+function expandQuery(query: string): string {
+  let expanded = query.toLowerCase();
+  for (const [canonical, syns] of Object.entries(SYNONYMS)) {
+    for (const syn of syns) {
+      if (expanded.includes(syn)) {
+        expanded += ` ${canonical}`;
+      }
+    }
+  }
+  return expanded;
+}
+
+
+/* ================================================================ */
+/* HERO                                                              */
+/* ================================================================ */
+
+function HeroSection({ searchValue, onSearch, inputRef }: { searchValue: string; onSearch: (v: string) => void; inputRef: React.RefObject<HTMLInputElement | null> }) {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
 
   return (
-    <div style={{ background: "#FAFAFA", fontFamily: sans }}>
-      <style>{`
-        .faq-answer p { font-size: 16px; color: ${muted}; line-height: 1.65; margin-bottom: 10px; }
-        .faq-answer p:last-child { margin-bottom: 0; }
-        .faq-answer ul { padding: 0; margin: 0 0 10px; list-style: none; }
-        .faq-answer ul li { font-size: 16px; color: ${muted}; line-height: 1.65; padding-left: 20px; position: relative; }
-        .faq-answer ul li::before { content: ""; position: absolute; left: 0; top: 11px; width: 5px; height: 5px; border-radius: 50%; background: ${C.teal}; }
-        .faq-table { border-radius: 12px; overflow: hidden; border: 1px solid ${border}; margin-bottom: 12px; }
-        .faq-table-row { display: grid; grid-template-columns: 1fr 1fr; padding: 12px 20px; font-size: 14px; }
-        .faq-table-row:nth-child(even) { background: #FAFAFA; }
-        .faq-table-row:nth-child(odd):not(.faq-table-header) { background: ${C.white}; }
-        .faq-table-header { background: ${C.navy} !important; color: rgba(244,241,234,0.65); font-size: 12px; font-weight: 600; letter-spacing: 0.10em; text-transform: uppercase; }
-        .faq-table-row span:first-child { font-weight: 600; color: ${C.navy}; }
-        .faq-table-header span:first-child, .faq-table-header span:last-child { color: rgba(244,241,234,0.65); font-weight: 600; }
-        .faq-table-row:not(.faq-table-header) span:last-child { color: ${muted}; text-align: right; font-family: ${mono}; }
-        .faq-table-header span:last-child { text-align: right; }
-      `}</style>
-
-      {/* HERO */}
-      <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: mobile ? 36 : 56, paddingBottom: mobile ? 36 : 56, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24 }}>
-        <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
-        <div ref={heroAnim.ref} style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1, opacity: heroAnim.visible ? 1 : 0, transform: heroAnim.visible ? "translateY(0)" : "translateY(10px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
-          <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
-            {t.faqPage.heroTag}
-          </div>
-          <h1 style={{ fontSize: mobile ? 36 : 52, fontWeight: 600, color: C.navy, letterSpacing: "-0.03em", lineHeight: 1.08, marginBottom: 20 }}>
-            {t.faqPage.heroTitle}
-          </h1>
-          <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, maxWidth: 560, margin: "0 auto" }}>
-            {t.faqPage.heroSubtitle}
-          </p>
+    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 148, paddingBottom: m ? 40 : 56, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+      <div style={{ maxWidth: narrowW, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
+          SUPPORT
         </div>
-      </header>
+        <h1 style={{ fontSize: m ? 34 : 52, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
+          Frequently asked questions
+        </h1>
+        <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 520, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
+          Clear answers about the Income Stability Score&#8482;, how it is generated, and how it is used.
+        </p>
+        <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 0, ...fadeIn(visible, 140) }}>
+          All answers reflect the system as it is defined — not interpreted.
+        </p>
+      </div>
 
-      {/* FAQ SECTIONS */}
-      <section style={{ paddingTop: mobile ? 56 : 112, paddingBottom: mobile ? 56 : 112 }}>
-        <div style={{ maxWidth: 820, margin: "0 auto", paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24, display: "flex", flexDirection: "column" as const, gap: mobile ? 44 : 64 }}>
-          {FAQ_CATEGORIES.map((cat) => (
-            <FaqCategorySection key={cat.title} cat={cat} openItems={openItems} toggleItem={toggleItem} mobile={mobile} />
+      {/* Search bar */}
+      <div style={{ maxWidth: 680, margin: "32px auto 0", ...fadeIn(visible, 180) }}>
+        <div style={{ position: "relative" }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={C.textMuted} strokeWidth="2" strokeLinecap="round" style={{ position: "absolute", left: 20, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
+            <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+          </svg>
+          <input
+            ref={inputRef}
+            type="text"
+            value={searchValue}
+            onChange={e => onSearch(e.target.value)}
+            placeholder="Search how the system works\u2026"
+            style={{
+              width: "100%", height: m ? 56 : 64,
+              padding: "0 48px 0 52px",
+              borderRadius: 16,
+              border: `1px solid rgba(14,26,43,0.12)`,
+              backgroundColor: C.white,
+              fontSize: 16, fontWeight: 400, color: C.navy,
+              outline: "none",
+            }}
+            onFocus={e => { e.currentTarget.style.borderColor = C.teal; }}
+            onBlur={e => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
+          />
+          {!m && !searchValue && (
+            <span style={{ position: "absolute", right: 20, top: "50%", transform: "translateY(-50%)", fontSize: 12, fontWeight: 600, color: C.textMuted, padding: "4px 8px", borderRadius: 6, backgroundColor: "rgba(14,26,43,0.04)", pointerEvents: "none" }}>/</span>
+          )}
+          {searchValue && (
+            <button onClick={() => onSearch("")} style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", fontSize: 18, color: C.textMuted, padding: 4 }}>&times;</button>
+          )}
+        </div>
+      </div>
+    </header>
+  );
+}
+
+
+/* ================================================================ */
+/* SEARCH RESULTS VIEW                                               */
+/* ================================================================ */
+
+function SearchResults({ results, query }: { results: FaqItem[]; query: string }) {
+  const m = useMobile();
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  if (results.length === 0) {
+    return (
+      <div style={{ textAlign: "center", padding: m ? "48px 20px" : "80px 48px" }}>
+        <p style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 8 }}>No exact match.</p>
+        <p style={{ fontSize: 15, color: C.textMuted }}>Try a different term.</p>
+        <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 8, justifyContent: "center", marginTop: 24 }}>
+          {["score", "assessment", "report", "privacy"].map(s => (
+            <span key={s} style={{ fontSize: 13, fontWeight: 500, color: C.teal, padding: "6px 14px", borderRadius: 8, backgroundColor: `${C.teal}08`, cursor: "default" }}>{s}</span>
           ))}
         </div>
-      </section>
+      </div>
+    );
+  }
 
-      {/* FINAL CTA */}
-      <section style={{ backgroundColor: C.navy, paddingTop: mobile ? 72 : 120, paddingBottom: mobile ? 72 : 120, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24, position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: "50%", left: "50%", width: 500, height: 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
-        <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-          <div style={{ fontSize: mobile ? 28 : 40, fontWeight: 500, color: C.sand, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 16 }}>
-            {t.faqPage.closingSubtitle}
-          </div>
-          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.45)", letterSpacing: "0.04em", marginBottom: 28 }}>
-            {t.faqPage.poweredBy}
-          </p>
-          <Link href="/pricing" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 52, padding: "0 40px", borderRadius: 12, backgroundColor: C.white, color: C.navy, fontSize: 16, fontWeight: 600, textDecoration: "none", transition: "background-color 200ms, box-shadow 200ms", boxShadow: "0 2px 12px rgba(244,241,234,0.10)" }}
-            onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#E8E5DE"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(244,241,234,0.15)"; }}
-            onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.boxShadow = "0 2px 12px rgba(244,241,234,0.10)"; }}>
-            Start Your Free Assessment
-          </Link>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.45)", marginTop: 14, letterSpacing: "0.03em" }}>Under 2 minutes &bull; Instant result &bull; Private by default</p>
+  const top = results[0];
+  const related = results.slice(1, 6);
+
+  return (
+    <div style={{ maxWidth: narrowW, margin: "0 auto", padding: m ? "32px 20px" : "48px 48px" }}>
+      {/* Direct answer card */}
+      <div style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, border: `1px solid rgba(14,26,43,0.08)`, marginBottom: 32 }}>
+        <p style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.35 }}>{top.question}</p>
+        <p style={{ fontSize: 16, fontWeight: 400, color: C.textSecondary, lineHeight: 1.6, margin: 0, whiteSpace: "pre-line" }}>{top.answer}</p>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 16, paddingTop: 16, borderTop: `1px solid rgba(14,26,43,0.06)` }}>
+          <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.06em", color: C.textMuted }}>{top.categoryLabel}</span>
         </div>
-      </section>
+      </div>
+
+      {/* Related questions */}
+      {related.length > 0 && (
+        <div>
+          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 16 }}>RELATED</div>
+          {related.map(item => (
+            <div key={item.id} style={{ borderTop: `1px solid ${C.borderSoft}` }}>
+              <button onClick={() => setExpanded(expanded === item.id ? null : item.id)}
+                style={{ width: "100%", padding: "16px 0", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}>
+                <span style={{ fontSize: 16, fontWeight: 600, color: C.navy, lineHeight: 1.4, paddingRight: 16 }}>{item.question}</span>
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, transition: "transform 200ms", transform: expanded === item.id ? "rotate(45deg)" : "rotate(0deg)" }}>
+                  <path d="M3 8h10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
+                  <path d="M8 3v10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              </button>
+              <div style={{ maxHeight: expanded === item.id ? 300 : 0, overflow: "hidden", transition: "max-height 200ms ease" }}>
+                <p style={{ fontSize: 15, fontWeight: 400, color: C.textSecondary, lineHeight: 1.65, margin: 0, paddingBottom: 20, whiteSpace: "pre-line" }}>{item.answer}</p>
+              </div>
+            </div>
+          ))}
+          <div style={{ borderTop: `1px solid ${C.borderSoft}` }} />
+        </div>
+      )}
+
+      <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 32 }}>
+        All answers reflect the system as defined — not interpreted.
+      </p>
+    </div>
+  );
+}
+
+
+/* ================================================================ */
+/* BROWSE VIEW (3-COLUMN DESKTOP)                                    */
+/* ================================================================ */
+
+function BrowseView({ activeCategory, setActiveCategory }: { activeCategory: string; setActiveCategory: (c: string) => void }) {
+  const m = useMobile();
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  const categoryFaqs = FAQ_DATA.filter(f => f.category === activeCategory);
+  const activeLabel = CATEGORIES.find(c => c.key === activeCategory)?.label || "";
+
+  if (m) {
+    return (
+      <div style={{ paddingLeft: 20, paddingRight: 20, paddingBottom: 72 }}>
+        {/* Category tabs */}
+        <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 20, paddingTop: 8, WebkitOverflowScrolling: "touch" }}>
+          {CATEGORIES.map(cat => (
+            <button key={cat.key} onClick={() => { setActiveCategory(cat.key); setExpanded(null); }}
+              style={{
+                padding: "8px 16px", borderRadius: 10, whiteSpace: "nowrap",
+                fontSize: 13, fontWeight: activeCategory === cat.key ? 600 : 400,
+                color: activeCategory === cat.key ? C.navy : C.textMuted,
+                backgroundColor: activeCategory === cat.key ? C.white : "transparent",
+                border: `1px solid ${activeCategory === cat.key ? C.borderSoft : "transparent"}`,
+                cursor: "pointer",
+              }}>
+              {cat.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Questions */}
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.teal, marginBottom: 20 }}>{activeLabel.toUpperCase()}</div>
+        {categoryFaqs.map(item => (
+          <div key={item.id} style={{ borderTop: `1px solid ${C.borderSoft}` }}>
+            <button onClick={() => setExpanded(expanded === item.id ? null : item.id)}
+              style={{ width: "100%", padding: "18px 0", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}>
+              <span style={{ fontSize: 16, fontWeight: 600, color: C.navy, lineHeight: 1.4, paddingRight: 16 }}>{item.question}</span>
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, transition: "transform 200ms", transform: expanded === item.id ? "rotate(45deg)" : "rotate(0deg)" }}>
+                <path d="M3 8h10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
+                <path d="M8 3v10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </button>
+            <div style={{ maxHeight: expanded === item.id ? 400 : 0, overflow: "hidden", transition: "max-height 200ms ease" }}>
+              <p style={{ fontSize: 15, fontWeight: 400, color: C.textSecondary, lineHeight: 1.65, margin: 0, paddingBottom: 20, whiteSpace: "pre-line" }}>{item.answer}</p>
+            </div>
+          </div>
+        ))}
+        <div style={{ borderTop: `1px solid ${C.borderSoft}` }} />
+      </div>
+    );
+  }
+
+  // Desktop 3-column
+  return (
+    <div style={{ maxWidth: innerW, margin: "0 auto", display: "grid", gridTemplateColumns: "240px 1fr 200px", gap: 48, paddingLeft: sectionPx(false), paddingRight: sectionPx(false), paddingBottom: 120 }}>
+      {/* Sidebar */}
+      <nav style={{ position: "sticky", top: 100, alignSelf: "start" }}>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 16 }}>CATEGORIES</div>
+        {CATEGORIES.map(cat => {
+          const isActive = activeCategory === cat.key;
+          return (
+            <button key={cat.key} onClick={() => { setActiveCategory(cat.key); setExpanded(null); }}
+              style={{
+                display: "block", width: "100%", textAlign: "left",
+                padding: "10px 16px", marginBottom: 2,
+                fontSize: 14, fontWeight: isActive ? 600 : 400,
+                color: isActive ? C.navy : C.textSecondary,
+                backgroundColor: isActive ? "rgba(14,26,43,0.03)" : "transparent",
+                borderLeft: isActive ? `2px solid ${C.teal}` : "2px solid transparent",
+                border: "none", borderLeftStyle: "solid" as const, borderLeftWidth: 2,
+                borderLeftColor: isActive ? C.teal : "transparent",
+                cursor: "pointer", borderRadius: 0,
+                transition: "background-color 150ms",
+              }}
+              onMouseEnter={e => { if (!isActive) e.currentTarget.style.backgroundColor = "rgba(14,26,43,0.02)"; }}
+              onMouseLeave={e => { if (!isActive) e.currentTarget.style.backgroundColor = "transparent"; }}>
+              {cat.label}
+            </button>
+          );
+        })}
+      </nav>
+
+      {/* Content */}
+      <div style={{ maxWidth: 720 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.teal, marginBottom: 16 }}>{activeLabel.toUpperCase()}</div>
+
+        {categoryFaqs.map(item => (
+          <div key={item.id} id={item.id} style={{ borderTop: `1px solid ${C.borderSoft}` }}>
+            <button onClick={() => setExpanded(expanded === item.id ? null : item.id)}
+              style={{ width: "100%", padding: "20px 0", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}>
+              <span style={{ fontSize: 18, fontWeight: 600, color: C.navy, lineHeight: 1.4, paddingRight: 24 }}>{item.question}</span>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, transition: "transform 200ms", transform: expanded === item.id ? "rotate(45deg)" : "rotate(0deg)" }}>
+                <path d="M3 8h10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
+                <path d="M8 3v10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+            </button>
+            <div style={{ maxHeight: expanded === item.id ? 500 : 0, overflow: "hidden", transition: "max-height 200ms ease" }}>
+              <p style={{ fontSize: 16, fontWeight: 400, color: C.textSecondary, lineHeight: 1.65, margin: 0, paddingBottom: 24, whiteSpace: "pre-line" }}>{item.answer}</p>
+            </div>
+          </div>
+        ))}
+        <div style={{ borderTop: `1px solid ${C.borderSoft}` }} />
+      </div>
+
+      {/* TOC */}
+      <nav style={{ position: "sticky", top: 100, alignSelf: "start" }}>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 16 }}>ON THIS PAGE</div>
+        {categoryFaqs.map(item => (
+          <a key={item.id} href={`#${item.id}`}
+            style={{
+              display: "block", fontSize: 13, fontWeight: 400,
+              color: expanded === item.id ? C.navy : C.textMuted,
+              textDecoration: "none", padding: "6px 0", lineHeight: 1.4,
+              transition: "color 150ms",
+            }}
+            onClick={e => { e.preventDefault(); setExpanded(item.id); document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
+            {item.question.length > 40 ? item.question.slice(0, 40) + "\u2026" : item.question}
+          </a>
+        ))}
+      </nav>
+    </div>
+  );
+}
+
+
+/* ================================================================ */
+/* FOOTER STRIP                                                      */
+/* ================================================================ */
+
+function FooterStrip() {
+  const m = useMobile();
+  return (
+    <div style={{ backgroundColor: C.sand, padding: m ? "32px 20px" : "40px 48px", textAlign: "center" }}>
+      <p style={{ fontSize: 13, fontWeight: 400, color: C.textMuted, margin: 0 }}>
+        Income Stability Score&#8482; &bull; Powered by Structural Stability Model RP-2.0
+      </p>
+    </div>
+  );
+}
+
+
+/* ================================================================ */
+/* FINAL CTA                                                         */
+/* ================================================================ */
+
+function FinalCta() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+
+  return (
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+      <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center" }}>
+        <h2 style={{ fontSize: m ? 34 : 52, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.sandText, marginBottom: 20, ...fadeIn(visible) }}>
+          See how your income is built.
+        </h2>
+        <p style={{ fontSize: m ? 20 : 24, fontWeight: 400, lineHeight: 1.45, color: C.sandMuted, marginBottom: 32, ...fadeIn(visible, 80) }}>
+          Measure your structure under a fixed system.
+        </p>
+        <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", ...fadeIn(visible, 160) }}>
+          <Link href="/begin" style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            height: m ? 56 : 60, width: m ? "100%" : "auto",
+            padding: m ? "0 28px" : "0 32px",
+            borderRadius: 14, backgroundColor: C.white, color: C.navy,
+            fontSize: 18, fontWeight: 600, textDecoration: "none",
+            boxShadow: "0 8px 24px rgba(14,26,43,0.08)",
+            border: `1px solid ${C.borderSoft}`,
+            transition: "transform 200ms",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
+            Begin assessment
+          </Link>
+          <p style={{ fontSize: 14, fontWeight: 400, color: C.sandLight, marginTop: 16 }}>
+            Under 2 minutes &bull; Instant result &bull; Private by default
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================ */
+/* PAGE EXPORT                                                       */
+/* ================================================================ */
+
+export default function FaqPage() {
+  const [query, setQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState("score");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Keyboard shortcut: "/" to focus search
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "/" && document.activeElement?.tagName !== "INPUT") {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
+      if (e.key === "Escape") {
+        setQuery("");
+        inputRef.current?.blur();
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
+  // Fuse.js search engine
+  const fuse = useMemo(() => new Fuse(FAQ_DATA, {
+    keys: [
+      { name: "question", weight: 0.5 },
+      { name: "answer", weight: 0.2 },
+      { name: "keywords", weight: 0.3 },
+    ],
+    threshold: 0.4,
+    includeScore: true,
+  }), []);
+
+  const searchResults = useMemo(() => {
+    if (!query.trim()) return [];
+    const expanded = expandQuery(query);
+    return fuse.search(expanded).map(r => r.item);
+  }, [query, fuse]);
+
+  const isSearching = query.trim().length > 0;
+
+  return (
+    <div className="overflow-x-hidden">
+      <main>
+        <HeroSection searchValue={query} onSearch={setQuery} inputRef={inputRef} />
+
+        <div style={{ backgroundColor: C.white, minHeight: 400 }}>
+          {isSearching ? (
+            <SearchResults results={searchResults} query={query} />
+          ) : (
+            <BrowseView activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+          )}
+        </div>
+
+        <FooterStrip />
+        <FinalCta />
+      </main>
     </div>
   );
 }
