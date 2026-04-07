@@ -61,15 +61,23 @@ function HeroSection() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <header ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 40 : 64, paddingBottom: m ? 40 : 56, paddingLeft: px(m), paddingRight: px(m) }}>
+    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 56 : 88, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>Methodology</div>
-        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.03em", color: C.navy, marginBottom: 16, ...fadeIn(visible, 60) }}>
-          Fixed rules. Versioned logic.{m ? " " : <br />}Every result reproducible.
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>METHODOLOGY</div>
+        <h1 style={{ fontSize: m ? 38 : 64, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible, 50) }}>
+          The System Behind Your Score
         </h1>
-        <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto", ...fadeIn(visible, 120) }}>
-          The Income Stability Score&#8482; is produced by fixed rules. No AI. No subjective judgment. Same answers always produce the same score.
+        <p style={{ fontSize: m ? 20 : 28, fontWeight: 400, lineHeight: 1.4, color: C.teal, marginBottom: 24, ...fadeIn(visible, 80) }}>
+          Fixed rules. Versioned logic. Reproducible results.
         </p>
+        <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.6, maxWidth: 580, margin: "0 auto 24px", ...fadeIn(visible, 120) }}>
+          RunPayway&#8482; produces the Income Stability Score&#8482; using fixed rules&mdash;no AI, no subjective judgment. Same inputs always produce the same result. Period.
+        </p>
+        <div style={{ display: "flex", flexWrap: "wrap" as const, justifyContent: "center", gap: m ? 12 : 24, ...fadeIn(visible, 160) }}>
+          {["No machine learning", "No interpretation", "No variation"].map((item, i) => (
+            <span key={i} style={{ fontSize: 14, fontWeight: 600, color: "rgba(14,26,43,0.55)" }}>{item}</span>
+          ))}
+        </div>
       </div>
     </header>
   );
@@ -88,24 +96,24 @@ function WhatMakesItDifferent() {
     <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 60 : 104, paddingBottom: m ? 60 : 104, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 880, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 12 }}>What makes this different from other assessments.</h2>
-          <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 560, margin: "0 auto" }}>
-            Most financial tools measure what happened. RunPayway™ measures how your income is built — and whether it holds up when things change.
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>What makes this different from other assessments?</h2>
+          <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.6, maxWidth: 600, margin: "0 auto" }}>
+            Most financial tools measure what happened. RunPayway&#8482; measures how your income is built&mdash;and whether it holds up when things change.
           </p>
         </div>
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20, marginBottom: m ? 48 : 72, ...fadeIn(visible, 100) }}>
           {[
-            { title: "Not a credit score", desc: "Credit scores measure borrowing history. This measures how income holds under disruption. Different inputs. Different purpose.", icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", color: C.teal },
-            { title: "Not a forecast", desc: "The model does not predict what will happen. It measures how your current income would hold up if conditions changed today.", icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6", color: C.purple },
-            { title: "Not subjective", desc: "No advisor, no algorithm, no interpretation layer touches the score. Fixed rules produce fixed results. Every time.", icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 0 0 4.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 0 1-15.357-2m15.357 2H15", color: C.navy },
+            { title: "Not a Credit Score", desc: "Credit scores measure borrowing history. This measures how income holds under disruption. Different inputs. Different purpose.", icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", color: C.teal },
+            { title: "Not a Forecast", desc: "The model does not predict what will happen. It measures how your current income would hold up if conditions changed today.", icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6", color: C.purple },
+            { title: "Not Subjective", desc: "No advisor. No algorithm. No interpretation. Fixed rules produce fixed results. Every time.", icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 0 0 4.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 0 1-15.357-2m15.357 2H15", color: C.navy },
           ].map((item, i) => (
             <div key={i} style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 28, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", marginBottom: m ? 16 : 0, position: "relative" as const, overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${item.color}20` }} />
               <div style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: `${item.color}08`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={item.color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={item.icon} /></svg>
               </div>
-              <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 10, lineHeight: 1.3 }}>{item.title}</div>
+              <div style={{ fontSize: 18, fontWeight: 600, color: C.teal, marginBottom: 10, lineHeight: 1.3 }}>{item.title}</div>
               <p style={{ fontSize: 15, color: muted, margin: 0, lineHeight: 1.6 }}>{item.desc}</p>
             </div>
           ))}
@@ -118,10 +126,10 @@ function WhatMakesItDifferent() {
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${C.purple}20` }} />
             <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.purple, marginBottom: 20 }}>HOW VERSIONING WORKS</div>
             {[
-              { label: "Model is locked", desc: "Every version is immutable once deployed.", icon: "M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 0 0-8 0v4h8z" },
-              { label: "Scores are comparable", desc: "Same version = directly comparable results.", icon: "M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6M15 19v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6M9 13V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v8" },
-              { label: "Changes increment", desc: "Any rule change creates a new model version.", icon: "M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" },
-              { label: "Every result is stamped", desc: "The model version is permanently recorded.", icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" },
+              { label: "The model is locked", desc: "Once deployed, every version is immutable.", icon: "M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 0 0-8 0v4h8z" },
+              { label: "Scores are Comparable", desc: "Same version = directly comparable results.", icon: "M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6M15 19v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6M9 13V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v8" },
+              { label: "Changes Increment", desc: "Any rule change creates a new model version.", icon: "M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" },
+              { label: "Every Result is Stamped", desc: "The model version is permanently recorded.", icon: "M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" },
             ].map((item, i) => (
               <div key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start", marginBottom: 18 }}>
                 <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${C.purple}06`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
@@ -177,8 +185,8 @@ function Integrity() {
       <div style={{ maxWidth: 880, margin: "0 auto", position: "relative", zIndex: 1 }}>
 
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.sand, marginBottom: 12 }}>System integrity.</h2>
-          <p style={{ fontSize: m ? 16 : 17, color: "rgba(244,241,234,0.50)", lineHeight: 1.65 }}>What the model guarantees — and what it deliberately does not do.</p>
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sand, marginBottom: 12 }}>System Integrity: What the Model Guarantees</h2>
+          <p style={{ fontSize: m ? 16 : 18, color: "rgba(244,241,234,0.50)", lineHeight: 1.6 }}>What the model guarantees &mdash; and what it deliberately does not do.</p>
         </div>
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: m ? 36 : 56, ...fadeIn(visible, 100) }}>
@@ -229,8 +237,11 @@ function Integrity() {
 
         {/* Boundary statement */}
         <div style={{ padding: m ? "18px 20px" : "18px 24px", borderRadius: 10, borderLeft: `3px solid ${C.teal}`, backgroundColor: "rgba(255,255,255,0.02)", ...fadeIn(visible, 200) }}>
-          <p style={{ fontSize: 16, fontWeight: 500, color: C.sand, margin: 0, lineHeight: 1.5 }}>
-            RunPayway&#8482; is a measurement system — not a financial product. It defines how income stability is measured, not how decisions are made.
+          <p style={{ fontSize: 18, fontWeight: 600, color: C.sand, margin: 0, lineHeight: 1.5 }}>
+            RunPayway&#8482; is a measurement system &mdash; not a financial product.
+          </p>
+          <p style={{ fontSize: 16, fontWeight: 400, color: "rgba(244,241,234,0.55)", margin: "8px 0 0", lineHeight: 1.5 }}>
+            It defines how income stability is measured, not how decisions are made.
           </p>
         </div>
       </div>
@@ -249,30 +260,30 @@ function FinalCta() {
   const fadeIn = useFadeIn();
   return (
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 60 : 104, paddingBottom: m ? 64 : 112, paddingLeft: px(m), paddingRight: px(m), borderTop: "1px solid rgba(244,241,234,0.04)" }}>
-      <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center" }}>
-        <h2 style={{ fontSize: m ? 26 : 40, fontWeight: 500, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.sand, marginBottom: 16, ...fadeIn(visible) }}>
-          The rules are fixed.{m ? " " : <br />}Now see how your income measures up.
-        </h2>
-        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 36, ...fadeIn(visible, 60) }}>
-          Under 2 minutes. Same answers always give the same result.
+      <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
+        <p style={{ fontSize: m ? 18 : 22, fontWeight: 600, color: C.sand, lineHeight: 1.35, marginBottom: 8, ...fadeIn(visible) }}>
+          The rules are fixed.
         </p>
+        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sand, marginBottom: 32, ...fadeIn(visible, 40) }}>
+          Now, see how your income measures up.
+        </h2>
         <div style={{ ...fadeIn(visible, 120) }}>
-          <Link href="/pricing" style={{
+          <Link href="/begin" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
-            height: 56, padding: m ? "0 28px" : "0 44px", width: m ? "100%" : "auto", maxWidth: m ? 360 : "none",
-            borderRadius: 12,
-            background: `linear-gradient(135deg, ${C.white} 0%, rgba(244,241,234,0.95) 100%)`,
-            color: C.navy, fontSize: m ? 15 : 16, fontWeight: 600, textDecoration: "none",
-            boxShadow: "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)",
-            border: "1px solid rgba(244,241,234,0.45)",
+            height: m ? 56 : 60, padding: m ? "0 28px" : "0 32px", width: m ? "100%" : "auto",
+            borderRadius: 16,
+            backgroundColor: C.white, color: C.navy,
+            fontSize: 16, fontWeight: 600, textDecoration: "none",
+            boxShadow: "0 8px 24px rgba(14,26,43,0.08)",
+            border: `1px solid rgba(244,241,234,0.45)`,
             transition: "transform 200ms, box-shadow 200ms",
           }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(244,241,234,0.20), 0 12px 48px rgba(244,241,234,0.10)"; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)"; }}>
-            Start Your Free Assessment
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(244,241,234,0.15)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
+            Get Your Structural Income Report
           </Link>
-          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.45)", marginTop: 14, letterSpacing: "0.02em" }}>
-            Under 2 minutes &bull; Instant result &bull; Private by default
+          <p style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.45)", marginTop: 16 }}>
+            Under 2 minutes | Instant result | Private by default
           </p>
         </div>
       </div>
