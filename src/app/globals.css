@@ -6,8 +6,12 @@
   --rp-navy: #0E1A2B;
   --rp-purple: #4B3FAE;
   --rp-teal: #1F6D7A;
-  --rp-sand: #F7F6F3;
+  --rp-sand: #F4F1EA;
   --rp-sand-dark: #EDECEA;
+  --rp-text-primary: #131A22;
+  --rp-text-secondary: #5E6873;
+  --rp-text-muted: #7B848E;
+  --rp-border-soft: #D9D6CF;
 }
 
 /* Mobile viewport safety */
