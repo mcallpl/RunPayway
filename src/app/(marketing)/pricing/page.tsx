@@ -213,7 +213,7 @@ function PricingCards() {
 
           {/* ─── DIAGNOSTIC (PRIMARY) ─── */}
           <div style={{ backgroundColor: C.white, borderRadius: 18, padding: m ? 28 : 32, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", boxShadow: "0 12px 40px rgba(14,26,43,0.10)", transform: m ? "none" : "scale(1.03)", border: `1px solid rgba(14,26,43,0.08)` }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${C.purple}, ${C.teal})` }} />
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.purple }} />
             <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.purple, marginTop: 4, marginBottom: 20 }}>
               RunPayway&#8482; Diagnostic
             </div>
@@ -274,36 +274,36 @@ function PricingCards() {
           </div>
 
           {/* ─── MONITORING ─── */}
-          <div style={{ backgroundColor: C.navy, borderRadius: 18, padding: m ? 28 : 32, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", marginTop: m ? 20 : 0 }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginTop: 4, marginBottom: 20 }}>
+          <div style={{ backgroundColor: C.white, borderRadius: 18, padding: m ? 28 : 32, boxShadow: cardShadow, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", marginTop: m ? 20 : 0 }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.navy }} />
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.navy, marginTop: 4, marginBottom: 20 }}>
               RunPayway&#8482; Monitoring
             </div>
             <div style={{ marginBottom: 4 }}>
-              <span style={{ fontSize: 48, fontWeight: 600, fontFamily: mono, color: C.sandText, lineHeight: 1 }}>$149</span>
-              <span style={{ fontSize: 14, color: C.sandLight, marginLeft: 8 }}>/year</span>
+              <span style={{ fontSize: 48, fontWeight: 600, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$149</span>
+              <span style={{ fontSize: 14, color: C.textMuted, marginLeft: 8 }}>/year</span>
             </div>
-            <div style={{ fontSize: 14, color: C.sandLight, marginBottom: 20 }}>ongoing visibility</div>
-            <p style={{ fontSize: 15, fontWeight: 500, color: C.sandMuted, lineHeight: 1.55, marginBottom: 12 }}>
+            <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 20 }}>ongoing visibility</div>
+            <p style={{ fontSize: 15, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 12 }}>
               Track how your income structure evolves over time.
             </p>
             <p style={{ fontSize: 14, fontWeight: 500, color: C.teal, marginBottom: 24 }}>
               Because structure changes — even when income doesn&rsquo;t.
             </p>
-            <div style={{ marginBottom: 20, flex: 1, color: "rgba(244,241,234,0.60)" }}>
-              {check("Reassess your structure across the year", C.teal)}
-              {check("Track how your score actually moves", C.teal)}
-              {check("See what improved — and what didn\u2019t", C.teal)}
-              {check("Compare your structure over time", C.teal)}
-              {check("Maintain continuous visibility", C.teal)}
+            <div style={{ marginBottom: 20, flex: 1, color: C.textSecondary }}>
+              {check("Reassess your structure across the year")}
+              {check("Track how your score actually moves")}
+              {check("See what improved — and what didn\u2019t")}
+              {check("Compare your structure over time")}
+              {check("Maintain continuous visibility")}
             </div>
 
             {/* Best for */}
-            <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 20, marginBottom: 24 }}>
-              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: C.sandLight, marginBottom: 12 }}>BEST FOR</div>
+            <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 20, marginBottom: 24 }}>
+              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: C.textMuted, marginBottom: 12 }}>BEST FOR</div>
               <div style={{ display: "flex", flexDirection: "column" as const, gap: 6 }}>
                 {["Self-employed", "Variable income earners", "Anyone actively improving structure"].map((line, i) => (
-                  <span key={i} style={{ fontSize: 14, fontWeight: 500, color: C.sandMuted, lineHeight: 1.45 }}>{line}</span>
+                  <span key={i} style={{ fontSize: 14, fontWeight: 500, color: C.textSecondary, lineHeight: 1.45 }}>{line}</span>
                 ))}
               </div>
             </div>
@@ -311,16 +311,16 @@ function PricingCards() {
             <a href={STRIPE_ANNUAL} onClick={() => trackPurchaseClick("monitoring_149")} style={{
               display: "flex", alignItems: "center", justifyContent: "center",
               height: 56, borderRadius: 14,
-              backgroundColor: C.white, color: C.navy,
+              backgroundColor: C.navy, color: C.white,
               fontSize: 16, fontWeight: 600, textDecoration: "none",
               transition: "transform 200ms, box-shadow 200ms",
-              boxShadow: "0 2px 8px rgba(244,241,234,0.10)",
+              boxShadow: ctaShadow,
             }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
               Start Monitoring &mdash; $149/year
             </a>
-            <p style={{ fontSize: 13, color: C.sandMuted, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
+            <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
               Includes full diagnostic access.
             </p>
           </div>
