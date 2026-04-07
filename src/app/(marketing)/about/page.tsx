@@ -84,14 +84,14 @@ function HeroSection() {
         <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
           ABOUT
         </div>
-        <h1 style={{ fontSize: m ? 38 : 64, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
-          The standard for measuring{m ? " " : <br />}Structural Income.
+        <h1 style={{ fontSize: m ? 38 : 64, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
+          The Standard for Measuring{m ? " " : <br />}Structural Income
         </h1>
         <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: narrowW, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
-          RunPayway&#8482; produces the Income Stability Score&#8482; — a fixed measurement of how income is built and how it holds under pressure.
+          RunPayway&#8482; produces the Income Stability Score&#8482;&mdash;a fixed, deterministic measurement of how your income is built and how it holds up under pressure.
         </p>
-        <p style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: C.navy, ...fadeIn(visible, 150) }}>
-          Not how much you earn. How your income behaves.
+        <p style={{ fontSize: m ? 18 : 22, fontWeight: 600, color: C.teal, ...fadeIn(visible, 150) }}>
+          Not how much you earn. How your income behaves under change.
         </p>
       </div>
     </header>
@@ -113,18 +113,18 @@ function Declaration() {
       <div style={{ maxWidth: innerW, margin: "0 auto", display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 48 }}>
         <div style={{ marginBottom: m ? 32 : 0, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy }}>
-            Income has always{m ? " " : <br />}been visible.{m ? " " : <br />}Its structure has not.
+            Income Has Always{m ? " " : <br />}Been Visible.{m ? " " : <br />}Its Structure Has Not.
           </h2>
         </div>
         <div style={{ ...fadeIn(visible, 100) }}>
-          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24 }}>
-            Financial systems measure:
+          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 16 }}>
+            Financial systems track:
           </p>
-          <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, marginBottom: 32 }}>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, marginBottom: 24 }}>
             {[
-              "what you earn",
-              "what you owe",
-              "what you\u2019ve accumulated",
+              "What you earn",
+              "What you owe",
+              "What you\u2019ve accumulated",
             ].map((line, i) => (
               <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                 <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
@@ -132,11 +132,14 @@ function Declaration() {
               </div>
             ))}
           </div>
-          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 32 }}>
+          <p style={{ fontSize: 18, fontWeight: 500, lineHeight: 1.6, color: C.navy, marginBottom: 24 }}>
             But not how income is built.
           </p>
-          <p style={{ fontSize: 16, fontWeight: 600, color: C.navy }}>
+          <p style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 8 }}>
             RunPayway defines that measurement.
+          </p>
+          <p style={{ fontSize: 16, fontWeight: 500, color: C.teal }}>
+            This is the standard for income structure.
           </p>
         </div>
       </div>
@@ -161,19 +164,27 @@ function WhatWeDo() {
           WHAT WE DO
         </div>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
-          Measure how income holds under change.
+          Measure How Income Holds Under Change.
         </h2>
         <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, ...fadeIn(visible, 100) }}>
-          RunPayway evaluates six structural dimensions of income — not the amount.
+          RunPayway evaluates six structural dimensions of income&mdash;not the amount.
         </p>
         <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, ...fadeIn(visible, 120) }}>
-          The result is a score from 0 to 100 that shows how income behaves under real conditions:
+          The result is a score from 0 to 100 that shows how income behaves under real-world conditions:
         </p>
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 10, marginBottom: 32, ...fadeIn(visible, 150) }}>
-          {["disruption", "delay", "dependency", "inactivity"].map((item, i) => (
-            <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: m ? 12 : 16, marginBottom: 32, ...fadeIn(visible, 150) }}>
+          {[
+            { label: "Disruption", desc: "A client leaves or a contract ends" },
+            { label: "Delay", desc: "Pipeline stalls or payments are late" },
+            { label: "Dependency", desc: "Too much relies on one source" },
+            { label: "Inactivity", desc: "You step away or can\u2019t work" },
+          ].map((item, i) => (
+            <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "12px 16px", borderRadius: 12, backgroundColor: C.white, marginBottom: m ? 8 : 0 }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
-              <span style={{ fontSize: 18, color: C.textSecondary, lineHeight: 1.6 }}>{item}</span>
+              <div>
+                <span style={{ fontSize: 16, fontWeight: 600, color: C.navy }}>{item.label}</span>
+                <span style={{ fontSize: 15, color: C.textSecondary }}> &mdash; {item.desc}</span>
+              </div>
             </div>
           ))}
         </div>
@@ -201,20 +212,20 @@ function WhoItsFor() {
         <div style={{ marginBottom: m ? 32 : 0, ...fadeIn(visible) }}>
           <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>WHO IT&rsquo;S FOR</div>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy }}>
-            For income that depends{m ? " " : <br />}on decisions —{m ? " " : <br />}not guarantees.
+            For Income That Depends{m ? " " : <br />}on Decisions &mdash;{m ? " " : <br />}Not Guarantees.
           </h2>
         </div>
         <div style={{ ...fadeIn(visible, 100) }}>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24 }}>
-            RunPayway is built for individuals whose income is not fixed:
+            RunPayway is designed for individuals whose income is not fixed:
           </p>
           <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, marginBottom: 32 }}>
             {[
-              "consultants",
-              "business owners",
-              "freelancers",
-              "commission-based professionals",
-              "operators with variable income",
+              "Consultants",
+              "Business owners",
+              "Freelancers",
+              "Commission-based professionals",
+              "Operators with variable income",
             ].map((item, i) => (
               <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                 <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
@@ -223,7 +234,7 @@ function WhoItsFor() {
             ))}
           </div>
           <p style={{ fontSize: 16, fontWeight: 600, color: C.navy }}>
-            If your income changes based on what you do, this applies.
+            If your income changes based on what you do, this applies to you.
           </p>
         </div>
       </div>
@@ -248,19 +259,22 @@ function WhyItExists() {
           WHY IT EXISTS
         </div>
         <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 32, ...fadeIn(visible, 50) }}>
-          A missing measurement.
+          A Missing Measurement
         </h2>
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 16, marginBottom: 32, ...fadeIn(visible, 100) }}>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 16, marginBottom: 24, ...fadeIn(visible, 100) }}>
           {[
             "Credit scores measure borrowing behavior.",
             "Advisors manage accumulated assets.",
-            "Income is tracked — but not evaluated structurally.",
+            "Income is tracked, but not evaluated structurally.",
           ].map((line, i) => (
             <p key={i} style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, margin: 0 }}>{line}</p>
           ))}
         </div>
+        <p style={{ fontSize: 18, fontWeight: 500, lineHeight: 1.6, color: C.navy, marginBottom: 16, ...fadeIn(visible, 150) }}>
+          RunPayway measures how income is built&mdash;and whether it holds under real-world conditions.
+        </p>
         <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, ...fadeIn(visible, 180) }}>
-          RunPayway measures how income is built — and whether it holds.
+          The system evaluates the structural integrity of your income.{m ? " " : <br />}No guesswork. No random data. Just reproducible results.
         </p>
       </div>
     </section>
@@ -272,34 +286,67 @@ function WhyItExists() {
 /* SECTION 6 — TRUST SYSTEM                                          */
 /* ================================================================ */
 
-function TrustSystem() {
+function SystemIntegrity() {
   const { ref, visible } = useInView();
   const m = useMobile();
   const fadeIn = useFadeIn();
 
-  const pillars = [
-    { title: "Consistent", desc: "Same inputs always produce the same score. No variation." },
-    { title: "Versioned", desc: "Each model is fixed. If rules change, the version changes." },
-    { title: "Private", desc: "No bank connection. No credit pull. No data sharing." },
-    { title: "Deterministic", desc: "No AI in scoring. No subjective judgment. Fixed rules only." },
-  ];
-
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
-      <div style={{ maxWidth: 880, margin: "0 auto" }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m), position: "relative", overflow: "hidden" }}>
+      <div style={{ maxWidth: 880, margin: "0 auto", position: "relative", zIndex: 1 }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy }}>
-            Designed for consistency —{m ? " " : <br />}not interpretation.
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 12 }}>
+            System Integrity: Fixed Rules, No Exceptions
           </h2>
+          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted }}>
+            RunPayway is a fixed-system model&mdash;no machine learning, no advisor judgment, no randomness.
+          </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 24, ...fadeIn(visible, 100) }}>
-          {pillars.map((item, i) => (
-            <div key={i} style={{ padding: 24, borderRadius: 12, border: `1px solid rgba(14,26,43,0.06)` }}>
-              <div style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 8 }}>{item.title}</div>
-              <p style={{ fontSize: 15, fontWeight: 400, color: C.textSecondary, lineHeight: 1.55, margin: 0 }}>{item.desc}</p>
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, ...fadeIn(visible, 100) }}>
+          {/* Guarantees */}
+          <div style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.04)", borderLeft: `3px solid ${C.teal}`, marginBottom: m ? 16 : 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${C.teal}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round"><path d="M9 12l2 2 4-4" /><circle cx="12" cy="12" r="10" /></svg>
+              </div>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal }}>WHAT THE MODEL GUARANTEES</div>
             </div>
-          ))}
+            {[
+              "Same inputs always produce the same score",
+              "No human override in scoring",
+              "Nothing outside your answers affects the result",
+              "Every assessment stamped with model version",
+              "Scores under the same version are directly comparable",
+            ].map((item, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 14 }}>
+                <span style={{ color: C.teal, fontSize: 14, flexShrink: 0, marginTop: 1 }}>&#10003;</span>
+                <span style={{ fontSize: 15, color: "rgba(244,241,234,0.65)", lineHeight: 1.5 }}>{item}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Exclusions */}
+          <div style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.04)", borderLeft: "3px solid rgba(244,241,234,0.10)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+              <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.04)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(244,241,234,0.50)" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+              </div>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.40)" }}>WHAT THE MODEL DOES NOT DO</div>
+            </div>
+            {[
+              "Access bank accounts or financial data",
+              "Use machine learning or probability-based models",
+              "Apply subjective judgment at any stage",
+              "Make predictive claims about future income",
+              "Provide financial, legal, or investment advice",
+            ].map((item, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 14 }}>
+                <span style={{ color: "rgba(244,241,234,0.25)", fontSize: 14, flexShrink: 0, marginTop: 1 }}>&times;</span>
+                <span style={{ fontSize: 15, color: "rgba(244,241,234,0.50)", lineHeight: 1.5 }}>{item}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -319,20 +366,20 @@ function Positioning() {
   return (
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>
-          A measurement system —{m ? " " : <br />}not a financial product.
+        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
+          RunPayway&#8482; is a measurement system &mdash;{m ? " " : <br />}not a financial product.
         </h2>
-        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, ...fadeIn(visible, 80) }}>
-          RunPayway defines how income stability is measured.
+        <p style={{ fontSize: 18, fontWeight: 500, lineHeight: 1.6, color: C.teal, marginBottom: 24, ...fadeIn(visible, 60) }}>
+          It defines how income stability is measured.
         </p>
-        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, ...fadeIn(visible, 100) }}>
+        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 16, ...fadeIn(visible, 100) }}>
           It does not:
         </p>
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 10, marginBottom: 32, ...fadeIn(visible, 140) }}>
           {[
-            "provide financial advice",
-            "make decisions",
-            "interpret outcomes",
+            "Make decisions for you",
+            "Provide financial advice",
+            "Interpret outcomes",
           ].map((line, i) => (
             <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
@@ -361,29 +408,29 @@ function FinalCta() {
   return (
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center" }}>
-        <h2 style={{ fontSize: m ? 34 : 52, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.sandText, marginBottom: 20, ...fadeIn(visible) }}>
-          Your income already{m ? " " : <br />}has a structure.
-        </h2>
-        <p style={{ fontSize: m ? 20 : 24, fontWeight: 400, lineHeight: 1.45, color: C.sandMuted, marginBottom: 32, ...fadeIn(visible, 80) }}>
-          Now you can see how it behaves — and decide what to do next.
+        <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.45, color: C.sandMuted, marginBottom: 12, ...fadeIn(visible) }}>
+          Your income already has a structure.
         </p>
+        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 32, ...fadeIn(visible, 60) }}>
+          Now you can see how it behaves&mdash;{m ? " " : <br />}and decide what to do next.
+        </h2>
         <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", ...fadeIn(visible, 160) }}>
           <Link href="/begin" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: m ? 56 : 60, width: m ? "100%" : "auto",
             padding: m ? "0 28px" : "0 32px",
-            borderRadius: 14, backgroundColor: C.white, color: C.navy,
-            fontSize: 18, fontWeight: 600, textDecoration: "none",
+            borderRadius: 16, backgroundColor: C.white, color: C.navy,
+            fontSize: 16, fontWeight: 600, textDecoration: "none",
             boxShadow: "0 8px 24px rgba(14,26,43,0.08)",
             border: `1px solid ${C.borderSoft}`,
-            transition: "transform 200ms",
+            transition: "transform 200ms, box-shadow 200ms",
           }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
-            Begin assessment
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
+            Get Your Structural Income Report
           </Link>
-          <p style={{ fontSize: 14, fontWeight: 400, color: C.sandLight, marginTop: 16 }}>
-            Under 2 minutes &bull; Instant result &bull; Private by default
+          <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 16 }}>
+            Under 2 minutes | Instant result | Private by default
           </p>
         </div>
       </div>
@@ -405,7 +452,7 @@ export default function AboutPage() {
         <WhatWeDo />
         <WhoItsFor />
         <WhyItExists />
-        <TrustSystem />
+        <SystemIntegrity />
         <Positioning />
         <FinalCta />
       </main>
