@@ -91,7 +91,7 @@ function HeroSection() {
           PRICING
         </div>
         <h1 style={{ fontSize: m ? 42 : 68, fontWeight: 700, lineHeight: 0.98, letterSpacing: "-0.04em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
-          Start with the score.{m ? " " : <br />}Unlock what changes it.
+          Start with the score.{m ? " " : <br />}Understand what defines it.
         </h1>
         <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.45, color: C.textSecondary, maxWidth: 680, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
           RunPayway reveals how your income is built — and whether it holds under pressure.
@@ -120,10 +120,7 @@ function Declaration() {
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, textAlign: "center", marginBottom: 24, ...fadeIn(visible) }}>
           The system stays fixed.{m ? " " : <br />}Your level of visibility changes.
         </h2>
-        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, textAlign: "center", marginBottom: 24, ...fadeIn(visible, 80) }}>
-          Every user is evaluated using the same model.
-        </p>
-        <p style={{ fontSize: 17, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, textAlign: "center", marginBottom: 32, ...fadeIn(visible, 120) }}>
+        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, textAlign: "center", marginBottom: 32, ...fadeIn(visible, 80) }}>
           What changes is how deeply you can see:
         </p>
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, maxWidth: 420, margin: "0 auto 32px", ...fadeIn(visible, 160) }}>
@@ -139,7 +136,7 @@ function Declaration() {
           ))}
         </div>
         <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, textAlign: "center", ...fadeIn(visible, 200) }}>
-          The rules do not change. Your access does.
+          The rules do not change. Only your visibility does.
         </p>
       </div>
     </section>
@@ -159,7 +156,7 @@ function PricingCards() {
   const check = (text: string, color = C.teal) => (
     <div style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 14 }}>
       <span style={{ color, fontSize: 14, flexShrink: 0, marginTop: 2 }}>&#10003;</span>
-      <span style={{ fontSize: 15, lineHeight: 1.55, color: "inherit" }}>{text}</span>
+      <span style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.55, color: "inherit" }}>{text}</span>
     </div>
   );
 
@@ -173,8 +170,11 @@ function PricingCards() {
         <span style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$0</span>
       </div>
       <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 24 }}>always available</div>
-      <p style={{ fontSize: 15, fontWeight: 500, color: C.navy, lineHeight: 1.5, marginBottom: 24 }}>
+      <p style={{ fontSize: 15, fontWeight: 400, color: C.navy, lineHeight: 1.5, marginBottom: 8 }}>
         Your baseline measurement. No cost. No commitment.
+      </p>
+      <p style={{ fontSize: 14, fontWeight: 400, color: C.textMuted, lineHeight: 1.5, marginBottom: 24 }}>
+        A starting point — not the full picture.
       </p>
       <div style={{ marginBottom: 28, flex: 1, color: C.textSecondary }}>
         {check("Structural Income Score (0\u2013100)")}
@@ -196,7 +196,7 @@ function PricingCards() {
         Get Your Free Score
       </Link>
       <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
-        Takes under 2 minutes. No account. No financial access.
+        Under 2 minutes. No account. No financial access.
       </p>
       <p style={{ fontSize: 13, fontWeight: 600, color: C.navy, textAlign: "center", marginTop: 10, marginBottom: 0 }}>
         Most people have never measured this.
@@ -218,11 +218,11 @@ function PricingCards() {
         <span style={{ fontSize: 36, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$69</span>
       </div>
       <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 20 }}>one-time access</div>
-      <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 12 }}>
+      <p style={{ fontSize: 16, fontWeight: 400, color: C.navy, lineHeight: 1.55, marginBottom: 8 }}>
         See exactly what defines your score — and what changes it.
       </p>
-      <p style={{ fontSize: 14, fontWeight: 500, color: C.teal, marginBottom: 20 }}>
-        This is where most users realize what they&rsquo;ve been missing.
+      <p style={{ fontSize: 14, fontWeight: 400, color: C.teal, marginBottom: 20 }}>
+        This is where the system becomes actionable.
       </p>
 
       <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 20, marginBottom: 20 }} />
@@ -241,11 +241,11 @@ function PricingCards() {
           {[
             "You stop guessing what matters",
             "You act before problems appear",
-            "You improve structure intentionally",
+            "You improve your structure with intent",
           ].map((line, i) => (
             <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
               <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 7 }} />
-              <span style={{ fontSize: 14, fontWeight: 500, color: C.textSecondary, lineHeight: 1.45 }}>{line}</span>
+              <span style={{ fontSize: 14, fontWeight: 400, color: C.textSecondary, lineHeight: 1.45 }}>{line}</span>
             </div>
           ))}
         </div>
@@ -267,7 +267,7 @@ function PricingCards() {
         One payment. Lifetime access.
       </p>
       <p style={{ fontSize: 14, fontWeight: 600, color: C.teal, textAlign: "center", marginTop: 8, marginBottom: 0 }}>
-        If it doesn&rsquo;t reveal something new, you don&rsquo;t pay.
+        If it doesn&rsquo;t reveal something new, you don&rsquo;t pay. No questions.
       </p>
     </div>
   );
@@ -282,8 +282,8 @@ function PricingCards() {
         <span style={{ fontSize: 14, color: C.textMuted, marginLeft: 8 }}>/year</span>
       </div>
       <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 20 }}>3 full assessments per year</div>
-      <p style={{ fontSize: 15, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 12 }}>
-        Reassess your structure three times a year and track how it evolves.
+      <p style={{ fontSize: 15, fontWeight: 400, color: C.navy, lineHeight: 1.55, marginBottom: 12 }}>
+        Reassess your structure three times a year and track how it actually evolves.
       </p>
       <p style={{ fontSize: 14, fontWeight: 500, color: C.teal, marginBottom: 24 }}>
         Because structure changes — even when income doesn&rsquo;t.
@@ -300,8 +300,8 @@ function PricingCards() {
       <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 20, marginBottom: 24 }}>
         <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: C.textMuted, marginBottom: 12 }}>BEST FOR</div>
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 6 }}>
-          {["Self-employed", "Variable income earners", "Anyone actively improving structure"].map((line, i) => (
-            <span key={i} style={{ fontSize: 14, fontWeight: 500, color: C.textSecondary, lineHeight: 1.45 }}>{line}</span>
+          {["Self-employed professionals", "Variable income earners", "Anyone actively improving structure"].map((line, i) => (
+            <span key={i} style={{ fontSize: 14, fontWeight: 400, color: C.textSecondary, lineHeight: 1.45 }}>{line}</span>
           ))}
         </div>
       </div>
@@ -380,8 +380,8 @@ function PositioningStrip() {
         </p>
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 16, maxWidth: 480, margin: "0 auto", ...fadeIn(visible, 140) }}>
           {[
-            { bold: "The score", rest: "tells you where you stand." },
-            { bold: "The diagnostic", rest: "shows what determines it." },
+            { bold: "The score", rest: "shows where you stand." },
+            { bold: "The diagnostic", rest: "shows what defines it." },
             { bold: "Monitoring", rest: "tracks how it changes." },
           ].map((line, i) => (
             <p key={i} style={{ fontSize: 17, color: C.textSecondary, lineHeight: 1.6, margin: 0, textAlign: "center" }}>
@@ -415,7 +415,7 @@ function OutcomesSection() {
       <div style={{ maxWidth: 960, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy }}>
-            What the diagnostic actually gives you
+            What the diagnostic gives you
           </h2>
         </div>
 
@@ -520,7 +520,7 @@ function FinalCta() {
           Know your income{m ? " " : <br />}before you rely on it.
         </h2>
         <p style={{ fontSize: m ? 20 : 24, fontWeight: 400, lineHeight: 1.45, color: C.sandMuted, marginBottom: 32, ...fadeIn(visible, 80) }}>
-          Measure how your income is built — and whether it holds when it matters.
+          Measure how your income is built—and whether it holds when it matters.
         </p>
 
         <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", ...fadeIn(visible, 120) }}>
