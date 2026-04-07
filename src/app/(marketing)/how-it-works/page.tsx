@@ -225,13 +225,22 @@ function WhatIsMeasured() {
   const m = useMobile();
   const fadeIn = useFadeIn();
 
-  const dimensions = [
-    { name: "Recurring Income", desc: "How much continues without new effort." },
-    { name: "Source Reliance", desc: "How dependent you are on your largest source." },
-    { name: "Number of Sources", desc: "How many independent income streams you have." },
-    { name: "Income Locked In", desc: "How far ahead your income is secured." },
-    { name: "Month-to-Month Steadiness", desc: "How much your income fluctuates." },
-    { name: "Income Without You", desc: "How much continues if you stop working." },
+  const themes = [
+    {
+      title: "How it\u2019s earned",
+      desc: "Where your income comes from and how it\u2019s distributed.",
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+    },
+    {
+      title: "How it holds",
+      desc: "Whether it continues under pressure or disappears with disruption.",
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+    },
+    {
+      title: "How it depends on you",
+      desc: "What happens to your income if you step away.",
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+    },
   ];
 
   return (
@@ -240,23 +249,21 @@ function WhatIsMeasured() {
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
           <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>MEASUREMENT</div>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24 }}>
-            Six dimensions define your income structure.
+            Six structural dimensions. One result.
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: explanatoryW, margin: "0 auto" }}>
-            Each factor is scored independently and combined into your final result.
+            Your income is evaluated across six fixed factors &mdash; covering how it&rsquo;s built, how it holds, and what happens if something changes.
           </p>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 0, maxWidth: 720, margin: "0 auto", ...fadeIn(visible, 100) }}>
-          {dimensions.map((d, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "center", gap: m ? 16 : 24, padding: m ? "20px 0" : "24px 0", borderBottom: i < dimensions.length - 1 ? `1px solid rgba(14,26,43,0.06)` : "none" }}>
-              <div style={{ width: m ? 48 : 56, height: m ? 48 : 56, borderRadius: 14, backgroundColor: `${C.teal}08`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <span style={{ fontSize: m ? 18 : 20, fontWeight: 700, fontFamily: mono, color: C.teal }}>{String(i + 1).padStart(2, "0")}</span>
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, maxWidth: 860, margin: "0 auto", ...fadeIn(visible, 100) }}>
+          {themes.map((t, i) => (
+            <div key={i} style={{ padding: m ? 28 : 32, borderRadius: 20, backgroundColor: C.white, boxShadow: cardShadow, textAlign: "center", marginBottom: m ? 16 : 0 }}>
+              <div style={{ width: 56, height: 56, borderRadius: 14, backgroundColor: `${C.teal}08`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
+                {t.icon}
               </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 4, lineHeight: 1.35 }}>{d.name}</div>
-                <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.55, margin: 0 }}>{d.desc}</p>
-              </div>
+              <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 8, lineHeight: 1.35 }}>{t.title}</div>
+              <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>{t.desc}</p>
             </div>
           ))}
         </div>
@@ -434,7 +441,52 @@ function ShiftMoment() {
 
 
 /* ================================================================ */
-/* SECTION 8 — FINAL CTA                                             */
+/* SECTION 8 — BEFORE YOU BEGIN                                      */
+/* ================================================================ */
+
+function BeforeYouBegin() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+
+  return (
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+      <div style={{ maxWidth: 680, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+          <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>BEFORE YOU BEGIN</div>
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24 }}>
+            No documents needed.{m ? " " : <br />}No bank connection.
+          </h2>
+          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: explanatoryW, margin: "0 auto" }}>
+            But you&rsquo;ll get the most accurate result if you&rsquo;ve thought about:
+          </p>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 16, maxWidth: 560, margin: "0 auto 32px", ...fadeIn(visible, 100) }}>
+          {[
+            "How many places your income comes from",
+            "Whether any single source accounts for most of it",
+            "How much of your income is already committed or recurring",
+            "What would change if your biggest source went away tomorrow",
+          ].map((item, i) => (
+            <div key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+              <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 10 }} />
+              <span style={{ fontSize: 17, fontWeight: 500, color: C.navy, lineHeight: 1.5 }}>{item}</span>
+            </div>
+          ))}
+        </div>
+
+        <p style={{ fontSize: 16, fontWeight: 500, color: C.textMuted, textAlign: "center", lineHeight: 1.6, maxWidth: 520, margin: "0 auto", ...fadeIn(visible, 180) }}>
+          You don&rsquo;t need exact numbers. Reasonable estimates work.{m ? " " : <br />}The system is built for it.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================ */
+/* SECTION 9 — FINAL CTA                                             */
 /* ================================================================ */
 
 function FinalCta() {
@@ -526,6 +578,7 @@ export default function HowItWorksPage() {
         <ScoreVsDiagnostic />
         <SystemIntegrity />
         <ShiftMoment />
+        <BeforeYouBegin />
         <FinalCta />
       </main>
       <StickyCta />

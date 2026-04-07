@@ -772,7 +772,52 @@ function QuietAuthority() {
 
 
 /* ================================================================ */
-/* SECTION 11 — FINAL CTA                                            */
+/* SECTION 11 — BEFORE YOU BEGIN                                     */
+/* ================================================================ */
+
+function BeforeYouBegin() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+
+  return (
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+      <div style={{ maxWidth: 680, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+          <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>BEFORE YOU BEGIN</div>
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24 }}>
+            No documents needed.{m ? " " : <br />}No bank connection.
+          </h2>
+          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: explanatoryW, margin: "0 auto" }}>
+            But you&rsquo;ll get the most accurate result if you&rsquo;ve thought about:
+          </p>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 16, maxWidth: 560, margin: "0 auto 32px", ...fadeIn(visible, 100) }}>
+          {[
+            "How many places your income comes from",
+            "Whether any single source accounts for most of it",
+            "How much of your income is already committed or recurring",
+            "What would change if your biggest source went away tomorrow",
+          ].map((item, i) => (
+            <div key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+              <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 10 }} />
+              <span style={{ fontSize: 17, fontWeight: 500, color: C.navy, lineHeight: 1.5 }}>{item}</span>
+            </div>
+          ))}
+        </div>
+
+        <p style={{ fontSize: 16, fontWeight: 500, color: C.textMuted, textAlign: "center", lineHeight: 1.6, maxWidth: 520, margin: "0 auto", ...fadeIn(visible, 180) }}>
+          You don&rsquo;t need exact numbers. Reasonable estimates work.{m ? " " : <br />}The system is built for it.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================ */
+/* SECTION 12 — FINAL CTA                                            */
 /* ================================================================ */
 
 function FinalCta() {
@@ -875,6 +920,7 @@ export default function LandingPage() {
         <UseCaseArchitecture />
         <IndustryProfiles />
         <QuietAuthority />
+        <BeforeYouBegin />
         <FinalCta />
       </main>
       <StickyCta />

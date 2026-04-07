@@ -413,9 +413,32 @@ export default function InitializationPage() {
               A short structural diagnostic about how your income works. No financial data required.
             </p>
 
-            <p style={{ fontSize: 13, fontFamily: sans, color: C.light, marginBottom: 40 }}>
+            <p style={{ fontSize: 13, fontFamily: sans, color: C.light, marginBottom: 24 }}>
               Takes about <span style={{ fontFamily: mono }}>90</span> seconds
             </p>
+
+            {/* Preparation hints */}
+            <div style={{ maxWidth: 340, margin: "0 auto 32px", textAlign: "left" }}>
+              <div style={{ fontSize: 11, fontWeight: 700, fontFamily: sans, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 12 }}>
+                FOR THE BEST RESULT, HAVE IN MIND:
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {[
+                  "How many places your income comes from",
+                  "Whether one source accounts for most of it",
+                  "How much is already recurring or committed",
+                  "What changes if your biggest source goes away",
+                ].map((item, i) => (
+                  <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                    <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 7 }} />
+                    <span style={{ fontSize: 13, fontFamily: sans, color: C.muted, lineHeight: 1.5 }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+              <p style={{ fontSize: 12, fontFamily: sans, color: C.light, marginTop: 10, marginBottom: 0 }}>
+                Exact numbers aren&rsquo;t needed. Reasonable estimates work.
+              </p>
+            </div>
 
             <button
               className="cta-tick"
