@@ -89,32 +89,31 @@ function HeroSection() {
         <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
           HOW IT WORKS
         </div>
-        <h1 style={{ fontSize: m ? 42 : 64, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
+        <h1 style={{ fontSize: m ? 42 : 64, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible, 50) }}>
           The system behind your score.
         </h1>
-        <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: 560, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
-          RunPayway measures how your income is built — not how much you earn.
-          Fixed rules. Same answers always produce the same result.
+        <p style={{ fontSize: m ? 20 : 28, fontWeight: 400, lineHeight: 1.4, color: C.textSecondary, maxWidth: 620, margin: "0 auto 24px", ...fadeIn(visible, 80) }}>
+          How your income is built&mdash;and how it holds under pressure.
         </p>
-        <p style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: C.navy, marginBottom: 32, ...fadeIn(visible, 140) }}>
-          No interpretation. No variation. No exceptions.
+        <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 560, margin: "0 auto 32px", ...fadeIn(visible, 120) }}>
+          RunPayway measures how your income behaves under real conditions. Same answers always produce the same result.
         </p>
         <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", ...fadeIn(visible, 180) }}>
           <Link href="/begin" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: m ? 56 : 60, width: m ? "100%" : "auto",
             padding: m ? "0 28px" : "0 32px",
-            borderRadius: 14, backgroundColor: C.navy, color: C.white,
-            fontSize: 18, fontWeight: 600, textDecoration: "none",
+            borderRadius: 16, backgroundColor: C.navy, color: C.white,
+            fontSize: 16, fontWeight: 600, textDecoration: "none",
             boxShadow: ctaShadow,
             transition: "transform 200ms, box-shadow 200ms",
           }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
-            Begin assessment
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = ctaShadow; }}>
+            Get Your Structural Income Report
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, marginTop: 16 }}>
-            Under 2 minutes &bull; No financial accounts required &bull; Private by default
+            Under 2 minutes | Instant result | Private by default
           </p>
         </div>
       </div>
@@ -134,28 +133,27 @@ function Declaration() {
 
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
-      <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, textAlign: "center", marginBottom: 24, ...fadeIn(visible) }}>
-          A fixed method. Not a changing model.
+      <div style={{ maxWidth: narrowW, margin: "0 auto", textAlign: "center" }}>
+        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 12, ...fadeIn(visible) }}>
+          No interpretation. No exceptions.
         </h2>
-        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, textAlign: "center", marginBottom: 32, ...fadeIn(visible, 80) }}>
-          Every RunPayway score is produced using the same rules, applied the same way, every time.
+        <p style={{ fontSize: m ? 20 : 24, fontWeight: 600, lineHeight: 1.3, color: C.teal, marginBottom: 32, ...fadeIn(visible, 60) }}>
+          Same rules. Every time.
         </p>
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, maxWidth: 480, margin: "0 auto 32px", ...fadeIn(visible, 140) }}>
+        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, ...fadeIn(visible, 100) }}>
+          RunPayway uses fixed rules applied the same way each time.
+        </p>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, maxWidth: 380, margin: "0 auto", ...fadeIn(visible, 140) }}>
           {[
-            "No one adjusts your inputs.",
-            "No system adapts your result.",
-            "No interpretation is applied.",
+            "No human judgment.",
+            "No algorithm changes.",
           ].map((line, i) => (
-            <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+            <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", justifyContent: "center" }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
-              <span style={{ fontSize: 18, color: C.textSecondary, lineHeight: 1.6 }}>{line}</span>
+              <span style={{ fontSize: 18, fontWeight: 500, color: C.textSecondary, lineHeight: 1.6 }}>{line}</span>
             </div>
           ))}
         </div>
-        <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, textAlign: "center", ...fadeIn(visible, 200) }}>
-          If the inputs are the same, the score is the same.
-        </p>
       </div>
     </section>
   );
@@ -175,41 +173,40 @@ function ProcessOverview() {
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
-          <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>PROCESS</div>
-          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24 }}>
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.teal, marginBottom: 16 }}>
             Three steps. One standardized result.
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: explanatoryW, margin: "0 auto" }}>
-            Each step follows fixed rules.{m ? " " : <br />}No judgment. No adjustments. No subjectivity.
+            No judgment. No subjectivity. No adjustments.{m ? " " : <br />}Step-by-step clarity, every time.
           </p>
         </div>
 
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, maxWidth: 1020, margin: "0 auto", ...fadeIn(visible, 100) }}>
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 32, maxWidth: 1020, margin: "0 auto", ...fadeIn(visible, 100) }}>
           {[
             {
               num: "01",
               title: "Describe how you earn",
-              body: "You define how your income works — your sources, concentration, and what you depend on.",
-              footer: "Under 2 minutes.\nNo bank connection.\nNo documents required.",
+              body: "Tell us how your income works\u2014sources, concentration, and dependency.",
+              footer: "No bank connection, no documents, under 2 minutes.",
             },
             {
               num: "02",
               title: "Six dimensions scored",
-              body: "Six structural factors are evaluated using fixed rules.\n\nThe model combines them into a single score from 0 to 100.",
+              body: "Six structural factors are evaluated with fixed rules. The model combines them into one result.",
               footer: "Same answers always produce the same result.",
             },
             {
               num: "03",
               title: "Your result",
-              body: "You receive your score, stability level, and structural breakdown.",
-              footer: "The diagnostic adds context — without ever changing the score.",
+              body: "Your score, stability level, and structural breakdown. The diagnostic adds context without changing the score.",
+              footer: "",
             },
           ].map((step, i) => (
-            <div key={i} style={{ backgroundColor: C.white, borderRadius: 20, padding: m ? 28 : 32, boxShadow: cardShadow, marginBottom: m ? 20 : 0 }}>
-              <div style={{ fontSize: 14, fontWeight: 700, fontFamily: mono, color: C.teal, marginBottom: 20 }}>{step.num}</div>
-              <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 16, lineHeight: 1.35 }}>{step.title}</div>
-              <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.6, margin: "0 0 20px", whiteSpace: "pre-line" }}>{step.body}</p>
-              <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, lineHeight: 1.6, margin: 0, whiteSpace: "pre-line" }}>{step.footer}</p>
+            <div key={i} style={{ backgroundColor: C.white, borderRadius: 20, padding: m ? 28 : 36, boxShadow: cardShadow, marginBottom: m ? 24 : 0, textAlign: "center" }}>
+              <div style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.teal, marginBottom: 16 }}>{step.num}</div>
+              <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.35 }}>{step.title}</div>
+              <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.6, margin: "0 0 16px" }}>{step.body}</p>
+              {step.footer && <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, lineHeight: 1.6, margin: 0 }}>{step.footer}</p>}
             </div>
           ))}
         </div>
@@ -229,15 +226,13 @@ function WhatIsMeasured() {
   const fadeIn = useFadeIn();
 
   const dimensions = [
-    { name: "Recurring Income", tag: "Structure", desc: "How much income continues without new effort." },
-    { name: "Source Reliance", tag: "Risk", desc: "How dependent you are on your largest source." },
-    { name: "Number of Sources", tag: "Structure", desc: "How many independent income streams you have." },
-    { name: "Income Locked In", tag: "Structure", desc: "How far ahead your income is already secured." },
-    { name: "Month-to-Month Steadiness", tag: "Stability", desc: "How much your income fluctuates." },
-    { name: "Income Without You", tag: "Stability", desc: "How much continues if you stop working." },
+    { name: "Recurring Income", desc: "How much continues without new effort." },
+    { name: "Source Reliance", desc: "How dependent you are on your largest source." },
+    { name: "Number of Sources", desc: "How many independent income streams you have." },
+    { name: "Income Locked In", desc: "How far ahead your income is secured." },
+    { name: "Month-to-Month Steadiness", desc: "How much your income fluctuates." },
+    { name: "Income Without You", desc: "How much continues if you stop working." },
   ];
-
-  const tagColor = (tag: string) => tag === "Risk" ? C.risk : tag === "Stability" ? C.moderate : C.teal;
 
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
@@ -248,19 +243,20 @@ function WhatIsMeasured() {
             Six dimensions define your income structure.
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: explanatoryW, margin: "0 auto" }}>
-            Each dimension is scored independently — then combined into your final result.
+            Each factor is scored independently and combined into your final result.
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 14 : 20, ...fadeIn(visible, 100) }}>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 0, maxWidth: 720, margin: "0 auto", ...fadeIn(visible, 100) }}>
           {dimensions.map((d, i) => (
-            <div key={i} style={{ padding: m ? "22px 20px" : "26px 28px", borderRadius: 18, backgroundColor: C.white, boxShadow: cardShadow, position: "relative" as const, overflow: "hidden" }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: tagColor(d.tag) }} />
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-                <span style={{ fontSize: 16, fontWeight: 600, color: C.navy, lineHeight: 1.35 }}>{d.name}</span>
-                <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: tagColor(d.tag), padding: "2px 8px", borderRadius: 4, backgroundColor: `${tagColor(d.tag)}08` }}>{d.tag}</span>
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: m ? 16 : 24, padding: m ? "20px 0" : "24px 0", borderBottom: i < dimensions.length - 1 ? `1px solid rgba(14,26,43,0.06)` : "none" }}>
+              <div style={{ width: m ? 48 : 56, height: m ? 48 : 56, borderRadius: 14, backgroundColor: `${C.teal}08`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <span style={{ fontSize: m ? 18 : 20, fontWeight: 700, fontFamily: mono, color: C.teal }}>{String(i + 1).padStart(2, "0")}</span>
               </div>
-              <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.55, margin: 0 }}>{d.desc}</p>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 4, lineHeight: 1.35 }}>{d.name}</div>
+                <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.55, margin: 0 }}>{d.desc}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -283,11 +279,14 @@ function ScoreVsDiagnostic() {
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: 960, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24 }}>
-            The score and the diagnostic are separate.
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>
+            The Score and the Diagnostic are Separate.
           </h2>
+          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: explanatoryW, margin: "0 auto 8px" }}>
+            The score is deterministic&mdash;calculated from your answers only. No changes. No exceptions.
+          </p>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: explanatoryW, margin: "0 auto" }}>
-            The score is fixed.{m ? " " : <br />}The diagnostic adds context — but never changes the result.
+            The diagnostic provides industry context and recommendations without altering your score.
           </p>
         </div>
 
@@ -295,7 +294,7 @@ function ScoreVsDiagnostic() {
           {/* The Score */}
           <div style={{ padding: m ? 28 : 32, borderRadius: 20, backgroundColor: C.white, boxShadow: cardShadow, marginBottom: m ? 20 : 0, position: "relative" as const, overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.teal }} />
-            <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12 }}>The Score</div>
+            <div style={{ fontSize: 20, fontWeight: 600, color: C.navy, marginBottom: 12 }}>The Score</div>
             <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.6, marginBottom: 20 }}>
               Calculated from your answers only. Nothing else influences it.
             </p>
@@ -312,7 +311,7 @@ function ScoreVsDiagnostic() {
           {/* The Diagnostic */}
           <div style={{ padding: m ? 28 : 32, borderRadius: 20, backgroundColor: C.white, boxShadow: cardShadow, position: "relative" as const, overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.purple }} />
-            <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12 }}>The Diagnostic</div>
+            <div style={{ fontSize: 20, fontWeight: 600, color: C.navy, marginBottom: 12 }}>The Diagnostic</div>
             <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.6, marginBottom: 20 }}>
               Adds interpretation without altering the score.
             </p>
@@ -353,12 +352,28 @@ function SystemIntegrity() {
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
           <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>SYSTEM INTEGRITY</div>
-          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy }}>
-            Built for consistency.{m ? " " : <br />}Not interpretation.
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 12 }}>
+            Built for consistency.
           </h2>
+          <p style={{ fontSize: m ? 20 : 24, fontWeight: 400, lineHeight: 1.4, color: C.textSecondary }}>
+            Not for judgment. Not for change.
+          </p>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: m ? 10 : 14, maxWidth: 480, margin: "0 auto 40px", ...fadeIn(visible, 100) }}>
+        {/* Highlighted consistency statement */}
+        <div style={{ maxWidth: 560, margin: "0 auto 40px", padding: m ? "24px 20px" : "28px 32px", borderRadius: 18, borderLeft: `4px solid ${C.navy}`, backgroundColor: C.sand, ...fadeIn(visible, 80) }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+            <div style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: `${C.navy}10`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={C.navy} strokeWidth="2.5" strokeLinecap="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </div>
+            <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.06em", color: C.navy }}>CONSISTENCY</span>
+          </div>
+          <p style={{ fontSize: 18, fontWeight: 500, color: C.navy, margin: 0, lineHeight: 1.5 }}>
+            RunPayway&trade; produces fixed outputs, applying fixed rules.
+          </p>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: m ? 10 : 14, maxWidth: 480, margin: "0 auto 40px", ...fadeIn(visible, 140) }}>
           {[
             { label: "Model", value: "RP-2.0" },
             { label: "Ruleset", value: "Fixed" },
@@ -370,10 +385,6 @@ function SystemIntegrity() {
             </div>
           ))}
         </div>
-
-        <p style={{ fontSize: 16, fontWeight: 500, color: C.textMuted, textAlign: "center", lineHeight: 1.7, ...fadeIn(visible, 180) }}>
-          No AI judgment.{m ? " " : <br />}No advisor input.{m ? " " : <br />}No variability over time.
-        </p>
       </div>
     </section>
   );
@@ -392,28 +403,30 @@ function ShiftMoment() {
   return (
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: 820, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>
             Once measured, your income{m ? " " : <br />}is no longer a guess.
           </h2>
+          <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary }}>
+            You know where your income holds&mdash;and where it breaks.
+          </p>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column" as const, maxWidth: 680, margin: "0 auto", ...fadeIn(visible, 100) }}>
-          {[
-            "You see where your income holds — and where it breaks",
-            "You understand what happens under real conditions",
-            "You act before problems appear — not after",
-          ].map((item, i) => (
-            <div key={i} style={{ display: "flex", gap: 16, alignItems: "flex-start", padding: "24px 0", borderBottom: i < 2 ? `1px solid rgba(14,26,43,0.06)` : "none" }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 10 }} />
-              <p style={{ fontSize: m ? 18 : 20, fontWeight: 600, color: C.navy, margin: 0, lineHeight: 1.35 }}>{item}</p>
-            </div>
-          ))}
+        {/* Accent callout */}
+        <div style={{ maxWidth: 640, margin: "0 auto", padding: m ? "24px 20px" : "28px 36px", borderRadius: 18, borderLeft: `4px solid ${C.teal}`, backgroundColor: C.white, boxShadow: cardShadow, ...fadeIn(visible, 100) }}>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 16 }}>
+            {[
+              "You see where your income holds — and where it breaks",
+              "You understand what happens under real conditions",
+              "You act before problems appear — not after",
+            ].map((item, i) => (
+              <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 10 }} />
+                <p style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: C.navy, margin: 0, lineHeight: 1.4 }}>{item}</p>
+              </div>
+            ))}
+          </div>
         </div>
-
-        <p style={{ fontSize: 16, fontWeight: 500, color: C.textMuted, textAlign: "center", marginTop: m ? 40 : 56, ...fadeIn(visible, 200) }}>
-          Most people rely on income they have never evaluated.
-        </p>
       </div>
     </section>
   );
@@ -432,33 +445,68 @@ function FinalCta() {
   return (
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center" }}>
-        <h2 style={{ fontSize: m ? 34 : 52, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.sandText, marginBottom: 20, ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 34 : 52, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.sandText, marginBottom: 32, ...fadeIn(visible) }}>
           See how your income is built.
         </h2>
-        <p style={{ fontSize: m ? 20 : 24, fontWeight: 400, lineHeight: 1.45, color: C.sandMuted, marginBottom: 32, ...fadeIn(visible, 80) }}>
-          Measure your structure under a fixed system — before you rely on it.
-        </p>
         <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", ...fadeIn(visible, 160) }}>
           <Link href="/begin" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: m ? 56 : 60, width: m ? "100%" : "auto",
             padding: m ? "0 28px" : "0 32px",
-            borderRadius: 14, backgroundColor: C.white, color: C.navy,
-            fontSize: 18, fontWeight: 600, textDecoration: "none",
+            borderRadius: 16, backgroundColor: C.white, color: C.navy,
+            fontSize: 16, fontWeight: 600, textDecoration: "none",
             boxShadow: "0 8px 24px rgba(14,26,43,0.08)",
             border: `1px solid ${C.borderSoft}`,
             transition: "transform 200ms, box-shadow 200ms",
           }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
             Get Your Structural Income Report
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 16 }}>
-            Under 2 minutes &bull; Instant result &bull; Private by default
+            Under 2 minutes | Instant result | Private by default
           </p>
         </div>
       </div>
     </section>
+  );
+}
+
+
+/* ================================================================ */
+/* STICKY CTA                                                        */
+/* ================================================================ */
+
+function StickyCta() {
+  const m = useMobile();
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 600);
+    window.addEventListener("scroll", h, { passive: true });
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+  if (!scrolled) return null;
+  return (
+    <div style={{
+      position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100,
+      height: 72,
+      display: "flex", alignItems: "center", justifyContent: "center",
+      padding: "0 20px",
+      paddingBottom: "max(12px, env(safe-area-inset-bottom))",
+      backgroundColor: "rgba(14,26,43,0.96)",
+      backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
+      boxShadow: "0 -4px 24px rgba(14,26,43,0.12)",
+    }}>
+      <Link href="/begin" style={{
+        display: "flex", alignItems: "center", justifyContent: "center",
+        height: 48, width: m ? "100%" : "auto", minWidth: m ? 0 : 360,
+        padding: m ? 0 : "0 32px",
+        borderRadius: 12, backgroundColor: C.white, color: C.navy,
+        fontSize: 16, fontWeight: 600, textDecoration: "none",
+      }}>
+        Get Your Structural Income Report
+      </Link>
+    </div>
   );
 }
 
@@ -480,6 +528,7 @@ export default function HowItWorksPage() {
         <ShiftMoment />
         <FinalCta />
       </main>
+      <StickyCta />
     </div>
   );
 }
