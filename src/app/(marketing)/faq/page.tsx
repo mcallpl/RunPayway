@@ -176,24 +176,24 @@ function HeroSection({ searchValue, onSearch, inputRef }: { searchValue: string;
   const fadeIn = useFadeIn();
 
   return (
-    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 148, paddingBottom: m ? 40 : 56, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
-      <div style={{ maxWidth: narrowW, margin: "0 auto", textAlign: "center" }}>
+    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 48 : 72, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+      <div style={{ maxWidth: 860, margin: "0 auto", textAlign: "center" }}>
         <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
           SUPPORT
         </div>
-        <h1 style={{ fontSize: m ? 34 : 52, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
+        <h1 style={{ fontSize: m ? 38 : 64, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
           Frequently asked questions
         </h1>
-        <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 520, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
+        <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: 580, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
           Clear answers about the Income Stability Score&#8482;, how it is generated, and how it is used.
         </p>
-        <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 0, ...fadeIn(visible, 140) }}>
+        <p style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: C.navy, marginBottom: 0, ...fadeIn(visible, 140) }}>
           All answers reflect the system as it is defined — not interpreted.
         </p>
       </div>
 
       {/* Search bar */}
-      <div style={{ maxWidth: 680, margin: "32px auto 0", ...fadeIn(visible, 180) }}>
+      <div style={{ maxWidth: 680, margin: "40px auto 0", ...fadeIn(visible, 180) }}>
         <div style={{ position: "relative" }}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={C.textMuted} strokeWidth="2" strokeLinecap="round" style={{ position: "absolute", left: 20, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
             <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
@@ -239,9 +239,9 @@ function SearchResults({ results, query }: { results: FaqItem[]; query: string }
 
   if (results.length === 0) {
     return (
-      <div style={{ textAlign: "center", padding: m ? "48px 20px" : "80px 48px" }}>
-        <p style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 8 }}>No exact match.</p>
-        <p style={{ fontSize: 15, color: C.textMuted }}>Try a different term.</p>
+      <div style={{ textAlign: "center", padding: m ? "56px 20px" : "96px 48px" }}>
+        <p style={{ fontSize: 20, fontWeight: 600, color: C.navy, marginBottom: 12 }}>No exact match.</p>
+        <p style={{ fontSize: 16, color: C.textMuted }}>Try a different term.</p>
         <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 8, justifyContent: "center", marginTop: 24 }}>
           {["score", "assessment", "report", "privacy"].map(s => (
             <span key={s} style={{ fontSize: 13, fontWeight: 500, color: C.teal, padding: "6px 14px", borderRadius: 8, backgroundColor: `${C.teal}08`, cursor: "default" }}>{s}</span>
@@ -255,32 +255,32 @@ function SearchResults({ results, query }: { results: FaqItem[]; query: string }
   const related = results.slice(1, 6);
 
   return (
-    <div style={{ maxWidth: narrowW, margin: "0 auto", padding: m ? "32px 20px" : "48px 48px" }}>
+    <div style={{ maxWidth: 780, margin: "0 auto", padding: m ? "40px 20px" : "64px 48px" }}>
       {/* Direct answer card */}
-      <div style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, border: `1px solid rgba(14,26,43,0.08)`, marginBottom: 32 }}>
-        <p style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.35 }}>{top.question}</p>
-        <p style={{ fontSize: 16, fontWeight: 400, color: C.textSecondary, lineHeight: 1.6, margin: 0, whiteSpace: "pre-line" }}>{top.answer}</p>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 16, paddingTop: 16, borderTop: `1px solid rgba(14,26,43,0.06)` }}>
-          <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.06em", color: C.textMuted }}>{top.categoryLabel}</span>
+      <div style={{ padding: m ? 28 : 36, borderRadius: 16, backgroundColor: C.sand, border: `1px solid rgba(14,26,43,0.06)`, marginBottom: 40 }}>
+        <p style={{ fontSize: m ? 18 : 20, fontWeight: 600, color: C.navy, marginBottom: 16, lineHeight: 1.35 }}>{top.question}</p>
+        <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, color: C.textSecondary, lineHeight: 1.6, margin: 0, whiteSpace: "pre-line" }}>{top.answer}</p>
+        <div style={{ display: "flex", alignItems: "center", marginTop: 20, paddingTop: 20, borderTop: `1px solid rgba(14,26,43,0.06)` }}>
+          <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.08em", color: C.textMuted }}>{top.categoryLabel.toUpperCase()}</span>
         </div>
       </div>
 
       {/* Related questions */}
       {related.length > 0 && (
         <div>
-          <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 16 }}>RELATED</div>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 20 }}>RELATED</div>
           {related.map(item => (
             <div key={item.id} style={{ borderTop: `1px solid ${C.borderSoft}` }}>
               <button onClick={() => setExpanded(expanded === item.id ? null : item.id)}
-                style={{ width: "100%", padding: "16px 0", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}>
-                <span style={{ fontSize: 16, fontWeight: 600, color: C.navy, lineHeight: 1.4, paddingRight: 16 }}>{item.question}</span>
+                style={{ width: "100%", padding: "20px 0", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}>
+                <span style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: C.navy, lineHeight: 1.4, paddingRight: 24 }}>{item.question}</span>
                 <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, transition: "transform 200ms", transform: expanded === item.id ? "rotate(45deg)" : "rotate(0deg)" }}>
                   <path d="M3 8h10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
                   <path d="M8 3v10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
               </button>
               <div style={{ maxHeight: expanded === item.id ? 300 : 0, overflow: "hidden", transition: "max-height 200ms ease" }}>
-                <p style={{ fontSize: 15, fontWeight: 400, color: C.textSecondary, lineHeight: 1.65, margin: 0, paddingBottom: 20, whiteSpace: "pre-line" }}>{item.answer}</p>
+                <p style={{ fontSize: 16, fontWeight: 400, color: C.textSecondary, lineHeight: 1.65, margin: 0, paddingBottom: 24, whiteSpace: "pre-line" }}>{item.answer}</p>
               </div>
             </div>
           ))}
@@ -288,7 +288,7 @@ function SearchResults({ results, query }: { results: FaqItem[]; query: string }
         </div>
       )}
 
-      <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 32 }}>
+      <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 48 }}>
         All answers reflect the system as defined — not interpreted.
       </p>
     </div>
@@ -309,14 +309,14 @@ function BrowseView({ activeCategory, setActiveCategory }: { activeCategory: str
 
   if (m) {
     return (
-      <div style={{ paddingLeft: 20, paddingRight: 20, paddingBottom: 72 }}>
+      <div style={{ paddingLeft: 20, paddingRight: 20, paddingTop: 16, paddingBottom: 80 }}>
         {/* Category tabs */}
-        <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 20, paddingTop: 8, WebkitOverflowScrolling: "touch" }}>
+        <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 28, paddingTop: 8, WebkitOverflowScrolling: "touch" }}>
           {CATEGORIES.map(cat => (
             <button key={cat.key} onClick={() => { setActiveCategory(cat.key); setExpanded(null); }}
               style={{
-                padding: "8px 16px", borderRadius: 10, whiteSpace: "nowrap",
-                fontSize: 13, fontWeight: activeCategory === cat.key ? 600 : 400,
+                padding: "10px 18px", borderRadius: 10, whiteSpace: "nowrap",
+                fontSize: 14, fontWeight: activeCategory === cat.key ? 600 : 400,
                 color: activeCategory === cat.key ? C.navy : C.textMuted,
                 backgroundColor: activeCategory === cat.key ? C.white : "transparent",
                 border: `1px solid ${activeCategory === cat.key ? C.borderSoft : "transparent"}`,
@@ -328,19 +328,19 @@ function BrowseView({ activeCategory, setActiveCategory }: { activeCategory: str
         </div>
 
         {/* Questions */}
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.teal, marginBottom: 20 }}>{activeLabel.toUpperCase()}</div>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.teal, marginBottom: 24 }}>{activeLabel.toUpperCase()}</div>
         {categoryFaqs.map(item => (
           <div key={item.id} style={{ borderTop: `1px solid ${C.borderSoft}` }}>
             <button onClick={() => setExpanded(expanded === item.id ? null : item.id)}
-              style={{ width: "100%", padding: "18px 0", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}>
-              <span style={{ fontSize: 16, fontWeight: 600, color: C.navy, lineHeight: 1.4, paddingRight: 16 }}>{item.question}</span>
+              style={{ width: "100%", padding: "20px 0", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}>
+              <span style={{ fontSize: 17, fontWeight: 600, color: C.navy, lineHeight: 1.4, paddingRight: 16 }}>{item.question}</span>
               <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, transition: "transform 200ms", transform: expanded === item.id ? "rotate(45deg)" : "rotate(0deg)" }}>
                 <path d="M3 8h10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
                 <path d="M8 3v10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
               </svg>
             </button>
             <div style={{ maxHeight: expanded === item.id ? 400 : 0, overflow: "hidden", transition: "max-height 200ms ease" }}>
-              <p style={{ fontSize: 15, fontWeight: 400, color: C.textSecondary, lineHeight: 1.65, margin: 0, paddingBottom: 20, whiteSpace: "pre-line" }}>{item.answer}</p>
+              <p style={{ fontSize: 16, fontWeight: 400, color: C.textSecondary, lineHeight: 1.65, margin: 0, paddingBottom: 24, whiteSpace: "pre-line" }}>{item.answer}</p>
             </div>
           </div>
         ))}
@@ -351,18 +351,18 @@ function BrowseView({ activeCategory, setActiveCategory }: { activeCategory: str
 
   // Desktop 3-column
   return (
-    <div style={{ maxWidth: innerW, margin: "0 auto", display: "grid", gridTemplateColumns: "240px 1fr 200px", gap: 48, paddingLeft: sectionPx(false), paddingRight: sectionPx(false), paddingBottom: 120 }}>
+    <div style={{ maxWidth: innerW, margin: "0 auto", display: "grid", gridTemplateColumns: "260px 1fr 220px", gap: 56, paddingLeft: sectionPx(false), paddingRight: sectionPx(false), paddingTop: 64, paddingBottom: 120 }}>
       {/* Sidebar */}
       <nav style={{ position: "sticky", top: 100, alignSelf: "start" }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 16 }}>CATEGORIES</div>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 24 }}>CATEGORIES</div>
         {CATEGORIES.map(cat => {
           const isActive = activeCategory === cat.key;
           return (
             <button key={cat.key} onClick={() => { setActiveCategory(cat.key); setExpanded(null); }}
               style={{
                 display: "block", width: "100%", textAlign: "left",
-                padding: "10px 16px", marginBottom: 2,
-                fontSize: 14, fontWeight: isActive ? 600 : 400,
+                padding: "12px 20px", marginBottom: 2,
+                fontSize: 15, fontWeight: isActive ? 600 : 400,
                 color: isActive ? C.navy : C.textSecondary,
                 backgroundColor: isActive ? "rgba(14,26,43,0.03)" : "transparent",
                 borderLeft: isActive ? `2px solid ${C.teal}` : "2px solid transparent",
@@ -380,13 +380,13 @@ function BrowseView({ activeCategory, setActiveCategory }: { activeCategory: str
       </nav>
 
       {/* Content */}
-      <div style={{ maxWidth: 720 }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.teal, marginBottom: 16 }}>{activeLabel.toUpperCase()}</div>
+      <div style={{ maxWidth: 780 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.teal, marginBottom: 24 }}>{activeLabel.toUpperCase()}</div>
 
         {categoryFaqs.map(item => (
           <div key={item.id} id={item.id} style={{ borderTop: `1px solid ${C.borderSoft}` }}>
             <button onClick={() => setExpanded(expanded === item.id ? null : item.id)}
-              style={{ width: "100%", padding: "20px 0", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}>
+              style={{ width: "100%", padding: "24px 0", display: "flex", alignItems: "center", justifyContent: "space-between", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}>
               <span style={{ fontSize: 18, fontWeight: 600, color: C.navy, lineHeight: 1.4, paddingRight: 24 }}>{item.question}</span>
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, transition: "transform 200ms", transform: expanded === item.id ? "rotate(45deg)" : "rotate(0deg)" }}>
                 <path d="M3 8h10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
@@ -394,7 +394,7 @@ function BrowseView({ activeCategory, setActiveCategory }: { activeCategory: str
               </svg>
             </button>
             <div style={{ maxHeight: expanded === item.id ? 500 : 0, overflow: "hidden", transition: "max-height 200ms ease" }}>
-              <p style={{ fontSize: 16, fontWeight: 400, color: C.textSecondary, lineHeight: 1.65, margin: 0, paddingBottom: 24, whiteSpace: "pre-line" }}>{item.answer}</p>
+              <p style={{ fontSize: 17, fontWeight: 400, color: C.textSecondary, lineHeight: 1.65, margin: 0, paddingBottom: 32, whiteSpace: "pre-line" }}>{item.answer}</p>
             </div>
           </div>
         ))}
@@ -403,17 +403,17 @@ function BrowseView({ activeCategory, setActiveCategory }: { activeCategory: str
 
       {/* TOC */}
       <nav style={{ position: "sticky", top: 100, alignSelf: "start" }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 16 }}>ON THIS PAGE</div>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 20 }}>ON THIS PAGE</div>
         {categoryFaqs.map(item => (
           <a key={item.id} href={`#${item.id}`}
             style={{
-              display: "block", fontSize: 13, fontWeight: 400,
+              display: "block", fontSize: 13, fontWeight: expanded === item.id ? 600 : 400,
               color: expanded === item.id ? C.navy : C.textMuted,
-              textDecoration: "none", padding: "6px 0", lineHeight: 1.4,
+              textDecoration: "none", padding: "8px 0", lineHeight: 1.45,
               transition: "color 150ms",
             }}
             onClick={e => { e.preventDefault(); setExpanded(item.id); document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
-            {item.question.length > 40 ? item.question.slice(0, 40) + "\u2026" : item.question}
+            {item.question.length > 44 ? item.question.slice(0, 44) + "\u2026" : item.question}
           </a>
         ))}
       </nav>
@@ -429,8 +429,8 @@ function BrowseView({ activeCategory, setActiveCategory }: { activeCategory: str
 function FooterStrip() {
   const m = useMobile();
   return (
-    <div style={{ backgroundColor: C.sand, padding: m ? "32px 20px" : "40px 48px", textAlign: "center" }}>
-      <p style={{ fontSize: 13, fontWeight: 400, color: C.textMuted, margin: 0 }}>
+    <div style={{ backgroundColor: C.sand, padding: m ? "40px 20px" : "48px 48px", textAlign: "center" }}>
+      <p style={{ fontSize: 13, fontWeight: 400, color: C.textMuted, margin: 0, letterSpacing: "0.02em" }}>
         Income Stability Score&#8482; &bull; Powered by Structural Stability Model RP-2.0
       </p>
     </div>
