@@ -477,15 +477,15 @@ function ScoringSystem() {
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: m ? 12 : 20, maxWidth: 560, margin: "0 auto", ...fadeIn(visible, 120) }}>
+        <div style={{ display: m ? "flex" : "grid", flexDirection: m ? "column" as const : undefined, gridTemplateColumns: m ? undefined : "1fr 1fr 1fr", gap: m ? 12 : 20, maxWidth: 680, margin: "0 auto", ...fadeIn(visible, 120) }}>
           {[
             { label: "Model", value: "RP-2.0" },
             { label: "Ruleset", value: "Fixed" },
             { label: "Output", value: "Deterministic" },
           ].map((item, i) => (
-            <div key={i} style={{ padding: m ? 24 : 32, borderRadius: 18, backgroundColor: C.white, boxShadow: cardShadow, textAlign: "center" as const }}>
+            <div key={i} style={{ padding: m ? "20px 24px" : 32, borderRadius: 18, backgroundColor: C.white, boxShadow: cardShadow, textAlign: "center" as const }}>
               <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 8 }}>{item.label.toUpperCase()}</div>
-              <div style={{ fontSize: m ? 22 : 28, fontWeight: 700, fontFamily: mono, color: C.navy }}>{item.value}</div>
+              <div style={{ fontSize: m ? 20 : 28, fontWeight: 700, fontFamily: mono, color: C.navy, whiteSpace: "nowrap" }}>{item.value}</div>
             </div>
           ))}
         </div>
