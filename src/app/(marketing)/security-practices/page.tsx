@@ -86,7 +86,7 @@ export default function SecurityPracticesPage() {
   const heroAnim = useInView();
   const s1 = useInView(); const s2 = useInView(); const s3 = useInView(); const s4 = useInView();
   const s5 = useInView(); const s6 = useInView(); const s7 = useInView(); const s8 = useInView();
-  const s9 = useInView(); const s10 = useInView();
+  const s9 = useInView(); const s10 = useInView(); const s11 = useInView();
 
   return (
     <div style={{ background: "#FAFAFA", fontFamily: sans }}>
@@ -130,6 +130,7 @@ export default function SecurityPracticesPage() {
           </Section></div>
           <div ref={s9.ref}><Section number="9." title={t.securityPractices.s9Title} mobile={mobile} visible={s9.visible}><P>{t.securityPractices.s9P1}</P><P>{t.securityPractices.s9P2}</P><P style={{ marginBottom: 0 }}>{t.securityPractices.s9P3}</P></Section></div>
           <div ref={s10.ref}><Section number="10." title={t.securityPractices.s10Title} mobile={mobile} visible={s10.visible}><P>{t.securityPractices.s10P1}</P><P style={{ marginBottom: 0 }}>{t.securityPractices.s10P2}</P></Section></div>
+          <div ref={s11.ref}><Section number="11." title={t.securityPractices.s11Title} mobile={mobile} visible={s11.visible}><P>{t.securityPractices.s11P1}</P><Bullet items={[t.securityPractices.s11Li1, t.securityPractices.s11Li2, t.securityPractices.s11Li3, t.securityPractices.s11Li4]} /><P>{t.securityPractices.s11P2}</P><P style={{ marginBottom: 0 }}>{t.securityPractices.s11P3}</P></Section></div>
 
         </div>
       </section>

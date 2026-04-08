@@ -89,7 +89,7 @@ export default function TermsOfUsePage() {
   const s5 = useInView(); const s6 = useInView(); const s7 = useInView(); const s8 = useInView();
   const s9 = useInView(); const s10 = useInView(); const s11 = useInView(); const s12 = useInView();
   const s13 = useInView(); const s14 = useInView(); const s15 = useInView(); const s16 = useInView();
-  const s17 = useInView(); const s18 = useInView(); const s19 = useInView(); const s20 = useInView();
+  const s17 = useInView(); const s18 = useInView(); const s19 = useInView(); const s20 = useInView(); const s21 = useInView();
 
   return (
     <div style={{ background: "#FAFAFA", fontFamily: sans }}>
@@ -136,6 +136,7 @@ export default function TermsOfUsePage() {
           <div ref={s18.ref}><Section number="18." title={t.termsOfUse.s18Title} mobile={mobile} visible={s18.visible}><P style={{ marginBottom: 0 }}>{t.termsOfUse.s18P1}</P></Section></div>
           <div ref={s19.ref}><Section number="19." title={t.termsOfUse.s19Title} mobile={mobile} visible={s19.visible}><P style={{ marginBottom: 0 }}>{t.termsOfUse.s19P1}</P></Section></div>
           <div ref={s20.ref}><Section number="20." title={t.termsOfUse.s20Title} mobile={mobile} visible={s20.visible}><P>{t.termsOfUse.s20P1}</P><P>{t.termsOfUse.s20P2}</P><P>{t.termsOfUse.s20P3}</P><P style={{ marginBottom: 0 }}>{t.termsOfUse.s20P4}</P></Section></div>
+          <div ref={s21.ref}><Section number="21." title={t.termsOfUse.s21Title} mobile={mobile} visible={s21.visible}><P>{t.termsOfUse.s21P1}</P><P>{t.termsOfUse.s21P2}</P><Bullet items={[t.termsOfUse.s21Li1, t.termsOfUse.s21Li2, t.termsOfUse.s21Li3, t.termsOfUse.s21Li4, t.termsOfUse.s21Li5]} /><P>{t.termsOfUse.s21P3}</P><P style={{ marginBottom: 0 }}>{t.termsOfUse.s21P4}</P></Section></div>
 
         </div>
       </section>

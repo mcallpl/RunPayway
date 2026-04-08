@@ -117,13 +117,21 @@ const FAQ_DATA: FaqItem[] = [
   { id: "ent-multiple", category: "enterprise", categoryLabel: "Enterprise", question: "Can RunPayway assess multiple income profiles?", answer: "Yes. The system can evaluate multiple individuals using the same model.", keywords: ["multiple", "team", "bulk", "organization"] },
   { id: "ent-volume", category: "enterprise", categoryLabel: "Enterprise", question: "Does RunPayway offer volume access?", answer: "Yes. Structured access can be provided for teams and organizations.", keywords: ["volume", "enterprise", "team access", "organization"] },
   { id: "ent-share", category: "enterprise", categoryLabel: "Enterprise", question: "Can assessment records be shared?", answer: "Yes. Reports can be shared at the discretion of the individual.", keywords: ["share", "send", "export", "advisor"] },
-  { id: "ent-soc2", category: "enterprise", categoryLabel: "Enterprise", question: "Is RunPayway SOC 2 compliant?", answer: "Compliance status depends on current infrastructure.", keywords: ["soc 2", "compliance", "security", "certified"] },
   { id: "ent-integrate", category: "enterprise", categoryLabel: "Enterprise", question: "Can we integrate RunPayway into workflows?", answer: "Integration options can be discussed for enterprise use.", keywords: ["integrate", "api", "workflow", "embed"] },
+
+  // --- Compliance ---
+  { id: "comp-soc2", category: "compliance", categoryLabel: "Compliance", question: "Is RunPayway SOC 2 compliant?", answer: "RunPayway\u2122 is building toward SOC 2 Type II readiness. Our security controls are designed around the Trust Services Criteria (security, availability, processing integrity, confidentiality, and privacy). Formal certification is part of our compliance roadmap. Enterprise customers may request additional security documentation through our contact form.", keywords: ["soc 2", "soc2", "compliance", "security", "certified", "audit", "trust services"] },
+  { id: "comp-iso27001", category: "compliance", categoryLabel: "Compliance", question: "Does RunPayway align with ISO 27001?", answer: "RunPayway\u2122 security practices are informed by the ISO 27001 framework, including risk assessment, access control, and continuous improvement. Formal certification is part of our compliance roadmap.", keywords: ["iso 27001", "iso", "information security", "isms", "framework"] },
+  { id: "comp-gdpr", category: "compliance", categoryLabel: "Compliance", question: "Is RunPayway GDPR ready?", answer: "RunPayway\u2122 is designed with GDPR principles in mind. We publish a Data Processing Agreement, identify legal bases for processing, support data subject rights (access, rectification, erasure, portability, restriction, objection), implement Standard Contractual Clauses for international transfers, and maintain a 72-hour breach notification commitment.", keywords: ["gdpr", "european", "data protection", "dpa", "eu", "eea"] },
+  { id: "comp-ccpa", category: "compliance", categoryLabel: "Compliance", question: "Does RunPayway comply with CCPA/CPRA?", answer: "RunPayway\u2122 supports California privacy rights as outlined in our Privacy Policy. We do not sell personal information, do not share data for cross-context behavioral advertising, and provide mechanisms for access, deletion, correction, and opt-out requests.", keywords: ["ccpa", "cpra", "california", "privacy rights"] },
+  { id: "comp-dpa", category: "compliance", categoryLabel: "Compliance", question: "Does RunPayway offer a Data Processing Agreement?", answer: "Yes. A standard Data Processing Agreement is published on our website and available at /data-processing-agreement. Enterprise customers requiring custom DPA terms may contact us through the contact form.", keywords: ["dpa", "data processing", "agreement", "contract", "enterprise"] },
 
   // --- Licensing ---
   { id: "lic-score", category: "licensing", categoryLabel: "Licensing", question: "Can the score be licensed?", answer: "Yes. Licensing options are available for organizations.", keywords: ["license", "licensing", "use score"] },
   { id: "lic-api", category: "licensing", categoryLabel: "Licensing", question: "How does licensing differ from API access?", answer: "Licensing defines usage rights. API access enables system integration.", keywords: ["license vs api", "api", "difference", "access"] },
   { id: "lic-whitelabel", category: "licensing", categoryLabel: "Licensing", question: "Is white-label reporting available?", answer: "Options may be available depending on use case.", keywords: ["white label", "whitelabel", "branded", "custom"] },
+  { id: "lic-enterprise", category: "licensing", categoryLabel: "Licensing", question: "What does an enterprise license include?", answer: "Enterprise licensing governs authorized use cases, volume limits, data handling obligations, attribution requirements, and compliance with applicable data protection regulations. Terms are defined per agreement.", keywords: ["enterprise license", "what includes", "terms", "commercial"] },
+  { id: "lic-compliance", category: "licensing", categoryLabel: "Licensing", question: "Does the license require compliance with data protection laws?", answer: "Yes. Enterprise licensees are expected to comply with applicable data protection regulations, including GDPR and CCPA/CPRA, when processing data obtained through the RunPayway\u2122 platform.", keywords: ["compliance", "data protection", "gdpr", "ccpa", "licensee", "obligations"] },
 ];
 
 const CATEGORIES = [
@@ -134,6 +142,7 @@ const CATEGORIES = [
   { key: "privacy", label: "Privacy" },
   { key: "pricing", label: "Pricing" },
   { key: "enterprise", label: "Enterprise" },
+  { key: "compliance", label: "Compliance" },
   { key: "licensing", label: "Licensing" },
 ];
 
@@ -146,6 +155,7 @@ const SYNONYMS: Record<string, string[]> = {
   assessment: ["test", "quiz", "evaluation"],
   privacy: ["data", "security", "information"],
   cost: ["price", "pricing", "fee", "charge"],
+  compliance: ["certification", "certified", "audit", "regulation", "soc", "iso", "gdpr", "ccpa"],
 };
 
 

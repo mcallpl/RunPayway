@@ -89,7 +89,7 @@ export default function PrivacyPolicyPage() {
   const mobile = useMobile();
   const { t } = useLanguage();
   const heroAnim = useInView();
-  const sectionRefs = Array.from({ length: 16 }, () => useInView());
+  const sectionRefs = Array.from({ length: 17 }, () => useInView());
 
   return (
     <div style={{ background: "#FAFAFA", fontFamily: sans }}>
@@ -213,7 +213,7 @@ export default function PrivacyPolicyPage() {
           <div ref={sectionRefs[9].ref}>
             <Section number="9." title={t.privacyPolicy.s9Title} mobile={mobile} visible={sectionRefs[9].visible}>
               <P>{t.privacyPolicy.s9P1}</P>
-              <Bullet items={[t.privacyPolicy.s9Li1, t.privacyPolicy.s9Li2, t.privacyPolicy.s9Li3, t.privacyPolicy.s9Li4, t.privacyPolicy.s9Li5]} />
+              <Bullet items={[t.privacyPolicy.s9Li1, t.privacyPolicy.s9Li2, t.privacyPolicy.s9Li3, t.privacyPolicy.s9Li4, t.privacyPolicy.s9Li5, t.privacyPolicy.s9Li6, t.privacyPolicy.s9Li7]} />
               <P>{t.privacyPolicy.s9P2}</P>
               <P>{t.privacyPolicy.s9P3}</P>
               <P>{t.privacyPolicy.s9P4}</P>
@@ -224,9 +224,10 @@ export default function PrivacyPolicyPage() {
           <div ref={sectionRefs[10].ref}>
             <Section number="10." title={t.privacyPolicy.s10Title} mobile={mobile} visible={sectionRefs[10].visible}>
               <P>{t.privacyPolicy.s10P1}</P>
-              <Bullet items={[t.privacyPolicy.s10Li1, t.privacyPolicy.s10Li2, t.privacyPolicy.s10Li3, t.privacyPolicy.s10Li4, t.privacyPolicy.s10Li5]} />
+              <Bullet items={[t.privacyPolicy.s10Li1, t.privacyPolicy.s10Li2, t.privacyPolicy.s10Li3, t.privacyPolicy.s10Li4, t.privacyPolicy.s10Li5, t.privacyPolicy.s10Li6]} />
               <P>{t.privacyPolicy.s10P2}</P>
-              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s10P3}</P>
+              <P>{t.privacyPolicy.s10P3}</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s10P4}</P>
             </Section>
           </div>
 
@@ -264,7 +265,14 @@ export default function PrivacyPolicyPage() {
           </div>
 
           <div ref={sectionRefs[15].ref}>
-            <Section number="15." title={t.privacyPolicy.s14Title} mobile={mobile} visible={sectionRefs[15].visible}>
+            <Section number="15." title={t.privacyPolicy.s13cTitle} mobile={mobile} visible={sectionRefs[15].visible}>
+              <P>{t.privacyPolicy.s13cP1}</P>
+              <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s13cP2}</P>
+            </Section>
+          </div>
+
+          <div ref={sectionRefs[16].ref}>
+            <Section number="16." title={t.privacyPolicy.s14Title} mobile={mobile} visible={sectionRefs[16].visible}>
               <P>{t.privacyPolicy.s14P1}</P>
               <P style={{ marginBottom: 0 }}>{t.privacyPolicy.s14P2}</P>
             </Section>

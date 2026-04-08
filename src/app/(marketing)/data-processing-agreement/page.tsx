@@ -78,8 +78,9 @@ const sections = [
   ]},
   { title: "6. Data Subject Rights", items: [
     "Data subjects may request access to, rectification of, or deletion of their Personal Data at any time.",
+    "These rights include, where applicable under GDPR: access (Article 15), rectification (Article 16), erasure (Article 17), restriction of processing (Article 18), data portability (Article 20), and objection (Article 21).",
     "Requests can be submitted through the RunPayway\u2122 privacy request form or by email at privacy@peoplestar.com.",
-    "The Processor will respond to data subject requests within 30 days.",
+    "RunPayway\u2122 will respond to data subject requests within 30 days.",
   ]},
   { title: "7. Data Retention", items: [
     "Assessment records are retained for the duration of the service relationship plus 12 months, unless deletion is requested earlier.",
@@ -97,6 +98,11 @@ const sections = [
   { title: "10. Governing Law", items: [
     "This Data Processing Agreement is governed by the laws of the State of California, United States.",
     "For enterprise customers subject to GDPR, the Standard Contractual Clauses (SCCs) are incorporated by reference.",
+  ]},
+  { title: "11. Compliance Framework Alignment", items: [
+    "RunPayway\u2122 security and data protection practices are designed to align with SOC 2 Type II Trust Services Criteria and the ISO 27001 Information Security Management System framework.",
+    "For enterprise customers subject to GDPR, this DPA is intended to satisfy the requirements of Article 28 (Processor obligations).",
+    "Framework alignment does not constitute formal certification. RunPayway\u2122 will notify enterprise customers as formal audit milestones are achieved.",
   ]},
 ];
 
