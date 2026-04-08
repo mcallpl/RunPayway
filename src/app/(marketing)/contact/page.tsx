@@ -93,19 +93,18 @@ export default function ContactPage() {
     <div style={{ background: "#FAFAFA", fontFamily: sans }}>
 
       {/* HERO */}
-      <header style={{ backgroundColor: C.white, position: "relative", overflow: "hidden", paddingTop: mobile ? 36 : 56, paddingBottom: mobile ? 36 : 56, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24 }}>
-        <div style={{ position: "absolute", top: "-20%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
-        <div ref={heroAnim.ref} style={{ maxWidth: 780, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1, ...fade(heroAnim.visible) }}>
-          <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
+      <header style={{ backgroundColor: C.sand, position: "relative", overflow: "hidden", paddingTop: mobile ? 104 : 152, paddingBottom: mobile ? 56 : 88, paddingLeft: mobile ? 20 : 48, paddingRight: mobile ? 20 : 48 }}>
+        <div ref={heroAnim.ref} style={{ maxWidth: 860, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1, ...fade(heroAnim.visible) }}>
+          <div style={{ fontSize: mobile ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>
             {t.contact.heroTag}
           </div>
-          <h1 style={{ fontSize: mobile ? 32 : 48, fontWeight: 600, color: C.navy, letterSpacing: "-0.03em", lineHeight: 1.08, marginBottom: 20 }}>
+          <h1 style={{ fontSize: mobile ? 38 : 64, fontWeight: 700, color: C.navy, letterSpacing: "-0.035em", lineHeight: 1.05, marginBottom: 24 }}>
             {t.contact.heroTitle}
           </h1>
-          <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, maxWidth: 560, margin: "0 auto 12px" }}>
+          <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 400, color: muted, lineHeight: 1.5, maxWidth: 620, margin: "0 auto 16px" }}>
             {t.contact.heroDesc}
           </p>
-          <p style={{ fontSize: 14, color: light }}>
+          <p style={{ fontSize: mobile ? 15 : 16, fontWeight: 600, color: C.navy }}>
             {t.contact.heroResponse}
           </p>
         </div>
@@ -122,11 +121,14 @@ export default function ContactPage() {
             boxShadow: "0 2px 12px rgba(14,26,43,0.04)",
             ...fade(formAnim.visible),
           }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 28 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 12 }}>
               <div style={{ width: 4, height: 24, borderRadius: 2, backgroundColor: C.purple, opacity: 0.30, flexShrink: 0 }} />
               <span style={{ fontSize: 11, fontWeight: 700, color: C.purple, letterSpacing: "0.14em", textTransform: "uppercase" as const }}>{t.contact.formTag}</span>
               <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, ${C.purple}10 0%, transparent 100%)` }} />
             </div>
+            <p style={{ fontSize: 15, color: muted, lineHeight: 1.6, marginBottom: 28 }}>
+              {t.contact.formDesc}
+            </p>
 
             <div style={{ marginBottom: 22 }}>
               <label style={labelStyle}>{t.contact.fullName} <span style={{ color: "#C0392B" }}>*</span></label>
@@ -175,16 +177,16 @@ export default function ContactPage() {
             ) : (
               <>
                 <button onClick={handleSubmit} disabled={!canSubmit} style={{
-                  width: "100%", height: 56, borderRadius: 14,
+                  width: "100%", height: 60, borderRadius: 16,
                   background: canSubmit ? C.navy : "rgba(14,26,43,0.08)",
                   color: canSubmit ? C.white : light,
                   fontSize: 16, fontWeight: 600, border: "none",
                   cursor: canSubmit ? "pointer" : "not-allowed",
-                  boxShadow: canSubmit ? "0 2px 12px rgba(14,26,43,0.10)" : "none",
-                  transition: "background 200ms ease, box-shadow 200ms ease",
+                  boxShadow: canSubmit ? "0 8px 24px rgba(14,26,43,0.12)" : "none",
+                  transition: "background 200ms ease, box-shadow 200ms ease, transform 200ms ease",
                 }}
-                  onMouseEnter={e => { if (canSubmit) { e.currentTarget.style.backgroundColor = "#1a2540"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(14,26,43,0.15)"; } }}
-                  onMouseLeave={e => { if (canSubmit) { e.currentTarget.style.backgroundColor = C.navy; e.currentTarget.style.boxShadow = "0 2px 12px rgba(14,26,43,0.10)"; } }}>
+                  onMouseEnter={e => { if (canSubmit) { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; } }}
+                  onMouseLeave={e => { if (canSubmit) { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; } }}>
                   {sending ? "Sending..." : t.contact.submit}
                 </button>
                 {sendError && <p role="alert" aria-live="assertive" style={{ fontSize: 13, color: "#C0392B", marginTop: 8, textAlign: "center" }}>{sendError}</p>}
@@ -192,8 +194,10 @@ export default function ContactPage() {
             )}
 
             <div style={{ height: 1, background: border, margin: "28px 0 16px" }} />
-            <div style={{ display: "flex", flexDirection: "column" as const, gap: 4, alignItems: "center" }}>
-              <span style={{ fontSize: 13, color: light }}>{t.contact.secureForm}</span>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={light} strokeWidth="2" strokeLinecap="round"><path d="M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 0 0-8 0v4h8z" /></svg>
+              <span style={{ fontSize: 13, fontWeight: 600, color: light }}>{t.contact.secureForm}</span>
+              <span style={{ fontSize: 13, color: light }}>&middot;</span>
               <span style={{ fontSize: 13, color: light }}>{t.contact.encryptedData}</span>
             </div>
           </div>
@@ -260,13 +264,29 @@ export default function ContactPage() {
       </section>
 
       {/* FINAL CTA */}
-      <section style={{ backgroundColor: C.navy, paddingTop: mobile ? 72 : 100, paddingBottom: mobile ? 72 : 100, paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24, position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: "50%", left: "50%", width: 500, height: 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
-        <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-          <div style={{ fontSize: mobile ? 24 : 32, fontWeight: 600, color: C.navy, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 12 }}>
+      <section style={{ backgroundColor: C.navy, paddingTop: mobile ? 88 : 128, paddingBottom: mobile ? 88 : 128, paddingLeft: mobile ? 20 : 48, paddingRight: mobile ? 20 : 48 }}>
+        <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontSize: mobile ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 32 }}>
             {t.contact.closingSubtitle}
-          </div>
-          <p style={{ fontSize: 13, color: light, letterSpacing: "0.04em" }}>
+          </h2>
+          <Link href="/begin" style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            height: mobile ? 56 : 60, width: mobile ? "100%" : "auto",
+            padding: mobile ? "0 28px" : "0 32px",
+            borderRadius: 16, backgroundColor: C.white, color: C.navy,
+            fontSize: 16, fontWeight: 600, textDecoration: "none",
+            boxShadow: "0 8px 24px rgba(14,26,43,0.08)",
+            border: `1px solid rgba(244,241,234,0.45)`,
+            transition: "transform 200ms, box-shadow 200ms",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
+            Get Your Structural Income Report
+          </Link>
+          <p style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.40)", marginTop: 16 }}>
+            Under 2 minutes | Instant result | Private by default
+          </p>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 24, letterSpacing: "0.04em" }}>
             {t.contact.poweredBy}
           </p>
         </div>
