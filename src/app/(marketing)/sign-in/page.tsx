@@ -105,21 +105,24 @@ export default function SignInPage() {
   return (
     <div style={{ fontFamily: sans, overflowX: "hidden" }}>
       {/* ══ HERO ══ */}
-      <section ref={heroAnim.ref} style={{ backgroundColor: C.white, paddingTop: m ? 36 : 56, paddingBottom: m ? 36 : 56, paddingLeft: px(m), paddingRight: px(m) }}>
-        <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
+      <section ref={heroAnim.ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 56 : 88, paddingLeft: px(m), paddingRight: px(m) }}>
+        <div style={{ maxWidth: 860, margin: "0 auto", textAlign: "center" }}>
           <div style={{ ...fadeIn(heroAnim.visible) }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 28 }}>
-              <span style={{ ...T.label, color: C.teal }}>Monitoring Portal</span>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 16 }}>
+              <span style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal }}>Monitoring Portal</span>
             </div>
-            <h1 style={{ ...h1(m), color: C.navy, lineHeight: 1.08, letterSpacing: "-0.03em", marginBottom: 24 }}>
-              Your stability,{!m && <br />} tracked over time.
+            <h1 style={{ fontSize: m ? 38 : 64, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16 }}>
+              Monitor Your Income Stability
             </h1>
-            <p style={{ ...body(m), color: C.muted, maxWidth: 480, margin: "0 auto 28px" }}>
-              Sign in to access your RunPayway&#8482; Stability Monitoring dashboard, take assessments, and review your history.
+            <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.45, color: C.textSecondary, maxWidth: 620, margin: "0 auto 16px" }}>
+              Track how your income holds up over time.
             </p>
-            <div style={{ display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap" as const }}>
-              {["Email sign-in", "No password required", "3 assessments included"].map(t => (
-                <span key={t} style={{ ...T.micro, fontWeight: 500, color: C.sandLight }}>{t}</span>
+            <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 560, margin: "0 auto 24px" }}>
+              Sign in to access your RunPayway&#8482; Stability Monitoring Dashboard, take assessments, and review your history.
+            </p>
+            <div style={{ display: "flex", justifyContent: "center", gap: m ? 12 : 24, flexWrap: "wrap" as const }}>
+              {["Email + PIN authentication", "No passwords required", "3 assessments included"].map(t => (
+                <span key={t} style={{ fontSize: 14, fontWeight: 600, color: C.textMuted }}>{t}</span>
               ))}
             </div>
           </div>
@@ -137,10 +140,10 @@ export default function SignInPage() {
                 <div style={{ textAlign: "center", marginBottom: 32 }}>
                   <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 16 }}>RunPayway&#8482; Stability Monitoring</div>
                   <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: 12 }}>
-                    Sign in to your portal
+                    Sign in with Your Email &amp; PIN
                   </h2>
                   <p style={{ ...bodySm(m), color: C.muted, maxWidth: 360, margin: "0 auto" }}>
-                    Enter the email address you used at checkout.
+                    No passwords. Just one email, one PIN for seamless access.
                   </p>
                 </div>
 
@@ -194,10 +197,11 @@ export default function SignInPage() {
                 ) : (
                   /* ─── Normal sign-in flow ─── */
                   <>
-                    <div style={{ marginBottom: 20 }}>
-                      <label style={{ ...T.label, fontSize: 13, color: C.navy, display: "block", marginBottom: 10 }}>
+                    <div style={{ marginBottom: 24 }}>
+                      <label style={{ ...T.label, fontSize: 13, color: C.navy, display: "block", marginBottom: 4 }}>
                         Email Address
                       </label>
+                      <p style={{ fontSize: 12, color: C.muted, margin: "0 0 10px" }}>Enter the email address you used at checkout</p>
                       <input
                         type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                         placeholder="you@example.com"
@@ -241,7 +245,7 @@ export default function SignInPage() {
                       onMouseEnter={() => canHover() && setBtnHovered(true)}
                       onMouseLeave={() => setBtnHovered(false)}
                       style={{
-                        width: "100%", height: 52, borderRadius: 12,
+                        width: "100%", height: 60, borderRadius: 16,
                         background: C.navy, color: C.white,
                         fontSize: 16, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em", border: "none", cursor: "pointer",
                         boxShadow: btnHovered ? "0 12px 32px rgba(14,26,43,0.25)" : "0 8px 24px rgba(14,26,43,0.15)",
@@ -252,12 +256,16 @@ export default function SignInPage() {
                       Access Monitoring Portal
                     </button>
 
-                    <div style={{ textAlign: "center", marginTop: 24 }}>
-                      <span style={{ fontSize: 14, color: C.light }}>Don&apos;t have a plan? </span>
-                      <Link href="/pricing" style={{ fontSize: 14, fontWeight: 600, color: C.purple, textDecoration: "none" }}>
-                        View pricing &rarr;
-                      </Link>
-                    </div>
+                    <Link href="/pricing" style={{
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      width: "100%", height: 52, borderRadius: 16, marginTop: 12,
+                      backgroundColor: C.white, color: C.navy,
+                      fontSize: 15, fontWeight: 600, fontFamily: sans, textDecoration: "none",
+                      border: `1px solid ${C.softBorder}`,
+                      transition: "background-color 200ms",
+                    }}>
+                      View Pricing
+                    </Link>
 
                     <div style={{ height: 1, background: C.softBorder, margin: "28px 0 20px" }} />
                     <div style={{ textAlign: "center" }}>
@@ -380,27 +388,26 @@ export default function SignInPage() {
       {/* ══ INFO CARDS ══ */}
       <section style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
         <div ref={infoAnim.ref} style={{ maxWidth: 800, margin: "0 auto" }}>
-          <div style={{ marginBottom: sp(2), ...fadeIn(infoAnim.visible) }}>
-            <span style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.14em", color: C.light, fontFamily: mono }}>01</span>
-          </div>
-          <div style={{ marginBottom: m ? 32 : 48, ...fadeIn(infoAnim.visible) }}>
+          <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, ...fadeIn(infoAnim.visible) }}>
             <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
-              Stability is not static.{!m && <br />} Neither is the score.
+              Stability Is Not Static.{!m && <br />} Neither is the Score.
             </h2>
+            <p style={{ ...body(m), color: C.muted, maxWidth: 480, margin: "0 auto" }}>
+              Your score evolves based on how your income behaves.
+            </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? 16 : 20 }}>
+          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? 16 : 24 }}>
             {[
-              { num: "01", title: "Authenticate instantly", desc: "One email. Zero passwords. Your monitoring portal recognizes you the moment you arrive.", color: C.purple },
-              { num: "02", title: "Reassess on your terms", desc: "Each assessment captures a new structural snapshot — a full 4-page diagnostic calibrated to your current reality.", color: C.teal },
-              { num: "03", title: "Observe the trajectory", desc: "Income structures evolve. Three assessments over 12 months reveal what changed, what held, and what to act on next.", color: C.purple },
+              { num: "01", title: "Stability Is Not Static", desc: "Your score evolves based on how your income behaves.", color: C.teal },
+              { num: "02", title: "Reassess on Your Terms", desc: "Each assessment captures a new structural snapshot, calibrated to your current income.", color: C.teal },
+              { num: "03", title: "Observe the Trajectory", desc: "Track your income\u2019s evolution. Each assessment reveals what changed, what held, and what to act on next.", color: C.teal },
             ].map((card, i) => (
               <div key={card.num} style={{
-                ...cardStyle, borderRadius: 14, padding: m ? "28px 24px" : "32px 28px",
+                ...cardStyle, borderRadius: 16, padding: m ? "28px 24px" : "32px 28px",
                 ...fadeIn(infoAnim.visible, 100 + i * 80),
               }}>
-                <div style={{ width: 36, height: 36, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#FAFAFA", border: `1px solid ${C.softBorder}`, fontSize: 13, fontWeight: 700, fontFamily: mono, color: card.color, position: "relative", overflow: "hidden", marginBottom: 20 }}>
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, backgroundColor: card.color, opacity: 0.6 }} />
+                <div style={{ fontSize: 28, fontWeight: 700, fontFamily: mono, color: card.color, marginBottom: 16 }}>
                   {card.num}
                 </div>
                 <div style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: C.navy, marginBottom: 8 }}>{card.title}</div>
@@ -415,31 +422,25 @@ export default function SignInPage() {
       <section style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
         <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
           <div style={{ ...fadeIn(true) }}>
-            <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.02em", marginBottom: 20 }}>
-              Your income has a structure.{!m && <br />} Now you can measure it.
+            <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.02em", marginBottom: 12 }}>
+              Your Income Has a Structure.
             </h2>
-            <p style={{ ...body(m), color: C.sandMuted, maxWidth: 440, margin: "0 auto 40px" }}>
-              The free score shows where you stand. The full diagnostic shows what to do about it.
+            <p style={{ ...body(m), color: C.sandMuted, maxWidth: 480, margin: "0 auto 16px" }}>
+              Now you can measure it under fixed rules.
+            </p>
+            <p style={{ fontSize: 16, color: C.sandLight, maxWidth: 440, margin: "0 auto 40px", lineHeight: 1.6 }}>
+              The Free Score shows where you stand. The Full Diagnostic shows exactly what to do about it.
             </p>
             <div style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" as const }}>
               <Link href="/begin" style={{
-                ...ctaButtonLight, height: m ? 48 : 56, paddingLeft: 32, paddingRight: 32, borderRadius: 12,
+                ...ctaButtonLight, height: m ? 56 : 60, paddingLeft: 32, paddingRight: 32, borderRadius: 16,
                 backgroundColor: C.white, color: C.navy,
               }}>
                 Get My Free Score
               </Link>
-              <Link href="/pricing" style={{
-                display: "inline-flex", alignItems: "center", justifyContent: "center",
-                height: m ? 48 : 56, paddingLeft: 32, paddingRight: 32, borderRadius: 12,
-                backgroundColor: "transparent", color: C.sandText,
-                fontSize: 16, fontWeight: 600, textDecoration: "none",
-                border: `1px solid ${C.sandBorder}`,
-              }}>
-                View Pricing
-              </Link>
             </div>
-            <div style={{ marginTop: 20, ...T.meta, color: C.sandLight }}>
-              Under 2 minutes &#183; Instant result &#183; Private by default
+            <div style={{ marginTop: 20, fontSize: 14, fontWeight: 500, color: C.sandLight }}>
+              Under 2 minutes | Instant result | Private by default
             </div>
           </div>
         </div>
