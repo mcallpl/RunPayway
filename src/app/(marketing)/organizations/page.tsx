@@ -83,13 +83,13 @@ function HeroSection() {
   const fadeIn = useFadeIn();
 
   return (
-    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 56 : 72, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 56 : 88, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: 860, margin: "0 auto", textAlign: "center" }}>
         <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
-          FOR ORGANIZATIONS
+          FOR ENTERPRISES
         </div>
         <h1 style={{ fontSize: m ? 38 : 64, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
-          Assess Income Structure{m ? " " : <br />}at Scale. One Fixed Rule Set.
+          Standardize and Scale Income{m ? " " : <br />}Structure Assessment with{m ? " " : <br />}One Fixed Methodology
         </h1>
         <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: narrowW, margin: "0 auto 24px", ...fadeIn(visible, 100) }}>
           Income evaluation across your organization is subjective. RunPayway standardizes it&mdash;with a deterministic system that produces the same result every time.
@@ -126,7 +126,7 @@ function ProblemSection() {
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", maxWidth: narrowW, margin: "0 auto", marginBottom: m ? 40 : 56 }}>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
             The Problem with Subjective{m ? " " : <br />}Income Evaluation
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
@@ -158,18 +158,18 @@ function SystemSection() {
   const fadeIn = useFadeIn();
 
   const attrs = [
-    { title: "Deterministic", desc: "Identical inputs always produce identical outputs. No variability." },
-    { title: "Version-Controlled", desc: "Every model version is locked and immutable. Scores are always traceable." },
-    { title: "Auditable", desc: "Every assessment is stamped with model version, timestamp, and authentication code." },
-    { title: "Private by Default", desc: "No bank accounts. No credit pull. No financial data required." },
+    { title: "Deterministic", desc: "Identical inputs always produce identical results. No variability, no exceptions." },
+    { title: "Version-Controlled", desc: "Every model version is locked and immutable. Scores are always traceable to their methodology." },
+    { title: "Auditable", desc: "Every assessment is stamped with model version, timestamp, and authentication code. Fully traceable." },
+    { title: "Private by Default", desc: "No bank accounts. No credit pull. No financial data required. Assessment inputs only." },
   ];
 
   return (
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", maxWidth: narrowW, margin: "0 auto", marginBottom: m ? 40 : 56 }}>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
-            One System. Fixed Rules.{m ? " " : <br />}Every Assessment.
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
+            One System. Fixed Rules.{m ? " " : <br />}Every Time.
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
             The Income Stability Score&#8482; is produced by a deterministic model. No AI. No subjective judgment. Same inputs always produce the same result.
@@ -200,16 +200,16 @@ function IntegrationSection() {
   const fadeIn = useFadeIn();
 
   const items = [
-    { num: "01", title: "API Access", desc: "Programmatic access to the scoring engine. Send inputs, receive scores and structural breakdowns as JSON." },
-    { num: "02", title: "Batch Assessment", desc: "Assess hundreds of income profiles using the same fixed model. Upload inputs, receive standardized results." },
-    { num: "03", title: "White-Label Reporting", desc: "Generate branded reports with your organization\u2019s identity. Same data, your brand. Powered by RunPayway\u2122." },
+    { num: "01", title: "API Access", desc: "Programmatically access scoring and structural breakdowns. Send inputs via API, receive scores, bands, and risk factors as JSON." },
+    { num: "02", title: "Batch Assessment", desc: "Assess hundreds of income profiles at once using the fixed model. Upload inputs, receive standardized, comparable results." },
+    { num: "03", title: "White-Label Reporting", desc: "Generate branded reports with your organization\u2019s identity. Same data, same methodology, your brand. Powered by RunPayway\u2122." },
   ];
 
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", maxWidth: narrowW, margin: "0 auto", marginBottom: m ? 40 : 56 }}>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
             Built for Integration
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
@@ -256,7 +256,7 @@ function ComplianceSection() {
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", maxWidth: narrowW, margin: "0 auto", marginBottom: m ? 40 : 56 }}>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
             Enterprise Compliance Readiness
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
@@ -288,18 +288,18 @@ function UseCasesSection() {
   const fadeIn = useFadeIn();
 
   const cases = [
-    { title: "Lending & Underwriting", desc: "Add a structural income layer to credit decisions. Standardize what was previously subjective." },
-    { title: "Workforce Platforms", desc: "Assess contractor and freelancer income stability at onboarding or renewal." },
-    { title: "Advisory Platforms", desc: "Give advisors a standardized income risk tool they can deploy across their client book." },
-    { title: "Benefits & Insurance", desc: "Evaluate income structure for eligibility, risk pricing, or coverage decisions." },
+    { title: "Lending & Underwriting", desc: "Integrate a structural income layer into credit decisions. Standardize income assessment across different analysts and eliminate subjective variation." },
+    { title: "Workforce Platforms", desc: "Quickly assess contractor and freelancer income stability at onboarding and renewal. One consistent standard across your entire platform." },
+    { title: "Advisory Platforms", desc: "Give financial advisors a standardized tool to evaluate client income risk, making assessments consistent across your entire client base." },
+    { title: "Benefits & Insurance", desc: "Use income structure evaluation for eligibility determination, risk pricing, or coverage decisions. Replace subjective review with fixed methodology." },
   ];
 
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", maxWidth: narrowW, margin: "0 auto", marginBottom: m ? 40 : 56 }}>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
-            Where Organizations Deploy This
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
+            Where Enterprises Apply RunPayway&#8482;
           </h2>
         </div>
 
@@ -372,11 +372,11 @@ function RequestAccessSection() {
     <section ref={ref} id="enterprise-form" style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 32 : 48 }}>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
-            Request an Enterprise Briefing
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
+            Request Your Enterprise Briefing
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
-            Tell us about your organization and use case. We&#8217;ll schedule a briefing within five business days.
+            Gain access to a customized demo and detailed insights for applying RunPayway&#8482; to your organization. We&#8217;ll follow up within two business days.
           </p>
         </div>
 
