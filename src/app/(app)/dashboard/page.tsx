@@ -732,7 +732,7 @@ function DashboardContent() {
               Loading Dashboard
             </div>
             <div style={{ fontSize: 14, fontWeight: 400, color: C.muted, lineHeight: 1.5 }}>
-              Analyzing your income &bull; Model RP-2.0
+              Analyzing your income | Model RP-2.0
             </div>
             <div style={{ marginTop: 40, display: "flex", flexDirection: "column", gap: 12 }}>
               <div style={{ height: 12, borderRadius: 6, backgroundColor: C.border, width: "100%" }} />
@@ -741,7 +741,7 @@ function DashboardContent() {
             </div>
           </div>
           <p style={{ fontSize: 13, fontWeight: 400, color: C.light, textAlign: "center", marginTop: 24, lineHeight: 1.5 }}>
-            Private by default &bull; No external data access &bull; Version-locked scoring
+            Private by default | No external data access | Version-locked scoring
           </p>
           <style>{`@keyframes cc-spin { to { transform: rotate(360deg); } }`}</style>
         </div>
@@ -856,7 +856,7 @@ function DashboardContent() {
             .cc-teaser-card .cc-hover-reveal { opacity: 1; max-height: 200px; }
           }
         `}</style>
-        <div style={{ minHeight: "100vh", backgroundColor: B.bg, fontFamily: sans }}>
+        <div style={{ minHeight: "100vh", backgroundColor: C.sand, fontFamily: sans }}>
           <SuiteHeader current="dashboard" />
 
           <div style={{ maxWidth: 720, margin: "0 auto", padding: mobile ? "24px 16px 100px" : "48px 36px 96px" }}>
@@ -873,12 +873,15 @@ function DashboardContent() {
               <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" as const }}>
                 <a href={STRIPE_URL} style={{
                   display: "inline-flex", alignItems: "center", justifyContent: "center",
-                  height: 52, padding: "0 36px", borderRadius: 10,
-                  background: `linear-gradient(135deg, ${B.navy} 0%, ${B.purple} 100%)`,
+                  height: 60, padding: "0 36px", borderRadius: 16,
+                  backgroundColor: B.navy,
                   color: "#FFF", fontSize: 16, fontWeight: 600, textDecoration: "none",
-                  boxShadow: "0 4px 16px rgba(14,26,43,0.15)",
-                  transition: "transform 150ms, box-shadow 150ms",
-                }}>Get Your Assessment</a>
+                  boxShadow: "0 8px 24px rgba(14,26,43,0.12)",
+                  transition: "transform 200ms, box-shadow 200ms",
+                }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}
+                >Get Your Assessment</a>
               </div>
             </div>
 
@@ -945,16 +948,21 @@ function DashboardContent() {
               </p>
               <a href={STRIPE_URL} style={{
                 display: "inline-flex", alignItems: "center", justifyContent: "center",
-                height: 52, padding: "0 36px", borderRadius: 8,
-                backgroundColor: C.sandBorder, border: `1px solid ${C.sandLight}`,
-                color: C.sandText, fontSize: 16, fontWeight: 600, textDecoration: "none",
-              }}>Get Your Assessment &rarr;</a>
+                height: 60, padding: "0 36px", borderRadius: 16,
+                backgroundColor: C.white, border: `1px solid ${C.sandLight}`,
+                color: B.navy, fontSize: 16, fontWeight: 600, textDecoration: "none",
+                boxShadow: "0 8px 24px rgba(14,26,43,0.08)",
+                transition: "transform 200ms, box-shadow 200ms",
+              }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(244,241,234,0.15)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}
+              >Get Your Assessment</a>
             </div>
 
             {/* Footer */}
             <div style={{ paddingTop: 32, textAlign: "center" }}>
-              <p style={{ fontSize: 14, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; PeopleStar Enterprises, INC.</p>
-              <p style={{ fontSize: 12, color: `${B.taupe}80`, margin: 0 }}>Fixed rules &middot; Same answers, same score &middot; Private by default</p>
+              <p style={{ fontSize: 14, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; | Model RP-2.0 | PeopleStar Enterprises, INC.</p>
+              <p style={{ fontSize: 12, color: `${B.taupe}80`, margin: 0 }}>Fixed rules | Same answers, same score | Private by default</p>
             </div>
           </div>
         </div>
@@ -1378,7 +1386,7 @@ function DashboardContent() {
                 </div>
                 <div style={{ marginTop: 16, paddingTop: 14, borderTop: `1px solid ${B.stone}`, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: 8 }}>
                   <span style={{ fontSize: 13, color: B.taupe }}>Scripts are starting points. Adapt tone and details to your voice.</span>
-                  <span style={{ fontSize: 12, color: B.taupe, fontFamily: mono }}>Model RP-2.0 &middot; {indLabel}</span>
+                  <span style={{ fontSize: 12, color: B.taupe, fontFamily: mono }}>Model RP-2.0 | {indLabel}</span>
                 </div>
               </section>
             );
@@ -1971,7 +1979,7 @@ function DashboardContent() {
 
           {/* Minimal footer */}
           <div style={{ paddingTop: 32, textAlign: "center" }}>
-            <p style={{ fontSize: 12, color: `${B.taupe}60`, margin: 0 }}>RunPayway™ &middot; PeopleStar Enterprises, INC.</p>
+            <p style={{ fontSize: 12, color: `${B.taupe}60`, margin: 0 }}>RunPayway™ | PeopleStar Enterprises, INC.</p>
           </div>
         </div>
       </div>
