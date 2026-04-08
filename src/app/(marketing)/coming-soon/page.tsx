@@ -138,11 +138,26 @@ function Shipped() {
       icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6",
       color: C.purple,
       items: [
-        "Score History Timeline — visual progression across assessments",
+        "Score History Timeline \u2014 visual progression across assessments",
         "Factor-level delta tracking between assessments",
-        "Benchmark evolution — peer percentile movement over time",
+        "Benchmark evolution \u2014 peer percentile movement over time",
         "Email + PIN authentication for Monitoring Portal",
         "3 assessments over 12 months",
+      ],
+    },
+    {
+      version: "GV-1.0",
+      date: "Q2 2026",
+      title: "Enterprise Compliance & B2B Readiness",
+      icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+      color: C.teal,
+      items: [
+        "SOC 2 Type II and ISO 27001 framework alignment documentation",
+        "GDPR readiness \u2014 DPIA, expanded data subject rights, DPO roadmap",
+        "CCPA/CPRA strengthening \u2014 sensitive PI declaration, CPRA-specific rights",
+        "Enterprise licensing framework in Terms of Use",
+        "Advisors and Organizations pages with request access forms",
+        "Compliance FAQ category with SOC 2, ISO 27001, GDPR, CCPA entries",
       ],
     },
   ];
@@ -225,8 +240,8 @@ function RoadmapSection() {
     {
       timeline: "2026",
       title: "Enterprise API & Advisor License",
-      desc: "Programmatic access to the scoring engine for financial advisors, lenders, and workforce platforms. White-label reporting available.",
-      status: "planned" as const,
+      desc: "Programmatic API access to the scoring engine for financial advisors, lenders, and workforce platforms. White-label reporting and batch assessment. Advisor and enterprise access currently available by request.",
+      status: "development" as const,
       icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
     },
   ];
