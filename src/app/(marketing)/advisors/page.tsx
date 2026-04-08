@@ -81,20 +81,20 @@ function HeroSection() {
   const fadeIn = useFadeIn();
 
   return (
-    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 56 : 72, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 56 : 88, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: 860, margin: "0 auto", textAlign: "center" }}>
         <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
           FOR ADVISORS
         </div>
         <h1 style={{ fontSize: m ? 38 : 64, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
-          Evaluate Client Income Risk{m ? " " : <br />}Before It Surfaces
+          Evaluate and Mitigate Client{m ? " " : <br />}Income Risk Before It Becomes{m ? " " : <br />}a Problem
         </h1>
         <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: narrowW, margin: "0 auto 24px", ...fadeIn(visible, 100) }}>
-          Your clients tell you what they earn. Not how it&rsquo;s built. RunPayway gives you a standardized way to assess income structure&nbsp;&mdash; before it becomes a problem.
+          Your clients tell you what they earn. Not how it&rsquo;s built. RunPayway gives you a standardized way to assess income structure&mdash;and act on it before problems surface.
         </p>
-        <div style={{ display: "flex", justifyContent: "center", gap: m ? 12 : 20, flexWrap: "wrap" as const, ...fadeIn(visible, 150) }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: m ? 12 : 24, flexWrap: "wrap" as const, ...fadeIn(visible, 150) }}>
           {["Standardized methodology", "Fixed rules", "Private by default"].map((badge, i) => (
-            <span key={i} style={{ fontSize: 14, fontWeight: 500, color: C.textMuted }}>{badge}{i < 2 ? " |" : ""}</span>
+            <span key={i} style={{ fontSize: 14, fontWeight: 600, color: C.textMuted }}>{badge}</span>
           ))}
         </div>
       </div>
@@ -121,8 +121,8 @@ function TheProblem() {
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
-        <div style={{ maxWidth: 680, margin: "0 auto 48px", textAlign: "center" }}>
-          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
+        <div style={{ maxWidth: 680, margin: "0 auto 56px", textAlign: "center" }}>
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
             The Gap in Client Assessment
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
@@ -231,10 +231,10 @@ function UseCases() {
   const fadeIn = useFadeIn();
 
   const cases = [
-    { title: "Pre-Onboarding Risk Screen", desc: "Assess a prospect\u2019s income structure before taking them on as a client." },
-    { title: "Annual Review Supplement", desc: "Add income stability to your annual review alongside assets and liabilities." },
-    { title: "Client Retention", desc: "Identify clients at structural risk before they experience a crisis." },
-    { title: "Practice Differentiation", desc: "Offer a capability no other advisor in your market has." },
+    { title: "Pre-Onboarding Risk Assessment", desc: "Quickly assess income structure before onboarding clients. Know what you\u2019re inheriting." },
+    { title: "Annual Income Review", desc: "Add income stability to your annual review, alongside assets and liabilities. See the full picture." },
+    { title: "Client Retention", desc: "Identify clients at risk before they experience income-related problems. Act before the crisis." },
+    { title: "Practice Differentiation", desc: "Stand out from competitors by offering a unique income risk assessment no one else has." },
   ];
 
   return (
@@ -242,7 +242,7 @@ function UseCases() {
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 48, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy }}>
-            Where Advisors Apply This
+            Where Advisors Apply RunPayway&#8482;
           </h2>
         </div>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, ...fadeIn(visible, 100) }}>
@@ -269,25 +269,28 @@ function WhatYouGet() {
   const fadeIn = useFadeIn();
 
   const items = [
-    "Run assessments on behalf of clients",
-    "Full 4-page diagnostic report per client",
-    "Dashboard access with score breakdown and stress testing",
-    "Client-ready PDF output",
-    "Standardized methodology across your entire book",
-    "White-label reporting options (enterprise tier)",
+    { title: "Full 4-Page Diagnostic Report", desc: "Actionable insights tailored to each client\u2019s unique income structure." },
+    { title: "Complete Dashboard", desc: "Score breakdowns, stress testing, and real-time performance insights per client." },
+    { title: "Client-Ready PDF Output", desc: "Download and share a polished report directly with your client." },
+    { title: "Standardized Methodology", desc: "Run consistent assessments with fixed, transparent rules across your entire book." },
+    { title: "Run Assessments on Behalf of Clients", desc: "No client login required. You run it, they receive the results." },
+    { title: "White-Label Reporting", desc: "For enterprise advisors \u2014 branded reports with your firm\u2019s identity." },
   ];
 
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 32, ...fadeIn(visible) }}>
-          What Advisor Access Includes
+          What Advisors Get with Access
         </h2>
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 16, ...fadeIn(visible, 100) }}>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 20, ...fadeIn(visible, 100) }}>
           {items.map((item, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-              <span style={{ color: C.teal, fontSize: 16, flexShrink: 0, marginTop: 1 }}>&#10003;</span>
-              <span style={{ fontSize: 17, color: C.textSecondary, lineHeight: 1.6 }}>{item}</span>
+            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
+              <span style={{ color: C.teal, fontSize: 16, flexShrink: 0, marginTop: 2 }}>&#10003;</span>
+              <div>
+                <span style={{ fontSize: 16, fontWeight: 600, color: C.navy }}>{item.title}</span>
+                <span style={{ fontSize: 15, color: C.textSecondary }}> &mdash; {item.desc}</span>
+              </div>
             </div>
           ))}
         </div>
@@ -392,10 +395,10 @@ function RequestAccessForm() {
       <div style={{ maxWidth: 640, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 40, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 12 }}>
-            Request Advisor Access
+            Request Advisor Access Now
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary }}>
-            Access is available by request. Tell us about your practice and we&rsquo;ll follow up within two business days.
+            Get access to the tools that help you evaluate income risk for your clients. Our team will follow up within two business days.
           </p>
         </div>
 
