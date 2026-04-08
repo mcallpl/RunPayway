@@ -111,7 +111,7 @@ const FAQ_DATA: FaqItem[] = [
 
   // --- Pricing ---
   { id: "pricing-diff", category: "pricing", categoryLabel: "Pricing", question: "What is the difference between the free score and the full report?", answer: "The score shows your position. The report shows what defines it\u2014and what changes it.", keywords: ["free vs paid", "difference", "what do I get", "pricing", "cost"] },
-  { id: "pricing-account", category: "pricing", categoryLabel: "Pricing", question: "Do I need an account?", answer: "No.", keywords: ["account", "sign up", "registration", "login"] },
+  { id: "pricing-account", category: "pricing", categoryLabel: "Pricing", question: "Do I need an account?", answer: "Not for the free score or the $69 Command Center\u2014those work without an account. The $149/year Monitoring plan requires a sign-in so your three annual assessments can be tracked and compared over time.", keywords: ["account", "sign up", "registration", "login", "sign in", "monitoring"] },
 
   // --- Enterprise ---
   { id: "ent-multiple", category: "enterprise", categoryLabel: "Enterprise", question: "Can RunPayway assess multiple income profiles?", answer: "Yes. The system can evaluate multiple individuals using the same model.", keywords: ["multiple", "team", "bulk", "organization"] },
