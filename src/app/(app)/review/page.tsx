@@ -976,7 +976,7 @@ export default function ReviewPage() {
             const closedPct = Math.round(((gapBefore - gapAfter) / gapBefore) * 100);
             const nextBandLabel = nextBandMin === 30 ? "Developing Stability" : nextBandMin === 50 ? "Established Stability" : "High Stability";
             if (closedPct > 0) {
-              progressText = `Together, these changes close ${closedPct}% of the gap to ${nextBandLabel} Stability (score: ${cur} to ${proj}).`;
+              progressText = `Together, these changes close ${closedPct}% of the gap to ${nextBandLabel} (score: ${cur} to ${proj}).`;
             } else {
               progressText = `Together, these changes would raise your score from ${cur} to ${proj}.`;
             }
@@ -1093,7 +1093,7 @@ export default function ReviewPage() {
             <div style={{ fontSize: 14, fontWeight: 600, color: bandColor }}>{record.stability_band}</div>
           </div>
 
-          {nextBandName && <div style={{ fontSize: 12, color: B.teal, fontWeight: 500, marginBottom: mobile ? 16 : 24 }}><span style={{ fontFamily: mono }}>{distanceToNext}</span> points to {nextBandName} Stability</div>}
+          {nextBandName && <div style={{ fontSize: 12, color: B.teal, fontWeight: 500, marginBottom: mobile ? 16 : 24 }}><span style={{ fontFamily: mono }}>{distanceToNext}</span> points to {nextBandName}</div>}
           {tier === "high" && <div style={{ fontSize: 12, color: B.teal, fontWeight: 500, marginBottom: mobile ? 16 : 24 }}>Highest stability band achieved</div>}
 
           <div style={{ width: mobile ? 60 : 80, height: 1, backgroundColor: "rgba(14,26,43,0.08)", marginBottom: mobile ? 16 : 24 }} />
@@ -1138,7 +1138,7 @@ export default function ReviewPage() {
             <div style={{ width: 8, height: 8, borderRadius: 2, backgroundColor: bandColor }} />
             <div style={{ fontSize: 14, fontWeight: 600, color: bandColor }}>{record.stability_band}</div>
           </div>
-          {nextBandName && <div style={{ fontSize: 12, color: B.teal, fontWeight: 600, marginTop: 8 }}><span style={{ fontFamily: mono }}>{distanceToNext}</span> points to {nextBandName} Stability</div>}
+          {nextBandName && <div style={{ fontSize: 12, color: B.teal, fontWeight: 600, marginTop: 8 }}><span style={{ fontFamily: mono }}>{distanceToNext}</span> points to {nextBandName}</div>}
         </div>
 
         {/* ── KEY TAKEAWAY ── */}
@@ -1288,7 +1288,7 @@ export default function ReviewPage() {
             const closedPct = Math.round(((gapBefore - gapAfter) / gapBefore) * 100);
             const nextBandLabel = nextBandMin === 30 ? "Developing Stability" : nextBandMin === 50 ? "Established Stability" : "High Stability";
             if (closedPct > 0) {
-              progressText = `Together, these changes close ${closedPct}% of the gap to ${nextBandLabel} Stability (score: ${cur} → ${proj}).`;
+              progressText = `Together, these changes close ${closedPct}% of the gap to ${nextBandLabel} (score: ${cur} → ${proj}).`;
             } else {
               progressText = `Together, these changes would raise your score from ${cur} to ${proj}.`;
             }
@@ -1328,7 +1328,7 @@ export default function ReviewPage() {
             <div style={{ ...reportCardStyle, marginBottom: 16, padding: mobile ? "14px 16px" : "16px 24px", borderLeft: `3px solid ${B.teal}` }}>
               <div style={{ ...T.overline, color: B.teal, marginBottom: 4 }}>WHAT BECOMES POSSIBLE{nextTier ? ` AT ${nextLabel.toUpperCase()} STABILITY` : ""}</div>
               <p style={{ ...T.small, color: B.muted, margin: "0 0 10px", lineHeight: 1.5 }}>
-                {nextTier ? `Reaching ${nextLabel} Stability isn\u2019t just a higher number \u2014 it changes what you can do:` : "At your level, your income gives you real leverage:"}
+                {nextTier ? `Reaching ${nextLabel} isn\u2019t just a higher number \u2014 it changes what you can do:` : "At your level, your income gives you real leverage:"}
               </p>
               {items?.map((item, i) => (
                 <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: i < (items.length - 1) ? 8 : 0 }}>

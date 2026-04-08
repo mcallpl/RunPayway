@@ -943,7 +943,7 @@ export default function DiagnosticPage() {
           <div style={{ opacity: revealPhase >= 2 ? 1 : 0, transform: revealPhase >= 2 ? "translateY(0)" : "translateY(12px)", transition: "opacity 600ms ease, transform 600ms ease", marginBottom: 8 }}>
             {nextBand && (
               <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(14,26,43,0.45)", margin: "0 0 8px", lineHeight: 1.5 }}>
-                {gap} points from {nextBand} Stability
+                {gap} points from {nextBand}
               </p>
             )}
             <p style={{ fontSize: 14, color: "rgba(14,26,43,0.35)", margin: 0 }}>

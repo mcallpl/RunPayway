@@ -1010,7 +1010,7 @@ function DashboardContent() {
             const stepsDone = completedSteps.length;
 
             const copyBriefing = () => {
-              const text = `RunPayway™ Weekly Briefing — ${custName || "Assessment"}\n\nScore: ${dScore}/100 (${dBand})\n${gap > 0 ? `${gap} points to ${nextB} Stability` : "Highest band achieved"}\n\nThis week: ${nextMove?.label || "Complete Step 1"}\nProjected impact: +${nextMove?.lift || 0} points → ${nextMove?.projected || dScore}\n\n${stepsDone}/${stepsTotal} steps completed · ${daysSince} days since assessment\n\n— RunPayway™ Dashboard`;
+              const text = `RunPayway™ Weekly Briefing — ${custName || "Assessment"}\n\nScore: ${dScore}/100 (${dBand})\n${gap > 0 ? `${gap} points to ${nextB}` : "Highest band achieved"}\n\nThis week: ${nextMove?.label || "Complete Step 1"}\nProjected impact: +${nextMove?.lift || 0} points → ${nextMove?.projected || dScore}\n\n${stepsDone}/${stepsTotal} steps completed · ${daysSince} days since assessment\n\n— RunPayway™ Dashboard`;
               navigator.clipboard.writeText(text);
             };
 
@@ -1029,7 +1029,7 @@ function DashboardContent() {
                       </div>
                       <div style={{ fontSize: mobile ? 15 : 17, color: B.muted, lineHeight: 1.55, marginBottom: 6 }}>
                         {gap > 0
-                          ? <>{gap} points from <span style={{ fontWeight: 600, color: B.navy }}>{nextB} Stability</span>.</>
+                          ? <>{gap} points from <span style={{ fontWeight: 600, color: B.navy }}>{nextB}</span>.</>
                           : <span style={{ fontWeight: 600, color: B.teal }}>Highest band achieved.</span>
                         }
                       </div>

@@ -371,7 +371,7 @@ async function page1(doc: jsPDF, d: ReportPDFData) {
   // Improvement potential
   if (d.nextBandName) {
     sf(doc, "InterSB"); doc.setFontSize(9.5); doc.setTextColor("#1F6D7A");
-    doc.text(S(`Improvement Potential: ${d.distanceToNext} points to ${d.nextBandName} Stability`), ML + CW, scoreBlockY + 68, { align: "right" });
+    doc.text(S(`Improvement Potential: ${d.distanceToNext} points to ${d.nextBandName}`), ML + CW, scoreBlockY + 68, { align: "right" });
   }
 
   // ── BAND DESCRIPTION ──
