@@ -632,9 +632,9 @@ function UseCaseArchitecture() {
   const fadeIn = useFadeIn();
 
   const cases = [
-    { title: "Individuals", sub: "Measure your structure", desc: "Measure your structure. Know where it holds, where it breaks, and what drives your stability.", color: C.teal, link: "/begin", cta: "Begin assessment" },
-    { title: "Advisors", sub: "Evaluate client risk", desc: "Evaluate client risk. Standardize income risk across your book, preventing client failure before it surfaces.", color: C.purple, link: "/contact", cta: "Request advisor access" },
-    { title: "Organizations", sub: "Assess at scale", desc: "Assess at scale. Use a fixed rule set to compare income structures across your organization. Remove subjectivity.", color: C.textMuted, link: "/contact", cta: "Request enterprise briefing" },
+    { title: "Individuals", sub: "Measure your structure", desc: "Know where your income holds, where it breaks, and what drives your stability.", color: C.teal, link: "/begin", cta: "Begin assessment" },
+    { title: "Advisors", sub: "Evaluate client risk", desc: "See how your clients\u2019 income holds under pressure\u2014before it becomes a problem.", color: C.purple, link: "/advisors", cta: "Learn more" },
+    { title: "Organizations", sub: "Assess at scale", desc: "Standardize income evaluation across your organization with one fixed, auditable rule set.", color: C.textMuted, link: "/organizations", cta: "Learn more" },
   ];
 
   return (
