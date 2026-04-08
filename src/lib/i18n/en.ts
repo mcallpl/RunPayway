@@ -857,8 +857,8 @@ export const en: Translations = {
   privacyPolicy: {
     heroTag: "Legal",
     heroTitle: "Privacy Policy",
-    heroSubtitle: "RunPayway™ · Income Stability Score™",
-    heroModel: "Model RP-2.0",
+    heroSubtitle: "RunPayway\u2122 is committed to protecting your privacy. This policy outlines how we collect, use, store, and protect your personal information.",
+    heroModel: "Effective Date: March 22, 2026",
     s0Title: "RunPayway™",
     s0EffectiveDate: "Effective Date: March 22, 2026",
     s0Operator: "Operated by PeopleStar Enterprises, Inc.",
@@ -993,9 +993,9 @@ export const en: Translations = {
     s14Title: "Changes to This Policy",
     s14P1: "This Privacy Policy may be updated periodically.",
     s14P2: "Material changes will be published with an updated effective date.",
-    closingBrand: "RunPayway™",
-    closingSubtitle: "Income Stability Score™",
-    closingPowered: "Model RP-2.0",
+    closingBrand: "Contact Us for Privacy Requests",
+    closingSubtitle: "For privacy inquiries or to exercise your data protection rights, contact us through the RunPayway\u2122 privacy request form or by email at privacy@peoplestar.com.",
+    closingPowered: "RunPayway\u2122 is committed to protecting your privacy.",
   },
 
   // ── Terms of Use page ──
