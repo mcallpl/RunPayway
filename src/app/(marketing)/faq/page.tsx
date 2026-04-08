@@ -98,12 +98,12 @@ const FAQ_DATA: FaqItem[] = [
   { id: "report-included", category: "report", categoryLabel: "Assessment Report", question: "What is included in the report?", answer: "Score and stability classification, structural breakdown, primary constraint, stress testing, and action plan. Each section is generated from your inputs.", keywords: ["report contents", "what is included", "report sections", "what do I get"] },
   { id: "report-calculated", category: "report", categoryLabel: "Assessment Report", question: "How is the score calculated?", answer: "Using fixed rules defined in the Structural Stability Model. The same inputs always produce the same score.", keywords: ["how calculated", "calculation", "formula", "method", "deterministic"] },
 
-  // --- Command Center ---
-  { id: "cc-what", category: "command-center", categoryLabel: "Command Center", question: "What is the Command Center?", answer: "A structured interface for applying your results.", keywords: ["command center", "dashboard", "what is it"] },
-  { id: "cc-playbook", category: "command-center", categoryLabel: "Command Center", question: "What is the Negotiation Playbook?", answer: "Scripts based on your income structure to reduce dependency and improve stability.", keywords: ["negotiation", "playbook", "scripts", "what to say"] },
-  { id: "cc-thisweek", category: "command-center", categoryLabel: "Command Center", question: "What is the \u2018This Week\u2019 briefing?", answer: "A short set of actions based on your highest-impact change.", keywords: ["this week", "briefing", "weekly", "actions"] },
-  { id: "cc-roadmap", category: "command-center", categoryLabel: "Command Center", question: "How are roadmap milestones personalized?", answer: "They are generated directly from your inputs\u2014not templates.", keywords: ["roadmap", "milestones", "personalized", "12 week"] },
-  { id: "cc-pressuremap", category: "command-center", categoryLabel: "Command Center", question: "What is PressureMap\u2122?", answer: "A structured view of where your income is most exposed.", keywords: ["pressuremap", "pressure", "exposure", "risk map"] },
+  // --- Dashboard ---
+  { id: "cc-what", category: "command-center", categoryLabel: "Dashboard", question: "What is the Dashboard?", answer: "A structured interface for applying your results.", keywords: ["command center", "dashboard", "what is it"] },
+  { id: "cc-playbook", category: "command-center", categoryLabel: "Dashboard", question: "What is the Negotiation Playbook?", answer: "Scripts based on your income structure to reduce dependency and improve stability.", keywords: ["negotiation", "playbook", "scripts", "what to say"] },
+  { id: "cc-thisweek", category: "command-center", categoryLabel: "Dashboard", question: "What is the \u2018This Week\u2019 briefing?", answer: "A short set of actions based on your highest-impact change.", keywords: ["this week", "briefing", "weekly", "actions"] },
+  { id: "cc-roadmap", category: "command-center", categoryLabel: "Dashboard", question: "How are roadmap milestones personalized?", answer: "They are generated directly from your inputs\u2014not templates.", keywords: ["roadmap", "milestones", "personalized", "12 week"] },
+  { id: "cc-pressuremap", category: "command-center", categoryLabel: "Dashboard", question: "What is PressureMap\u2122?", answer: "A structured view of where your income is most exposed.", keywords: ["pressuremap", "pressure", "exposure", "risk map"] },
 
   // --- Privacy ---
   { id: "privacy-data", category: "privacy", categoryLabel: "Privacy and Data", question: "How is my data handled?", answer: "Your inputs are used only to generate your score and report.", keywords: ["data", "privacy", "how used", "what happens to data"] },
@@ -111,7 +111,7 @@ const FAQ_DATA: FaqItem[] = [
 
   // --- Pricing ---
   { id: "pricing-diff", category: "pricing", categoryLabel: "Pricing", question: "What is the difference between the free score and the full report?", answer: "The score shows your position. The report shows what defines it\u2014and what changes it.", keywords: ["free vs paid", "difference", "what do I get", "pricing", "cost"] },
-  { id: "pricing-account", category: "pricing", categoryLabel: "Pricing", question: "Do I need an account?", answer: "Not for the free score or the $69 Command Center\u2014those work without an account. The $149/year Monitoring plan requires a sign-in so your three annual assessments can be tracked and compared over time.", keywords: ["account", "sign up", "registration", "login", "sign in", "monitoring"] },
+  { id: "pricing-account", category: "pricing", categoryLabel: "Pricing", question: "Do I need an account?", answer: "Not for the free score or the $69 Dashboard\u2014those work without an account. The $149/year Monitoring plan requires a sign-in so your three annual assessments can be tracked and compared over time.", keywords: ["account", "sign up", "registration", "login", "sign in", "monitoring"] },
 
   // --- Enterprise ---
   { id: "ent-multiple", category: "enterprise", categoryLabel: "Enterprise", question: "Can RunPayway assess multiple income profiles?", answer: "Yes. The system can evaluate multiple individuals using the same model.", keywords: ["multiple", "team", "bulk", "organization"] },
@@ -130,7 +130,7 @@ const CATEGORIES = [
   { key: "score", label: "Income Stability Score\u2122" },
   { key: "assessment", label: "Assessment" },
   { key: "report", label: "Report" },
-  { key: "command-center", label: "Command Center" },
+  { key: "command-center", label: "Dashboard" },
   { key: "privacy", label: "Privacy" },
   { key: "pricing", label: "Pricing" },
   { key: "enterprise", label: "Enterprise" },

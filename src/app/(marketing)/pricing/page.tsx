@@ -215,7 +215,7 @@ function PricingCards() {
       </div>
 
       <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.navy, marginBottom: 20 }}>
-        RunPayway&#8482; Dashboard (Command Center)
+        RunPayway&#8482; Dashboard
       </div>
       <div style={{ marginBottom: 4 }}>
         <span style={{ fontSize: 36, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$69</span>
@@ -261,7 +261,7 @@ function PricingCards() {
       }}
         onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
         onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = ctaShadow; }}>
-        Unlock Command Center &mdash; $69
+        Unlock Dashboard &mdash; $69
       </a>
       <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, textAlign: "center", marginTop: 14, marginBottom: 0 }}>
         One payment. Lifetime access.
@@ -313,7 +313,7 @@ function PricingCards() {
         Start Monitoring &mdash; $149/year
       </a>
       <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
-        Includes full Command Center access.
+        Includes full Dashboard access.
       </p>
     </div>
   );
@@ -407,7 +407,7 @@ function OutcomesSection() {
       <div style={{ maxWidth: 960, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy }}>
-            What the Dashboard (Command Center) gives you
+            What the Dashboard gives you
           </h2>
         </div>
 
@@ -454,7 +454,7 @@ function FaqSection() {
 
   const faqs = [
     { q: "What do I get for free?", a: "A complete structural score and classification. No cost. No account required." },
-    { q: "What does the $69 unlock?", a: "The Dashboard (Command Center) — a full breakdown of what defines your score, personalized scripts, a 12-week roadmap, and the exact actions that change it." },
+    { q: "What does the $69 unlock?", a: "The Dashboard — a full breakdown of what defines your score, personalized scripts, a 12-week roadmap, and the exact actions that change it." },
     { q: "What is the Negotiation Playbook?", a: "Scripts based on your actual income structure, designed to improve stability." },
     { q: "How are roadmap milestones personalized?", a: "They are generated directly from your inputs — not templates or assumptions." },
     { q: "What does Monitoring include?", a: "Multiple assessments, change tracking, and visibility over time." },

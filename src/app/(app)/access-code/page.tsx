@@ -75,7 +75,7 @@ function AccessCodeContent() {
           <div style={{ textAlign: "center", marginBottom: 40 }}>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: B.purple, marginBottom: 16 }}>ACCESS CODE</div>
             <h1 style={{ fontSize: mobile ? 22 : 28, fontWeight: 300, color: B.navy, margin: "0 0 12px", lineHeight: 1.25, letterSpacing: "-0.02em" }}>
-              Load your Command Center.
+              Load your Dashboard.
             </h1>
             <p style={{ fontSize: 15, color: B.muted, margin: 0, lineHeight: 1.65 }}>
               Paste the access code from your RunPayway™ report to open your full diagnostic, simulator, and roadmap.
@@ -121,7 +121,7 @@ function AccessCodeContent() {
               onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.9"; }}
               onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
             >
-              Open Command Center
+              Open Dashboard
             </button>
           </div>
 

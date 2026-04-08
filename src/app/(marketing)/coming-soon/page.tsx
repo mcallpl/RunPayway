@@ -120,7 +120,7 @@ function Shipped() {
     {
       version: "CC-1.0",
       date: "Q1 2026",
-      title: "Command Center Launch",
+      title: "Dashboard Launch",
       icon: "M13 10V3L4 14h7v7l9-11h-7z",
       color: C.teal,
       items: [

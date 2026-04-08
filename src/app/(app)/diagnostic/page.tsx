@@ -969,7 +969,7 @@ export default function DiagnosticPage() {
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "#1a2540"; }}
               onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = C.navy; }}
             >
-              Enter Your Command Center &rarr;
+              Enter Your Dashboard &rarr;
             </button>
           </div>
 

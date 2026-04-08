@@ -51,7 +51,7 @@ const sections = [
   ]},
   { title: "2. Scope of Processing", items: [
     "RunPayway\u2122 processes the following categories of Personal Data: assessment inputs (structural income dimensions), email addresses, assessment titles, and industry sector classifications.",
-    "Processing is performed solely for the purpose of generating the Income Stability Score\u2122, diagnostic reports, and Command Center functionality.",
+    "Processing is performed solely for the purpose of generating the Income Stability Score\u2122, diagnostic reports, and Dashboard functionality.",
     "No financial account data, bank credentials, credit data, or transaction history is collected or processed.",
     "All scoring is deterministic under Model RP-2.0. No Personal Data is used for model training, profiling, or automated decision-making beyond the assessment itself.",
   ]},

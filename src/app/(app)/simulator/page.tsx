@@ -8,7 +8,7 @@ export default function SimulatorRedirect() {
   useEffect(() => { router.replace("/dashboard"); }, [router]);
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Inter', system-ui, sans-serif" }}>
-      <p style={{ fontSize: 14, color: "rgba(14,26,43,0.52)" }}>Redirecting to Command Center...</p>
+      <p style={{ fontSize: 14, color: "rgba(14,26,43,0.52)" }}>Redirecting to Dashboard...</p>
     </div>
   );
 }

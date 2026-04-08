@@ -280,7 +280,7 @@ export default function SignInPage() {
               /* ─── Dashboard ─── */
               <>
                 <div style={{ textAlign: "center", marginBottom: 32 }}>
-                  <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 16 }}>Command Center</div>
+                  <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 16 }}>Dashboard</div>
                   <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: 12 }}>
                     Welcome back.
                   </h2>

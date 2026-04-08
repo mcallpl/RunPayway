@@ -409,7 +409,7 @@ export default function FreeScorePage() {
           </p>
 
           <div style={{ display: "flex", flexDirection: "column" as const, gap: 8, textAlign: "left", maxWidth: 400, margin: "0 auto 28px" }}>
-            {["Structural breakdown", "Score drivers", "Ranked risk scenarios", "Impact modeling", "Improvement path", "12-week roadmap", "Command Center access"].map((item, i) => (
+            {["Structural breakdown", "Score drivers", "Ranked risk scenarios", "Impact modeling", "Improvement path", "12-week roadmap", "Dashboard access"].map((item, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
                 <span style={{ fontSize: 14, color: "rgba(244,241,234,0.60)" }}>{item}</span>
@@ -435,14 +435,14 @@ export default function FreeScorePage() {
           </p>
         </section>
 
-        {/* ── SECTION 9: COMMAND CENTER PREVIEW ── */}
+        {/* ── SECTION 9: DASHBOARD PREVIEW ── */}
         <section style={{
           backgroundColor: C.white, borderRadius: 12, padding: cardPad,
           border: `1px solid ${C.border}`,
           marginBottom: secPad,
         }}>
           <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 12 }}>
-            Command Center
+            Dashboard
           </div>
           <div style={{ fontSize: 18, fontWeight: 500, color: C.navy, marginBottom: 8 }}>
             Where your structure gets improved.

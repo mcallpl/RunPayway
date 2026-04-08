@@ -1,7 +1,7 @@
 /* ================================================================== */
 /*  report-pdf.tsx — Fixed 4-page print document                      */
 /*  jsPDF absolute coordinates, measured text, hard overflow failure   */
-/*  RunPayway(TM) Command Center · Income Stability Report · RP-2.0  */
+/*  RunPayway(TM) Dashboard · Income Stability Report · RP-2.0      */
 /* ================================================================== */
 
 export interface ReportPDFData {
@@ -395,7 +395,7 @@ async function page1(doc: jsPDF, d: ReportPDFData) {
   doc.text("RUNPAYWAY(TM) STABILITY SUITE ACCESS", ML, y, { charSpace: 0.5 });
   y += 12;
   sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
-  doc.text("Use this code at runpayway.com/simulator to access your Command Center tools.", ML, y);
+  doc.text("Use this code at runpayway.com/dashboard to access your Dashboard tools.", ML, y);
   y += 14;
   // Access code card — full width (no QR for RP-2.0)
   doc.setFont("Courier", "normal"); doc.setFontSize(6.5);
@@ -651,7 +651,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
     sf(doc, "InterB"); doc.setFontSize(10); doc.setTextColor("#1C1635");
     doc.text("Why This Report Delivers Real Value", ML, y);
     y += 12;
-    const valueText = "This report provides actionable steps, personalized recommendations, and the RunPayway(TM) Command Center to future-proof your income. Clear guidance, interactive tools, and an ongoing plan to create lasting financial stability.";
+    const valueText = "This report provides actionable steps, personalized recommendations, and the RunPayway(TM) Dashboard to future-proof your income. Clear guidance, interactive tools, and an ongoing plan to create lasting financial stability.";
     y = dt(doc, valueText, ML, y, CW, 9, { color: "#535D6B", maxLines: 3 });
     y += 8;
   }
@@ -669,10 +669,10 @@ function page4(doc: jsPDF, d: ReportPDFData) {
   if (y + 60 <= YL) {
     doc.setDrawColor("#E2E0DB"); doc.setLineWidth(0.5);
     doc.line(ML, y, ML + CW, y); y += 12;
-    label(doc, "COMMAND CENTER ACCESS", ML, y, "#1C1635");
+    label(doc, "DASHBOARD ACCESS", ML, y, "#1C1635");
     y += 10;
     sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#535D6B");
-    doc.text("Use this code at runpayway.com/dashboard to access your Command Center.", ML, y);
+    doc.text("Use this code at runpayway.com/dashboard to access your Dashboard.", ML, y);
     y += 12;
     card(doc, ML, y, CW, 28);
     doc.setFont("Courier", "normal"); doc.setFontSize(6); doc.setTextColor("#1C1635");
@@ -689,7 +689,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
     dt(doc, fp, ML, y, CW, 7.5, { color: "#6B6155", lh: 1.3 });
   }
 
-  footer(doc, "Stress Testing & Command Center Access", 4);
+  footer(doc, "Stress Testing & Dashboard Access", 4);
 }
 
 /* ================================================================== */
