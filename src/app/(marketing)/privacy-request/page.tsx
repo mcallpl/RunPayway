@@ -71,12 +71,12 @@ export default function PrivacyRequestPage() {
 
   const inputStyle: React.CSSProperties = {
     width: "100%",
-    height: 48,
+    height: 56,
     padding: "0 16px",
-    borderRadius: 10,
+    borderRadius: 16,
     border: "1px solid rgba(14,26,43,0.12)",
     background: C.sand,
-    fontSize: 14,
+    fontSize: 16,
     color: C.navy,
     outline: "none",
     transition: "border-color 180ms ease",
@@ -99,85 +99,39 @@ export default function PrivacyRequestPage() {
       {/*  Hero                                                        */}
       {/* ============================================================ */}
       <section
+        ref={heroAnim.ref}
         style={{
-          position: "relative",
-          overflow: "hidden",
-          background: gradient,
-          paddingTop: mobile ? 72 : 100,
-          paddingBottom: mobile ? 72 : 100,
+          backgroundColor: C.sand,
+          paddingTop: mobile ? 104 : 152,
+          paddingBottom: mobile ? 56 : 88,
+          paddingLeft: mobile ? 20 : 48,
+          paddingRight: mobile ? 20 : 48,
         }}
       >
         <div
           style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.15,
-            mixBlendMode: "soft-light",
-            pointerEvents: "none",
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`,
-            backgroundSize: "180px 180px",
-          }}
-        />
-
-        <div
-          ref={heroAnim.ref}
-          className="mx-auto"
-          style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: 820,
-            paddingLeft: mobile ? 24 : 40,
-            paddingRight: mobile ? 24 : 40,
+            maxWidth: 860,
+            margin: "0 auto",
             textAlign: "center",
             opacity: heroAnim.visible ? 1 : 0,
-            transform: heroAnim.visible ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 700ms ease, transform 700ms ease",
+            transform: heroAnim.visible ? "translateY(0)" : "translateY(16px)",
+            transition: "opacity 600ms ease, transform 600ms ease",
           }}
         >
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "6px 16px",
-              borderRadius: 100,
-              border: "1px solid rgba(255,255,255,0.12)",
-              background: "rgba(255,255,255,0.06)",
-              marginBottom: 28,
-            }}
-          >
-            <span style={{ fontSize: 12, fontWeight: 600, color: C.sandText, letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              Privacy
-            </span>
+          <div style={{ fontSize: mobile ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>
+            PRIVACY
           </div>
 
-          <h1
-            style={{
-              fontSize: mobile ? 30 : 44,
-              fontWeight: 700,
-              color: C.sandText,
-              letterSpacing: "-0.03em",
-              lineHeight: 1.15,
-              marginBottom: 20,
-            }}
-          >
+          <h1 style={{ fontSize: mobile ? 38 : 64, fontWeight: 700, color: C.navy, letterSpacing: "-0.035em", lineHeight: 1.05, marginBottom: 24 }}>
             Privacy Request
           </h1>
 
-          <p
-            style={{
-              fontSize: mobile ? 15 : 18,
-              color: C.sandMuted,
-              lineHeight: 1.7,
-              maxWidth: 560,
-              margin: "0 auto 8px",
-            }}
-          >
-            Submit a privacy inquiry or exercise your privacy rights under applicable law.
+          <p style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, color: C.navy, marginBottom: 16 }}>
+            RunPayway&#8482; is committed to protecting your privacy.
           </p>
 
-          <p style={{ fontSize: 14, color: C.sandLight }}>
-            RunPayway™ · Income Stability Score™
+          <p style={{ fontSize: mobile ? 16 : 18, color: C.textSecondary, lineHeight: 1.6, maxWidth: 580, margin: "0 auto" }}>
+            Submit a privacy inquiry or exercise your privacy rights under applicable law. Use the form below to submit your request.
           </p>
         </div>
       </section>
@@ -220,8 +174,11 @@ export default function PrivacyRequestPage() {
             }}
           >
             <div style={{ fontSize: 12, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 10 }}>
-              Privacy Request Form
+              Submit Your Privacy Request
             </div>
+            <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.6, marginBottom: 12 }}>
+              Please provide the following information for us to process your request.
+            </p>
             <div style={{ height: 1, background: "rgba(14,26,43,0.06)", marginBottom: 28 }} />
 
             {/* Full Name */}
@@ -231,7 +188,7 @@ export default function PrivacyRequestPage() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Your full name"
+                placeholder="Enter your full name"
                 style={inputStyle}
                 onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; }}
                 onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
@@ -276,6 +233,7 @@ export default function PrivacyRequestPage() {
                 <option value="correction">Request Correction of Personal Information</option>
                 <option value="deletion">Request Deletion of Personal Information</option>
                 <option value="limitation">Request Limitation of Processing</option>
+                <option value="portability">Request Data Portability</option>
                 <option value="inquiry">General Privacy Inquiry</option>
               </select>
             </div>
@@ -289,7 +247,7 @@ export default function PrivacyRequestPage() {
                 type="text"
                 value={recordId}
                 onChange={(e) => setRecordId(e.target.value)}
-                placeholder="If related to a specific assessment"
+                placeholder="If related to a specific assessment, enter the Record ID"
                 style={{ ...inputStyle, fontFamily: "monospace" }}
                 onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; }}
                 onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
@@ -378,18 +336,18 @@ export default function PrivacyRequestPage() {
                 onMouseLeave={() => setBtnHovered(false)}
                 style={{
                   width: "100%",
-                  height: 52,
-                  borderRadius: 12,
-                  background: btnHovered ? "#3D33A0" : C.purple,
+                  height: 60,
+                  borderRadius: 16,
+                  background: C.navy,
                   color: C.white,
-                  fontSize: 15,
+                  fontSize: 16,
                   fontWeight: 600,
                   letterSpacing: "-0.01em",
                   border: "none",
                   cursor: "pointer",
-                  boxShadow: "0 6px 16px rgba(75,63,174,0.25)",
-                  transition: "background 180ms ease, transform 180ms ease",
-                  transform: btnHovered ? "translateY(-1px)" : "translateY(0)",
+                  boxShadow: btnHovered ? "0 12px 32px rgba(14,26,43,0.18)" : "0 8px 24px rgba(14,26,43,0.12)",
+                  transition: "box-shadow 200ms ease, transform 200ms ease",
+                  transform: btnHovered ? "translateY(-2px)" : "translateY(0)",
                 }}
               >
                 Submit Privacy Request
@@ -398,9 +356,11 @@ export default function PrivacyRequestPage() {
 
             {/* Security */}
             <div style={{ height: 1, background: "rgba(14,26,43,0.06)", margin: "24px 0 16px" }} />
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-              <span style={{ fontSize: 12, color: C.light }}>Secure form submission</span>
-              <span style={{ fontSize: 12, color: C.light }}>Encrypted data transmission</span>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={C.light} strokeWidth="2" strokeLinecap="round"><path d="M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 0 0-8 0v4h8z" /></svg>
+              <span style={{ fontSize: 12, fontWeight: 600, color: C.light }}>Secure form submission</span>
+              <span style={{ fontSize: 12, color: C.light }}>&middot;</span>
+              <span style={{ fontSize: 12, color: C.light }}>Your data is securely transmitted and encrypted</span>
             </div>
           </div>
 
@@ -431,14 +391,15 @@ export default function PrivacyRequestPage() {
                 Your Privacy Rights
               </div>
               <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.75, marginBottom: 12 }}>
-                Depending on your jurisdiction, you may have the right to:
+                Depending on your jurisdiction, you may have the following rights regarding your personal information:
               </p>
               <ul style={{ padding: 0, margin: "0 0 12px", listStyle: "none" }}>
                 {[
                   "Request access to personal information",
-                  "Request correction of inaccurate information",
+                  "Request correction of inaccurate data",
                   "Request deletion of personal information",
                   "Request limitation of processing",
+                  "Request portability of your data (if applicable)",
                 ].map((item) => (
                   <li
                     key={item}
@@ -471,7 +432,7 @@ export default function PrivacyRequestPage() {
                 Identity Verification
               </div>
               <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.75, marginBottom: 10 }}>
-                Identity verification may be required before processing your request.
+                To process your request, identity verification may be required.
               </p>
               <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.75 }}>
                 Verified requests will be responded to within applicable legal timeframes.
@@ -489,10 +450,10 @@ export default function PrivacyRequestPage() {
               }}
             >
               <div style={{ fontSize: 12, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 14 }}>
-                Privacy Policy
+                Review Our Full Privacy Policy
               </div>
               <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.75, marginBottom: 14 }}>
-                For full details on how RunPayway™ collects, uses, and protects your information, review the Privacy Policy.
+                For complete details on how RunPayway&#8482; collects, uses, stores, and protects your information, read our full Privacy Policy.
               </p>
               <Link
                 href="/privacy-policy"
