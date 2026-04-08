@@ -404,9 +404,9 @@ async function handleSendEmail(body, env, corsHeaders) {
 <!-- Personal greeting -->
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 <tr><td>
-<p style="font-size:22px;font-weight:300;color:${navy};margin:0 0 6px;letter-spacing:-0.02em;line-height:1.3;">${name}, your assessment is complete.</p>
+<p style="font-size:22px;font-weight:300;color:${navy};margin:0 0 6px;letter-spacing:-0.02em;line-height:1.3;">${name}, we\u2019ve finished your assessment.</p>
 <p style="font-size:13px;color:${light};line-height:1.7;margin:8px 0 0;">
-Your income structure${industry ? ` in <strong style="color:${muted};font-weight:600;">${industry}</strong>` : ""}${structure ? ` as <strong style="color:${muted};font-weight:600;">${structure}</strong>` : ""} has been evaluated across six structural dimensions.
+We looked at how your income holds up${industry ? ` in <strong style="color:${muted};font-weight:600;">${industry}</strong>` : ""}${structure ? ` as ${structure.match(/^[aeiou]/i) ? "an" : "a"} <strong style="color:${muted};font-weight:600;">${structure}</strong>` : ""} \u2014 here\u2019s what stands out.
 </p>
 </td></tr>
 </table>
@@ -492,9 +492,9 @@ ${body.interpretation ? `
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:32px;">
 <tr><td style="text-align:center;">
 <p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${teal};margin:0 0 8px;">NEXT STEP</p>
-<p style="font-size:18px;font-weight:300;color:${navy};margin:0 0 8px;letter-spacing:-0.01em;">Your Command Center is ready.</p>
+<p style="font-size:18px;font-weight:300;color:${navy};margin:0 0 8px;letter-spacing:-0.01em;">Your full breakdown is ready.</p>
 <p style="font-size:13px;color:${muted};line-height:1.65;margin:0 0 24px;">
-View your full report, explore your structural breakdown by factor, and review your personalized action plan.
+See exactly where your income is strong, where it\u2019s exposed, and what to focus on first.
 </p>
 <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;">
 <tr><td style="background-color:${purple};border-radius:10px;">
@@ -513,9 +513,9 @@ View your full report, explore your structural breakdown by factor, and review y
 <table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="width:3px;height:36px;background-color:${teal};border-radius:2px;">&nbsp;</td></tr></table>
 </td>
 <td>
-<p style="font-size:13px;font-weight:600;color:${navy};margin:0 0 6px;">When to reassess</p>
+<p style="font-size:13px;font-weight:600;color:${navy};margin:0 0 6px;">When to check back in</p>
 <p style="font-size:12px;color:${muted};line-height:1.65;margin:0;">
-We recommend a follow-up assessment after 90 days or after making a significant structural change to your income${industry ? ` \u2014 whether that is securing a new contract, diversifying your ${industry.toLowerCase()} revenue streams, or building recurring arrangements` : ""}. Your Command Center tracks your progress across assessments automatically.
+Run another assessment in about 90 days, or whenever something meaningful shifts${industry ? ` \u2014 a new contract, a change in how your ${industry.toLowerCase()} revenue comes in, or a move toward recurring work` : ""}. Your Command Center will track the progress for you.
 </p>
 </td>
 </tr>
