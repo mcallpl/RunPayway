@@ -61,14 +61,17 @@ function HeroSection() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <header ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 40 : 64, paddingBottom: m ? 40 : 56, paddingLeft: px(m), paddingRight: px(m) }}>
-      <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>New Releases</div>
-        <h1 style={{ fontSize: m ? 32 : 48, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.03em", color: C.navy, marginBottom: 16, ...fadeIn(visible, 60) }}>
-          What we've shipped.{m ? " " : <br />}What's next.
+    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 56 : 88, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 860, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>NEW RELEASES</div>
+        <h1 style={{ fontSize: m ? 38 : 64, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible, 50) }}>
+          What We&rsquo;ve Shipped.{m ? " " : <br />}What&rsquo;s Coming Next.
         </h1>
-        <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65, maxWidth: 520, margin: "0 auto", ...fadeIn(visible, 120) }}>
+        <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.6, maxWidth: 600, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
           RunPayway&#8482; is actively developed. Every update is versioned, tested, and deployed without disrupting existing assessments.
+        </p>
+        <p style={{ fontSize: m ? 15 : 16, fontWeight: 500, color: light, ...fadeIn(visible, 140) }}>
+          Explore our most recent updates, and see what&rsquo;s coming in the future.
         </p>
       </div>
     </header>
@@ -148,8 +151,8 @@ function Shipped() {
     <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 12 }}>Shipped.</h2>
-          <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65 }}>Everything currently live in production.</p>
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.teal, marginBottom: 12 }}>Shipped</h2>
+          <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.6 }}>Everything currently live in production.</p>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" as const, gap: m ? 16 : 20 }}>
@@ -232,8 +235,9 @@ function RoadmapSection() {
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 500, lineHeight: 1.15, letterSpacing: "-0.02em", color: C.navy, marginBottom: 12 }}>Roadmap.</h2>
-          <p style={{ fontSize: m ? 16 : 17, color: muted, lineHeight: 1.65 }}>What we're building next. Timelines are targets, not promises.</p>
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 12 }}>Roadmap</h2>
+          <p style={{ fontSize: m ? 16 : 18, fontWeight: 500, color: C.navy, marginBottom: 8 }}>What We&rsquo;re Building Next</p>
+          <p style={{ fontSize: m ? 15 : 16, color: muted, lineHeight: 1.6 }}>Timelines are targets, not promises.</p>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" as const, gap: m ? 16 : 20, maxWidth: 800, margin: "0 auto" }}>
@@ -286,32 +290,31 @@ function FinalCta() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 60 : 104, paddingBottom: m ? 64 : 112, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", top: "50%", left: "50%", width: m ? 300 : 500, height: m ? 300 : 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
-      <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-        <h2 style={{ fontSize: m ? 26 : 40, fontWeight: 500, lineHeight: 1.12, letterSpacing: "-0.02em", color: C.sand, marginBottom: 16, ...fadeIn(visible) }}>
-          The platform is live.{m ? " " : <br />}Your assessment is waiting.
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
+        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sand, marginBottom: 16, ...fadeIn(visible) }}>
+          The Platform Is Live.{m ? " " : <br />}Your assessment is waiting.
         </h2>
-        <p style={{ fontSize: 17, color: "rgba(244,241,234,0.45)", lineHeight: 1.65, marginBottom: 36, ...fadeIn(visible, 60) }}>
-          Start with the free score. The full diagnostic is there when you want it.
+        <p style={{ fontSize: m ? 16 : 18, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 32, ...fadeIn(visible, 60) }}>
+          Start with your free score. The full diagnostic is there when you&rsquo;re ready.
         </p>
         <div style={{ ...fadeIn(visible, 120) }}>
-          <Link href="/pricing" style={{
+          <Link href="/begin" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
-            height: 56, padding: m ? "0 28px" : "0 44px", width: m ? "100%" : "auto", maxWidth: m ? 360 : "none",
-            borderRadius: 12,
-            background: `linear-gradient(135deg, ${C.white} 0%, rgba(244,241,234,0.95) 100%)`,
-            color: C.navy, fontSize: m ? 15 : 16, fontWeight: 600, textDecoration: "none",
-            boxShadow: "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)",
-            border: "1px solid rgba(244,241,234,0.30)",
+            height: m ? 56 : 60, padding: m ? "0 28px" : "0 32px", width: m ? "100%" : "auto",
+            borderRadius: 16,
+            backgroundColor: C.white, color: C.navy,
+            fontSize: 16, fontWeight: 600, textDecoration: "none",
+            boxShadow: "0 8px 24px rgba(14,26,43,0.08)",
+            border: "1px solid rgba(244,241,234,0.45)",
             transition: "transform 200ms, box-shadow 200ms",
           }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(244,241,234,0.20), 0 12px 48px rgba(244,241,234,0.10)"; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 2px 12px rgba(244,241,234,0.15), 0 8px 32px rgba(244,241,234,0.08)"; }}>
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(244,241,234,0.15)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
             Start Your Free Assessment
           </Link>
-          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.45)", marginTop: 14, letterSpacing: "0.02em" }}>
-            Under 2 minutes &bull; Instant result &bull; Private by default
+          <p style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.40)", marginTop: 16 }}>
+            Under 2 minutes | Instant result | Private by default
           </p>
         </div>
       </div>
