@@ -85,8 +85,8 @@ interface FaqItem {
 const FAQ_DATA: FaqItem[] = [
   // --- Income Stability Score ---
   { id: "score-measure", category: "score", categoryLabel: "Income Stability Score\u2122", question: "What does the Income Stability Score\u2122 measure?", answer: "It measures how your income is built\u2014and how it holds under change. The score reflects structure, stability, and continuity. Not income size.", keywords: ["score meaning", "what is score", "income stability", "structure", "rating", "number"] },
-  { id: "score-factors", category: "score", categoryLabel: "Income Stability Score\u2122", question: "What factors influence the score?", answer: "Six structural dimensions: recurring income, source concentration, number of sources, forward visibility, earnings variability, and income continuity. Each is evaluated using fixed rules.", keywords: ["factors", "dimensions", "what affects score", "how calculated", "six areas"] },
-  { id: "score-good", category: "score", categoryLabel: "Income Stability Score\u2122", question: "What does a good score look like?", answer: "Higher scores indicate stronger structure: less dependency, more continuity, greater resilience under disruption. There is no \u201cperfect\u201d score\u2014only stronger or weaker structures.", keywords: ["good score", "high score", "best score", "what is good", "range"] },
+  { id: "score-factors", category: "score", categoryLabel: "Income Stability Score\u2122", question: "What factors influence the score?", answer: "The score is determined by six structural dimensions:\n\n\u2022 Recurring Income\n\u2022 Source Reliance\n\u2022 Number of Sources\n\u2022 Income Locked In\n\u2022 Month-to-Month Steadiness\n\u2022 Income Without You\n\nEach dimension is scored independently, then combined into your final result.", keywords: ["factors", "dimensions", "what affects score", "how calculated", "six areas"] },
+  { id: "score-good", category: "score", categoryLabel: "Income Stability Score\u2122", question: "What does a good score look like?", answer: "A good score reflects a stable income structure\u2014one that can absorb disruptions and adapt.\n\n0\u201329: Limited Stability\u2014one disruption could impact income significantly.\n30\u201349: Developing Stability\u2014income is not yet protected.\n50\u201374: Established Stability\u2014can handle most disruptions.\n75\u2013100: High Stability\u2014holds up even under sustained pressure.", keywords: ["good score", "high score", "best score", "what is good", "range", "bands"] },
   { id: "score-predict", category: "score", categoryLabel: "Income Stability Score\u2122", question: "Does the score predict future income?", answer: "No. It evaluates how your income is structured\u2014not what will happen.", keywords: ["predict", "future", "forecast", "guarantee"] },
 
   // --- Assessment ---
@@ -181,14 +181,14 @@ function HeroSection({ searchValue, onSearch, inputRef }: { searchValue: string;
         <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
           SUPPORT
         </div>
-        <h1 style={{ fontSize: m ? 38 : 64, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
-          Frequently asked questions
+        <h1 style={{ fontSize: m ? 38 : 64, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
+          Frequently Asked Questions
         </h1>
-        <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: 580, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
-          Clear answers about the Income Stability Score&#8482;, how it is generated, and how it is used.
+        <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: 620, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
+          Clear answers about the Income Stability Score&#8482;, how it&rsquo;s generated, and how it&rsquo;s used.
         </p>
         <p style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: C.navy, marginBottom: 0, ...fadeIn(visible, 140) }}>
-          All answers reflect the system as it is defined — not interpreted.
+          All answers reflect the system as it is defined&mdash;not interpreted.
         </p>
       </div>
 
@@ -354,7 +354,7 @@ function BrowseView({ activeCategory, setActiveCategory }: { activeCategory: str
     <div style={{ maxWidth: innerW, margin: "0 auto", display: "grid", gridTemplateColumns: "260px 1fr 220px", gap: 56, paddingLeft: sectionPx(false), paddingRight: sectionPx(false), paddingTop: 64, paddingBottom: 120 }}>
       {/* Sidebar */}
       <nav style={{ position: "sticky", top: 100, alignSelf: "start" }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 24 }}>CATEGORIES</div>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 24 }}>BROWSE BY CATEGORIES</div>
         {CATEGORIES.map(cat => {
           const isActive = activeCategory === cat.key;
           return (
@@ -450,29 +450,26 @@ function FinalCta() {
   return (
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center" }}>
-        <h2 style={{ fontSize: m ? 34 : 52, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.sandText, marginBottom: 20, ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 32, ...fadeIn(visible) }}>
           See how your income is built.
         </h2>
-        <p style={{ fontSize: m ? 20 : 24, fontWeight: 400, lineHeight: 1.45, color: C.sandMuted, marginBottom: 32, ...fadeIn(visible, 80) }}>
-          Measure your structure under a fixed system.
-        </p>
         <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", ...fadeIn(visible, 160) }}>
           <Link href="/begin" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: m ? 56 : 60, width: m ? "100%" : "auto",
             padding: m ? "0 28px" : "0 32px",
-            borderRadius: 14, backgroundColor: C.white, color: C.navy,
-            fontSize: 18, fontWeight: 600, textDecoration: "none",
+            borderRadius: 16, backgroundColor: C.white, color: C.navy,
+            fontSize: 16, fontWeight: 600, textDecoration: "none",
             boxShadow: "0 8px 24px rgba(14,26,43,0.08)",
             border: `1px solid ${C.borderSoft}`,
-            transition: "transform 200ms",
+            transition: "transform 200ms, box-shadow 200ms",
           }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
-            Begin assessment
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
+            Get Your Structural Income Report
           </Link>
-          <p style={{ fontSize: 14, fontWeight: 400, color: C.sandLight, marginTop: 16 }}>
-            Under 2 minutes &bull; Instant result &bull; Private by default
+          <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 16 }}>
+            Under 2 minutes | Instant result | Private by default
           </p>
         </div>
       </div>
