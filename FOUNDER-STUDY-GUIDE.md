@@ -273,6 +273,94 @@ Every industry has a unique structural constraint:
 
 ---
 
+## Selling to Advisors — Conversation Playbook
+
+### Opening (The Problem They Feel)
+
+> "You know your clients' assets, liabilities, and cash flow. But do you know how their income is actually built? If their biggest client left tomorrow, do you know what happens to their income? That's the gap. And right now, you're blind to it."
+
+### The Pitch (What You Offer)
+
+> "RunPayway gives you a standardized way to assess every client's income structure in under 2 minutes. No financial documents needed. You run the assessment on their behalf, get a score from 0 to 100, and see exactly where their income holds, where it breaks, and what the single biggest risk is. Same methodology for every client. Fixed rules. No subjectivity."
+
+### Handling "Why should I care?"
+
+> "Because client failure you didn't see coming is the most expensive thing in your practice. Not just the lost revenue — the reputation damage. If a client's income collapses because 80% depended on one source, and you didn't flag it, that's a conversation you don't want to have. This gives you the visibility to prevent it."
+
+### Handling "My clients won't want another assessment"
+
+> "They don't take it — you do. Under 2 minutes, no documents, no bank login. You answer a few structural questions about how their income works. They get a 4-page report showing exactly how their income is built. Most clients are fascinated by what it reveals."
+
+### Handling "What does it cost?"
+
+> "We're rolling out advisor access by request right now. Pricing is per-assessment or tiered for your practice. Start by requesting access — we'll set up a conversation about what fits your book size."
+
+### The Close
+
+> "Request access at runpayway.com/advisors. We'll follow up within two business days with next steps for your practice."
+
+---
+
+## Selling to Enterprises — Conversation Playbook
+
+### Opening (The Problem They Feel)
+
+> "Every analyst in your organization evaluates income differently. Two underwriters looking at the same applicant reach different conclusions. Two advisors assessing the same client see different risk. There's no standard. That's a compliance risk and an efficiency problem."
+
+### The Pitch (What You Offer)
+
+> "RunPayway is a fixed, deterministic scoring engine for structural income evaluation. One rule set, applied identically every time. API access for programmatic scoring, batch assessment for volume, white-label reporting with your brand. Every assessment is stamped with the model version, timestamp, and authentication code — fully auditable."
+
+### Handling "How does it integrate?"
+
+> "API access — you send inputs as JSON, get back scores, bands, and structural breakdowns. Batch mode for volume processing. White-label for client-facing reports. The methodology is version-controlled, so every score is traceable to the exact rules that produced it."
+
+### Handling "What about compliance?"
+
+> "We're building toward SOC 2 Type II. Our practices are informed by ISO 27001. We have a published Data Processing Agreement for GDPR, and we support CCPA/CPRA rights. Every assessment is auditable — model version, timestamp, auth code. We don't access bank accounts, don't pull credit, and Stripe handles payment processing so we never see card numbers."
+
+### Handling "Is this just a credit score?"
+
+> "No — completely different. Credit scores measure borrowing behavior using historical data from credit bureaus. We measure structural income — how income is built, how concentrated it is, what happens if a source disappears. Different inputs, different purpose, different output. They're complementary, not competitive."
+
+### Handling "What does it cost at scale?"
+
+> "Enterprise pricing is per-assessment with volume tiers, or annual licensing. It depends on your use case, volume, and integration requirements. We tailor the agreement. Request a briefing and we'll scope it together."
+
+### The Close
+
+> "Request an enterprise briefing at runpayway.com/organizations. We'll follow up within two business days with a customized overview for your use case."
+
+---
+
+## Advisor-Specific Language to Use
+
+| Situation | What to Say |
+|-----------|------------|
+| Describing the product | "A standardized income risk assessment you can run for every client" |
+| Explaining the value | "See what's invisible in a balance sheet — how their income actually holds up" |
+| Describing the process | "You run it, not the client. Under 2 minutes. No documents." |
+| Describing the output | "Score, structural breakdown, stress test, primary constraint, action plan" |
+| Addressing skepticism | "Same fixed rules for every client. No interpretation. No subjectivity." |
+| Differentiating | "No other advisor in your market has this capability" |
+| Urgency | "The clients most at risk are the ones who look fine on paper" |
+
+---
+
+## Enterprise-Specific Language to Use
+
+| Situation | What to Say |
+|-----------|------------|
+| Describing the product | "A deterministic scoring engine for structural income evaluation at scale" |
+| Explaining the value | "Remove subjectivity from income assessment across your entire organization" |
+| Describing integration | "API access, batch processing, white-label reporting — built for your infrastructure" |
+| Describing auditability | "Every assessment stamped with model version, timestamp, and auth code" |
+| Addressing compliance | "Building toward SOC 2 Type II, informed by ISO 27001, DPA published" |
+| Differentiating | "One fixed rule set. No analyst variation. Defensible, consistent decisions." |
+| Urgency | "Every subjective income decision is a compliance risk you can eliminate" |
+
+---
+
 ## What You Must NEVER Say
 
 | Never Say This | Because |
