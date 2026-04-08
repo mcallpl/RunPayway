@@ -82,7 +82,7 @@ export default function AccessibilityPage() {
   const { t } = useLanguage();
   const heroAnim = useInView();
   const s1 = useInView(); const s2 = useInView(); const s3 = useInView();
-  const s4 = useInView(); const s5 = useInView(); const s6 = useInView(); const s7 = useInView();
+  const s4 = useInView(); const s5 = useInView(); const s6 = useInView(); const s7 = useInView(); const s8 = useInView();
 
   return (
     <div style={{ background: "#FAFAFA", fontFamily: sans }}>
@@ -122,6 +122,13 @@ export default function AccessibilityPage() {
               {t.accessibilityPage.s7Post}
             </P>
             <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s7P2}</P>
+          </Section></div>
+
+          <div ref={s8.ref}><Section title={t.accessibilityPage.s8Title} mobile={mobile} visible={s8.visible}>
+            <P>{t.accessibilityPage.s8P1}</P>
+            <Bullet items={[t.accessibilityPage.s8Li1, t.accessibilityPage.s8Li2, t.accessibilityPage.s8Li3, t.accessibilityPage.s8Li4, t.accessibilityPage.s8Li5]} />
+            <P>{t.accessibilityPage.s8P2}</P>
+            <P style={{ marginBottom: 0 }}>{t.accessibilityPage.s8P3}</P>
           </Section></div>
 
         </div>
