@@ -908,21 +908,20 @@ function IndustryProfiles() {
             })}
           </div>
 
-          {/* Insight card */}
-          <div key={active.key} style={{
+          {/* Insight card — persistent DOM, content crossfades */}
+          <div style={{
             backgroundColor: C.navy, borderRadius: 24, padding: m ? "28px 24px" : "36px 40px",
             boxShadow: "0 12px 48px rgba(14,26,43,0.15), 0 4px 16px rgba(14,26,43,0.08)",
             position: "relative" as const, overflow: "hidden",
-            animation: "fadeInUp 400ms cubic-bezier(0.22, 1, 0.36, 1) forwards",
           }}>
-            {/* Gradient accent top */}
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${bandColor2}, ${C.purple})` }} />
+            {/* Gradient accent top — color transitions smoothly */}
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${bandColor2}, ${C.purple})`, transition: "background 500ms ease" }} />
 
             {/* Header: industry + score ring */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
               <div>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.40)", marginBottom: 6 }}>STRUCTURAL PROFILE</div>
-                <div style={{ fontSize: m ? 20 : 24, fontWeight: 600, color: C.sandText, letterSpacing: "-0.02em" }}>{active.name}</div>
+                <div style={{ fontSize: m ? 20 : 24, fontWeight: 600, color: C.sandText, letterSpacing: "-0.02em", transition: "opacity 300ms ease" }}>{active.name}</div>
               </div>
               <IndustryMiniRing score={active.median} size={m ? 52 : 64} />
             </div>
@@ -940,9 +939,9 @@ function IndustryProfiles() {
             <div style={{ marginBottom: 20 }}>
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.35)", marginBottom: 10 }}>TYPICAL INCOME STRUCTURE</div>
               <div style={{ display: "flex", height: 10, borderRadius: 999, overflow: "hidden" }}>
-                <div style={{ width: `${active.atRisk}%`, backgroundColor: C.risk, transition: "width 600ms cubic-bezier(0.22, 1, 0.36, 1)" }} />
-                <div style={{ width: `${active.recurring}%`, backgroundColor: C.moderate, transition: "width 600ms cubic-bezier(0.22, 1, 0.36, 1)" }} />
-                <div style={{ width: `${active.protected}%`, backgroundColor: C.teal, transition: "width 600ms cubic-bezier(0.22, 1, 0.36, 1)" }} />
+                <div style={{ width: `${active.atRisk}%`, backgroundColor: C.risk, transition: "width 800ms cubic-bezier(0.22, 1, 0.36, 1)" }} />
+                <div style={{ width: `${active.recurring}%`, backgroundColor: C.moderate, transition: "width 800ms cubic-bezier(0.22, 1, 0.36, 1)" }} />
+                <div style={{ width: `${active.protected}%`, backgroundColor: C.teal, transition: "width 800ms cubic-bezier(0.22, 1, 0.36, 1)" }} />
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8 }}>
                 <span style={{ fontSize: 11, color: C.risk, fontWeight: 600 }}>At risk {active.atRisk}%</span>
@@ -955,12 +954,12 @@ function IndustryProfiles() {
             <div style={{ display: "flex", gap: m ? 12 : 16, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
               <div style={{ flex: 1, textAlign: "center" }}>
                 <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 4 }}>MEDIAN SCORE</div>
-                <div style={{ fontSize: 20, fontWeight: 700, fontFamily: mono, color: bandColor2 }}>{active.median}</div>
+                <div style={{ fontSize: 20, fontWeight: 700, fontFamily: mono, color: bandColor2, transition: "color 500ms ease" }}>{active.median}</div>
               </div>
               <div style={{ width: 1, backgroundColor: "rgba(255,255,255,0.06)" }} />
               <div style={{ flex: 1, textAlign: "center" }}>
                 <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 4 }}>STABILITY BAND</div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: bandColor2 }}>{bandLabel}</div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: bandColor2, transition: "color 500ms ease" }}>{bandLabel}</div>
               </div>
               <div style={{ width: 1, backgroundColor: "rgba(255,255,255,0.06)" }} />
               <div style={{ flex: 1, textAlign: "center" }}>
