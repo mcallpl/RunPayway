@@ -221,14 +221,14 @@ function HeroSection() {
             </div>
           </div>
 
-          {/* Right — product preview */}
+          {/* Right — product preview (pill shape) */}
           <div style={{ ...fadeIn(visible, 200) }}>
-            <div style={{ backgroundColor: C.navy, borderRadius: 24, padding: m ? "28px 24px" : "36px 32px", position: "relative", overflow: "hidden" }}>
+            <div style={{ backgroundColor: C.navy, borderRadius: 28, padding: m ? "28px 24px 24px" : "36px 36px 28px", position: "relative", overflow: "hidden" }}>
               {/* Gradient accent */}
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
 
-              {/* Score header */}
-              <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 28 }}>
+              {/* Score module — horizontal pill */}
+              <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 24 }}>
                 <div style={{ position: "relative", width: 72, height: 72, flexShrink: 0 }}>
                   <svg width={72} height={72} style={{ transform: "rotate(-90deg)" }}>
                     <circle cx={36} cy={36} r={30} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={5} />
@@ -251,23 +251,23 @@ function HeroSection() {
                 </div>
               </div>
 
-              {/* Stats grid */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1, borderRadius: 12, overflow: "hidden", marginBottom: 20 }}>
+              {/* Stats bar — horizontal single row */}
+              <div style={{ display: "flex", borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.06)", marginBottom: 20 }}>
                 {[
-                  { label: "INCOME BUFFER", value: "4.2 mo", color: C.teal },
-                  { label: "FORWARD VISIBILITY", value: "68%", color: C.teal },
-                  { label: "BIGGEST RISK", value: "Concentration", color: "#E57373" },
-                  { label: "STABILITY TYPE", value: "Uneven", color: "#D4A843" },
-                ].map((stat, i) => (
-                  <div key={i} style={{ padding: "14px 16px", backgroundColor: "rgba(255,255,255,0.03)" }}>
-                    <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 6 }}>{stat.label}</div>
-                    <div style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: stat.color }}>{stat.value}</div>
+                  { label: "BUFFER", value: "4.2 mo", color: C.teal },
+                  { label: "VISIBILITY", value: "68%", color: C.teal },
+                  { label: "TOP RISK", value: "Concen.", color: "#E57373" },
+                  { label: "TYPE", value: "Uneven", color: "#D4A843" },
+                ].map((stat, i, arr) => (
+                  <div key={i} style={{ flex: 1, padding: "12px 10px", textAlign: "center", borderRight: i < arr.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none", backgroundColor: "rgba(255,255,255,0.02)" }}>
+                    <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.30)", marginBottom: 5 }}>{stat.label}</div>
+                    <div style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: stat.color }}>{stat.value}</div>
                   </div>
                 ))}
               </div>
 
               {/* Income pressure bar */}
-              <div style={{ marginBottom: 8 }}>
+              <div>
                 <div style={{ display: "flex", height: 8, borderRadius: 999, overflow: "hidden" }}>
                   <div style={{ width: "28%", backgroundColor: C.teal }} />
                   <div style={{ width: "40%", backgroundColor: C.moderate }} />
@@ -280,8 +280,8 @@ function HeroSection() {
                 </div>
               </div>
 
-              <div style={{ textAlign: "center", paddingTop: 12 }}>
-                <span style={{ fontSize: 11, color: "rgba(244,241,234,0.25)", letterSpacing: "0.04em" }}>Example output &middot; Model RP-2.0</span>
+              <div style={{ textAlign: "center", paddingTop: 14 }}>
+                <span style={{ fontSize: 10, color: "rgba(244,241,234,0.20)", letterSpacing: "0.04em" }}>Example output &middot; Model RP-2.0</span>
               </div>
             </div>
           </div>
