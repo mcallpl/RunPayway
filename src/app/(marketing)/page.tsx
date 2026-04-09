@@ -291,22 +291,40 @@ function CategoryDeclaration() {
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
-      <div style={{ maxWidth: narrowW, margin: "0 auto", textAlign: "center" }}>
-        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 32, ...fadeIn(visible) }}>
-          Your income has a structure&mdash;whether you know it or not.
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m), position: "relative" as const, overflow: "hidden" }}>
+      {/* Subtle grain */}
+      <div className="navy-grain" />
+
+      <div style={{ maxWidth: 820, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
+        <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.03em", color: C.sandText, marginBottom: 32, ...fadeIn(visible) }}>
+          Your income has a structure.
         </h2>
 
-        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, ...fadeIn(visible, 80) }}>
-          RunPayway measures how it holds up under pressure, whether a client leaves, a deal falls through, or you step away.
+        <p style={{ fontSize: m ? 17 : 20, fontWeight: 400, lineHeight: 1.65, color: "rgba(244,241,234,0.60)", maxWidth: 600, margin: "0 auto 48px", ...fadeIn(visible, 80) }}>
+          Not how much you earn. How it&rsquo;s built. Whether it depends on one client, one employer, one deal closing on time. Whether it continues if you stop. Whether it holds when conditions change.
         </p>
 
-        <p style={{ fontSize: m ? 18 : 20, fontWeight: 600, color: C.navy, marginBottom: 16, ...fadeIn(visible, 120) }}>
-          Why does this matter?
-        </p>
+        {/* Three pillars */}
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1, maxWidth: 720, margin: "0 auto 48px", borderRadius: 16, overflow: "hidden", ...fadeIn(visible, 120) }}>
+          {[
+            { label: "Credit scores", measures: "Borrowing behavior" },
+            { label: "Income verification", measures: "How much you earn" },
+            { label: "RunPayway", measures: "How your income is built", highlight: true },
+          ].map((item, i) => (
+            <div key={i} style={{
+              padding: m ? "20px 24px" : "24px 20px",
+              backgroundColor: item.highlight ? "rgba(31,109,122,0.12)" : "rgba(255,255,255,0.03)",
+              textAlign: "center",
+              marginBottom: m ? 1 : 0,
+            }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: item.highlight ? C.teal : "rgba(244,241,234,0.35)", marginBottom: 8 }}>{item.label.toUpperCase()}</div>
+              <div style={{ fontSize: m ? 15 : 16, fontWeight: item.highlight ? 700 : 500, color: item.highlight ? C.teal : "rgba(244,241,234,0.55)" }}>{item.measures}</div>
+            </div>
+          ))}
+        </div>
 
-        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 160) }}>
-          Because income isn&rsquo;t just about how much you make. It&rsquo;s about how it behaves under stress.
+        <p style={{ fontSize: m ? 17 : 20, fontWeight: 600, lineHeight: 1.5, color: C.sandText, maxWidth: 560, margin: "0 auto", ...fadeIn(visible, 200) }}>
+          This is the layer nobody measures.{m ? " " : <br />}Until now.
         </p>
       </div>
     </section>
