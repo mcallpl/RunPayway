@@ -1035,10 +1035,10 @@ function BeforeYouBegin() {
   const fadeIn = useFadeIn();
 
   const items = [
-    { num: "01", question: "Do you know where all of your income comes from?", why: "Most people can answer this\u2014but not precisely" },
-    { num: "02", question: "Could you lose one source and still be fine?", why: "The answer reveals more than you\u2019d expect" },
-    { num: "03", question: "How much of next month\u2019s income is already locked in?", why: "This is where the structure starts to show" },
-    { num: "04", question: "What happens to your income if you step away?", why: "The honest answer is usually the uncomfortable one" },
+    { num: "01", question: "How much of your income renews automatically?", why: "Select a range \u2014 A through E" },
+    { num: "02", question: "How spread out is your income across sources?", why: "No need to count every dollar" },
+    { num: "03", question: "How far ahead is your income already committed?", why: "Just a general timeframe" },
+    { num: "04", question: "How consistent is your monthly income?", why: "Compare your best and slowest months" },
   ];
 
   return (
