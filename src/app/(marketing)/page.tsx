@@ -270,9 +270,9 @@ function HeroSection() {
                   <div style={{ width: "32%", backgroundColor: C.risk }} />
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
-                  <span style={{ fontSize: 10, color: "rgba(244,241,234,0.35)" }}>Protected</span>
-                  <span style={{ fontSize: 10, color: "rgba(244,241,234,0.35)" }}>Recurring</span>
-                  <span style={{ fontSize: 10, color: "rgba(244,241,234,0.35)" }}>At risk</span>
+                  <span style={{ fontSize: 10, color: C.teal, fontWeight: 600 }}>Protected 28%</span>
+                  <span style={{ fontSize: 10, color: C.moderate, fontWeight: 600 }}>Recurring 40%</span>
+                  <span style={{ fontSize: 10, color: C.risk, fontWeight: 600 }}>At risk 32%</span>
                 </div>
               </div>
 
