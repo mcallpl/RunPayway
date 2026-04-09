@@ -295,6 +295,7 @@ export default function MarketingLayout({
     { href: "/sample-report", label: t.nav.sampleReport },
     { href: "/advisors", label: "For Advisors" },
     { href: "/organizations", label: "For Organizations" },
+    { href: "/developers", label: "Developers" },
     { href: "/blog", label: "Blog" },
     { href: "/about", label: t.nav.about },
     { href: "/faq", label: t.nav.faq },
@@ -744,6 +745,7 @@ export default function MarketingLayout({
                   { href: "/pricing", label: t.nav.pricing },
                   { href: "/advisors", label: "For Advisors" },
                   { href: "/organizations", label: "For Organizations" },
+                  { href: "/developers", label: "Developers" },
                 ].map((link) => (
                   <Link key={link.label} href={link.href}
                     style={{ fontSize: 14, color: "rgba(14,26,43,0.55)", lineHeight: 1.4, transition: "color 160ms ease, font-weight 160ms ease" }}
