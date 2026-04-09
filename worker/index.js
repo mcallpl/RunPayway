@@ -54,9 +54,10 @@ LENGTH DISCIPLINE:
 `;
 
 export default {
-  // ── Cron trigger: send follow-up emails ──
+  // ── Cron trigger: send follow-up emails + nurture sequence ──
   async scheduled(event, env, ctx) {
     ctx.waitUntil(handleFollowUpCron(env));
+    ctx.waitUntil(processNurtureQueue(env));
   },
 
   async fetch(request, env) {
@@ -315,6 +316,38 @@ async function handleSaveRecord(body, env, corsHeaders) {
     body.email || "",
     body.top_action || "",
   ).run();
+
+  // ── Update nurture record with score data if this email is enrolled ──
+  if (body.email && body.score) {
+    try {
+      await ensureNurtureTable(env);
+      const nurture = await env.DB.prepare(
+        "SELECT email FROM nurture_queue WHERE email = ?"
+      ).bind(body.email.toLowerCase()).first();
+
+      if (nurture) {
+        // Parse record_data to extract the weakest factor / constraint
+        let constraint = "";
+        try {
+          const rd = typeof body.record_data === "string" ? JSON.parse(body.record_data) : body.record_data;
+          constraint = rd?.weakest_factor || rd?.constraint || body.top_action || "";
+        } catch { /* ignore parse errors */ }
+
+        await env.DB.prepare(
+          `UPDATE nurture_queue SET score = ?, band = ?, constraint_name = ?, industry = ? WHERE email = ?`
+        ).bind(
+          body.score || 0,
+          body.band || "",
+          constraint,
+          body.industry || "",
+          body.email.toLowerCase()
+        ).run();
+        console.log(`[Nurture] Updated score data for ${body.email}: ${body.score} (${body.band})`);
+      }
+    } catch (err) {
+      console.error(`[Nurture] Failed to update score for ${body.email}:`, err);
+    }
+  }
 
   return new Response(JSON.stringify({ success: true, id: body.id }), { headers: corsHeaders });
 }
@@ -633,6 +666,58 @@ async function handleContact(body, env, corsHeaders) {
     });
   }
 
+  // ── Nurture sequence: enroll and send email 1 for brief signups ──
+  if (body.subject === "structural_income_brief") {
+    try {
+      await ensureNurtureTable(env);
+
+      // Check if already enrolled (idempotent)
+      const existing = await env.DB.prepare(
+        "SELECT email, emails_sent FROM nurture_queue WHERE email = ?"
+      ).bind(body.email.toLowerCase()).first();
+
+      if (!existing) {
+        const now = new Date().toISOString();
+        await env.DB.prepare(
+          `INSERT INTO nurture_queue (email, name, signed_up_at, emails_sent, score, band, constraint_name, industry)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+        ).bind(
+          body.email.toLowerCase(),
+          body.name || "there",
+          now,
+          "1", // email 1 will be sent immediately
+          0,   // score not yet available
+          "",  // band not yet available
+          "",  // constraint not yet available
+          ""   // industry not yet available
+        ).run();
+
+        // Send nurture email 1 immediately (welcome version without score)
+        const welcomeResult = buildNurtureWelcomeEmail({ name: body.name || "there" });
+        await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+          },
+          body: JSON.stringify({
+            from: env.FROM_EMAIL || "RunPayway <reports@peoplestar.com>",
+            to: body.email,
+            subject: welcomeResult.subject,
+            html: welcomeResult.html,
+            tags: [{ name: "type", value: "nurture-1" }],
+          }),
+        });
+        console.log(`[Nurture] Enrolled ${body.email} and sent welcome email`);
+      } else {
+        console.log(`[Nurture] ${body.email} already enrolled, skipping`);
+      }
+    } catch (err) {
+      // Nurture enrollment failure should not break the contact form
+      console.error(`[Nurture] Enrollment error for ${body.email}:`, err);
+    }
+  }
+
   return new Response(JSON.stringify({ success: true }), { headers: corsHeaders });
 }
 
@@ -661,6 +746,224 @@ async function handleStats(env, corsHeaders) {
     by_income_model: byModel?.results || [],
     recent_assessments: recent?.results || [],
   }), { headers: corsHeaders });
+}
+
+// ══════════════════════════════════════════════════════════
+// NURTURE SEQUENCE — D1-backed scheduler
+// ══════════════════════════════════════════════════════════
+
+// Ensure the nurture_queue table exists (idempotent)
+async function ensureNurtureTable(env) {
+  await env.DB.prepare(`
+    CREATE TABLE IF NOT EXISTS nurture_queue (
+      email TEXT PRIMARY KEY,
+      name TEXT NOT NULL DEFAULT 'there',
+      signed_up_at TEXT NOT NULL,
+      emails_sent TEXT NOT NULL DEFAULT '1',
+      score INTEGER DEFAULT 0,
+      band TEXT DEFAULT '',
+      constraint_name TEXT DEFAULT '',
+      industry TEXT DEFAULT ''
+    )
+  `).run();
+}
+
+// Process the nurture queue — called by cron trigger daily at 2pm UTC
+async function processNurtureQueue(env) {
+  if (!env.RESEND_API_KEY) {
+    console.log("[Nurture Cron] No RESEND_API_KEY configured, skipping");
+    return;
+  }
+
+  try {
+    await ensureNurtureTable(env);
+  } catch (err) {
+    console.error("[Nurture Cron] Failed to ensure table:", err);
+    return;
+  }
+
+  const fromEmail = env.FROM_EMAIL || "RunPayway <reports@peoplestar.com>";
+
+  // Fetch all nurture records that still have emails to send
+  let rows;
+  try {
+    rows = await env.DB.prepare(
+      "SELECT * FROM nurture_queue ORDER BY signed_up_at ASC LIMIT 50"
+    ).all();
+  } catch (err) {
+    console.error("[Nurture Cron] Failed to query nurture_queue:", err);
+    return;
+  }
+
+  if (!rows?.results?.length) {
+    console.log("[Nurture Cron] No records to process");
+    return;
+  }
+
+  console.log(`[Nurture Cron] Processing ${rows.results.length} nurture records`);
+  const now = Date.now();
+
+  for (const row of rows.results) {
+    const emailsSent = row.emails_sent ? row.emails_sent.split(",").map(Number) : [];
+    const signedUpAt = new Date(row.signed_up_at).getTime();
+    const daysSince = Math.floor((now - signedUpAt) / (1000 * 60 * 60 * 24));
+
+    const params = {
+      name: row.name || "there",
+      score: row.score || 0,
+      band: row.band || "",
+      constraint: row.constraint_name || "Income Concentration",
+      industry: row.industry || "",
+    };
+
+    try {
+      // Day 3+: send email 2 (the structural move email)
+      if (daysSince >= 3 && !emailsSent.includes(2)) {
+        let emailContent;
+        if (params.score > 0) {
+          // Have score data — send the full nurture email 2
+          emailContent = buildNurtureEmail2(params);
+        } else {
+          // No score yet — send a reminder to take the assessment
+          emailContent = buildNurtureReminder2(params);
+        }
+
+        const res = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${env.RESEND_API_KEY}` },
+          body: JSON.stringify({
+            from: fromEmail,
+            to: row.email,
+            subject: emailContent.subject,
+            html: emailContent.html,
+            tags: [{ name: "type", value: "nurture-2" }],
+          }),
+        });
+
+        if (res.ok) {
+          emailsSent.push(2);
+          await env.DB.prepare(
+            "UPDATE nurture_queue SET emails_sent = ? WHERE email = ?"
+          ).bind(emailsSent.join(","), row.email).run();
+          console.log(`[Nurture Cron] Sent email 2 to ${row.email} (day ${daysSince})`);
+        } else {
+          console.error(`[Nurture Cron] Failed to send email 2 to ${row.email}: ${await res.text()}`);
+        }
+        continue; // Process one email per record per cron run
+      }
+
+      // Day 7+: send email 3 (the industry patterns email)
+      if (daysSince >= 7 && !emailsSent.includes(3)) {
+        let emailContent;
+        if (params.score > 0) {
+          emailContent = buildNurtureEmail3(params);
+        } else {
+          emailContent = buildNurtureReminder3(params);
+        }
+
+        const res = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${env.RESEND_API_KEY}` },
+          body: JSON.stringify({
+            from: fromEmail,
+            to: row.email,
+            subject: emailContent.subject,
+            html: emailContent.html,
+            tags: [{ name: "type", value: "nurture-3" }],
+          }),
+        });
+
+        if (res.ok) {
+          emailsSent.push(3);
+          await env.DB.prepare(
+            "UPDATE nurture_queue SET emails_sent = ? WHERE email = ?"
+          ).bind(emailsSent.join(","), row.email).run();
+          console.log(`[Nurture Cron] Sent email 3 to ${row.email} (day ${daysSince})`);
+        } else {
+          console.error(`[Nurture Cron] Failed to send email 3 to ${row.email}: ${await res.text()}`);
+        }
+        continue;
+      }
+
+      // All 3 emails sent — clean up the record
+      if (emailsSent.includes(1) && emailsSent.includes(2) && emailsSent.includes(3)) {
+        await env.DB.prepare("DELETE FROM nurture_queue WHERE email = ?").bind(row.email).run();
+        console.log(`[Nurture Cron] Completed sequence for ${row.email}, record removed`);
+      }
+    } catch (err) {
+      // Individual record failure should not stop processing others
+      console.error(`[Nurture Cron] Error processing ${row.email}:`, err);
+    }
+  }
+
+  console.log("[Nurture Cron] Processing complete");
+}
+
+// Welcome email (no score yet) — sent immediately on signup
+function buildNurtureWelcomeEmail({ name }) {
+  const navy = "#1C1635";
+  const muted = "rgba(14,26,43,0.58)";
+  const light = "rgba(14,26,43,0.35)";
+
+  const body = `
+<p style="font-size:22px;font-weight:300;color:${navy};margin:0 0 6px;letter-spacing:-0.02em;line-height:1.3;">Welcome to the Structural Income Brief, ${name}.</p>
+<p style="font-size:13px;color:${light};line-height:1.7;margin:8px 0 0;">You are now receiving structural intelligence about how income holds up under pressure.</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0;"><tr><td style="height:1px;background-color:rgba(14,26,43,0.06);">&nbsp;</td></tr></table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:0;">
+<tr><td>
+<p style="font-size:14px;color:${muted};line-height:1.75;margin:0 0 12px;">Most professionals have no structural view of their income. They know what they earn, but not how it behaves under disruption \u2014 what happens when a client leaves, a contract ends, or the market shifts.</p>
+<p style="font-size:14px;color:${muted};line-height:1.75;margin:0 0 12px;">The RunPayway Income Stability Score measures exactly this: how your income holds up when conditions change. It looks at six structural dimensions \u2014 concentration, recurrence, forward visibility, labor dependence, variability, and continuity \u2014 and produces a single number that tells you where you stand.</p>
+<p style="font-size:14px;color:${muted};line-height:1.75;margin:0;">Take your free assessment to receive your personalized income structure analysis. It takes under 3 minutes.</p>
+</td></tr></table>
+${nurtureCta("Take Your Free Assessment", "https://peoplestar.com/RunPayway/begin")}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0 0;">
+<tr><td style="padding:20px 24px;border-radius:8px;background-color:#fafaf8;border:1px solid rgba(14,26,43,0.04);">
+<p style="font-size:13px;font-weight:600;color:${navy};margin:0 0 6px;">What to expect</p>
+<p style="font-size:12px;color:${muted};line-height:1.65;margin:0;">Over the next week, you will receive two more briefs: your primary structural constraint and how to address it, and how income patterns in your industry compare. Each one builds on the last.</p>
+</td></tr></table>`;
+
+  return { subject: `Welcome to the Structural Income Brief, ${name}`, html: nurtureEmailWrapper(body, name) };
+}
+
+// Reminder email 2 (Day 3, no score available) — nudge to take assessment
+function buildNurtureReminder2({ name }) {
+  const navy = "#1C1635";
+  const muted = "rgba(14,26,43,0.58)";
+  const light = "rgba(14,26,43,0.35)";
+
+  const body = `
+<p style="font-size:22px;font-weight:300;color:${navy};margin:0 0 6px;letter-spacing:-0.02em;line-height:1.3;">${name}, your structural analysis is waiting.</p>
+<p style="font-size:13px;color:${light};line-height:1.7;margin:8px 0 0;">We have not received your assessment yet. Here is why it matters.</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0;"><tr><td style="height:1px;background-color:rgba(14,26,43,0.06);">&nbsp;</td></tr></table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:0;">
+<tr><td>
+<p style="font-size:14px;color:${muted};line-height:1.75;margin:0 0 12px;">The difference between income that feels stable and income that is structurally stable is not always obvious. Most people discover the gap only when something disrupts their earning pattern \u2014 a lost client, an industry shift, an unexpected change.</p>
+<p style="font-size:14px;color:${muted};line-height:1.75;margin:0;">The free assessment takes under 3 minutes. It maps six structural dimensions of your income and identifies the single highest-leverage change you can make. No financial advice, no sales pitch \u2014 just a structural reading of how your income actually works.</p>
+</td></tr></table>
+${nurtureCta("Start Your Free Assessment", "https://peoplestar.com/RunPayway/begin")}`;
+
+  return { subject: `${name}, your structural analysis is waiting`, html: nurtureEmailWrapper(body, name) };
+}
+
+// Reminder email 3 (Day 7, no score available) — last nudge
+function buildNurtureReminder3({ name }) {
+  const navy = "#1C1635";
+  const muted = "rgba(14,26,43,0.58)";
+  const light = "rgba(14,26,43,0.35)";
+
+  const body = `
+<p style="font-size:22px;font-weight:300;color:${navy};margin:0 0 6px;letter-spacing:-0.02em;line-height:1.3;">One structural question for ${name}.</p>
+<p style="font-size:13px;color:${light};line-height:1.7;margin:8px 0 0;">This is the last email in the series without your assessment.</p>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0;"><tr><td style="height:1px;background-color:rgba(14,26,43,0.06);">&nbsp;</td></tr></table>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:0;">
+<tr><td>
+<p style="font-size:14px;color:${muted};line-height:1.75;margin:0 0 12px;">If your largest income source disappeared tomorrow \u2014 how many months could your current structure sustain you?</p>
+<p style="font-size:14px;color:${muted};line-height:1.75;margin:0 0 12px;">Most professionals answer this question with a feeling, not a number. The Income Stability Score replaces that feeling with a structural measurement. Six dimensions, one score, one clear priority.</p>
+<p style="font-size:14px;color:${muted};line-height:1.75;margin:0;">It takes under 3 minutes. The result will either confirm that your structure is sound, or it will show you exactly where it is not.</p>
+</td></tr></table>
+${nurtureCta("See Where You Stand", "https://peoplestar.com/RunPayway/begin")}`;
+
+  return { subject: `One structural question for ${name}`, html: nurtureEmailWrapper(body, name) };
 }
 
 // ══════════════════════════════════════════════════════════
