@@ -1,6 +1,9 @@
 // RUNPAYWAY™ — Lightweight Analytics
 // Tracks page views and key funnel events without third-party scripts.
 // Events are sent to a Cloudflare Worker endpoint for aggregation.
+// Pixel events (GA4, Meta, LinkedIn) are fired alongside custom analytics.
+
+import { trackGA4Event, trackMetaEvent, trackLinkedInConversion } from "@/components/AnalyticsPixels";
 
 const ANALYTICS_ENDPOINT = "https://runpayway-pressuremap.mcallpl.workers.dev/analytics";
 
@@ -72,6 +75,9 @@ export function trackAssessmentComplete(score: number, industry?: string) {
     industry,
     timestamp: new Date().toISOString(),
   });
+  // Fire pixel events for assessment completion
+  trackGA4Event("assessment_complete", { score, industry });
+  trackMetaEvent("CompleteRegistration", { value: score, content_name: industry });
 }
 
 /** Track purchase initiation (clicked Stripe link) */
@@ -81,6 +87,9 @@ export function trackPurchaseClick(plan: string) {
     plan,
     timestamp: new Date().toISOString(),
   });
+  // Fire pixel events for purchase intent
+  trackGA4Event("purchase_click", { plan });
+  trackMetaEvent("InitiateCheckout", { content_name: plan });
 }
 
 /** Track any custom event */
