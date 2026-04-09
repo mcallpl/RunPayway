@@ -11,6 +11,7 @@ import { useLanguage } from "@/lib/i18n";
 import type { LangCode } from "@/lib/i18n";
 import { trackPageView } from "@/lib/analytics";
 import { C } from "@/lib/design-tokens";
+import EmailCapture from "@/components/EmailCapture";
 
 /* ------------------------------------------------------------------ */
 /*  Global animation styles (injected once)                             */
@@ -294,6 +295,7 @@ export default function MarketingLayout({
     { href: "/sample-report", label: t.nav.sampleReport },
     { href: "/advisors", label: "For Advisors" },
     { href: "/organizations", label: "For Organizations" },
+    { href: "/blog", label: "Blog" },
     { href: "/about", label: t.nav.about },
     { href: "/faq", label: t.nav.faq },
     { href: "/sign-in", label: "Sign In" },
@@ -759,6 +761,7 @@ export default function MarketingLayout({
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {[
                   { href: "/about", label: t.nav.about },
+                  { href: "/blog", label: "Blog" },
                   { href: "/faq", label: t.nav.faq },
                   { href: "/coming-soon", label: "New Releases" },
                   { href: "/contact", label: t.nav.contact },
@@ -796,6 +799,25 @@ export default function MarketingLayout({
               </div>
             </div>
           </nav>
+
+          {/* Structural Income Brief — footer capture */}
+          <div style={{
+            display: "flex",
+            flexDirection: mobile ? "column" : "row",
+            alignItems: mobile ? "flex-start" : "center",
+            gap: mobile ? 12 : 24,
+            padding: mobile ? "24px 20px" : "24px 28px",
+            borderRadius: 14,
+            backgroundColor: "#0E1A2B",
+            marginBottom: mobile ? 28 : 36,
+          }}>
+            <span style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA", whiteSpace: "nowrap", flexShrink: 0 }}>
+              Structural Income Brief
+            </span>
+            <div style={{ flex: 1, width: mobile ? "100%" : "auto" }}>
+              <EmailCapture variant="inline" source="footer" />
+            </div>
+          </div>
 
           {/* Divider */}
           <div style={{ height: 1, width: "100%", background: "rgba(14,26,43,0.06)", marginBottom: 20 }} />

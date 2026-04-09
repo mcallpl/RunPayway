@@ -1094,6 +1094,42 @@ function BeforeYouBegin() {
 
 
 /* ================================================================ */
+/* SECTION 11B — STRUCTURAL INCOME BRIEF (Email Capture)             */
+/* ================================================================ */
+
+function StructuralIncomeBrief() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+
+  return (
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m), position: "relative" as const, overflow: "hidden" }}>
+      {/* Subtle grain */}
+      <div className="navy-grain" />
+
+      <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
+        <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
+          STAY INFORMED
+        </div>
+        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 16, ...fadeIn(visible, 60) }}>
+          The Structural Income Brief
+        </h2>
+        <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted, marginBottom: m ? 32 : 40, maxWidth: 520, marginLeft: "auto", marginRight: "auto", ...fadeIn(visible, 120) }}>
+          A periodic analysis of income stability patterns across industries. Data-driven. No fluff. Delivered to your inbox.
+        </p>
+        <div style={{ display: "flex", justifyContent: "center", ...fadeIn(visible, 180) }}>
+          <EmailCapture variant="standalone" source="homepage_brief_section" />
+        </div>
+        <p style={{ fontSize: 13, color: C.sandLight, marginTop: 20, ...fadeIn(visible, 240) }}>
+          Unsubscribe anytime. We respect your privacy.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================ */
 /* SECTION 12 — FINAL CTA                                            */
 /* ================================================================ */
 
@@ -1164,6 +1200,7 @@ export default function LandingPage() {
         <IndustryProfiles />
         <QuietAuthority />
         <BeforeYouBegin />
+        <StructuralIncomeBrief />
         <FinalCta />
       </main>
     </div>

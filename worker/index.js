@@ -100,6 +100,7 @@ export default {
       if (path === "/get-record") return await handleGetRecord(body, env, corsHeaders);
       if (path === "/send-email") return await handleSendEmail(body, env, corsHeaders);
       if (path === "/contact") return await handleContact(body, env, corsHeaders);
+      if (path === "/nurture") return await handleNurture(body, env, corsHeaders);
 
       return new Response(JSON.stringify({ error: "Unknown endpoint" }), {
         status: 404, headers: corsHeaders,

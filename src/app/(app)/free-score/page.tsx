@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { simulateScore, SIMULATOR_PRESETS } from "@/lib/engine/v2/simulate";
 import type { CanonicalInput } from "@/lib/engine/v2/simulate";
 import { bandColor as bandColorFn } from "@/lib/design-tokens";
+import EmailCapture from "@/components/EmailCapture";
 
 /* ================================================================== */
 /* DESIGN SYSTEM (LOCKED)                                              */
@@ -433,6 +434,30 @@ export default function FreeScorePage() {
           <p style={{ fontSize: 13, color: C.teal, margin: 0 }}>
             If it doesn&#8217;t reveal something new, full refund.
           </p>
+        </section>
+
+        {/* ── SECTION 8B: EMAIL CAPTURE — post free score ── */}
+        <section style={{
+          backgroundColor: C.white, borderRadius: 12, padding: mobile ? "28px 24px" : "32px 36px",
+          border: `1px solid ${C.border}`,
+          marginBottom: secPad, textAlign: "center",
+        }}>
+          <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 12 }}>
+            Income Analysis
+          </div>
+          <div style={{ fontSize: mobile ? 18 : 20, fontWeight: 600, color: C.navy, marginBottom: 8, lineHeight: 1.3 }}>
+            Get your full income structure analysis delivered to your inbox
+          </div>
+          <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, marginBottom: 24, maxWidth: 420, marginLeft: "auto", marginRight: "auto" }}>
+            A detailed look at what your score means for your specific industry and operating structure.
+          </p>
+          <div style={{
+            padding: mobile ? "20px 16px" : "20px 24px",
+            borderRadius: 12,
+            backgroundColor: C.navy,
+          }}>
+            <EmailCapture variant="inline" source="free_score_page" />
+          </div>
         </section>
 
         {/* ── SECTION 9: DASHBOARD PREVIEW ── */}
