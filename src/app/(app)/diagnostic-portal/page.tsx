@@ -785,39 +785,39 @@ export default function InitializationPage() {
 
       {/* Top bar — institutional header */}
       <div style={{
-        background: C.navy, padding: "14px 24px",
+        background: C.navy, padding: mobile ? "14px 16px" : "14px 24px",
         display: "flex", justifyContent: "space-between", alignItems: "center",
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div style={{ width: 8, height: 8, borderRadius: "50%", background: C.teal }} />
-          <span style={{ fontSize: 11, fontWeight: 700, fontFamily: sans, color: C.sandMuted, letterSpacing: "0.12em", textTransform: "uppercase" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: mobile ? 8 : 12 }}>
+          <div style={{ width: 8, height: 8, borderRadius: "50%", background: C.teal, flexShrink: 0 }} />
+          <span style={{ fontSize: mobile ? 10 : 11, fontWeight: 700, fontFamily: sans, color: C.sandMuted, letterSpacing: "0.12em", textTransform: "uppercase" }}>
             Income Stability Diagnostic
           </span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{ fontSize: 11, fontFamily: sans, color: C.sandLight }}>
+          <span style={{ fontSize: mobile ? 10 : 11, fontFamily: sans, color: C.sandLight }}>
             Assessing: {form.assessment_title || "—"}
           </span>
-          <span style={{ fontSize: 11, fontFamily: sans, color: C.sandLight }}>Model RP-2.0</span>
+          {!mobile && <span style={{ fontSize: 11, fontFamily: sans, color: C.sandLight }}>Model RP-2.0</span>}
         </div>
       </div>
 
       {/* Progress indicator — clinical-style segmented bar */}
       <div style={{
         background: C.white, borderBottom: "1px solid rgba(14,26,43,0.06)",
-        padding: "12px 24px",
+        padding: mobile ? "12px 12px" : "12px 24px",
       }}>
-        <div style={{ maxWidth: 860, margin: "0 auto", display: "flex", alignItems: "center", gap: 12 }}>
-          {["Profile", "Income Structure", "Assessment"].map((label, i) => {
+        <div style={{ maxWidth: 860, margin: "0 auto", display: "flex", alignItems: "center", gap: mobile ? 6 : 12 }}>
+          {(mobile ? ["Profile", "Income", "Assessment"] : ["Profile", "Income Structure", "Assessment"]).map((label, i) => {
             const isActive = i === step;
             const isComplete = i < step;
             const isFuture = i > step && i < 3;
             return (
-              <div key={label} style={{ flex: i === 2 ? 2 : 1, display: "flex", alignItems: "center", gap: 8 }}>
+              <div key={label} style={{ flex: i === 2 ? 2 : 1, display: "flex", alignItems: "center", gap: mobile ? 4 : 8 }}>
                 <div style={{
-                  width: 24, height: 24, borderRadius: "50%", flexShrink: 0,
+                  width: mobile ? 20 : 24, height: mobile ? 20 : 24, borderRadius: "50%", flexShrink: 0,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 11, fontWeight: 700, fontFamily: mono,
+                  fontSize: mobile ? 10 : 11, fontWeight: 700, fontFamily: mono,
                   background: isComplete ? C.teal : isActive ? C.purple : "rgba(14,26,43,0.06)",
                   color: isComplete || isActive ? C.white : C.light,
                   transition: "all 300ms ease",
@@ -825,8 +825,9 @@ export default function InitializationPage() {
                   {isComplete ? "\u2713" : i + 1}
                 </div>
                 <span style={{
-                  fontSize: 12, fontWeight: isActive ? 600 : 400, fontFamily: sans,
+                  fontSize: mobile ? 11 : 12, fontWeight: isActive ? 600 : 400, fontFamily: sans,
                   color: isActive ? C.navy : isComplete ? C.teal : C.light,
+                  whiteSpace: "nowrap",
                 }}>
                   {label}
                 </span>

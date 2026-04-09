@@ -911,12 +911,13 @@ export default function DiagnosticPage() {
     return (
       <div style={{
         position: "fixed", inset: 0, zIndex: 9999, background: C.sand,
-        display: "flex", alignItems: "center", justifyContent: "center",
+        display: "flex", alignItems: mobile ? "flex-start" : "center", justifyContent: "center",
         overflowX: "hidden", width: "100%", maxWidth: "100vw",
+        paddingTop: mobile ? "20vh" : 0,
       }}>
         <style dangerouslySetInnerHTML={{ __html: `${VIEWPORT_LOCK_CSS} @keyframes revealPulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }` }} />
-        <div style={{ position: "absolute", top: "30%", left: "50%", width: mobile ? 360 : 600, height: mobile ? 360 : 600, transform: "translate(-50%, -50%)", background: `radial-gradient(circle, ${revealColor}10 0%, transparent 60%)`, pointerEvents: "none" }} />
-        <div style={{ textAlign: "center", maxWidth: 480, padding: mobile ? "0 16px" : "0 24px", position: "relative", zIndex: 1 }}>
+        <div style={{ position: "absolute", top: mobile ? "15%" : "30%", left: "50%", width: mobile ? 360 : 600, height: mobile ? 360 : 600, transform: "translate(-50%, -50%)", background: `radial-gradient(circle, ${revealColor}10 0%, transparent 60%)`, pointerEvents: "none" }} />
+        <div style={{ textAlign: "center", maxWidth: 480, padding: mobile ? "0 24px" : "0 24px", position: "relative", zIndex: 1, width: "100%", boxSizing: "border-box" }}>
 
           {/* Score number — counts up with pulse on reveal */}
           <div style={{ marginBottom: 8, animation: revealPhase >= 1 ? "revealPulse 0.6s ease-out" : "none" }}>
@@ -989,14 +990,15 @@ export default function DiagnosticPage() {
     return (
       <div style={{
         position: "fixed", inset: 0, zIndex: 9999, background: C.sand,
-        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: mobile ? "flex-start" : "center",
         overflowX: "hidden", width: "100%", maxWidth: "100vw",
+        paddingTop: mobile ? "25vh" : 0,
       }}>
         <style dangerouslySetInnerHTML={{ __html: `${VIEWPORT_LOCK_CSS} @keyframes quoteLoadBar { 0% { width: 0%; } 30% { width: 35%; } 60% { width: 70%; } 90% { width: 92%; } 100% { width: 100%; } }` }} />
 
         {/* Quote — the hero of this page */}
         <div style={{ maxWidth: 520, padding: mobile ? "0 20px" : "0 32px", textAlign: "center", width: "100%" }}>
-          <div style={{ minHeight: mobile ? 120 : 140, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ minHeight: mobile ? 100 : 140, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <div style={{ opacity: quoteFade ? 1 : 0, transition: "opacity 500ms ease" }}>
               <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 300, color: C.navy, lineHeight: 1.5, margin: "0 0 16px", letterSpacing: "-0.01em" }}>
                 &ldquo;{LOADING_QUOTES[quoteIdx]?.text}&rdquo;
@@ -1237,15 +1239,15 @@ export default function DiagnosticPage() {
               Based on your previous 12 months
             </div>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <span style={{ fontSize: 13, color: C.light, fontFeatureSettings: "'tnum'" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
+            <span style={{ fontSize: 13, color: C.light, fontFeatureSettings: "'tnum'", whiteSpace: "nowrap" }}>
               {Math.floor(elapsed / 60)}:{(elapsed % 60).toString().padStart(2, "0")}
             </span>
           </div>
         </div>
 
         {/* Progress bar */}
-        <div style={{ display: "flex", gap: 4 }}>
+        <div style={{ display: "flex", gap: 4, width: "100%", overflow: "hidden" }}>
           {QUESTIONS.map((_, i) => (
             <button
               key={i}

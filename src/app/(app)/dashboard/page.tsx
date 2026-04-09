@@ -116,7 +116,7 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
       </svg>
       <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 2 }}>
         <span style={{ fontSize: size * 0.28, fontWeight: 300, fontFamily: mono, color: B.navy, lineHeight: 1, letterSpacing: "-0.04em" }}>{score}</span>
-        <span style={{ fontSize: size * 0.08, fontWeight: 600, color, marginTop: 4, letterSpacing: "0.04em" }}>{bandLabel}</span>
+        <span style={{ fontSize: Math.max(size * 0.08, 9), fontWeight: 600, color, marginTop: 4, letterSpacing: "0.04em" }}>{bandLabel}</span>
       </div>
     </div>
   );
@@ -1316,13 +1316,13 @@ function DashboardContent() {
                               <div style={{ width: 24, height: 24, borderRadius: 6, backgroundColor: `${B.teal}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                                 <span style={{ fontSize: 12, fontWeight: 700, color: B.teal }}>{i + 1}</span>
                               </div>
-                              <span style={{ fontSize: 16, fontWeight: 600, color: B.navy }}>{play.title}</span>
+                              <span style={{ fontSize: mobile ? 14 : 16, fontWeight: 600, color: B.navy }}>{play.title}</span>
                             </div>
                             <p style={{ fontSize: 14, color: B.muted, margin: "0 0 6px", lineHeight: 1.5 }}>{play.context}</p>
                             {play.who && !isExp && <p style={{ fontSize: 13, color: B.teal, margin: 0, fontWeight: 500 }}>Talk to: {play.who.length > 80 ? play.who.substring(0, 80) + "..." : play.who}</p>}
                           </div>
                           <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0, marginTop: 4 }}>
-                            <span style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{play.lift}</span>
+                            <span style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: B.teal, whiteSpace: "nowrap" as const }}>+{play.lift}</span>
                             <span style={{ fontSize: 14, color: B.taupe, transition: "transform 200ms", transform: isExp ? "rotate(180deg)" : "rotate(0deg)" }}>&#9660;</span>
                           </div>
                         </button>
@@ -1440,9 +1440,9 @@ function DashboardContent() {
                       {/* Completed step — compact with celebration */}
                       {done ? (
                         <div style={{ padding: "14px 20px", borderRadius: 12, backgroundColor: `${B.teal}04`, border: `1px solid ${B.teal}12` }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
                             <span style={{ fontSize: 15, fontWeight: 500, color: B.teal, textDecoration: "line-through", opacity: 0.7 }}>{step.action}</span>
-                            <span style={{ fontSize: 12, fontFamily: mono, color: B.teal }}>+{step.lift} pts</span>
+                            <span style={{ fontSize: 12, fontFamily: mono, color: B.teal, flexShrink: 0, whiteSpace: "nowrap" as const }}>+{step.lift} pts</span>
                           </div>
                         </div>
                       ) : isFirst ? (
@@ -1472,9 +1472,9 @@ function DashboardContent() {
                       ) : (
                         /* Future step — collapsed, just the title */
                         <div style={{ padding: "14px 20px", borderRadius: 12, backgroundColor: "#FAFAFA", border: `1px solid ${B.stone}`, opacity: 0.6 }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
                             <span style={{ fontSize: 15, fontWeight: 500, color: B.navy }}>{step.action}</span>
-                            <span style={{ fontSize: 12, color: B.taupe }}>{step.weeks}</span>
+                            <span style={{ fontSize: 12, color: B.taupe, flexShrink: 0, whiteSpace: "nowrap" as const }}>{step.weeks}</span>
                           </div>
                         </div>
                       )}
@@ -1527,12 +1527,12 @@ function DashboardContent() {
                     return (
                       <button key={pr.id} onClick={() => setActivePreset(isA && activePreset === pr.id ? null : pr.id)}
                         style={{ padding: "18px 22px", textAlign: "left" as const, borderRadius: 14, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? `${B.purple}30` : isTop ? `${B.teal}15` : B.stone}`, backgroundColor: isA ? `${B.purple}04` : isTop ? `${B.teal}02` : "#FAFAFA", minHeight: 48 }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                            <span style={{ fontSize: 14, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
-                            {isTop && <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: `${B.teal}10`, color: B.teal }}>#1</span>}
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 4 }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+                            <span style={{ fontSize: mobile ? 13 : 14, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
+                            {isTop && <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: `${B.teal}10`, color: B.teal, flexShrink: 0 }}>#1</span>}
                           </div>
-                          <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal }}>+{lift}</span>
+                          <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal, flexShrink: 0, whiteSpace: "nowrap" as const }}>+{lift}</span>
                         </div>
                         <p style={{ fontSize: 14, color: B.taupe, margin: 0, lineHeight: 1.6 }}>{pr.description}</p>
                         {why && <p style={{ fontSize: 12, color: B.teal, margin: "6px 0 0", fontWeight: 500 }}>{why}</p>}
@@ -1550,9 +1550,9 @@ function DashboardContent() {
                     return (
                       <button key={pr.id} onClick={() => setActivePreset(isA && activePreset === pr.id ? null : pr.id)}
                         style={{ flex: 1, padding: "16px 20px", textAlign: "left" as const, borderRadius: 12, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? `${B.red}40` : B.stone}`, backgroundColor: isA ? `${B.red}04` : "transparent", minHeight: 48 }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
-                          <span style={{ fontSize: 14, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
-                          <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.red }}>{lift}</span>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 4 }}>
+                          <span style={{ fontSize: mobile ? 13 : 14, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
+                          <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.red, flexShrink: 0, whiteSpace: "nowrap" as const }}>{lift}</span>
                         </div>
                         <p style={{ fontSize: 14, color: B.taupe, margin: 0, lineHeight: 1.6 }}>{pr.description}</p>
                       </button>
