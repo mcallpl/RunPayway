@@ -964,7 +964,7 @@ function IndustryProfiles() {
             {/* Bottom stats row */}
             <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr", gap: m ? 12 : 0, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
               <div style={{ textAlign: "center", padding: m ? "8px 0" : "0 16px", borderRight: m ? "none" : "1px solid rgba(255,255,255,0.06)" }}>
-                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 4 }}>MEDIAN SCORE</div>
+                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 4 }}>BASELINE SCORE</div>
                 <div style={{ fontSize: 20, fontWeight: 700, fontFamily: mono, color: bandColor2, transition: "color 500ms ease" }}>{active.median}</div>
               </div>
               <div style={{ textAlign: "center", padding: m ? "8px 0" : "0 16px", borderRight: m ? "none" : "1px solid rgba(255,255,255,0.06)" }}>
@@ -980,7 +980,7 @@ function IndustryProfiles() {
         </div>
 
         <p style={{ fontSize: 14, color: C.textMuted, textAlign: "center", marginTop: m ? 32 : 44, lineHeight: 1.6, maxWidth: explanatoryW, marginLeft: "auto", marginRight: "auto" }}>
-          Profiles based on structural patterns across each industry. Your individual score depends on your specific setup.
+          Industry baselines derived from structural income modeling. Your individual score depends on your specific setup. Baselines are refined as assessment data grows.
         </p>
       </div>
     </section>

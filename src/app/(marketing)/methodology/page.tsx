@@ -254,6 +254,55 @@ function Integrity() {
 /* SECTION 5 — FINAL CTA (dark)                                        */
 /* ================================================================== */
 
+function Transparency() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+  return (
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 112, paddingBottom: m ? 72 : 112, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 720, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 36 : 48, ...fadeIn(visible) }}>
+          <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>TRANSPARENCY</div>
+          <h2 style={{ fontSize: m ? 28 : 36, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.028em", color: C.navy, marginBottom: 20 }}>
+            What we measure, how we measure it,{m ? " " : <br />}and what we don&rsquo;t yet know.
+          </h2>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: m ? 16 : 20, ...fadeIn(visible, 100) }}>
+          {[
+            {
+              title: "The scoring model is deterministic and fixed",
+              body: "RP-2.0 uses a published, version-locked rule set. Same inputs produce the same output, every time. No AI interpretation. No subjective adjustment. The methodology is transparent and auditable.",
+            },
+            {
+              title: "Industry baselines are structural estimates",
+              body: "When we compare your score to an industry baseline, that baseline is derived from structural income modeling across each sector \u2014 not from a census of individual users. These baselines are versioned (B-2.0) and are continuously refined as real assessment data accumulates. We believe in showing you this context while being clear about its source.",
+            },
+            {
+              title: "Scoring weights are designed, not yet empirically validated",
+              body: "The point allocations across the six structural dimensions reflect our best judgment of how income stability factors relate to real-world resilience. As we collect outcome data over time, we will calibrate these weights against actual disruption events and publish updates transparently.",
+            },
+            {
+              title: "Your score reflects structure, not prediction",
+              body: "RunPayway does not predict whether you will experience a disruption. It measures how your income is built and how it would behave if conditions changed. The constraint diagnosis, action plan, and stress tests are structural analyses \u2014 they show what defines your score, not what will happen next.",
+            },
+          ].map((item, i) => (
+            <div key={i} style={{ padding: m ? "24px 20px" : "28px 32px", borderRadius: 16, backgroundColor: "#FAFAF8", border: "1px solid rgba(14,26,43,0.06)" }}>
+              <div style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: C.navy, marginBottom: 8, lineHeight: 1.35 }}>{item.title}</div>
+              <p style={{ fontSize: 14, color: muted, lineHeight: 1.7, margin: 0 }}>{item.body}</p>
+            </div>
+          ))}
+        </div>
+
+        <p style={{ fontSize: 13, color: light, textAlign: "center", marginTop: m ? 32 : 40, lineHeight: 1.6, ...fadeIn(visible, 200) }}>
+          We are committed to earning your trust through transparency, not disclaimers. If you have questions about our methodology, contact us directly.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
 function FinalCta() {
   const { ref, visible } = useInView();
   const m = useMobile();
@@ -303,6 +352,7 @@ export default function MethodologyPage() {
         <HeroSection />
         <WhatMakesItDifferent />
         <Integrity />
+        <Transparency />
         <FinalCta />
       </main>
     </div>

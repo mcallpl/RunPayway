@@ -158,8 +158,8 @@ function buildReportEmailHtml(data: ReportEmailData): string {
                     <p style="font-size:13px; font-weight:500; color:${brandNavy}; margin:0;">${data.industrySector}</p>
                   </td>
                   <td width="50%" style="vertical-align:top; padding-left:12px;">
-                    <p style="font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:${light}; margin:0 0 4px;">Peer Ranking</p>
-                    <p style="font-size:13px; font-weight:500; color:${brandNavy}; margin:0 0 16px;">${data.peerPercentileLabel} percentile in ${data.industrySector}</p>
+                    <p style="font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:${light}; margin:0 0 4px;">Industry Position</p>
+                    <p style="font-size:13px; font-weight:500; color:${brandNavy}; margin:0 0 16px;">${data.peerPercentileLabel} relative to ${data.industrySector} baseline</p>
 
                     <p style="font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:${light}; margin:0 0 4px;">Main Area to Improve</p>
                     <p style="font-size:13px; font-weight:500; color:${brandNavy}; margin:0 0 16px;">${data.primaryConstraintLabel}</p>

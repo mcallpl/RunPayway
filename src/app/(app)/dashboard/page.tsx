@@ -589,10 +589,10 @@ function DashboardContent() {
   const zones = [
     { id: "active", label: "Income That Stops", pct: activeInc, color: B.red, lift: redR.l, sev: redSev,
       txt: activeInc >= 70
-        ? `In ${indName.toLowerCase()}, ${activeInc}% active income is critically high. If you cannot work for 90 days, your score drops by ${stNWDrop} points. Most ${indName.toLowerCase()} professionals average ${indData.redAvg}% — you are ${activeInc - indData.redAvg}% above that.`
+        ? `In ${indName.toLowerCase()}, ${activeInc}% active income is critically high. If you cannot work for 90 days, your score drops by ${stNWDrop} points. Industry baseline: ${indData.redAvg}% — you are ${activeInc - indData.redAvg}% above that.`
         : activeInc >= 40
-        ? `${activeInc}% of your income requires active daily work. In ${indName.toLowerCase()}, the average is ${indData.redAvg}%. ${activeInc > indData.redAvg ? `You are ${activeInc - indData.redAvg}% more exposed than your peers.` : `You are ${indData.redAvg - activeInc}% below average — better than most.`}`
-        : `${activeInc}% active income is well below the ${indName.toLowerCase()} average of ${indData.redAvg}%. Your structure has meaningful protection against work stoppages.`,
+        ? `${activeInc}% of your income requires active daily work. In ${indName.toLowerCase()}, the industry baseline is ${indData.redAvg}%. ${activeInc > indData.redAvg ? `You are ${activeInc - indData.redAvg}% more exposed than the baseline.` : `You are ${indData.redAvg - activeInc}% below the industry baseline.`}`
+        : `${activeInc}% active income is well below the ${indName.toLowerCase()} baseline of ${indData.redAvg}%. Your structure has meaningful protection against work stoppages.`,
       peer: `${Math.abs(activeInc - indData.redAvg)}% ${activeInc > indData.redAvg ? "above" : "below"} ${indName.toLowerCase()} avg (${indData.redAvg}%)`,
       action: redAction ? `Fix: ${redAction.label}` : null },
     { id: "semi", label: "Recurring For Now", pct: semiInc, color: B.amber, lift: 0, sev: "elevated" as const,
@@ -605,9 +605,9 @@ function DashboardContent() {
       action: null as string | null },
     { id: "persistent", label: "Protected Income", pct: persInc, color: B.teal, lift: grnR.l, sev: grnSev,
       txt: persInc < 10
-        ? `Only ${persInc}% would continue if you stopped entirely. The ${indName.toLowerCase()} average is ${indData.greenAvg}%. Building this zone is the single most durable improvement available.`
+        ? `Only ${persInc}% would continue if you stopped entirely. The ${indName.toLowerCase()} industry baseline is ${indData.greenAvg}%. Building this zone is the single most durable improvement available.`
         : persInc < 25
-        ? `${persInc}% protected gives some runway. ${persInc > indData.greenAvg ? `You are ${persInc - indData.greenAvg}% ahead of the ${indName.toLowerCase()} average.` : `Most ${indName.toLowerCase()} professionals average ${indData.greenAvg}% — you are ${indData.greenAvg - persInc}% behind.`}`
+        ? `${persInc}% protected gives some runway. ${persInc > indData.greenAvg ? `You are ${persInc - indData.greenAvg}% above the modeled industry baseline.` : `The ${indName.toLowerCase()} industry baseline is ${indData.greenAvg}% — you are ${indData.greenAvg - persInc}% below the modeled industry baseline.`}`
         : `${persInc}% protected is a real advantage in ${indName.toLowerCase()}. This zone keeps generating revenue through disruptions, illness, and market shifts.`,
       peer: `${Math.abs(persInc - indData.greenAvg)}% ${persInc > indData.greenAvg ? "above" : "below"} ${indName.toLowerCase()} avg (${indData.greenAvg}%)`,
       action: grnAction ? `Fix: ${grnAction.label}` : null },
@@ -1035,7 +1035,7 @@ function DashboardContent() {
                       </div>
                       {bm && indLabel && (
                         <div style={{ fontSize: 14, color: B.teal, fontWeight: 500 }}>
-                          Top {100 - Math.round(bm.peer_percentile)}% of {indLabel.toLowerCase()} professionals
+                          Industry Position: {bm.peer_percentile > 70 ? "Above industry baseline" : bm.peer_percentile >= 40 ? "At industry baseline" : "Below industry baseline"}
                         </div>
                       )}
                     </div>
@@ -1688,7 +1688,7 @@ function DashboardContent() {
                 const pDelta = Math.round(lBm.peer_percentile - fBm.peer_percentile);
                 return (
                   <div style={{ padding: "16px 20px", borderRadius: 10, backgroundColor: pDelta > 0 ? `${B.teal}05` : `${B.stone}`, border: `1px solid ${pDelta > 0 ? `${B.teal}15` : B.stone}` }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 8 }}>PEER BENCHMARK EVOLUTION</div>
+                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 8 }}>BASELINE COMPARISON</div>
                     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                       <span style={{ fontFamily: mono, fontSize: 18, color: B.taupe }}>{Math.round(fBm.peer_percentile)}th</span>
                       <span style={{ color: B.taupe }}>→</span>
