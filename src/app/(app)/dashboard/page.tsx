@@ -1696,7 +1696,7 @@ function DashboardContent() {
                       <span style={{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: pDelta > 0 ? B.teal : pDelta < 0 ? B.red : B.taupe }}>{pDelta > 0 ? "+" : ""}{pDelta} percentile</span>
                     </div>
                     <p style={{ fontSize: 13, color: B.muted, marginTop: 8, marginBottom: 0 }}>
-                      {pDelta > 0 ? "You are pulling ahead of your industry peers." : pDelta < 0 ? "Your relative position has declined." : "Your peer position is unchanged."}
+                      {pDelta > 0 ? "Your position relative to the industry baseline has improved." : pDelta < 0 ? "Your position relative to the industry baseline has shifted." : "Your baseline position is stable."}
                     </p>
                   </div>
                 );
