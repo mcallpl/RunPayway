@@ -417,46 +417,79 @@ function WhatChanges() {
   const m = useMobile();
   const fadeIn = useFadeIn();
 
+  const steps = [
+    {
+      num: "01",
+      step: "Identify",
+      desc: "See exactly where your income is exposed\u2014the blind spots you can\u2019t find in a bank statement.",
+      detail: "Which source disappearing would hurt the most?",
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>,
+    },
+    {
+      num: "02",
+      step: "Understand",
+      desc: "Know how your income actually behaves under pressure\u2014not how it feels when things are going well.",
+      detail: "What happens if you can\u2019t work for 90 days?",
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
+    },
+    {
+      num: "03",
+      step: "Act",
+      desc: "Get the exact moves\u2014with scripts, sequences, and projected impact\u2014before the problem arrives.",
+      detail: "One structural change could shift your score 15+ points.",
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>,
+    },
+  ];
+
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
-      <div style={{ maxWidth: 820, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy }}>
-            Unlock the full diagnostic and move{m ? " " : <br />}from reactive decisions to structural ones.
+      <div style={{ maxWidth: 960, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
+          <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>HOW IT WORKS</div>
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>
+            From blind spot to structural clarity{m ? " " : <br />}in under two minutes.
           </h2>
+          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 560, margin: "0 auto" }}>
+            The diagnostic doesn&rsquo;t just score you. It shows you what to do about it.
+          </p>
         </div>
 
-        {/* 3-step horizontal flow */}
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 32, maxWidth: 960, margin: "0 auto", ...fadeIn(visible, 100) }}>
-          {[
-            { step: "Identify", desc: "Where your income holds\u2014and where it breaks", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> },
-            { step: "Understand", desc: "How your income behaves under real pressure", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> },
-            { step: "Act", desc: "Before problems show up\u2014no more waiting for the crisis", icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> },
-          ].map((item, i) => (
-            <div key={i} style={{ textAlign: "center", padding: m ? "24px 0" : 0, marginBottom: m ? 16 : 0 }}>
-              <div style={{ width: 48, height: 48, borderRadius: 12, backgroundColor: `${C.teal}10`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
-                {item.icon}
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 0, ...fadeIn(visible, 100) }}>
+          {steps.map((item, i) => (
+            <div key={i} style={{
+              display: m ? "block" : "grid", gridTemplateColumns: "56px 1fr", gap: 24,
+              padding: m ? "28px 0" : "36px 0",
+              borderTop: i === 0 ? `1px solid rgba(14,26,43,0.06)` : "none",
+              borderBottom: `1px solid rgba(14,26,43,0.06)`,
+            }}>
+              {/* Step number + line */}
+              <div style={{ display: "flex", flexDirection: m ? "row" as const : "column" as const, alignItems: m ? "center" : "center", gap: m ? 14 : 8, marginBottom: m ? 16 : 0 }}>
+                <div style={{
+                  width: 48, height: 48, borderRadius: 14,
+                  backgroundColor: C.navy, color: "#fff",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 14, fontWeight: 700, fontFamily: mono, flexShrink: 0,
+                }}>
+                  {item.num}
+                </div>
+                {m && <div style={{ fontSize: 20, fontWeight: 700, color: C.navy }}>{item.step}</div>}
               </div>
-              <div style={{ fontSize: m ? 18 : 20, fontWeight: 600, color: C.navy, marginBottom: 8 }}>{item.step}</div>
-              <p style={{ fontSize: 16, fontWeight: 400, color: C.textSecondary, margin: 0, lineHeight: 1.6 }}>{item.desc}</p>
+
+              {/* Content */}
+              <div>
+                {!m && <div style={{ fontSize: 20, fontWeight: 700, color: C.navy, marginBottom: 8 }}>{item.step}</div>}
+                <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.65, margin: "0 0 16px" }}>{item.desc}</p>
+                <div style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  padding: "8px 16px", borderRadius: 10,
+                  backgroundColor: `${C.teal}06`, border: `1px solid ${C.teal}15`,
+                }}>
+                  <div style={{ color: C.teal, flexShrink: 0, display: "flex" }}>{item.icon}</div>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>{item.detail}</span>
+                </div>
+              </div>
             </div>
           ))}
-        </div>
-
-        <div style={{ textAlign: "center", marginTop: m ? 40 : 56, ...fadeIn(visible, 200) }}>
-          <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, maxWidth: 680, margin: "0 auto" }}>
-            {[
-              "Identify where your income holds\u2014and where it breaks",
-              "Understand how your income behaves under real pressure",
-              "Know the impact before a client leaves or a deal falls through",
-              "Act before problems show up\u2014no more waiting for the crisis",
-            ].map((item, i) => (
-              <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", textAlign: "left" }}>
-                <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
-                <span style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.6 }}>{item}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>
