@@ -1053,7 +1053,7 @@ function BeforeYouBegin() {
               No documents.{m ? " " : <br />}No bank connection.{m ? " " : <br />}No account needed.
             </h2>
             <p style={{ fontSize: m ? 16 : 17, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 28 }}>
-              Six questions. Under two minutes. The system needs general knowledge of your income structure&mdash;not access to your finances.
+              Under two minutes. The system needs general knowledge of your income structure&mdash;not access to your finances.
             </p>
             <div style={{ padding: m ? "18px 20px" : "20px 24px", borderRadius: 16, backgroundColor: C.white, border: "1px solid rgba(14,26,43,0.06)" }}>
               <div style={{ fontSize: 13, fontWeight: 600, color: C.navy, marginBottom: 6 }}>You don&rsquo;t need exact numbers.</div>
