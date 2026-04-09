@@ -92,7 +92,7 @@ export default function AcceptableUsePolicyPage() {
     <div style={{ background: "#FAFAFA", fontFamily: sans }}>
 
       {/* HERO */}
-      <header style={{ backgroundColor: C.sand, paddingTop: mobile ? 104 : 152, paddingBottom: mobile ? 56 : 88, paddingLeft: mobile ? 20 : 48, paddingRight: mobile ? 20 : 48 }}>
+      <header style={{ backgroundColor: C.sand, paddingTop: mobile ? 104 : 152, paddingBottom: mobile ? 56 : 88, paddingLeft: mobile ? 24 : 48, paddingRight: mobile ? 24 : 48 }}>
         <div ref={heroAnim.ref} style={{ maxWidth: 860, margin: "0 auto", textAlign: "center", opacity: heroAnim.visible ? 1 : 0, transform: heroAnim.visible ? "translateY(0)" : "translateY(10px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
           <div style={{ fontSize: mobile ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>
             {t.acceptableUse.heroTag}
@@ -111,7 +111,7 @@ export default function AcceptableUsePolicyPage() {
 
       {/* CONTENT */}
       <section style={{ paddingTop: mobile ? 56 : 112, paddingBottom: mobile ? 56 : 112 }}>
-        <div style={{ maxWidth: 820, margin: "0 auto", paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24, display: "flex", flexDirection: "column" as const, gap: mobile ? 16 : 20 }}>
+        <div style={{ maxWidth: 820, margin: "0 auto", paddingLeft: mobile ? 24 : 24, paddingRight: mobile ? 24 : 24, display: "flex", flexDirection: "column" as const, gap: mobile ? 16 : 20 }}>
 
           <div ref={s1.ref}><Section number="1." title={t.acceptableUse.s1Title} mobile={mobile} visible={s1.visible}><P>{t.acceptableUse.s1P1}</P><P style={{ marginBottom: 0 }}>{t.acceptableUse.s1P2}</P></Section></div>
           <div ref={s2.ref}><Section number="2." title={t.acceptableUse.s2Title} mobile={mobile} visible={s2.visible}><P>{t.acceptableUse.s2P1}</P><Bullet items={[t.acceptableUse.s2Li1, t.acceptableUse.s2Li2, t.acceptableUse.s2Li3, t.acceptableUse.s2Li4]} /><P style={{ marginBottom: 0 }}>{t.acceptableUse.s2P2}</P></Section></div>
@@ -134,7 +134,7 @@ export default function AcceptableUsePolicyPage() {
       </section>
 
       {/* FOOTER */}
-      <section style={{ backgroundColor: C.navy, paddingTop: mobile ? 88 : 128, paddingBottom: mobile ? 88 : 128, paddingLeft: mobile ? 20 : 48, paddingRight: mobile ? 20 : 48 }}>
+      <section style={{ backgroundColor: C.navy, paddingTop: mobile ? 88 : 128, paddingBottom: mobile ? 88 : 128, paddingLeft: mobile ? 24 : 48, paddingRight: mobile ? 24 : 48 }}>
         <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
           <h2 style={{ fontSize: mobile ? 24 : 32, fontWeight: 600, color: C.sandText, letterSpacing: "-0.02em", lineHeight: 1.15, marginBottom: 16 }}>
             {t.acceptableUse.closingBrand}

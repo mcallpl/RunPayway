@@ -104,8 +104,8 @@ export default function PrivacyRequestPage() {
           backgroundColor: C.sand,
           paddingTop: mobile ? 104 : 152,
           paddingBottom: mobile ? 56 : 88,
-          paddingLeft: mobile ? 20 : 48,
-          paddingRight: mobile ? 20 : 48,
+          paddingLeft: mobile ? 24 : 48,
+          paddingRight: mobile ? 24 : 48,
         }}
       >
         <div
@@ -150,8 +150,8 @@ export default function PrivacyRequestPage() {
           className="mx-auto"
           style={{
             maxWidth: 940,
-            paddingLeft: mobile ? 20 : 40,
-            paddingRight: mobile ? 20 : 40,
+            paddingLeft: mobile ? 24 : 40,
+            paddingRight: mobile ? 24 : 40,
             display: "flex",
             flexDirection: mobile ? "column" : "row",
             gap: mobile ? 32 : 40,
@@ -371,7 +371,7 @@ export default function PrivacyRequestPage() {
               flex: 0.8,
               display: "flex",
               flexDirection: "column",
-              gap: mobile ? 20 : 24,
+              gap: mobile ? 24 : 24,
               opacity: sideAnim.visible ? 1 : 0,
               transform: sideAnim.visible ? "translateY(0)" : "translateY(24px)",
               transition: "opacity 700ms ease 140ms, transform 700ms ease 140ms",

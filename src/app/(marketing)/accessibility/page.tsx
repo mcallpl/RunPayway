@@ -88,7 +88,7 @@ export default function AccessibilityPage() {
     <div style={{ background: "#FAFAFA", fontFamily: sans }}>
 
       {/* HERO */}
-      <header style={{ backgroundColor: C.sand, paddingTop: mobile ? 104 : 152, paddingBottom: mobile ? 56 : 88, paddingLeft: mobile ? 20 : 48, paddingRight: mobile ? 20 : 48 }}>
+      <header style={{ backgroundColor: C.sand, paddingTop: mobile ? 104 : 152, paddingBottom: mobile ? 56 : 88, paddingLeft: mobile ? 24 : 48, paddingRight: mobile ? 24 : 48 }}>
         <div ref={heroAnim.ref} style={{ maxWidth: 860, margin: "0 auto", textAlign: "center", opacity: heroAnim.visible ? 1 : 0, transform: heroAnim.visible ? "translateY(0)" : "translateY(10px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
           <div style={{ fontSize: mobile ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>
             {t.accessibilityPage.heroTag}
@@ -107,7 +107,7 @@ export default function AccessibilityPage() {
 
       {/* CONTENT */}
       <section style={{ paddingTop: mobile ? 56 : 112, paddingBottom: mobile ? 56 : 112 }}>
-        <div style={{ maxWidth: 820, margin: "0 auto", paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24, display: "flex", flexDirection: "column" as const, gap: mobile ? 16 : 20 }}>
+        <div style={{ maxWidth: 820, margin: "0 auto", paddingLeft: mobile ? 24 : 24, paddingRight: mobile ? 24 : 24, display: "flex", flexDirection: "column" as const, gap: mobile ? 16 : 20 }}>
 
           <div ref={s1.ref}><Section title={t.accessibilityPage.s1Title} mobile={mobile} visible={s1.visible}><P>{t.accessibilityPage.s1P1}</P><P style={{ marginBottom: 0 }}>{t.accessibilityPage.s1P2}</P></Section></div>
           <div ref={s2.ref}><Section title={t.accessibilityPage.s2Title} mobile={mobile} visible={s2.visible}><P>{t.accessibilityPage.s2P1}</P><P style={{ marginBottom: 0 }}>{t.accessibilityPage.s2P2}</P></Section></div>
@@ -135,7 +135,7 @@ export default function AccessibilityPage() {
       </section>
 
       {/* FOOTER */}
-      <section style={{ backgroundColor: C.navy, paddingTop: mobile ? 88 : 128, paddingBottom: mobile ? 88 : 128, paddingLeft: mobile ? 20 : 48, paddingRight: mobile ? 20 : 48 }}>
+      <section style={{ backgroundColor: C.navy, paddingTop: mobile ? 88 : 128, paddingBottom: mobile ? 88 : 128, paddingLeft: mobile ? 24 : 48, paddingRight: mobile ? 24 : 48 }}>
         <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
           <h2 style={{ fontSize: mobile ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 16 }}>
             {t.accessibilityPage.closingBrand}

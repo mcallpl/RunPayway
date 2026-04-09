@@ -93,7 +93,7 @@ export default function ContactPage() {
     <div style={{ background: "#FAFAFA", fontFamily: sans }}>
 
       {/* HERO */}
-      <header style={{ backgroundColor: C.sand, position: "relative", overflow: "hidden", paddingTop: mobile ? 104 : 152, paddingBottom: mobile ? 56 : 88, paddingLeft: mobile ? 20 : 48, paddingRight: mobile ? 20 : 48 }}>
+      <header style={{ backgroundColor: C.sand, position: "relative", overflow: "hidden", paddingTop: mobile ? 104 : 152, paddingBottom: mobile ? 56 : 88, paddingLeft: mobile ? 24 : 48, paddingRight: mobile ? 24 : 48 }}>
         <div ref={heroAnim.ref} style={{ maxWidth: 860, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1, ...fade(heroAnim.visible) }}>
           <div style={{ fontSize: mobile ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>
             {t.contact.heroTag}
@@ -112,7 +112,7 @@ export default function ContactPage() {
 
       {/* FORM + SIDEBAR */}
       <section style={{ paddingTop: mobile ? 56 : 112, paddingBottom: mobile ? 56 : 112 }}>
-        <div style={{ maxWidth: 1040, margin: "0 auto", paddingLeft: mobile ? 20 : 24, paddingRight: mobile ? 20 : 24, display: "flex", flexDirection: mobile ? "column" : "row", gap: mobile ? 28 : 36, alignItems: "start" }}>
+        <div style={{ maxWidth: 1040, margin: "0 auto", paddingLeft: mobile ? 24 : 24, paddingRight: mobile ? 24 : 24, display: "flex", flexDirection: mobile ? "column" : "row", gap: mobile ? 28 : 36, alignItems: "start" }}>
 
           {/* Form card */}
           <div ref={formAnim.ref} style={{
@@ -264,7 +264,7 @@ export default function ContactPage() {
       </section>
 
       {/* FINAL CTA */}
-      <section style={{ backgroundColor: C.navy, paddingTop: mobile ? 88 : 128, paddingBottom: mobile ? 88 : 128, paddingLeft: mobile ? 20 : 48, paddingRight: mobile ? 20 : 48 }}>
+      <section style={{ backgroundColor: C.navy, paddingTop: mobile ? 88 : 128, paddingBottom: mobile ? 88 : 128, paddingLeft: mobile ? 24 : 48, paddingRight: mobile ? 24 : 48 }}>
         <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
           <h2 style={{ fontSize: mobile ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 32 }}>
             {t.contact.closingSubtitle}
