@@ -187,91 +187,98 @@ function HeroSection() {
         @keyframes ringDraw { from { stroke-dashoffset: 745; } to { stroke-dashoffset: 538; } }
       `}</style>
 
-      {/* Trust strip */}
-      <div style={{ maxWidth: innerW, margin: "0 auto", paddingTop: m ? 72 : 88, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
-        <div style={{ padding: "10px 0 14px", borderBottom: `1px solid rgba(14,26,43,0.06)`, display: "flex", flexWrap: "wrap" as const, justifyContent: "center", gap: m ? 8 : 32 }}>
-          {(m
-            ? ["Private by default", "No credit pull"]
-            : ["Private by default", "No financial accounts required", "No credit pull"]
-          ).map((item, i) => (
-            <span key={i} style={{ fontSize: 13, fontWeight: 600, color: C.textSecondary, whiteSpace: "nowrap" }}>{item}</span>
-          ))}
-        </div>
-      </div>
+      <div style={{ maxWidth: innerW, margin: "0 auto", paddingTop: m ? 80 : 112, paddingBottom: m ? 64 : 96, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
 
-      {/* Hero content */}
-      <div style={{ maxWidth: innerW, margin: "0 auto", paddingTop: m ? 32 : 56, paddingBottom: m ? 56 : 88, paddingLeft: sectionPx(m), paddingRight: sectionPx(m), textAlign: "center" }}>
+        {/* Two-column: copy left, product preview right */}
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center", maxWidth: 1080, margin: "0 auto" }}>
 
-        <h1 style={{ fontSize: m ? 36 : 64, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, maxWidth: 860, margin: "0 auto 28px", ...fadeIn(visible, 50) }}>
-          Structural Income. Measured.
-        </h1>
+          {/* Left — copy */}
+          <div style={{ marginBottom: m ? 48 : 0 }}>
+            {/* Trust badges */}
+            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: m ? 12 : 16, marginBottom: m ? 28 : 36, ...fadeIn(visible) }}>
+              {["Private by default", "No credit pull", "Instant result"].map((item, i) => (
+                <span key={i} style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.04em", color: C.teal, padding: "5px 12px", borderRadius: 100, border: `1px solid ${C.teal}25`, backgroundColor: `${C.teal}06` }}>{item}</span>
+              ))}
+            </div>
 
-        <p style={{ fontSize: m ? 18 : 28, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: 760, margin: "0 auto 48px", ...fadeIn(visible, 100) }}>
-          This is how your income behaves under real conditions.
-        </p>
+            <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.035em", color: C.navy, marginBottom: m ? 20 : 24, ...fadeIn(visible, 50) }}>
+              Know how your{m ? " " : <br />}income holds up{m ? " " : <br />}before you rely on it.
+            </h1>
 
-        <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 680, margin: "0 auto 32px", ...fadeIn(visible, 120) }}>
-          RunPayway defines income stability through a deterministic, fixed system. Know how your income holds up under disruption, and whether it&rsquo;s built to last.
-        </p>
+            <p style={{ fontSize: m ? 17 : 20, fontWeight: 400, lineHeight: 1.55, color: C.textSecondary, maxWidth: 440, marginBottom: m ? 32 : 40, ...fadeIn(visible, 100) }}>
+              RunPayway measures how your income is built&mdash;not how much you make. A fixed, deterministic system. Same inputs, same result. Every time.
+            </p>
 
-        <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", maxWidth: 560, margin: "0 auto", ...fadeIn(visible, 150) }}>
-          <CtaButton m={m} variant="primary" />
-          <p style={{ fontSize: 14, fontWeight: 500, lineHeight: 1.45, color: C.textMuted, marginTop: 16, textAlign: "center" }}>
-            Takes under 2 minutes | Instant result | Private by default
-          </p>
-        </div>
+            <div style={{ ...fadeIn(visible, 150) }}>
+              <CtaButton m={m} variant="primary" label="Get Your Income Stability Score" />
+              <p style={{ fontSize: 13, fontWeight: 500, color: C.textMuted, marginTop: 14 }}>
+                Takes under 2 minutes &middot; No financial accounts required
+              </p>
+            </div>
+          </div>
 
-        {/* Product preview */}
-        <div style={{ maxWidth: 980, margin: "56px auto 0", ...fadeIn(visible, 250) }}>
-          <div style={{ backgroundColor: C.navy, borderRadius: 28, padding: m ? 28 : 40, position: "relative", overflow: "hidden" }}>
-            <div style={{ display: m ? "block" : "flex", alignItems: "flex-start", gap: 32, position: "relative", zIndex: 1 }}>
+          {/* Right — product preview */}
+          <div style={{ ...fadeIn(visible, 200) }}>
+            <div style={{ backgroundColor: C.navy, borderRadius: 24, padding: m ? "28px 24px" : "36px 32px", position: "relative", overflow: "hidden" }}>
+              {/* Gradient accent */}
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
 
-              {/* Score module — enhanced */}
-              <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: m ? 24 : 0, flexShrink: 0 }}>
-                <div style={{ position: "relative", width: 80, height: 80, flexShrink: 0 }}>
-                  <svg width={80} height={80} style={{ transform: "rotate(-90deg)" }}>
-                    <circle cx={40} cy={40} r={34} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={6} />
-                    <circle cx={40} cy={40} r={34} fill="none" stroke="#2B5EA7" strokeWidth={6}
-                      strokeDasharray={2 * Math.PI * 34} strokeDashoffset={2 * Math.PI * 34 * (1 - 0.72)}
+              {/* Score header */}
+              <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 28 }}>
+                <div style={{ position: "relative", width: 72, height: 72, flexShrink: 0 }}>
+                  <svg width={72} height={72} style={{ transform: "rotate(-90deg)" }}>
+                    <circle cx={36} cy={36} r={30} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={5} />
+                    <circle cx={36} cy={36} r={30} fill="none" stroke="#2B5EA7" strokeWidth={5}
+                      strokeDasharray={2 * Math.PI * 30} strokeDashoffset={2 * Math.PI * 30 * (1 - 0.72)}
                       strokeLinecap="round"
                       style={{ animation: visible ? "ringDraw 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards" : "none", filter: "drop-shadow(0 0 4px rgba(43,94,167,0.30))" }} />
                   </svg>
                   <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ fontSize: 24, fontWeight: 300, fontFamily: mono, color: C.sandText, lineHeight: 1 }}>72</span>
+                    <span style={{ fontSize: 22, fontWeight: 300, fontFamily: mono, color: C.sandText, lineHeight: 1 }}>72</span>
                   </div>
                 </div>
-                <div style={{ textAlign: "left" }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: C.sandText, marginBottom: 4 }}>72 / 100</div>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 10px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.12)", marginBottom: 6 }}>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 600, fontFamily: mono, color: C.sandText, marginBottom: 4 }}>72 / 100</div>
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 10px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.12)", marginBottom: 4 }}>
                     <div style={{ width: 5, height: 5, borderRadius: 2, backgroundColor: "#2B5EA7" }} />
                     <span style={{ fontSize: 11, fontWeight: 600, color: "#2B5EA7" }}>Established Stability</span>
                   </div>
-                  <div style={{ fontSize: 13, color: C.sandLight }}>3 points to High Stability</div>
+                  <div style={{ fontSize: 12, color: "rgba(244,241,234,0.40)" }}>3 pts to High Stability</div>
                 </div>
               </div>
 
-              {/* Key stats — single-line sections */}
-              <div style={{ flex: 1, display: "flex", flexDirection: "column" as const, gap: 8 }}>
-                <div style={{ display: m ? "grid" : "flex", gridTemplateColumns: "1fr", gap: 0, borderRadius: 10, overflow: "hidden", border: "1px solid rgba(255,255,255,0.06)" }}>
-                  {[
-                    { label: "INCOME BUFFER", value: "4.2 months", sub: "if your top client leaves", color: C.teal },
-                    { label: "STABILITY TYPE", value: "Uneven", sub: "", color: "#D4A843" },
-                    { label: "BIGGEST RISK", value: "Concentration", sub: "Too much from one source", color: "#E57373" },
-                  ].map((metric, i, arr) => (
-                    <div key={i} style={{ flex: m ? undefined : 1, padding: m ? "10px 14px" : "12px 10px", textAlign: m ? "left" : "center", borderRight: !m && i < arr.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none", borderBottom: m && i < arr.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none", backgroundColor: "rgba(255,255,255,0.02)", display: m ? "flex" : "block", alignItems: "center", justifyContent: "space-between" }}>
-                      <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.08em", color: C.sandLight, marginBottom: m ? 0 : 4 }}>{metric.label}</div>
-                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        <div style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: metric.color }}>{metric.value}</div>
-                        {metric.sub && !m && <div style={{ fontSize: 11, color: C.sandLight, marginTop: 2 }}>{metric.sub}</div>}
-                      </div>
-                    </div>
-                  ))}
+              {/* Stats grid */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1, borderRadius: 12, overflow: "hidden", marginBottom: 20 }}>
+                {[
+                  { label: "INCOME BUFFER", value: "4.2 mo", color: C.teal },
+                  { label: "FORWARD VISIBILITY", value: "68%", color: C.teal },
+                  { label: "BIGGEST RISK", value: "Concentration", color: "#E57373" },
+                  { label: "STABILITY TYPE", value: "Uneven", color: "#D4A843" },
+                ].map((stat, i) => (
+                  <div key={i} style={{ padding: "14px 16px", backgroundColor: "rgba(255,255,255,0.03)" }}>
+                    <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 6 }}>{stat.label}</div>
+                    <div style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: stat.color }}>{stat.value}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Income pressure bar */}
+              <div style={{ marginBottom: 8 }}>
+                <div style={{ display: "flex", height: 8, borderRadius: 999, overflow: "hidden" }}>
+                  <div style={{ width: "28%", backgroundColor: C.teal }} />
+                  <div style={{ width: "40%", backgroundColor: C.moderate }} />
+                  <div style={{ width: "32%", backgroundColor: C.risk }} />
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
+                  <span style={{ fontSize: 10, color: "rgba(244,241,234,0.35)" }}>Protected</span>
+                  <span style={{ fontSize: 10, color: "rgba(244,241,234,0.35)" }}>Recurring</span>
+                  <span style={{ fontSize: 10, color: "rgba(244,241,234,0.35)" }}>At risk</span>
                 </div>
               </div>
-            </div>
 
-            <div style={{ textAlign: "center", marginTop: 16, position: "relative", zIndex: 1 }}>
-              <span style={{ fontSize: 11, color: C.sandLight, letterSpacing: "0.04em" }}>Example output</span>
+              <div style={{ textAlign: "center", paddingTop: 12 }}>
+                <span style={{ fontSize: 11, color: "rgba(244,241,234,0.25)", letterSpacing: "0.04em" }}>Example output &middot; Model RP-2.0</span>
+              </div>
             </div>
           </div>
         </div>
