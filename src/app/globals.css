@@ -480,7 +480,7 @@ html {
 
   /* --- Footer --- */
   footer .mx-auto {
-    padding: 36px 24px 96px !important;
+    padding: 36px 24px 40px !important;
   }
   footer nav[aria-label="Footer navigation"] {
     grid-template-columns: repeat(2, 1fr) !important;
@@ -632,7 +632,7 @@ html {
     padding-right: 16px !important;
   }
   footer .mx-auto {
-    padding: 32px 16px 96px !important;
+    padding: 32px 16px 40px !important;
   }
   footer nav[aria-label="Footer navigation"] {
     grid-template-columns: 1fr !important;

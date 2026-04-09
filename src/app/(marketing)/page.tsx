@@ -845,42 +845,8 @@ function FinalCta() {
 }
 
 
-/* ================================================================ */
-/* STICKY MOBILE CTA                                                 */
-/* ================================================================ */
-
-function StickyCta() {
-  const m = useMobile();
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const h = () => setScrolled(window.scrollY > 600);
-    window.addEventListener("scroll", h, { passive: true });
-    return () => window.removeEventListener("scroll", h);
-  }, []);
-  if (!scrolled) return null;
-  return (
-    <div style={{
-      position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100,
-      height: 72,
-      display: "flex", alignItems: "center", justifyContent: "center",
-      padding: "0 20px",
-      paddingBottom: "max(12px, env(safe-area-inset-bottom))",
-      backgroundColor: "rgba(14,26,43,0.96)",
-      backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
-      boxShadow: "0 -4px 24px rgba(14,26,43,0.12)",
-    }}>
-      <Link href="/begin" style={{
-        display: "flex", alignItems: "center", justifyContent: "center",
-        height: 48, width: m ? "100%" : "auto", minWidth: m ? 0 : 360,
-        padding: m ? 0 : "0 32px",
-        borderRadius: 12, backgroundColor: C.white, color: C.navy,
-        fontSize: 16, fontWeight: 600, textDecoration: "none",
-      }}>
-        Get Your Structural Income Report
-      </Link>
-    </div>
-  );
-}
+/* StickyCta removed — page has sufficient inline CTAs (hero, proof, final)
+   and the fixed bar was covering footer content on all viewports. */
 
 
 /* ================================================================ */
@@ -925,7 +891,6 @@ export default function LandingPage() {
         <BeforeYouBegin />
         <FinalCta />
       </main>
-      <StickyCta />
     </div>
   );
 }
