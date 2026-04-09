@@ -74,7 +74,7 @@ const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace'
 const innerW = 1120;
 const narrowW = 720;
 const explanatoryW = 640;
-const sectionPx = (m: boolean) => m ? 20 : 48;
+const sectionPx = (m: boolean) => m ? 24 : 48;
 const cardShadow = "0 10px 30px rgba(14,26,43,0.06)";
 const ctaShadow = "0 8px 24px rgba(14,26,43,0.12)";
 
@@ -202,7 +202,7 @@ function HeroSection() {
       {/* Hero content */}
       <div style={{ maxWidth: innerW, margin: "0 auto", paddingTop: m ? 32 : 56, paddingBottom: m ? 56 : 88, paddingLeft: sectionPx(m), paddingRight: sectionPx(m), textAlign: "center" }}>
 
-        <h1 style={{ fontSize: m ? 48 : 64, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, maxWidth: 860, margin: "0 auto 28px", ...fadeIn(visible, 50) }}>
+        <h1 style={{ fontSize: m ? 36 : 64, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, maxWidth: 860, margin: "0 auto 28px", ...fadeIn(visible, 50) }}>
           Structural Income. Measured.
         </h1>
 
@@ -252,16 +252,18 @@ function HeroSection() {
 
               {/* Key stats — single-line sections */}
               <div style={{ flex: 1, display: "flex", flexDirection: "column" as const, gap: 8 }}>
-                <div style={{ display: "flex", gap: 0, borderRadius: 10, overflow: "hidden", border: "1px solid rgba(255,255,255,0.06)" }}>
+                <div style={{ display: m ? "grid" : "flex", gridTemplateColumns: "1fr", gap: 0, borderRadius: 10, overflow: "hidden", border: "1px solid rgba(255,255,255,0.06)" }}>
                   {[
                     { label: "INCOME BUFFER", value: "4.2 months", sub: "if your top client leaves", color: C.teal },
                     { label: "STABILITY TYPE", value: "Uneven", sub: "", color: "#D4A843" },
                     { label: "BIGGEST RISK", value: "Concentration", sub: "Too much from one source", color: "#E57373" },
                   ].map((metric, i, arr) => (
-                    <div key={i} style={{ flex: 1, padding: "12px 10px", textAlign: "center", borderRight: i < arr.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none", backgroundColor: "rgba(255,255,255,0.02)" }}>
-                      <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.08em", color: C.sandLight, marginBottom: 4 }}>{metric.label}</div>
-                      <div style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: metric.color }}>{metric.value}</div>
-                      {metric.sub && <div style={{ fontSize: 11, color: C.sandLight, marginTop: 2 }}>{metric.sub}</div>}
+                    <div key={i} style={{ flex: m ? undefined : 1, padding: m ? "10px 14px" : "12px 10px", textAlign: m ? "left" : "center", borderRight: !m && i < arr.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none", borderBottom: m && i < arr.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none", backgroundColor: "rgba(255,255,255,0.02)", display: m ? "flex" : "block", alignItems: "center", justifyContent: "space-between" }}>
+                      <div style={{ fontSize: 9, fontWeight: 600, letterSpacing: "0.08em", color: C.sandLight, marginBottom: m ? 0 : 4 }}>{metric.label}</div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <div style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: metric.color }}>{metric.value}</div>
+                        {metric.sub && !m && <div style={{ fontSize: 11, color: C.sandLight, marginTop: 2 }}>{metric.sub}</div>}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -325,10 +327,10 @@ function ProofMoment() {
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 34 : 52, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24 }}>
+          <h2 style={{ fontSize: m ? 28 : 52, fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24 }}>
             Same income. Different setup.{m ? " " : <br />}Completely different risk.
           </h2>
-          <p style={{ fontSize: m ? 20 : 24, fontWeight: 400, lineHeight: 1.45, color: C.textSecondary }}>
+          <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.45, color: C.textSecondary }}>
             Two consultants. Same $150K/year income. One breaks first.
           </p>
         </div>
@@ -688,20 +690,20 @@ function IndustryProfiles() {
           </p>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "repeat(4, 1fr)", gap: m ? 10 : 12, maxWidth: 960, margin: "0 auto", ...fadeIn(visible, 100) }}>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(4, 1fr)", gap: m ? 8 : 12, maxWidth: 960, margin: "0 auto", ...fadeIn(visible, 100) }}>
           {INDUSTRIES.map((ind) => {
             const isActive = selected?.key === ind.key;
             return (
               <button key={ind.key} onClick={() => setSelected(isActive ? null : ind)}
                 style={{
                   display: "flex", alignItems: "center",
-                  height: 56, padding: "0 20px",
+                  height: m ? 48 : 56, padding: m ? "0 16px" : "0 20px",
                   borderRadius: 14,
                   backgroundColor: isActive ? `${C.teal}08` : C.white,
                   border: `1px solid ${isActive ? C.teal + "40" : C.borderSoft}`,
                   boxShadow: isActive ? `0 0 0 1px ${C.teal}20` : "none",
-                  fontSize: 15, fontWeight: isActive ? 600 : 500, color: C.navy,
-                  cursor: "pointer", textAlign: "left" as const,
+                  fontSize: m ? 14 : 15, fontWeight: isActive ? 600 : 500, color: C.navy,
+                  cursor: "pointer", textAlign: "left" as const, whiteSpace: "nowrap" as const,
                   transition: "border-color 200ms, box-shadow 200ms",
                 }}
                 onMouseEnter={e => { if (!isActive) { e.currentTarget.style.borderColor = "rgba(14,26,43,0.20)"; e.currentTarget.style.boxShadow = "0 2px 8px rgba(14,26,43,0.04)"; } }}
@@ -828,7 +830,7 @@ function FinalCta() {
   return (
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m), paddingRight: sectionPx(m), borderTop: "1px solid rgba(255,255,255,0.04)" }}>
       <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center" }}>
-        <h2 style={{ fontSize: m ? 34 : 52, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.sandText, marginBottom: 20, ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 28 : 52, fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.035em", color: C.sandText, marginBottom: 20, ...fadeIn(visible) }}>
           Know how your income holds up{m ? " " : <br />}before you rely on it.
         </h2>
         <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", ...fadeIn(visible, 160) }}>
@@ -903,7 +905,7 @@ const PRODUCT_SCHEMA = {
 
 export default function LandingPage() {
   return (
-    <div className="overflow-x-hidden">
+    <div className="overflow-x-hidden" style={{ paddingBottom: 80 }}>
       <a href="#main-content" style={{ position: "absolute", left: "-9999px", top: "auto", width: 1, height: 1, overflow: "hidden", zIndex: 9999, padding: "12px 24px", backgroundColor: C.navy, color: C.white, fontSize: 14, fontWeight: 600, textDecoration: "none", borderRadius: 8 }}
         onFocus={e => { e.currentTarget.style.position = "fixed"; e.currentTarget.style.left = "16px"; e.currentTarget.style.top = "16px"; e.currentTarget.style.width = "auto"; e.currentTarget.style.height = "auto"; }}
         onBlur={e => { e.currentTarget.style.position = "absolute"; e.currentTarget.style.left = "-9999px"; e.currentTarget.style.width = "1px"; e.currentTarget.style.height = "1px"; }}>

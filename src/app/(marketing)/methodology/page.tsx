@@ -49,7 +49,7 @@ const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace'
 const muted = "rgba(14,26,43,0.68)";
 const light = "rgba(14,26,43,0.62)";
 const contentW = 1040;
-const px = (m: boolean) => m ? 20 : 24;
+const px = (m: boolean) => m ? 24 : 24;
 
 
 /* ================================================================== */
@@ -64,7 +64,7 @@ function HeroSection() {
     <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 56 : 88, paddingLeft: px(m), paddingRight: px(m) }}>
       <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
         <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>METHODOLOGY</div>
-        <h1 style={{ fontSize: m ? 38 : 64, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible, 50) }}>
+        <h1 style={{ fontSize: m ? 30 : 64, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible, 50) }}>
           The System Behind Your Score
         </h1>
         <p style={{ fontSize: m ? 20 : 28, fontWeight: 400, lineHeight: 1.4, color: C.teal, marginBottom: 24, ...fadeIn(visible, 80) }}>

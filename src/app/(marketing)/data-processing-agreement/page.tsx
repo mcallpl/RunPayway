@@ -119,13 +119,13 @@ export default function DataProcessingAgreementPage() {
     <div style={{ background: "#FAFAFA", fontFamily: sans }}>
 
       {/* HERO */}
-      <header style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 56 : 88, paddingLeft: m ? 20 : 48, paddingRight: m ? 20 : 48 }}>
+      <header style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 56 : 88, paddingLeft: m ? 24 : 48, paddingRight: m ? 24 : 48 }}>
         <div ref={hero.ref} style={{ maxWidth: 860, margin: "0 auto", textAlign: "center", opacity: hero.visible ? 1 : 0, transform: hero.visible ? "translateY(0)" : "translateY(10px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 16 }}>
             <span style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal }}>DATA PROCESSING AGREEMENT</span>
             <span style={{ fontSize: 11, fontWeight: 600, color: muted, padding: "3px 10px", borderRadius: 6, border: `1px solid rgba(14,26,43,0.10)`, backgroundColor: "rgba(14,26,43,0.03)" }}>Enterprise</span>
           </div>
-          <h1 style={{ fontSize: m ? 38 : 64, fontWeight: 700, color: C.navy, letterSpacing: "-0.035em", lineHeight: 1.05, marginBottom: 16 }}>
+          <h1 style={{ fontSize: m ? 30 : 64, fontWeight: 700, color: C.navy, letterSpacing: "-0.035em", lineHeight: 1.1, marginBottom: 16 }}>
             Data Processing Agreement
           </h1>
           <p style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: C.navy, marginBottom: 24 }}>
@@ -138,7 +138,7 @@ export default function DataProcessingAgreementPage() {
       </header>
 
       {/* CONTENT */}
-      <section style={{ paddingTop: m ? 56 : 112, paddingBottom: m ? 56 : 112, paddingLeft: m ? 20 : 24, paddingRight: m ? 20 : 24 }}>
+      <section style={{ paddingTop: m ? 56 : 112, paddingBottom: m ? 56 : 112, paddingLeft: m ? 24 : 24, paddingRight: m ? 24 : 24 }}>
         <div ref={content.ref} style={{ maxWidth: 820, margin: "0 auto" }}>
           <p style={{ fontSize: 13, color: light, marginBottom: m ? 32 : 48, opacity: content.visible ? 1 : 0, transform: content.visible ? "translateY(0)" : "translateY(10px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
             PeopleStar Enterprises, INC. &middot; Orange County, California, USA
@@ -176,7 +176,7 @@ export default function DataProcessingAgreementPage() {
       </section>
 
       {/* FOOTER */}
-      <section style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: m ? 20 : 48, paddingRight: m ? 20 : 48 }}>
+      <section style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: m ? 24 : 48, paddingRight: m ? 24 : 48 }}>
         <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 16 }}>
             Contact Us for Data Protection Inquiries

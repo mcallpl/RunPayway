@@ -66,7 +66,7 @@ const mono = "'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace";
 const innerW = 1120;
 const narrowW = 720;
 const explanatoryW = 640;
-const sectionPx = (m: boolean) => m ? 20 : 48;
+const sectionPx = (m: boolean) => m ? 24 : 48;
 const cardShadow = "0 10px 30px rgba(14,26,43,0.06)";
 const ctaShadow = "0 8px 24px rgba(14,26,43,0.12)";
 const border = "rgba(14,26,43,0.12)";
@@ -88,7 +88,7 @@ function HeroSection() {
         <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
           FOR ENTERPRISES
         </div>
-        <h1 style={{ fontSize: m ? 38 : 64, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
+        <h1 style={{ fontSize: m ? 30 : 64, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
           Standardize and Scale Income{m ? " " : <br />}Structure Assessment with{m ? " " : <br />}One Fixed Methodology
         </h1>
         <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: narrowW, margin: "0 auto 24px", ...fadeIn(visible, 100) }}>

@@ -69,7 +69,7 @@ const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace'
 const innerW = 1120;
 const narrowW = 720;
 const explanatoryW = 640;
-const sectionPx = (m: boolean) => m ? 20 : 48;
+const sectionPx = (m: boolean) => m ? 24 : 48;
 const cardShadow = "0 10px 30px rgba(14,26,43,0.06)";
 const ctaShadow = "0 8px 24px rgba(14,26,43,0.12)";
 
@@ -89,10 +89,10 @@ function HeroSection() {
         <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
           HOW IT WORKS
         </div>
-        <h1 style={{ fontSize: m ? 42 : 64, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible, 50) }}>
+        <h1 style={{ fontSize: m ? 32 : 64, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible, 50) }}>
           The system behind your score.
         </h1>
-        <p style={{ fontSize: m ? 20 : 28, fontWeight: 400, lineHeight: 1.4, color: C.textSecondary, maxWidth: 620, margin: "0 auto 24px", ...fadeIn(visible, 80) }}>
+        <p style={{ fontSize: m ? 18 : 28, fontWeight: 400, lineHeight: 1.4, color: C.textSecondary, maxWidth: 620, margin: "0 auto 24px", ...fadeIn(visible, 80) }}>
           How your income is built&mdash;and how it holds under pressure.
         </p>
         <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 560, margin: "0 auto 32px", ...fadeIn(visible, 120) }}>
@@ -497,7 +497,7 @@ function FinalCta() {
   return (
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center" }}>
-        <h2 style={{ fontSize: m ? 34 : 52, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.sandText, marginBottom: 32, ...fadeIn(visible) }}>
+        <h2 style={{ fontSize: m ? 28 : 52, fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.035em", color: C.sandText, marginBottom: 32, ...fadeIn(visible) }}>
           See how your income is built.
         </h2>
         <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", ...fadeIn(visible, 160) }}>

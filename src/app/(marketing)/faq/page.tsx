@@ -66,7 +66,7 @@ const C = {
 const innerW = 1120;
 const narrowW = 720;
 const explanatoryW = 640;
-const sectionPx = (m: boolean) => m ? 20 : 48;
+const sectionPx = (m: boolean) => m ? 24 : 48;
 
 
 /* ================================================================ */
@@ -191,7 +191,7 @@ function HeroSection({ searchValue, onSearch, inputRef }: { searchValue: string;
         <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
           SUPPORT
         </div>
-        <h1 style={{ fontSize: m ? 38 : 64, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
+        <h1 style={{ fontSize: m ? 30 : 64, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
           Frequently Asked Questions
         </h1>
         <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: 620, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>

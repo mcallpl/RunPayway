@@ -71,7 +71,7 @@ const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace'
 const innerW = 1120;
 const narrowW = 720;
 const explanatoryW = 640;
-const sectionPx = (m: boolean) => m ? 20 : 48;
+const sectionPx = (m: boolean) => m ? 24 : 48;
 const cardShadow = "0 10px 30px rgba(14,26,43,0.06)";
 
 
@@ -90,7 +90,7 @@ function HeroSection() {
         <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
           SAMPLE REPORT
         </div>
-        <h1 style={{ fontSize: m ? 38 : 64, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
+        <h1 style={{ fontSize: m ? 30 : 64, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
           See exactly what the system reveals&mdash;{m ? " " : <br />}before you access it.
         </h1>
         <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: 600, margin: "0 auto 24px", ...fadeIn(visible, 100) }}>
@@ -198,7 +198,7 @@ function Page01() {
               {/* Score */}
               <div style={{ textAlign: m ? "center" : "left", marginBottom: m ? 24 : 0, flexShrink: 0 }}>
                 <div style={{ display: "flex", alignItems: "baseline", justifyContent: m ? "center" : "flex-start", gap: 4 }}>
-                  <span style={{ fontSize: m ? 64 : 80, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1, letterSpacing: "-0.04em" }}>72</span>
+                  <span style={{ fontSize: m ? 48 : 80, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1, letterSpacing: "-0.04em" }}>72</span>
                   <span style={{ fontSize: 18, fontWeight: 400, color: C.textMuted }}>/100</span>
                 </div>
                 <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 100, backgroundColor: `${C.teal}10`, marginTop: 8 }}>
@@ -359,7 +359,7 @@ function Page03() {
             <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 12 }}>
               <span style={{ fontSize: 28, fontWeight: 700, fontFamily: mono, color: C.textMuted }}>72</span>
               <span style={{ fontSize: 18, color: C.textMuted }}>&rarr;</span>
-              <span style={{ fontSize: 40, fontWeight: 700, fontFamily: mono, color: C.teal }}>96</span>
+              <span style={{ fontSize: m ? 32 : 40, fontWeight: 700, fontFamily: mono, color: C.teal }}>96</span>
             </div>
           </div>
 
