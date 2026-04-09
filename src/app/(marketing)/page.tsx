@@ -1035,10 +1035,10 @@ function BeforeYouBegin() {
   const fadeIn = useFadeIn();
 
   const items = [
-    { num: "01", question: "How many places does your income come from?", why: "Source count drives your diversification score" },
-    { num: "02", question: "Does any single source account for most of it?", why: "Concentration above 50% is the #1 structural risk" },
-    { num: "03", question: "How much is already committed or recurring?", why: "Recurring revenue is the foundation of stability" },
-    { num: "04", question: "What changes if your biggest source disappears?", why: "This determines your fragility classification" },
+    { num: "01", question: "Do you know where all of your income comes from?", why: "Most people can answer this\u2014but not precisely" },
+    { num: "02", question: "Could you lose one source and still be fine?", why: "The answer reveals more than you\u2019d expect" },
+    { num: "03", question: "How much of next month\u2019s income is already locked in?", why: "This is where the structure starts to show" },
+    { num: "04", question: "What happens to your income if you step away?", why: "The honest answer is usually the uncomfortable one" },
   ];
 
   return (
