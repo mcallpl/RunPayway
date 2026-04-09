@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import logoBlue from "../../../public/runpayway-logo-blue.png";
 import CookieConsent from "@/components/CookieConsent";
+import AccessibilityWidget from "@/components/AccessibilityWidget";
 import ScrollToTop from "@/components/ScrollToTop";
 import { useLanguage } from "@/lib/i18n";
 import type { LangCode } from "@/lib/i18n";
@@ -808,6 +809,8 @@ export default function MarketingLayout({
 
       {/* Cookie Consent Banner — GDPR compliance */}
       <CookieConsent />
+      {/* Accessibility Widget — WCAG 2.1 AA */}
+      <AccessibilityWidget />
     </div>
   );
 }

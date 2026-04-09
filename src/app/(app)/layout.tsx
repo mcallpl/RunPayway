@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import logoBlue from "../../../public/runpayway-logo-blue.png";
 import ScrollToTop from "@/components/ScrollToTop";
+import AccessibilityWidget from "@/components/AccessibilityWidget";
 
 export default function AppLayout({
   children,
@@ -46,6 +47,7 @@ export default function AppLayout({
           </span>
         </div>
       </footer>
+      <AccessibilityWidget />
     </div>
   );
 }

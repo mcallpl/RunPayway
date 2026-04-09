@@ -754,3 +754,179 @@ input:focus-visible {
 *:focus:not(:focus-visible) {
   outline: none;
 }
+
+/* ============================================================
+   ACCESSIBILITY WIDGET — CSS Override Rules
+   Applied via classes on <html> by the a11y widget JS.
+   All overrides use !important to beat inline styles.
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   1. PROFILE CLASSES (applied to <html>)
+   ---------------------------------------------------------- */
+
+/* --- Seizure Safe --- */
+html.a11y-profile-seizure-safe *,
+html.a11y-profile-seizure-safe *::before,
+html.a11y-profile-seizure-safe *::after {
+  animation: none !important;
+  transition: none !important;
+}
+html.a11y-profile-seizure-safe {
+  filter: contrast(0.9) !important;
+}
+
+/* --- Vision Impaired --- */
+html.a11y-profile-vision-impaired {
+  filter: contrast(1.3) !important;
+  zoom: 1.15 !important;
+}
+html.a11y-profile-vision-impaired a {
+  text-decoration: underline !important;
+  font-weight: bold !important;
+}
+
+/* --- ADHD Friendly --- */
+html.a11y-profile-adhd *,
+html.a11y-profile-adhd *::before,
+html.a11y-profile-adhd *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+html.a11y-profile-adhd {
+  filter: saturate(0.6) !important;
+}
+
+/* --- Cognitive --- */
+html.a11y-profile-cognitive {
+  zoom: 1.1 !important;
+}
+html.a11y-profile-cognitive * {
+  line-height: 1.8 !important;
+  letter-spacing: 0.03em !important;
+  word-spacing: 0.1em !important;
+}
+
+/* --- Keyboard Navigation --- */
+html.a11y-profile-keyboard *:focus-visible {
+  outline: 3px solid #ff6600 !important;
+  outline-offset: 4px !important;
+  box-shadow: 0 0 0 6px rgba(255, 102, 0, 0.25) !important;
+}
+
+/* --- Screen Reader (mostly JS-driven; skip-link visibility) --- */
+html.a11y-profile-screenreader .skip-link {
+  position: absolute !important;
+  top: 8px !important;
+  left: 8px !important;
+  z-index: 100000 !important;
+  padding: 12px 24px !important;
+  background: #0E1A2B !important;
+  color: #fff !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  text-decoration: underline !important;
+  clip: auto !important;
+  width: auto !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+/* --- Older Users --- */
+html.a11y-profile-older {
+  zoom: 1.12 !important;
+  letter-spacing: 0.02em !important;
+}
+html.a11y-profile-older button,
+html.a11y-profile-older a,
+html.a11y-profile-older [role="button"] {
+  min-height: 52px !important;
+}
+
+/* ----------------------------------------------------------
+   2. GRANULAR CONTROLS
+   ---------------------------------------------------------- */
+
+/* --- Line Height --- */
+html.a11y-lh-compact * {
+  line-height: 1.3 !important;
+}
+html.a11y-lh-relaxed * {
+  line-height: 1.8 !important;
+}
+html.a11y-lh-spacious * {
+  line-height: 2.2 !important;
+}
+
+/* --- Letter Spacing --- */
+html.a11y-ls-tight * {
+  letter-spacing: -0.01em !important;
+}
+html.a11y-ls-wide * {
+  letter-spacing: 0.08em !important;
+}
+
+/* --- Color Modes --- */
+
+/* Dark mode (invert everything, then re-invert media) */
+html.a11y-color-dark {
+  filter: invert(0.9) hue-rotate(180deg) !important;
+}
+html.a11y-color-dark img,
+html.a11y-color-dark video,
+html.a11y-color-dark svg,
+html.a11y-color-dark canvas {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
+
+/* Saturated */
+html.a11y-color-saturated {
+  filter: saturate(2) !important;
+}
+
+/* Monochrome */
+html.a11y-color-mono {
+  filter: grayscale(1) !important;
+}
+
+/* --- Text Color --- */
+html.a11y-text-light * {
+  color: #f0f0f0 !important;
+}
+html.a11y-text-dark * {
+  color: #111 !important;
+}
+html.a11y-text-blue * {
+  color: #1a3a6b !important;
+}
+
+/* ----------------------------------------------------------
+   3. WIDGET EXEMPTIONS
+   ---------------------------------------------------------- */
+
+/* The widget renders via createPortal into document.body.
+   Exempt it from all a11y filter/color overrides. */
+[data-a11y-widget] {
+  filter: none !important;
+}
+html[class*="a11y-color-"] [data-a11y-widget],
+html[class*="a11y-color-"] [data-a11y-widget] * {
+  filter: none !important;
+}
+html[class*="a11y-text-"] [data-a11y-widget] *,
+html[class*="a11y-profile-"] [data-a11y-widget] * {
+  color: inherit !important;
+  line-height: inherit !important;
+  letter-spacing: inherit !important;
+  word-spacing: inherit !important;
+  animation: revert !important;
+  transition: revert !important;
+}
+
+/* Hide the widget when printing */
+@media print {
+  [data-a11y-widget] {
+    display: none !important;
+  }
+}
