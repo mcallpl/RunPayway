@@ -1034,36 +1034,58 @@ function BeforeYouBegin() {
   const m = useMobile();
   const fadeIn = useFadeIn();
 
+  const items = [
+    { num: "01", question: "How many places does your income come from?", why: "Source count drives your diversification score" },
+    { num: "02", question: "Does any single source account for most of it?", why: "Concentration above 50% is the #1 structural risk" },
+    { num: "03", question: "How much is already committed or recurring?", why: "Recurring revenue is the foundation of stability" },
+    { num: "04", question: "What changes if your biggest source disappears?", why: "This determines your fragility classification" },
+  ];
+
   return (
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
-      <div style={{ maxWidth: 680, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
-          <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>BEFORE YOU BEGIN</div>
-          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24 }}>
-            No documents needed.{m ? " " : <br />}No bank connection.
-          </h2>
-          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: explanatoryW, margin: "0 auto" }}>
-            But you&rsquo;ll get the most accurate result if you&rsquo;ve thought about:
-          </p>
-        </div>
+      <div style={{ maxWidth: 860, margin: "0 auto" }}>
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1.1fr", gap: 64, alignItems: "start" }}>
 
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 16, maxWidth: 560, margin: "0 auto 32px", ...fadeIn(visible, 100) }}>
-          {[
-            "How many places your income comes from",
-            "Whether any single source accounts for most of it",
-            "How much of your income is already committed or recurring",
-            "What would change if your biggest source went away tomorrow",
-          ].map((item, i) => (
-            <div key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 10 }} />
-              <span style={{ fontSize: 17, fontWeight: 500, color: C.navy, lineHeight: 1.5 }}>{item}</span>
+          {/* Left — copy */}
+          <div style={{ marginBottom: m ? 40 : 0, ...fadeIn(visible) }}>
+            <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>BEFORE YOU BEGIN</div>
+            <h2 style={{ fontSize: m ? 28 : 36, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.028em", color: C.navy, marginBottom: 20 }}>
+              No documents.{m ? " " : <br />}No bank connection.{m ? " " : <br />}No account needed.
+            </h2>
+            <p style={{ fontSize: m ? 16 : 17, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 28 }}>
+              Six questions. Under two minutes. The system needs general knowledge of your income structure&mdash;not access to your finances.
+            </p>
+            <div style={{ padding: m ? "18px 20px" : "20px 24px", borderRadius: 16, backgroundColor: C.white, border: "1px solid rgba(14,26,43,0.06)" }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: C.navy, marginBottom: 6 }}>You don&rsquo;t need exact numbers.</div>
+              <p style={{ fontSize: 14, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>
+                Reasonable estimates work. The model is designed for directional accuracy&mdash;not decimal precision.
+              </p>
             </div>
-          ))}
-        </div>
+          </div>
 
-        <p style={{ fontSize: 16, fontWeight: 500, color: C.textMuted, textAlign: "center", lineHeight: 1.6, maxWidth: 520, margin: "0 auto", ...fadeIn(visible, 180) }}>
-          You don&rsquo;t need exact numbers. Reasonable estimates work.{m ? " " : <br />}The system is built for it.
-        </p>
+          {/* Right — question cards */}
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 0, ...fadeIn(visible, 120) }}>
+            {items.map((item, i) => (
+              <div key={i} style={{
+                display: "flex", gap: m ? 16 : 20, padding: m ? "20px 0" : "24px 0",
+                borderBottom: i < items.length - 1 ? "1px solid rgba(14,26,43,0.06)" : "none",
+              }}>
+                <div style={{
+                  width: 36, height: 36, borderRadius: 10, flexShrink: 0,
+                  backgroundColor: C.navy, color: "#fff",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 12, fontWeight: 700, fontFamily: mono,
+                }}>
+                  {item.num}
+                </div>
+                <div>
+                  <div style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: C.navy, lineHeight: 1.4, marginBottom: 4 }}>{item.question}</div>
+                  <div style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.5 }}>{item.why}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
