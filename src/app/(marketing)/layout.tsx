@@ -699,7 +699,7 @@ export default function MarketingLayout({
           className="mx-auto"
           style={{
             maxWidth: 1200,
-            padding: mobile ? "40px 24px 32px" : "64px 48px 40px",
+            padding: mobile ? "40px 24px 96px" : "64px 48px 80px",
           }}
         >
           {/* Brand */}

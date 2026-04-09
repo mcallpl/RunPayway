@@ -26,7 +26,7 @@ export default function AppLayout({
           style={{
             maxWidth: 860,
             margin: "0 auto",
-            padding: "20px 24px",
+            padding: "20px 24px 72px",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
