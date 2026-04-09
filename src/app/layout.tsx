@@ -44,7 +44,27 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen"><Providers>{children}</Providers><AnalyticsPixels /></body>
+      <body className="min-h-screen">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "RunPayway\u2122",
+              url: "https://peoplestar.com/RunPayway",
+              description:
+                "RunPayway measures how stable your income structure actually is. Deterministic scoring built for consultants, contractors, freelancers, and business owners.",
+              brand: {
+                "@type": "Brand",
+                name: "RunPayway\u2122",
+              },
+            }),
+          }}
+        />
+        <Providers>{children}</Providers>
+        <AnalyticsPixels />
+      </body>
     </html>
   );
 }
