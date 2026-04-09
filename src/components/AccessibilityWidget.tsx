@@ -30,14 +30,37 @@ const DEFAULT_STATE: A11yState = {
   textColor: "default",
 };
 
+/* Custom SVG icons — brand-consistent, no emoji */
+function ProfileIcon({ id, color }: { id: string; color: string }) {
+  const s = { width: 18, height: 18, viewBox: "0 0 24 24", fill: "none", stroke: color, strokeWidth: 1.8, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+  switch (id) {
+    case "seizure-safe":
+      return <svg {...s}><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /><line x1="1" y1="1" x2="23" y2="23" strokeWidth="2" /></svg>;
+    case "vision-impaired":
+      return <svg {...s}><circle cx="12" cy="12" r="3" /><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" /></svg>;
+    case "adhd":
+      return <svg {...s}><circle cx="12" cy="12" r="10" /><path d="M12 8v4l2 2" /></svg>;
+    case "cognitive":
+      return <svg {...s}><path d="M12 2a7 7 0 0 1 7 7c0 2.5-1.3 4.8-3.5 6L14 22h-4l-1.5-7C6.3 13.8 5 11.5 5 9a7 7 0 0 1 7-7z" /><path d="M9 22h6" /></svg>;
+    case "keyboard":
+      return <svg {...s}><rect x="2" y="6" width="20" height="12" rx="2" /><path d="M6 10h0M10 10h0M14 10h0M18 10h0M8 14h8" /></svg>;
+    case "screenreader":
+      return <svg {...s}><path d="M2 6s1.5-2 4-2 4 2 4 2" /><path d="M14 6s1.5-2 4-2 4 2 4 2" /><circle cx="6" cy="10" r="2" /><circle cx="18" cy="10" r="2" /><path d="M6 12v4a6 6 0 0 0 12 0v-4" /></svg>;
+    case "older":
+      return <svg {...s}><circle cx="12" cy="5" r="3" /><path d="M12 8v6M8 21l2-7M16 21l-2-7M7 13h10" /></svg>;
+    default:
+      return null;
+  }
+}
+
 const PROFILES = [
-  { id: "seizure-safe", label: "Seizure Safe", desc: "Stops animations, reduces contrast extremes", icon: "⚡" },
-  { id: "vision-impaired", label: "Vision Impaired", desc: "High contrast, bold links, larger text", icon: "👁" },
-  { id: "adhd", label: "ADHD Friendly", desc: "Minimal motion, muted colors", icon: "🎯" },
-  { id: "cognitive", label: "Cognitive Disability", desc: "Larger text, wider spacing, reading guide", icon: "🧠" },
-  { id: "keyboard", label: "Keyboard Navigation", desc: "Enhanced focus indicators", icon: "⌨" },
-  { id: "screenreader", label: "Screen Reader", desc: "Optimized for assistive technology", icon: "📖" },
-  { id: "older", label: "Older Adults", desc: "Larger text, bigger touch targets", icon: "👤" },
+  { id: "seizure-safe", label: "Seizure Safe", desc: "Stops animations, reduces contrast extremes" },
+  { id: "vision-impaired", label: "Vision Impaired", desc: "High contrast, bold links, larger text" },
+  { id: "adhd", label: "ADHD Friendly", desc: "Minimal motion, muted colors" },
+  { id: "cognitive", label: "Cognitive Disability", desc: "Larger text, wider spacing, reading guide" },
+  { id: "keyboard", label: "Keyboard Navigation", desc: "Enhanced focus indicators" },
+  { id: "screenreader", label: "Screen Reader", desc: "Optimized for assistive technology" },
+  { id: "older", label: "Older Adults", desc: "Larger text, bigger touch targets" },
 ];
 
 const FONT_STEPS = [
@@ -391,7 +414,9 @@ export default function AccessibilityWidget() {
                         width: "100%",
                       }}
                     >
-                      <span style={{ fontSize: 20, flexShrink: 0, width: 32, textAlign: "center" }}>{p.icon}</span>
+                      <div style={{ width: 36, height: 36, borderRadius: 10, backgroundColor: active ? `${purple}15` : "rgba(14,26,43,0.04)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "background 150ms ease" }}>
+                        <ProfileIcon id={p.id} color={active ? purple : "#5E6873"} />
+                      </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ fontSize: 13, fontWeight: 600, color: active ? purple : navy }}>{p.label}</div>
                         <div style={{ fontSize: 11, color: muted, lineHeight: 1.4, marginTop: 2 }}>{p.desc}</div>
