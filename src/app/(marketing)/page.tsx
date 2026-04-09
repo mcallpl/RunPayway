@@ -634,31 +634,132 @@ function UseCaseArchitecture() {
   const fadeIn = useFadeIn();
 
   const cases = [
-    { title: "Individuals", sub: "Measure your structure", desc: "Know where your income holds, where it breaks, and what drives your stability.", color: C.teal, link: "/begin", cta: "Begin assessment" },
-    { title: "Advisors", sub: "Evaluate client risk", desc: "See how your clients\u2019 income holds under pressure\u2014before it becomes a problem.", color: C.purple, link: "/advisors", cta: "Learn more" },
-    { title: "Organizations", sub: "Assess at scale", desc: "Standardize income evaluation across your organization with one fixed, auditable rule set.", color: C.textMuted, link: "/organizations", cta: "Learn more" },
+    {
+      title: "Individuals",
+      sub: "Your income. Measured.",
+      hook: "You\u2019ve built something. But do you know if it holds?",
+      bullets: [
+        "See where your income breaks before it actually does",
+        "Know exactly which move raises your stability the fastest",
+        "Get negotiation scripts built from your real numbers",
+      ],
+      stat: "Under 2 minutes",
+      statLabel: "TO YOUR SCORE",
+      color: C.teal,
+      link: "/begin",
+      cta: "Begin your assessment",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-4 3-7 7-7s7 3 7 7"/></svg>,
+    },
+    {
+      title: "Advisors",
+      sub: "Your clients\u2019 risk. Quantified.",
+      hook: "You already know something\u2019s off in their income. Now you can prove it.",
+      bullets: [
+        "Run structural assessments for every client in your book",
+        "Surface risks they can\u2019t see in a balance sheet",
+        "Turn income conversations into planning engagements",
+      ],
+      stat: "$15\u2013$25",
+      statLabel: "PER ASSESSMENT",
+      color: C.purple,
+      link: "/advisors",
+      cta: "See the advisor model",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M9 12l2 2 4-4"/><path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9-9 9-9-1.8-9-9 1.8-9 9-9z"/></svg>,
+    },
+    {
+      title: "Organizations",
+      sub: "Workforce stability. At scale.",
+      hook: "Your contractors look fine on paper. Their income structure says otherwise.",
+      bullets: [
+        "Assess contractor and workforce income stability at scale",
+        "One fixed, auditable rule set across the entire organization",
+        "API integration for underwriting, onboarding, and compliance",
+      ],
+      stat: "API",
+      statLabel: "INTEGRATION",
+      color: C.navy,
+      link: "/organizations",
+      cta: "Explore enterprise",
+      icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>,
+    },
   ];
 
   return (
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
+          <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>WHO IT&rsquo;S FOR</div>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>
-            One system. Three distinct applications.
+            One system. Three ways to use it.
           </h2>
-          <p style={{ fontSize: 18, fontWeight: 400, color: C.textSecondary }}>The scoring rules stay fixed. The context changes.</p>
+          <p style={{ fontSize: 18, fontWeight: 400, color: C.textSecondary, maxWidth: 520, margin: "0 auto" }}>Same fixed rules. Same deterministic output. Different stakes.</p>
         </div>
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, ...fadeIn(visible, 100) }}>
           {cases.map((uc, i) => (
-            <div key={i} style={{ padding: m ? 28 : 32, borderRadius: 20, backgroundColor: C.white, boxShadow: cardShadow, position: "relative" as const, overflow: "hidden", marginBottom: m ? 16 : 0 }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: uc.color }} />
-              <div style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 4, lineHeight: 1.35 }}>{uc.title}</div>
-              <div style={{ fontSize: 14, fontWeight: 500, color: uc.color, marginBottom: 20 }}>{uc.sub}</div>
-              <p style={{ fontSize: 16, color: C.textSecondary, margin: "0 0 24px", lineHeight: 1.6 }}>{uc.desc}</p>
-              <Link href={uc.link} style={{ fontSize: 14, fontWeight: 600, color: C.navy, textDecoration: "none" }}>
-                {uc.cta} &rarr;
-              </Link>
+            <div key={i} style={{
+              display: "flex", flexDirection: "column" as const,
+              borderRadius: 24, backgroundColor: C.white,
+              boxShadow: "0 1px 4px rgba(14,26,43,0.04)",
+              border: "1px solid rgba(14,26,43,0.06)",
+              position: "relative" as const, overflow: "hidden", marginBottom: m ? 16 : 0,
+              transition: "box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 320ms cubic-bezier(0.22, 1, 0.36, 1)",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 16px 48px rgba(14,26,43,0.10), 0 4px 16px rgba(14,26,43,0.06)"; e.currentTarget.style.transform = "translateY(-4px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 1px 4px rgba(14,26,43,0.04)"; e.currentTarget.style.transform = "translateY(0)"; }}
+            >
+              {/* Gradient accent top */}
+              <div style={{ height: 4, background: `linear-gradient(90deg, ${uc.color}, ${uc.color}60)` }} />
+
+              <div style={{ padding: m ? "28px 24px 32px" : "36px 32px 36px", flex: 1, display: "flex", flexDirection: "column" as const }}>
+                {/* Icon + title row */}
+                <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
+                  <div style={{ width: 48, height: 48, borderRadius: 14, backgroundColor: `${uc.color}08`, display: "flex", alignItems: "center", justifyContent: "center", color: uc.color, flexShrink: 0 }}>
+                    {uc.icon}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 18, fontWeight: 700, color: C.navy, lineHeight: 1.2 }}>{uc.title}</div>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: uc.color, marginTop: 2 }}>{uc.sub}</div>
+                  </div>
+                </div>
+
+                {/* Hook — the line that speaks to them */}
+                <p style={{ fontSize: m ? 16 : 17, fontWeight: 500, color: C.navy, lineHeight: 1.45, margin: "0 0 20px" }}>
+                  {uc.hook}
+                </p>
+
+                {/* Bullet points */}
+                <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, marginBottom: 24, flex: 1 }}>
+                  {uc.bullets.map((b, bi) => (
+                    <div key={bi} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                      <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: uc.color, flexShrink: 0, marginTop: 8 }} />
+                      <span style={{ fontSize: 14, color: C.textSecondary, lineHeight: 1.55 }}>{b}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Stat chip */}
+                <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", borderRadius: 14, backgroundColor: `${uc.color}06`, marginBottom: 24 }}>
+                  <span style={{ fontSize: 22, fontWeight: 700, fontFamily: mono, color: uc.color, lineHeight: 1 }}>{uc.stat}</span>
+                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: `${uc.color}99` }}>{uc.statLabel}</span>
+                </div>
+
+                {/* CTA */}
+                <Link href={uc.link} className="cta-tick" style={{
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  height: 52, borderRadius: 14,
+                  backgroundColor: i === 0 ? uc.color : "transparent",
+                  color: i === 0 ? "#fff" : C.navy,
+                  border: i === 0 ? "none" : `1.5px solid rgba(14,26,43,0.12)`,
+                  fontSize: 15, fontWeight: 600, textDecoration: "none",
+                  transition: "background 200ms, border-color 200ms, transform 200ms",
+                }}
+                  onMouseEnter={e => { if (i !== 0) { e.currentTarget.style.borderColor = "rgba(14,26,43,0.25)"; e.currentTarget.style.backgroundColor = "rgba(14,26,43,0.02)"; } }}
+                  onMouseLeave={e => { if (i !== 0) { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; e.currentTarget.style.backgroundColor = "transparent"; } }}
+                >
+                  <span className="tick tick-white" /><span className="cta-label">{uc.cta}</span>
+                </Link>
+              </div>
             </div>
           ))}
         </div>
