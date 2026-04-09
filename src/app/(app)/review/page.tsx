@@ -758,10 +758,10 @@ export default function ReviewPage() {
 
   const peerPercentileValue: number | null = record.peer_stability_percentile ?? (v2Benchmarks?.peer_percentile ?? null);
   const peerInterpretation: string | null = peerPercentileValue === null ? null :
-    peerPercentileValue <= 10 ? "far below benchmark" :
-    peerPercentileValue <= 30 ? "below benchmark" :
-    peerPercentileValue <= 60 ? "around benchmark" :
-    peerPercentileValue <= 85 ? "above benchmark" : "well above benchmark";
+    peerPercentileValue <= 10 ? "far below industry baseline" :
+    peerPercentileValue <= 30 ? "below industry baseline" :
+    peerPercentileValue <= 60 ? "around industry baseline" :
+    peerPercentileValue <= 85 ? "above industry baseline" : "well above industry baseline";
 
 
   const p2Intro: Record<string, string> = {
@@ -834,8 +834,8 @@ export default function ReviewPage() {
 
   // ── Peer comparison direction helper ──
   const peerDirectionLabel = (direction: string): string =>
-    direction === "above" ? "Above your peers — this is a strength" :
-    "Below your peers — this is an area to improve";
+    direction === "above" ? "Above industry baseline — a structural strength" :
+    "Below industry baseline — an area to strengthen";
 
   // ── Continuity display ──
   const continuityDisplay = record.income_continuity_months < 0.5
@@ -1440,7 +1440,7 @@ export default function ReviewPage() {
               "PressureMap\u2122 structural intelligence",
               "What-if simulator with lifetime access",
               "12-week execution roadmap",
-              "Industry-specific benchmarks",
+              "Industry baseline comparisons",
             ].map(item => (
               <div key={item} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
@@ -1457,6 +1457,9 @@ export default function ReviewPage() {
         <div style={{ paddingTop: 12, borderTop: `1px solid ${B.stone}` }}>
           <p style={{ ...T.meta, color: B.taupe, margin: 0, lineHeight: 1.5, fontStyle: "italic" }}>
             Scored by RunPayway&#8482; Model RP-2.0 — a deterministic system using fixed rules and weights. Same inputs always produce the same score. Not financial advice.
+          </p>
+          <p style={{ ...T.meta, color: B.taupe, margin: "6px 0 0", lineHeight: 1.5, fontStyle: "italic", fontSize: 11 }}>
+            Baselines reflect structural income modeling by sector, not a census of individual users.
           </p>
         </div>
 

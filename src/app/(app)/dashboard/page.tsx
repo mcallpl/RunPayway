@@ -1977,6 +1977,13 @@ function DashboardContent() {
             );
           })()}
 
+          {/* Methodology disclosure */}
+          <div style={{ paddingTop: 24, textAlign: "center" }}>
+            <p style={{ fontSize: 11, color: `${B.taupe}80`, margin: 0, lineHeight: 1.5 }}>
+              Industry baselines are derived from structural income modeling across each sector. Distributions are refined as assessment data accumulates. Model B-2.0.
+            </p>
+          </div>
+
           {/* Minimal footer */}
           <div style={{ paddingTop: 32, textAlign: "center" }}>
             <p style={{ fontSize: 12, color: `${B.taupe}60`, margin: 0 }}>RunPayway™ | PeopleStar Enterprises, INC.</p>
