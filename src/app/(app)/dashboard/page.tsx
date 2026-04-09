@@ -8,6 +8,7 @@ import type { CanonicalInput } from "@/lib/engine/v2/types";
 import type { TimelinePoint } from "@/lib/engine/v2/simulate";
 import { getScriptsForSector } from "@/lib/action-scripts";
 import SuiteHeader from "@/components/SuiteHeader";
+import ShareableScoreCard from "@/components/ShareableScoreCard";
 // Sample data removed — empty state teasers replace demo mode
 import { C, mono, sans, bandColor } from "@/lib/design-tokens";
 
@@ -376,6 +377,7 @@ function DashboardContent() {
   const [expandedPlaybook, setExpandedPlaybook] = useState<string | null>(null);
   const [copiedRecord, setCopiedRecord] = useState(false);
   const [snapshotTip, setSnapshotTip] = useState<string | null>(null);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   /* ── IntersectionObserver for phase nav ── */
   useEffect(() => {
@@ -1120,8 +1122,17 @@ function DashboardContent() {
                     </div>
                   )}
 
-                  {/* View Report — single action */}
-                  <div style={{ marginTop: 20, textAlign: mobile ? "center" : "right" as const }}>
+                  {/* View Report + Share — actions row */}
+                  <div style={{ marginTop: 20, display: "flex", justifyContent: mobile ? "center" : "flex-end", alignItems: "center", gap: 20 }}>
+                    <button
+                      onClick={() => setShowShareModal(true)}
+                      style={{ fontSize: 13, fontWeight: 500, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 8, padding: "6px 14px", cursor: "pointer", fontFamily: sans, display: "inline-flex", alignItems: "center", gap: 6, transition: "border-color 150ms, color 150ms" }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = B.purple; (e.currentTarget as HTMLElement).style.color = B.purple; }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = B.stone; (e.currentTarget as HTMLElement).style.color = B.taupe; }}
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                      Share Score
+                    </button>
                     <Link href="/review" style={{ fontSize: 13, fontWeight: 500, color: B.taupe, textDecoration: "none", display: "inline-flex", alignItems: "center", minHeight: 36, transition: "color 150ms" }}
                       onMouseEnter={(e) => { e.currentTarget.style.color = B.navy; }}
                       onMouseLeave={(e) => { e.currentTarget.style.color = B.taupe; }}>
@@ -1132,6 +1143,22 @@ function DashboardContent() {
               </div>
             );
           })()}
+
+          {/* Share Score Modal */}
+          {showShareModal && (
+            <div style={{ position: "fixed", inset: 0, zIndex: 10000, background: "rgba(14,26,43,0.60)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }} onClick={() => setShowShareModal(false)}>
+              <div style={{ maxWidth: 620, width: "100%", maxHeight: "90vh", overflow: "auto", borderRadius: 16, background: C.sand, padding: mobile ? 20 : 32, boxShadow: "0 24px 80px rgba(14,26,43,0.25)" }} onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+                <ShareableScoreCard
+                  score={score}
+                  band={band}
+                  accessCode={(() => { const rid = (r?.record_id as string) || ""; return rid.length > 8 ? rid.slice(0, 8).toUpperCase() : rid.toUpperCase(); })()}
+                  industry={sector ? (() => { const words = sector.replace(/_/g, " ").split(" "); return words.map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(" "); })() : ""}
+                  name={custName}
+                  onClose={() => setShowShareModal(false)}
+                />
+              </div>
+            </div>
+          )}
 
           {/* ════════════════════════════════════════════════════════ */}
           {/*  DIAGNOSE — PressureMap (now after Plan)                  */}

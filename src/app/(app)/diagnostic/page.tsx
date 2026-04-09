@@ -4,8 +4,9 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
-import { C, mono, sans } from "@/lib/design-tokens";
+import { C, mono, sans, bandColor } from "@/lib/design-tokens";
 import { trackAssessmentComplete } from "@/lib/analytics";
+import ShareableScoreCard from "@/components/ShareableScoreCard";
 // Dynamic imports — loaded at runtime only (prevents static export bundling issues with zod/crypto)
 const loadV2Engine = () => import("@/lib/client-engine-v2");
 const loadAdapter = () => import("@/lib/v2-to-v1-adapter");
@@ -287,6 +288,7 @@ export default function DiagnosticPage() {
   const [revealScore, setRevealScore] = useState(0);
   const [revealBand, setRevealBand] = useState("");
   const [revealPhase, setRevealPhase] = useState(0); // 0=counting, 1=band, 2=peer, 3=cta
+  const [showShareCard, setShowShareCard] = useState(false);
 
   // Mobile detection
   const [mobile, setMobile] = useState(false);
@@ -972,7 +974,33 @@ export default function DiagnosticPage() {
             >
               Enter Your Dashboard &rarr;
             </button>
+            <div style={{ marginTop: 16 }}>
+              <button
+                onClick={() => setShowShareCard(true)}
+                style={{ background: "none", border: "none", fontSize: 13, fontWeight: 500, color: "rgba(14,26,43,0.35)", cursor: "pointer", fontFamily: sans, letterSpacing: "0.02em", transition: "color 150ms" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(14,26,43,0.55)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(14,26,43,0.35)"; }}
+              >
+                Share Your Score
+              </button>
+            </div>
           </div>
+
+          {/* Share card modal */}
+          {showShareCard && (
+            <div style={{ position: "fixed", inset: 0, zIndex: 10000, background: "rgba(14,26,43,0.60)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }} onClick={() => setShowShareCard(false)}>
+              <div style={{ maxWidth: 620, width: "100%", maxHeight: "90vh", overflow: "auto", borderRadius: 16, background: C.sand, padding: mobile ? 20 : 32, boxShadow: "0 24px 80px rgba(14,26,43,0.25)" }} onClick={(e) => e.stopPropagation()}>
+                <ShareableScoreCard
+                  score={revealScore}
+                  band={revealBand}
+                  accessCode={(() => { try { const rec = JSON.parse(sessionStorage.getItem("rp_record") || "{}"); return rec.record_id ? rec.record_id.slice(0, 8).toUpperCase() : ""; } catch { return ""; } })()}
+                  industry={(() => { try { return JSON.parse(sessionStorage.getItem("rp_profile") || "{}").industry_sector || ""; } catch { return ""; } })()}
+                  name={(() => { try { return JSON.parse(sessionStorage.getItem("rp_profile") || "{}").assessment_title || ""; } catch { return ""; } })()}
+                  onClose={() => setShowShareCard(false)}
+                />
+              </div>
+            </div>
+          )}
 
           {/* Model watermark */}
           <div style={{ position: "absolute", bottom: -80, left: "50%", transform: "translateX(-50%)", fontSize: 11, color: "rgba(14,26,43,0.12)", letterSpacing: "0.10em" }}>
