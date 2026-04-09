@@ -48,6 +48,8 @@ export function computeBenchmarks(
     top_20_threshold: sectorData.top_20_threshold,
     peer_band_distribution: sectorData.peer_band_distribution,
     outlier_dimensions,
+    benchmark_methodology: "structural_model" as const,
+    benchmark_note: "Based on structural income modeling across industry patterns. Peer distributions are refined as assessment volume grows.",
   };
 }
 

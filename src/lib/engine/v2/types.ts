@@ -448,6 +448,8 @@ export interface BenchmarkResult {
     high: number;
   };
   outlier_dimensions: OutlierDimension[];
+  benchmark_methodology: "structural_model";
+  benchmark_note: string;
 }
 
 export interface OutlierDimension {

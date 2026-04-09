@@ -1,5 +1,21 @@
-// Sector benchmark data — seeded estimates, marked B-2.0
-// These will be refined as real assessment data accumulates.
+// ─── SECTOR BENCHMARK DATA ──────────────────────────────────────────
+// Version: B-2.0 (Structural Estimates)
+//
+// METHODOLOGY DISCLOSURE:
+// These benchmarks are structural estimates derived from income model
+// analysis across industry patterns. They are NOT census data collected
+// from actual RunPayway users. Distributions and indicator averages
+// represent modeled expectations for typical income structures within
+// each sector, informed by publicly available industry research and
+// structural income modeling.
+//
+// These values will be refined and eventually replaced with empirical
+// distributions as assessment volume grows and real user data
+// accumulates across sectors.
+//
+// Version history:
+//   B-2.0 — Initial seeded estimates (structural modeling)
+// ────────────────────────────────────────────────────────────────────
 
 import type { IndustrySector } from "../types";
 

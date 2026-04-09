@@ -216,7 +216,7 @@ function generateSurprisingInsights(
     }
   }
 
-  // 5. Peer comparison surprise — outperforming in unexpected area
+  // 5. Industry baseline comparison — outperforming in unexpected area
   if (benchmarks && benchmarks.outlier_dimensions.length > 0) {
     const aboveOutlier = benchmarks.outlier_dimensions.find(
       (d) => d.direction === "above" && d.magnitude === "significant",
@@ -226,9 +226,9 @@ function generateSurprisingInsights(
     );
     if (aboveOutlier && belowOutlier) {
       insights.push({
-        headline: "You are stronger than peers in one area but weaker where it matters most",
-        explanation: `You significantly outperform peers on ${aboveOutlier.factor.replace(/_/g, " ")} (you: ${Math.round(aboveOutlier.user_value)}, peers: ${Math.round(aboveOutlier.peer_average)}). But you fall significantly behind on ${belowOutlier.factor.replace(/_/g, " ")} (you: ${Math.round(belowOutlier.user_value)}, peers: ${Math.round(belowOutlier.peer_average)}). Your overall score would improve more by closing the gap than by widening the lead.`,
-        data_point: `+${Math.round(aboveOutlier.user_value - aboveOutlier.peer_average)} above peers on ${aboveOutlier.factor.replace(/_/g, " ")}, -${Math.round(belowOutlier.peer_average - belowOutlier.user_value)} below on ${belowOutlier.factor.replace(/_/g, " ")}`,
+        headline: "You are stronger than the industry baseline in one area but weaker where it matters most",
+        explanation: `Your structure is significantly stronger than the modeled industry baseline on ${aboveOutlier.factor.replace(/_/g, " ")} (you: ${Math.round(aboveOutlier.user_value)}, baseline: ${Math.round(aboveOutlier.peer_average)}). But your structure falls below the modeled industry baseline on ${belowOutlier.factor.replace(/_/g, " ")} (you: ${Math.round(belowOutlier.user_value)}, baseline: ${Math.round(belowOutlier.peer_average)}). Your overall score would improve more by closing the gap than by widening the lead.`,
+        data_point: `+${Math.round(aboveOutlier.user_value - aboveOutlier.peer_average)} above industry baseline on ${aboveOutlier.factor.replace(/_/g, " ")}, -${Math.round(belowOutlier.peer_average - belowOutlier.user_value)} below on ${belowOutlier.factor.replace(/_/g, " ")}`,
       });
     }
   }
