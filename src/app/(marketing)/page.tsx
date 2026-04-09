@@ -159,16 +159,16 @@ function CtaMicrocopy({ variant = "dark" }: { variant?: "dark" | "light" }) {
 const INDUSTRIES = [
   { key: "consulting", name: "Consulting", constraint: "You are the product", desc: "Your clients pay for your time, not a system. If you stop delivering, 85% of your income stops with you.", median: 38, risk: "Labor dependence", atRisk: 78, recurring: 12, protected: 10 },
   { key: "real_estate", name: "Real Estate", constraint: "Pipeline dependency", desc: "One delayed closing or one lost listing can erase a quarter of annual earnings. Nothing is contractually yours until it closes.", median: 29, risk: "Forward visibility", atRisk: 82, recurring: 8, protected: 10 },
-  { key: "sales", name: "Sales / Brokerage", constraint: "Nothing carries forward", desc: "Last quarter was strong. But your structure doesn't carry that forward. Next quarter starts from zero unless you close again.", median: 31, risk: "Income persistence", atRisk: 80, recurring: 10, protected: 10 },
-  { key: "creative", name: "Freelance / Creative", constraint: "Every month starts at zero", desc: "No project means no income. No retainer means no floor. You are re-earning your entire livelihood every 30 days.", median: 27, risk: "Concentration", atRisk: 85, recurring: 8, protected: 7 },
-  { key: "construction", name: "Construction / Trades", constraint: "The next job isn't signed yet", desc: "The current project is solid. The next one is a handshake. Your income has no structural buffer between jobs.", median: 33, risk: "Forward visibility", atRisk: 75, recurring: 15, protected: 10 },
-  { key: "media", name: "Media / Entertainment", constraint: "Between projects, income is zero", desc: "Strong projects create strong months. But between them, your income is not low — it is zero. No carry. No residual.", median: 25, risk: "Continuity gap", atRisk: 88, recurring: 5, protected: 7 },
+  { key: "sales", name: "Sales / Brokerage", shortName: "Sales", constraint: "Nothing carries forward", desc: "Last quarter was strong. But your structure doesn't carry that forward. Next quarter starts from zero unless you close again.", median: 31, risk: "Income persistence", atRisk: 80, recurring: 10, protected: 10 },
+  { key: "creative", name: "Freelance / Creative", shortName: "Freelance", constraint: "Every month starts at zero", desc: "No project means no income. No retainer means no floor. You are re-earning your entire livelihood every 30 days.", median: 27, risk: "Concentration", atRisk: 85, recurring: 8, protected: 7 },
+  { key: "construction", name: "Construction / Trades", shortName: "Construction", constraint: "The next job isn't signed yet", desc: "The current project is solid. The next one is a handshake. Your income has no structural buffer between jobs.", median: 33, risk: "Forward visibility", atRisk: 75, recurring: 15, protected: 10 },
+  { key: "media", name: "Media / Entertainment", shortName: "Media / Ent.", constraint: "Between projects, income is zero", desc: "Strong projects create strong months. But between them, your income is not low — it is zero. No carry. No residual.", median: 25, risk: "Continuity gap", atRisk: 88, recurring: 5, protected: 7 },
   { key: "insurance", name: "Insurance", constraint: "New business masks renewal erosion", desc: "Strong production quarters feel like growth. But if renewals are slipping underneath, your structure is compounding backwards.", median: 44, risk: "Concentration", atRisk: 55, recurring: 30, protected: 15 },
   { key: "legal", name: "Legal Services", constraint: "Three matters carry the practice", desc: "Count your top three matters. They likely carry 60–70% of your billings. When one concludes, the gap arrives all at once.", median: 41, risk: "Concentration", atRisk: 62, recurring: 22, protected: 16 },
   { key: "technology", name: "Technology", constraint: "One employer, one system, one decision", desc: "Your compensation feels stable because the system around it is stable. But it's one layoff away from a total structural shift.", median: 48, risk: "Source diversity", atRisk: 50, recurring: 35, protected: 15 },
-  { key: "finance", name: "Finance / Banking", constraint: "The variable component is the one that matters", desc: "Base salary creates a floor. But the bonus, the production credit — that's where real earnings live. And that part can vanish in one cycle.", median: 46, risk: "Variability", atRisk: 52, recurring: 30, protected: 18 },
+  { key: "finance", name: "Finance / Banking", shortName: "Finance", constraint: "The variable component is the one that matters", desc: "Base salary creates a floor. But the bonus, the production credit — that's where real earnings live. And that part can vanish in one cycle.", median: 46, risk: "Variability", atRisk: 52, recurring: 30, protected: 18 },
   { key: "healthcare", name: "Healthcare", constraint: "One system, no alternatives", desc: "Steady pay from one institution feels safe until the institution restructures. When your sole employer changes models, you have no alternative.", median: 52, risk: "Source diversity", atRisk: 45, recurring: 40, protected: 15 },
-  { key: "fitness", name: "Fitness / Wellness", constraint: "Clients cancel. Revenue disappears the same day.", desc: "Your income is a collection of individual decisions that can reverse without notice. One slow month and the calendar empties.", median: 26, risk: "Persistence", atRisk: 84, recurring: 10, protected: 6 },
+  { key: "fitness", name: "Fitness / Wellness", shortName: "Fitness", constraint: "Clients cancel. Revenue disappears the same day.", desc: "Your income is a collection of individual decisions that can reverse without notice. One slow month and the calendar empties.", median: 26, risk: "Persistence", atRisk: 84, recurring: 10, protected: 6 },
 ];
 
 
@@ -498,12 +498,12 @@ function WhatChanges() {
                 {!m && <div style={{ fontSize: 20, fontWeight: 700, color: C.navy, marginBottom: 8 }}>{item.step}</div>}
                 <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.65, margin: "0 0 16px" }}>{item.desc}</p>
                 <div style={{
-                  display: "inline-flex", alignItems: "center", gap: 8,
-                  padding: "8px 16px", borderRadius: 10,
+                  display: "inline-flex", alignItems: "flex-start", gap: 8,
+                  padding: m ? "10px 14px" : "8px 16px", borderRadius: 10,
                   backgroundColor: `${C.teal}06`, border: `1px solid ${C.teal}15`,
                 }}>
-                  <div style={{ color: C.teal, flexShrink: 0, display: "flex" }}>{item.icon}</div>
-                  <span style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>{item.detail}</span>
+                  <div style={{ color: C.teal, flexShrink: 0, display: "flex", marginTop: 1 }}>{item.icon}</div>
+                  <span style={{ fontSize: m ? 13 : 14, fontWeight: 600, color: C.navy, lineHeight: 1.4 }}>{item.detail}</span>
                 </div>
               </div>
             </div>
@@ -896,13 +896,13 @@ function IndustryProfiles() {
                     border: isActive ? "1px solid transparent" : "1px solid rgba(14,26,43,0.08)",
                     fontSize: m ? 13 : 14, fontWeight: isActive ? 600 : 500,
                     color: isActive ? "#fff" : C.textSecondary,
-                    cursor: "pointer", textAlign: "left" as const, whiteSpace: "nowrap" as const,
+                    cursor: "pointer", textAlign: "left" as const,
                     transition: "all 240ms cubic-bezier(0.22, 1, 0.36, 1)",
                   }}
                   onMouseEnter={e => { if (!isActive) { e.currentTarget.style.backgroundColor = "rgba(14,26,43,0.03)"; e.currentTarget.style.borderColor = "rgba(14,26,43,0.15)"; } }}
                   onMouseLeave={e => { if (!isActive) { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.borderColor = "rgba(14,26,43,0.08)"; } }}>
                   {isActive && <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: bandColor2, flexShrink: 0 }} />}
-                  {ind.name}
+                  {m && (ind as { shortName?: string }).shortName ? (ind as { shortName?: string }).shortName : ind.name}
                 </button>
               );
             })}
@@ -944,25 +944,23 @@ function IndustryProfiles() {
                 <div style={{ width: `${active.protected}%`, backgroundColor: C.teal, transition: "width 800ms cubic-bezier(0.22, 1, 0.36, 1)" }} />
               </div>
               <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8 }}>
-                <span style={{ fontSize: 11, color: C.risk, fontWeight: 600 }}>At risk {active.atRisk}%</span>
-                <span style={{ fontSize: 11, color: C.moderate, fontWeight: 600 }}>Recurring {active.recurring}%</span>
-                <span style={{ fontSize: 11, color: C.teal, fontWeight: 600 }}>Protected {active.protected}%</span>
+                <span style={{ fontSize: m ? 10 : 11, color: C.risk, fontWeight: 600 }}>{m ? "Risk" : "At risk"} {active.atRisk}%</span>
+                <span style={{ fontSize: m ? 10 : 11, color: C.moderate, fontWeight: 600 }}>{m ? "Recur." : "Recurring"} {active.recurring}%</span>
+                <span style={{ fontSize: m ? 10 : 11, color: C.teal, fontWeight: 600 }}>{m ? "Prot." : "Protected"} {active.protected}%</span>
               </div>
             </div>
 
             {/* Bottom stats row */}
-            <div style={{ display: "flex", gap: m ? 12 : 16, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-              <div style={{ flex: 1, textAlign: "center" }}>
+            <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr", gap: m ? 12 : 0, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+              <div style={{ textAlign: "center", padding: m ? "8px 0" : "0 16px", borderRight: m ? "none" : "1px solid rgba(255,255,255,0.06)" }}>
                 <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 4 }}>MEDIAN SCORE</div>
                 <div style={{ fontSize: 20, fontWeight: 700, fontFamily: mono, color: bandColor2, transition: "color 500ms ease" }}>{active.median}</div>
               </div>
-              <div style={{ width: 1, backgroundColor: "rgba(255,255,255,0.06)" }} />
-              <div style={{ flex: 1, textAlign: "center" }}>
+              <div style={{ textAlign: "center", padding: m ? "8px 0" : "0 16px", borderRight: m ? "none" : "1px solid rgba(255,255,255,0.06)" }}>
                 <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 4 }}>STABILITY BAND</div>
                 <div style={{ fontSize: 14, fontWeight: 600, color: bandColor2, transition: "color 500ms ease" }}>{bandLabel}</div>
               </div>
-              <div style={{ width: 1, backgroundColor: "rgba(255,255,255,0.06)" }} />
-              <div style={{ flex: 1, textAlign: "center" }}>
+              <div style={{ textAlign: "center", padding: m ? "8px 0" : "0 16px", gridColumn: m ? "1 / -1" : "auto" }}>
                 <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 4 }}>TOP RISK</div>
                 <div style={{ fontSize: 14, fontWeight: 600, color: C.sandText }}>{active.risk}</div>
               </div>
