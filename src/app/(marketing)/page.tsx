@@ -201,12 +201,16 @@ function HeroSection() {
               ))}
             </div>
 
-            <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.035em", color: C.navy, marginBottom: m ? 20 : 24, ...fadeIn(visible, 50) }}>
-              Know how your{m ? " " : <br />}income holds up{m ? " " : <br />}before you rely on it.
+            <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.035em", color: C.navy, marginBottom: m ? 16 : 20, ...fadeIn(visible, 50) }}>
+              Structural Income.{m ? " " : <br />}Measured.
             </h1>
 
-            <p style={{ fontSize: m ? 17 : 20, fontWeight: 400, lineHeight: 1.55, color: C.textSecondary, maxWidth: 440, marginBottom: m ? 32 : 40, ...fadeIn(visible, 100) }}>
-              RunPayway measures how your income is built&mdash;not how much you make. A fixed, deterministic system. Same inputs, same result. Every time.
+            <p style={{ fontSize: m ? 17 : 22, fontWeight: 500, lineHeight: 1.45, color: C.navy, maxWidth: 440, marginBottom: 16, ...fadeIn(visible, 80) }}>
+              Know how your income holds up&mdash;before you rely on it.
+            </p>
+
+            <p style={{ fontSize: m ? 15 : 17, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 440, marginBottom: m ? 32 : 40, ...fadeIn(visible, 100) }}>
+              A fixed, deterministic system that measures how your income is built&mdash;not how much you make. Same inputs, same result. Every time.
             </p>
 
             <div style={{ ...fadeIn(visible, 150) }}>
