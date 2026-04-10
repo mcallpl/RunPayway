@@ -1369,18 +1369,25 @@ async function handleContact(body, env, corsHeaders) {
     });
   }
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${env.RESEND_API_KEY}`,
-    },
-    body: JSON.stringify({
-      from: env.FROM_EMAIL || "RunPayway <reports@peoplestar.com>",
-      to: "info@peoplestar.com",
-      reply_to: body.email,
-      subject: `[RunPayway Contact] ${(body.subject || "General Inquiry").replace(/[\r\n]/g, "")} - ${(body.name || "").replace(/[\r\n]/g, "")}`,
-      html: `<div style="font-family:sans-serif;max-width:600px;">
+  // Format admin notification based on type
+  const isBriefSignup = body.subject === "structural_income_brief";
+  const adminSubject = isBriefSignup
+    ? `[RunPayway] New Brief Subscriber: ${body.email}`
+    : `[RunPayway Contact] ${(body.subject || "General Inquiry").replace(/[\r\n]/g, "")} - ${(body.name || "").replace(/[\r\n]/g, "")}`;
+
+  const adminHtml = isBriefSignup
+    ? `<div style="font-family:sans-serif;max-width:600px;">
+<h2 style="color:#1F6D7A;margin:0 0 16px;">New Structural Income Brief Subscriber</h2>
+<table style="width:100%;border-collapse:collapse;">
+<tr><td style="padding:8px 0;color:#6B6155;width:100px;">Email</td><td style="padding:8px 0;color:#1C1635;font-weight:600;">${body.email}</td></tr>
+<tr><td style="padding:8px 0;color:#6B6155;">Source</td><td style="padding:8px 0;color:#1C1635;font-weight:500;">${body.message.includes("homepage") ? "Homepage" : body.message.includes("footer") ? "Footer" : body.message.includes("free-score") ? "Free Score Page" : "Website"}</td></tr>
+<tr><td style="padding:8px 0;color:#6B6155;">Date</td><td style="padding:8px 0;color:#1C1635;font-weight:500;">${new Date().toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</td></tr>
+</table>
+<div style="margin:16px 0;padding:16px;background:#F0FDF4;border-radius:8px;border:1px solid #BBF7D0;">
+<p style="margin:0;color:#166534;line-height:1.6;font-weight:500;">This subscriber will receive the 3-email nurture sequence automatically (Day 0, Day 3, Day 7).</p>
+</div>
+</div>`
+    : `<div style="font-family:sans-serif;max-width:600px;">
 <h2 style="color:#1C1635;margin:0 0 16px;">New Contact Form Submission</h2>
 <table style="width:100%;border-collapse:collapse;">
 <tr><td style="padding:8px 0;color:#6B6155;width:100px;">Name</td><td style="padding:8px 0;color:#1C1635;font-weight:500;">${body.name}</td></tr>
@@ -1391,7 +1398,20 @@ async function handleContact(body, env, corsHeaders) {
 <p style="margin:0;color:#1C1635;line-height:1.6;">${body.message.replace(/\n/g, "<br/>")}</p>
 </div>
 <p style="font-size:12px;color:#6B6155;margin:16px 0 0;">Reply directly to this email to respond to ${body.name}.</p>
-</div>`,
+</div>`;
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+    },
+    body: JSON.stringify({
+      from: env.FROM_EMAIL || "RunPayway <reports@peoplestar.com>",
+      to: "info@peoplestar.com",
+      reply_to: body.email,
+      subject: adminSubject,
+      html: adminHtml,
     }),
   });
 
