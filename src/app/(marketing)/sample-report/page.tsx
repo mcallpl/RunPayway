@@ -182,57 +182,64 @@ function Page01() {
         <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 16 }}>PAGE 01</div>
 
         {/* Report card */}
-        <div style={{ backgroundColor: C.white, borderRadius: 20, padding: m ? 28 : 40, boxShadow: cardShadow, overflow: "hidden" }}>
+        <div style={{ backgroundColor: C.white, borderRadius: 24, overflow: "hidden", boxShadow: "0 16px 48px rgba(14,26,43,0.08), 0 4px 12px rgba(14,26,43,0.04)" }}>
           {/* Header bar */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: 20, borderBottom: `1px solid rgba(14,26,43,0.08)`, marginBottom: 32 }}>
-            <span style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>RunPayway&#8482;</span>
-            <span style={{ fontSize: 12, fontWeight: 400, color: C.textMuted }}>2026-03-15 &bull; RP-7X2K</span>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: m ? "16px 24px" : "18px 40px", borderBottom: `1px solid rgba(14,26,43,0.06)` }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: 14, fontWeight: 700, color: C.navy }}>RunPayway&#8482;</span>
+              <span style={{ fontSize: 11, fontWeight: 600, color: C.teal }}>Structural Income Report</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <span style={{ fontSize: 11, color: C.textMuted }}>2026-03-15</span>
+              <span style={{ fontSize: 10, fontWeight: 600, fontFamily: mono, color: C.textMuted, padding: "3px 8px", borderRadius: 6, backgroundColor: "rgba(14,26,43,0.04)" }}>RP-7X2K</span>
+            </div>
           </div>
 
-          <div style={{ fontSize: m ? 22 : 28, fontWeight: 600, color: C.navy, marginBottom: 8 }}>RunPayway&#8482; Structural Income Report</div>
-          <p style={{ fontSize: 14, color: C.textMuted, marginBottom: 32 }}>Measured under a fixed system. No variation.</p>
+          {/* Score hero — navy */}
+          <div style={{ backgroundColor: C.navy, padding: m ? "32px 24px" : "44px 40px", position: "relative" as const, overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
 
-          {/* Score module */}
-          <div style={{ backgroundColor: C.sand, borderRadius: 20, padding: m ? 24 : 32, marginBottom: 24 }}>
-            <div style={{ display: m ? "block" : "flex", alignItems: "center", gap: 40 }}>
-              {/* Score */}
-              <div style={{ textAlign: m ? "center" : "left", marginBottom: m ? 24 : 0, flexShrink: 0 }}>
-                <div style={{ display: "flex", alignItems: "baseline", justifyContent: m ? "center" : "flex-start", gap: 4 }}>
-                  <span style={{ fontSize: m ? 48 : 80, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1, letterSpacing: "-0.04em" }}>72</span>
-                  <span style={{ fontSize: 18, fontWeight: 400, color: C.textMuted }}>/100</span>
-                </div>
-                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 100, backgroundColor: `${C.teal}10`, marginTop: 8 }}>
-                  <div style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: C.teal }} />
-                  <span style={{ fontSize: 13, fontWeight: 600, color: C.teal }}>Established Stability</span>
+            <div style={{ display: m ? "block" : "flex", alignItems: "center", gap: 48, position: "relative", zIndex: 1 }}>
+              {/* Score ring */}
+              <div style={{ textAlign: m ? "center" : "left", marginBottom: m ? 28 : 0, flexShrink: 0 }}>
+                <div style={{ position: "relative", width: m ? 120 : 140, height: m ? 120 : 140, margin: m ? "0 auto" : 0 }}>
+                  <svg width={m ? 120 : 140} height={m ? 120 : 140} style={{ transform: "rotate(-90deg)" }}>
+                    <circle cx={m ? 60 : 70} cy={m ? 60 : 70} r={m ? 52 : 60} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={m ? 7 : 8} />
+                    <circle cx={m ? 60 : 70} cy={m ? 60 : 70} r={m ? 52 : 60} fill="none" stroke={C.teal} strokeWidth={m ? 7 : 8}
+                      strokeDasharray={2 * Math.PI * (m ? 52 : 60)} strokeDashoffset={2 * Math.PI * (m ? 52 : 60) * (1 - 0.72)}
+                      strokeLinecap="round" style={{ filter: `drop-shadow(0 0 6px ${C.teal}40)` }} />
+                  </svg>
+                  <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center" }}>
+                    <span style={{ fontSize: m ? 36 : 44, fontWeight: 300, fontFamily: mono, color: "#fff", lineHeight: 1, letterSpacing: "-0.04em" }}>72</span>
+                    <span style={{ fontSize: 11, color: "rgba(244,241,234,0.40)", marginTop: 2 }}>/100</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Scale bar + meta */}
+              {/* Score details */}
               <div style={{ flex: 1 }}>
-                {/* Scale bar */}
-                <div style={{ marginBottom: 20 }}>
-                  <div style={{ position: "relative", height: 10, borderRadius: 999, overflow: "hidden", backgroundColor: "rgba(14,26,43,0.04)" }}>
-                    <div style={{ position: "absolute", inset: 0, borderRadius: 999, background: `linear-gradient(90deg, ${C.risk}40, ${C.moderate}40, ${C.teal}40, ${C.green}40)` }} />
-                    <div style={{ position: "absolute", left: "72%", top: -2, width: 3, height: 14, borderRadius: 2, backgroundColor: C.navy, transform: "translateX(-50%)" }} />
-                  </div>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
-                    {["0", "40", "60", "80", "100"].map((t, i) => (
-                      <span key={i} style={{ fontSize: 10, fontWeight: 400, color: C.textMuted }}>{t}</span>
-                    ))}
-                  </div>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 14px", borderRadius: 100, backgroundColor: `${C.teal}18`, marginBottom: 16 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: C.teal }} />
+                  <span style={{ fontSize: 13, fontWeight: 600, color: C.teal }}>Established Stability</span>
                 </div>
 
-                {/* Meta grid */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                {/* Next level callout — replaces vague "3 pts" */}
+                <div style={{ padding: m ? "14px 16px" : "16px 20px", borderRadius: 14, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", marginBottom: 20 }}>
+                  <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 6 }}>NEXT LEVEL</div>
+                  <div style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: "#fff", lineHeight: 1.4 }}>3 points to High Stability (75+)</div>
+                  <p style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", lineHeight: 1.5, margin: "6px 0 0" }}>Converting one client to a retainer arrangement would close this gap.</p>
+                </div>
+
+                {/* Meta row */}
+                <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr", gap: m ? 12 : 16 }}>
                   {[
-                    { label: "STABILITY BAND", value: "Established Stability" },
-                    { label: "DISTANCE TO NEXT", value: "3 pts" },
                     { label: "STRUCTURAL TYPE", value: "Uneven" },
-                    { label: "ACCESS CODE", value: "RP-7X2K" },
+                    { label: "MODEL", value: "RP-2.0" },
+                    ...(!m ? [{ label: "ACCESS CODE", value: "RP-7X2K" }] : []),
                   ].map((item, i) => (
                     <div key={i}>
-                      <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 2 }}>{item.label}</div>
-                      <div style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>{item.value}</div>
+                      <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.30)", marginBottom: 4 }}>{item.label}</div>
+                      <div style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: "rgba(244,241,234,0.75)" }}>{item.value}</div>
                     </div>
                   ))}
                 </div>
@@ -240,7 +247,36 @@ function Page01() {
             </div>
           </div>
 
-          <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", margin: 0 }}>Same inputs produce the same result.</p>
+          {/* Scale bar — below the navy section */}
+          <div style={{ padding: m ? "20px 24px 16px" : "24px 40px 20px", backgroundColor: "#FAFAF8" }}>
+            <div style={{ position: "relative", height: 12, borderRadius: 999, overflow: "hidden" }}>
+              <div style={{ position: "absolute", inset: 0, borderRadius: 999, display: "flex" }}>
+                <div style={{ width: "29%", backgroundColor: `${C.risk}30` }} />
+                <div style={{ width: "21%", backgroundColor: `${C.moderate}30` }} />
+                <div style={{ width: "25%", backgroundColor: `${C.teal}30` }} />
+                <div style={{ width: "25%", backgroundColor: `${C.green}30` }} />
+              </div>
+              <div style={{ position: "absolute", left: "72%", top: -1, width: 4, height: 14, borderRadius: 2, backgroundColor: C.navy, transform: "translateX(-50%)", boxShadow: "0 1px 4px rgba(14,26,43,0.20)" }} />
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
+              {[
+                { label: "Limited", range: "0\u201329", color: C.risk },
+                { label: "Developing", range: "30\u201349", color: C.moderate },
+                { label: "Established", range: "50\u201374", color: C.teal },
+                { label: "High", range: "75\u2013100", color: C.green },
+              ].map((band, i) => (
+                <div key={i} style={{ textAlign: "center", flex: 1 }}>
+                  <div style={{ fontSize: 10, fontWeight: 600, color: band.color }}>{band.label}</div>
+                  <div style={{ fontSize: 9, color: C.textMuted }}>{band.range}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Deterministic footer */}
+          <div style={{ padding: "12px 40px 16px", textAlign: "center" }}>
+            <span style={{ fontSize: 11, color: "rgba(14,26,43,0.25)" }}>Deterministic scoring &middot; Version-locked &middot; Same inputs produce the same result</span>
+          </div>
         </div>
       </div>
     </section>
