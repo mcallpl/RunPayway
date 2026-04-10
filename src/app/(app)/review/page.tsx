@@ -1520,7 +1520,7 @@ export default function ReviewPage() {
     {/* On-screen paginated view */}
     <div id="paginated-view" style={{ maxWidth: PDF.captureW, margin: "0 auto", padding: "0 0 80px" }}>
       <div ref={pageContainerRef} style={{ minHeight: "60vh" }}>
-        <div className="report-page" style={{ backgroundColor: "#FFFFFF", borderRadius: mobile ? 0 : 8, padding: mobile ? "24px 16px" : "32px 36px", border: mobile ? "none" : "1px solid rgba(14,26,43,0.06)", boxShadow: mobile ? "none" : "0 2px 12px rgba(14,26,43,0.04)" }}>
+        <div className="report-page" style={{ backgroundColor: "#FFFFFF", borderRadius: mobile ? 0 : 24, overflow: "hidden", border: "none", boxShadow: mobile ? "none" : "0 16px 48px rgba(14,26,43,0.08), 0 4px 12px rgba(14,26,43,0.04)" }}>
           {pageContents[currentPage]}
         </div>
       </div>
