@@ -83,7 +83,7 @@ function CheckoutSuccessContent() {
       body: JSON.stringify({ plan_key: planKey }),
     })
       .then((res) => res.ok ? res.json() : null)
-      .then((data) => {
+      .then(async (data) => {
         if (data?.token) {
           session.payment_token = data.token;
           session.token_timestamp = data.timestamp;
@@ -92,6 +92,25 @@ function CheckoutSuccessContent() {
         }
         sessionStorage.setItem("rp_purchase_session", JSON.stringify(session));
         localStorage.setItem("rp_purchase_session", JSON.stringify(session));
+        // Create entitlement record on server (non-blocking)
+        try {
+          const entRes = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/entitlement/create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: customerEmail,
+              plan_key: planKey,
+              stripe_session_id: stripeSessionId,
+            }),
+          });
+          if (entRes.ok) {
+            const entData = await entRes.json();
+            if (entData?.entitlement_id) {
+              sessionStorage.setItem("rp_entitlement_id", entData.entitlement_id);
+              localStorage.setItem("rp_entitlement_id", entData.entitlement_id);
+            }
+          }
+        } catch { /* Entitlement create failed — non-blocking, localStorage flow still works */ }
         // Check if customer already has an assessment (free-to-paid upgrade or retake)
         try {
           const existingRecord = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record");
@@ -113,9 +132,28 @@ function CheckoutSuccessContent() {
         }
         setReady(true);
       })
-      .catch(() => {
+      .catch(async () => {
         sessionStorage.setItem("rp_purchase_session", JSON.stringify(session));
         localStorage.setItem("rp_purchase_session", JSON.stringify(session));
+        // Create entitlement record on server (non-blocking)
+        try {
+          const entRes = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/entitlement/create", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: customerEmail,
+              plan_key: planKey,
+              stripe_session_id: stripeSessionId,
+            }),
+          });
+          if (entRes.ok) {
+            const entData = await entRes.json();
+            if (entData?.entitlement_id) {
+              sessionStorage.setItem("rp_entitlement_id", entData.entitlement_id);
+              localStorage.setItem("rp_entitlement_id", entData.entitlement_id);
+            }
+          }
+        } catch { /* Entitlement create failed — non-blocking */ }
         try {
           const existingRecord = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record");
           if (existingRecord) {

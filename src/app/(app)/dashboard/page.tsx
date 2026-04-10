@@ -382,6 +382,7 @@ function DashboardContent() {
   const [presetMeta, setPresetMeta] = useState<PresetMeta[]>([]);
   const [workerScripts, setWorkerScripts] = useState<ActionScript[]>([]);
   const [simLoading, setSimLoading] = useState(true);
+  const [serverEntitlements, setServerEntitlements] = useState<{ remaining: number; total: number; plan_key: string } | null>(null);
 
   /* ── IntersectionObserver for phase nav ── */
   useEffect(() => {
@@ -510,6 +511,37 @@ function DashboardContent() {
     localStorage.setItem("rp_cc_visited", "1");
     setDataLoaded(true);
   }, [searchParams]);
+
+  // Fetch server-side entitlements for accurate remaining count
+  useEffect(() => {
+    if (!dataLoaded) return;
+    (async () => {
+      try {
+        const ps = JSON.parse(sessionStorage.getItem("rp_purchase_session") || localStorage.getItem("rp_purchase_session") || "{}");
+        const email = ps.customer_email || "";
+        if (!email) return;
+        const res = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/entitlement/lookup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.entitlements && Array.isArray(data.entitlements) && data.entitlements.length > 0) {
+            // Use the most relevant entitlement (most remaining, or most recent)
+            const best = data.entitlements.reduce((a: Record<string, unknown>, b: Record<string, unknown>) =>
+              ((b.remaining as number) || 0) > ((a.remaining as number) || 0) ? b : a
+            , data.entitlements[0]);
+            setServerEntitlements({
+              remaining: (best.remaining as number) || 0,
+              total: (best.total as number) || 0,
+              plan_key: (best.plan_key as string) || "",
+            });
+          }
+        }
+      } catch { /* Entitlement lookup failed — fall back to localStorage count */ }
+    })();
+  }, [dataLoaded]);
 
   useEffect(() => {
     const t = setTimeout(() => setMinTimeElapsed(true), 600);
@@ -1694,7 +1726,7 @@ function DashboardContent() {
             <section className="cc-section" style={{ marginBottom: 20, padding: mobile ? "28px 24px" : "36px 40px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
               <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 10 }}>STABILITY MONITORING</div>
               <div style={{ fontSize: 16, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Score History</div>
-              <p style={{ fontSize: 14, color: B.muted, margin: "0 0 20px" }}>{assessments.length} assessments tracked. {assessments.length < 3 ? `${3 - assessments.length} remaining on your plan.` : "All assessments completed."}</p>
+              <p style={{ fontSize: 14, color: B.muted, margin: "0 0 20px" }}>{assessments.length} assessments tracked. {serverEntitlements ? (serverEntitlements.remaining > 0 ? `${serverEntitlements.remaining} remaining on your plan.` : "All assessments completed.") : (assessments.length < 3 ? `${3 - assessments.length} remaining on your plan.` : "All assessments completed.")}</p>
 
               {/* Score timeline visual */}
               <div style={{ display: "flex", alignItems: "flex-end", gap: mobile ? 12 : 24, marginBottom: 24, padding: "20px 0" }}>

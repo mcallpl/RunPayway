@@ -555,6 +555,35 @@ export default function DiagnosticPage() {
     setSubmitting(true);
     setError(null);
 
+    // ── Entitlement check (non-blocking for free users, gate for paid) ──
+    const purchaseSession = (() => {
+      try { return JSON.parse(sessionStorage.getItem("rp_purchase_session") || localStorage.getItem("rp_purchase_session") || "{}"); } catch { return {}; }
+    })();
+    const entEmail = profile.recipient_email || purchaseSession.customer_email || "";
+    const entPlanKey = purchaseSession.plan_key || "free";
+
+    if (entEmail && entPlanKey !== "free") {
+      try {
+        const checkRes = await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/entitlement/check", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: entEmail, plan_key: entPlanKey }),
+        }, 8000);
+        if (checkRes.ok) {
+          const checkData = await checkRes.json();
+          if (checkData?.entitlement_id) {
+            sessionStorage.setItem("rp_entitlement_id", checkData.entitlement_id);
+          }
+          if (checkData?.allowed === false) {
+            setError(checkData.reason || "You have used all assessments on your current plan. Upgrade to continue.");
+            setSubmitting(false);
+            return;
+          }
+        }
+        // If server returns non-ok, fall through — localStorage flow still works
+      } catch { /* Entitlement check failed — allow scoring via localStorage fallback */ }
+    }
+
     // Show loading screen with quotes IMMEDIATELY
     setAssessmentTitle(profile.assessment_title || "");
     setShowLoading(true);
@@ -672,6 +701,22 @@ export default function DiagnosticPage() {
           }),
         });
       } catch { /* Cloud save failed — local storage still works */ }
+
+      // Decrement entitlement usage (non-blocking)
+      try {
+        const entitlementId = sessionStorage.getItem("rp_entitlement_id") || localStorage.getItem("rp_entitlement_id") || "";
+        if (entitlementId) {
+          const recAdaptedForEnt = record as Record<string, unknown>;
+          fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/entitlement/use", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              entitlement_id: entitlementId,
+              assessment_id: recAdaptedForEnt.record_id || "",
+            }),
+          }, 8000).catch(() => { /* non-blocking */ });
+        }
+      } catch { /* Entitlement use failed — non-blocking */ }
 
       // Send report email if customer has an email address
       try {
