@@ -1354,13 +1354,13 @@ export default function ReviewPage() {
           })()}
 
           {/* What to avoid */}
-          {v2AvoidActions && (v2AvoidActions as string[]).length > 0 && (
+          {v2AvoidActions && (v2AvoidActions as Array<Record<string, string>>).length > 0 && (
             <div style={{ padding: "12px 20px", borderRadius: 14, backgroundColor: "rgba(197,48,48,0.02)", border: "1px solid rgba(197,48,48,0.08)", marginTop: 12 }}>
               <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandLimited, marginBottom: 6 }}>WHAT TO AVOID</div>
-              {(v2AvoidActions as string[]).slice(0, 2).map((a: string, i: number) => (
+              {(v2AvoidActions as Array<Record<string, string>>).slice(0, 2).map((a, i: number) => (
                 <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: i < 1 ? 4 : 0 }}>
                   <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.bandLimited, flexShrink: 0, marginTop: 7 }} />
-                  <span style={{ fontSize: 12, color: B.muted, lineHeight: 1.5 }}>{a}</span>
+                  <span style={{ fontSize: 12, color: B.muted, lineHeight: 1.5 }}>{typeof a === "string" ? a : `${a.label}: ${a.reason}`}</span>
                 </div>
               ))}
             </div>
