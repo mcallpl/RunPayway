@@ -574,13 +574,29 @@ export default function DiagnosticPage() {
           if (checkData?.entitlement_id) {
             sessionStorage.setItem("rp_entitlement_id", checkData.entitlement_id);
           }
-          if (checkData?.allowed === false) {
-            setError(checkData.reason || "You have used all assessments on your current plan. Upgrade to continue.");
+          // Only block for definitively exhausted or expired — NOT for missing entitlements
+          // (users who paid before the entitlement system was built won't have server records)
+          if (checkData?.allowed === false && (checkData.reason === "exhausted" || checkData.reason === "expired")) {
+            setError(checkData.reason === "expired"
+              ? "Your monitoring plan has expired. Renew to continue."
+              : "You have used all assessments on this plan.");
             setSubmitting(false);
             return;
           }
+          // For "no_entitlement": auto-create one for this paid user
+          if (checkData?.allowed === false && checkData.reason === "no_entitlement") {
+            try {
+              const createRes = await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/entitlement/create", {
+                method: "POST", headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: entEmail, plan_key: entPlanKey, stripe_session_id: purchaseSession.stripe_session_id || null }),
+              }, 5000);
+              if (createRes.ok) {
+                const createData = await createRes.json();
+                if (createData?.entitlement?.id) sessionStorage.setItem("rp_entitlement_id", createData.entitlement.id);
+              }
+            } catch { /* auto-create failed — proceed anyway */ }
+          }
         }
-        // If server returns non-ok, fall through — localStorage flow still works
       } catch { /* Entitlement check failed — allow scoring via localStorage fallback */ }
     }
 
@@ -1087,7 +1103,7 @@ export default function DiagnosticPage() {
           Income Stability Score&#8482; &middot; Model RP-2.0
         </div>
       </div>
-      <div style={{ maxWidth: 860, margin: "0 auto", padding: mobile ? "24px 16px 40px" : "32px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
+      <div style={{ maxWidth: 860, margin: "0 auto", padding: mobile ? "24px 24px 40px" : "32px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
         <div style={{ marginBottom: 28 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
             <div style={{ fontSize: 13, fontWeight: 600, color: C.purple, letterSpacing: "0.08em", textTransform: "uppercase" as const }}>
@@ -1232,7 +1248,7 @@ export default function DiagnosticPage() {
         Income Stability Score&#8482;
       </div>
     </div>
-    <div style={{ maxWidth: 860, margin: "0 auto", padding: mobile ? "20px 16px 40px" : "28px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh", opacity: entered ? 1 : 0, transform: entered ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
+    <div style={{ maxWidth: 860, margin: "0 auto", padding: mobile ? "20px 24px 40px" : "28px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh", opacity: entered ? 1 : 0, transform: entered ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>
       {/* Step breadcrumb */}
       <div style={{ marginBottom: 16, marginTop: 4 }}>
         <StepBreadcrumb activeStep={2} completedSteps={[1]} />
@@ -1304,7 +1320,7 @@ export default function DiagnosticPage() {
           background: C.white,
           borderRadius: 16,
           border: "1px solid rgba(14,26,43,0.06)",
-          padding: mobile ? "24px 18px" : "32px 28px",
+          padding: mobile ? "24px 20px" : "32px 28px",
           flex: 1,
           display: "flex",
           flexDirection: "column",

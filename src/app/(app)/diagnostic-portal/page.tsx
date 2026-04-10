@@ -586,7 +586,7 @@ export default function InitializationPage() {
         display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center",
         textAlign: "center",
-        padding: mobile ? "0 16px" : "0 32px",
+        padding: mobile ? "0 28px" : "0 32px",
       }}>
         <div style={{
           opacity: readyExiting ? 0 : readyVisible ? 1 : 0,
@@ -690,7 +690,7 @@ export default function InitializationPage() {
 
         {/* Content */}
         <div style={{
-          maxWidth: 520, width: "100%", padding: mobile ? "0 16px" : "0 32px",
+          maxWidth: 520, width: "100%", padding: mobile ? "0 28px" : "0 32px",
           opacity: portalRevealed ? 1 : 0,
           transform: portalRevealed ? "translateY(0)" : "translateY(20px)",
           transition: "opacity 800ms ease, transform 800ms ease",
@@ -710,7 +710,7 @@ export default function InitializationPage() {
 
           {/* Title */}
           <h1 style={{
-            fontSize: 36, fontWeight: 300, fontFamily: sans, color: C.navy, textAlign: "center",
+            fontSize: mobile ? 28 : 36, fontWeight: 300, fontFamily: sans, color: C.navy, textAlign: "center",
             lineHeight: 1.25, letterSpacing: "-0.02em", marginBottom: 12,
           }}>
             Your Assessment Begins Here
