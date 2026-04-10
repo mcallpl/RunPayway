@@ -48,8 +48,8 @@ RESP=$(curl -s -o /tmp/e2e_simulate -w "%{http_code}" \
   "${WORKER}/simulate" 2>/dev/null)
 BODY=$(cat /tmp/e2e_simulate 2>/dev/null || echo "")
 
-if [ "$RESP" = "200" ] && echo "$BODY" | grep -q '"score"'; then
-  SCORE=$(echo "$BODY" | sed -n 's/.*"score":\([0-9]*\).*/\1/p')
+if [ "$RESP" = "200" ] && echo "$BODY" | grep -q '"overall_score"'; then
+  SCORE=$(echo "$BODY" | sed -n 's/.*"overall_score":\([0-9]*\).*/\1/p')
   pass "Step 2 — Simulate score returned: $SCORE (HTTP $RESP)"
 else
   fail "Step 2 — Simulate score (HTTP $RESP)"

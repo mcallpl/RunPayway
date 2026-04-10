@@ -64,6 +64,11 @@ export default function RootLayout({
           }}
         />
         <ErrorReporter />
+        <script dangerouslySetInnerHTML={{ __html: `
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/RunPayway/sw.js').catch(() => {});
+          }
+        ` }} />
         <Providers>{children}</Providers>
         <AnalyticsPixels />
       </body>
