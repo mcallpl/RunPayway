@@ -1112,7 +1112,7 @@ function DashboardContent() {
                   <div style={{ display: "flex", gap: 12, marginBottom: 28 }} className="d-metrics">
                     {[
                       { label: "Income Buffer", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? B.red : B.teal },
-                      { label: "If Top Source Leaves", value: `−${riskDrop} pts`, color: riskDrop > 15 ? B.red : B.amber },
+                      { label: vocabDash.scenarios.lose_top_client.split(/[.!?]/)[0].slice(0, 40) || "If Top Source Leaves", value: `−${riskDrop} pts`, color: riskDrop > 15 ? B.red : B.amber },
                       { label: "Stability Type", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" || fragLabel === "Supported" ? B.teal : B.amber },
                     ].map((m) => (
                       <div key={m.label} style={{ flex: 1, padding: mobile ? "12px 10px" : "14px 16px", textAlign: "center" as const, borderRadius: 10, backgroundColor: "#FAFAFA" }}>
@@ -1279,7 +1279,7 @@ function DashboardContent() {
             {/* Biggest risk — clean, below zones */}
             <div style={{ marginTop: 24, padding: mobile ? "20px 18px" : "24px 28px", borderRadius: 14, backgroundColor: `${B.red}04`, borderLeft: `3px solid ${B.red}` }}>
               <p style={{ fontSize: mobile ? 16 : 18, fontWeight: 500, color: B.navy, margin: "0 0 8px", lineHeight: 1.4 }}>
-                If your top source leaves, your score drops {dScore - stLCDrop < 30 && dScore >= 30 ? "into Limited Stability." : `from ${dScore} to ${dScore - stLCDrop}.`}
+                {vocabDash.scenarios.lose_top_client.split(/[.!?]/)[0]}  — your score drops {dScore - stLCDrop < 30 && dScore >= 30 ? "into Limited Stability." : `from ${dScore} to ${dScore - stLCDrop}.`}
               </p>
               <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>{constraintNarrative(rootCon, base, sector)}</p>
             </div>
@@ -1291,8 +1291,8 @@ function DashboardContent() {
           <section style={{ marginBottom: 24 }}>
             <div style={{ display: "flex", gap: mobile ? 12 : 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
               {[
-                { label: "Your biggest client stops paying", insight: stLC ? `Your score drops to ${stLC.overall_score}.${stLC.overall_score < 30 && dScore >= 30 ? " That puts you in Limited Stability." : ""}` : "Loading...", val: stLC ? `${dScore} → ${stLC.overall_score}` : "..." },
-                { label: "You can't work for 90 days", insight: stNW ? `Your score drops to ${stNW.overall_score}.${stNW.overall_score < 30 && dScore >= 30 ? " That puts you in Limited Stability." : ""}` : "Loading...", val: stNW ? `${dScore} → ${stNW.overall_score}` : "..." },
+                { label: vocabDash.scenarios.lose_top_client.split(/[.!?]/)[0], insight: stLC ? `Your score drops to ${stLC.overall_score}.${stLC.overall_score < 30 && dScore >= 30 ? " That puts you in Limited Stability." : ""}` : "Loading...", val: stLC ? `${dScore} → ${stLC.overall_score}` : "..." },
+                { label: vocabDash.scenarios.cant_work_90_days.split(/[.!?]/)[0], insight: stNW ? `Your score drops to ${stNW.overall_score}.${stNW.overall_score < 30 && dScore >= 30 ? " That puts you in Limited Stability." : ""}` : "Loading...", val: stNW ? `${dScore} → ${stNW.overall_score}` : "..." },
               ].map(row => (
                 <div key={row.label} style={{ flex: 1, padding: mobile ? "22px 18px" : "26px 28px", borderRadius: 16, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${B.red}` }}>
                   <p style={{ fontSize: 15, fontWeight: 500, color: B.navy, margin: "0 0 6px", lineHeight: 1.4 }}>{row.label}</p>
@@ -1643,14 +1643,18 @@ function DashboardContent() {
                   {stressPresetsMeta.map(pr => {
                     const res = simResults?.[pr.id]; const lift = res ? res.overall_score - dScore : 0;
                     const isA = effectivePreset === pr.id;
+                    const scenarioKey = pr.id as keyof typeof vocabDash.scenarios;
+                    const vocabScenario = vocabDash.scenarios[scenarioKey];
+                    const scenarioLabel = vocabScenario ? vocabScenario.split(/[.!?]/)[0] : pr.label;
+                    const scenarioDesc = vocabScenario || pr.description;
                     return (
                       <button key={pr.id} onClick={() => setActivePreset(isA && activePreset === pr.id ? null : pr.id)}
                         style={{ flex: 1, padding: "16px 20px", textAlign: "left" as const, borderRadius: 12, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? `${B.red}40` : B.stone}`, backgroundColor: isA ? `${B.red}04` : "transparent", minHeight: 48 }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 4 }}>
-                          <span style={{ fontSize: mobile ? 13 : 14, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
+                          <span style={{ fontSize: mobile ? 13 : 14, fontWeight: 600, color: isA ? B.navy : B.muted }}>{scenarioLabel}</span>
                           <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.red, flexShrink: 0, whiteSpace: "nowrap" as const }}>{lift}</span>
                         </div>
-                        <p style={{ fontSize: 14, color: B.taupe, margin: 0, lineHeight: 1.6 }}>{pr.description}</p>
+                        <p style={{ fontSize: 14, color: B.taupe, margin: 0, lineHeight: 1.6 }}>{scenarioDesc}</p>
                       </button>
                     );
                   })}
