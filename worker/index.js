@@ -845,7 +845,7 @@ function cleanupRateLimits() {
 }
 
 function getRateLimitCategory(path) {
-  if (["/pressuremap", "/plain-english", "/action-plan", "/"].includes(path)) return "scoring";
+  if (["/pressuremap", "/plain-english", "/action-plan", "/personalize", "/"].includes(path)) return "scoring";
   if (path.startsWith("/entitlement/")) return "entitlement";
   return "default";
 }
@@ -994,6 +994,7 @@ export default {
       else if (path === "/simulate-batch") response = await handleSimulateBatch(body, corsHeaders);
       else if (path === "/timeline") response = await handleTimeline(body, corsHeaders);
       else if (path === "/analytics") response = handleAnalytics(body, corsHeaders);
+      else if (path === "/personalize") response = await handlePersonalize(body, env, corsHeaders);
       else if (path === "/error-report") response = await handleErrorReport(body, env, corsHeaders);
       else {
         response = new Response(JSON.stringify({ error: "Unknown endpoint" }), {
@@ -1223,6 +1224,111 @@ Return ONLY the JSON.`;
     return new Response(JSON.stringify({ error: "Incomplete" }), { status: 502, headers: corsHeaders });
   }
   return new Response(JSON.stringify(parsed), { headers: corsHeaders });
+}
+
+// ══════════════════════════════════════════════════════════
+// PERSONALIZE — unified narrative generation
+// ══════════════════════════════════════════════════════════
+
+async function handlePersonalize(body, env, corsHeaders) {
+  const EMPTY_RESPONSE = {
+    why_this_score: "",
+    action_script: "",
+    what_becomes_possible: "",
+    email_hook: "",
+    dashboard_headline: "",
+    comparative_narrative: "",
+  };
+
+  try {
+    body.industry = sanitizeString(body.industry, 200) || body.industry;
+    body.operating_structure = sanitizeString(body.operating_structure, 200) || body.operating_structure;
+    body.income_model = sanitizeString(body.income_model, 200) || body.income_model;
+    body.score = sanitizeNumber(body.score, 0, 100, body.score || 0);
+    body.band = sanitizeString(body.band, 100) || body.band;
+    body.prior_score = sanitizeNumber(body.prior_score, 0, 100, 0);
+    body.prior_band = sanitizeString(body.prior_band, 100) || "";
+    body.weakest_factor = sanitizeString(body.weakest_factor, 200) || body.weakest_factor;
+    body.strongest_factor = sanitizeString(body.strongest_factor, 200) || "";
+    body.recurrence_pct = sanitizeNumber(body.recurrence_pct, 0, 100, 0);
+    body.concentration_pct = sanitizeNumber(body.concentration_pct, 0, 100, 0);
+    body.forward_visibility_pct = sanitizeNumber(body.forward_visibility_pct, 0, 100, 0);
+    body.labor_dependence_pct = sanitizeNumber(body.labor_dependence_pct, 0, 100, 0);
+    body.variability_level = sanitizeString(body.variability_level, 50) || "moderate";
+    body.continuity_months = sanitizeNumber(body.continuity_months, 0, 120, 0);
+    body.active_income_pct = sanitizeNumber(body.active_income_pct, 0, 100, 0);
+    body.persistent_income_pct = sanitizeNumber(body.persistent_income_pct, 0, 100, 0);
+    body.fragility_class = sanitizeString(body.fragility_class, 100) || "";
+    body.top_lift_action = sanitizeString(body.top_lift_action, 200) || "";
+    body.top_lift_points = sanitizeNumber(body.top_lift_points, 0, 50, 0);
+    body.projected_score = sanitizeNumber(body.projected_score, 0, 100, 0);
+    body.risk_drop = sanitizeNumber(body.risk_drop, 0, 100, 0);
+    body.assessment_title = sanitizeString(body.assessment_title, 200) || "";
+
+    const vc = body.vocab_context || {};
+    const hasPrior = body.prior_score && body.prior_score > 0;
+    const comparativeInstruction = hasPrior
+      ? `[2-3 sentences] What changed between their prior score of ${body.prior_score} and current ${body.score}. What structural shift caused the movement.`
+      : "Return empty string";
+
+    const system = `You are a senior income structure advisor writing a private diagnostic brief for one client. You have deep expertise in ${body.industry}.
+
+VOICE: Direct, specific, confident. Speak to the client by situation, not by category. Reference their exact numbers. Name specific arrangement types from their industry. Never use generic phrases like "recurring revenue" — use industry terms.
+
+INDUSTRY VOCABULARY:
+- Structural pressure: ${sanitizeString(vc.pressure_framing, 500) || "general market dynamics"}
+- Arrangement types: ${sanitizeString(vc.arrangement_types, 500) || "retainer, standing agreement, prepaid package"}
+- Peer group: ${sanitizeString(vc.peer_group_label, 200) || "independent professionals"}
+
+OUTPUT: Return valid JSON with exactly these 6 keys. Each must be personalized to THIS person's exact numbers, industry, and income model.`;
+
+    const user = `Write the personalized narrative for this assessment:
+
+${profileBlock(body)}
+
+ADDITIONAL CONTEXT:
+- Strongest factor: ${body.strongest_factor}
+- Recurring revenue: ${body.recurrence_pct}%
+- Concentration: ${body.concentration_pct}%
+- Forward visibility: ${body.forward_visibility_pct}%
+- Labor dependence: ${body.labor_dependence_pct}%
+- Active income: ${body.active_income_pct}%
+- Persistent income: ${body.persistent_income_pct}%
+- Fragility class: ${body.fragility_class}
+- Top lift action: ${body.top_lift_action} (+${body.top_lift_points} pts)
+- Projected score: ${body.projected_score}
+- Prior score: ${hasPrior ? body.prior_score + " (" + body.prior_band + ")" : "None"}
+- Assessment title: ${body.assessment_title}
+
+Return this JSON:
+{
+  "why_this_score": "[3-4 sentences] What their score of ${body.score} reveals about their specific situation as a ${body.operating_structure} in ${body.industry}. Reference their exact numbers. Make them feel understood — name something about their structure they know is true but haven't articulated.",
+
+  "action_script": "[4-5 sentences] The single most important structural change, written as a specific instruction. Name who to call, what to propose, how to frame it, and what language to use. This must be so specific that the person can act on it today — not generic advice.",
+
+  "what_becomes_possible": "[3 sentences] What changes in their daily life and business if they make the recommended change. Industry-specific outcomes, not abstract benefits. Reference what ${body.projected_score} means vs ${body.score}.",
+
+  "email_hook": "[1-2 sentences] A subject-line-worthy insight that would make this person open an email. Must reference their specific situation — not generic. Example quality: 'CJ, 65% of your closings depend on one relationship — here\\'s the structural risk that creates.'",
+
+  "dashboard_headline": "[1 sentence] The opening line they see on their dashboard. Direct, specific, sets the tone for the entire experience.",
+
+  "comparative_narrative": "${comparativeInstruction}"
+}
+
+Return ONLY the JSON.`;
+
+    const parsed = await callClaude(system, user, env, 1200);
+    const REQUIRED_KEYS = ["why_this_score", "action_script", "what_becomes_possible", "email_hook", "dashboard_headline", "comparative_narrative"];
+    for (const key of REQUIRED_KEYS) {
+      if (!(key in parsed)) {
+        return new Response(JSON.stringify({ error: "Incomplete" }), { status: 502, headers: corsHeaders });
+      }
+    }
+    return new Response(JSON.stringify(parsed), { headers: corsHeaders });
+  } catch (err) {
+    console.error("Personalize error:", err);
+    return new Response(JSON.stringify(EMPTY_RESPONSE), { headers: corsHeaders });
+  }
 }
 
 // ══════════════════════════════════════════════════════════
