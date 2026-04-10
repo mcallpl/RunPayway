@@ -500,7 +500,7 @@ function DashboardContent() {
       } else if (ps.plan_key === "free" && stored) {
         // Only redirect if they're free AND have assessment data
         // (if no data, let them see the empty state with CTA to purchase)
-        window.location.replace("/free-score");
+        window.location.replace("/RunPayway/free-score");
         return;
       }
     } catch { /* */ }
