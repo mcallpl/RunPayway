@@ -1181,7 +1181,7 @@ export default function ReviewPage() {
               <div style={{ padding: mobile ? "14px 16px" : "16px 20px", borderRadius: 14, backgroundColor: "rgba(14,26,43,0.02)", border: "1px solid rgba(14,26,43,0.06)", marginBottom: 12 }}>
                 <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(14,26,43,0.30)", marginBottom: 6 }}>COMMAND CENTER ACCESS</div>
                 <div style={{ fontSize: 11, color: "rgba(14,26,43,0.45)", marginBottom: 6 }}>Enter at runpayway.com/dashboard to access your interactive tools.</div>
-                <div style={{ fontFamily: mono, fontSize: mobile ? 7.5 : 8.5, color: "rgba(14,26,43,0.55)", letterSpacing: "0.01em", wordBreak: "break-all" as const, lineHeight: 1.4 }}>{code}</div>
+                <div style={{ fontFamily: mono, fontSize: mobile ? 10 : 11, color: "rgba(14,26,43,0.55)", letterSpacing: "0.01em", wordBreak: "break-all" as const, lineHeight: 1.4 }}>{code}</div>
               </div>
             );
           })()}

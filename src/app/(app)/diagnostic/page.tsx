@@ -575,148 +575,80 @@ export default function DiagnosticPage() {
         (record as Record<string, unknown>).assessment_title = profile.assessment_title;
       }
 
-      // Generate PressureMap via Cloudflare Worker proxy (API key secured server-side)
-      try {
-        const adapted = record as Record<string, unknown>;
-        const v2Data = (adapted._v2 || {}) as Record<string, unknown>;
-        const ni = (v2Data.normalized_inputs || {}) as Record<string, unknown>;
-        const constraints = ((v2Data.constraints || {}) as Record<string, unknown>);
-        const topConstraint = (Array.isArray(constraints.ranked) && constraints.ranked.length > 0)
-          ? constraints.ranked[0] as Record<string, string>
-          : { factor: "recurrence", label: "Recurring Revenue" };
+      // ── Prepare shared data for all 3 Claude API calls ──
+      const adapted = record as Record<string, unknown>;
+      const v2Data = (adapted._v2 || {}) as Record<string, unknown>;
+      const ni = (v2Data.normalized_inputs || {}) as Record<string, unknown>;
+      const constraints = ((v2Data.constraints || {}) as Record<string, unknown>);
+      const topConstraint = (Array.isArray(constraints.ranked) && constraints.ranked.length > 0)
+        ? constraints.ranked[0] as Record<string, string>
+        : { factor: "recurrence", label: "Recurring Revenue" };
+      const topFactor = (Array.isArray(constraints.ranked) && constraints.ranked.length > 0)
+        ? (constraints.ranked[0] as Record<string, string>).factor || "recurrence"
+        : "recurrence";
+      const { getVocabulary } = await loadVocab();
+      const vocabCtx = getVocabulary(profile.industry_sector || "").worker_context;
+      const lift3 = v2Data.score_lift_projection as Record<string, unknown> | undefined;
+      const topLift = lift3?.highest_single_lift as Record<string, unknown> | undefined;
 
-        // Load industry-specific vocabulary for Claude prompts
-        const { getVocabulary } = await loadVocab();
-        const vocabCtx = getVocabulary(profile.industry_sector || "").worker_context;
+      const sharedBody = {
+        industry: profile.industry_sector || "",
+        operating_structure: profile.operating_structure || "",
+        income_model: profile.primary_income_model || "",
+        years_in_structure: profile.years_in_structure || "",
+        score: (adapted.final_score as number) || 0,
+        band: (adapted.stability_band as string) || "",
+        vocab_context: vocabCtx,
+        recurrence_pct: (ni.income_persistence_pct as number) || 0,
+        concentration_pct: (ni.largest_source_pct as number) || 0,
+        forward_visibility_pct: (ni.forward_secured_pct as number) || 0,
+        labor_dependence_pct: (ni.labor_dependence_pct as number) || 0,
+        variability_level: (ni.income_variability_level as string) || "moderate",
+      };
 
-        const pmRes = await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            industry: profile.industry_sector || "",
-            operating_structure: profile.operating_structure || "",
-            income_model: profile.primary_income_model || "",
-            years_in_structure: profile.years_in_structure || "",
-            score: (adapted.final_score as number) || 0,
-            band: (adapted.stability_band as string) || "",
-            vocab_context: vocabCtx,
-            weakest_factor: topConstraint.factor || topConstraint.label || "",
-            weakest_factor_value: topConstraint.label || "",
-            recurrence_pct: (ni.income_persistence_pct as number) || 0,
-            concentration_pct: (ni.largest_source_pct as number) || 0,
-            forward_visibility_pct: (ni.forward_secured_pct as number) || 0,
-            labor_dependence_pct: (ni.labor_dependence_pct as number) || 0,
-            variability_level: (ni.income_variability_level as string) || "moderate",
-          }),
-        });
+      // ── Run all 3 Claude API calls in PARALLEL (each takes 2-5s) ──
+      const [pmResult, peResult, apResult] = await Promise.allSettled([
+        // PressureMap
+        fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...sharedBody, weakest_factor: topConstraint.factor || topConstraint.label || "", weakest_factor_value: topConstraint.label || "" }),
+        }).then(async (res) => res.ok ? res.json() : null).catch(() => null),
 
-        if (pmRes.ok) {
-          const parsed = await pmRes.json();
-          if (parsed.pressure && parsed.tailwind && parsed.leverage_move) {
-            (record as Record<string, unknown>).pressure_map = {
-              generated_at: new Date().toISOString(),
-              industry: profile.industry_sector || "",
-              operating_structure: profile.operating_structure || "",
-              income_model: profile.primary_income_model || "",
-              pressure: parsed.pressure,
-              tailwind: parsed.tailwind,
-              leverage_move: parsed.leverage_move,
-            };
-          } else {
-            console.error("PressureMap response incomplete:", parsed);
-          }
-        } else {
-          const errText = await pmRes.text();
-          console.error("PressureMap Worker error:", pmRes.status, errText);
-        }
-      } catch (pmErr) { console.error("PressureMap fetch failed:", pmErr); }
+        // Plain English
+        fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/plain-english", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...sharedBody, weakest_factor: topFactor, active_income: adapted.active_income_level || 0, continuity_months: adapted.income_continuity_months || 0, risk_drop: adapted.risk_scenario_drop || 0 }),
+        }).then(async (res) => res.ok ? res.json() : null).catch(() => null),
 
-      // Generate "In Plain English" via Claude Worker
-      try {
-        const adapted2 = record as Record<string, unknown>;
-        const v2Data2 = (adapted2._v2 || {}) as Record<string, unknown>;
-        const ni2 = (v2Data2.normalized_inputs || {}) as Record<string, number | string>;
-        const constraints2 = (v2Data2.constraints || {}) as Record<string, unknown>;
-        const topC2 = (Array.isArray(constraints2.ranked) && constraints2.ranked.length > 0)
-          ? (constraints2.ranked[0] as Record<string, string>).factor || "recurrence"
-          : "recurrence";
+        // Action Plan
+        fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/action-plan", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...sharedBody, weakest_factor: topFactor, active_income: adapted.active_income_level || 0, continuity_months: adapted.income_continuity_months || 0, risk_drop: adapted.risk_scenario_drop || 0, top_change: topLift?.label || "", projected_lift: topLift ? `${topLift.original_score} to ${topLift.projected_score} (+${topLift.lift})` : "" }),
+        }).then(async (res) => res.ok ? res.json() : null).catch(() => null),
+      ]);
 
-        const peRes = await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/plain-english", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            industry: profile.industry_sector || "",
-            operating_structure: profile.operating_structure || "",
-            income_model: profile.primary_income_model || "",
-            years_in_structure: profile.years_in_structure || "",
-            score: (adapted2.final_score as number) || 0,
-            band: (adapted2.stability_band as string) || "",
-            weakest_factor: topC2,
-            vocab_context: vocabCtx,
-            recurrence_pct: (ni2.income_persistence_pct as number) || 0,
-            concentration_pct: (ni2.largest_source_pct as number) || 0,
-            forward_visibility_pct: (ni2.forward_secured_pct as number) || 0,
-            labor_dependence_pct: (ni2.labor_dependence_pct as number) || 0,
-            variability_level: (ni2.income_variability_level as string) || "moderate",
-            active_income: (record as Record<string, unknown>).active_income_level || 0,
-            continuity_months: (record as Record<string, unknown>).income_continuity_months || 0,
-            risk_drop: (record as Record<string, unknown>).risk_scenario_drop || 0,
-          }),
-        });
-        if (peRes.ok) {
-          const peData = await peRes.json();
-          if (peData.interpretation) {
-            const expl = (v2Data2.explainability || {}) as Record<string, unknown>;
-            expl.why_this_score = peData.interpretation;
-            if (peData.why_not_higher) expl.why_not_higher = peData.why_not_higher;
-            (v2Data2 as Record<string, unknown>).explainability = expl;
-          }
-        }
-      } catch { /* Plain English generation failed — report uses template */ }
+      // ── Apply results to record ──
+      const pmData = pmResult.status === "fulfilled" ? pmResult.value : null;
+      if (pmData?.pressure && pmData?.tailwind && pmData?.leverage_move) {
+        (record as Record<string, unknown>).pressure_map = {
+          generated_at: new Date().toISOString(), industry: profile.industry_sector || "",
+          operating_structure: profile.operating_structure || "", income_model: profile.primary_income_model || "",
+          pressure: pmData.pressure, tailwind: pmData.tailwind, leverage_move: pmData.leverage_move,
+        };
+      }
 
-      // Generate Action Plan via Claude Worker
-      try {
-        const adapted3 = record as Record<string, unknown>;
-        const v2Data3 = (adapted3._v2 || {}) as Record<string, unknown>;
-        const ni3 = (v2Data3.normalized_inputs || {}) as Record<string, number | string>;
-        const constraints3 = (v2Data3.constraints || {}) as Record<string, unknown>;
-        const topC3 = (Array.isArray(constraints3.ranked) && constraints3.ranked.length > 0)
-          ? (constraints3.ranked[0] as Record<string, string>).factor || "recurrence"
-          : "recurrence";
-        const lift3 = v2Data3.score_lift_projection as Record<string, unknown> | undefined;
-        const topLift = lift3?.highest_single_lift as Record<string, unknown> | undefined;
+      const peData = peResult.status === "fulfilled" ? peResult.value : null;
+      if (peData?.interpretation) {
+        const expl = (v2Data.explainability || {}) as Record<string, unknown>;
+        expl.why_this_score = peData.interpretation;
+        if (peData.why_not_higher) expl.why_not_higher = peData.why_not_higher;
+        (v2Data as Record<string, unknown>).explainability = expl;
+      }
 
-        const apRes = await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/action-plan", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            industry: profile.industry_sector || "",
-            operating_structure: profile.operating_structure || "",
-            income_model: profile.primary_income_model || "",
-            years_in_structure: profile.years_in_structure || "",
-            score: (adapted3.final_score as number) || 0,
-            band: (adapted3.stability_band as string) || "",
-            weakest_factor: topC3,
-            vocab_context: vocabCtx,
-            recurrence_pct: (ni3.income_persistence_pct as number) || 0,
-            concentration_pct: (ni3.largest_source_pct as number) || 0,
-            forward_visibility_pct: (ni3.forward_secured_pct as number) || 0,
-            labor_dependence_pct: (ni3.labor_dependence_pct as number) || 0,
-            variability_level: (ni3.income_variability_level as string) || "moderate",
-            active_income: adapted3.active_income_level || 0,
-            continuity_months: adapted3.income_continuity_months || 0,
-            risk_drop: adapted3.risk_scenario_drop || 0,
-            top_change: topLift?.label || "",
-            projected_lift: topLift ? `${topLift.original_score} to ${topLift.projected_score} (+${topLift.lift})` : "",
-          }),
-        });
-        if (apRes.ok) {
-          const apData = await apRes.json();
-          if (apData.primary_action) {
-            (v2Data3 as Record<string, unknown>).ai_action_plan = apData;
-          }
-        }
-      } catch { /* Action plan generation failed — report uses template */ }
+      const apData = apResult.status === "fulfilled" ? apResult.value : null;
+      if (apData?.primary_action) {
+        (v2Data as Record<string, unknown>).ai_action_plan = apData;
+      }
 
       sessionStorage.setItem("rp_record", JSON.stringify(record));
       localStorage.setItem("rp_record", JSON.stringify(record));
@@ -783,7 +715,6 @@ export default function DiagnosticPage() {
 
       // Persist record for lookup (v1-adapted field names)
       const stored = JSON.parse(localStorage.getItem("rp_records") || "[]");
-      const adapted = record as Record<string, unknown>;
       stored.push({
         record_id: adapted.record_id,
         authorization_code: adapted.authorization_code,
@@ -1178,7 +1109,7 @@ export default function DiagnosticPage() {
         <div style={{ marginTop: 24, display: "flex", gap: 12, alignItems: "center", justifyContent: mobile ? "center" : "space-between", flexDirection: mobile ? "column-reverse" : "row" }}>
           <button
             onClick={() => { setShowReview(false); setCurrentQuestion(5); }}
-            style={{ fontSize: 13, fontWeight: 500, color: C.muted, background: "none", border: "none", cursor: "pointer", padding: "8px 0" }}
+            style={{ fontSize: 13, fontWeight: 500, color: C.muted, background: "none", border: "none", cursor: "pointer", padding: "12px 16px", minHeight: 44 }}
           >
             Back to questions
           </button>

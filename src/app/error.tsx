@@ -56,7 +56,11 @@ export default function Error({
 
         <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
           <button
-            onClick={reset}
+            onClick={() => {
+              // Clear potentially corrupted session data to break error loops
+              try { sessionStorage.removeItem("rp_record"); } catch { /* */ }
+              reset();
+            }}
             style={{
               padding: "10px 24px",
               fontSize: 14,
@@ -66,6 +70,7 @@ export default function Error({
               border: "none",
               borderRadius: 8,
               cursor: "pointer",
+              minHeight: 44,
             }}
           >
             Try Again
