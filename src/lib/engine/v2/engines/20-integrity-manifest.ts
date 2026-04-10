@@ -1,7 +1,7 @@
 // Engine 20 — Integrity & Manifest
 // Computes SHA-256 hashes for inputs, outputs, manifest, and record.
 
-import { createHash } from "crypto";
+import { sha256 as sha256Hash } from "../crypto-compat";
 import type { CanonicalInput, ScoreBreakdown, IntegrityResult, ModelManifest } from "../types";
 import {
   MODEL_VERSION,
@@ -69,7 +69,7 @@ export function computeManifestHash(): string {
 }
 
 function sha256(data: string): string {
-  return createHash("sha256").update(data).digest("hex");
+  return sha256Hash(data);
 }
 
 function sortKeys(obj: Record<string, unknown>): Record<string, unknown> {

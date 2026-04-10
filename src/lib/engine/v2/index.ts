@@ -7,7 +7,7 @@
 // identical outputs.
 // ═══════════════════════════════════════════════════════════════
 
-import { randomUUID } from "crypto";
+import { randomUUID } from "./crypto-compat";
 
 import type {
   RawDiagnosticInput,

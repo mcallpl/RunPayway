@@ -7,8 +7,10 @@ import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import { C, mono, sans, bandColor } from "@/lib/design-tokens";
 import { trackAssessmentComplete } from "@/lib/analytics";
 import ShareableScoreCard from "@/components/ShareableScoreCard";
-// V2-to-V1 adapter for converting worker response to record format
+// V2-to-V1 adapter for converting engine output to record format
 const loadAdapter = () => import("@/lib/v2-to-v1-adapter");
+// V2 engine — runs client-side (deterministic, no server secrets needed)
+const loadEngine = () => import("@/lib/engine/v2/index");
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
@@ -547,32 +549,13 @@ export default function DiagnosticPage() {
 
     try {
       let record;
-      // Score via Cloudflare Worker — the only scoring path
-      const purchaseSession = JSON.parse(sessionStorage.getItem("rp_purchase_session") || "{}");
-      const payloadBody: Record<string, unknown> = {
-        raw_inputs: rawInputsV2,
+      // Run the v2 engine client-side (deterministic, no server secrets needed)
+      const { executeAssessment } = await loadEngine();
+      const v2Result = executeAssessment({
+        rawInputs: rawInputsV2,
         profile: profileV2,
-      };
-      if (purchaseSession.payment_token) {
-        payloadBody._payment_token = purchaseSession.payment_token;
-        payloadBody._payment_payload = {
-          plan_key: purchaseSession.plan_key,
-          timestamp: purchaseSession.token_timestamp,
-          nonce: purchaseSession.token_nonce,
-          expires_at: purchaseSession.token_expires_at,
-        };
-      }
-      const res = await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/score", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payloadBody),
       });
-      if (res.ok) {
-        record = adaptV2ToV1(await res.json());
-      } else {
-        const errText = await res.text().catch(() => "Unknown error");
-        throw new Error(`Scoring failed (${res.status}): ${errText}`);
-      }
+      record = adaptV2ToV1(v2Result);
       // Override assessment_title with user-entered value from profile
       if (profile.assessment_title) {
         (record as Record<string, unknown>).assessment_title = profile.assessment_title;
