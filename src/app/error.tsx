@@ -41,17 +41,9 @@ export default function Error({
           marginBottom: 24,
           textAlign: "left",
         }}>
-          <div style={{ fontSize: 11, fontWeight: 600, color: "#DC2626", marginBottom: 4 }}>
-            Error Details
+          <div style={{ fontSize: 13, color: "#6B7280", lineHeight: 1.5 }}>
+            Please try refreshing the page. If you just completed an assessment, your data is saved and will load when you return.
           </div>
-          <div style={{ fontSize: 12, color: "#6B7280", fontFamily: "monospace", wordBreak: "break-all", lineHeight: 1.5 }}>
-            {error?.message || "Unknown error"}
-          </div>
-          {error?.stack && (
-            <div style={{ fontSize: 10, color: "#9CA3AF", fontFamily: "monospace", wordBreak: "break-all", lineHeight: 1.4, marginTop: 8, maxHeight: 120, overflow: "auto" }}>
-              {error.stack.split("\n").slice(1, 6).join("\n")}
-            </div>
-          )}
         </div>
 
         <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
