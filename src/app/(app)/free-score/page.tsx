@@ -165,6 +165,25 @@ export default function FreeScorePage() {
     requestAnimationFrame(step);
   }, [record]);
 
+  /* Poll sessionStorage for background personalization data */
+  useEffect(() => {
+    if (!record) return;
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts++;
+      if (attempts > 5) { clearInterval(interval); return; }
+      try {
+        const updated = JSON.parse(sessionStorage.getItem("rp_record") || "{}");
+        const hook = (updated._v2 as Record<string, unknown> | undefined)?.personalized;
+        const currentHook = (record._v2 as Record<string, unknown> | undefined)?.personalized;
+        if (hook && !currentHook) {
+          setRecord(updated);
+        }
+      } catch { /* */ }
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [record]);
+
   /* Stress test — must be before any early return to preserve hook order */
   useEffect(() => {
     if (!record) return;
@@ -235,6 +254,8 @@ export default function FreeScorePage() {
     return lines;
   })();
 
+  const personalizedInsight = (v2?.personalized as Record<string, string> | undefined)?.email_hook || "";
+
   const upgradeHeadline = UPGRADE_HEADLINES[band] || "Your structure has room to improve.";
 
   const secPad = mobile ? 32 : 48;
@@ -290,6 +311,25 @@ export default function FreeScorePage() {
             </p>
           </div>
         </section>
+
+        {/* ── INSIGHT HOOK (personalized, async) ── */}
+        {personalizedInsight && (
+          <section style={{
+            marginBottom: secPad,
+            padding: cardPad,
+            borderLeft: `3px solid ${C.teal}`,
+            backgroundColor: C.white,
+            borderRadius: "0 12px 12px 0",
+            border: `1px solid ${C.border}`,
+            borderLeftWidth: 3,
+            borderLeftColor: C.teal,
+            animation: "fadeIn 600ms ease",
+          }}>
+            <p style={{ fontSize: 17, color: C.navy, fontWeight: 500, lineHeight: 1.55, margin: 0 }}>
+              {personalizedInsight}
+            </p>
+          </section>
+        )}
 
         {/* ── SECTION 2: AI EXPLANATION ── */}
         <section style={{ marginBottom: secPad }}>

@@ -719,6 +719,31 @@ export default function DiagnosticPage() {
       sessionStorage.setItem("rp_record", JSON.stringify(record));
       localStorage.setItem("rp_record", JSON.stringify(record));
 
+      // ── Background: personalize insight hook (non-blocking, all users) ──
+      try {
+        fetchWithRetry("https://runpayway-pressuremap.mcallpl.workers.dev/personalize", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...sharedBody,
+            weakest_factor: topFactor,
+            weakest_factor_label: topConstraint.label || "",
+          }),
+        }).then(async (res) => {
+          if (!res.ok) return;
+          const data = await res.json();
+          if (data?.email_hook) {
+            try {
+              const cur = JSON.parse(sessionStorage.getItem("rp_record") || "{}");
+              if (!cur._v2) cur._v2 = {};
+              (cur._v2 as Record<string, unknown>).personalized = data;
+              sessionStorage.setItem("rp_record", JSON.stringify(cur));
+              localStorage.setItem("rp_record", JSON.stringify(cur));
+            } catch { /* storage update failed — non-blocking */ }
+          }
+        }).catch(() => { /* personalize failed — non-blocking */ });
+      } catch { /* non-blocking */ }
+
       // Save record to cloud database (D1 via Worker)
       try {
         const recAdapted = record as Record<string, unknown>;
