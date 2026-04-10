@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 /* ================================================================== */
 /*  BADGE SVG API — /api/badge/[code]                                  */
 /*  Returns a premium pill-shaped SVG verification badge.              */

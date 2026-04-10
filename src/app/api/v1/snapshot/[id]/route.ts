@@ -1,6 +1,8 @@
 // RUNPAYWAY™ — GET /api/v1/snapshot/[id]
 // Retrieve issued record by record_id
 
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import { createStorageBackend } from "@/lib/engine";
 import { validateApiKey } from "@/lib/api-auth";

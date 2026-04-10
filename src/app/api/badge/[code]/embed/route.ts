@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 /* ================================================================== */
 /*  EMBED CODE ENDPOINT — /api/badge/[code]/embed                      */
 /*  Returns HTML embed snippet for the verification badge.             */

@@ -4,6 +4,7 @@
 
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || "";
 
 interface PressureMapRequest {

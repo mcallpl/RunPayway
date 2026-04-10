@@ -6,6 +6,7 @@ import { createStorageBackend } from "@/lib/engine";
 import { validateApiKey } from "@/lib/api-auth";
 import { auditLog, getClientIp } from "@/lib/audit-log";
 
+export const dynamic = "force-dynamic";
 export async function POST(request: NextRequest) {
   // API key authentication
   if (!validateApiKey(request)) {

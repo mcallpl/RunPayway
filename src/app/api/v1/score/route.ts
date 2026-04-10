@@ -10,6 +10,7 @@ import { verifyPaymentToken } from "@/lib/payment-token";
 import { auditLog, getClientIp } from "@/lib/audit-log";
 import { createStorageBackend } from "@/lib/engine";
 
+export const dynamic = "force-dynamic";
 function isAuthorized(request: NextRequest, body: Record<string, unknown>): boolean {
   if (validateApiKey(request)) return true;
 

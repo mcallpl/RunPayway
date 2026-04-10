@@ -5,6 +5,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
+export const dynamic = "force-dynamic";
 const FROM_ADDRESS = process.env.RESEND_FROM_EMAIL || "RunPayway™ <onboarding@resend.dev>";
 
 function getResend(): Resend | null {

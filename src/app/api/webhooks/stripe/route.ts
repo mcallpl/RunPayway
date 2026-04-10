@@ -16,6 +16,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { generatePaymentToken } from "@/lib/payment-token";
 import { auditLog, getClientIp } from "@/lib/audit-log";
 
+export const dynamic = "force-dynamic";
 export async function POST(request: NextRequest) {
   const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 
