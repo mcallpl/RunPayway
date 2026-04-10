@@ -218,6 +218,7 @@ export default function InitializationPage() {
   const [step, setStep] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const [portalRevealed, setPortalRevealed] = useState(false);
+  const [showIndustryInit, setShowIndustryInit] = useState(false);
   const [showPrepScreen, setShowPrepScreen] = useState(false);
   const [prepVisible, setPrepVisible] = useState(false);
   const [showReadyScreen, setShowReadyScreen] = useState(false);
@@ -365,8 +366,12 @@ export default function InitializationPage() {
     };
     sessionStorage.setItem("rp_profile", JSON.stringify(profile));
     localStorage.setItem("rp_profile", JSON.stringify(profile));
-    setShowPrepScreen(true);
-    setTimeout(() => setPrepVisible(true), 100);
+    setShowIndustryInit(true);
+    setTimeout(() => {
+      setShowIndustryInit(false);
+      setShowPrepScreen(true);
+      setTimeout(() => setPrepVisible(true), 100);
+    }, 1800);
   };
 
   const handlePrepContinue = () => {
@@ -385,6 +390,70 @@ export default function InitializationPage() {
 
   const canContinueStep0 = form.assessment_title.trim() !== "";
   const canContinueStep1 = form.industry_sector !== "" && form.operating_structure !== "" && form.primary_income_model !== "" && form.years_in_structure !== "";
+
+  /* ================================================================ */
+  /*  INDUSTRY INIT INTERSTITIAL                                        */
+  /* ================================================================ */
+  if (showIndustryInit) {
+    return (
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 9999,
+        background: "#F4F1EA",
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        padding: "0 32px",
+        animation: "rpInitFadeIn 600ms ease-out both",
+      }}>
+        <style>{`
+          @keyframes rpInitFadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+          }
+          @keyframes rpInitTextSlide {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+          }
+          @keyframes rpInitPulse {
+            0%, 100% { opacity: 0.4; }
+            50%      { opacity: 1; }
+          }
+        `}</style>
+        <div style={{ textAlign: "center" }}>
+          <div style={{
+            fontSize: 11, fontWeight: 600, fontFamily: mono,
+            color: "#1F6D7A", letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            marginBottom: 14,
+            animation: "rpInitTextSlide 500ms ease-out 100ms both",
+          }}>
+            Initializing
+          </div>
+          <div style={{
+            fontSize: mobile ? 28 : 36, fontWeight: 700, fontFamily: sans,
+            color: "#0E1A2B", letterSpacing: "-0.02em",
+            lineHeight: 1.2, marginBottom: 8,
+            animation: "rpInitTextSlide 500ms ease-out 250ms both",
+          }}>
+            {form.industry_sector}
+          </div>
+          <div style={{
+            fontSize: mobile ? 15 : 17, fontWeight: 400, fontFamily: sans,
+            color: "#4B3FAE", letterSpacing: "0.01em",
+            animation: "rpInitTextSlide 500ms ease-out 400ms both",
+          }}>
+            diagnostic framework
+          </div>
+          <div style={{
+            marginTop: 32,
+            width: 32, height: 2, borderRadius: 1,
+            background: "#1F6D7A",
+            margin: "32px auto 0",
+            animation: "rpInitPulse 1.2s ease-in-out infinite",
+          }} />
+        </div>
+      </div>
+    );
+  }
 
   /* ================================================================ */
   /*  PREPARATION SCREEN — Unmissable gate before assessment            */
