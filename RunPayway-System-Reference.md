@@ -559,3 +559,19 @@ Storage: `rp_lang` in localStorage. Hook: `useLanguage()`.
 | `ANTHROPIC_API_KEY` | Claude API key (worker) |
 | `PAYMENT_TOKEN_SECRET` | HMAC secret for payment tokens |
 | `FTP_SERVER` / `FTP_USERNAME` / `FTP_PASSWORD` | GoDaddy FTP credentials (GitHub Secrets) |
+
+---
+
+## 21. Formal Specification Pages
+
+RunPayway publishes the following formal specification pages, each explaining a specific aspect of the system:
+
+| Route | Purpose |
+|-------|---------|
+| `/methodology` | How the scoring model works |
+| `/model-version-policy` | Version stamping and immutability |
+| `/interpretation-contract` | How report language is selected |
+| `/version-governance` | Model version management and migration |
+| `/assessment-registry` | Score verification and record integrity |
+| `/security-practices` | Data protection and security |
+| `/developers` | API documentation |
