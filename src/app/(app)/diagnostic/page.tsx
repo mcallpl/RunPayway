@@ -641,186 +641,10 @@ export default function DiagnosticPage() {
         (record as Record<string, unknown>).assessment_title = profile.assessment_title;
       }
 
-      // ── Prepare shared data for all 3 Claude API calls ──
+      // ── Save record IMMEDIATELY — score is ready, AI content will be added async ──
       const adapted = record as Record<string, unknown>;
-      const v2Data = (adapted._v2 || {}) as Record<string, unknown>;
-      const ni = (v2Data.normalized_inputs || {}) as Record<string, unknown>;
-      const constraints = ((v2Data.constraints || {}) as Record<string, unknown>);
-      const topConstraint = (Array.isArray(constraints.ranked) && constraints.ranked.length > 0)
-        ? constraints.ranked[0] as Record<string, string>
-        : { factor: "recurrence", label: "Recurring Revenue" };
-      const topFactor = (Array.isArray(constraints.ranked) && constraints.ranked.length > 0)
-        ? (constraints.ranked[0] as Record<string, string>).factor || "recurrence"
-        : "recurrence";
-      const { getVocabulary } = await loadVocab();
-      const vocabCtx = getVocabulary(profile.industry_sector || "").worker_context;
-      const lift3 = v2Data.score_lift_projection as Record<string, unknown> | undefined;
-      const topLift = lift3?.highest_single_lift as Record<string, unknown> | undefined;
-
-      const sharedBody = {
-        industry: profile.industry_sector || "",
-        operating_structure: profile.operating_structure || "",
-        income_model: profile.primary_income_model || "",
-        years_in_structure: profile.years_in_structure || "",
-        score: (adapted.final_score as number) || 0,
-        band: (adapted.stability_band as string) || "",
-        vocab_context: vocabCtx,
-        recurrence_pct: (ni.income_persistence_pct as number) || 0,
-        concentration_pct: (ni.largest_source_pct as number) || 0,
-        forward_visibility_pct: (ni.forward_secured_pct as number) || 0,
-        labor_dependence_pct: (ni.labor_dependence_pct as number) || 0,
-        variability_level: (ni.income_variability_level as string) || "moderate",
-      };
-
-      // ── Run all 3 Claude API calls in PARALLEL (each takes 2-5s) ──
-      const [pmResult, peResult, apResult] = await Promise.allSettled([
-        // PressureMap
-        fetchWithRetry("https://runpayway-pressuremap.mcallpl.workers.dev", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...sharedBody, weakest_factor: topConstraint.factor || topConstraint.label || "", weakest_factor_value: topConstraint.label || "" }),
-        }).then(async (res) => res.ok ? res.json() : null).catch(() => null),
-
-        // Plain English
-        fetchWithRetry("https://runpayway-pressuremap.mcallpl.workers.dev/plain-english", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...sharedBody, weakest_factor: topFactor, active_income: adapted.active_income_level || 0, continuity_months: adapted.income_continuity_months || 0, risk_drop: adapted.risk_scenario_drop || 0 }),
-        }).then(async (res) => res.ok ? res.json() : null).catch(() => null),
-
-        // Action Plan
-        fetchWithRetry("https://runpayway-pressuremap.mcallpl.workers.dev/action-plan", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...sharedBody, weakest_factor: topFactor, active_income: adapted.active_income_level || 0, continuity_months: adapted.income_continuity_months || 0, risk_drop: adapted.risk_scenario_drop || 0, top_change: topLift?.label || "", projected_lift: topLift ? `${topLift.original_score} to ${topLift.projected_score} (+${topLift.lift})` : "" }),
-        }).then(async (res) => res.ok ? res.json() : null).catch(() => null),
-      ]);
-
-      // ── Apply results to record ──
-      const pmData = pmResult.status === "fulfilled" ? pmResult.value : null;
-      if (pmData?.pressure && pmData?.tailwind && pmData?.leverage_move) {
-        (record as Record<string, unknown>).pressure_map = {
-          generated_at: new Date().toISOString(), industry: profile.industry_sector || "",
-          operating_structure: profile.operating_structure || "", income_model: profile.primary_income_model || "",
-          pressure: pmData.pressure, tailwind: pmData.tailwind, leverage_move: pmData.leverage_move,
-        };
-      }
-
-      const peData = peResult.status === "fulfilled" ? peResult.value : null;
-      if (peData?.interpretation) {
-        const expl = (v2Data.explainability || {}) as Record<string, unknown>;
-        expl.why_this_score = peData.interpretation;
-        if (peData.why_not_higher) expl.why_not_higher = peData.why_not_higher;
-        (v2Data as Record<string, unknown>).explainability = expl;
-      }
-
-      const apData = apResult.status === "fulfilled" ? apResult.value : null;
-      if (apData?.primary_action) {
-        (v2Data as Record<string, unknown>).ai_action_plan = apData;
-      }
-
       sessionStorage.setItem("rp_record", JSON.stringify(record));
       localStorage.setItem("rp_record", JSON.stringify(record));
-
-      // ── Background: personalize insight hook (non-blocking, all users) ──
-      try {
-        fetchWithRetry("https://runpayway-pressuremap.mcallpl.workers.dev/personalize", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...sharedBody,
-            weakest_factor: topFactor,
-            weakest_factor_label: topConstraint.label || "",
-          }),
-        }).then(async (res) => {
-          if (!res.ok) return;
-          const data = await res.json();
-          if (data?.email_hook) {
-            try {
-              const cur = JSON.parse(sessionStorage.getItem("rp_record") || "{}");
-              if (!cur._v2) cur._v2 = {};
-              (cur._v2 as Record<string, unknown>).personalized = data;
-              sessionStorage.setItem("rp_record", JSON.stringify(cur));
-              localStorage.setItem("rp_record", JSON.stringify(cur));
-            } catch { /* storage update failed — non-blocking */ }
-          }
-        }).catch(() => { /* personalize failed — non-blocking */ });
-      } catch { /* non-blocking */ }
-
-      // Save record to cloud database (D1 via Worker)
-      try {
-        const recAdapted = record as Record<string, unknown>;
-        await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/save-record", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            id: recAdapted.record_id,
-            assessment_title: recAdapted.assessment_title || "",
-            industry: profile.industry_sector || "",
-            operating_structure: profile.operating_structure || "",
-            income_model: profile.primary_income_model || "",
-            score: recAdapted.final_score || 0,
-            band: recAdapted.stability_band || "",
-            record_data: JSON.stringify(record),
-            email: profile.recipient_email || "",
-            idempotency_key: idempotencyKey,
-          }),
-        });
-      } catch { /* Cloud save failed — local storage still works */ }
-
-      // Decrement entitlement usage (non-blocking)
-      try {
-        const entitlementId = sessionStorage.getItem("rp_entitlement_id") || localStorage.getItem("rp_entitlement_id") || "";
-        if (entitlementId) {
-          const recAdaptedForEnt = record as Record<string, unknown>;
-          fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/entitlement/use", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              entitlement_id: entitlementId,
-              assessment_id: recAdaptedForEnt.record_id || "",
-              idempotency_key: idempotencyKey,
-            }),
-          }, 8000).catch(() => { /* non-blocking */ });
-        }
-      } catch { /* Entitlement use failed — non-blocking */ }
-
-      // Send report email if customer has an email address
-      try {
-        const emailAddr = profile.recipient_email || "";
-        if (emailAddr && emailAddr.includes("@")) {
-          const recForEmail = record as Record<string, unknown>;
-          const v2ForEmail = ((recForEmail._v2 || {}) as Record<string, unknown>);
-          const explForEmail = (v2ForEmail.explainability || {}) as Record<string, string>;
-          const constraintsForEmail = (v2ForEmail.constraints || {}) as Record<string, unknown>;
-          const rootConstraintEmail = (constraintsForEmail.root_constraint as string) || "";
-          const constraintLabels: Record<string, string> = {
-            high_concentration: "Too much income depends on one source",
-            weak_forward_visibility: "Not enough income secured ahead of time",
-            high_labor_dependence: "Too much income stops when work stops",
-            low_persistence: "Not enough income repeats on its own",
-            low_source_diversity: "Income comes from too few sources",
-            high_variability: "Income swings too much month to month",
-          };
-          const topCEmail = constraintLabels[rootConstraintEmail]
-            || ((Array.isArray(constraintsForEmail.ranked) && constraintsForEmail.ranked.length > 0)
-              ? (constraintsForEmail.ranked[0] as Record<string, string>).label || ""
-              : "")
-            || "Structural weakness identified";
-          await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/send-email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              to: emailAddr,
-              name: recForEmail.assessment_title || "",
-              score: recForEmail.final_score || 0,
-              band: recForEmail.stability_band || "",
-              industry: profile.industry_sector || "",
-              operating_structure: profile.operating_structure || "",
-              constraint: topCEmail,
-              interpretation: explForEmail.why_this_score || "",
-              record_id: recForEmail.record_id || "",
-            }),
-          });
-        }
-      } catch { /* Email send failed — non-blocking */ }
 
       // Persist record for lookup (v1-adapted field names)
       const stored = JSON.parse(localStorage.getItem("rp_records") || "[]");
@@ -842,10 +666,10 @@ export default function DiagnosticPage() {
       clearAnswerStorage();
       sessionStorage.removeItem("rp_idempotency_key");
 
-      // API work is done — ensure minimum 5s of quote display, then show final card
+      // ── Route IMMEDIATELY — score is computed, no need to wait for AI ──
       apiDoneRef.current = true;
       const elapsedMs = Date.now() - loadingStartTime;
-      const remainingMs = Math.max(0, 3000 - elapsedMs);
+      const remainingMs = Math.max(0, 1500 - elapsedMs);
 
       const planKey = (() => {
         try {
@@ -863,15 +687,196 @@ export default function DiagnosticPage() {
             return;
           }
           // Paid users: go straight to score reveal
-          try {
-            const rec = JSON.parse(sessionStorage.getItem("rp_record") || "{}");
-            setRevealScore(rec.final_score || 0);
-            setRevealBand(rec.stability_band || "");
-          } catch { /* */ }
+          setRevealScore((adapted.final_score as number) || 0);
+          setRevealBand((adapted.stability_band as string) || "");
           setShowLoading(false);
           setShowReveal(true);
         }, 600);
       }, remainingMs);
+
+      // ── Background: AI enrichment + persistence (non-blocking) ──
+      (async () => {
+        try {
+          const v2Data = (adapted._v2 || {}) as Record<string, unknown>;
+          const ni = (v2Data.normalized_inputs || {}) as Record<string, unknown>;
+          const constraints = ((v2Data.constraints || {}) as Record<string, unknown>);
+          const topConstraint = (Array.isArray(constraints.ranked) && constraints.ranked.length > 0)
+            ? constraints.ranked[0] as Record<string, string>
+            : { factor: "recurrence", label: "Recurring Revenue" };
+          const topFactor = (Array.isArray(constraints.ranked) && constraints.ranked.length > 0)
+            ? (constraints.ranked[0] as Record<string, string>).factor || "recurrence"
+            : "recurrence";
+          const { getVocabulary } = await loadVocab();
+          const vocabCtx = getVocabulary(profile.industry_sector || "").worker_context;
+          const lift3 = v2Data.score_lift_projection as Record<string, unknown> | undefined;
+          const topLift = lift3?.highest_single_lift as Record<string, unknown> | undefined;
+
+          const sharedBody = {
+            industry: profile.industry_sector || "",
+            operating_structure: profile.operating_structure || "",
+            income_model: profile.primary_income_model || "",
+            years_in_structure: profile.years_in_structure || "",
+            score: (adapted.final_score as number) || 0,
+            band: (adapted.stability_band as string) || "",
+            vocab_context: vocabCtx,
+            recurrence_pct: (ni.income_persistence_pct as number) || 0,
+            concentration_pct: (ni.largest_source_pct as number) || 0,
+            forward_visibility_pct: (ni.forward_secured_pct as number) || 0,
+            labor_dependence_pct: (ni.labor_dependence_pct as number) || 0,
+            variability_level: (ni.income_variability_level as string) || "moderate",
+          };
+
+          // Run all 3 Claude API calls + /personalize in PARALLEL
+          const [pmResult, peResult, apResult, persResult] = await Promise.allSettled([
+            // PressureMap
+            fetchWithRetry("https://runpayway-pressuremap.mcallpl.workers.dev", {
+              method: "POST", headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ ...sharedBody, weakest_factor: topConstraint.factor || topConstraint.label || "", weakest_factor_value: topConstraint.label || "" }),
+            }).then(async (res) => res.ok ? res.json() : null).catch(() => null),
+
+            // Plain English
+            fetchWithRetry("https://runpayway-pressuremap.mcallpl.workers.dev/plain-english", {
+              method: "POST", headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ ...sharedBody, weakest_factor: topFactor, active_income: adapted.active_income_level || 0, continuity_months: adapted.income_continuity_months || 0, risk_drop: adapted.risk_scenario_drop || 0 }),
+            }).then(async (res) => res.ok ? res.json() : null).catch(() => null),
+
+            // Action Plan
+            fetchWithRetry("https://runpayway-pressuremap.mcallpl.workers.dev/action-plan", {
+              method: "POST", headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ ...sharedBody, weakest_factor: topFactor, active_income: adapted.active_income_level || 0, continuity_months: adapted.income_continuity_months || 0, risk_drop: adapted.risk_scenario_drop || 0, top_change: topLift?.label || "", projected_lift: topLift ? `${topLift.original_score} to ${topLift.projected_score} (+${topLift.lift})` : "" }),
+            }).then(async (res) => res.ok ? res.json() : null).catch(() => null),
+
+            // Personalize
+            fetchWithRetry("https://runpayway-pressuremap.mcallpl.workers.dev/personalize", {
+              method: "POST", headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                ...sharedBody,
+                weakest_factor: topFactor,
+                assessment_title: profile.assessment_title || "",
+                active_income_pct: adapted.active_income_level || 0,
+                persistent_income_pct: adapted.persistent_income_level || 0,
+                continuity_months: adapted.income_continuity_months || 0,
+                risk_drop: adapted.risk_scenario_drop || 0,
+                fragility_class: (v2Data.fragility as Record<string, unknown>)?.fragility_class || "",
+                top_lift_action: topLift?.label || "",
+                top_lift_points: topLift?.lift || 0,
+                projected_score: topLift?.projected_score || 0,
+                strongest_factor: "",
+              }),
+            }).then(async (res) => res.ok ? res.json() : null).catch(() => null),
+          ]);
+
+          // Apply AI results to record
+          const pmData = pmResult.status === "fulfilled" ? pmResult.value : null;
+          if (pmData?.pressure && pmData?.tailwind && pmData?.leverage_move) {
+            (record as Record<string, unknown>).pressure_map = {
+              generated_at: new Date().toISOString(), industry: profile.industry_sector || "",
+              operating_structure: profile.operating_structure || "", income_model: profile.primary_income_model || "",
+              pressure: pmData.pressure, tailwind: pmData.tailwind, leverage_move: pmData.leverage_move,
+            };
+          }
+
+          const peData = peResult.status === "fulfilled" ? peResult.value : null;
+          if (peData?.interpretation) {
+            const expl = (v2Data.explainability || {}) as Record<string, unknown>;
+            expl.why_this_score = peData.interpretation;
+            if (peData.why_not_higher) expl.why_not_higher = peData.why_not_higher;
+            (v2Data as Record<string, unknown>).explainability = expl;
+          }
+
+          const apData = apResult.status === "fulfilled" ? apResult.value : null;
+          if (apData?.primary_action) {
+            (v2Data as Record<string, unknown>).ai_action_plan = apData;
+          }
+
+          const persData = persResult.status === "fulfilled" ? persResult.value : null;
+          if (persData) {
+            (v2Data as Record<string, unknown>).personalized = persData;
+          }
+
+          // Update record in storage with AI-enriched content
+          sessionStorage.setItem("rp_record", JSON.stringify(record));
+          localStorage.setItem("rp_record", JSON.stringify(record));
+
+          // Save record to cloud database (D1 via Worker)
+          try {
+            const recAdapted = record as Record<string, unknown>;
+            await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/save-record", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                id: recAdapted.record_id,
+                assessment_title: recAdapted.assessment_title || "",
+                industry: profile.industry_sector || "",
+                operating_structure: profile.operating_structure || "",
+                income_model: profile.primary_income_model || "",
+                score: recAdapted.final_score || 0,
+                band: recAdapted.stability_band || "",
+                record_data: JSON.stringify(record),
+                email: profile.recipient_email || "",
+                idempotency_key: idempotencyKey,
+              }),
+            });
+          } catch { /* Cloud save failed — local storage still works */ }
+
+          // Decrement entitlement usage (non-blocking)
+          try {
+            const entitlementId = sessionStorage.getItem("rp_entitlement_id") || localStorage.getItem("rp_entitlement_id") || "";
+            if (entitlementId) {
+              const recAdaptedForEnt = record as Record<string, unknown>;
+              fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/entitlement/use", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  entitlement_id: entitlementId,
+                  assessment_id: recAdaptedForEnt.record_id || "",
+                  idempotency_key: idempotencyKey,
+                }),
+              }, 8000).catch(() => { /* non-blocking */ });
+            }
+          } catch { /* Entitlement use failed — non-blocking */ }
+
+          // Send report email if customer has an email address (wait for AI content)
+          try {
+            const emailAddr = profile.recipient_email || "";
+            if (emailAddr && emailAddr.includes("@")) {
+              const recForEmail = record as Record<string, unknown>;
+              const v2ForEmail = ((recForEmail._v2 || {}) as Record<string, unknown>);
+              const explForEmail = (v2ForEmail.explainability || {}) as Record<string, string>;
+              const constraintsForEmail = (v2ForEmail.constraints || {}) as Record<string, unknown>;
+              const rootConstraintEmail = (constraintsForEmail.root_constraint as string) || "";
+              const constraintLabels: Record<string, string> = {
+                high_concentration: "Too much income depends on one source",
+                weak_forward_visibility: "Not enough income secured ahead of time",
+                high_labor_dependence: "Too much income stops when work stops",
+                low_persistence: "Not enough income repeats on its own",
+                low_source_diversity: "Income comes from too few sources",
+                high_variability: "Income swings too much month to month",
+              };
+              const topCEmail = constraintLabels[rootConstraintEmail]
+                || ((Array.isArray(constraintsForEmail.ranked) && constraintsForEmail.ranked.length > 0)
+                  ? (constraintsForEmail.ranked[0] as Record<string, string>).label || ""
+                  : "")
+                || "Structural weakness identified";
+              await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/send-email", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  to: emailAddr,
+                  name: recForEmail.assessment_title || "",
+                  score: recForEmail.final_score || 0,
+                  band: recForEmail.stability_band || "",
+                  industry: profile.industry_sector || "",
+                  operating_structure: profile.operating_structure || "",
+                  constraint: topCEmail,
+                  interpretation: explForEmail.why_this_score || "",
+                  record_id: recForEmail.record_id || "",
+                }),
+              });
+            }
+          } catch { /* Email send failed — non-blocking */ }
+        } catch { /* Background enrichment failed — record still has engine data */ }
+      })();
 
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Submission failed";
