@@ -164,6 +164,26 @@ export default function FreeScorePage() {
     requestAnimationFrame(step);
   }, [record]);
 
+  /* Stress test — must be before any early return to preserve hook order */
+  useEffect(() => {
+    if (!record) return;
+    const v2s = record._v2 as Record<string, unknown> | undefined;
+    const nis = v2s?.normalized_inputs as Record<string, number | string> | undefined;
+    const stressInputs: CanonicalInputs = nis ? {
+      income_persistence_pct: (nis.income_persistence_pct as number) || 0,
+      largest_source_pct: (nis.largest_source_pct as number) || 0,
+      source_diversity_count: (nis.source_diversity_count as number) || 1,
+      forward_secured_pct: (nis.forward_secured_pct as number) || 0,
+      income_variability_level: ((nis.income_variability_level as string) || "moderate"),
+      labor_dependence_pct: (nis.labor_dependence_pct as number) || 0,
+    } : { income_persistence_pct: 25, largest_source_pct: 60, source_diversity_count: 2, forward_secured_pct: 15, income_variability_level: "moderate" as const, labor_dependence_pct: 70 };
+    const qs = ((v2s?.quality as Record<string, number>)?.quality_score) ?? 5;
+    setStressLoading(true);
+    fetchSimulationBatch(stressInputs, [{ id: "stress", preset_id: "lose_top_client" }], qs)
+      .then(results => { setStressResult(results.stress ?? null); setStressLoading(false); })
+      .catch(err => { console.error("Stress test failed:", err); setStressLoading(false); });
+  }, [record]);
+
   if (!record) return null;
 
   /* ── Derived data ── */
@@ -179,27 +199,6 @@ export default function FreeScorePage() {
   const v2 = record._v2 as Record<string, unknown> | undefined;
   const rootConstraint = (v2?.constraints as { root_constraint: string })?.root_constraint || "weak_forward_visibility";
   const constraintLabel = CONSTRAINT_LABELS[rootConstraint] || rootConstraint.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
-
-  /* Stress test — fetch projected drop from worker */
-  const ni = v2?.normalized_inputs as Record<string, number | string> | undefined;
-  const inputs: CanonicalInputs = ni ? {
-    income_persistence_pct: (ni.income_persistence_pct as number) || 0,
-    largest_source_pct: (ni.largest_source_pct as number) || 0,
-    source_diversity_count: (ni.source_diversity_count as number) || 1,
-    forward_secured_pct: (ni.forward_secured_pct as number) || 0,
-    income_variability_level: ((ni.income_variability_level as string) || "moderate"),
-    labor_dependence_pct: (ni.labor_dependence_pct as number) || 0,
-  } : { income_persistence_pct: 25, largest_source_pct: 60, source_diversity_count: 2, forward_secured_pct: 15, income_variability_level: "moderate" as const, labor_dependence_pct: 70 };
-  const qScore = ((v2?.quality as Record<string, number>)?.quality_score) ?? 5;
-
-  useEffect(() => {
-    if (!record) return;
-    setStressLoading(true);
-    fetchSimulationBatch(inputs, [{ id: "stress", preset_id: "lose_top_client" }], qScore)
-      .then(results => { setStressResult(results.stress ?? null); setStressLoading(false); })
-      .catch(err => { console.error("Stress test failed:", err); setStressLoading(false); });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [record]);
 
   const projectedDrop = stressResult?.overall_score ?? score;
   const projectedBand = stressResult?.band ?? band;
