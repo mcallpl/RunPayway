@@ -2641,7 +2641,7 @@ function followUpDay30(name, score, topAction, daysSince, recordId, industry) {
 <tr><td style="background:#ffffff;padding:44px 40px 40px;border-radius:12px;">
 <p style="font-size:22px;font-weight:300;color:#1C1635;margin:0 0 12px;">${daysSince} days since your assessment.</p>
 <p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 16px;">Your score of <strong style="color:#1C1635;">${score}</strong> reflects your income structure \u2014 not market conditions. The only way to change it is to make a structural change.</p>
-<p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 24px;">${topAction ? `Your highest-leverage move is still: <strong style="color:#1C1635;">${topAction}</strong>. ` : ""}Use the Simulator to model the impact before you commit.</p>
+<p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 24px;">${topAction ? `Your highest-leverage move${industry ? ` as a ${industry.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())} professional` : ""} is still: <strong style="color:#1C1635;">${topAction}</strong>. ` : ""}Use the Simulator to model the impact before you commit.</p>
 ${(() => { const p = getReassessmentPrompts(industry); return `<div style="border-left:3px solid #1F6D7A;padding:16px 20px;background:rgba(31,109,122,0.04);border-radius:0 8px 8px 0;margin-bottom:24px;">
 <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#1F6D7A;margin-bottom:8px;">HAS ANYTHING CHANGED?</div>
 <div style="font-size:13px;color:rgba(14,26,43,0.65);line-height:1.65;margin-bottom:10px;">${p.recurrence}</div>
