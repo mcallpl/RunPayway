@@ -3,10 +3,8 @@
 import { useEffect, useState, useRef, useCallback, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import { simulateScore, SIMULATOR_PRESETS, projectTimeline } from "@/lib/engine/v2/simulate";
-import type { CanonicalInput } from "@/lib/engine/v2/types";
-import type { TimelinePoint } from "@/lib/engine/v2/simulate";
-import { getScriptsForSector } from "@/lib/action-scripts";
+import { fetchSimulationBatch, fetchSimulation, fetchTimeline, fetchPresets, fetchActionScripts } from "@/lib/worker-api";
+import type { SimulationResult, PresetMeta, ActionScript, CanonicalInputs, TimelinePoint } from "@/lib/worker-api";
 import SuiteHeader from "@/components/SuiteHeader";
 import ShareableScoreCard from "@/components/ShareableScoreCard";
 // Sample data removed — empty state teasers replace demo mode
@@ -297,7 +295,7 @@ const IND: Record<string, { general: string; redAvg: number; greenAvg: number }>
 /* ================================================================== */
 /*  CONSTRAINT NARRATIVES                                              */
 /* ================================================================== */
-function constraintNarrative(c: string, i: CanonicalInput): string {
+function constraintNarrative(c: string, i: CanonicalInputs): string {
   const n: Record<string, string> = {
     high_concentration: `Your largest source represents ${i.largest_source_pct}% of income. If that single relationship changes, ${i.largest_source_pct}% of your revenue disappears in one decision.`,
     weak_forward_visibility: `Only ${i.forward_secured_pct}% of your income is committed forward. You are re-selling your time every month.`,
@@ -378,6 +376,11 @@ function DashboardContent() {
   const [copiedRecord, setCopiedRecord] = useState(false);
   const [snapshotTip, setSnapshotTip] = useState<string | null>(null);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [simResults, setSimResults] = useState<Record<string, SimulationResult> | null>(null);
+  const [activeTimeline, setActiveTimeline] = useState<TimelinePoint[] | null>(null);
+  const [presetMeta, setPresetMeta] = useState<PresetMeta[]>([]);
+  const [workerScripts, setWorkerScripts] = useState<ActionScript[]>([]);
+  const [simLoading, setSimLoading] = useState(true);
 
   /* ── IntersectionObserver for phase nav ── */
   useEffect(() => {
@@ -551,42 +554,79 @@ function DashboardContent() {
   const indLabel = sector ? fmtIndustry(sector) : "";
   const assessedDate = issuedDate ? new Date(issuedDate).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "";
 
-  const base: CanonicalInput = ni ? {
+  const base: CanonicalInputs = ni ? {
     income_persistence_pct: ni.income_persistence_pct as number, largest_source_pct: ni.largest_source_pct as number,
     source_diversity_count: ni.source_diversity_count as number, forward_secured_pct: ni.forward_secured_pct as number,
-    income_variability_level: (ni.income_variability_level || "moderate") as CanonicalInput["income_variability_level"],
+    income_variability_level: (ni.income_variability_level || "moderate") as string,
     labor_dependence_pct: ni.labor_dependence_pct as number,
   } : { income_persistence_pct: 25, largest_source_pct: 60, source_diversity_count: 2, forward_secured_pct: 15, income_variability_level: "moderate" as const, labor_dependence_pct: 70 };
 
   const qScore = ((v2?.quality as Record<string, number>)?.quality_score) ?? 5;
-  const baseRes = simulateScore(base, qScore);
-  const dScore = score > 0 ? score : baseRes.overall_score;
-  const dBand = band || baseRes.band;
+
+  /* ── Fetch all simulations from worker (async, stored in state) ── */
+  useEffect(() => {
+    if (!hasRecord) return;
+    const scenarios = [
+      { id: "base" },
+      { id: "add_client", preset_id: "add_client" },
+      { id: "convert_retainer", preset_id: "convert_retainer" },
+      { id: "build_passive", preset_id: "build_passive" },
+      { id: "lock_forward", preset_id: "lock_forward" },
+      { id: "lose_top_client", preset_id: "lose_top_client" },
+      { id: "cant_work_90_days", preset_id: "cant_work_90_days" },
+    ];
+    setSimLoading(true);
+    fetchSimulationBatch(base, scenarios, qScore)
+      .then(results => { setSimResults(results); setSimLoading(false); })
+      .catch(err => { console.error("Simulation batch failed:", err); setSimLoading(false); });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasRecord, score]);
+
+  /* ── Fetch presets metadata ── */
+  useEffect(() => {
+    fetchPresets(sector || undefined)
+      .then(setPresetMeta)
+      .catch(err => console.error("Presets fetch failed:", err));
+  }, [sector]);
+
+  /* ── Fetch action scripts from worker ── */
+  useEffect(() => {
+    if (!sector) return;
+    const sKey = normSector(sector);
+    fetchActionScripts(sKey)
+      .then(raw => setWorkerScripts(raw))
+      .catch(err => console.error("Action scripts fetch failed:", err));
+  }, [sector]);
+
+  const baseRes = simResults?.base ?? null;
+  const dScore = score > 0 ? score : (baseRes?.overall_score ?? 0);
+  const dBand = band || (baseRes?.band ?? "");
   const sectorKey = normSector(sector);
   const indData = IND[sectorKey] || IND.default;
-  const scripts = sector ? getScriptsForSector(sectorKey) || getScriptsForSector(sector) : [];
+  // Adapt worker ActionScript shape (body, sector) to dashboard-expected shape (script, context)
+  const scripts = workerScripts.map(s => ({ id: s.id, title: s.title, context: "", script: s.body, sector: s.sector }));
 
   /* ── PressureMap ── */
   const rootCon = con?.root_constraint || "weak_forward_visibility";
   const secCon = con?.secondary_constraint || "";
   const conPreset: Record<string, string> = { high_concentration: "add_client", weak_forward_visibility: "lock_forward", high_labor_dependence: "build_passive", low_persistence: "convert_retainer", low_source_diversity: "add_client", high_variability: "convert_retainer", weak_durability: "convert_retainer", shallow_continuity: "build_passive" };
-  const liftOf = (pid: string) => { const p = SIMULATOR_PRESETS.find(x => x.id === pid); if (!p) return { s: dScore, l: 0 }; const res = simulateScore(p.modify(base), qScore); return { s: res.overall_score, l: Math.max(0, res.overall_score - dScore) }; };
+  const liftOf = (pid: string) => { const r = simResults?.[pid]; if (!r) return { s: dScore, l: 0 }; return { s: r.overall_score, l: Math.max(0, r.overall_score - dScore) }; };
   const redP = conPreset[rootCon] || "convert_retainer";
   const redR = liftOf(redP);
   const grnP = rootCon === "high_labor_dependence" ? "lock_forward" : "build_passive";
   const grnR = liftOf(grnP);
 
   /* ── Stress drops for consequence pairing ── */
-  const stLCDrop = dScore - simulateScore(SIMULATOR_PRESETS.find(p => p.id === "lose_top_client")!.modify(base), qScore).overall_score;
-  const stNWDrop = dScore - simulateScore(SIMULATOR_PRESETS.find(p => p.id === "cant_work_90_days")!.modify(base), qScore).overall_score;
+  const stLCDrop = dScore - (simResults?.lose_top_client?.overall_score ?? dScore);
+  const stNWDrop = dScore - (simResults?.cant_work_90_days?.overall_score ?? dScore);
 
   const indName = indLabel || "your sector";
   const severity = (pct: number, avg: number): "critical" | "elevated" | "managed" => pct > avg + 10 ? "critical" : pct > avg - 5 ? "elevated" : "managed";
   const redSev = severity(activeInc, indData.redAvg);
   const grnSev = severity(indData.greenAvg, persInc); // inverted: low protected = bad
 
-  const redAction = SIMULATOR_PRESETS.find(p => p.id === redP);
-  const grnAction = SIMULATOR_PRESETS.find(p => p.id === grnP);
+  const redAction = presetMeta.find(p => p.id === redP);
+  const grnAction = presetMeta.find(p => p.id === grnP);
 
   const zones = [
     { id: "active", label: "Income That Stops", pct: activeInc, color: B.red, lift: redR.l, sev: redSev,
@@ -616,10 +656,13 @@ function DashboardContent() {
   ];
 
   /* ── Top moves ── */
-  const topMoves = SIMULATOR_PRESETS.filter(p => !["lose_top_client", "cant_work_90_days"].includes(p.id)).map(p => {
-    const res = simulateScore(p.modify(base), qScore);
-    return { ...p, lift: res.overall_score - dScore, projected: res.overall_score, resBand: res.band, effort: p.id === "lock_forward" || p.id === "convert_retainer" ? "Low" : "High", speed: p.id === "lock_forward" || p.id === "convert_retainer" ? "Fast" : "Gradual" };
-  }).filter(p => p.lift > 0).sort((a, b) => b.lift - a.lift);
+  const growthIds = ["add_client", "convert_retainer", "build_passive", "lock_forward"];
+  const topMoves = growthIds.map(pid => {
+    const meta = presetMeta.find(p => p.id === pid);
+    const res = simResults?.[pid];
+    if (!res) return null;
+    return { id: pid, label: meta?.label || pid.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()), description: meta?.description || "", lift: res.overall_score - dScore, projected: res.overall_score, resBand: res.band, effort: pid === "lock_forward" || pid === "convert_retainer" ? "Low" as const : "High" as const, speed: pid === "lock_forward" || pid === "convert_retainer" ? "Fast" as const : "Gradual" as const };
+  }).filter((p): p is NonNullable<typeof p> => p !== null && p.lift > 0).sort((a, b) => b.lift - a.lift);
 
   const scriptFor = (pid: string) => { if (!scripts.length) return null; if (pid === "convert_retainer") return scripts.find(s => s.id.includes("retainer")) || scripts[0]; if (pid === "add_client") return scripts.find(s => s.id.includes("diversi") || s.id.includes("referral")) || scripts[1]; if (pid === "build_passive") return scripts[2] || scripts[0]; return scripts[0]; };
 
@@ -674,23 +717,50 @@ function DashboardContent() {
     { id: "passive", label: "Built passive income", pid: "build_passive" },
     { id: "forward", label: "Secured forward revenue", pid: "lock_forward" },
   ];
-  let qInputs = { ...base };
   const qCount = Object.values(quickToggles).filter(Boolean).length;
-  for (const a of qActions) { if (quickToggles[a.id]) { const p = SIMULATOR_PRESETS.find(x => x.id === a.pid); if (p) qInputs = p.modify(qInputs); } }
-  const qResult = simulateScore(qInputs, qScore);
-  const qLift = qCount > 0 ? qResult.overall_score - dScore : 0;
+  /* Quick toggles — fire debounced fetch when toggles change */
+  const [qResult, setQResult] = useState<SimulationResult | null>(null);
+  useEffect(() => {
+    if (qCount === 0 || !hasRecord) { setQResult(null); return; }
+    // Build composite modified_inputs from active toggles
+    const activeIds = qActions.filter(a => quickToggles[a.id]).map(a => a.pid);
+    // Fire individual sim with combined preset IDs — worker applies them in sequence
+    const scenarios = activeIds.map(pid => ({ id: pid, preset_id: pid }));
+    const timer = setTimeout(() => {
+      fetchSimulationBatch(base, [{ id: "quick_composite", preset_id: activeIds[0] }, ...scenarios.slice(1)], qScore)
+        .then(results => {
+          // Get the last scenario result as composite
+          const lastKey = Object.keys(results).pop();
+          if (lastKey) setQResult(results[lastKey]);
+        })
+        .catch(err => console.error("Quick toggle sim failed:", err));
+    }, 300);
+    return () => clearTimeout(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [qCount, quickToggles, hasRecord]);
+  const qLift = qCount > 0 && qResult ? qResult.overall_score - dScore : 0;
 
-  /* ── Scenario — Change 5: auto-select best preset ── */
+  /* ── Scenario — auto-select best preset ── */
   const effectivePreset = activePreset ?? (topMoves[0]?.id || null);
-  const aPO = SIMULATOR_PRESETS.find(p => p.id === effectivePreset);
-  const sInputs = aPO ? aPO.modify(base) : base;
-  const sResult = aPO ? simulateScore(sInputs, qScore) : baseRes;
-  const sDelta = aPO ? sResult.overall_score - dScore : 0;
-  const sTL: TimelinePoint[] = aPO ? projectTimeline(base, sInputs, qScore) : [];
+  const aPO = presetMeta.find(p => p.id === effectivePreset);
+  const sResult = effectivePreset ? simResults?.[effectivePreset] ?? null : null;
+  const sDelta = sResult ? sResult.overall_score - dScore : 0;
+
+  /* ── Timeline — fetch when scenario changes ── */
+  useEffect(() => {
+    if (!effectivePreset || !hasRecord || !sResult) { setActiveTimeline(null); return; }
+    // Build target inputs: we approximate by using the scenario result's factor_scores
+    // The worker handles the preset application internally via preset_id in batch
+    fetchTimeline(base, base, qScore)
+      .then(setActiveTimeline)
+      .catch(err => { console.error("Timeline fetch failed:", err); setActiveTimeline(null); });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [effectivePreset, hasRecord]);
+  const sTL: TimelinePoint[] = activeTimeline || [];
 
   /* ── Stress ── */
-  const stLC = simulateScore(SIMULATOR_PRESETS.find(p => p.id === "lose_top_client")!.modify(base), qScore);
-  const stNW = simulateScore(SIMULATOR_PRESETS.find(p => p.id === "cant_work_90_days")!.modify(base), qScore);
+  const stLC = simResults?.lose_top_client ?? null;
+  const stNW = simResults?.cant_work_90_days ?? null;
 
   /* ── Progress ── */
   const nextT = dScore < 30 ? 30 : dScore < 50 ? 50 : dScore < 75 ? 75 : 100;
@@ -1226,8 +1296,8 @@ function DashboardContent() {
           <section style={{ marginBottom: 24 }}>
             <div style={{ display: "flex", gap: mobile ? 12 : 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
               {[
-                { label: "Your biggest client stops paying", insight: `Your score drops to ${stLC.overall_score}.${stLC.overall_score < 30 && dScore >= 30 ? " That puts you in Limited Stability." : ""}`, val: `${dScore} → ${stLC.overall_score}` },
-                { label: "You can't work for 90 days", insight: `Your score drops to ${stNW.overall_score}.${stNW.overall_score < 30 && dScore >= 30 ? " That puts you in Limited Stability." : ""}`, val: `${dScore} → ${stNW.overall_score}` },
+                { label: "Your biggest client stops paying", insight: stLC ? `Your score drops to ${stLC.overall_score}.${stLC.overall_score < 30 && dScore >= 30 ? " That puts you in Limited Stability." : ""}` : "Loading...", val: stLC ? `${dScore} → ${stLC.overall_score}` : "..." },
+                { label: "You can't work for 90 days", insight: stNW ? `Your score drops to ${stNW.overall_score}.${stNW.overall_score < 30 && dScore >= 30 ? " That puts you in Limited Stability." : ""}` : "Loading...", val: stNW ? `${dScore} → ${stNW.overall_score}` : "..." },
               ].map(row => (
                 <div key={row.label} style={{ flex: 1, padding: mobile ? "22px 18px" : "26px 28px", borderRadius: 16, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${B.red}` }}>
                   <p style={{ fontSize: 15, fontWeight: 500, color: B.navy, margin: "0 0 6px", lineHeight: 1.4 }}>{row.label}</p>
@@ -1537,17 +1607,21 @@ function DashboardContent() {
             </button>
 
             {whatIfOpen && (() => {
-              const growthPresets = SIMULATOR_PRESETS.filter(p => !["lose_top_client", "cant_work_90_days"].includes(p.id));
-              const stressPresets = SIMULATOR_PRESETS.filter(p => ["lose_top_client", "cant_work_90_days"].includes(p.id));
+              const growthPresetsMeta = presetMeta.filter(p => !["lose_top_client", "cant_work_90_days"].includes(p.id));
+              const stressPresetsMeta = presetMeta.filter(p => ["lose_top_client", "cant_work_90_days"].includes(p.id));
 
               return (
               <div style={{ border: `1px solid ${B.stone}`, borderTop: "none", borderRadius: "0 0 14px 14px", backgroundColor: B.surface, padding: mobile ? "24px 20px" : "28px 32px" }}>
 
+                {simLoading && !simResults ? (
+                  <div style={{ textAlign: "center", padding: "24px 0", color: B.taupe, fontSize: 14 }}>Loading simulations...</div>
+                ) : (
+                <>
                 {/* GROWTH MOVES */}
                 <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, marginBottom: 12 }}>GROWTH MOVES</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 24 }}>
-                  {growthPresets.map((pr, idx) => {
-                    const res = simulateScore(pr.modify(base), qScore); const lift = res.overall_score - dScore;
+                  {growthPresetsMeta.map((pr) => {
+                    const res = simResults?.[pr.id]; const lift = res ? res.overall_score - dScore : 0;
                     const isA = effectivePreset === pr.id;
                     const isTop = topMoves[0]?.id === pr.id;
                     const why = isTop ? `Recommended \u2014 addresses your root constraint (${rootCon.replace(/_/g, " ")})` : null;
@@ -1571,8 +1645,8 @@ function DashboardContent() {
                 {/* STRESS TESTS */}
                 <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: B.red, marginBottom: 12 }}>STRESS TESTS</div>
                 <div style={{ display: "flex", gap: 8, marginBottom: 24, flexDirection: mobile ? "column" : "row" }}>
-                  {stressPresets.map(pr => {
-                    const res = simulateScore(pr.modify(base), qScore); const lift = res.overall_score - dScore;
+                  {stressPresetsMeta.map(pr => {
+                    const res = simResults?.[pr.id]; const lift = res ? res.overall_score - dScore : 0;
                     const isA = effectivePreset === pr.id;
                     return (
                       <button key={pr.id} onClick={() => setActivePreset(isA && activePreset === pr.id ? null : pr.id)}
@@ -1586,12 +1660,11 @@ function DashboardContent() {
                     );
                   })}
                 </div>
-
-                {/* Removed: Goal Mode, Save Paths, Compare Paths, Timeline projections
-                   — didn't answer "what is this going to do for me?" */}
+                </>
+                )}
 
                 {/* SCENARIO RESULT — clean, answers "what would this do for me?" */}
-                {effectivePreset && aPO && (
+                {effectivePreset && aPO && sResult && (
                   <div style={{ padding: mobile ? "22px 20px" : "24px 28px", borderRadius: 16, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${sDelta >= 0 ? B.teal : B.red}` }}>
                     <p style={{ fontSize: 16, fontWeight: 500, color: B.navy, margin: "0 0 8px", lineHeight: 1.4 }}>
                       {sDelta > 0

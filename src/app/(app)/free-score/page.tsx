@@ -2,8 +2,8 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { simulateScore, SIMULATOR_PRESETS } from "@/lib/engine/v2/simulate";
-import type { CanonicalInput } from "@/lib/engine/v2/simulate";
+import { fetchSimulationBatch } from "@/lib/worker-api";
+import type { SimulationResult, CanonicalInputs } from "@/lib/worker-api";
 import { bandColor as bandColorFn } from "@/lib/design-tokens";
 import EmailCapture from "@/components/EmailCapture";
 
@@ -111,6 +111,8 @@ export default function FreeScorePage() {
   const [animatedScore, setAnimatedScore] = useState(0);
   const [mobile, setMobile] = useState(false);
   const scoreAnimated = useRef(false);
+  const [stressResult, setStressResult] = useState<SimulationResult | null>(null);
+  const [stressLoading, setStressLoading] = useState(true);
 
   useEffect(() => { const c = () => setMobile(window.innerWidth <= 768); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
 
@@ -178,22 +180,29 @@ export default function FreeScorePage() {
   const rootConstraint = (v2?.constraints as { root_constraint: string })?.root_constraint || "weak_forward_visibility";
   const constraintLabel = CONSTRAINT_LABELS[rootConstraint] || rootConstraint.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
 
-  /* Stress test — compute projected drop */
+  /* Stress test — fetch projected drop from worker */
   const ni = v2?.normalized_inputs as Record<string, number | string> | undefined;
-  const inputs: CanonicalInput = ni ? {
+  const inputs: CanonicalInputs = ni ? {
     income_persistence_pct: (ni.income_persistence_pct as number) || 0,
     largest_source_pct: (ni.largest_source_pct as number) || 0,
     source_diversity_count: (ni.source_diversity_count as number) || 1,
     forward_secured_pct: (ni.forward_secured_pct as number) || 0,
-    income_variability_level: ((ni.income_variability_level as string) || "moderate") as CanonicalInput["income_variability_level"],
+    income_variability_level: ((ni.income_variability_level as string) || "moderate"),
     labor_dependence_pct: (ni.labor_dependence_pct as number) || 0,
   } : { income_persistence_pct: 25, largest_source_pct: 60, source_diversity_count: 2, forward_secured_pct: 15, income_variability_level: "moderate" as const, labor_dependence_pct: 70 };
   const qScore = ((v2?.quality as Record<string, number>)?.quality_score) ?? 5;
 
-  const stressPreset = SIMULATOR_PRESETS.find(p => p.id === "lose_top_client")!;
-  const stressResult = simulateScore(stressPreset.modify(inputs), qScore);
-  const projectedDrop = stressResult.overall_score;
-  const projectedBand = stressResult.band;
+  useEffect(() => {
+    if (!record) return;
+    setStressLoading(true);
+    fetchSimulationBatch(inputs, [{ id: "stress", preset_id: "lose_top_client" }], qScore)
+      .then(results => { setStressResult(results.stress ?? null); setStressLoading(false); })
+      .catch(err => { console.error("Stress test failed:", err); setStressLoading(false); });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [record]);
+
+  const projectedDrop = stressResult?.overall_score ?? score;
+  const projectedBand = stressResult?.band ?? band;
 
   const constraintExplanation = CONSTRAINT_EXPLANATIONS[rootConstraint] || "Your income structure has a primary limiting factor that increases exposure to disruption.";
   const behaviorText = BEHAVIOR_DESCRIPTIONS[rootConstraint] || "Your income structure has dependencies that affect how it responds to change.";
@@ -341,6 +350,10 @@ export default function FreeScorePage() {
             backgroundColor: "rgba(155,44,44,0.04)", border: "1px solid rgba(155,44,44,0.08)",
             marginBottom: 20,
           }}>
+            {stressLoading ? (
+              <div style={{ textAlign: "center", padding: "8px 0", color: muted, fontSize: 14 }}>Calculating...</div>
+            ) : (
+            <>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 }}>
               <span style={{ fontSize: 14, color: muted }}>Projected Score</span>
               <span style={{ fontSize: 24, fontWeight: 300, fontFamily: mono, color: "#9B2C2C" }}>{projectedDrop}</span>
@@ -349,6 +362,8 @@ export default function FreeScorePage() {
               <span style={{ fontSize: 14, color: muted }}>New Classification</span>
               <span style={{ fontSize: 14, fontWeight: 600, color: "#9B2C2C" }}>{projectedBand}</span>
             </div>
+            </>
+            )}
           </div>
 
           <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, marginBottom: 12 }}>

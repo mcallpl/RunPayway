@@ -7,8 +7,7 @@ import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import { C, mono, sans, bandColor } from "@/lib/design-tokens";
 import { trackAssessmentComplete } from "@/lib/analytics";
 import ShareableScoreCard from "@/components/ShareableScoreCard";
-// Dynamic imports — loaded at runtime only (prevents static export bundling issues with zod/crypto)
-const loadV2Engine = () => import("@/lib/client-engine-v2");
+// V2-to-V1 adapter for converting worker response to record format
 const loadAdapter = () => import("@/lib/v2-to-v1-adapter");
 
 /* ------------------------------------------------------------------ */
@@ -509,18 +508,33 @@ export default function DiagnosticPage() {
     if (!allAnswered) return;
 
     const profile = JSON.parse(sessionStorage.getItem("rp_profile") || "{}");
-    const inputs: Record<string, number> = {};
-    for (let i = 0; i < 6; i++) {
-      inputs[FIELD_MAP[i]] = ANSWER_MAP[answers[i]!];
-    }
 
-    // Load v2 engine modules dynamically
-    const { convertV1InputsToV2, convertV1ProfileToV2, executeClientEngineV2 } = await loadV2Engine();
     const { adaptV2ToV1 } = await loadAdapter();
 
-    // Build v2 raw inputs (answer choices A-E)
-    const rawInputsV2 = convertV1InputsToV2(inputs);
-    const profileV2 = convertV1ProfileToV2(profile);
+    // Build v2 raw inputs directly from answer choices (A-E)
+    const rawInputsV2 = {
+      q1_recurring_revenue_base: answers[0] as string,
+      q2_income_concentration: answers[1] as string,
+      q3_income_source_diversity: answers[2] as string,
+      q4_forward_revenue_visibility: answers[3] as string,
+      q5_earnings_variability: answers[4] as string,
+      q6_income_continuity_without_labor: answers[5] as string,
+    };
+
+    // Build v2 profile context from profile fields
+    const classMap: Record<string, string> = { "Individual": "individual", "Business Entity": "business_owner", "Team / Partnership": "hybrid" };
+    const structureMap: Record<string, string> = { "Employee (W-2)": "solo_service", "Independent Contractor": "solo_service", "Business Owner / Firm": "small_agency", "Partnership": "small_agency", "Nonprofit Organization": "small_agency" };
+    const modelMap: Record<string, string> = { "Employee Salary": "salary", "Commission-Based": "commission", "Contract-Based": "project_fee", "Independent Contractor": "project_fee", "Consulting / Client Services": "retainer", "Agency / Brokerage Income": "commission", "Project-Based Work": "project_fee", "Subscription / Retainer Services": "subscription", "Licensing / Royalty Income": "licensing", "Product Sales": "ecommerce", "Digital Product Sales": "digital_products", "Real Estate Rental Income": "rental", "Real Estate Brokerage Income": "commission", "Hybrid Multiple Income Sources": "mixed_services" };
+    const revenueMap: Record<string, string> = { "Mostly One-Time Payments": "active_heavy", "Repeat Clients / Returning Customers": "hybrid", "Monthly Recurring Payments": "recurring_heavy", "Contracted Multi-Month Revenue": "recurring_heavy", "Long-Term Recurring Income": "asset_heavy", "Mixed Revenue Structure": "mixed" };
+    const sectorMap: Record<string, string> = { "Real Estate": "real_estate", "Finance / Banking": "finance_banking", "Insurance": "insurance", "Technology": "technology", "Healthcare": "healthcare", "Legal Services": "legal_services", "Consulting / Professional Services": "consulting_professional_services", "Sales / Brokerage": "sales_brokerage", "Media / Entertainment": "media_entertainment", "Construction / Trades": "construction_trades", "Retail / E-Commerce": "retail_ecommerce", "Hospitality / Food Service": "hospitality_food_service", "Transportation / Logistics": "transportation_logistics", "Manufacturing": "manufacturing", "Education": "education", "Nonprofit / Public Sector": "nonprofit_public_sector", "Agriculture": "agriculture", "Energy / Utilities": "energy_utilities", "Other": "other" };
+    const profileV2 = {
+      profile_class: classMap[String(profile.classification ?? "Individual")] ?? "individual",
+      operating_structure: structureMap[String(profile.operating_structure ?? "Employee (W-2)")] ?? "solo_service",
+      primary_income_model: modelMap[String(profile.primary_income_model ?? "Employee Salary")] ?? "other",
+      revenue_structure: revenueMap[String(profile.revenue_structure ?? "Mixed Revenue Structure")] ?? "mixed",
+      industry_sector: sectorMap[String(profile.industry_sector ?? "Other")] ?? "other",
+      maturity_stage: "developing",
+    };
 
     setSubmitting(true);
     setError(null);
@@ -533,36 +547,31 @@ export default function DiagnosticPage() {
 
     try {
       let record;
-      try {
-        // Try v2 server-side scoring first
-        const purchaseSession = JSON.parse(sessionStorage.getItem("rp_purchase_session") || "{}");
-        const payloadBody: Record<string, unknown> = {
-          raw_inputs: rawInputsV2,
-          profile: profileV2,
+      // Score via Cloudflare Worker — the only scoring path
+      const purchaseSession = JSON.parse(sessionStorage.getItem("rp_purchase_session") || "{}");
+      const payloadBody: Record<string, unknown> = {
+        raw_inputs: rawInputsV2,
+        profile: profileV2,
+      };
+      if (purchaseSession.payment_token) {
+        payloadBody._payment_token = purchaseSession.payment_token;
+        payloadBody._payment_payload = {
+          plan_key: purchaseSession.plan_key,
+          timestamp: purchaseSession.token_timestamp,
+          nonce: purchaseSession.token_nonce,
+          expires_at: purchaseSession.token_expires_at,
         };
-        if (purchaseSession.payment_token) {
-          payloadBody._payment_token = purchaseSession.payment_token;
-          payloadBody._payment_payload = {
-            plan_key: purchaseSession.plan_key,
-            timestamp: purchaseSession.token_timestamp,
-            nonce: purchaseSession.token_nonce,
-            expires_at: purchaseSession.token_expires_at,
-          };
-        }
-        const res = await fetch("/api/v2/score", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payloadBody),
-        });
-        if (res.ok) {
-          record = adaptV2ToV1(await res.json());
-        } else {
-          throw new Error("Server unavailable");
-        }
-      } catch {
-        // Client-side v2 fallback
-        const v2Result = await executeClientEngineV2({ profile, inputs });
-        record = adaptV2ToV1(v2Result);
+      }
+      const res = await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/score", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payloadBody),
+      });
+      if (res.ok) {
+        record = adaptV2ToV1(await res.json());
+      } else {
+        const errText = await res.text().catch(() => "Unknown error");
+        throw new Error(`Scoring failed (${res.status}): ${errText}`);
       }
       // Override assessment_title with user-entered value from profile
       if (profile.assessment_title) {
