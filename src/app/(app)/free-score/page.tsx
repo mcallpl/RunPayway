@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { fetchSimulationBatch } from "@/lib/worker-api";
 import type { SimulationResult, CanonicalInputs } from "@/lib/worker-api";
 import { bandColor as bandColorFn } from "@/lib/design-tokens";
+import { getVocabulary } from "@/lib/industry-vocabulary";
 import EmailCapture from "@/components/EmailCapture";
 
 /* ================================================================== */
@@ -198,18 +199,18 @@ export default function FreeScorePage() {
 
   const v2 = record._v2 as Record<string, unknown> | undefined;
   const rootConstraint = (v2?.constraints as { root_constraint: string })?.root_constraint || "weak_forward_visibility";
+  const vocab = getVocabulary(industry);
   const constraintLabel = CONSTRAINT_LABELS[rootConstraint] || rootConstraint.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
 
   const projectedDrop = stressResult?.overall_score ?? score;
   const projectedBand = stressResult?.band ?? band;
 
-  const constraintExplanation = CONSTRAINT_EXPLANATIONS[rootConstraint] || "Your income structure has a primary limiting factor that increases exposure to disruption.";
-  const behaviorText = BEHAVIOR_DESCRIPTIONS[rootConstraint] || "Your income structure has dependencies that affect how it responds to change.";
-  const improvements = IMPROVEMENT_DIRECTIONS[rootConstraint] || ["Strengthen your weakest structural dimension", "Increase income diversification", "Build forward commitments"];
+  const constraintExplanation = vocab.constraints[rootConstraint] || CONSTRAINT_EXPLANATIONS[rootConstraint] || "Your income has a limiting factor that increases exposure.";
+  const behaviorText = vocab.behaviors[rootConstraint] || BEHAVIOR_DESCRIPTIONS[rootConstraint] || "Your income has dependencies that affect how it responds to change.";
+  const improvements = vocab.improvements[rootConstraint] || IMPROVEMENT_DIRECTIONS[rootConstraint] || ["Strengthen your weakest structural dimension", "Increase income diversification", "Build forward commitments"];
 
   /* Industry context */
-  const industryKey = Object.keys(INDUSTRY_CONTEXT).find(k => industry.includes(k)) || "default";
-  const industryText = INDUSTRY_CONTEXT[industryKey] || INDUSTRY_CONTEXT.default;
+  const industryText = vocab.industry_context;
 
   /* AI explanation — deterministic template based on inputs */
   const explanationText = (() => {

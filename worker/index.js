@@ -924,15 +924,22 @@ async function handlePressureMap(body, env, corsHeaders) {
 ROLE: Structural analyst producing a private intelligence briefing.
 OUTPUT: Three sections, each exactly 2 sentences. No more.`;
 
+  const vc = body.vocab_context || {};
+  const vocabBlock = vc.pressure_framing ? `\nINDUSTRY VOCABULARY (use this language — do NOT use generic income terminology):
+- Structural pressure in this industry: ${vc.pressure_framing}
+- Structural opportunity: ${vc.tailwind_framing}
+- Specific arrangement types to recommend: ${vc.arrangement_types}
+- Peer group: ${vc.peer_group_label}\n` : "";
+
   const user = `Generate a PressureMap briefing:
 
 ${profileBlock(body)}
-
+${vocabBlock}
 Return this JSON:
 {
-  "pressure": "[Exactly 2 sentences] The specific structural force in ${body.industry} that is currently working against this ${body.operating_structure} with a ${body.income_model} model, given their weakest factor is ${body.weakest_factor} at the values shown above. Name the structural dynamic, not a generic industry trend.",
-  "tailwind": "[Exactly 2 sentences] The specific current condition in ${body.industry} that creates a structural opening for this ${body.operating_structure} with a ${body.income_model} model to improve their weakest factor right now.",
-  "leverage_move": "[Exactly 2 sentences] The single highest-leverage structural change — name the exact type of arrangement (retainer, standing agreement, prepaid package, productized service, licensing deal, etc.) that fits a ${body.operating_structure} in ${body.industry} earning through ${body.income_model}."
+  "pressure": "[Exactly 2 sentences] The specific structural force in ${body.industry} that is currently working against this ${body.operating_structure} with a ${body.income_model} model, given their weakest factor is ${body.weakest_factor} at the values shown above. Name the structural dynamic, not a generic industry trend. Use the industry vocabulary above.",
+  "tailwind": "[Exactly 2 sentences] The specific current condition in ${body.industry} that creates a structural opening for this ${body.operating_structure} with a ${body.income_model} model to improve their weakest factor right now. Reference specific arrangement types from the vocabulary.",
+  "leverage_move": "[Exactly 2 sentences] The single highest-leverage structural change — name the exact type of arrangement from the vocabulary (${vc.arrangement_types || "retainer, standing agreement, prepaid package, productized service, licensing deal"}) that fits a ${body.operating_structure} in ${body.industry} earning through ${body.income_model}."
 }
 
 Return ONLY the JSON.`;
@@ -949,14 +956,23 @@ Return ONLY the JSON.`;
 // ══════════════════════════════════════════════════════════
 
 async function handlePlainEnglish(body, env, corsHeaders) {
+  const vc = body.vocab_context || {};
+  const vocabInstructions = vc.pressure_framing ? `
+CRITICAL: Use industry-specific vocabulary. Do NOT use generic terms like "recurring revenue" or "forward visibility."
+Instead use terms from this vocabulary:
+- Structural pressure: ${vc.pressure_framing}
+- Arrangement types: ${vc.arrangement_types}
+- Peer group: ${vc.peer_group_label}` : "";
+
   const system = `You are a structural income analyst for RunPayway. You write the "In Plain English" section of the Income Stability Report.
 
-ROLE: Senior analyst explaining diagnostic results to the person who took the assessment.
+ROLE: Senior analyst explaining diagnostic results directly to the person who took the assessment. You speak to them as a fellow professional in ${body.industry}.
 GOAL: Make the reader feel that this score revealed something they did not already know about their income structure. This is what makes the report worth the price.
+${vocabInstructions}
 
 OUTPUT REQUIREMENTS:
-- "interpretation": Exactly 3-4 sentences. Start with what the score means structurally. Then explain the single most important thing it reveals. Then connect it to their daily reality as a ${body.operating_structure} in ${body.industry}. End with what this means if conditions change.
-- "why_not_higher": Exactly 1-2 sentences. The specific structural factor preventing a higher score. Reference their exact number.`;
+- "interpretation": Exactly 3-4 sentences. Start with what the score means structurally for someone in ${body.industry}. Then explain the single most important thing it reveals about their specific situation. Then connect it to their daily reality as a ${body.operating_structure} earning through ${body.income_model}. End with what this means if conditions change.
+- "why_not_higher": Exactly 1-2 sentences. The specific structural factor preventing a higher score, using language a ${body.operating_structure} in ${body.industry} would immediately recognize.`;
 
   const user = `Write the Plain English interpretation:
 
@@ -965,7 +981,7 @@ ${profileBlock(body)}
 Return this JSON:
 {
   "interpretation": "[3-4 sentences as described above]",
-  "why_not_higher": "[1-2 sentences] Why the score is ${body.score} and not higher, specific to their ${body.weakest_factor} in the context of being a ${body.operating_structure} in ${body.industry} with a ${body.income_model} model."
+  "why_not_higher": "[1-2 sentences] Why the score is ${body.score} and not higher, specific to their ${body.weakest_factor}. Use industry-specific terms, not generic structural language."
 }
 
 Return ONLY the JSON.`;
@@ -985,18 +1001,28 @@ Return ONLY the JSON.`;
 // ══════════════════════════════════════════════════════════
 
 async function handleActionPlan(body, env, corsHeaders) {
+  const vc = body.vocab_context || {};
+  const vocabInstructions = vc.arrangement_types ? `
+CRITICAL VOCABULARY RULES:
+- You are advising a ${body.operating_structure} in ${body.industry}. Speak their language.
+- Use these specific arrangement types: ${vc.arrangement_types}
+- Industry pressure context: ${vc.pressure_framing || ""}
+- Industry opportunity context: ${vc.tailwind_framing || ""}
+- Do NOT use generic terms. Name specific deals, clients, arrangements this person would recognize.` : "";
+
   const system = `You are a structural income strategist for RunPayway. You write the Action Plan section of the Income Stability Report.
 
-ROLE: Management consultant delivering a strategy recommendation to a private client.
-GOAL: Make the reader feel that this action plan is the most valuable part of the report — specific enough to act on immediately, not generic advice they could find anywhere.
+ROLE: Management consultant who has worked extensively in ${body.industry}, delivering a strategy recommendation to a private client.
+GOAL: Make the reader feel that this action plan was written by someone who understands their industry. Every recommendation should use the vocabulary of ${body.industry}, not generic income advice.
+${vocabInstructions}
 
 OUTPUT REQUIREMENTS:
-- primary_action: 2-3 sentences. Name the exact structural change. Be specific to their industry and model.
+- primary_action: 2-3 sentences. Name the exact structural change using ${body.industry}-specific terms. Reference specific arrangement types.
 - primary_how: 2-3 sentences. Exactly how to execute. What to offer, who to approach, what language to use. Specific to a ${body.operating_structure} in ${body.industry}.
-- supporting_action: 1-2 sentences. A second change that compounds with the first.
+- supporting_action: 1-2 sentences. A second change that compounds with the first. Industry-specific.
 - supporting_how: 1-2 sentences. How to execute it.
 - combined_interpretation: 1-2 sentences. What the income structure looks like after both changes.
-- tradeoff_upside: 1-2 sentences. The structural benefit.
+- tradeoff_upside: 1-2 sentences. The structural benefit in terms a ${body.operating_structure} would care about.
 - tradeoff_cost: 1-2 sentences. The realistic effort or sacrifice required.
 - tradeoff_verdict: Exactly 1 sentence. Whether it is worth doing and why — stated with conviction.`;
 
@@ -1010,9 +1036,9 @@ Projected lift: ${body.projected_lift || "Unknown"}
 
 Return this JSON:
 {
-  "primary_action": "[2-3 sentences]",
-  "primary_how": "[2-3 sentences] Specific to a ${body.operating_structure} in ${body.industry} with a ${body.income_model} model.",
-  "supporting_action": "[1-2 sentences]",
+  "primary_action": "[2-3 sentences] Use ${body.industry}-specific terminology.",
+  "primary_how": "[2-3 sentences] Specific to a ${body.operating_structure} in ${body.industry} with a ${body.income_model} model. Name who to talk to, what to propose, how to frame it.",
+  "supporting_action": "[1-2 sentences] Industry-specific.",
   "supporting_how": "[1-2 sentences]",
   "combined_interpretation": "[1-2 sentences] Reference the projected score if provided: ${body.projected_lift}",
   "tradeoff_upside": "[1-2 sentences]",

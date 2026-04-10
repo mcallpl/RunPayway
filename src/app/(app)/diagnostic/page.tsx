@@ -9,6 +9,7 @@ import { trackAssessmentComplete } from "@/lib/analytics";
 import ShareableScoreCard from "@/components/ShareableScoreCard";
 // V2-to-V1 adapter for converting engine output to record format
 const loadAdapter = () => import("@/lib/v2-to-v1-adapter");
+const loadVocab = () => import("@/lib/industry-vocabulary");
 // V2 engine — runs client-side (deterministic, no server secrets needed)
 const loadEngine = () => import("@/lib/engine/v2/index");
 
@@ -571,6 +572,10 @@ export default function DiagnosticPage() {
           ? constraints.ranked[0] as Record<string, string>
           : { factor: "recurrence", label: "Recurring Revenue" };
 
+        // Load industry-specific vocabulary for Claude prompts
+        const { getVocabulary } = await loadVocab();
+        const vocabCtx = getVocabulary(profile.industry_sector || "").worker_context;
+
         const pmRes = await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -581,6 +586,7 @@ export default function DiagnosticPage() {
             years_in_structure: profile.years_in_structure || "",
             score: (adapted.final_score as number) || 0,
             band: (adapted.stability_band as string) || "",
+            vocab_context: vocabCtx,
             weakest_factor: topConstraint.factor || topConstraint.label || "",
             weakest_factor_value: topConstraint.label || "",
             recurrence_pct: (ni.income_persistence_pct as number) || 0,

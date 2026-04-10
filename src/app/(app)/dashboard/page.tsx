@@ -9,6 +9,8 @@ import SuiteHeader from "@/components/SuiteHeader";
 import ShareableScoreCard from "@/components/ShareableScoreCard";
 // Sample data removed — empty state teasers replace demo mode
 import { C, mono, sans, bandColor } from "@/lib/design-tokens";
+import { getVocabulary } from "@/lib/industry-vocabulary";
+import { normSector, formatIndustry } from "@/lib/sector-map";
 
 /* ================================================================== */
 /*  BRAND TOKENS  (mapped from shared design-tokens)                   */
@@ -295,7 +297,10 @@ const IND: Record<string, { general: string; redAvg: number; greenAvg: number }>
 /* ================================================================== */
 /*  CONSTRAINT NARRATIVES                                              */
 /* ================================================================== */
-function constraintNarrative(c: string, i: CanonicalInputs): string {
+function constraintNarrative(c: string, i: CanonicalInputs, sector: string): string {
+  // Pull industry-specific language first, fall back to templated numbers
+  const vocab = getVocabulary(sector);
+  if (vocab.constraints[c]) return vocab.constraints[c];
   const n: Record<string, string> = {
     high_concentration: `Your largest source represents ${i.largest_source_pct}% of income. If that single relationship changes, ${i.largest_source_pct}% of your revenue disappears in one decision.`,
     weak_forward_visibility: `Only ${i.forward_secured_pct}% of your income is committed forward. You are re-selling your time every month.`,
@@ -306,11 +311,7 @@ function constraintNarrative(c: string, i: CanonicalInputs): string {
     weak_durability: `Your income quality score indicates fragility. The contracts and agreements backing your income may not withstand market pressure.`,
     shallow_continuity: `Your income runway is critically short. If active work stops, income drops to near zero within weeks. Building any continuity buffer is the priority.`,
   };
-  if (n[c]) return n[c];
-  // Anti-fallback: never return generic text. Use the constraint key to generate a meaningful sentence.
-  const readable = c.replace(/_/g, " ");
-  console.warn(`[RunPayway] Missing constraint narrative for: "${c}". Add it to constraintNarrative().`);
-  return `Your primary area — ${readable} — is the biggest lever for improving your score. Addressing this directly will have more impact than any other change.`;
+  return n[c] || `Your primary area — ${c.replace(/_/g, " ")} — is the biggest lever for improving your score.`;
 }
 
 /* ================================================================== */
@@ -676,17 +677,11 @@ function DashboardContent() {
     lock_forward: "Improves forward visibility",
   };
 
-  const industryAction: Record<string, Record<string, string>> = {
-    convert_retainer: { creative_media: "Convert your biggest production client to a monthly content retainer.", consulting_professional_services: "Offer your top client a monthly advisory retainer instead of project-based billing.", real_estate: "Propose a property management retainer to your highest-volume client.", technology: "Convert your largest project client to a monthly support and development retainer.", healthcare: "Transition your most active patient referral source to a membership arrangement.", default: "Convert your biggest client from project-based to a recurring monthly agreement." },
-    add_client: { creative_media: "Pitch a second production house or brand for recurring content work.", consulting_professional_services: "Open a conversation with one prospect in an adjacent vertical.", real_estate: "Build a referral relationship with one new mortgage broker or attorney.", technology: "Identify one adjacent SaaS client or agency that could become a steady source.", default: "Add one new client or revenue source that could reach 15%+ of income within 90 days." },
-    build_passive: { creative_media: "License existing content, create a template pack, or launch a paid resource library.", consulting_professional_services: "Package your frameworks into a course, book, or licensed methodology.", real_estate: "Create a property investment guide or neighborhood report subscription.", technology: "Build a micro-SaaS tool, plugin, or template marketplace product.", default: "Create one income stream that produces revenue whether you work that day or not." },
-    lock_forward: { creative_media: "Get signed commitments for next quarter's production calendar.", consulting_professional_services: "Secure prepaid quarterly retainer commitments from 2+ clients.", real_estate: "Pre-sign listing agreements or management contracts for the next quarter.", technology: "Lock in quarterly support contracts or prepaid development sprints.", default: "Secure next quarter's revenue with signed commitments, prepaid packages, or retainers." },
-  };
+  const vocabDash = getVocabulary(sector);
 
   const getIndustryAction = (pid: string): string => {
-    const actions = industryAction[pid];
-    if (!actions) return "";
-    return actions[sectorKey] || actions.default || "";
+    const vocabAction = vocabDash.actions[pid as keyof typeof vocabDash.actions];
+    return vocabAction || "";
   };
 
   let cumulativeScore = dScore;
@@ -1286,7 +1281,7 @@ function DashboardContent() {
               <p style={{ fontSize: mobile ? 16 : 18, fontWeight: 500, color: B.navy, margin: "0 0 8px", lineHeight: 1.4 }}>
                 If your top source leaves, your score drops {dScore - stLCDrop < 30 && dScore >= 30 ? "into Limited Stability." : `from ${dScore} to ${dScore - stLCDrop}.`}
               </p>
-              <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>{constraintNarrative(rootCon, base)}</p>
+              <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>{constraintNarrative(rootCon, base, sector)}</p>
             </div>
           </section>
 
