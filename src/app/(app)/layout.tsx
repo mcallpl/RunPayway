@@ -14,7 +14,7 @@ export default function AppLayout({
   return (
     <div style={{ background: "#F7F6F3", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <ScrollToTop />
-      <main style={{ flex: 1, maxWidth: 860, width: "100%", margin: "0 auto", padding: "32px 24px 48px" }}>
+      <main style={{ flex: 1, maxWidth: 860, width: "100%", margin: "0 auto", padding: "24px 16px 48px" }}>
         {children}
       </main>
       <footer
