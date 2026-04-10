@@ -1768,7 +1768,7 @@ async function handleFollowUpCron(env) {
 
   // Query records with email that haven't received all follow-ups
   const rows = await env.DB.prepare(
-    `SELECT id, email, assessment_title, score, band, top_action, created_at, followup_sent
+    `SELECT id, email, assessment_title, score, band, top_action, industry, created_at, followup_sent
      FROM records
      WHERE email != '' AND email IS NOT NULL AND followup_sent < 7
      ORDER BY created_at ASC LIMIT 50`
@@ -1790,7 +1790,7 @@ async function handleFollowUpCron(env) {
       email = {
         flag: 1,
         subject: `${name}, have you explored your Command Center yet?`,
-        html: followUpDay7(name, row.score, row.band, row.top_action, row.id),
+        html: followUpDay7(name, row.score, row.band, row.top_action, row.id, row.industry),
       };
     }
     // Day 30 (send between day 28-45)
@@ -1798,7 +1798,7 @@ async function handleFollowUpCron(env) {
       email = {
         flag: 2,
         subject: `${daysSince} days since your assessment \u2014 here\u2019s what to focus on`,
-        html: followUpDay30(name, row.score, row.top_action, daysSince, row.id),
+        html: followUpDay30(name, row.score, row.top_action, daysSince, row.id, row.industry),
       };
     }
     // Day 90 (send between day 85-120)
@@ -1806,7 +1806,7 @@ async function handleFollowUpCron(env) {
       email = {
         flag: 4,
         subject: `${name}, it\u2019s time to see how much you\u2019ve improved`,
-        html: followUpDay90(name, daysSince, row.id),
+        html: followUpDay90(name, daysSince, row.id, row.industry),
       };
     }
 
@@ -1831,7 +1831,180 @@ async function handleFollowUpCron(env) {
   }
 }
 
-function followUpDay7(name, score, band, topAction, recordId) {
+// ── Industry-Specific Reassessment Prompts ────────────────────────
+// Mirrors reassessment fields from src/lib/industry-vocabulary.ts
+// Keys: recurrence, concentration, diversification, forward, variability, labor
+
+const INDUSTRY_REASSESSMENT_PROMPTS = {
+  real_estate: {
+    recurrence: "Have you added any property management contracts, rental units, or team override arrangements since your last assessment that now generate monthly income without requiring a closing?",
+    concentration: "Has the share of your GCI coming from your single largest referral source or client changed — have you added new lead sources, or has one relationship become even more dominant?",
+    diversification: "Are you now earning income from transaction types or market areas you were not active in before — commercial, rentals, new construction, or a different geographic farm?",
+    forward: "Do you currently have more or fewer signed listing agreements and pre-approved buyers in your pipeline compared to your last assessment?",
+    variability: "Over the past six months, has the gap between your highest-earning month and lowest-earning month narrowed or widened?",
+    labor: "Have you hired showing assistants, buyer's agents, or established referral partnerships that generate income without your personal presence at every transaction?",
+  },
+  consulting_professional_services: {
+    recurrence: "Have you converted any project clients to monthly retainer arrangements, or added subscription-based services that now generate predictable monthly revenue?",
+    concentration: "Has the percentage of your total revenue coming from your single largest client increased or decreased since your last assessment?",
+    diversification: "Are you now serving clients in industries or functional areas that you were not active in previously?",
+    forward: "Do you currently have more signed engagement letters and committed retainers extending into the next quarter than you did at your last assessment?",
+    variability: "Over the last two quarters, has the spread between your highest-revenue month and lowest-revenue month narrowed?",
+    labor: "Have you hired associates, engaged subcontractors, or launched any productized offerings that generate revenue without requiring your personal delivery hours?",
+  },
+  technology: {
+    recurrence: "Have you added maintenance contracts, SaaS subscriptions, or any recurring billing arrangements since your last assessment?",
+    concentration: "Has the share of revenue from your single largest client or platform changed — have you onboarded new clients, or has one account grown more dominant?",
+    diversification: "Are you now generating income from technology stacks, platforms, or client industries you were not serving before?",
+    forward: "Do you have more or fewer signed SOWs and committed engagements on the books compared to your last assessment?",
+    variability: "Has the gap between your highest and lowest billing months over the past two quarters narrowed or widened?",
+    labor: "Have you launched products, hired subcontractors, or built automation that generates revenue without your direct billable hours?",
+  },
+  healthcare: {
+    recurrence: "Have you enrolled new patients in a membership or concierge program, added chronic care management billing, or established any recurring monthly revenue since your last assessment?",
+    concentration: "Has the percentage of your collections from your single largest insurance payer or referral source changed significantly?",
+    diversification: "Are you now offering clinical services, payer types, or treatment modalities that you were not providing at your last assessment?",
+    forward: "Is your patient schedule booked further in advance than it was previously — do you have more pre-scheduled visits and committed treatment plans on the books?",
+    variability: "Over the past six months, has the spread between your highest-collection month and lowest-collection month narrowed or widened?",
+    labor: "Have you hired associate providers, launched telehealth services, or created any revenue streams that do not require your direct clinical presence?",
+  },
+  legal_services: {
+    recurrence: "Have you converted any hourly clients to monthly retainer arrangements, or established subscription legal services that now generate predictable monthly revenue?",
+    concentration: "Has the share of your total billings from your single largest client increased or decreased since your last assessment?",
+    diversification: "Are you now practicing in areas of law or serving client industries that you were not active in previously?",
+    forward: "Do you have more signed engagement letters, committed retainers, and active matters on the books than at your last assessment?",
+    variability: "Over the past two quarters, has the difference between your highest and lowest billing months narrowed?",
+    labor: "Have you hired associates, engaged contract attorneys, or launched any legal products or services that generate revenue without your direct billable hours?",
+  },
+  finance_banking: {
+    recurrence: "Have you converted commission-based client relationships to fee-based advisory accounts, or added flat-fee planning subscriptions that generate new recurring revenue?",
+    concentration: "Has the percentage of your AUM held by your top three households increased or decreased since your last assessment?",
+    diversification: "Are you now serving client demographics, asset classes, or planning niches that you were not active in before?",
+    forward: "Do you have more signed multi-year advisory agreements or prepaid planning commitments on the books than at your last assessment?",
+    variability: "Over the past four quarters, has the impact of market fluctuations on your fee revenue been reduced by fixed-fee or subscription components?",
+    labor: "Have you hired associate advisors, paraplanners, or implemented technology that allows your practice to serve clients without your direct involvement in every interaction?",
+  },
+  insurance: {
+    recurrence: "Has your renewal commission income grown as a percentage of total compensation — are renewals now covering a larger share of your expenses than at your last assessment?",
+    concentration: "Has the share of your total commissions coming from your single largest account or carrier changed significantly?",
+    diversification: "Are you now writing coverage lines, serving industries, or placed with carriers that you were not active with before?",
+    forward: "Do you have more bound policies and signed applications in the pipeline than you did at your last assessment?",
+    variability: "Over the past six months, has the gap between your highest and lowest commission months narrowed?",
+    labor: "Have you hired service staff, added sub-producers, or implemented quoting automation that generates production without your direct effort?",
+  },
+  sales_brokerage: {
+    recurrence: "Have you established residual commission arrangements, override structures, or recurring advisory fees that now generate income without requiring you to close a new deal?",
+    concentration: "Has the share of your total commission income from your single largest account or deal type changed since your last assessment?",
+    diversification: "Are you now closing deals in industries, product categories, or geographic markets you were not active in before?",
+    forward: "Do you have more signed commitments, LOIs, or binding agreements in your pipeline than at your last assessment?",
+    variability: "Over the past two quarters, has the difference between your best and worst commission months narrowed?",
+    labor: "Have you added junior reps, automated your prospecting process, or built any income streams that generate commissions without your direct deal involvement?",
+  },
+  creative_media: {
+    recurrence: "Have you launched a membership program, signed retainer-based brand partnerships, or established any licensing arrangements that now generate predictable monthly revenue?",
+    concentration: "Has the percentage of your income from a single brand partner, platform, or content buyer changed since your last assessment?",
+    diversification: "Are you now earning revenue from content formats, platforms, or brand categories you were not active in previously?",
+    forward: "Do you have more signed production contracts, confirmed sponsorships, and pre-sold content packages than at your last assessment?",
+    variability: "Over the past six months, has the gap between your highest-earning and lowest-earning months narrowed?",
+    labor: "Have you hired production support, launched digital products, or built systems that generate revenue without requiring your personal creative involvement in every deliverable?",
+  },
+  construction_trades: {
+    recurrence: "Have you added maintenance contracts, service agreements, or any recurring monthly revenue arrangements since your last assessment?",
+    concentration: "Has the share of your total project revenue from your single largest client or GC relationship changed — have you added new project sources, or has one relationship become more dominant?",
+    diversification: "Are you now performing work types, serving market segments, or bidding project categories that you were not active in before?",
+    forward: "Do you currently have more awarded bids and signed contracts on your books than at your last assessment?",
+    variability: "Over the past six months, has the gap between your highest-revenue and lowest-revenue months narrowed?",
+    labor: "Have you developed crew leaders who can manage job sites independently, acquired rental assets, or built any income streams that generate revenue without your personal presence on the job site?",
+  },
+  education_training: {
+    recurrence: "Have you added any new ongoing contracts, subscription courses, or recurring training retainers since your last assessment?",
+    concentration: "Has the share of income from your largest institution or client changed — did you reduce dependency or did it grow?",
+    diversification: "Are you now serving new types of buyers — different sectors, new platforms, or different learner demographics — compared to before?",
+    forward: "How far out is your teaching calendar booked? Do you have confirmed engagements further into the future than last time?",
+    variability: "Did your month-to-month income even out, or are the peaks and valleys still as dramatic as before?",
+    labor: "Have you launched any asynchronous courses, licensed materials, or other income streams that do not require your live presence?",
+  },
+  retail_ecommerce: {
+    recurrence: "Have you added any subscription offerings, auto-replenishment programs, or recurring wholesale orders since your last assessment?",
+    concentration: "Is your revenue more spread across channels now, or has your dependence on a single marketplace grown since last time?",
+    diversification: "Have you expanded your product catalog, entered new customer segments, or opened new sales channels?",
+    forward: "Do you have more confirmed pre-orders, standing purchase orders, or contracted wholesale commitments than before?",
+    variability: "Has your month-to-month revenue become more consistent, or are the seasonal spikes and valleys still extreme?",
+    labor: "Have you automated more operations or hired help, or are you still the bottleneck for daily fulfillment and customer service?",
+  },
+  hospitality: {
+    recurrence: "Have you secured any new standing accounts, recurring event contracts, or membership subscriptions since your last assessment?",
+    concentration: "Has your largest client's share of revenue decreased, or have you become even more dependent on them?",
+    diversification: "Are you generating revenue from new service types or client segments that you were not serving before?",
+    forward: "How far into the future is your events and reservations calendar booked compared to last time?",
+    variability: "Have your off-peak months improved, or is the gap between your best and worst months still just as wide?",
+    labor: "Can your operation run without you for a week now? Have you reduced the number of tasks that only you can perform?",
+  },
+  transportation: {
+    recurrence: "Have you converted any spot lanes into standing contracts or added new recurring freight commitments since your last assessment?",
+    concentration: "Has your freight volume become more diversified across shippers, or are you still heavily dependent on one or two accounts?",
+    diversification: "Are you hauling for new industries, running new lane types, or serving new geographies compared to before?",
+    forward: "How many weeks of confirmed loads do you have booked ahead? Is your forward visibility longer or shorter than last time?",
+    variability: "Has your rate per mile and weekly revenue become more consistent, or are you still riding the spot market roller coaster?",
+    labor: "Have you improved driver retention, added capacity, or reduced your personal involvement in daily dispatch operations?",
+  },
+  manufacturing: {
+    recurrence: "Have you secured any new blanket orders, long-term supply agreements, or standing production contracts since your last assessment?",
+    concentration: "Has your production volume become more balanced across customers, or has your top buyer's share increased?",
+    diversification: "Are you now serving customers in new industries or producing new product types compared to before?",
+    forward: "How deep is your production backlog in weeks? Do you have more confirmed orders on the books than last time?",
+    variability: "Has your monthly production volume stabilized, or do you still experience dramatic swings between busy and idle periods?",
+    labor: "Have you reduced skill bottlenecks through cross-training, documentation, or automation since your last assessment?",
+  },
+  nonprofit: {
+    recurrence: "Have you added any new multi-year grants, monthly donors, or recurring program fee revenue since your last assessment?",
+    concentration: "Has your largest funder's share of your total budget decreased, or has your dependency on them grown?",
+    diversification: "Are you receiving funding from new source types — earned revenue, corporate partners, new government programs — that you were not tapping before?",
+    forward: "How many months of committed funding do you have confirmed? Is your financial runway longer or shorter than last time?",
+    variability: "Has your monthly cash flow stabilized, or are you still experiencing dramatic swings between funding peaks and valleys?",
+    labor: "Could your fundraising and programs continue if you personally stepped away for a month? Have you reduced single-person dependencies?",
+  },
+  agriculture: {
+    recurrence: "Have you added any new CSA subscriptions, forward contracts, or recurring supply agreements since your last assessment?",
+    concentration: "Has your revenue become more balanced across buyers and crops, or are you still heavily concentrated in one commodity or one sales channel?",
+    diversification: "Are you generating income from new sources — value-added products, agritourism, new crops, or secondary livestock — that were not part of your operation before?",
+    forward: "What percentage of your next harvest is already committed or forward-priced? Is your pre-season revenue certainty higher than last year?",
+    variability: "Has your monthly cash flow smoothed out, or is your income still arriving in one or two large lumps around harvest?",
+    labor: "Could your farm operate for two weeks without you personally in the field? Have you reduced your physical dependency through equipment, training, or hired help?",
+  },
+  energy: {
+    recurrence: "Have you added any new maintenance contracts, PPA income, or recurring monitoring agreements since your last assessment?",
+    concentration: "Is your project volume more diversified across referral sources, technologies, and client types, or has dependency on a single channel increased?",
+    diversification: "Are you now serving new customer segments, offering new services, or operating in new territories compared to before?",
+    forward: "How deep is your signed project backlog? Do you have more committed, permitted projects on the books than last time?",
+    variability: "Has your monthly revenue stabilized through recurring services, or is it still driven entirely by project-based installation timing?",
+    labor: "Have you expanded your team's capacity or reduced your personal involvement in on-site project execution?",
+  },
+  fitness_wellness: {
+    recurrence: "Have you added any new monthly memberships, coaching retainers, or subscription-based offerings since your last assessment?",
+    concentration: "Has your income become more distributed across clients, or are you still heavily dependent on a handful of premium bookings?",
+    diversification: "Are you generating revenue from new channels — digital products, corporate wellness, group programming, workshops — that you were not using before?",
+    forward: "How far ahead is your booking calendar filled? Do you have more pre-paid commitments and locked-in clients than last time?",
+    variability: "Have your seasonal income swings reduced, or is January still dramatically better than July?",
+    labor: "Have you created any income source that does not require your physical presence — digital programs, group formats, passive products?",
+  },
+  default: {
+    recurrence: "Have you established any new recurring revenue arrangements since your last assessment?",
+    concentration: "Has the share of revenue from your largest client changed?",
+    diversification: "Are you now serving markets or offering services you were not active in before?",
+    forward: "Do you have more signed commitments extending into the future than at your last assessment?",
+    variability: "Has the spread between your best and worst months narrowed over the past two quarters?",
+    labor: "Have you added team members, products, or systems that generate revenue without your direct involvement?",
+  },
+};
+
+function getReassessmentPrompts(industry) {
+  if (!industry) return INDUSTRY_REASSESSMENT_PROMPTS.default;
+  const key = industry.toLowerCase().replace(/[\s\/&]+/g, "_").replace(/[^a-z0-9_]/g, "");
+  return INDUSTRY_REASSESSMENT_PROMPTS[key] || INDUSTRY_REASSESSMENT_PROMPTS.default;
+}
+
+function followUpDay7(name, score, band, topAction, recordId, industry) {
   const link = recordId ? `https://peoplestar.com/RunPayway/dashboard?record=${encodeURIComponent(recordId)}` : "https://peoplestar.com/RunPayway/dashboard";
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
 <body style="margin:0;padding:0;background:#1C1635;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
@@ -1847,6 +2020,9 @@ function followUpDay7(name, score, band, topAction, recordId) {
 ${topAction ? `<div style="border-left:3px solid #4B3FAE;padding:16px 20px;background:rgba(75,63,174,0.04);border-radius:0 8px 8px 0;margin-bottom:24px;">
 <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#4B3FAE;margin-bottom:6px;">YOUR #1 PRIORITY</div>
 <div style="font-size:15px;font-weight:600;color:#1C1635;">${topAction}</div></div>` : ""}
+${(() => { const p = getReassessmentPrompts(industry); return `<div style="border-left:3px solid #1F6D7A;padding:16px 20px;background:rgba(31,109,122,0.04);border-radius:0 8px 8px 0;margin-bottom:24px;">
+<div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#1F6D7A;margin-bottom:6px;">QUICK CHECK</div>
+<div style="font-size:14px;color:rgba(14,26,43,0.7);line-height:1.6;">${p.recurrence}</div></div>`; })()}
 <table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr><td style="background:#4B3FAE;border-radius:10px;">
 <a href="${link}" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Open Your Command Center</a>
 </td></tr></table>
@@ -1857,7 +2033,7 @@ ${topAction ? `<div style="border-left:3px solid #4B3FAE;padding:16px 20px;backg
 </table></td></tr></table></body></html>`;
 }
 
-function followUpDay30(name, score, topAction, daysSince, recordId) {
+function followUpDay30(name, score, topAction, daysSince, recordId, industry) {
   const link = recordId ? `https://peoplestar.com/RunPayway/dashboard?record=${encodeURIComponent(recordId)}` : "https://peoplestar.com/RunPayway/dashboard";
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
 <body style="margin:0;padding:0;background:#1C1635;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
@@ -1871,6 +2047,11 @@ function followUpDay30(name, score, topAction, daysSince, recordId) {
 <p style="font-size:22px;font-weight:300;color:#1C1635;margin:0 0 12px;">${daysSince} days since your assessment.</p>
 <p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 16px;">Your score of <strong style="color:#1C1635;">${score}</strong> reflects your income structure \u2014 not market conditions. The only way to change it is to make a structural change.</p>
 <p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 24px;">${topAction ? `Your highest-leverage move is still: <strong style="color:#1C1635;">${topAction}</strong>. ` : ""}Use the Simulator to model the impact before you commit.</p>
+${(() => { const p = getReassessmentPrompts(industry); return `<div style="border-left:3px solid #1F6D7A;padding:16px 20px;background:rgba(31,109,122,0.04);border-radius:0 8px 8px 0;margin-bottom:24px;">
+<div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#1F6D7A;margin-bottom:8px;">HAS ANYTHING CHANGED?</div>
+<div style="font-size:13px;color:rgba(14,26,43,0.65);line-height:1.65;margin-bottom:10px;">${p.recurrence}</div>
+<div style="font-size:13px;color:rgba(14,26,43,0.65);line-height:1.65;margin-bottom:10px;">${p.concentration}</div>
+<div style="font-size:13px;color:rgba(14,26,43,0.65);line-height:1.65;">${p.forward}</div></div>`; })()}
 <table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr><td style="background:#4B3FAE;border-radius:10px;">
 <a href="${link}" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Open the Simulator</a>
 </td></tr></table>
@@ -2138,7 +2319,32 @@ ${nurtureCta("Unlock Your Full Diagnostic", "https://peoplestar.com/RunPayway/pr
   return { subject: `Income patterns in ${displayIndustry}`, html: nurtureEmailWrapper(body, name) };
 }
 
-function followUpDay90(name, daysSince, _recordId) {
+function followUpDay90(name, daysSince, _recordId, industry) {
+  const prompts = getReassessmentPrompts(industry);
+  // Build industry-specific examples for the "structural changes" line
+  const examplesMap = {
+    real_estate: "added a property management contract, diversified your listing sources, or built rental portfolio income",
+    consulting_professional_services: "converted a project client to a retainer, added a new industry vertical, or launched a productized service",
+    technology: "added maintenance contracts, launched a SaaS offering, or onboarded clients in a new tech stack",
+    healthcare: "enrolled patients in a membership program, added a new payer type, or hired an associate provider",
+    legal_services: "converted hourly clients to retainers, expanded into a new practice area, or engaged contract attorneys",
+    finance_banking: "converted commission clients to fee-based accounts, diversified your AUM across households, or hired a paraplanner",
+    insurance: "grown your renewal book, diversified your carrier placements, or added sub-producers to your team",
+    sales_brokerage: "established residual commission arrangements, expanded into new markets, or added junior reps",
+    creative_media: "signed retainer-based brand deals, launched a membership program, or licensed your content",
+    construction_trades: "added maintenance contracts, diversified your GC relationships, or developed independent crew leaders",
+    education_training: "launched subscription courses, added new institutional clients, or created asynchronous content",
+    retail_ecommerce: "added subscription offerings, opened new sales channels, or automated your fulfillment",
+    hospitality: "secured standing accounts, launched a membership program, or booked recurring event contracts",
+    transportation: "converted spot lanes to standing contracts, diversified your shipper base, or added capacity",
+    manufacturing: "secured blanket orders, diversified your customer base, or reduced skill bottlenecks",
+    nonprofit: "added multi-year grants, grown your monthly donor base, or launched earned revenue programs",
+    agriculture: "added CSA subscriptions, forward-priced your harvest, or diversified into value-added products",
+    energy: "added maintenance contracts, diversified your project pipeline, or expanded your service territory",
+    fitness_wellness: "added monthly memberships, launched digital products, or booked corporate wellness contracts",
+  };
+  const industryKey = industry ? industry.toLowerCase().replace(/[\s\/&]+/g, "_").replace(/[^a-z0-9_]/g, "") : "";
+  const examples = examplesMap[industryKey] || "signed a retainer, added a client, or built a recurring stream";
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
 <body style="margin:0;padding:0;background:#1C1635;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#1C1635;"><tr><td style="height:32px;"></td></tr>
@@ -2149,13 +2355,16 @@ function followUpDay90(name, daysSince, _recordId) {
 <tr><td style="padding:0 12px;"><table width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="background:#ffffff;padding:44px 40px 40px;border-radius:12px;">
 <p style="font-size:22px;font-weight:300;color:#1C1635;margin:0 0 12px;">It has been ${daysSince} days.</p>
-<p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 16px;">If you have made structural changes to your income \u2014 signed a retainer, added a client, built a recurring stream \u2014 your score may have improved. There is only one way to find out.</p>
+<p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 16px;">If you have made structural changes to your income \u2014 ${examples} \u2014 your score may have improved. There is only one way to find out.</p>
 <p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 24px;">A new assessment will show you exactly how much progress you have made and where to focus next.</p>
 <table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr><td style="background:#1C1635;border-radius:10px;">
 <a href="https://peoplestar.com/RunPayway/pricing" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Reassess Your Score</a>
 </td></tr></table>
 <div style="border-left:3px solid #1F6D7A;padding:16px 20px;background:rgba(31,109,122,0.04);border-radius:0 8px 8px 0;margin-top:24px;">
-<p style="font-size:13px;color:rgba(14,26,43,0.55);line-height:1.6;margin:0;">Income structures shift over time. We recommend reassessing after 90 days or whenever you make a significant structural change. Your Command Center tracks progress across assessments automatically.</p>
+<div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#1F6D7A;margin-bottom:8px;">ASK YOURSELF</div>
+<div style="font-size:13px;color:rgba(14,26,43,0.55);line-height:1.6;margin-bottom:10px;">${prompts.recurrence}</div>
+<div style="font-size:13px;color:rgba(14,26,43,0.55);line-height:1.6;margin-bottom:10px;">${prompts.diversification}</div>
+<div style="font-size:13px;color:rgba(14,26,43,0.55);line-height:1.6;">${prompts.labor}</div>
 </div>
 </td></tr></table></td></tr>
 <tr><td style="padding:24px 40px;text-align:center;">
