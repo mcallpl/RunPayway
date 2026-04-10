@@ -7,6 +7,7 @@ import Image from "next/image";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import { useAssessmentServer } from "@/lib/monitoring";
 import { generateTailoredCopy } from "@/lib/industry-tailoring";
+import { getVocabulary } from "@/lib/industry-vocabulary";
 import { generateReportPDF, type ReportPDFData } from "./report-pdf";
 import { C, mono, sans, bandColor as bandColorFn } from "@/lib/design-tokens";
 
@@ -1002,6 +1003,15 @@ export default function ReviewPage() {
         reassessDaysLeft,
         reassessTiming: tier === "limited" ? "2 months" : tier === "high" ? "6 months" : "3 months",
         triggers: (olTriggers || []).map(t => t.display_text),
+        vocabulary: (() => {
+          const v = getVocabulary(record.industry_sector || "");
+          return {
+            scenarios: v.scenarios as unknown as Record<string, string>,
+            constraints: v.constraints,
+            nouns: v.nouns as unknown as Record<string, string>,
+            actions: v.actions as unknown as Record<string, string>,
+          };
+        })(),
       };
 
       const blob = await generateReportPDF(pdfData);

@@ -82,6 +82,12 @@ export interface ReportPDFData {
   reassessDaysLeft: number;
   reassessTiming: string;
   triggers: string[];
+  vocabulary?: {
+    scenarios: Record<string, string>;
+    constraints: Record<string, string>;
+    nouns: Record<string, string>;
+    actions: Record<string, string>;
+  };
 }
 
 /* ================================================================== */
@@ -167,8 +173,28 @@ function truncate(text: string, maxChars: number): string {
   return (lastSpace > maxChars * 0.6 ? cut.substring(0, lastSpace) : cut) + "...";
 }
 
-/** Map backend scenario titles to plain English */
-function cleanTitle(title: string): string {
+/** Map backend scenario titles to plain English, with optional industry vocabulary */
+function cleanTitle(title: string, vocabScenarios?: Record<string, string>): string {
+  // If vocabulary scenarios are available, try to match against them first
+  if (vocabScenarios) {
+    const titleLower = title.toLowerCase();
+    const vocabMap: Record<string, string> = {
+      "lose_top_client": "Client Concentration Loss|Key Client Loss|Contract Non Renewal",
+      "cant_work_90_days": "Active Labor Interrupted",
+      "market_slowdown": "Market Contraction|Seasonal Revenue Gap|Pricing Pressure",
+      "pipeline_dries_up": "Referral Pipeline Dries|Recurring Stream Degrades",
+    };
+    for (const [vocabKey, patterns] of Object.entries(vocabMap)) {
+      if (vocabScenarios[vocabKey]) {
+        for (const pattern of patterns.split("|")) {
+          if (titleLower.includes(pattern.toLowerCase().split(" ")[0])) {
+            return vocabScenarios[vocabKey];
+          }
+        }
+      }
+    }
+  }
+
   const map: Record<string, string> = {
     "Active Labor Interrupted": "You are unable to work for an extended period",
     "Platform Dependency Shock": "A major income source changes terms or access",
@@ -600,7 +626,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
     const h = 48;
     check(y, h, `P4-sc${i}`);
     card(doc, ML, y, CW, h, sBorders[i]);
-    label(doc, `SCENARIO ${i + 1}: ${truncate(cleanTitle(sc.title), 45).toUpperCase()}`, ML + 10, y + 10, sBorders[i]);
+    label(doc, `SCENARIO ${i + 1}: ${truncate(cleanTitle(sc.title, d.vocabulary?.scenarios), 45).toUpperCase()}`, ML + 10, y + 10, sBorders[i]);
     sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#1C1635");
     doc.text(S(`Risk: Score drops by ${sc.scoreDrop} points (${sc.originalScore} to ${sc.scenarioScore})`), ML + 10, y + 22);
     if (sc.bandShift) {
@@ -628,7 +654,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
   const cw2 = (CW - 12) / 2;
   if (y + 52 <= YL) {
     card(doc, ML, y, cw2, 52, "#9B2C2C");
-    label(doc, "IF BIGGEST SOURCE GOES AWAY", ML + 8, y + 10);
+    label(doc, d.vocabulary?.nouns?.top_client ? `IF YOUR ${truncate(d.vocabulary.nouns.top_client.split(/,| or /)[0], 22).toUpperCase()} LEAVES` : "IF BIGGEST SOURCE GOES AWAY", ML + 8, y + 10);
     sf(doc, "InterB"); doc.setFontSize(16); doc.setTextColor("#1C1635");
     doc.text(`${d.score} to ${d.riskScenarioScore}`, ML + 8, y + 28);
     sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
