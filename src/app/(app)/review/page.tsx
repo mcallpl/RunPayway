@@ -1242,7 +1242,7 @@ export default function ReviewPage() {
           </div>
 
           {/* PressureMap intelligence */}
-          {olSelectedScenarios && olSelectedScenarios.length > 0 && (
+          {Array.isArray(olSelectedScenarios) && olSelectedScenarios.length > 0 && (
             <div style={{ marginBottom: 20 }}>
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 12 }}>PRESSUREMAP&#8482; INTELLIGENCE</div>
               {olSelectedScenarios.slice(0, 3).map((sc, idx) => (
@@ -1271,7 +1271,7 @@ export default function ReviewPage() {
 
         {/* Actions */}
         <div style={{ padding: mobile ? "20px 24px" : "28px 40px" }}>
-          {v2Lift && v2Lift.lift_scenarios.length > 0 && (() => {
+          {v2Lift && Array.isArray(v2Lift.lift_scenarios) && v2Lift.lift_scenarios.length > 0 && (() => {
             const viable = v2Lift.lift_scenarios.filter(s => s.lift > 0).sort((a, b) => b.lift - a.lift);
 
             const liftConcrete: Record<string, { goal: string; action: string; example: string }> = {
@@ -1354,7 +1354,7 @@ export default function ReviewPage() {
           })()}
 
           {/* What to avoid */}
-          {v2AvoidActions && (v2AvoidActions as Array<Record<string, string>>).length > 0 && (
+          {Array.isArray(v2AvoidActions) && v2AvoidActions.length > 0 && (
             <div style={{ padding: "12px 20px", borderRadius: 14, backgroundColor: "rgba(197,48,48,0.02)", border: "1px solid rgba(197,48,48,0.08)", marginTop: 12 }}>
               <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandLimited, marginBottom: 6 }}>WHAT TO AVOID</div>
               {(v2AvoidActions as Array<Record<string, string>>).slice(0, 2).map((a, i: number) => (
@@ -1396,7 +1396,7 @@ export default function ReviewPage() {
 
         {/* Scenarios */}
         <div style={{ padding: mobile ? "16px 24px" : "24px 40px" }}>
-          {v2Scenarios && v2Scenarios.length > 0 && v2Scenarios.slice(0, 3).map((sc: { title: string; label?: string; original_score: number; scenario_score: number; score_drop: number; narrative?: string; band_shift?: boolean; original_band?: string; scenario_band?: string }, idx: number) => {
+          {Array.isArray(v2Scenarios) && v2Scenarios.length > 0 && v2Scenarios.slice(0, 3).map((sc: { title: string; label?: string; original_score: number; scenario_score: number; score_drop: number; narrative?: string; band_shift?: boolean; original_band?: string; scenario_band?: string }, idx: number) => {
             const severityLabel = sc.score_drop > score * 0.5 ? "Severe" : sc.score_drop > score * 0.25 ? "Significant" : "Moderate";
             const severityColor = sc.score_drop > score * 0.5 ? B.bandLimited : sc.score_drop > score * 0.25 ? B.bandDeveloping : B.teal;
             return (
