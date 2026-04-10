@@ -89,10 +89,10 @@ function normSector(raw: string): string {
 /*  PHASE NAV CONFIG                                                   */
 /* ================================================================== */
 const PHASE_NAV = [
-  { id: "phase-diagnosis", label: "Diagnosis", color: B.purple },
-  { id: "phase-plan", label: "Plan", color: B.navy },
-  { id: "phase-test", label: "Test", color: B.teal },
-  { id: "phase-progress", label: "History", color: B.taupe },
+  { id: "phase-diagnosis", label: "Your Score", color: B.purple },
+  { id: "phase-plan", label: "What To Do", color: B.navy },
+  { id: "phase-test", label: "What If", color: B.teal },
+  { id: "phase-progress", label: "Progress", color: B.taupe },
 ] as const;
 
 /* ================================================================== */
@@ -1304,7 +1304,7 @@ function DashboardContent() {
           {/* ════════════════════════════════════════════════════════ */}
           {/*  DIAGNOSE — PressureMap (now after Plan)                  */}
           {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="Your Diagnosis" color={B.purple} tint="rgba(75,63,174,0.02)" id="phase-diagnosis" mobile={mobile}>
+          <PhaseSep label="Your Score" color={B.purple} tint="rgba(75,63,174,0.02)" id="phase-diagnosis" mobile={mobile}>
 
           {/* 2. PRESSUREMAP™ */}
           <section className="cc-section" style={{ padding: mobile ? "32px 22px" : "44px 48px", borderRadius: 24, backgroundColor: B.surface, border: `1px solid ${B.stone}`, marginBottom: 24, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
@@ -1384,7 +1384,7 @@ function DashboardContent() {
           {/* ════════════════════════════════════════════════════════ */}
           {/*  DECIDE — "What should I do?"                           */}
           {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="Your Plan" color={B.navy} tint="rgba(14,26,43,0.015)" id="phase-plan" mobile={mobile}>
+          <PhaseSep label="What To Do" color={B.navy} tint="rgba(14,26,43,0.015)" id="phase-plan" mobile={mobile}>
 
           {/* ── NEGOTIATION PLAYBOOK — white, in Your Plan ── */}
           {(() => {
@@ -1658,7 +1658,7 @@ function DashboardContent() {
           {/* ════════════════════════════════════════════════════════ */}
           {/*  ACT — "Let me test it"                                 */}
           {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="Test Your Options" color={B.teal} tint="rgba(31,109,122,0.02)" id="phase-test" mobile={mobile}>
+          <PhaseSep label="What If" color={B.teal} tint="rgba(31,109,122,0.02)" id="phase-test" mobile={mobile}>
 
           {/* What-If Explorer — categorized, visual, recommended */}
           <section className="cc-section">
@@ -1763,7 +1763,7 @@ function DashboardContent() {
           {/* ════════════════════════════════════════════════════════ */}
           {/*  MONITOR — Score history (multi-assessment only)          */}
           {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="History" color={B.taupe} tint="rgba(14,26,43,0.01)" id="phase-progress" mobile={mobile}>
+          <PhaseSep label="Progress" color={B.taupe} tint="rgba(14,26,43,0.01)" id="phase-progress" mobile={mobile}>
 
           {/* ──── MONITORING FEATURES — Score History + Factor Deltas + Benchmark Evolution ──── */}
           {assessments.length >= 2 && (

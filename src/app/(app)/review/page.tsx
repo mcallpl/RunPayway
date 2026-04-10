@@ -1077,6 +1077,11 @@ export default function ReviewPage() {
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <Image src={logoBlue} alt="RunPayway&#8482;" width={110} height={13} style={{ height: "auto", opacity: 0.85 }} />
             <span style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>Structural Income Report</span>
+            {industrySector && (
+              <span style={{ fontSize: 10, fontWeight: 600, fontFamily: mono, color: B.teal, padding: "2px 8px", borderRadius: 4, backgroundColor: "rgba(31,109,122,0.06)", marginLeft: 8 }}>
+                {industrySector}
+              </span>
+            )}
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <span style={{ fontSize: 11, color: B.muted }}>{issuedDate}</span>
@@ -1143,6 +1148,22 @@ export default function ReviewPage() {
           </div>
         </div>
 
+        {/* Executive Summary */}
+        <div style={{ padding: mobile ? "20px 24px" : "24px 40px", borderBottom: "1px solid rgba(14,26,43,0.06)" }}>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 8 }}>EXECUTIVE SUMMARY</div>
+          <p style={{ fontSize: 14, fontWeight: 500, color: B.navy, lineHeight: 1.65, margin: "0 0 8px" }}>
+            {(reportVocab && v2Explainability?.why_this_score) || tailored.diagnosticSentence || coverBandDesc[tier]}
+          </p>
+          {aiPlan?.primary_action && (
+            <>
+              <p style={{ fontSize: 13, color: B.muted, lineHeight: 1.6, margin: 0 }}>
+                <strong style={{ color: B.navy }}>Priority action:</strong> {typeof aiPlan.primary_action === "string" ? aiPlan.primary_action : ""}
+              </p>
+              <div style={{ fontSize: 10, color: "rgba(14,26,43,0.20)", marginTop: 6, letterSpacing: "0.04em" }}>✦ AI-generated recommendation</div>
+            </>
+          )}
+        </div>
+
         {/* Scale bar — below the navy section */}
         <div style={{ padding: mobile ? "20px 24px 16px" : "24px 40px 20px", backgroundColor: "#FAFAF8" }}>
           <div style={{ position: "relative", height: 12, borderRadius: 999, overflow: "hidden" }}>
@@ -1182,6 +1203,15 @@ export default function ReviewPage() {
                 <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(14,26,43,0.30)", marginBottom: 6 }}>COMMAND CENTER ACCESS</div>
                 <div style={{ fontSize: 11, color: "rgba(14,26,43,0.45)", marginBottom: 6 }}>Enter at runpayway.com/dashboard to access your interactive tools.</div>
                 <div style={{ fontFamily: mono, fontSize: mobile ? 10 : 11, color: "rgba(14,26,43,0.55)", letterSpacing: "0.01em", wordBreak: "break-all" as const, lineHeight: 1.4 }}>{code}</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: B.teal }} />
+                  <span style={{ fontSize: 11, color: B.muted }}>
+                    Record: {(record.record_id || "").substring(0, 8).toUpperCase()}
+                  </span>
+                  <a href={"/RunPayway/verify?id=" + (record.record_id || "")} style={{ fontSize: 11, fontWeight: 600, color: B.teal, textDecoration: "none" }}>
+                    Verify this score →
+                  </a>
+                </div>
               </div>
             );
           })()}
@@ -1262,6 +1292,7 @@ export default function ReviewPage() {
                   <p style={{ fontSize: 12, color: B.muted, margin: 0, lineHeight: 1.5 }}>{sc.why_it_matters}</p>
                 </div>
               ))}
+              <div style={{ fontSize: 10, color: "rgba(14,26,43,0.20)", marginTop: 4, letterSpacing: "0.04em" }}>✦ AI-generated insight</div>
             </div>
           )}
 
@@ -1332,6 +1363,7 @@ export default function ReviewPage() {
               );
             });
           })()}
+          {aiPlan && <div style={{ fontSize: 10, color: "rgba(14,26,43,0.20)", marginTop: 8, letterSpacing: "0.04em" }}>✦ AI-generated action plan</div>}
 
           {/* What becomes possible */}
           {(() => {
