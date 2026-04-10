@@ -2,7 +2,8 @@
 // Secure proxy for all Claude API calls. Routes by URL path.
 // Endpoints: /pressuremap, /plain-english, /action-plan, /save-record, /get-record, /stats,
 //            /simulate, /simulate-batch, /timeline, /presets, /action-scripts/:sector,
-//            /entitlement/create, /entitlement/check, /entitlement/use, /entitlement/lookup
+//            /entitlement/create, /entitlement/check, /entitlement/use, /entitlement/lookup,
+//            /error-report, /error-reports
 
 // ══════════════════════════════════════════════════════════
 // BRAND VOICE — shared across all AI endpoints
@@ -204,6 +205,29 @@ const FRAGILITY_CLASS_TABLE = [
   [65, 79,  "supported"],
   [80, 100, "resilient"],
 ];
+
+// ── Input sanitization helpers ──
+
+function stripHtml(str) {
+  if (typeof str !== "string") return "";
+  return str.replace(/<[^>]*>/g, "").trim();
+}
+function sanitizeString(str, maxLength = 500) {
+  if (typeof str !== "string") return "";
+  return stripHtml(str).slice(0, maxLength);
+}
+function sanitizeEmail(email) {
+  if (typeof email !== "string") return "";
+  const cleaned = email.toLowerCase().trim().slice(0, 254);
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleaned) ? cleaned : "";
+}
+function sanitizeNumber(val, min = 0, max = 100, fallback = 0) {
+  const n = Number(val);
+  return isNaN(n) ? fallback : Math.max(min, Math.min(max, n));
+}
+function sanitizeInteger(val, min = 0, max = 100, fallback = 0) {
+  return Math.round(sanitizeNumber(val, min, max, fallback));
+}
 
 // ── Lookup utilities ──
 
@@ -822,6 +846,7 @@ export default {
     if (request.method === "GET") {
       if (path === "/stats") return await handleStats(env, corsHeaders);
       if (path === "/presets") return handlePresets(url, corsHeaders);
+      if (path === "/error-reports") return await handleGetErrorReports(env, corsHeaders);
       // GET /action-scripts/:sector
       const actionScriptsMatch = path.match(/^\/action-scripts\/(.+)$/);
       if (actionScriptsMatch) return handleActionScripts(decodeURIComponent(actionScriptsMatch[1]), request, corsHeaders);
@@ -851,6 +876,7 @@ export default {
       if (path === "/simulate-batch") return await handleSimulateBatch(body, corsHeaders);
       if (path === "/timeline") return await handleTimeline(body, corsHeaders);
       if (path === "/analytics") return handleAnalytics(body, corsHeaders);
+      if (path === "/error-report") return await handleErrorReport(body, env, corsHeaders);
 
       return new Response(JSON.stringify({ error: "Unknown endpoint" }), {
         status: 404, headers: corsHeaders,
@@ -924,6 +950,11 @@ STRUCTURAL DATA:
 // ══════════════════════════════════════════════════════════
 
 async function handlePressureMap(body, env, corsHeaders) {
+  body.industry = sanitizeString(body.industry, 200) || body.industry;
+  body.operating_structure = sanitizeString(body.operating_structure, 200) || body.operating_structure;
+  body.income_model = sanitizeString(body.income_model, 200) || body.income_model;
+  body.score = sanitizeNumber(body.score, 0, 100, body.score || 0);
+
   const system = `You are the PressureMap engine for RunPayway. You produce real-time structural intelligence specific to one individual's income architecture.
 
 ROLE: Structural analyst producing a private intelligence briefing.
@@ -961,6 +992,11 @@ Return ONLY the JSON.`;
 // ══════════════════════════════════════════════════════════
 
 async function handlePlainEnglish(body, env, corsHeaders) {
+  body.industry = sanitizeString(body.industry, 200) || body.industry;
+  body.operating_structure = sanitizeString(body.operating_structure, 200) || body.operating_structure;
+  body.income_model = sanitizeString(body.income_model, 200) || body.income_model;
+  body.score = sanitizeNumber(body.score, 0, 100, body.score || 0);
+
   const vc = body.vocab_context || {};
   const vocabInstructions = vc.pressure_framing ? `
 CRITICAL: Use industry-specific vocabulary. Do NOT use generic terms like "recurring revenue" or "forward visibility."
@@ -1006,6 +1042,11 @@ Return ONLY the JSON.`;
 // ══════════════════════════════════════════════════════════
 
 async function handleActionPlan(body, env, corsHeaders) {
+  body.industry = sanitizeString(body.industry, 200) || body.industry;
+  body.operating_structure = sanitizeString(body.operating_structure, 200) || body.operating_structure;
+  body.income_model = sanitizeString(body.income_model, 200) || body.income_model;
+  body.score = sanitizeNumber(body.score, 0, 100, body.score || 0);
+
   const vc = body.vocab_context || {};
   const vocabInstructions = vc.arrangement_types ? `
 CRITICAL VOCABULARY RULES:
@@ -1061,70 +1102,143 @@ Return ONLY the JSON.`;
 }
 
 // ══════════════════════════════════════════════════════════
+// ERROR REPORTING — D1-backed client error capture
+// ══════════════════════════════════════════════════════════
+
+async function ensureErrorReportsTable(env) {
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS error_reports (
+    id TEXT PRIMARY KEY, created_at TEXT NOT NULL, error_message TEXT NOT NULL,
+    error_stack TEXT DEFAULT '', page_url TEXT DEFAULT '', user_agent TEXT DEFAULT '',
+    component TEXT DEFAULT '', metadata TEXT DEFAULT '{}'
+  )`).run();
+}
+
+async function handleErrorReport(body, env, corsHeaders) {
+  await ensureErrorReportsTable(env);
+
+  const id = "err_" + crypto.randomUUID().slice(0, 12);
+  const now = new Date().toISOString();
+  const error_message = sanitizeString(body.error_message || body.message || "", 2000);
+  const error_stack = sanitizeString(body.error_stack || body.stack || "", 4000);
+  const page_url = sanitizeString(body.page_url || body.url || "", 1000);
+  const user_agent = sanitizeString(body.user_agent || "", 500);
+  const component = sanitizeString(body.component || "", 200);
+  let metadata = "{}";
+  try {
+    metadata = JSON.stringify(body.metadata || {}).slice(0, 4000);
+  } catch { /* ignore */ }
+
+  if (!error_message) {
+    return new Response(JSON.stringify({ error: "Missing error_message" }), {
+      status: 400, headers: corsHeaders,
+    });
+  }
+
+  await env.DB.prepare(
+    `INSERT INTO error_reports (id, created_at, error_message, error_stack, page_url, user_agent, component, metadata)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+  ).bind(id, now, error_message, error_stack, page_url, user_agent, component, metadata).run();
+
+  return new Response(JSON.stringify({ success: true, id }), { headers: corsHeaders });
+}
+
+async function handleGetErrorReports(env, corsHeaders) {
+  await ensureErrorReportsTable(env);
+  const rows = await env.DB.prepare(
+    "SELECT * FROM error_reports ORDER BY created_at DESC LIMIT 100"
+  ).all();
+  return new Response(JSON.stringify({ success: true, reports: rows?.results || [] }), { headers: corsHeaders });
+}
+
+// ══════════════════════════════════════════════════════════
 // SAVE RECORD
 // ══════════════════════════════════════════════════════════
 
 async function handleSaveRecord(body, env, corsHeaders) {
-  if (!body.id || !body.record_data) {
+  const id = sanitizeString(body.id, 100);
+  if (!id || !body.record_data) {
     return new Response(JSON.stringify({ error: "Missing id or record_data" }), {
       status: 400, headers: corsHeaders,
     });
   }
 
+  const assessment_title = sanitizeString(body.assessment_title, 200);
+  const industry = sanitizeString(body.industry, 200);
+  const operating_structure = sanitizeString(body.operating_structure, 200);
+  const income_model = sanitizeString(body.income_model, 200);
+  const score = sanitizeInteger(body.score, 0, 100, 0);
+  const band = sanitizeString(body.band, 100);
+  const email = sanitizeEmail(body.email || "");
+  const top_action = sanitizeString(body.top_action, 500);
+  const idempotency_key = sanitizeString(body.idempotency_key, 200) || null;
+  const record_data = typeof body.record_data === "string" ? body.record_data : JSON.stringify(body.record_data);
+
   // Auto-migrate: add columns if missing
   try { await env.DB.prepare("ALTER TABLE records ADD COLUMN email TEXT DEFAULT ''").run(); } catch { /* column exists */ }
   try { await env.DB.prepare("ALTER TABLE records ADD COLUMN top_action TEXT DEFAULT ''").run(); } catch { /* column exists */ }
   try { await env.DB.prepare("ALTER TABLE records ADD COLUMN followup_sent INTEGER DEFAULT 0").run(); } catch { /* column exists */ }
+  try { await env.DB.prepare("ALTER TABLE records ADD COLUMN idempotency_key TEXT DEFAULT NULL").run(); } catch { /* column exists */ }
+
+  // Idempotency: if key provided and record exists, return it
+  if (idempotency_key) {
+    const existing = await env.DB.prepare(
+      "SELECT id FROM records WHERE idempotency_key = ? LIMIT 1"
+    ).bind(idempotency_key).first();
+    if (existing) {
+      return new Response(JSON.stringify({ success: true, id: existing.id, idempotent: true }), { headers: corsHeaders });
+    }
+  }
 
   await env.DB.prepare(
-    `INSERT OR REPLACE INTO records (id, created_at, assessment_title, industry, operating_structure, income_model, score, band, record_data, email, top_action) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT OR REPLACE INTO records (id, created_at, assessment_title, industry, operating_structure, income_model, score, band, record_data, email, top_action, idempotency_key) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   ).bind(
-    body.id,
+    id,
     new Date().toISOString(),
-    body.assessment_title || "",
-    body.industry || "",
-    body.operating_structure || "",
-    body.income_model || "",
-    body.score || 0,
-    body.band || "",
-    typeof body.record_data === "string" ? body.record_data : JSON.stringify(body.record_data),
-    body.email || "",
-    body.top_action || "",
+    assessment_title,
+    industry,
+    operating_structure,
+    income_model,
+    score,
+    band,
+    record_data,
+    email,
+    top_action,
+    idempotency_key,
   ).run();
 
   // ── Update nurture record with score data if this email is enrolled ──
-  if (body.email && body.score) {
+  if (email && score) {
     try {
       await ensureNurtureTable(env);
       const nurture = await env.DB.prepare(
         "SELECT email FROM nurture_queue WHERE email = ?"
-      ).bind(body.email.toLowerCase()).first();
+      ).bind(email).first();
 
       if (nurture) {
         // Parse record_data to extract the weakest factor / constraint
         let constraint = "";
         try {
           const rd = typeof body.record_data === "string" ? JSON.parse(body.record_data) : body.record_data;
-          constraint = rd?.weakest_factor || rd?.constraint || body.top_action || "";
+          constraint = rd?.weakest_factor || rd?.constraint || top_action || "";
         } catch { /* ignore parse errors */ }
 
         await env.DB.prepare(
           `UPDATE nurture_queue SET score = ?, band = ?, constraint_name = ?, industry = ? WHERE email = ?`
         ).bind(
-          body.score || 0,
-          body.band || "",
+          score,
+          band,
           constraint,
-          body.industry || "",
-          body.email.toLowerCase()
+          industry,
+          email
         ).run();
-        console.log(`[Nurture] Updated score data for ${body.email}: ${body.score} (${body.band})`);
+        console.log(`[Nurture] Updated score data for ${email}: ${score} (${band})`);
       }
     } catch (err) {
-      console.error(`[Nurture] Failed to update score for ${body.email}:`, err);
+      console.error(`[Nurture] Failed to update score for ${email}:`, err);
     }
   }
 
-  return new Response(JSON.stringify({ success: true, id: body.id }), { headers: corsHeaders });
+  return new Response(JSON.stringify({ success: true, id }), { headers: corsHeaders });
 }
 
 // ══════════════════════════════════════════════════════════
@@ -1159,8 +1273,11 @@ async function handleGetRecord(body, env, corsHeaders) {
 // ══════════════════════════════════════════════════════════
 
 async function handleSendEmail(body, env, corsHeaders) {
-  if (!body.to || !body.score) {
-    return new Response(JSON.stringify({ error: "Missing to or score" }), {
+  const toEmail = sanitizeEmail(body.to);
+  const score = sanitizeInteger(body.score, 0, 100, 0);
+
+  if (!toEmail || !score) {
+    return new Response(JSON.stringify({ error: "Missing or invalid to (email) or score" }), {
       status: 400, headers: corsHeaders,
     });
   }
@@ -1177,13 +1294,17 @@ async function handleSendEmail(body, env, corsHeaders) {
   const muted = "rgba(14,26,43,0.58)";
   const light = "rgba(14,26,43,0.35)";
   const sand = "#F4F1EA";
-  const name = body.name || "Assessment";
-  const shortId = (body.record_id || "").slice(0, 8);
-  const fullId = body.record_id || "";
+  const name = sanitizeString(body.name, 200) || "Assessment";
+  const band = sanitizeString(body.band, 100);
+  const industry = sanitizeString(body.industry, 200);
+  const constraint = sanitizeString(body.constraint, 200);
+  const interpretation = sanitizeString(body.interpretation, 2000);
+  const record_id = sanitizeString(body.record_id, 100);
+  const structure = sanitizeString(body.operating_structure, 200);
+  const shortId = record_id.slice(0, 8);
+  const fullId = record_id;
   const dashboardLink = fullId ? `https://peoplestar.com/RunPayway/dashboard?record=${encodeURIComponent(fullId)}` : "https://peoplestar.com/RunPayway/dashboard";
-  const industry = body.industry || "";
-  const structure = body.operating_structure || "";
-  const bandColor = (body.score || 0) >= 75 ? teal : (body.score || 0) >= 50 ? "#2B5EA7" : (body.score || 0) >= 30 ? "#92640A" : "#9B2C2C";
+  const bandColor = score >= 75 ? teal : score >= 50 ? "#2B5EA7" : score >= 30 ? "#92640A" : "#9B2C2C";
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -1235,14 +1356,14 @@ We looked at how your income holds up${industry ? ` in <strong style="color:${mu
 <p style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 14px;">INCOME STABILITY SCORE</p>
 <table role="presentation" cellpadding="0" cellspacing="0">
 <tr>
-<td style="font-size:56px;font-weight:200;color:${navy};line-height:1;letter-spacing:-0.04em;font-family:'Georgia',serif;">${body.score}</td>
+<td style="font-size:56px;font-weight:200;color:${navy};line-height:1;letter-spacing:-0.04em;font-family:'Georgia',serif;">${score}</td>
 <td style="font-size:16px;font-weight:300;color:rgba(14,26,43,0.18);vertical-align:bottom;padding-bottom:10px;padding-left:4px;">/100</td>
 </tr>
 </table>
 <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:12px;">
 <tr>
 <td style="width:8px;height:8px;border-radius:2px;background-color:${bandColor};">&nbsp;</td>
-<td style="padding-left:8px;font-size:13px;font-weight:600;color:${bandColor};letter-spacing:0.01em;">${body.band || ""}</td>
+<td style="padding-left:8px;font-size:13px;font-weight:600;color:${bandColor};letter-spacing:0.01em;">${band}</td>
 </tr>
 </table>
 </td>
@@ -1261,10 +1382,10 @@ We looked at how your income holds up${industry ? ` in <strong style="color:${mu
 </table>
 
 <!-- Industry context interpretation -->
-${body.interpretation ? `
+${interpretation ? `
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;">
 <tr><td>
-<p style="font-size:14px;color:${muted};line-height:1.75;margin:0;">${body.interpretation}</p>
+<p style="font-size:14px;color:${muted};line-height:1.75;margin:0;">${interpretation}</p>
 </td></tr>
 </table>
 ` : ""}
@@ -1285,7 +1406,7 @@ ${body.interpretation ? `
 </td>
 <td width="50%" style="vertical-align:top;padding-left:16px;border-left:1px solid rgba(14,26,43,0.06);">
 <p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 5px;">Primary Constraint</p>
-<p style="font-size:14px;font-weight:500;color:${navy};margin:0 0 20px;">${body.constraint || "\u2014"}</p>
+<p style="font-size:14px;font-weight:500;color:${navy};margin:0 0 20px;">${constraint || "\u2014"}</p>
 <p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 5px;">Dimensions Analyzed</p>
 <p style="font-size:14px;font-weight:500;color:${navy};margin:0;">6</p>
 </td>
@@ -1370,8 +1491,8 @@ Run another assessment in about 90 days, or whenever something meaningful shifts
     },
     body: JSON.stringify({
       from: env.FROM_EMAIL || "RunPayway <reports@peoplestar.com>",
-      to: body.to,
-      subject: `${body.name || "Your"} Income Stability Assessment \u2014 ${body.band || "Results Ready"}`,
+      to: toEmail,
+      subject: `${name || "Your"} Income Stability Assessment \u2014 ${band || "Results Ready"}`,
       html,
       tags: [
         { name: "type", value: "assessment-report" },
@@ -1396,8 +1517,13 @@ Run another assessment in about 90 days, or whenever something meaningful shifts
 // ══════════════════════════════════════════════════════════
 
 async function handleContact(body, env, corsHeaders) {
-  if (!body.name || !body.email || !body.message) {
-    return new Response(JSON.stringify({ error: "Missing required fields" }), {
+  const contactName = sanitizeString(body.name, 200);
+  const contactEmail = sanitizeEmail(body.email);
+  const contactMessage = sanitizeString(body.message, 5000);
+  const contactSubject = sanitizeString(body.subject, 200);
+
+  if (!contactName || !contactEmail || !contactMessage) {
+    return new Response(JSON.stringify({ error: "Missing required fields (name, email, message)" }), {
       status: 400, headers: corsHeaders,
     });
   }
@@ -1409,17 +1535,17 @@ async function handleContact(body, env, corsHeaders) {
   }
 
   // Format admin notification based on type
-  const isBriefSignup = body.subject === "structural_income_brief";
+  const isBriefSignup = contactSubject === "structural_income_brief";
   const adminSubject = isBriefSignup
-    ? `[RunPayway] New Brief Subscriber: ${body.email}`
-    : `[RunPayway Contact] ${(body.subject || "General Inquiry").replace(/[\r\n]/g, "")} - ${(body.name || "").replace(/[\r\n]/g, "")}`;
+    ? `[RunPayway] New Brief Subscriber: ${contactEmail}`
+    : `[RunPayway Contact] ${(contactSubject || "General Inquiry").replace(/[\r\n]/g, "")} - ${contactName.replace(/[\r\n]/g, "")}`;
 
   const adminHtml = isBriefSignup
     ? `<div style="font-family:sans-serif;max-width:600px;">
 <h2 style="color:#1F6D7A;margin:0 0 16px;">New Structural Income Brief Subscriber</h2>
 <table style="width:100%;border-collapse:collapse;">
-<tr><td style="padding:8px 0;color:#6B6155;width:100px;">Email</td><td style="padding:8px 0;color:#1C1635;font-weight:600;">${body.email}</td></tr>
-<tr><td style="padding:8px 0;color:#6B6155;">Source</td><td style="padding:8px 0;color:#1C1635;font-weight:500;">${body.message.includes("homepage") ? "Homepage" : body.message.includes("footer") ? "Footer" : body.message.includes("free-score") ? "Free Score Page" : "Website"}</td></tr>
+<tr><td style="padding:8px 0;color:#6B6155;width:100px;">Email</td><td style="padding:8px 0;color:#1C1635;font-weight:600;">${contactEmail}</td></tr>
+<tr><td style="padding:8px 0;color:#6B6155;">Source</td><td style="padding:8px 0;color:#1C1635;font-weight:500;">${contactMessage.includes("homepage") ? "Homepage" : contactMessage.includes("footer") ? "Footer" : contactMessage.includes("free-score") ? "Free Score Page" : "Website"}</td></tr>
 <tr><td style="padding:8px 0;color:#6B6155;">Date</td><td style="padding:8px 0;color:#1C1635;font-weight:500;">${new Date().toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</td></tr>
 </table>
 <div style="margin:16px 0;padding:16px;background:#F0FDF4;border-radius:8px;border:1px solid #BBF7D0;">
@@ -1429,14 +1555,14 @@ async function handleContact(body, env, corsHeaders) {
     : `<div style="font-family:sans-serif;max-width:600px;">
 <h2 style="color:#1C1635;margin:0 0 16px;">New Contact Form Submission</h2>
 <table style="width:100%;border-collapse:collapse;">
-<tr><td style="padding:8px 0;color:#6B6155;width:100px;">Name</td><td style="padding:8px 0;color:#1C1635;font-weight:500;">${body.name}</td></tr>
-<tr><td style="padding:8px 0;color:#6B6155;">Email</td><td style="padding:8px 0;color:#1C1635;font-weight:500;">${body.email}</td></tr>
-<tr><td style="padding:8px 0;color:#6B6155;">Subject</td><td style="padding:8px 0;color:#1C1635;font-weight:500;">${body.subject || "General"}</td></tr>
+<tr><td style="padding:8px 0;color:#6B6155;width:100px;">Name</td><td style="padding:8px 0;color:#1C1635;font-weight:500;">${contactName}</td></tr>
+<tr><td style="padding:8px 0;color:#6B6155;">Email</td><td style="padding:8px 0;color:#1C1635;font-weight:500;">${contactEmail}</td></tr>
+<tr><td style="padding:8px 0;color:#6B6155;">Subject</td><td style="padding:8px 0;color:#1C1635;font-weight:500;">${contactSubject || "General"}</td></tr>
 </table>
 <div style="margin:16px 0;padding:16px;background:#F8F6F1;border-radius:8px;border:1px solid #E8E5DE;">
-<p style="margin:0;color:#1C1635;line-height:1.6;">${body.message.replace(/\n/g, "<br/>")}</p>
+<p style="margin:0;color:#1C1635;line-height:1.6;">${contactMessage.replace(/\n/g, "<br/>")}</p>
 </div>
-<p style="font-size:12px;color:#6B6155;margin:16px 0 0;">Reply directly to this email to respond to ${body.name}.</p>
+<p style="font-size:12px;color:#6B6155;margin:16px 0 0;">Reply directly to this email to respond to ${contactName}.</p>
 </div>`;
 
   const res = await fetch("https://api.resend.com/emails", {
@@ -1448,7 +1574,7 @@ async function handleContact(body, env, corsHeaders) {
     body: JSON.stringify({
       from: env.FROM_EMAIL || "RunPayway <reports@peoplestar.com>",
       to: "info@peoplestar.com",
-      reply_to: body.email,
+      reply_to: contactEmail,
       subject: adminSubject,
       html: adminHtml,
     }),
@@ -1462,14 +1588,14 @@ async function handleContact(body, env, corsHeaders) {
   }
 
   // ── Nurture sequence: enroll and send email 1 for brief signups ──
-  if (body.subject === "structural_income_brief") {
+  if (contactSubject === "structural_income_brief") {
     try {
       await ensureNurtureTable(env);
 
       // Check if already enrolled (idempotent)
       const existing = await env.DB.prepare(
         "SELECT email, emails_sent FROM nurture_queue WHERE email = ?"
-      ).bind(body.email.toLowerCase()).first();
+      ).bind(contactEmail).first();
 
       if (!existing) {
         const now = new Date().toISOString();
@@ -1477,8 +1603,8 @@ async function handleContact(body, env, corsHeaders) {
           `INSERT INTO nurture_queue (email, name, signed_up_at, emails_sent, score, band, constraint_name, industry)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
         ).bind(
-          body.email.toLowerCase(),
-          body.name || "there",
+          contactEmail,
+          contactName || "there",
           now,
           "1", // email 1 will be sent immediately
           0,   // score not yet available
@@ -1488,7 +1614,7 @@ async function handleContact(body, env, corsHeaders) {
         ).run();
 
         // Send nurture email 1 immediately (welcome version without score)
-        const welcomeResult = buildNurtureWelcomeEmail({ name: body.name || "there" });
+        const welcomeResult = buildNurtureWelcomeEmail({ name: contactName || "there" });
         await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: {
@@ -1497,19 +1623,19 @@ async function handleContact(body, env, corsHeaders) {
           },
           body: JSON.stringify({
             from: env.FROM_EMAIL || "RunPayway <reports@peoplestar.com>",
-            to: body.email,
+            to: contactEmail,
             subject: welcomeResult.subject,
             html: welcomeResult.html,
             tags: [{ name: "type", value: "nurture-1" }],
           }),
         });
-        console.log(`[Nurture] Enrolled ${body.email} and sent welcome email`);
+        console.log(`[Nurture] Enrolled ${contactEmail} and sent welcome email`);
       } else {
-        console.log(`[Nurture] ${body.email} already enrolled, skipping`);
+        console.log(`[Nurture] ${contactEmail} already enrolled, skipping`);
       }
     } catch (err) {
       // Nurture enrollment failure should not break the contact form
-      console.error(`[Nurture] Enrollment error for ${body.email}:`, err);
+      console.error(`[Nurture] Enrollment error for ${contactEmail}:`, err);
     }
   }
 
@@ -1573,13 +1699,15 @@ async function ensureEntitlementsTable(env) {
   `).run();
   await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_entitlements_email ON entitlements(email)`).run();
   await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_entitlements_stripe ON entitlements(stripe_session_id)`).run();
+  try { await env.DB.prepare("ALTER TABLE entitlements ADD COLUMN last_idempotency_key TEXT DEFAULT NULL").run(); } catch { /* column exists */ }
 }
 
 async function handleEntitlementCreate(body, env, corsHeaders) {
   await ensureEntitlementsTable(env);
 
-  const email = (body.email || "").toLowerCase().trim();
-  const plan_key = body.plan_key || "";
+  const email = sanitizeEmail(body.email);
+  const plan_key = sanitizeString(body.plan_key, 50);
+  const stripe_session_id = sanitizeString(body.stripe_session_id, 200);
   if (!email || !plan_key) {
     return new Response(JSON.stringify({ error: "Missing email or plan_key" }), {
       status: 400, headers: corsHeaders,
@@ -1594,10 +1722,10 @@ async function handleEntitlementCreate(body, env, corsHeaders) {
   }
 
   // Duplicate detection: same stripe_session_id
-  if (body.stripe_session_id) {
+  if (stripe_session_id) {
     const existing = await env.DB.prepare(
       "SELECT * FROM entitlements WHERE stripe_session_id = ?"
-    ).bind(body.stripe_session_id).first();
+    ).bind(stripe_session_id).first();
     if (existing) {
       return new Response(JSON.stringify({ success: true, entitlement: existing, duplicate: true }), { headers: corsHeaders });
     }
@@ -1626,8 +1754,8 @@ async function handleEntitlementCreate(body, env, corsHeaders) {
     email,
     plan_key,
     config.assessments_allowed,
-    body.model_version || "RP-2.0",
-    body.stripe_session_id || null,
+    sanitizeString(body.model_version, 20) || "RP-2.0",
+    stripe_session_id || null,
     now.toISOString(),
     expires_at,
   ).run();
@@ -1722,8 +1850,9 @@ async function handleEntitlementCheck(body, env, corsHeaders) {
 async function handleEntitlementUse(body, env, corsHeaders) {
   await ensureEntitlementsTable(env);
 
-  const entitlement_id = body.entitlement_id || "";
-  const assessment_id = body.assessment_id || "";
+  const entitlement_id = sanitizeString(body.entitlement_id, 100);
+  const assessment_id = sanitizeString(body.assessment_id, 100);
+  const idempotency_key = sanitizeString(body.idempotency_key, 200) || null;
   if (!entitlement_id || !assessment_id) {
     return new Response(JSON.stringify({ error: "Missing entitlement_id or assessment_id" }), {
       status: 400, headers: corsHeaders,
@@ -1743,13 +1872,19 @@ async function handleEntitlementUse(body, env, corsHeaders) {
     return new Response(JSON.stringify({ success: true, remaining, status: ent.status, idempotent: true }), { headers: corsHeaders });
   }
 
+  // Idempotency: if idempotency_key matches last_idempotency_key, skip
+  if (idempotency_key && ent.last_idempotency_key === idempotency_key) {
+    const remaining = ent.assessments_allowed - ent.assessments_used;
+    return new Response(JSON.stringify({ success: true, remaining, status: ent.status, idempotent: true }), { headers: corsHeaders });
+  }
+
   const now = new Date().toISOString();
 
   if (body.retake) {
     // Retake: don't increment, just update last_assessment fields
     await env.DB.prepare(
-      "UPDATE entitlements SET last_assessment_at = ?, last_assessment_id = ? WHERE id = ?"
-    ).bind(now, assessment_id, entitlement_id).run();
+      "UPDATE entitlements SET last_assessment_at = ?, last_assessment_id = ?, last_idempotency_key = ? WHERE id = ?"
+    ).bind(now, assessment_id, idempotency_key, entitlement_id).run();
     const remaining = ent.assessments_allowed - ent.assessments_used;
     return new Response(JSON.stringify({ success: true, remaining, status: ent.status }), { headers: corsHeaders });
   }
@@ -1758,8 +1893,8 @@ async function handleEntitlementUse(body, env, corsHeaders) {
   const newUsed = ent.assessments_used + 1;
   const newStatus = newUsed >= ent.assessments_allowed ? "exhausted" : "active";
   await env.DB.prepare(
-    "UPDATE entitlements SET assessments_used = ?, status = ?, last_assessment_at = ?, last_assessment_id = ? WHERE id = ?"
-  ).bind(newUsed, newStatus, now, assessment_id, entitlement_id).run();
+    "UPDATE entitlements SET assessments_used = ?, status = ?, last_assessment_at = ?, last_assessment_id = ?, last_idempotency_key = ? WHERE id = ?"
+  ).bind(newUsed, newStatus, now, assessment_id, idempotency_key, entitlement_id).run();
 
   const remaining = ent.assessments_allowed - newUsed;
   return new Response(JSON.stringify({ success: true, remaining, status: newStatus }), { headers: corsHeaders });
@@ -2311,7 +2446,13 @@ ${(() => { const p = getReassessmentPrompts(industry); return `<div style="borde
 // ══════════════════════════════════════════════════════════
 
 async function handleNurture(body, env, corsHeaders) {
-  const { email, name, score, band, constraint, industry, emailNumber } = body;
+  const email = sanitizeEmail(body.email);
+  const name = sanitizeString(body.name, 200);
+  const score = sanitizeInteger(body.score, 0, 100, 0);
+  const band = sanitizeString(body.band, 100);
+  const constraint = sanitizeString(body.constraint, 200);
+  const industry = sanitizeString(body.industry, 200);
+  const emailNumber = body.emailNumber;
 
   if (!email || !emailNumber || !name) {
     return new Response(JSON.stringify({ error: "Missing required fields: email, name, emailNumber" }), {
