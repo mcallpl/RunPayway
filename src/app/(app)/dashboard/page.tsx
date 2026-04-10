@@ -810,39 +810,83 @@ function DashboardContent() {
   /*  RENDER                                                           */
   /* ================================================================ */
 
-  /* Loading state — shows enterprise card while hydrating */
+  /* Loading state — skeleton screen matching real dashboard layout */
   if (!hydrated) {
+    const skBone = (w: string | number, h: number, r = 12, extra?: React.CSSProperties): React.CSSProperties => ({
+      width: w, height: h, borderRadius: r,
+      backgroundColor: "rgba(14,26,43,0.06)",
+      animation: "skeletonPulse 1.5s ease-in-out infinite",
+      ...extra,
+    });
     return (
       <>
         <title>Dashboard | RunPayway™</title>
-        <div style={{ maxWidth: 680, margin: "0 auto", paddingTop: 100, fontFamily: sans }}>
-          <div style={{
-            backgroundColor: C.white, borderRadius: 16,
-            border: `1px solid #E5E7EB`, padding: 64, textAlign: "center",
-            boxShadow: "0 2px 8px rgba(14,26,43,0.03)",
-          }}>
-            <div style={{ fontSize: 11, fontWeight: 500, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.light, marginBottom: 32 }}>
-              Dashboard
+        <style>{`@keyframes skeletonPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.7; } }`}</style>
+        <div style={{ minHeight: "100vh", backgroundColor: C.sand, fontFamily: sans }}>
+          <SuiteHeader current="dashboard" />
+
+          <div style={{ maxWidth: 960, margin: "0 auto", padding: mobile ? "20px 16px 120px" : "48px 36px 96px" }}>
+
+            {/* Skeleton: Score hero card */}
+            <div style={{ marginBottom: 36 }}>
+              <div style={{ padding: mobile ? "28px 22px" : "40px 44px", borderRadius: mobile ? 16 : 24, backgroundColor: C.white, border: "1px solid #E5E7EB", boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+
+                {/* Score ring + context row */}
+                <div style={{ display: "flex", alignItems: mobile ? "center" : "center", gap: mobile ? 20 : 40, marginBottom: 28, flexDirection: mobile ? "column" : "row" }}>
+                  {/* Pulsing circle for score ring */}
+                  <div style={{ ...skBone(mobile ? 100 : 140, mobile ? 100 : 140, 999), flexShrink: 0 }} />
+                  {/* Text lines */}
+                  <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 10, alignItems: mobile ? "center" : "flex-start" }}>
+                    <div style={skBone(180, 18, 8)} />
+                    <div style={skBone(240, 14, 8)} />
+                    <div style={skBone(160, 12, 8)} />
+                  </div>
+                </div>
+
+                {/* Metrics row */}
+                <div style={{ display: "flex", gap: 12, marginBottom: 28, flexDirection: mobile ? "column" : "row" }}>
+                  {[1, 2, 3].map(i => (
+                    <div key={i} style={{ flex: 1, padding: mobile ? "12px 10px" : "14px 16px", borderRadius: 10, backgroundColor: "#FAFAFA", display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                      <div style={skBone(80, 10, 6)} />
+                      <div style={skBone(60, 20, 8)} />
+                    </div>
+                  ))}
+                </div>
+
+                {/* This Week section */}
+                <div style={{ padding: mobile ? "20px 18px" : "24px 28px", borderRadius: 16, backgroundColor: "rgba(14,26,43,0.015)", borderLeft: `3px solid ${C.teal}20` }}>
+                  <div style={skBone("80%", 18, 8, { marginBottom: 10 })} />
+                  <div style={skBone("60%", 14, 8)} />
+                </div>
+              </div>
             </div>
-            <div style={{ display: "flex", justifyContent: "center", marginBottom: 32 }}>
-              <div style={{ width: 64, height: 64, borderRadius: "50%", border: `3px solid ${C.softBorder}`, borderTopColor: C.teal, animation: "cc-spin 1s linear infinite" }} />
-            </div>
-            <div style={{ fontSize: 18, fontWeight: 500, color: C.navy, marginBottom: 8, lineHeight: 1.4 }}>
-              Loading Dashboard
-            </div>
-            <div style={{ fontSize: 14, fontWeight: 400, color: C.muted, lineHeight: 1.5 }}>
-              Analyzing your income | Model RP-2.0
-            </div>
-            <div style={{ marginTop: 40, display: "flex", flexDirection: "column", gap: 12 }}>
-              <div style={{ height: 12, borderRadius: 6, backgroundColor: C.border, width: "100%" }} />
-              <div style={{ height: 12, borderRadius: 6, backgroundColor: C.border, width: "85%" }} />
-              <div style={{ height: 12, borderRadius: 6, backgroundColor: C.border, width: "70%" }} />
-            </div>
+
+            {/* Skeleton: Content cards */}
+            {[1, 2, 3, 4].map(i => (
+              <div key={i} style={{
+                marginBottom: 20,
+                padding: mobile ? "24px 20px" : "32px 36px",
+                borderRadius: 16,
+                backgroundColor: C.white,
+                border: "1px solid #E5E7EB",
+                boxShadow: "0 1px 4px rgba(14,26,43,0.03)",
+                animationDelay: `${i * 0.15}s`,
+              }}>
+                {/* Section label */}
+                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
+                  <div style={skBone(4, 24, 2)} />
+                  <div style={skBone(120, 12, 6)} />
+                </div>
+                {/* Content lines */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  <div style={skBone("100%", 14, 8)} />
+                  <div style={skBone("85%", 14, 8)} />
+                  <div style={skBone("70%", 14, 8)} />
+                </div>
+              </div>
+            ))}
+
           </div>
-          <p style={{ fontSize: 13, fontWeight: 400, color: C.light, textAlign: "center", marginTop: 24, lineHeight: 1.5 }}>
-            Private by default | No external data access | Version-locked scoring
-          </p>
-          <style>{`@keyframes cc-spin { to { transform: rotate(360deg); } }`}</style>
         </div>
       </>
     );
