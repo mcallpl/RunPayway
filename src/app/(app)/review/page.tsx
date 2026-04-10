@@ -611,6 +611,7 @@ export default function ReviewPage() {
 
   // ── V2 engine data (must be before band-sensitive copy) ──
   const v2 = record._v2;
+  const reportVocab = getVocabulary(record.industry_sector || "");
   const v2Fragility = v2?.fragility ?? null;
   const v2Sensitivity = v2?.sensitivity ?? null;
   const v2Interactions = v2?.interactions ?? null;
@@ -1309,15 +1310,18 @@ export default function ReviewPage() {
               const concrete = liftConcrete[scenario.scenario_id];
               const aiAction = idx === 0 ? aiPlan?.primary_action : idx === 1 ? aiPlan?.supporting_action : null;
               const goal = aiAction || concrete?.goal || scenario.label;
-              const action = concrete?.action || scenario.change_description || "";
+              const rawAction = concrete?.action || scenario.change_description || "";
+              const action = cleanConstraintText(rawAction);
               const liftVal = scenario.lift > 0 ? `+${scenario.lift}` : "";
+              // De-emphasize small lifts — show them smaller and muted
+              const isSmallLift = scenario.lift <= 3;
               return (
                 <div key={scenario.scenario_id} style={{ display: "flex", gap: 16, alignItems: "flex-start", padding: "18px 0", borderBottom: idx < steps.length - 1 ? "1px solid rgba(14,26,43,0.06)" : "none" }}>
                   <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: B.navy, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, fontFamily: mono, color: "#fff", flexShrink: 0 }}>{String(idx + 1).padStart(2, "0")}</div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4, gap: 12 }}>
                       <span style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{goal}</span>
-                      {liftVal && <span style={{ fontSize: 16, fontWeight: 700, fontFamily: mono, color: B.teal, flexShrink: 0 }}>{liftVal}</span>}
+                      {liftVal && <span style={{ fontSize: isSmallLift ? 13 : 16, fontWeight: isSmallLift ? 500 : 700, fontFamily: mono, color: isSmallLift ? "rgba(14,26,43,0.35)" : B.teal, flexShrink: 0 }}>{liftVal}</span>}
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <span style={{ fontSize: 13, color: B.muted }}>{action.length > 100 ? action.substring(0, 100) + "..." : action}</span>
@@ -1356,7 +1360,7 @@ export default function ReviewPage() {
                 {items.map((item, i) => (
                   <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: i < items.length - 1 ? 6 : 0 }}>
                     <span style={{ color: B.teal, fontSize: 14, flexShrink: 0, marginTop: 1 }}>&#10003;</span>
-                    <span style={{ fontSize: 12, color: B.muted, lineHeight: 1.5 }}><strong style={{ color: B.navy }}>{item.title}</strong> \u2014 {item.desc}</span>
+                    <span style={{ fontSize: 12, color: B.muted, lineHeight: 1.5 }}><strong style={{ color: B.navy }}>{item.title}</strong> {"\u2014"} {item.desc}</span>
                   </div>
                 ))}
               </div>
@@ -1409,16 +1413,19 @@ export default function ReviewPage() {
           {Array.isArray(v2Scenarios) && v2Scenarios.length > 0 && v2Scenarios.slice(0, 3).map((sc: { title: string; label?: string; original_score: number; scenario_score: number; score_drop: number; narrative?: string; band_shift?: boolean; original_band?: string; scenario_band?: string }, idx: number) => {
             const severityLabel = sc.score_drop > score * 0.5 ? "Severe" : sc.score_drop > score * 0.25 ? "Significant" : "Moderate";
             const severityColor = sc.score_drop > score * 0.5 ? B.bandLimited : sc.score_drop > score * 0.25 ? B.bandDeveloping : B.teal;
+            // Clean up generic scenario titles using the cleanTitle map
+            const scenarioTitleMap: Record<string, string> = { "Largest Source Removed": "If your top source disappears", "Active Labor Interrupted": "If you cannot work for 90 days", "Forward Commitments Delayed": "If expected income arrives late", "Client Concentration Loss": "If your biggest client leaves", "Market Contraction": "If demand in your industry drops", "High Volatility Month": "If you have a slow month with no backup", "Key Client Loss": "If you lose a key client or contract", "Revenue Model Disruption": "If your primary income model stops working", "Seasonal Revenue Gap": "If a seasonal slowdown cuts your income", "Pricing Pressure": "If what you can charge drops", "Recurring Stream Degrades": "If a repeating income stream weakens", "Referral Pipeline Dries": "If new business or referrals dry up", "Contract Non Renewal": "If a major contract is not renewed" };
+            const cleanScTitle = scenarioTitleMap[sc.title || ""] || sc.label || sc.title || "Disruption scenario";
             return (
               <div key={idx} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 0", borderBottom: idx < Math.min(v2Scenarios.length, 3) - 1 ? "1px solid rgba(14,26,43,0.06)" : "none" }}>
                 <div style={{ flex: 1 }}>
-                  <span style={{ fontSize: 15, fontWeight: 500, color: B.navy }}>{sc.title || sc.label}</span>
+                  <span style={{ fontSize: 15, fontWeight: 500, color: B.navy }}>{cleanScTitle}</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: mobile ? 10 : 16, flexShrink: 0 }}>
                   <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.04em", color: severityColor, padding: "3px 10px", borderRadius: 6, backgroundColor: `${severityColor}08` }}>{severityLabel}</span>
                   <div style={{ display: "flex", alignItems: "baseline", gap: 4, minWidth: 70, justifyContent: "flex-end" }}>
                     <span style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: "rgba(14,26,43,0.30)" }}>{sc.scenario_score}</span>
-                    <span style={{ fontSize: mobile ? 20 : 24, fontWeight: 700, fontFamily: mono, color: severityColor }}>-{sc.score_drop}</span>
+                    <span style={{ fontSize: mobile ? 20 : 24, fontWeight: 700, fontFamily: mono, color: severityColor }}>{"\u2212"}{sc.score_drop}</span>
                   </div>
                 </div>
               </div>
@@ -1428,12 +1435,12 @@ export default function ReviewPage() {
           {/* Real-world impact cards */}
           <div style={{ display: mobile ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 20, marginBottom: 16 }}>
             <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: "#FAFAF8", border: `1px solid rgba(197,48,48,0.10)`, marginBottom: mobile ? 10 : 0 }}>
-              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandLimited, marginBottom: 6 }}>IF BIGGEST SOURCE LEAVES</div>
-              <div style={{ fontSize: 22, fontWeight: 300, color: B.navy, fontFamily: mono, marginBottom: 2 }}>{score} &rarr; {riskScenarioScore}</div>
+              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandLimited, marginBottom: 6 }}>IF YOUR {(reportVocab?.nouns?.top_client || "TOP SOURCE").split(/[,/]/)[0].trim().toUpperCase().slice(0, 30)} LEAVES</div>
+              <div style={{ fontSize: 22, fontWeight: 300, color: B.navy, fontFamily: mono, marginBottom: 2 }}>{score} {"\u2192"} {riskScenarioScore}</div>
               <div style={{ fontSize: 12, color: B.muted }}>Score drops by <span style={{ fontFamily: mono, fontWeight: 600 }}>{riskScenarioDrop}</span> points</div>
             </div>
             <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: "#FAFAF8", border: `1px solid rgba(183,121,31,0.10)` }}>
-              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandDeveloping, marginBottom: 6 }}>IF YOU STOP WORKING</div>
+              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandDeveloping, marginBottom: 6 }}>IF YOU STOP {(reportVocab?.nouns?.active_work || "WORKING").split(/[,/]/)[0].trim().toUpperCase().slice(0, 30)}</div>
               <div style={{ fontSize: 22, fontWeight: 300, color: B.navy, fontFamily: mono, marginBottom: 2 }}>{continuityDisplay}</div>
               <div style={{ fontSize: 12, color: B.muted }}>{continuityText}</div>
             </div>
