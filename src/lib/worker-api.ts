@@ -143,7 +143,8 @@ export async function fetchTimeline(
  */
 export async function fetchPresets(sector?: string): Promise<PresetMeta[]> {
   const path = sector ? `/presets?sector=${encodeURIComponent(sector)}` : "/presets";
-  return get<PresetMeta[]>(path);
+  const res = await get<{ presets: PresetMeta[] }>(path);
+  return res.presets;
 }
 
 /**
@@ -155,5 +156,6 @@ export async function fetchActionScripts(
 ): Promise<ActionScript[]> {
   const headers: Record<string, string> = {};
   if (authToken) headers["Authorization"] = `Bearer ${authToken}`;
-  return get<ActionScript[]>(`/action-scripts/${encodeURIComponent(sector)}`, headers);
+  const res = await get<{ scripts: ActionScript[] }>(`/action-scripts/${encodeURIComponent(sector)}`, headers);
+  return res.scripts;
 }
