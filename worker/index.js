@@ -778,6 +778,13 @@ function handlePresets(url, corsHeaders) {
   return new Response(JSON.stringify({ presets: SIMULATOR_PRESETS.map(stripPreset) }), { headers: corsHeaders });
 }
 
+function handleAnalytics(body, corsHeaders) {
+  // Accept and acknowledge analytics events (fire-and-forget from frontend).
+  // In production this could write to D1 or Analytics Engine;
+  // for now we simply accept the payload so the endpoint exists.
+  return new Response(JSON.stringify({ ok: true }), { headers: corsHeaders });
+}
+
 // ══════════════════════════════════════════════════════════
 // MAIN WORKER
 // ══════════════════════════════════════════════════════════
@@ -838,6 +845,7 @@ export default {
       if (path === "/simulate") return await handleSimulate(body, corsHeaders);
       if (path === "/simulate-batch") return await handleSimulateBatch(body, corsHeaders);
       if (path === "/timeline") return await handleTimeline(body, corsHeaders);
+      if (path === "/analytics") return handleAnalytics(body, corsHeaders);
 
       return new Response(JSON.stringify({ error: "Unknown endpoint" }), {
         status: 404, headers: corsHeaders,

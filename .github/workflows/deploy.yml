@@ -51,3 +51,6 @@ jobs:
           local-dir: ./out/
           server-dir: /public_html/RunPayway/
           dangerous-clean-slate: false
+
+      - name: Smoke test — verify worker endpoints
+        run: bash scripts/smoke-test.sh
