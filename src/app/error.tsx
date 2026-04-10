@@ -47,6 +47,11 @@ export default function Error({
           <div style={{ fontSize: 12, color: "#6B7280", fontFamily: "monospace", wordBreak: "break-all", lineHeight: 1.5 }}>
             {error?.message || "Unknown error"}
           </div>
+          {error?.stack && (
+            <div style={{ fontSize: 10, color: "#9CA3AF", fontFamily: "monospace", wordBreak: "break-all", lineHeight: 1.4, marginTop: 8, maxHeight: 120, overflow: "auto" }}>
+              {error.stack.split("\n").slice(1, 6).join("\n")}
+            </div>
+          )}
         </div>
 
         <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
