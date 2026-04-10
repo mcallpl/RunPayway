@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Providers } from "@/components/Providers";
 import AnalyticsPixels from "@/components/AnalyticsPixels";
+import ErrorReporter from "@/components/ErrorReporter";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -62,6 +63,7 @@ export default function RootLayout({
             }),
           }}
         />
+        <ErrorReporter />
         <Providers>{children}</Providers>
         <AnalyticsPixels />
       </body>

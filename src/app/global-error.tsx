@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 export default function GlobalError({
   error,
   reset,
@@ -7,6 +9,22 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  useEffect(() => {
+    try {
+      const payload = {
+        error_message: error.message || "Unknown global error",
+        error_stack: error.stack || "",
+        component: "global-error.tsx",
+        page_url: typeof window !== "undefined" ? window.location.href : "",
+        user_agent: typeof navigator !== "undefined" ? navigator.userAgent : "",
+      };
+      const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
+      if (typeof navigator !== "undefined" && navigator.sendBeacon) {
+        navigator.sendBeacon("https://runpayway-pressuremap.mcallpl.workers.dev/error-report", blob);
+      }
+    } catch { /* reporting should never throw */ }
+  }, [error]);
+
   return (
     <html lang="en">
       <body style={{ fontFamily: "Inter, system-ui, sans-serif", margin: 0, padding: 0, backgroundColor: "#FAFAFA" }}>

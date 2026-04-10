@@ -1,5 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
+import { reportError } from "@/components/ErrorReporter";
+
 export default function Error({
   error,
   reset,
@@ -7,6 +10,14 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  useEffect(() => {
+    reportError({
+      error_message: error.message || "Unknown error",
+      error_stack: error.stack || "",
+      component: "error.tsx",
+    });
+  }, [error]);
+
   return (
     <div style={{
       display: "flex",

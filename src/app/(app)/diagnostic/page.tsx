@@ -32,6 +32,25 @@ function fetchWithTimeout(url: string, opts: RequestInit, timeoutMs = 15000): Pr
   ]);
 }
 
+/** Fetch with exponential backoff retry — for Claude API calls */
+async function fetchWithRetry(
+  url: string, opts: RequestInit,
+  { maxRetries = 3, baseDelayMs = 1000, timeoutMs = 15000 } = {}
+): Promise<Response> {
+  let lastError: Error | null = null;
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      const res = await fetchWithTimeout(url, opts, timeoutMs);
+      if (res.ok || (res.status >= 400 && res.status < 500 && res.status !== 429)) return res;
+      lastError = new Error(`HTTP ${res.status}`);
+    } catch (err) {
+      lastError = err instanceof Error ? err : new Error(String(err));
+    }
+    if (attempt < maxRetries - 1) await new Promise(r => setTimeout(r, baseDelayMs * Math.pow(2, attempt)));
+  }
+  throw lastError || new Error("fetchWithRetry exhausted");
+}
+
 interface Question {
   number: number;
   title: string;
@@ -523,6 +542,8 @@ export default function DiagnosticPage() {
   const handleSubmit = async () => {
     if (!allAnswered) return;
 
+    const idempotencyKey = crypto.randomUUID();
+
     const profile = JSON.parse(sessionStorage.getItem("rp_profile") || "{}");
 
     const { adaptV2ToV1 } = await loadAdapter();
@@ -654,19 +675,19 @@ export default function DiagnosticPage() {
       // ── Run all 3 Claude API calls in PARALLEL (each takes 2-5s) ──
       const [pmResult, peResult, apResult] = await Promise.allSettled([
         // PressureMap
-        fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev", {
+        fetchWithRetry("https://runpayway-pressuremap.mcallpl.workers.dev", {
           method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...sharedBody, weakest_factor: topConstraint.factor || topConstraint.label || "", weakest_factor_value: topConstraint.label || "" }),
         }).then(async (res) => res.ok ? res.json() : null).catch(() => null),
 
         // Plain English
-        fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/plain-english", {
+        fetchWithRetry("https://runpayway-pressuremap.mcallpl.workers.dev/plain-english", {
           method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...sharedBody, weakest_factor: topFactor, active_income: adapted.active_income_level || 0, continuity_months: adapted.income_continuity_months || 0, risk_drop: adapted.risk_scenario_drop || 0 }),
         }).then(async (res) => res.ok ? res.json() : null).catch(() => null),
 
         // Action Plan
-        fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/action-plan", {
+        fetchWithRetry("https://runpayway-pressuremap.mcallpl.workers.dev/action-plan", {
           method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...sharedBody, weakest_factor: topFactor, active_income: adapted.active_income_level || 0, continuity_months: adapted.income_continuity_months || 0, risk_drop: adapted.risk_scenario_drop || 0, top_change: topLift?.label || "", projected_lift: topLift ? `${topLift.original_score} to ${topLift.projected_score} (+${topLift.lift})` : "" }),
         }).then(async (res) => res.ok ? res.json() : null).catch(() => null),
@@ -714,6 +735,7 @@ export default function DiagnosticPage() {
             band: recAdapted.stability_band || "",
             record_data: JSON.stringify(record),
             email: profile.recipient_email || "",
+            idempotency_key: idempotencyKey,
           }),
         });
       } catch { /* Cloud save failed — local storage still works */ }
@@ -729,6 +751,7 @@ export default function DiagnosticPage() {
             body: JSON.stringify({
               entitlement_id: entitlementId,
               assessment_id: recAdaptedForEnt.record_id || "",
+              idempotency_key: idempotencyKey,
             }),
           }, 8000).catch(() => { /* non-blocking */ });
         }
@@ -792,6 +815,7 @@ export default function DiagnosticPage() {
       localStorage.setItem("rp_records", JSON.stringify(stored));
 
       clearAnswerStorage();
+      sessionStorage.removeItem("rp_idempotency_key");
 
       // API work is done — ensure minimum 5s of quote display, then show final card
       apiDoneRef.current = true;
