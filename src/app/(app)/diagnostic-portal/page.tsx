@@ -4,10 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
-import logoWhite from "../../../../public/runpayway-logo-white.png";
 import { getRemaining, getRemainingServer } from "@/lib/monitoring";
 import { C, T, mono, sans, sp, padX, cardStyle, ctaButton, canHover, h2Style, body, bodySm } from "@/lib/design-tokens";
-import { trackAssessmentStart } from "@/lib/analytics";
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
@@ -218,12 +216,6 @@ export default function InitializationPage() {
   const [step, setStep] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const [portalRevealed, setPortalRevealed] = useState(false);
-  const [showIndustryInit, setShowIndustryInit] = useState(false);
-  const [showPrepScreen, setShowPrepScreen] = useState(false);
-  const [prepVisible, setPrepVisible] = useState(false);
-  const [showReadyScreen, setShowReadyScreen] = useState(false);
-  const [readyVisible, setReadyVisible] = useState(false);
-  const [readyExiting, setReadyExiting] = useState(false);
   const [mobile, setMobile] = useState(false);
   useEffect(() => { const c = () => setMobile(window.innerWidth <= 640); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
 
@@ -360,25 +352,10 @@ export default function InitializationPage() {
 
   const handleBegin = () => {
     if (!isValid) return;
-    const profile = {
-      ...form,
-      assessment_title: form.assessment_title.trim(),
-    };
-    sessionStorage.setItem("rp_profile", JSON.stringify(profile));
-    localStorage.setItem("rp_profile", JSON.stringify(profile));
-    setShowIndustryInit(true);
-    setTimeout(() => {
-      setShowIndustryInit(false);
-      setShowPrepScreen(true);
-      setTimeout(() => setPrepVisible(true), 100);
-    }, 1800);
-  };
-
-  const handlePrepContinue = () => {
-    setShowPrepScreen(false);
-    setPrepVisible(false);
-    setShowReadyScreen(true);
-    setTimeout(() => setReadyVisible(true), 100);
+    const profileData = { ...form, assessment_title: form.assessment_title.trim() };
+    sessionStorage.setItem("rp_profile", JSON.stringify(profileData));
+    localStorage.setItem("rp_profile", JSON.stringify(profileData));
+    router.push("/diagnostic");
   };
 
   const focusHandler = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -391,273 +368,6 @@ export default function InitializationPage() {
   const canContinueStep0 = form.assessment_title.trim() !== "";
   const canContinueStep1 = form.industry_sector !== "" && form.operating_structure !== "" && form.primary_income_model !== "" && form.years_in_structure !== "";
 
-  /* ================================================================ */
-  /*  INDUSTRY INIT INTERSTITIAL                                        */
-  /* ================================================================ */
-  if (showIndustryInit) {
-    return (
-      <div style={{
-        position: "fixed", inset: 0, zIndex: 9999,
-        background: "#F4F1EA",
-        display: "flex", flexDirection: "column",
-        alignItems: "center", justifyContent: "center",
-        padding: "0 32px",
-        animation: "rpInitFadeIn 600ms ease-out both",
-      }}>
-        <style>{`
-          @keyframes rpInitFadeIn {
-            from { opacity: 0; }
-            to   { opacity: 1; }
-          }
-          @keyframes rpInitTextSlide {
-            from { opacity: 0; transform: translateY(12px); }
-            to   { opacity: 1; transform: translateY(0); }
-          }
-          @keyframes rpInitPulse {
-            0%, 100% { opacity: 0.4; }
-            50%      { opacity: 1; }
-          }
-        `}</style>
-        <div style={{ textAlign: "center" }}>
-          <div style={{
-            fontSize: 11, fontWeight: 600, fontFamily: mono,
-            color: "#1F6D7A", letterSpacing: "0.14em",
-            textTransform: "uppercase",
-            marginBottom: 14,
-            animation: "rpInitTextSlide 500ms ease-out 100ms both",
-          }}>
-            Initializing
-          </div>
-          <div style={{
-            fontSize: mobile ? 28 : 36, fontWeight: 700, fontFamily: sans,
-            color: "#0E1A2B", letterSpacing: "-0.02em",
-            lineHeight: 1.2, marginBottom: 8,
-            animation: "rpInitTextSlide 500ms ease-out 250ms both",
-          }}>
-            {form.industry_sector}
-          </div>
-          <div style={{
-            fontSize: mobile ? 15 : 17, fontWeight: 400, fontFamily: sans,
-            color: "#4B3FAE", letterSpacing: "0.01em",
-            animation: "rpInitTextSlide 500ms ease-out 400ms both",
-          }}>
-            diagnostic framework
-          </div>
-          <div style={{
-            marginTop: 32,
-            width: 32, height: 2, borderRadius: 1,
-            background: "#1F6D7A",
-            margin: "32px auto 0",
-            animation: "rpInitPulse 1.2s ease-in-out infinite",
-          }} />
-        </div>
-      </div>
-    );
-  }
-
-  /* ================================================================ */
-  /*  PREPARATION SCREEN — Unmissable gate before assessment            */
-  /* ================================================================ */
-  if (showPrepScreen) {
-    return (
-      <div style={{
-        position: "fixed", inset: 0, zIndex: 9999,
-        background: C.navy,
-        display: "flex", flexDirection: "column",
-        alignItems: "center", justifyContent: "center",
-        padding: mobile ? "0 20px" : "0 32px",
-        overflow: "auto",
-      }}>
-        <div style={{
-          opacity: prepVisible ? 1 : 0,
-          transform: prepVisible ? "translateY(0)" : "translateY(24px)",
-          transition: "opacity 600ms ease-out, transform 600ms ease-out",
-          maxWidth: 520, width: "100%",
-          textAlign: "center",
-        }}>
-          {/* Icon */}
-          <div style={{
-            width: 64, height: 64, borderRadius: 16,
-            backgroundColor: "rgba(31,109,122,0.15)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            margin: "0 auto 32px",
-          }}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round">
-              <path d="M9 11l3 3L22 4" />
-              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-            </svg>
-          </div>
-
-          <h1 style={{
-            fontSize: mobile ? 28 : 36, fontWeight: 700, fontFamily: sans,
-            color: C.sandText, letterSpacing: "-0.02em",
-            lineHeight: 1.15, marginBottom: 16,
-          }}>
-            Before you start, read this.
-          </h1>
-
-          <p style={{
-            fontSize: mobile ? 16 : 18, fontFamily: sans, fontWeight: 400,
-            color: C.sandMuted, lineHeight: 1.6,
-            maxWidth: 420, margin: "0 auto 40px",
-          }}>
-            Your score is only as accurate as your answers. No documents are needed &mdash; but take 30 seconds to think about these four things:
-          </p>
-
-          {/* The four prep items — large, clear, unmissable */}
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
-            gap: 16,
-            maxWidth: 480, margin: "0 auto 48px",
-            textAlign: "left",
-          }}>
-            {[
-              { num: "1", text: "How many places does your income come from?" },
-              { num: "2", text: "Does one source account for most of it?" },
-              { num: "3", text: "How much of your income is recurring or already committed?" },
-              { num: "4", text: "What happens if your biggest source disappears tomorrow?" },
-            ].map((item, i) => (
-              <div key={i} style={{
-                padding: mobile ? "16px 16px" : "20px 20px",
-                borderRadius: 14,
-                backgroundColor: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.08)",
-              }}>
-                <div style={{
-                  fontSize: 13, fontWeight: 700, fontFamily: mono,
-                  color: C.teal, marginBottom: 8,
-                }}>{item.num}</div>
-                <p style={{
-                  fontSize: 15, fontFamily: sans, fontWeight: 500,
-                  color: C.sandText, lineHeight: 1.45, margin: 0,
-                }}>{item.text}</p>
-              </div>
-            ))}
-          </div>
-
-          <p style={{
-            fontSize: 15, fontFamily: sans, fontWeight: 500,
-            color: C.sandMuted, lineHeight: 1.55,
-            maxWidth: 380, margin: "0 auto 40px",
-          }}>
-            You don&rsquo;t need exact numbers. Reasonable estimates are enough. The system is built for it.
-          </p>
-
-          {/* CTA — explicit acknowledgment */}
-          <button
-            onClick={handlePrepContinue}
-            style={{
-              height: 60, paddingLeft: 40, paddingRight: 40,
-              borderRadius: 16,
-              background: C.white, color: C.navy,
-              fontSize: 16, fontWeight: 600, fontFamily: sans,
-              border: "none", cursor: "pointer",
-              boxShadow: "0 8px 24px rgba(0,0,0,0.20)",
-              transition: "transform 200ms ease, box-shadow 200ms ease",
-              width: mobile ? "100%" : "auto",
-              minWidth: mobile ? 0 : 280,
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 36px rgba(0,0,0,0.30)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.20)"; }}
-          >
-            I&rsquo;m Ready &mdash; Continue
-          </button>
-
-          <p style={{
-            fontSize: 12, fontFamily: sans, color: C.sandLight,
-            marginTop: 20, letterSpacing: "0.02em",
-          }}>
-            This takes under 2 minutes
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  /* ================================================================ */
-  /*  READY SCREEN — Breath before the diagnostic begins               */
-  /* ================================================================ */
-  if (showReadyScreen) {
-    return (
-      <div style={{
-        position: "fixed", inset: 0, zIndex: 9999,
-        background: "#FAFAFA",
-        display: "flex", flexDirection: "column",
-        alignItems: "center", justifyContent: "center",
-        textAlign: "center",
-        padding: mobile ? "0 28px" : "0 32px",
-      }}>
-        <div style={{
-          opacity: readyExiting ? 0 : readyVisible ? 1 : 0,
-          transform: readyExiting ? "translateY(-16px)" : readyVisible ? "translateY(0)" : "translateY(20px)",
-          transition: readyExiting ? "opacity 1000ms ease-out, transform 1000ms ease-out" : "opacity 800ms ease-out, transform 800ms ease-out",
-          maxWidth: 440,
-          display: "flex", flexDirection: "column", alignItems: "center",
-          minHeight: "80vh", justifyContent: "center", position: "relative",
-        }}>
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-            <div style={{ fontSize: 12, fontWeight: 700, fontFamily: sans, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.light, marginBottom: 28 }}>
-              Prepared for {form.assessment_title}
-            </div>
-
-            <h1 style={{ fontSize: 28, fontWeight: 500, fontFamily: sans, color: C.navy, letterSpacing: "-0.02em", marginBottom: 16, lineHeight: 1.25 }}>
-              Your assessment is ready.
-            </h1>
-
-            <div style={{ width: 32, height: 1, backgroundColor: "rgba(14,26,43,0.08)", marginBottom: 20 }} />
-
-            <p style={{ fontSize: 15, fontFamily: sans, color: C.muted, lineHeight: 1.65, maxWidth: 340, margin: "0 auto 12px" }}>
-              A short structural diagnostic about how your income works. No financial data required.
-            </p>
-
-            <p style={{ fontSize: 13, fontFamily: sans, color: C.light, marginBottom: 40 }}>
-              Takes about <span style={{ fontFamily: mono }}>90</span> seconds
-            </p>
-
-            <button
-              className="cta-tick"
-              onClick={() => {
-                setReadyExiting(true);
-                trackAssessmentStart(sessionStorage.getItem("rp_industry") || undefined);
-                setTimeout(() => router.push("/diagnostic"), 1200);
-              }}
-              style={{
-                height: 52, paddingLeft: 36, paddingRight: 36, borderRadius: 12,
-                background: C.navy,
-                color: C.sandText, fontSize: 14, fontWeight: 600, fontFamily: sans, letterSpacing: "-0.01em",
-                border: "none", cursor: "pointer",
-                boxShadow: "none",
-                transition: "transform 200ms ease, box-shadow 200ms ease",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 36px rgba(0,0,0,0.25)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(0,0,0,0.20)"; }}
-            >
-              <span className="tick tick-navy" />
-              Begin Assessment
-            </button>
-
-            <div style={{ marginTop: 28, display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap" }}>
-              {["No bank connection", "No credit pull", "Private by default"].map((item) => (
-                <span key={item} style={{ fontSize: 12, fontFamily: sans, color: C.light, letterSpacing: "0.02em" }}>{item}</span>
-              ))}
-            </div>
-          </div>
-
-          {/* Logo at bottom center */}
-          <div style={{ paddingBottom: 40, paddingTop: 32 }}>
-            <Image
-              src={logoBlue}
-              alt="RunPayway™"
-              width={100}
-              height={12}
-              style={{ height: "auto", opacity: 0.25 }}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   /* ================================================================ */
   /*  STEP 0 — PORTAL ENTRANCE                                        */
@@ -1009,6 +719,13 @@ export default function InitializationPage() {
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>
+            </div>
+
+            <div style={{ padding: "16px 20px", borderRadius: 12, backgroundColor: "rgba(31,109,122,0.04)", border: "1px solid rgba(31,109,122,0.08)", marginTop: 24, marginBottom: 8 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 8 }}>QUICK PREP</div>
+              <div style={{ fontSize: 13, color: C.muted, lineHeight: 1.6 }}>
+                Think about: how many income sources you have, whether one dominates, how much is recurring, and what happens if your biggest source disappears. No documents needed — reasonable estimates work.
+              </div>
             </div>
           </div>
         )}

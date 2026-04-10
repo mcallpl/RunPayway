@@ -30,10 +30,10 @@ class ReportErrorBoundary extends Component<
       return (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "60vh", padding: 20, textAlign: "center" }}>
           <h2 style={{ fontSize: 20, fontWeight: 600, color: B.navy, marginBottom: R.paraMb }}>
-            Something went wrong loading your report
+            Your report is loading
           </h2>
           <p style={{ ...T.body, color: B.muted, marginBottom: R.sectionGap, maxWidth: 400 }}>
-            Your assessment was saved. Please try refreshing the page. If the problem persists, visit our contact page.
+            Your assessment is saved and secure. We&rsquo;re resolving a display issue — try refreshing.
           </p>
           <p style={{ ...T.meta, color: B.taupe, marginBottom: R.sectionGap }}>{this.state.error}</p>
           <button

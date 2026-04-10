@@ -37,21 +37,23 @@ export default function Error({
         boxShadow: "0 4px 24px rgba(14,26,43,0.06)",
       }}>
         <h2 style={{ fontSize: 20, fontWeight: 700, color: "#1C1635", marginBottom: 12 }}>
-          Something went wrong
+          We&rsquo;re on it
         </h2>
         <p style={{ fontSize: 14, color: "#6B7280", lineHeight: 1.6, marginBottom: 20 }}>
-          We hit an unexpected error loading this page. Please try again.
+          Your data is secure and your assessment is saved. This page encountered a temporary issue — it does not affect your results.
         </p>
 
-        {/* Show the actual error for debugging */}
         <div style={{
-          backgroundColor: "rgba(220,38,38,0.04)",
-          border: "1px solid rgba(220,38,38,0.12)",
+          backgroundColor: "rgba(14,26,43,0.03)",
+          border: "1px solid rgba(14,26,43,0.08)",
           borderRadius: 8,
           padding: "12px 16px",
           marginBottom: 24,
           textAlign: "left",
         }}>
+          <div style={{ fontSize: 11, fontWeight: 600, color: "rgba(14,26,43,0.45)", marginBottom: 4 }}>
+            Reference
+          </div>
           <div style={{ fontSize: 13, color: "#6B7280", lineHeight: 1.5 }}>
             Please try refreshing the page. If you just completed an assessment, your data is saved and will load when you return.
           </div>
@@ -91,7 +93,7 @@ export default function Error({
               cursor: "pointer",
             }}
           >
-            Go Home
+            Return to RunPayway
           </button>
         </div>
 

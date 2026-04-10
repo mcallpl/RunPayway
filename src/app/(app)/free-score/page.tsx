@@ -464,14 +464,43 @@ export default function FreeScorePage() {
             Most people discover their biggest structural risk after it hits. This shows it before.
           </p>
 
-          <div style={{ display: "flex", flexDirection: "column" as const, gap: 8, textAlign: "left", maxWidth: 400, margin: "0 auto 28px" }}>
-            {["Structural breakdown", "Score drivers", "Ranked risk scenarios", "Impact modeling", "Improvement path", "12-week roadmap", "Dashboard access"].map((item, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
-                <span style={{ fontSize: 14, color: "rgba(244,241,234,0.60)" }}>{item}</span>
+          {(() => {
+            const personalizedWhy = (v2?.personalized as Record<string, string> | undefined)?.why_this_score || "";
+            if (personalizedWhy) {
+              const sentences = personalizedWhy.split(/(?<=\.)\s+/);
+              const firstSentence = sentences[0] || "";
+              const rest = sentences.slice(1).join(" ");
+              return (
+                <div style={{ textAlign: "left", maxWidth: 400, margin: "0 auto 28px" }}>
+                  <p style={{ fontSize: 14, color: "rgba(244,241,234,0.75)", lineHeight: 1.6, margin: "0 0 8px" }}>
+                    From your diagnostic:
+                  </p>
+                  <p style={{ fontSize: 15, color: "rgba(244,241,234,0.90)", lineHeight: 1.6, margin: "0 0 4px", fontWeight: 500 }}>
+                    {firstSentence}
+                  </p>
+                  {rest && (
+                    <p style={{ fontSize: 14, color: "rgba(244,241,234,0.60)", lineHeight: 1.6, margin: 0, filter: "blur(4px)", WebkitFilter: "blur(4px)", userSelect: "none" }}>
+                      {rest}
+                    </p>
+                  )}
+                  <p style={{ fontSize: 13, color: C.teal, fontWeight: 600, marginTop: 12, marginBottom: 0 }}>
+                    Your full analysis continues in the diagnostic report.
+                  </p>
+                </div>
+              );
+            }
+            // Fallback: original bullet list
+            return (
+              <div style={{ display: "flex", flexDirection: "column" as const, gap: 8, textAlign: "left", maxWidth: 400, margin: "0 auto 28px" }}>
+                {["Structural breakdown", "Score drivers", "Ranked risk scenarios", "Impact modeling", "Improvement path", "12-week roadmap", "Dashboard access"].map((item, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+                    <span style={{ fontSize: 14, color: "rgba(244,241,234,0.60)" }}>{item}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            );
+          })()}
 
           <a href={STRIPE} style={{
             display: "block", width: "100%", maxWidth: 380, margin: "0 auto 16px",
