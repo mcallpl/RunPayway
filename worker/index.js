@@ -1652,7 +1652,20 @@ async function handleEntitlementCheck(body, env, corsHeaders) {
     "SELECT * FROM entitlements WHERE email = ? AND plan_key = ? AND status = 'active' ORDER BY created_at DESC LIMIT 1"
   ).bind(email, plan_key).first();
 
-  // Free plan auto-create: if no entitlement exists, create one
+  // If no active entitlement, check if an exhausted/expired one exists (don't auto-create if so)
+  if (!ent) {
+    const anyEnt = await env.DB.prepare(
+      "SELECT * FROM entitlements WHERE email = ? AND plan_key = ? ORDER BY created_at DESC LIMIT 1"
+    ).bind(email, plan_key).first();
+    if (anyEnt) {
+      return new Response(JSON.stringify({
+        allowed: false, remaining: 0, plan_key, entitlement_id: anyEnt.id,
+        reason: anyEnt.status === "expired" ? "expired" : "exhausted",
+      }), { headers: corsHeaders });
+    }
+  }
+
+  // Free plan auto-create: only if NO entitlement exists at all for this email + plan_key
   if (!ent && plan_key === "free") {
     const config = PLAN_CONFIGS.free;
     const now = new Date();
