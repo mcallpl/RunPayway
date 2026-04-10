@@ -811,6 +811,92 @@ function handleAnalytics(body, corsHeaders) {
 }
 
 // ══════════════════════════════════════════════════════════
+// RATE LIMITING — in-memory per-isolate
+// ══════════════════════════════════════════════════════════
+
+const RATE_LIMITS = {
+  default:     { maxRequests: 60, windowMs: 60000 },
+  scoring:     { maxRequests: 10, windowMs: 60000 },
+  entitlement: { maxRequests: 20, windowMs: 60000 },
+};
+
+const rateLimitMap = new Map();
+let rateLimitRequestCount = 0;
+
+function isRateLimited(ip, category = "default") {
+  const key = `${ip}:${category}`;
+  const now = Date.now();
+  const limits = RATE_LIMITS[category] || RATE_LIMITS.default;
+  const entry = rateLimitMap.get(key);
+
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(key, { count: 1, resetAt: now + limits.windowMs });
+    return false;
+  }
+  entry.count++;
+  return entry.count > limits.maxRequests;
+}
+
+function cleanupRateLimits() {
+  const now = Date.now();
+  for (const [key, entry] of rateLimitMap) {
+    if (now > entry.resetAt) rateLimitMap.delete(key);
+  }
+}
+
+function getRateLimitCategory(path) {
+  if (["/pressuremap", "/plain-english", "/action-plan", "/"].includes(path)) return "scoring";
+  if (path.startsWith("/entitlement/")) return "entitlement";
+  return "default";
+}
+
+// ══════════════════════════════════════════════════════════
+// TABLE INITIALIZATION — run once per isolate
+// ══════════════════════════════════════════════════════════
+
+let tablesInitialized = false;
+
+async function ensureAllTables(env) {
+  if (tablesInitialized) return;
+  await Promise.all([
+    ensureEntitlementsTable(env),
+    ensureErrorReportsTable(env),
+    ensureNurtureTable(env),
+  ]);
+  tablesInitialized = true;
+}
+
+// ══════════════════════════════════════════════════════════
+// STRUCTURED LOGGING
+// ══════════════════════════════════════════════════════════
+
+function logRequest(request, path, status, durationMs, extra = {}) {
+  const ip = request.headers.get("cf-connecting-ip") || "unknown";
+  console.log(JSON.stringify({
+    ts: new Date().toISOString(),
+    method: request.method,
+    path,
+    status,
+    duration_ms: durationMs,
+    ip: ip.length > 3 ? ip.slice(0, -3) + "xxx" : "xxx",
+    ...extra,
+  }));
+}
+
+// ══════════════════════════════════════════════════════════
+// CORS — locked to peoplestar.com (+ localhost in dev)
+// ══════════════════════════════════════════════════════════
+
+const ALLOWED_ORIGINS = ["https://peoplestar.com", "https://www.peoplestar.com"];
+
+function getCorsOrigin(request) {
+  const origin = request.headers.get("origin") || "";
+  if (ALLOWED_ORIGINS.includes(origin)) return origin;
+  if (origin.includes("localhost")) return origin;
+  return ALLOWED_ORIGINS[0];
+}
+
+// ══════════════════════════════════════════════════════════
 // MAIN WORKER
 // ══════════════════════════════════════════════════════════
 
@@ -822,11 +908,16 @@ export default {
   },
 
   async fetch(request, env) {
+    const startTime = Date.now();
+    const url = new URL(request.url);
+    const path = url.pathname.replace(/\/$/, "") || "/pressuremap";
+    const corsOrigin = getCorsOrigin(request);
+
     // CORS preflight
     if (request.method === "OPTIONS") {
       return new Response(null, {
         headers: {
-          "Access-Control-Allow-Origin": env.ALLOWED_ORIGIN || "*",
+          "Access-Control-Allow-Origin": corsOrigin,
           "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type, Authorization",
           "Access-Control-Max-Age": "86400",
@@ -835,56 +926,89 @@ export default {
     }
 
     const corsHeaders = {
-      "Access-Control-Allow-Origin": env.ALLOWED_ORIGIN || "*",
+      "Access-Control-Allow-Origin": corsOrigin,
       "Content-Type": "application/json",
     };
 
-    const url = new URL(request.url);
-    const path = url.pathname.replace(/\/$/, "") || "/pressuremap";
+    // ── Rate limiting ──
+    const clientIp = request.headers.get("cf-connecting-ip")
+      || (request.headers.get("x-forwarded-for") || "").split(",")[0]
+      || "unknown";
+    const rlCategory = getRateLimitCategory(path);
+
+    if (isRateLimited(clientIp, rlCategory)) {
+      const resp = new Response(JSON.stringify({ error: "Rate limit exceeded", retry_after: 60 }), {
+        status: 429, headers: corsHeaders,
+      });
+      logRequest(request, path, 429, Date.now() - startTime, { rate_limited: true, category: rlCategory });
+      return resp;
+    }
+
+    // Periodic cleanup
+    rateLimitRequestCount++;
+    if (rateLimitRequestCount % 100 === 0) cleanupRateLimits();
+
+    // ── Ensure tables once per isolate ──
+    await ensureAllTables(env);
+
+    let response;
 
     // GET endpoints
     if (request.method === "GET") {
-      if (path === "/stats") return await handleStats(env, corsHeaders);
-      if (path === "/presets") return handlePresets(url, corsHeaders);
-      if (path === "/error-reports") return await handleGetErrorReports(env, corsHeaders);
-      // GET /action-scripts/:sector
-      const actionScriptsMatch = path.match(/^\/action-scripts\/(.+)$/);
-      if (actionScriptsMatch) return handleActionScripts(decodeURIComponent(actionScriptsMatch[1]), request, corsHeaders);
-      return new Response("Not found", { status: 404 });
+      if (path === "/stats") response = await handleStats(env, corsHeaders);
+      else if (path === "/presets") response = handlePresets(url, corsHeaders);
+      else if (path === "/error-reports") response = await handleGetErrorReports(env, corsHeaders);
+      else {
+        // GET /action-scripts/:sector
+        const actionScriptsMatch = path.match(/^\/action-scripts\/(.+)$/);
+        if (actionScriptsMatch) response = handleActionScripts(decodeURIComponent(actionScriptsMatch[1]), request, corsHeaders);
+        else response = new Response("Not found", { status: 404 });
+      }
+
+      logRequest(request, path, response.status, Date.now() - startTime);
+      return response;
     }
 
     if (request.method !== "POST") {
-      return new Response("Method not allowed", { status: 405 });
+      response = new Response("Method not allowed", { status: 405 });
+      logRequest(request, path, 405, Date.now() - startTime);
+      return response;
     }
 
     try {
       const body = await request.json();
 
-      if (path === "/pressuremap" || path === "/") return await handlePressureMap(body, env, corsHeaders);
-      if (path === "/plain-english") return await handlePlainEnglish(body, env, corsHeaders);
-      if (path === "/action-plan") return await handleActionPlan(body, env, corsHeaders);
-      if (path === "/save-record") return await handleSaveRecord(body, env, corsHeaders);
-      if (path === "/get-record") return await handleGetRecord(body, env, corsHeaders);
-      if (path === "/entitlement/create") return await handleEntitlementCreate(body, env, corsHeaders);
-      if (path === "/entitlement/check") return await handleEntitlementCheck(body, env, corsHeaders);
-      if (path === "/entitlement/use") return await handleEntitlementUse(body, env, corsHeaders);
-      if (path === "/entitlement/lookup") return await handleEntitlementLookup(body, env, corsHeaders);
-      if (path === "/send-email") return await handleSendEmail(body, env, corsHeaders);
-      if (path === "/contact") return await handleContact(body, env, corsHeaders);
-      if (path === "/nurture") return await handleNurture(body, env, corsHeaders);
-      if (path === "/simulate") return await handleSimulate(body, corsHeaders);
-      if (path === "/simulate-batch") return await handleSimulateBatch(body, corsHeaders);
-      if (path === "/timeline") return await handleTimeline(body, corsHeaders);
-      if (path === "/analytics") return handleAnalytics(body, corsHeaders);
-      if (path === "/error-report") return await handleErrorReport(body, env, corsHeaders);
+      if (path === "/pressuremap" || path === "/") response = await handlePressureMap(body, env, corsHeaders);
+      else if (path === "/plain-english") response = await handlePlainEnglish(body, env, corsHeaders);
+      else if (path === "/action-plan") response = await handleActionPlan(body, env, corsHeaders);
+      else if (path === "/save-record") response = await handleSaveRecord(body, env, corsHeaders);
+      else if (path === "/get-record") response = await handleGetRecord(body, env, corsHeaders);
+      else if (path === "/entitlement/create") response = await handleEntitlementCreate(body, env, corsHeaders);
+      else if (path === "/entitlement/check") response = await handleEntitlementCheck(body, env, corsHeaders);
+      else if (path === "/entitlement/use") response = await handleEntitlementUse(body, env, corsHeaders);
+      else if (path === "/entitlement/lookup") response = await handleEntitlementLookup(body, env, corsHeaders);
+      else if (path === "/send-email") response = await handleSendEmail(body, env, corsHeaders);
+      else if (path === "/contact") response = await handleContact(body, env, corsHeaders);
+      else if (path === "/nurture") response = await handleNurture(body, env, corsHeaders);
+      else if (path === "/simulate") response = await handleSimulate(body, corsHeaders);
+      else if (path === "/simulate-batch") response = await handleSimulateBatch(body, corsHeaders);
+      else if (path === "/timeline") response = await handleTimeline(body, corsHeaders);
+      else if (path === "/analytics") response = handleAnalytics(body, corsHeaders);
+      else if (path === "/error-report") response = await handleErrorReport(body, env, corsHeaders);
+      else {
+        response = new Response(JSON.stringify({ error: "Unknown endpoint" }), {
+          status: 404, headers: corsHeaders,
+        });
+      }
 
-      return new Response(JSON.stringify({ error: "Unknown endpoint" }), {
-        status: 404, headers: corsHeaders,
-      });
+      logRequest(request, path, response.status, Date.now() - startTime);
+      return response;
     } catch (err) {
-      return new Response(JSON.stringify({ error: "Worker error", detail: String(err) }), {
+      response = new Response(JSON.stringify({ error: "Worker error", detail: String(err) }), {
         status: 500, headers: corsHeaders,
       });
+      logRequest(request, path, 500, Date.now() - startTime, { error: String(err) });
+      return response;
     }
   },
 };
@@ -1114,8 +1238,6 @@ async function ensureErrorReportsTable(env) {
 }
 
 async function handleErrorReport(body, env, corsHeaders) {
-  await ensureErrorReportsTable(env);
-
   const id = "err_" + crypto.randomUUID().slice(0, 12);
   const now = new Date().toISOString();
   const error_message = sanitizeString(body.error_message || body.message || "", 2000);
@@ -1143,7 +1265,6 @@ async function handleErrorReport(body, env, corsHeaders) {
 }
 
 async function handleGetErrorReports(env, corsHeaders) {
-  await ensureErrorReportsTable(env);
   const rows = await env.DB.prepare(
     "SELECT * FROM error_reports ORDER BY created_at DESC LIMIT 100"
   ).all();
@@ -1209,7 +1330,6 @@ async function handleSaveRecord(body, env, corsHeaders) {
   // ── Update nurture record with score data if this email is enrolled ──
   if (email && score) {
     try {
-      await ensureNurtureTable(env);
       const nurture = await env.DB.prepare(
         "SELECT email FROM nurture_queue WHERE email = ?"
       ).bind(email).first();
@@ -1590,8 +1710,6 @@ async function handleContact(body, env, corsHeaders) {
   // ── Nurture sequence: enroll and send email 1 for brief signups ──
   if (contactSubject === "structural_income_brief") {
     try {
-      await ensureNurtureTable(env);
-
       // Check if already enrolled (idempotent)
       const existing = await env.DB.prepare(
         "SELECT email, emails_sent FROM nurture_queue WHERE email = ?"
@@ -1703,8 +1821,6 @@ async function ensureEntitlementsTable(env) {
 }
 
 async function handleEntitlementCreate(body, env, corsHeaders) {
-  await ensureEntitlementsTable(env);
-
   const email = sanitizeEmail(body.email);
   const plan_key = sanitizeString(body.plan_key, 50);
   const stripe_session_id = sanitizeString(body.stripe_session_id, 200);
@@ -1765,8 +1881,6 @@ async function handleEntitlementCreate(body, env, corsHeaders) {
 }
 
 async function handleEntitlementCheck(body, env, corsHeaders) {
-  await ensureEntitlementsTable(env);
-
   const email = (body.email || "").toLowerCase().trim();
   const plan_key = body.plan_key || "";
   if (!email || !plan_key) {
@@ -1848,8 +1962,6 @@ async function handleEntitlementCheck(body, env, corsHeaders) {
 }
 
 async function handleEntitlementUse(body, env, corsHeaders) {
-  await ensureEntitlementsTable(env);
-
   const entitlement_id = sanitizeString(body.entitlement_id, 100);
   const assessment_id = sanitizeString(body.assessment_id, 100);
   const idempotency_key = sanitizeString(body.idempotency_key, 200) || null;
@@ -1901,8 +2013,6 @@ async function handleEntitlementUse(body, env, corsHeaders) {
 }
 
 async function handleEntitlementLookup(body, env, corsHeaders) {
-  await ensureEntitlementsTable(env);
-
   const email = (body.email || "").toLowerCase().trim();
   if (!email) {
     return new Response(JSON.stringify({ error: "Missing email" }), {
