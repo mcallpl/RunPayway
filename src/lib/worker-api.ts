@@ -15,17 +15,18 @@ export interface SimulationResult {
   overall_score: number;
   band: string;
   factor_scores: {
-    income_persistence: number;
-    source_diversity: number;
-    forward_security: number;
-    concentration_resilience: number;
-    labor_dependence: number;
+    persistence: number;
+    diversity: number;
+    forward: number;
+    concentration: number;
+    labor: number;
     variability: number;
     continuity: number;
   };
-  structure_subtotal: number;
-  stability_subtotal: number;
-  fragility_score: number;
+  structure_score: number;
+  stability_score: number;
+  interaction_adjustment: number;
+  continuity_months: number;
   fragility_class: string;
 }
 

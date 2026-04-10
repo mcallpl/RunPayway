@@ -2342,6 +2342,7 @@ function followUpDay90(name, daysSince, _recordId, industry) {
     agriculture: "added CSA subscriptions, forward-priced your harvest, or diversified into value-added products",
     energy: "added maintenance contracts, diversified your project pipeline, or expanded your service territory",
     fitness_wellness: "added monthly memberships, launched digital products, or booked corporate wellness contracts",
+    default: "signed a retainer, added a new client, or built a recurring income stream",
   };
   const industryKey = industry ? industry.toLowerCase().replace(/[\s\/&]+/g, "_").replace(/[^a-z0-9_]/g, "") : "";
   const examples = examplesMap[industryKey] || "signed a retainer, added a client, or built a recurring stream";

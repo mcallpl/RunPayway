@@ -13,7 +13,7 @@ function DownloadContent() {
     if (recordId && !downloading) {
       setDownloading(true);
       // FIX: /api/pdf/${recordId} does not exist; PDF download is handled from the review page
-      window.location.href = `/review`;
+      window.location.href = `/RunPayway/review`;
     }
   }, [recordId, downloading]);
 
