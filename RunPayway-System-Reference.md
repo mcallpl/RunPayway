@@ -486,3 +486,76 @@ Storage: `rp_lang` in localStorage. Hook: `useLanguage()`.
 | i18n languages | 4 |
 | Email templates | 7 (1 report + 3 nurture + 3 follow-up) |
 | Accessibility profiles | 7 |
+| Action script templates | 57 (3 per industry x 19) |
+| Gamification badges | 10+ |
+
+---
+
+## 20. Features Not Covered Above
+
+### Command Palette
+- **Location:** `src/components/CommandPalette.tsx`
+- **Trigger:** Cmd+K (Mac) / Ctrl+K (Windows)
+- **Purpose:** Quick navigation to dashboard, report, pricing, home. 4 commands with keyboard shortcuts (1-4 keys).
+
+### Gamification System
+- **Location:** `src/lib/gamification.ts` (211 lines)
+- **Badges:** first_report, simulator_explorer, pressuremap_viewer, action_starter, action_half, action_complete, score_up_5, score_up_10, band_shift, streak_3
+- **Persistence:** localStorage (`rp_gamification` key)
+- **Status:** Infrastructure built, not yet prominently surfaced in UI
+
+### Action Scripts Library
+- **Location:** `src/lib/action-scripts.ts` (836 lines)
+- **Content:** 57 ready-to-use negotiation and outreach templates (3 per industry x 19 industries)
+- **Categories:** Retainer pitch, diversification outreach, referral partnership scripts
+- **Delivery:** Displayed in Dashboard Phase 2 (Plan) and fetched from worker via `GET /action-scripts/:sector`
+
+### Badge Verification System
+- **API routes:** `/api/badge/[code]/route.ts` and `/api/badge/[code]/embed/route.ts`
+- **Marketing page:** `/badge`
+- **Purpose:** Generates SVG verification badges showing score and band. Embed variant allows external websites to display a verified RunPayway badge.
+
+### Blog System
+- **Location:** `src/app/(marketing)/blog/page.tsx` + `src/app/(marketing)/blog/[slug]/page.tsx`
+- **Purpose:** Blog listing page with dynamic slug-based article routes
+
+### Middleware (Security Layer)
+- **Location:** `src/middleware.ts`
+- **Rate limiting:** 100 requests per minute per IP (API routes only)
+- **Security headers:** Content-Security-Policy, HSTS, X-Frame-Options, X-Content-Type-Options, X-XSS-Protection, Referrer-Policy, Permissions-Policy
+- **CORS:** Same-origin only for API routes
+- **Note:** Middleware runs in dynamic mode only. For static export (production), security headers come from `.htaccess`.
+
+### SEO & Crawling
+- **Robots:** `src/app/robots.ts` — generates robots.txt
+- **Sitemap:** `src/app/sitemap.ts` — generates XML sitemap
+- **404 page:** `src/app/not-found.tsx` — custom not-found page
+
+### Supporting Library Modules
+| Module | Lines | Purpose |
+|--------|-------|---------|
+| `pressure-map.ts` | 76 | Client-side PressureMap data formatting |
+| `nurture-emails.ts` | 290 | 3-email nurture sequence templates |
+| `audit-log.ts` | 70 | Event logging with client IP tracking |
+| `rate-limit.ts` | 59 | Rate limiting for public endpoints |
+| `file-lock.ts` | 68 | Mutex locks for concurrent file writes |
+| `sample-data.ts` | 128 | Mock assessment data for development/demo |
+| `monitoring-storage.ts` | 121 | Persistent storage for monitoring sessions |
+| `engine.ts` | — | Storage backend initialization |
+
+### Worker Endpoint Not Listed Above
+- **GET /stats** — Returns aggregate assessment statistics from D1 database
+
+### Environment Variables
+| Variable | Purpose |
+|----------|---------|
+| `STATIC_EXPORT` | Set to "true" for GoDaddy FTP deploy |
+| `NEXT_PUBLIC_GA4_ID` | Google Analytics 4 measurement ID |
+| `NEXT_PUBLIC_META_PIXEL_ID` | Meta/Facebook Pixel ID |
+| `NEXT_PUBLIC_LINKEDIN_PARTNER_ID` | LinkedIn Insight Tag partner ID |
+| `NEXT_PUBLIC_STRIPE_CHECKOUT_URL` | Stripe checkout link ($69 plan) |
+| `NEXT_PUBLIC_STRIPE_ANNUAL_URL` | Stripe checkout link ($149 plan) |
+| `RESEND_API_KEY` | Resend email service key (worker) |
+| `ANTHROPIC_API_KEY` | Claude API key (worker) |
+| `PAYMENT_TOKEN_SECRET` | HMAC secret for payment tokens |
+| `FTP_SERVER` / `FTP_USERNAME` / `FTP_PASSWORD` | GoDaddy FTP credentials (GitHub Secrets) |
