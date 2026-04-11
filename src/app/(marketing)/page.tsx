@@ -210,15 +210,28 @@ function HeroSection() {
               Know how your income holds up&mdash;before you rely on it.
             </p>
 
-            <p style={{ fontSize: m ? 15 : 17, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 440, marginBottom: m ? 32 : 40, ...fadeIn(visible, 100) }}>
-              A fixed, deterministic system that measures how your income is built&mdash;not how much you make. Same inputs, same result. Every time.
-            </p>
+            <div style={{ marginBottom: m ? 32 : 40, ...fadeIn(visible, 100) }} />
 
             <div style={{ ...fadeIn(visible, 150) }}>
               <CtaButton m={m} variant="primary" label="Get Your Income Stability Score" />
               <p style={{ fontSize: 13, fontWeight: 500, color: C.textMuted, marginTop: 14 }}>
                 Takes under 2 minutes &middot; No financial accounts required
               </p>
+            </div>
+
+            {/* Trust strip */}
+            <div style={{ display: "flex", justifyContent: "center", gap: m ? 24 : 48, flexWrap: "wrap" as const, marginTop: 32 }}>
+              {[
+                { label: "19 Industries", sub: "Calibrated" },
+                { label: "20 Engines", sub: "Deterministic" },
+                { label: "RP-2.0", sub: "Version-locked" },
+                { label: "SHA-256", sub: "Verified" },
+              ].map((item, i) => (
+                <div key={i} style={{ textAlign: "center" as const }}>
+                  <div style={{ fontSize: 16, fontWeight: 700, fontFamily: mono, color: C.navy }}>{item.label}</div>
+                  <div style={{ fontSize: 11, color: C.textMuted, letterSpacing: "0.06em" }}>{item.sub}</div>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -380,7 +393,7 @@ function ProofMoment() {
               { pct: 5, color: C.teal, label: "" },
             ]} height={16} />
             <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.6, margin: "20px 0 24px" }}>
-              80% of income depends on one client. No contracts. Nothing repeats. If work stops, income stops.
+              One client. No contracts. Nothing recurring.
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 0 0", borderTop: `1px solid rgba(14,26,43,0.06)` }}>
               <div style={{ position: "relative", width: 52, height: 52, flexShrink: 0 }}>
@@ -409,7 +422,7 @@ function ProofMoment() {
               { pct: 40, color: C.teal, label: "Protected" },
             ]} height={16} />
             <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.6, margin: "20px 0 24px" }}>
-              5 clients, none over 30%. 40% recurring. 3 months of income already locked in. Can absorb a client leaving or a slow quarter.
+              Five clients. 40% recurring. Three months locked.
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 0 0", borderTop: `1px solid rgba(14,26,43,0.06)` }}>
               <div style={{ position: "relative", width: 52, height: 52, flexShrink: 0 }}>
@@ -479,9 +492,6 @@ function WhatChanges() {
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>
             From blind spot to structural clarity{m ? " " : <br />}in under two minutes.
           </h2>
-          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 560, margin: "0 auto" }}>
-            The diagnostic doesn&rsquo;t just score you. It shows you what to do about it.
-          </p>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 0, ...fadeIn(visible, 100) }}>
@@ -544,7 +554,7 @@ function ScoringSystem() {
             A fixed system.{m ? " " : <br />}Not a changing opinion.
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: explanatoryW, margin: "0 auto" }}>
-            No AI. No advisor judgment. No algorithm that changes week to week. Same inputs produce the same result.
+            Same inputs, same result. Every time.
           </p>
         </div>
 

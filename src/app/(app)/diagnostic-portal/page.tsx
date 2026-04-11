@@ -100,13 +100,6 @@ const labelStyle: React.CSSProperties = {
   marginBottom: 6,
 };
 
-const helperStyle: React.CSSProperties = {
-  fontSize: 12,
-  fontFamily: sans,
-  color: C.light,
-  lineHeight: 1.5,
-  marginBottom: 8,
-};
 
 const inputBase: React.CSSProperties = {
   width: "100%",
@@ -627,9 +620,7 @@ export default function InitializationPage() {
         </div>
         {/* Step header */}
         <div style={{ marginBottom: 32 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, fontFamily: sans, color: C.teal, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 8 }}>
-            Step {step} of 2
-          </div>
+          <div style={{ marginBottom: 8 }} />
           <h1 style={{ fontSize: 26, fontWeight: 700, fontFamily: sans, color: C.navy, letterSpacing: "-0.02em", marginBottom: 8 }}>
             {stepTitles[step]}
           </h1>
@@ -644,7 +635,6 @@ export default function InitializationPage() {
             {/* Industry */}
             <div>
               <label htmlFor="industry-sector" style={labelStyle}>Industry Sector</label>
-              <p style={helperStyle}>Which industry generates your primary income?</p>
               <select
                 id="industry-sector"
                 value={form.industry_sector}
@@ -664,7 +654,6 @@ export default function InitializationPage() {
             {/* Operating Structure */}
             <div>
               <label htmlFor="operating-structure" style={labelStyle}>Operating Structure</label>
-              <p style={helperStyle}>How is your income legally structured?</p>
               <select
                 id="operating-structure"
                 value={form.operating_structure}
@@ -684,7 +673,6 @@ export default function InitializationPage() {
             {/* Primary Income Model */}
             <div>
               <label htmlFor="income-model" style={labelStyle}>Primary Income Model</label>
-              <p style={helperStyle}>How do you primarily earn income?</p>
               <select
                 id="income-model"
                 value={form.primary_income_model}
@@ -704,7 +692,6 @@ export default function InitializationPage() {
             {/* Years in Current Structure */}
             <div>
               <label htmlFor="years-in-structure" style={labelStyle}>Years in Current Structure</label>
-              <p style={helperStyle}>How long have you been earning under this arrangement?</p>
               <select
                 id="years-in-structure"
                 value={form.years_in_structure}
@@ -721,12 +708,6 @@ export default function InitializationPage() {
               </select>
             </div>
 
-            <div style={{ padding: "16px 20px", borderRadius: 12, backgroundColor: "rgba(31,109,122,0.04)", border: "1px solid rgba(31,109,122,0.08)", marginTop: 24, marginBottom: 8 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 8 }}>QUICK PREP</div>
-              <div style={{ fontSize: 13, color: C.muted, lineHeight: 1.6 }}>
-                Think about: how many income sources you have, whether one dominates, how much is recurring, and what happens if your biggest source disappears. No documents needed — reasonable estimates work.
-              </div>
-            </div>
           </div>
         )}
 
