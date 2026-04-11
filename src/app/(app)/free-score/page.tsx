@@ -96,10 +96,10 @@ const INDUSTRY_CONTEXT: Record<string, string> = {
 /* ================================================================== */
 
 const UPGRADE_HEADLINES: Record<string, string> = {
-  "Limited Stability": "Your structure is exposed.",
-  "Developing Stability": "Your structure is not yet protected.",
-  "Established Stability": "Your structure is stable \u2014 but not protected.",
-  "High Stability": "Your structure is strong \u2014 but still dependent.",
+  "Limited Stability": "Your income is at risk right now.",
+  "Developing Stability": "Your income needs more protection.",
+  "Established Stability": "Your income is stable — small changes could make it stronger.",
+  "High Stability": "Your income holds up well — here's what keeps it there.",
 };
 
 /* ================================================================== */
@@ -349,7 +349,7 @@ export default function FreeScorePage() {
           marginBottom: secPad,
         }}>
           <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.purple, marginBottom: 12 }}>
-            Primary Structural Constraint: {constraintLabel}
+            What Limits Your Score: {constraintLabel}
           </div>
           <p style={{ fontSize: 16, color: C.navy, fontWeight: 500, lineHeight: 1.6, marginBottom: 8 }}>
             This is the strongest limiting factor affecting your score.
@@ -362,7 +362,7 @@ export default function FreeScorePage() {
         {/* ── SECTION 4: STRUCTURAL BEHAVIOR ── */}
         <section style={{ marginBottom: secPad }}>
           <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: light, marginBottom: 12 }}>
-            Structural Behavior
+            How Your Income Responds to Change
           </div>
           <p style={{ fontSize: 16, color: muted, lineHeight: 1.65, margin: 0 }}>
             {behaviorText}
@@ -407,7 +407,7 @@ export default function FreeScorePage() {
           </div>
 
           <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, marginBottom: 12 }}>
-            Your structure does not distribute income widely enough to absorb this loss.
+            Too much of your income depends on a single source. Losing it would have an outsized impact.
           </p>
           <p style={{ fontSize: 14, color: light, lineHeight: 1.55, margin: 0, fontStyle: "italic" }}>
             This does not affect your income today. It defines how your income responds to change.
@@ -513,7 +513,7 @@ export default function FreeScorePage() {
             onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#3d32a0"; }}
             onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.purple; }}
           >
-            Unlock Full Diagnostic &mdash; $69
+            See Your Complete Income Analysis &mdash; $69
           </a>
           <p style={{ fontSize: 13, color: C.teal, margin: 0 }}>
             If it doesn&#8217;t reveal something new, full refund.

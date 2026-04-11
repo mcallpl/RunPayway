@@ -810,7 +810,7 @@ export default function ReviewPage() {
     shallow_continuity: "Continuity window is too short",
   };
   const fragilityClassLabel: Record<string, string> = {
-    brittle: "One disruption could seriously damage your income", thin: "You can handle a small setback, but not two in a row", uneven: "Some parts of your income are protected, others are not", supported: "Your income has multiple layers of protection", resilient: "Your income can absorb a major hit and keep going",
+    brittle: "Your income is highly exposed to any disruption", thin: "Your income could break with one disruption", uneven: "Your income has gaps that targeted changes can fix", supported: "Your income has meaningful protection in place", resilient: "Your income can absorb a major hit and keep going",
   };
   const confidenceColor: Record<string, string> = {
     high: B.teal, moderate: B.bandEstablished, guarded: B.bandDeveloping, low: B.bandLimited,
@@ -907,11 +907,11 @@ export default function ReviewPage() {
       // Fragility
       const fragilityClass = v2Fragility?.fragility_class || "uneven";
       const fragilityLabel = ({
-        brittle: "One disruption could seriously damage your income",
-        thin: "You can handle a small setback, but not two in a row",
-        uneven: "Some parts are protected, others are not",
-        supported: "Multiple layers of protection",
-        resilient: "Can absorb a major hit and keep going",
+        brittle: "Your income is highly exposed to any disruption",
+        thin: "Your income could break with one disruption",
+        uneven: "Your income has gaps that targeted changes can fix",
+        supported: "Your income has meaningful protection in place",
+        resilient: "Your income can absorb a major hit and keep going",
       } as Record<string, string>)[fragilityClass] || fragilityClass;
       const fragilityColor = fragilityClass === "brittle" || fragilityClass === "thin" ? B.bandLimited : fragilityClass === "resilient" || fragilityClass === "supported" ? B.teal : B.navy;
 
@@ -1076,7 +1076,7 @@ export default function ReviewPage() {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: mobile ? "16px 24px" : "18px 40px", borderBottom: "1px solid rgba(14,26,43,0.06)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <Image src={logoBlue} alt="RunPayway&#8482;" width={110} height={13} style={{ height: "auto", opacity: 0.85 }} />
-            <span style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>Structural Income Report</span>
+            <span style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>Income Stability Report</span>
             {industrySector && (
               <span style={{ fontSize: 10, fontWeight: 600, fontFamily: mono, color: B.teal, padding: "2px 8px", borderRadius: 4, backgroundColor: "rgba(31,109,122,0.06)", marginLeft: 8 }}>
                 {industrySector}
@@ -1226,7 +1226,7 @@ export default function ReviewPage() {
         {/* Navy header */}
         <div style={{ backgroundColor: B.navy, padding: mobile ? "24px 24px 28px" : "32px 40px 36px", position: "relative" as const }}>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${B.teal}, ${B.purple})` }} />
-          <div style={{ fontSize: mobile ? 20 : 24, fontWeight: 600, color: "#fff", marginBottom: 8 }}>Key Structural Findings</div>
+          <div style={{ fontSize: mobile ? 20 : 24, fontWeight: 600, color: "#fff", marginBottom: 8 }}>What Your Score Reveals</div>
           {/* Key takeaway */}
           <div style={{ borderLeft: `3px solid ${B.teal}`, padding: "12px 16px", borderRadius: "0 10px 10px 0", backgroundColor: "rgba(255,255,255,0.04)" }}>
             <p style={{ fontSize: mobile ? 15 : 16, fontWeight: 500, color: "rgba(244,241,234,0.80)", margin: 0, lineHeight: 1.5 }}>
@@ -1242,7 +1242,7 @@ export default function ReviewPage() {
         <div style={{ padding: mobile ? "24px 24px 28px" : "32px 40px 36px" }}>
           {/* Income behavior bar */}
           <div style={{ marginBottom: 28 }}>
-            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.muted, marginBottom: 12 }}>HOW YOUR INCOME BEHAVES</div>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.muted, marginBottom: 12 }}>YOUR INCOME BREAKDOWN</div>
             <div style={{ display: "flex", height: 12, borderRadius: 999, overflow: "hidden", marginBottom: 12 }}>
               {record.active_income_level > 0 && <div style={{ width: `${record.active_income_level}%`, backgroundColor: B.bandLimited }} />}
               {record.semi_persistent_income_level > 0 && <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: B.bandDeveloping }} />}
@@ -1275,7 +1275,7 @@ export default function ReviewPage() {
               </p>
             </div>
             <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: "#FAFAF8", border: `1px solid rgba(197,48,48,0.15)` }}>
-              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandLimited, marginBottom: 6 }}>PRIMARY CONSTRAINT</div>
+              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandLimited, marginBottom: 6 }}>WHAT LIMITS YOUR SCORE</div>
               <p style={{ fontSize: 14, fontWeight: 600, color: B.navy, margin: 0, lineHeight: 1.5 }}>
                 {dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) : "Key structural gaps remain"}
               </p>
@@ -1437,7 +1437,7 @@ export default function ReviewPage() {
         <div style={{ backgroundColor: B.navy, padding: mobile ? "24px 24px 28px" : "32px 40px 36px", position: "relative" as const }}>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${B.bandLimited}, ${B.bandDeveloping})` }} />
           <div style={{ fontSize: mobile ? 20 : 24, fontWeight: 600, color: "#fff", marginBottom: 6 }}>Stress Testing Your Income</div>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", margin: 0 }}>How your structure responds under real conditions.</p>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", margin: 0 }}>What happens to your income when disruptions occur.</p>
         </div>
 
         {/* Scenarios */}

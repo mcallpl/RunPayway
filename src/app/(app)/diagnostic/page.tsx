@@ -937,7 +937,7 @@ export default function DiagnosticPage() {
                 boxShadow: "0 4px 16px rgba(75,63,174,0.25)",
               }}
             >
-              Continue where I left off
+              Resume your assessment
             </button>
             <button
               onClick={handleResumeStartFresh}
@@ -948,7 +948,7 @@ export default function DiagnosticPage() {
                 cursor: "pointer", fontFamily: sans,
               }}
             >
-              Start fresh
+              Start over with new answers
             </button>
           </div>
         </div>

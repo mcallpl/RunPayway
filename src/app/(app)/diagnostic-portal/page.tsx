@@ -759,7 +759,7 @@ export default function InitializationPage() {
               }}
             >
               <span className="tick tick-white" />
-              Continue
+              Continue to Questions
             </button>
           ) : (
             <button
