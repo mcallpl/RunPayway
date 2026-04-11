@@ -134,7 +134,7 @@ function Declaration() {
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, maxWidth: 420, margin: "0 auto", ...fadeIn(visible, 160) }}>
           {[
             "What defines your score",
-            "What limits your structure",
+            "What limits your score",
             "What moves it forward",
           ].map((line, i) => (
             <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", justifyContent: "center" }}>
@@ -230,7 +230,7 @@ function PricingCards() {
       <div style={{ marginBottom: 20, flex: 1, color: C.textSecondary }}>
         {check("Identify where your income holds\u2014and where it breaks")}
         {check("See what actually limits your stability")}
-        {check("Know the single move that shifts your structure fastest")}
+        {check("Know the single move that creates the biggest impact")}
         {check("Test changes before you make them")}
       </div>
 
@@ -241,7 +241,7 @@ function PricingCards() {
           {[
             "You stop guessing what matters",
             "You act before problems appear",
-            "You improve your structure with intent",
+            "You improve your income with intent",
           ].map((line, i) => (
             <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
               <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 7 }} />
@@ -281,12 +281,12 @@ function PricingCards() {
         <span style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$149</span>
         <span style={{ fontSize: 14, color: C.textMuted, marginLeft: 8 }}>/ year</span>
       </div>
-      <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 20 }}>Reassess your structure three times a year</div>
+      <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 20 }}>Reassess your score three times a year</div>
       <div style={{ marginBottom: 20, flex: 1, color: C.textSecondary }}>
-        {check("Reassess your structure across the year")}
+        {check("Track your score across the year")}
         {check("Track how your score moves")}
         {check("See what improved\u2014and what didn\u2019t")}
-        {check("Compare your structure over time")}
+        {check("Track your progress over time")}
         {check("Maintain continuous visibility")}
       </div>
 
@@ -294,7 +294,7 @@ function PricingCards() {
       <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 20, marginBottom: 24 }}>
         <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: C.textMuted, marginBottom: 12 }}>BEST FOR</div>
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 6 }}>
-          {["Self-employed professionals", "Variable income earners", "Anyone actively improving structure"].map((line, i) => (
+          {["Self-employed professionals", "Variable income earners", "Anyone actively improving their income stability"].map((line, i) => (
             <span key={i} style={{ fontSize: 14, fontWeight: 400, color: C.textSecondary, lineHeight: 1.45 }}>{line}</span>
           ))}
         </div>
@@ -424,7 +424,7 @@ function OutcomesSection() {
         <div style={{ textAlign: "center", marginTop: m ? 40 : 56, ...fadeIn(visible, 180) }}>
           <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 8 }}>One decision can cost more than this.</p>
           <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.6, maxWidth: explanatoryW, margin: "0 auto 24px" }}>
-            Understanding your income structure before acting prevents mistakes that cost far more than $69.
+            Understanding how your income works before acting prevents mistakes that cost far more than $69.
           </p>
           <Link href="/sample-report" style={{
             fontSize: 15, fontWeight: 600, color: C.teal, textDecoration: "none",
@@ -455,7 +455,7 @@ function FaqSection() {
   const faqs = [
     { q: "What do I get for free?", a: "A complete structural score and classification. No cost. No account required." },
     { q: "What does the $69 unlock?", a: "The Dashboard — a full breakdown of what defines your score, personalized scripts, a 12-week roadmap, and the exact actions that change it." },
-    { q: "What is the Negotiation Playbook?", a: "Scripts based on your actual income structure, designed to improve stability." },
+    { q: "What is the Negotiation Playbook?", a: "Scripts based on how your income actually works, designed to improve stability." },
     { q: "How are roadmap milestones personalized?", a: "They are generated directly from your inputs — not templates or assumptions." },
     { q: "What does Monitoring include?", a: "Multiple assessments, change tracking, and visibility over time." },
     { q: "How is the score calculated?", a: "Using fixed rules applied consistently to your answers." },
