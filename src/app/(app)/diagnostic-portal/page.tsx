@@ -217,7 +217,7 @@ export default function InitializationPage() {
   const [transitioning, setTransitioning] = useState(false);
   const [portalRevealed, setPortalRevealed] = useState(false);
   const [mobile, setMobile] = useState(false);
-  useEffect(() => { const c = () => setMobile(window.innerWidth <= 640); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
+  useEffect(() => { const c = () => setMobile(window.innerWidth <= 768); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
 
   const goToStep = useCallback((nextStep: number) => {
     setTransitioning(true);

@@ -115,7 +115,7 @@ export default function FreeScorePage() {
   const [stressResult, setStressResult] = useState<SimulationResult | null>(null);
   const [stressLoading, setStressLoading] = useState(true);
 
-  useEffect(() => { const c = () => setMobile(window.innerWidth <= 640); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
+  useEffect(() => { const c = () => setMobile(window.innerWidth <= 768); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);

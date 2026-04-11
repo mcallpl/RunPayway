@@ -209,7 +209,7 @@ export default function DiagnosticPage() {
 
   // Mobile breakpoint detection
   useEffect(() => {
-    const check = () => setMobile(window.innerWidth < 640);
+    const check = () => setMobile(window.innerWidth < 768);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
@@ -392,17 +392,21 @@ export default function DiagnosticPage() {
 
     if (currentQuestion < 5) {
       // Auto-advance after selection (except last question)
+      // Use longer delay to prevent ghost taps on touch devices (iPad/phone)
       setTimeout(() => {
-        scrollRef.current?.scrollTo({ top: 0 }); // Reset scroll before showing next question
+        scrollRef.current?.scrollTo({ top: 0 });
         setCurrentQuestion((prev) => Math.min(5, prev + 1));
-        setTimeout(() => setTransitioning(false), 350);
-      }, 550);
+        // Keep transitioning=true for 500ms after question change
+        // This blocks pointer events on the new question's options
+        // preventing the finger-lift from the previous tap from registering
+        setTimeout(() => setTransitioning(false), 500);
+      }, 600);
     } else {
       // Last question — auto-advance to review
       setTimeout(() => {
         setTransitioning(false);
         setShowReview(true);
-      }, 550);
+      }, 600);
     }
   }, [currentQuestion, transitioning]);
 

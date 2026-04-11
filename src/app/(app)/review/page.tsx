@@ -357,7 +357,7 @@ export default function ReviewPage() {
   const pageContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const check = () => setMobile(window.innerWidth <= 640);
+    const check = () => setMobile(window.innerWidth <= 768);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);

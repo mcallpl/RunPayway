@@ -26,7 +26,7 @@ function AccessCodeContent() {
 
   useState(() => {
     if (typeof window !== "undefined") {
-      const check = () => setMobile(window.innerWidth <= 640);
+      const check = () => setMobile(window.innerWidth <= 768);
       check();
       window.addEventListener("resize", check);
     }
