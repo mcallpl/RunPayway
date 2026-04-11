@@ -226,7 +226,6 @@ export default function FreeScorePage() {
 
   const constraintExplanation = vocab.constraints[rootConstraint] || CONSTRAINT_EXPLANATIONS[rootConstraint] || "Your income has a limiting factor that increases exposure.";
   const behaviorText = vocab.behaviors[rootConstraint] || BEHAVIOR_DESCRIPTIONS[rootConstraint] || "Your income has dependencies that affect how it responds to change.";
-  const improvements = vocab.improvements[rootConstraint] || IMPROVEMENT_DIRECTIONS[rootConstraint] || ["Strengthen your weakest structural dimension", "Increase income diversification", "Build forward commitments"];
 
   /* Industry context */
   const industryText = vocab.industry_context;
@@ -342,6 +341,29 @@ export default function FreeScorePage() {
           </div>
         </section>
 
+        {/* ── PROJECTED IMPROVEMENT — the number behind the paywall ── */}
+        {(() => {
+          const liftData = v2?.score_lift_projection as Record<string, unknown> | undefined;
+          const topLift = liftData?.highest_single_lift as Record<string, unknown> | undefined;
+          const projScore = (topLift?.projected_score as number) || 0;
+          const lift = (topLift?.lift as number) || 0;
+          if (!projScore || lift <= 0) return null;
+          return (
+            <section style={{ marginBottom: secPad, textAlign: "center" }}>
+              <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 12 }}>
+                Your Projected Score
+              </div>
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8, marginBottom: 8 }}>
+                <span style={{ fontFamily: mono, fontSize: 44, fontWeight: 300, color: C.navy }}>{projScore}</span>
+                <span style={{ fontFamily: mono, fontSize: 18, fontWeight: 600, color: C.teal }}>+{lift}</span>
+              </div>
+              <p style={{ fontSize: 14, color: muted, margin: "0 auto", maxWidth: 360, lineHeight: 1.55 }}>
+                One structural change could move your score here. Your full report shows exactly which one.
+              </p>
+            </section>
+          );
+        })()}
+
         {/* ── SECTION 3: PRIMARY CONSTRAINT ── */}
         <section style={{
           backgroundColor: C.white, borderRadius: 12, padding: cardPad,
@@ -351,9 +373,6 @@ export default function FreeScorePage() {
           <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.purple, marginBottom: 12 }}>
             What Limits Your Score: {constraintLabel}
           </div>
-          <p style={{ fontSize: 16, color: C.navy, fontWeight: 500, lineHeight: 1.6, marginBottom: 8 }}>
-            This is the strongest limiting factor affecting your score.
-          </p>
           <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, margin: 0 }}>
             {constraintExplanation}
           </p>
@@ -378,9 +397,6 @@ export default function FreeScorePage() {
           <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "#9B2C2C", marginBottom: 16 }}>
             Stress Test
           </div>
-          <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.55, marginBottom: 20 }}>
-            If this changes, your structure shifts.
-          </p>
           <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, marginBottom: 20 }}>
             If your largest income source is removed:
           </p>
@@ -406,46 +422,12 @@ export default function FreeScorePage() {
             )}
           </div>
 
-          <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, marginBottom: 12 }}>
+          <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, margin: 0 }}>
             Too much of your income depends on a single source. Losing it would have an outsized impact.
           </p>
-          <p style={{ fontSize: 14, color: light, lineHeight: 1.55, margin: 0, fontStyle: "italic" }}>
-            This does not affect your income today. It defines how your income responds to change.
-          </p>
         </section>
 
-        {/* ── SECTION 6: IMPROVEMENT DIRECTION ── */}
-        <section style={{ marginBottom: secPad }}>
-          <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>
-            Improvement Direction
-          </div>
-          <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
-            {improvements.map((item, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                <span style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 8 }} />
-                <span style={{ fontSize: 14, color: C.navy, lineHeight: 1.55 }}>{item}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── SECTION 7: INDUSTRY CONTEXT ── */}
-        {industry && (
-          <section style={{
-            backgroundColor: C.white, borderRadius: 12, padding: cardPad,
-            border: `1px solid ${C.border}`,
-            marginBottom: secPad,
-          }}>
-            <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: light, marginBottom: 12 }}>
-              Industry Context
-            </div>
-            <p style={{ fontSize: 14, color: muted, lineHeight: 1.65, margin: 0 }}>
-              {industryText}
-            </p>
-          </section>
-        )}
-
-        {/* ── SECTION 8: UPGRADE BLOCK ── */}
+        {/* ── UPGRADE BLOCK ── */}
         <section style={{
           backgroundColor: C.navy, borderRadius: 16,
           padding: mobile ? "32px 24px" : "40px 36px",
@@ -457,11 +439,8 @@ export default function FreeScorePage() {
           <div style={{ fontSize: mobile ? 20 : 24, fontWeight: 600, color: C.sand, marginBottom: 12, lineHeight: 1.3 }}>
             {upgradeHeadline}
           </div>
-          <p style={{ fontSize: 16, fontWeight: 500, color: "rgba(244,241,234,0.70)", lineHeight: 1.55, marginBottom: 8 }}>
-            See exactly what would break your income — before it happens.
-          </p>
-          <p style={{ fontSize: 14, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 28 }}>
-            Most people discover their biggest structural risk after it hits. This shows it before.
+          <p style={{ fontSize: 16, fontWeight: 500, color: "rgba(244,241,234,0.70)", lineHeight: 1.55, marginBottom: 28 }}>
+            See exactly what would break your income — before you need to.
           </p>
 
           {(() => {
@@ -513,7 +492,7 @@ export default function FreeScorePage() {
             onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#3d32a0"; }}
             onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = C.purple; }}
           >
-            See Your Complete Income Analysis &mdash; $69
+            See What To Do About It &mdash; $69
           </a>
           <p style={{ fontSize: 13, color: C.teal, margin: 0 }}>
             If it doesn&#8217;t reveal something new, full refund.
@@ -529,12 +508,9 @@ export default function FreeScorePage() {
           <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 12 }}>
             Income Analysis
           </div>
-          <div style={{ fontSize: mobile ? 18 : 20, fontWeight: 600, color: C.navy, marginBottom: 8, lineHeight: 1.3 }}>
-            Get your full income structure analysis delivered to your inbox
+          <div style={{ fontSize: mobile ? 18 : 20, fontWeight: 600, color: C.navy, marginBottom: 24, lineHeight: 1.3 }}>
+            Get your score breakdown delivered to your inbox
           </div>
-          <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, marginBottom: 24, maxWidth: 420, marginLeft: "auto", marginRight: "auto" }}>
-            A detailed look at what your score means for your specific industry and operating structure.
-          </p>
           <div style={{
             padding: mobile ? "20px 16px" : "20px 24px",
             borderRadius: 12,
@@ -544,32 +520,21 @@ export default function FreeScorePage() {
           </div>
         </section>
 
-        {/* ── SECTION 9: DASHBOARD PREVIEW ── */}
-        <section style={{
-          backgroundColor: C.white, borderRadius: 12, padding: cardPad,
-          border: `1px solid ${C.border}`,
-          marginBottom: secPad,
-        }}>
-          <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 12 }}>
-            Dashboard
-          </div>
-          <div style={{ fontSize: 18, fontWeight: 500, color: C.navy, marginBottom: 8 }}>
-            Where your structure gets improved.
-          </div>
-          <p style={{ fontSize: 14, color: muted, lineHeight: 1.6, marginBottom: 20 }}>
-            Test changes. Measure impact. Improve your score.
-          </p>
-          <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 10 }}>
-            {["PressureMap\u2122", "What-If Simulator", "Scenario Engine", "Execution Roadmap"].map((mod, i) => (
-              <div key={i} style={{
-                padding: "12px 16px", borderRadius: 8,
-                backgroundColor: "#fafaf8", border: `1px solid ${C.border}`,
-              }}>
-                <span style={{ fontSize: 14, fontWeight: 500, color: C.navy }}>{mod}</span>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* ── INDUSTRY CONTEXT (background info, bottom of page) ── */}
+        {industry && (
+          <section style={{
+            backgroundColor: C.white, borderRadius: 12, padding: cardPad,
+            border: `1px solid ${C.border}`,
+            marginBottom: secPad,
+          }}>
+            <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: light, marginBottom: 12 }}>
+              Industry Context
+            </div>
+            <p style={{ fontSize: 14, color: muted, lineHeight: 1.65, margin: 0 }}>
+              {industryText}
+            </p>
+          </section>
+        )}
 
         {/* Footer */}
         <div style={{ textAlign: "center", paddingTop: 24, borderTop: `1px solid ${C.border}`, marginTop: 32 }}>
