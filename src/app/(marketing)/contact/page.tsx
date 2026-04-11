@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n";
 import { C, sans } from "@/lib/design-tokens";
+import { WORKER_URL } from "@/lib/config";
 
 /* ================================================================== */
 /* UTILITIES                                                           */
@@ -61,7 +62,7 @@ export default function ContactPage() {
     if (!name.trim() || !email.trim() || !message.trim()) return;
     setSending(true); setSendError("");
     try {
-      const res = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/contact", {
+      const res = await fetch(`${WORKER_URL}/contact`, {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: name.trim(), email: email.trim(), subject, message: message.trim() }),
       });

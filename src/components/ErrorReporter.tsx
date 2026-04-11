@@ -1,16 +1,17 @@
 "use client";
 import { useEffect } from "react";
+import { WORKER_URL } from "@/lib/config";
 
-const WORKER_URL = "https://runpayway-pressuremap.mcallpl.workers.dev/error-report";
+const ERROR_REPORT_URL = `${WORKER_URL}/error-report`;
 
 export function reportError(data: { error_message: string; error_stack?: string; component?: string }) {
   try {
     const payload = { ...data, page_url: typeof window !== "undefined" ? window.location.href : "", user_agent: typeof navigator !== "undefined" ? navigator.userAgent : "" };
     const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
     if (typeof navigator !== "undefined" && navigator.sendBeacon) {
-      navigator.sendBeacon(WORKER_URL, blob);
+      navigator.sendBeacon(ERROR_REPORT_URL, blob);
     } else {
-      fetch(WORKER_URL, { method: "POST", body: blob, keepalive: true }).catch(() => {});
+      fetch(ERROR_REPORT_URL, { method: "POST", body: blob, keepalive: true }).catch(() => {});
     }
   } catch { /* reporting should never throw */ }
 }

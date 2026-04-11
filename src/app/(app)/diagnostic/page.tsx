@@ -6,6 +6,7 @@ import Image from "next/image";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import { C, mono, sans, bandColor } from "@/lib/design-tokens";
 import { trackAssessmentComplete } from "@/lib/analytics";
+import { WORKER_URL } from "@/lib/config";
 import ShareableScoreCard from "@/components/ShareableScoreCard";
 import { getVocabulary } from "@/lib/industry-vocabulary";
 // V2-to-V1 adapter for converting engine output to record format
@@ -585,7 +586,7 @@ export default function DiagnosticPage() {
 
     if (entEmail && entPlanKey !== "free") {
       try {
-        const checkRes = await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/entitlement/check", {
+        const checkRes = await fetchWithTimeout(`${WORKER_URL}/entitlement/check`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: entEmail, plan_key: entPlanKey }),
@@ -607,7 +608,7 @@ export default function DiagnosticPage() {
           // For "no_entitlement": auto-create one for this paid user
           if (checkData?.allowed === false && checkData.reason === "no_entitlement") {
             try {
-              const createRes = await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/entitlement/create", {
+              const createRes = await fetchWithTimeout(`${WORKER_URL}/entitlement/create`, {
                 method: "POST", headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email: entEmail, plan_key: entPlanKey, stripe_session_id: purchaseSession.stripe_session_id || null }),
               }, 5000);
@@ -729,25 +730,25 @@ export default function DiagnosticPage() {
           // Run all 3 Claude API calls + /personalize in PARALLEL
           const [pmResult, peResult, apResult, persResult] = await Promise.allSettled([
             // PressureMap
-            fetchWithRetry("https://runpayway-pressuremap.mcallpl.workers.dev", {
+            fetchWithRetry(WORKER_URL, {
               method: "POST", headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ ...sharedBody, weakest_factor: topConstraint.factor || topConstraint.label || "", weakest_factor_value: topConstraint.label || "" }),
             }).then(async (res) => res.ok ? res.json() : null).catch(() => null),
 
             // Plain English
-            fetchWithRetry("https://runpayway-pressuremap.mcallpl.workers.dev/plain-english", {
+            fetchWithRetry(`${WORKER_URL}/plain-english`, {
               method: "POST", headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ ...sharedBody, weakest_factor: topFactor, active_income: adapted.active_income_level || 0, continuity_months: adapted.income_continuity_months || 0, risk_drop: adapted.risk_scenario_drop || 0 }),
             }).then(async (res) => res.ok ? res.json() : null).catch(() => null),
 
             // Action Plan
-            fetchWithRetry("https://runpayway-pressuremap.mcallpl.workers.dev/action-plan", {
+            fetchWithRetry(`${WORKER_URL}/action-plan`, {
               method: "POST", headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ ...sharedBody, weakest_factor: topFactor, active_income: adapted.active_income_level || 0, continuity_months: adapted.income_continuity_months || 0, risk_drop: adapted.risk_scenario_drop || 0, top_change: topLift?.label || "", projected_lift: topLift ? `${topLift.original_score} to ${topLift.projected_score} (+${topLift.lift})` : "" }),
             }).then(async (res) => res.ok ? res.json() : null).catch(() => null),
 
             // Personalize
-            fetchWithRetry("https://runpayway-pressuremap.mcallpl.workers.dev/personalize", {
+            fetchWithRetry(`${WORKER_URL}/personalize`, {
               method: "POST", headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 ...sharedBody,
@@ -801,7 +802,7 @@ export default function DiagnosticPage() {
           // Save record to cloud database (D1 via Worker)
           try {
             const recAdapted = record as Record<string, unknown>;
-            await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/save-record", {
+            await fetchWithTimeout(`${WORKER_URL}/save-record`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -824,7 +825,7 @@ export default function DiagnosticPage() {
             const entitlementId = sessionStorage.getItem("rp_entitlement_id") || localStorage.getItem("rp_entitlement_id") || "";
             if (entitlementId) {
               const recAdaptedForEnt = record as Record<string, unknown>;
-              fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/entitlement/use", {
+              fetchWithTimeout(`${WORKER_URL}/entitlement/use`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -858,7 +859,7 @@ export default function DiagnosticPage() {
                   ? (constraintsForEmail.ranked[0] as Record<string, string>).label || ""
                   : "")
                 || "Structural weakness identified";
-              await fetchWithTimeout("https://runpayway-pressuremap.mcallpl.workers.dev/send-email", {
+              await fetchWithTimeout(`${WORKER_URL}/send-email`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

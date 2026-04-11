@@ -5,7 +5,7 @@
  * Client components call these functions instead of importing the engine directly.
  */
 
-const WORKER_URL = "https://runpayway-pressuremap.mcallpl.workers.dev";
+import { WORKER_URL } from "@/lib/config";
 
 /* ------------------------------------------------------------------ */
 /*  Types (response shapes — no scoring logic)                         */

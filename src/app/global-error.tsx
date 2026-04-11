@@ -20,6 +20,7 @@ export default function GlobalError({
       };
       const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
       if (typeof navigator !== "undefined" && navigator.sendBeacon) {
+        // Hardcoded: global-error can't import modules (renders own <html>)
         navigator.sendBeacon("https://runpayway-pressuremap.mcallpl.workers.dev/error-report", blob);
       }
     } catch { /* reporting should never throw */ }

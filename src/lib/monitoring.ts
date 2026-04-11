@@ -3,6 +3,8 @@
 /*  Server-first with localStorage fallback for static deployments     */
 /* ------------------------------------------------------------------ */
 
+import { WORKER_URL } from "@/lib/config";
+
 export interface MonitoringSession {
   access_code: string;
   email: string;
@@ -205,7 +207,7 @@ export async function resetPinAndSend(email: string): Promise<boolean> {
 
   // Send new plaintext PIN to email
   try {
-    await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/contact", {
+    await fetch(`${WORKER_URL}/contact`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

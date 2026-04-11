@@ -8,6 +8,7 @@ import CookieConsent from "@/components/CookieConsent";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
 import ScrollToTop from "@/components/ScrollToTop";
 import { useLanguage } from "@/lib/i18n";
+import { WORKER_URL } from "@/lib/config";
 import type { LangCode } from "@/lib/i18n";
 import { trackPageView } from "@/lib/analytics";
 import { C } from "@/lib/design-tokens";
@@ -275,7 +276,7 @@ export default function MarketingLayout({
   const submitWaitlist = async () => {
     if (!waitlistEmail || !waitlistEmail.includes("@")) return;
     try {
-      await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/contact", {
+      await fetch(`${WORKER_URL}/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: "Enterprise Waitlist", email: waitlistEmail.trim(), subject: "enterprise", message: "Enterprise waitlist signup from footer." }),

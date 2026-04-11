@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { createMonitoringSession, getSessionByEmail } from "@/lib/monitoring";
 import { C, mono, sans } from "@/lib/design-tokens";
+import { WORKER_URL } from "@/lib/config";
 
 const PLAN_INFO: Record<string, { title: string; price: string }> = {
   monitoring: { title: "RunPayway\u2122 Stability Monitoring", price: "$149" },
@@ -94,7 +95,7 @@ function CheckoutSuccessContent() {
         localStorage.setItem("rp_purchase_session", JSON.stringify(session));
         // Create entitlement record on server (non-blocking)
         try {
-          const entRes = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/entitlement/create", {
+          const entRes = await fetch(`${WORKER_URL}/entitlement/create`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -137,7 +138,7 @@ function CheckoutSuccessContent() {
         localStorage.setItem("rp_purchase_session", JSON.stringify(session));
         // Create entitlement record on server (non-blocking)
         try {
-          const entRes = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/entitlement/create", {
+          const entRes = await fetch(`${WORKER_URL}/entitlement/create`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

@@ -10,7 +10,8 @@ import ShareableScoreCard from "@/components/ShareableScoreCard";
 // Sample data removed — empty state teasers replace demo mode
 import { C, mono, sans, bandColor } from "@/lib/design-tokens";
 import { getVocabulary } from "@/lib/industry-vocabulary";
-import { normSector, formatIndustry } from "@/lib/sector-map";
+import { normSector, formatIndustry, SECTOR_MAP } from "@/lib/sector-map";
+import { WORKER_URL } from "@/lib/config";
 
 /* ================================================================== */
 /*  BRAND TOKENS  (mapped from shared design-tokens)                   */
@@ -33,49 +34,6 @@ const B = {
   bandEstablished: C.bandEstablished,
   bandHigh: C.bandHigh,
 };
-function fmtIndustry(s: string): string { return s.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()); }
-
-/* Map raw dropdown values → lookup keys */
-const SECTOR_MAP: Record<string, string> = {
-  "Real Estate": "real_estate",
-  "Finance / Banking": "finance_banking",
-  "Insurance": "insurance",
-  "Technology": "technology",
-  "Healthcare": "healthcare",
-  "Legal Services": "legal_services",
-  "Consulting / Professional Services": "consulting_professional_services",
-  "Sales / Brokerage": "sales_brokerage",
-  "Media / Entertainment": "creative_media",
-  "Construction / Trades": "construction_trades",
-  "Retail / E-Commerce": "retail_ecommerce",
-  "Hospitality / Food Service": "hospitality",
-  "Transportation / Logistics": "transportation",
-  "Manufacturing": "manufacturing",
-  "Education": "education_training",
-  "Nonprofit / Public Sector": "nonprofit",
-  "Agriculture": "agriculture",
-  "Energy / Utilities": "energy",
-  "Other": "default",
-  // Also match already-normalized keys
-  "real_estate": "real_estate",
-  "finance_banking": "finance_banking",
-  "insurance": "insurance",
-  "technology": "technology",
-  "healthcare": "healthcare",
-  "legal_services": "legal_services",
-  "consulting_professional_services": "consulting_professional_services",
-  "consulting": "consulting",
-  "sales_brokerage": "sales_brokerage",
-  "creative_media": "creative_media",
-  "construction_trades": "construction_trades",
-  "education_training": "education_training",
-  "fitness_wellness": "fitness_wellness",
-};
-function normSector(raw: string): string {
-  const match = SECTOR_MAP[raw] || SECTOR_MAP[raw.toLowerCase()];
-  if (!match && raw && raw !== "default") console.warn(`[RunPayway] Unmapped sector: "${raw}". Add it to SECTOR_MAP.`);
-  return match || "default";
-}
 
 /*  TYPE SCALE — 5 levels, optimized for clarity
     H1: 24px  — section headlines
@@ -442,7 +400,7 @@ function DashboardContent() {
     if (urlRecord) {
       (async () => {
         try {
-          const res = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/get-record", {
+          const res = await fetch(`${WORKER_URL}/get-record`, {
             method: "POST", headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ id: urlRecord }),
           });
@@ -520,7 +478,7 @@ function DashboardContent() {
         const ps = JSON.parse(sessionStorage.getItem("rp_purchase_session") || localStorage.getItem("rp_purchase_session") || "{}");
         const email = ps.customer_email || "";
         if (!email) return;
-        const res = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/entitlement/lookup", {
+        const res = await fetch(`${WORKER_URL}/entitlement/lookup`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email }),
@@ -584,7 +542,7 @@ function DashboardContent() {
   const sector = (r?.industry_sector as string) || "";
   const custName = (r?.assessment_title as string) || "";
   const fragLabel = frag?.fragility_class ? frag.fragility_class.charAt(0).toUpperCase() + frag.fragility_class.slice(1) : "—";
-  const indLabel = sector ? fmtIndustry(sector) : "";
+  const indLabel = sector ? formatIndustry(sector) : "";
   const assessedDate = issuedDate ? new Date(issuedDate).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "";
 
   const base: CanonicalInputs = ni ? {

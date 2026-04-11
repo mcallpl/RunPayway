@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { WORKER_URL } from "@/lib/config";
 
 /* ================================================================ */
 /* UTILITIES                                                         */
@@ -364,7 +365,7 @@ function RequestAccessForm() {
     if (!canSubmit) return;
     setSending(true); setSendError("");
     try {
-      const res = await fetch("https://runpayway-pressuremap.mcallpl.workers.dev/contact", {
+      const res = await fetch(`${WORKER_URL}/contact`, {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: name.trim(),

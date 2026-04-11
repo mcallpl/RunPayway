@@ -4,8 +4,9 @@
 // Pixel events (GA4, Meta, LinkedIn) are fired alongside custom analytics.
 
 import { trackGA4Event, trackMetaEvent, trackLinkedInConversion } from "@/components/AnalyticsPixels";
+import { WORKER_URL } from "@/lib/config";
 
-const ANALYTICS_ENDPOINT = "https://runpayway-pressuremap.mcallpl.workers.dev/analytics";
+const ANALYTICS_ENDPOINT = `${WORKER_URL}/analytics`;
 
 interface AnalyticsEvent {
   event: string;

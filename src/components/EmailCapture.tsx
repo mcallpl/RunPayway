@@ -15,8 +15,10 @@ const C = {
   risk: "#C74634",
 };
 
+import { WORKER_URL } from "@/lib/config";
+
 const STORAGE_KEY = "rp_brief_signup";
-const WORKER_URL = "https://runpayway-pressuremap.mcallpl.workers.dev/contact";
+const CONTACT_URL = `${WORKER_URL}/contact`;
 
 interface EmailCaptureProps {
   variant?: "inline" | "standalone";
@@ -56,7 +58,7 @@ export default function EmailCapture({ variant = "standalone", source = "homepag
     setErrorMsg("");
 
     try {
-      const res = await fetch(WORKER_URL, {
+      const res = await fetch(CONTACT_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
