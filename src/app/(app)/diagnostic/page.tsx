@@ -37,24 +37,15 @@ const FIELD_MAP = [
 ];
 
 const PROCESSING_STEPS = [
-  "Evaluating structural factors",
-  "Calculating pillar scores",
-  "Applying classification framework",
-  "Generating stability diagnosis",
-  "Compiling assessment record",
+  "Analyzing your responses",
+  "Running structural calculations",
+  "Building your report",
 ];
 
 const LOADING_QUOTES = [
-  { text: "Income stability is not about how much you earn. It is about how your income is structured.", attr: "RunPayway" },
-  { text: "The professionals who weather disruptions are the ones who built recurring revenue before they needed it.", attr: "RunPayway" },
-  { text: "Your income has an architecture. Most people have never seen the blueprint.", attr: "RunPayway" },
-  { text: "One client at 60% of revenue is not a business relationship. It is a structural dependency.", attr: "RunPayway" },
-  { text: "The difference between a $50K year and a $50K year is whether you knew it was coming.", attr: "RunPayway" },
-  { text: "Stability is not the absence of risk. It is the presence of structure.", attr: "RunPayway" },
-  { text: "Every income has a fragility score. Most people discover theirs after a disruption.", attr: "RunPayway" },
-  { text: "The goal is not to eliminate active income. It is to ensure it is not the only kind you have.", attr: "RunPayway" },
-  { text: "Forward visibility is the single most undervalued metric in personal finance.", attr: "RunPayway" },
-  { text: "Your competitors are not other businesses. Your competitor is structural vulnerability.", attr: "RunPayway" },
+  { text: "Analyzing your income across six structural dimensions." },
+  { text: "Running twenty diagnostic engines against your profile." },
+  { text: "Building your personalized assessment." },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -739,6 +730,7 @@ export default function DiagnosticPage() {
                   ? (constraintsForEmail.ranked[0] as Record<string, string>).label || ""
                   : "")
                 || "Structural weakness identified";
+              const persForEmail = (v2ForEmail.personalized as Record<string, string> | undefined);
               await fetchWithTimeout(`${WORKER_URL}/send-email`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -752,6 +744,10 @@ export default function DiagnosticPage() {
                   constraint: topCEmail,
                   interpretation: explForEmail.why_this_score || "",
                   record_id: recForEmail.record_id || "",
+                  insight_hook: persForEmail?.email_hook || "",
+                  projected_score: topLift?.projected_score || 0,
+                  projected_lift: topLift?.lift || 0,
+                  action_preview: persForEmail?.action_script || "",
                 }),
               });
             }

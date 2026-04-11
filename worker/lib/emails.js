@@ -35,10 +35,30 @@ export async function handleSendEmail(body, env, corsHeaders) {
   const interpretation = sanitizeString(body.interpretation, 2000);
   const record_id = sanitizeString(body.record_id, 100);
   const structure = sanitizeString(body.operating_structure, 200);
+  const insightHook = sanitizeString(body.insight_hook, 500);
+  const projectedScore = sanitizeInteger(body.projected_score, 0, 100, 0);
+  const projectedLift = sanitizeInteger(body.projected_lift, 0, 100, 0);
+  const actionPreviewRaw = sanitizeString(body.action_preview, 1000);
   const shortId = record_id.slice(0, 8);
   const fullId = record_id;
   const dashboardLink = fullId ? `https://peoplestar.com/RunPayway/dashboard?record=${encodeURIComponent(fullId)}` : "https://peoplestar.com/RunPayway/dashboard";
   const bandColor = score >= 75 ? teal : score >= 50 ? "#2B5EA7" : score >= 30 ? "#92640A" : "#9B2C2C";
+
+  // Extract first sentence of action preview for teaser, blur the rest
+  let actionFirst = "";
+  let actionBlurred = "";
+  if (actionPreviewRaw) {
+    const sentenceEnd = actionPreviewRaw.search(/[.!?]\s/);
+    if (sentenceEnd > 0) {
+      actionFirst = actionPreviewRaw.slice(0, sentenceEnd + 1);
+      const remainder = actionPreviewRaw.slice(sentenceEnd + 1).trim();
+      if (remainder.length > 0) {
+        actionBlurred = remainder.length > 60 ? remainder.slice(0, 60) + "..." : remainder;
+      }
+    } else {
+      actionFirst = actionPreviewRaw;
+    }
+  }
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -52,12 +72,12 @@ export async function handleSendEmail(body, env, corsHeaders) {
 <tr><td align="center" style="padding:0 16px;">
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
 
-<!-- Logo bar — navy background -->
+<!-- 1. Logo bar — navy background -->
 <tr><td style="padding:28px 40px 24px;text-align:left;">
 <img src="https://peoplestar.com/RunPayway/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="display:inline-block;height:auto;filter:brightness(0) invert(1);opacity:0.85;"/>
 </td></tr>
 
-<!-- Gradient accent line -->
+<!-- Thin gradient accent line -->
 <tr><td style="padding:0 40px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="background:linear-gradient(90deg,${purple} 0%,${teal} 100%);height:2px;border-radius:1px;">&nbsp;</td></tr></table></td></tr>
 
 <!-- White content card -->
@@ -65,48 +85,58 @@ export async function handleSendEmail(body, env, corsHeaders) {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="background-color:#ffffff;padding:44px 40px 40px;border-radius:12px;margin-top:20px;">
 
+<!-- 2. Insight hook — the line that makes them keep reading -->
+${insightHook ? `
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr><td style="padding:0 0 28px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+<tr>
+<td width="3" style="vertical-align:top;padding-right:16px;">
+<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="width:3px;height:100%;min-height:28px;background-color:${teal};border-radius:2px;">&nbsp;</td></tr></table>
+</td>
+<td>
+<p style="font-size:20px;font-weight:400;color:${navy};margin:0;line-height:1.45;letter-spacing:-0.01em;">${insightHook}</p>
+</td>
+</tr>
+</table>
+</td></tr>
+</table>
+` : ""}
+
 <!-- Personal greeting -->
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 <tr><td>
-<p style="font-size:22px;font-weight:300;color:${navy};margin:0 0 6px;letter-spacing:-0.02em;line-height:1.3;">${name}, we\u2019ve finished your assessment.</p>
+<p style="font-size:15px;font-weight:300;color:${navy};margin:0 0 6px;letter-spacing:-0.01em;line-height:1.4;">${name}, here\u2019s what we found.</p>
 <p style="font-size:13px;color:${light};line-height:1.7;margin:8px 0 0;">
-We looked at how your income holds up${industry ? ` in <strong style="color:${muted};font-weight:600;">${industry}</strong>` : ""}${structure ? ` as ${structure.match(/^[aeiou]/i) ? "an" : "a"} <strong style="color:${muted};font-weight:600;">${structure}</strong>` : ""} \u2014 here\u2019s what stands out.
+We analyzed your income structure${industry ? ` in <strong style="color:${muted};font-weight:600;">${industry}</strong>` : ""}${structure ? ` as ${structure.match(/^[aeiou]/i) ? "an" : "a"} <strong style="color:${muted};font-weight:600;">${structure}</strong>` : ""}.
 </p>
 </td></tr>
 </table>
 
 <!-- Spacer -->
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0;">
 <tr><td style="height:1px;background-color:rgba(14,26,43,0.06);">&nbsp;</td></tr>
 </table>
 
-<!-- Score display -->
+<!-- 3. Score display — secondary sizing -->
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-<tr><td style="padding:28px 32px;background-color:#fafaf8;border-radius:10px;border:1px solid rgba(14,26,43,0.04);">
+<tr><td style="padding:20px 24px;background-color:#fafaf8;border-radius:10px;border:1px solid rgba(14,26,43,0.04);">
 
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 <tr>
 <td style="vertical-align:top;">
-<p style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 14px;">INCOME STABILITY SCORE</p>
+<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 10px;">INCOME STABILITY SCORE</p>
 <table role="presentation" cellpadding="0" cellspacing="0">
 <tr>
-<td style="font-size:56px;font-weight:200;color:${navy};line-height:1;letter-spacing:-0.04em;font-family:'Georgia',serif;">${score}</td>
-<td style="font-size:16px;font-weight:300;color:rgba(14,26,43,0.18);vertical-align:bottom;padding-bottom:10px;padding-left:4px;">/100</td>
+<td style="font-size:40px;font-weight:200;color:${navy};line-height:1;letter-spacing:-0.04em;font-family:'Georgia',serif;">${score}</td>
+<td style="font-size:14px;font-weight:300;color:rgba(14,26,43,0.18);vertical-align:bottom;padding-bottom:6px;padding-left:3px;">/100</td>
 </tr>
 </table>
-<table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:12px;">
+<table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:8px;">
 <tr>
-<td style="width:8px;height:8px;border-radius:2px;background-color:${bandColor};">&nbsp;</td>
-<td style="padding-left:8px;font-size:13px;font-weight:600;color:${bandColor};letter-spacing:0.01em;">${band}</td>
+<td style="width:7px;height:7px;border-radius:2px;background-color:${bandColor};">&nbsp;</td>
+<td style="padding-left:7px;font-size:12px;font-weight:600;color:${bandColor};letter-spacing:0.01em;">${band}</td>
 </tr>
-</table>
-</td>
-<td width="120" style="vertical-align:top;text-align:right;">
-<table role="presentation" cellpadding="0" cellspacing="0" style="float:right;">
-<tr><td style="padding:6px 12px;border-radius:6px;border:1px solid rgba(14,26,43,0.08);">
-<p style="font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${light};margin:0 0 2px;">MODEL</p>
-<p style="font-size:12px;font-weight:600;color:${navy};margin:0;">RP-2.0</p>
-</td></tr>
 </table>
 </td>
 </tr>
@@ -115,80 +145,67 @@ We looked at how your income holds up${industry ? ` in <strong style="color:${mu
 </td></tr>
 </table>
 
-<!-- Industry context interpretation -->
-${interpretation ? `
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:24px;">
+<!-- 4. Projected improvement -->
+${projectedScore > 0 ? `
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+<tr><td style="padding:20px 24px;background-color:rgba(31,109,122,0.06);border-radius:10px;border:1px solid rgba(31,109,122,0.10);">
+<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${teal};margin:0 0 10px;">PROJECTED IMPROVEMENT</p>
+<p style="font-size:28px;font-weight:300;color:${navy};margin:0 0 4px;letter-spacing:-0.02em;font-family:'Georgia',serif;">
+${score} <span style="color:${teal};">&rarr;</span> ${projectedScore} <span style="font-size:16px;font-weight:600;color:${teal};">(+${projectedLift})</span>
+</p>
+<p style="font-size:13px;color:${muted};line-height:1.6;margin:8px 0 0;">One change unlocks this. Your report shows which one.</p>
+</td></tr>
+</table>
+` : ""}
+
+<!-- 5. Action preview -->
+${actionFirst ? `
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+<tr><td style="padding:20px 24px;background-color:#fafaf8;border-radius:10px;border:1px solid rgba(14,26,43,0.04);">
+<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 10px;">YOUR TOP RECOMMENDATION</p>
+<p style="font-size:14px;font-weight:500;color:${navy};line-height:1.6;margin:0;">${actionFirst}${actionBlurred ? `<span style="color:rgba(14,26,43,0.18);filter:blur(0.5px);"> ${actionBlurred}</span>` : ""}</p>
+<p style="margin:12px 0 0;"><a href="${dashboardLink}" style="font-size:12px;font-weight:600;color:${teal};text-decoration:none;letter-spacing:0.02em;">See full action plan &rarr;</a></p>
+</td></tr>
+</table>
+` : ""}
+
+<!-- Constraint context -->
+${constraint ? `
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;">
 <tr><td>
-<p style="font-size:14px;color:${muted};line-height:1.75;margin:0;">${interpretation}</p>
+<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 5px;">PRIMARY CONSTRAINT</p>
+<p style="font-size:14px;font-weight:500;color:${navy};margin:0;">${constraint}</p>
+</td></tr>
+</table>
+` : ""}
+
+<!-- Interpretation -->
+${interpretation ? `
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:16px;">
+<tr><td>
+<p style="font-size:13px;color:${muted};line-height:1.75;margin:0;">${interpretation}</p>
 </td></tr>
 </table>
 ` : ""}
 
 <!-- Spacer -->
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0 0;">
 <tr><td style="height:1px;background-color:rgba(14,26,43,0.06);">&nbsp;</td></tr>
 </table>
 
-<!-- Assessment details — clean two-column -->
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-<tr>
-<td width="50%" style="vertical-align:top;padding-right:16px;">
-<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 5px;">Industry</p>
-<p style="font-size:14px;font-weight:500;color:${navy};margin:0 0 20px;">${industry || "\u2014"}</p>
-<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 5px;">Operating Structure</p>
-<p style="font-size:14px;font-weight:500;color:${navy};margin:0;">${structure || "\u2014"}</p>
-</td>
-<td width="50%" style="vertical-align:top;padding-left:16px;border-left:1px solid rgba(14,26,43,0.06);">
-<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 5px;">Primary Constraint</p>
-<p style="font-size:14px;font-weight:500;color:${navy};margin:0 0 20px;">${constraint || "\u2014"}</p>
-<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 5px;">Dimensions Analyzed</p>
-<p style="font-size:14px;font-weight:500;color:${navy};margin:0;">6</p>
-</td>
-</tr>
-</table>
-
-<!-- Spacer -->
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:32px 0 0;">
-<tr><td style="height:1px;background-color:rgba(14,26,43,0.06);">&nbsp;</td></tr>
-</table>
-
-<!-- Command Center CTA -->
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:32px;">
+<!-- 6. CTA -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:28px;">
 <tr><td style="text-align:center;">
-<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${teal};margin:0 0 8px;">NEXT STEP</p>
-<p style="font-size:18px;font-weight:300;color:${navy};margin:0 0 8px;letter-spacing:-0.01em;">Your full breakdown is ready.</p>
-<p style="font-size:13px;color:${muted};line-height:1.65;margin:0 0 24px;">
-See exactly where your income is strong, where it\u2019s exposed, and what to focus on first.
-</p>
 <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;">
 <tr><td style="background-color:${purple};border-radius:10px;">
-<a href="${dashboardLink}" style="display:inline-block;padding:14px 40px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;letter-spacing:0.02em;">Open Your Command Center</a>
+<a href="${dashboardLink}" style="display:inline-block;padding:14px 40px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;letter-spacing:0.02em;">See Your Full Analysis</a>
 </td></tr>
 </table>
 </td></tr>
 </table>
 
-<!-- Reassessment guidance -->
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:36px;">
-<tr><td style="padding:20px 24px;border-radius:8px;border:1px solid rgba(14,26,43,0.06);background-color:#fafaf8;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-<tr>
-<td width="4" style="vertical-align:top;padding-right:16px;">
-<table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="width:3px;height:36px;background-color:${teal};border-radius:2px;">&nbsp;</td></tr></table>
-</td>
-<td>
-<p style="font-size:13px;font-weight:600;color:${navy};margin:0 0 6px;">When to check back in</p>
-<p style="font-size:12px;color:${muted};line-height:1.65;margin:0;">
-Run another assessment in about 90 days, or whenever something meaningful shifts${industry ? ` \u2014 a new contract, a change in how your ${industry.toLowerCase()} revenue comes in, or a move toward recurring work` : ""}. Your Command Center will track the progress for you.
-</p>
-</td>
-</tr>
-</table>
-</td></tr>
-</table>
-
-<!-- Record reference -->
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:28px;">
+<!-- 7. Record ID and model version footer -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:32px;">
 <tr><td>
 <p style="font-size:10px;color:rgba(14,26,43,0.22);margin:0;letter-spacing:0.02em;">Record ${shortId} \u00B7 Model RP-2.0</p>
 </td></tr>
