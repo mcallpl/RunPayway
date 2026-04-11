@@ -12,27 +12,23 @@ import { C, T, mono, sans, sp, padX, cardStyle, ctaButton, canHover, h2Style, bo
 /* ------------------------------------------------------------------ */
 
 const CLASSIFICATIONS = [
-  { value: "Individual", desc: "You earn income as a single person" },
-  { value: "Business Entity", desc: "Income flows through a registered business" },
-  { value: "Team / Partnership", desc: "Income is shared across multiple partners" },
+  { value: "Individual", desc: "You earn income as one person" },
+  { value: "Business Entity", desc: "Income flows through a business you own" },
+  { value: "Team / Partnership", desc: "You share income with partners" },
 ];
 
 const OPERATING_STRUCTURES = [
-  { value: "Employee (W-2)", desc: "Salaried or hourly employee" },
-  { value: "Independent Contractor", desc: "1099 or freelance arrangement" },
-  { value: "Business Owner / Firm", desc: "Owner of an LLC, S-Corp, or C-Corp" },
-  { value: "Partnership", desc: "Shared ownership structure" },
-  { value: "Nonprofit Organization", desc: "Tax-exempt entity" },
+  { value: "Employee (W-2)", desc: "You receive a paycheck from an employer" },
+  { value: "Independent Contractor", desc: "You work for yourself — 1099, freelance, or gig" },
+  { value: "Business Owner / Firm", desc: "You own the business that earns the income" },
+  { value: "Partnership", desc: "You co-own the business with others" },
+  { value: "Nonprofit Organization", desc: "You run or work for a nonprofit" },
 ];
 
 const PRIMARY_INCOME_MODELS = [
   "Employee Salary",
   "Commission-Based",
   "Contract-Based",
-  "Independent Contractor",
-  "Team / Partnership Income",
-  "Business Ownership",
-  "Professional Practice",
   "Consulting / Client Services",
   "Agency / Brokerage Income",
   "Project-Based Work",
@@ -41,21 +37,38 @@ const PRIMARY_INCOME_MODELS = [
   "Product Sales",
   "Digital Product Sales",
   "Creator / Media Income",
-  "Affiliate / Referral Income",
   "Real Estate Rental Income",
   "Real Estate Brokerage Income",
-  "Franchise Ownership",
   "Investment / Dividend Income",
   "Hybrid Multiple Income Sources",
 ];
 
+// Clarifying subtitles shown after selection — helps users confirm they picked the right one
+const INCOME_MODEL_HINTS: Record<string, string> = {
+  "Employee Salary": "Paycheck from an employer — W-2, hourly, or salaried",
+  "Commission-Based": "You earn per deal, sale, or transaction",
+  "Contract-Based": "Fixed-term agreements for specific deliverables",
+  "Consulting / Client Services": "You advise or serve clients directly",
+  "Agency / Brokerage Income": "You run an agency or broker deals for others",
+  "Project-Based Work": "You take on projects with a start and end date",
+  "Subscription / Retainer Services": "Clients pay you monthly for ongoing access",
+  "Licensing / Royalty Income": "You earn from intellectual property, content, or rights",
+  "Product Sales": "You sell physical products — retail, wholesale, or e-commerce",
+  "Digital Product Sales": "You sell digital products — courses, templates, software",
+  "Creator / Media Income": "You earn from content, sponsorships, or audience monetization",
+  "Real Estate Rental Income": "You earn from rental properties you own",
+  "Real Estate Brokerage Income": "You earn commissions from real estate transactions",
+  "Investment / Dividend Income": "You earn from investments, dividends, or interest",
+  "Hybrid Multiple Income Sources": "You earn from two or more of the above",
+};
+
 const REVENUE_STRUCTURES = [
-  { value: "Mostly One-Time Payments", desc: "Commissions, project fees, one-off sales" },
-  { value: "Repeat Clients / Returning Customers", desc: "Clients who come back but without formal contracts" },
-  { value: "Monthly Recurring Payments", desc: "Retainers, memberships, subscriptions" },
-  { value: "Contracted Multi-Month Revenue", desc: "Signed engagements lasting several months" },
-  { value: "Long-Term Recurring Income", desc: "Recurring advisory services, licensing, or royalties" },
-  { value: "Mixed Revenue Structure", desc: "Combination of one-time and recurring income" },
+  { value: "Mostly One-Time Payments", desc: "Each sale or deal is separate — no automatic repeat" },
+  { value: "Repeat Clients / Returning Customers", desc: "Clients come back regularly but can stop anytime" },
+  { value: "Monthly Recurring Payments", desc: "Income repeats every month — retainers, memberships, subscriptions" },
+  { value: "Contracted Multi-Month Revenue", desc: "Signed agreements that guarantee income for multiple months" },
+  { value: "Long-Term Recurring Income", desc: "Income that continues on its own — royalties, rental income, licensing" },
+  { value: "Mixed Revenue Structure", desc: "Some income repeats, some is one-time" },
 ];
 
 const YEARS_IN_STRUCTURE = [
@@ -634,7 +647,7 @@ export default function InitializationPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
             {/* Industry */}
             <div>
-              <label htmlFor="industry-sector" style={labelStyle}>Industry Sector</label>
+              <label htmlFor="industry-sector" style={labelStyle}>What industry are you in?</label>
               <select
                 id="industry-sector"
                 value={form.industry_sector}
@@ -644,7 +657,7 @@ export default function InitializationPage() {
                 onFocus={focusHandler}
                 onBlur={blurHandler}
               >
-                <option value="">Select your industry</option>
+                <option value="">Choose one</option>
                 {INDUSTRY_SECTORS.map((s) => (
                   <option key={s} value={s}>{s}</option>
                 ))}
@@ -653,7 +666,7 @@ export default function InitializationPage() {
 
             {/* Operating Structure */}
             <div>
-              <label htmlFor="operating-structure" style={labelStyle}>Operating Structure</label>
+              <label htmlFor="operating-structure" style={labelStyle}>How is your income set up?</label>
               <select
                 id="operating-structure"
                 value={form.operating_structure}
@@ -663,7 +676,7 @@ export default function InitializationPage() {
                 onFocus={focusHandler}
                 onBlur={blurHandler}
               >
-                <option value="">Select your structure</option>
+                <option value="">Choose one</option>
                 {OPERATING_STRUCTURES.map((s) => (
                   <option key={s.value} value={s.value}>{s.value}</option>
                 ))}
@@ -672,7 +685,7 @@ export default function InitializationPage() {
 
             {/* Primary Income Model */}
             <div>
-              <label htmlFor="income-model" style={labelStyle}>Primary Income Model</label>
+              <label htmlFor="income-model" style={labelStyle}>How do you primarily earn?</label>
               <select
                 id="income-model"
                 value={form.primary_income_model}
@@ -682,16 +695,21 @@ export default function InitializationPage() {
                 onFocus={focusHandler}
                 onBlur={blurHandler}
               >
-                <option value="">Select your income model</option>
+                <option value="">Choose one</option>
                 {PRIMARY_INCOME_MODELS.map((s) => (
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>
+              {form.primary_income_model && INCOME_MODEL_HINTS[form.primary_income_model] && (
+                <div style={{ fontSize: 12, color: C.teal, marginTop: 6, lineHeight: 1.4 }}>
+                  {INCOME_MODEL_HINTS[form.primary_income_model]}
+                </div>
+              )}
             </div>
 
             {/* Years in Current Structure */}
             <div>
-              <label htmlFor="years-in-structure" style={labelStyle}>Years in Current Structure</label>
+              <label htmlFor="years-in-structure" style={labelStyle}>How long have you earned this way?</label>
               <select
                 id="years-in-structure"
                 value={form.years_in_structure}
@@ -701,7 +719,7 @@ export default function InitializationPage() {
                 onFocus={focusHandler}
                 onBlur={blurHandler}
               >
-                <option value="">Select tenure</option>
+                <option value="">Choose one</option>
                 {YEARS_IN_STRUCTURE.map((s) => (
                   <option key={s} value={s}>{s}</option>
                 ))}
