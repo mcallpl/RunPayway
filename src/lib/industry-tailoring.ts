@@ -1,7 +1,14 @@
 /* ------------------------------------------------------------------ */
-/*  industry-tailoring.ts                                              */
-/*  Generates industry-specific copy for report sections               */
-/*  No API required — deterministic, based on profile data             */
+/*  industry-tailoring.ts — Dynamic copy generation using              */
+/*  profile + score data.                                              */
+/*                                                                     */
+/*  Different from industry-vocabulary.ts which provides static        */
+/*  per-industry text (nouns, scenario labels, section copy).          */
+/*  This module generates CONTEXTUAL copy that combines industry       */
+/*  vocabulary with the user's specific numbers (score, percentages,   */
+/*  tier, dominant constraint).                                        */
+/*                                                                     */
+/*  No API required — deterministic, based on profile data.            */
 /* ------------------------------------------------------------------ */
 
 interface TailoringInput {
