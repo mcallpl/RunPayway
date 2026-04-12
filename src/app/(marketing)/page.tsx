@@ -524,18 +524,6 @@ function ScoringSystem() {
           </p>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: m ? 10 : 14, maxWidth: 480, margin: "0 auto", ...fadeIn(visible, 120) }}>
-          {[
-            { label: "Model", value: "RP-2.0" },
-            { label: "Ruleset", value: "Fixed" },
-            { label: "Output", value: "Deterministic" },
-          ].map((item, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: m ? "16px 24px" : "20px 32px", borderRadius: 16, backgroundColor: C.white, boxShadow: cardShadow }}>
-              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted }}>{item.label.toUpperCase()}</div>
-              <div style={{ fontSize: m ? 20 : 24, fontWeight: 700, fontFamily: mono, color: C.navy }}>{item.value}</div>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );
