@@ -1192,6 +1192,17 @@ export default function DiagnosticPage() {
         </div>
       )}
 
+      {/* Progress bar */}
+      <div style={{ width: "100%", marginBottom: 20 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+          <span style={{ fontSize: 12, fontWeight: 600, color: "rgba(14,26,43,0.40)" }}>Question {currentQuestion + 1} of {QUESTIONS.length}</span>
+          <span style={{ fontSize: 12, fontWeight: 600, color: "#1F6D7A" }}>{Math.round(((currentQuestion + 1) / QUESTIONS.length) * 100)}%</span>
+        </div>
+        <div style={{ height: 4, borderRadius: 2, backgroundColor: "rgba(14,26,43,0.06)", overflow: "hidden" }}>
+          <div style={{ height: "100%", borderRadius: 2, backgroundColor: "#1F6D7A", width: `${((currentQuestion + 1) / QUESTIONS.length) * 100}%`, transition: "width 400ms ease" }} />
+        </div>
+      </div>
+
       {/* Top bar — factor label + progress */}
       <div style={{ marginBottom: mobile ? 20 : 28 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>

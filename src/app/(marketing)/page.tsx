@@ -300,6 +300,10 @@ function HeroSection() {
             </div>
           ))}
         </div>
+
+        <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, marginTop: 24, textAlign: "center" }}>
+          Methodology published. Scoring version-locked. <Link href="/methodology" style={{ color: C.teal, fontWeight: 600, textDecoration: "none" }}>Read how it works&nbsp;&rarr;</Link>
+        </p>
       </div>
     </header>
   );
@@ -995,6 +999,10 @@ function BeforeYouBegin() {
             ))}
           </div>
         </div>
+
+        <p style={{ fontSize: 15, fontWeight: 500, color: C.navy, marginTop: 32, textAlign: "center", opacity: 0.7 }}>
+          Your income structure changes every quarter. The sooner you measure it, the sooner you can act.
+        </p>
       </div>
     </section>
   );
