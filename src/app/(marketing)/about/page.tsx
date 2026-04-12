@@ -65,7 +65,13 @@ const C = {
 const innerW = 1120;
 const narrowW = 720;
 const explanatoryW = 640;
-const sectionPx = (m: boolean) => m ? 24 : 48;
+const sectionPx = (m: boolean, t?: boolean) => m ? 28 : t ? 56 : 48;
+
+function useTablet() {
+  const [t, setT] = useState(false);
+  useEffect(() => { const c = () => setT(window.innerWidth > 768 && window.innerWidth <= 1024); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
+  return t;
+}
 const cardShadow = "0 10px 30px rgba(14,26,43,0.06)";
 
 
@@ -76,19 +82,20 @@ const cardShadow = "0 10px 30px rgba(14,26,43,0.06)";
 function HeroSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
-    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 148, paddingBottom: m ? 56 : 72, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 148, paddingBottom: m ? 56 : 72, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: 860, margin: "0 auto", textAlign: "center" }}>
         <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
           ABOUT
         </div>
         <h1 style={{ fontSize: m ? 30 : 64, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
-          The Standard for Measuring{m ? " " : <br />}Structural Income
+          The Standard for Measuring{m ? " " : <br />}Income Stability
         </h1>
         <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: narrowW, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
-          RunPayway&#8482; produces the Income Stability Score&#8482;&mdash;a fixed, deterministic measurement of how your income is built and how it holds up under pressure.
+          RunPayway&#8482; produces the Income Stability Score&#8482;&mdash;a consistent, fixed measurement of how your income is built and how it holds under&nbsp;pressure.
         </p>
         <p style={{ fontSize: m ? 18 : 22, fontWeight: 600, color: C.teal, ...fadeIn(visible, 150) }}>
           Not how much you earn. How your income behaves under change.
@@ -106,10 +113,11 @@ function HeroSection() {
 function Declaration() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto", display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 48 }}>
         <div style={{ marginBottom: m ? 32 : 0, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy }}>
@@ -127,7 +135,7 @@ function Declaration() {
               "What you\u2019ve accumulated",
             ].map((line, i) => (
               <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginTop: 4 }}><path d="M20 6L9 17l-5-5"/></svg>
                 <span style={{ fontSize: 18, color: C.textSecondary, lineHeight: 1.6 }}>{line}</span>
               </div>
             ))}
@@ -136,10 +144,10 @@ function Declaration() {
             But not how income is built.
           </p>
           <p style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 8 }}>
-            RunPayway defines that measurement.
+            RunPayway&#8482; defines that measurement.
           </p>
           <p style={{ fontSize: 16, fontWeight: 500, color: C.teal }}>
-            This is the standard for income structure.
+            This is the standard for income stability.
           </p>
         </div>
       </div>
@@ -149,38 +157,35 @@ function Declaration() {
 
 
 /* ================================================================ */
-/* SECTION 3 — WHAT WE DO                                            */
+/* SECTION 3 — WHAT WE MEASURE                                      */
 /* ================================================================ */
 
-function WhatWeDo() {
+function WhatWeMeasure() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
-        <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
-          WHAT WE DO
-        </div>
-        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
-          Measure How Income Holds Under Change.
+        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>
+          What we measure &mdash; and&nbsp;why.
         </h2>
-        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, ...fadeIn(visible, 100) }}>
-          RunPayway evaluates six structural dimensions of income&mdash;not the amount.
+        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 16, ...fadeIn(visible, 60) }}>
+          Credit scores measure borrowing behavior. Advisors manage accumulated assets. But nobody measures how income itself is&nbsp;built.
         </p>
-        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, ...fadeIn(visible, 120) }}>
-          The result is a score from 0 to 100 that shows how income behaves under real-world conditions:
+        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, ...fadeIn(visible, 80) }}>
+          RunPayway&#8482; evaluates six key dimensions of income and produces a score from 0&ndash;100 that shows how it behaves under real-world conditions:
         </p>
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: m ? 12 : 16, marginBottom: 32, ...fadeIn(visible, 150) }}>
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: m ? 12 : 16, marginBottom: 32, ...fadeIn(visible, 120) }}>
           {[
-            { label: "Disruption", desc: "A client leaves or a contract ends" },
-            { label: "Delay", desc: "Pipeline stalls or payments are late" },
-            { label: "Dependency", desc: "Too much relies on one source" },
-            { label: "Inactivity", desc: "You step away or can\u2019t work" },
+            { label: "Disruption", desc: "A client leaves or a contract ends", color: "#C74634" },
+            { label: "Delay", desc: "Pipeline stalls or payments are late", color: "#D0A23A" },
+            { label: "Dependency", desc: "Too much relies on one source", color: "#4B3FAE" },
+            { label: "Inactivity", desc: "You step away or can\u2019t work", color: C.teal },
           ].map((item, i) => (
-            <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "12px 16px", borderRadius: 12, backgroundColor: C.white, marginBottom: m ? 8 : 0 }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
+            <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "14px 18px", borderRadius: 12, backgroundColor: C.white, borderLeft: `4px solid ${item.color}`, marginBottom: m ? 8 : 0, boxShadow: "0 2px 8px rgba(14,26,43,0.04)" }}>
               <div>
                 <span style={{ fontSize: 16, fontWeight: 600, color: C.navy }}>{item.label}</span>
                 <span style={{ fontSize: 15, color: C.textSecondary }}> &mdash; {item.desc}</span>
@@ -188,8 +193,8 @@ function WhatWeDo() {
             </div>
           ))}
         </div>
-        <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, ...fadeIn(visible, 200) }}>
-          Every result is produced under fixed rules.
+        <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, ...fadeIn(visible, 180) }}>
+          Every result is produced under fixed rules. Same inputs, same score. Every&nbsp;time.
         </p>
       </div>
     </section>
@@ -204,10 +209,11 @@ function WhatWeDo() {
 function WhoItsFor() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto", display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 48 }}>
         <div style={{ marginBottom: m ? 32 : 0, ...fadeIn(visible) }}>
           <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>WHO IT&rsquo;S FOR</div>
@@ -217,7 +223,7 @@ function WhoItsFor() {
         </div>
         <div style={{ ...fadeIn(visible, 100) }}>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24 }}>
-            RunPayway is designed for individuals whose income is not fixed:
+            RunPayway&#8482; is designed for individuals whose income is not fixed:
           </p>
           <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, marginBottom: 32 }}>
             {[
@@ -228,7 +234,7 @@ function WhoItsFor() {
               "Operators with variable income",
             ].map((item, i) => (
               <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginTop: 4 }}><path d="M20 6L9 17l-5-5"/></svg>
                 <span style={{ fontSize: 18, color: C.textSecondary, lineHeight: 1.6 }}>{item}</span>
               </div>
             ))}
@@ -243,43 +249,6 @@ function WhoItsFor() {
 }
 
 
-/* ================================================================ */
-/* SECTION 5 — WHY IT EXISTS                                         */
-/* ================================================================ */
-
-function WhyItExists() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-
-  return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 80 : 140, paddingBottom: m ? 80 : 140, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
-      <div style={{ maxWidth: 680, margin: "0 auto" }}>
-        <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
-          WHY IT EXISTS
-        </div>
-        <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.02, letterSpacing: "-0.035em", color: C.navy, marginBottom: 32, ...fadeIn(visible, 50) }}>
-          A Missing Measurement
-        </h2>
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 16, marginBottom: 24, ...fadeIn(visible, 100) }}>
-          {[
-            "Credit scores measure borrowing behavior.",
-            "Advisors manage accumulated assets.",
-            "Income is tracked, but not evaluated structurally.",
-          ].map((line, i) => (
-            <p key={i} style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, margin: 0 }}>{line}</p>
-          ))}
-        </div>
-        <p style={{ fontSize: 18, fontWeight: 500, lineHeight: 1.6, color: C.navy, marginBottom: 16, ...fadeIn(visible, 150) }}>
-          RunPayway measures how income is built&mdash;and whether it holds under real-world conditions.
-        </p>
-        <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, ...fadeIn(visible, 180) }}>
-          The system evaluates the structural integrity of your income.{m ? " " : <br />}No guesswork. No random data. Just reproducible results.
-        </p>
-      </div>
-    </section>
-  );
-}
 
 
 /* ================================================================ */
@@ -289,17 +258,18 @@ function WhyItExists() {
 function SystemIntegrity() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m), position: "relative", overflow: "hidden" }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t), position: "relative", overflow: "hidden" }}>
       <div style={{ maxWidth: 880, margin: "0 auto", position: "relative", zIndex: 1 }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 12 }}>
             System Integrity: Fixed Rules, No Exceptions
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted }}>
-            RunPayway is a fixed-system model&mdash;no machine learning, no advisor judgment, no randomness.
+            RunPayway&#8482; is a fixed-system model&mdash;no machine learning, no advisor judgment, no randomness.
           </p>
         </div>
 
@@ -361,10 +331,11 @@ function SystemIntegrity() {
 function Positioning() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
           RunPayway&#8482; is a measurement system &mdash;{m ? " " : <br />}not a financial product.
@@ -382,7 +353,7 @@ function Positioning() {
             "Interpret outcomes",
           ].map((line, i) => (
             <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(14,26,43,0.30)" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginTop: 4 }}><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
               <span style={{ fontSize: 18, color: C.textSecondary, lineHeight: 1.6 }}>{line}</span>
             </div>
           ))}
@@ -403,10 +374,11 @@ function Positioning() {
 function FinalCta() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center" }}>
         <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.45, color: C.sandMuted, marginBottom: 12, ...fadeIn(visible) }}>
           Your income already has a structure.
@@ -427,10 +399,10 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get Your Structural Income Report
+            Get Your Income Stability Score
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 16 }}>
-            Under 2 minutes | Instant result | Private by default
+            $69 &middot; Score, scripts, roadmap, and lifetime access
           </p>
         </div>
       </div>
@@ -449,9 +421,8 @@ export default function AboutPage() {
       <main>
         <HeroSection />
         <Declaration />
-        <WhatWeDo />
+        <WhatWeMeasure />
         <WhoItsFor />
-        <WhyItExists />
         <SystemIntegrity />
         <Positioning />
         <FinalCta />
