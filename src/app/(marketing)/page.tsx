@@ -119,7 +119,7 @@ function PressureBar({ segments, height = 14 }: { segments: { pct: number; color
 
 function CtaButton({ m, variant = "primary", label }: { m: boolean; variant?: "primary" | "light"; label?: string }) {
   const isPrimary = variant === "primary";
-  const text = label || "Get Your Structural Income Report";
+  const text = label || "Get Your Income Stability Score";
   return (
     <Link href="/begin" style={{
       display: "inline-flex", alignItems: "center", justifyContent: "center",
@@ -341,7 +341,7 @@ function ProofMoment() {
             Same income. Different setup.{m ? " " : <br />}Completely different risk.
           </h2>
           <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.45, color: C.textSecondary }}>
-            Two consultants. Same $150K/year income. One breaks first.
+            Two consultants. Same $150K/year income. Only one is ready for what&rsquo;s next.
           </p>
         </div>
 
@@ -371,7 +371,7 @@ function ProofMoment() {
               </div>
               <div>
                 <div style={{ fontSize: 16, fontWeight: 600, color: C.risk }}>Limited Stability</div>
-                <div style={{ fontSize: 14, fontWeight: 500, color: C.textMuted }}>One decision away from crisis</div>
+                <div style={{ fontSize: 14, fontWeight: 500, color: C.textMuted }}>One change away from disruption</div>
               </div>
             </div>
           </div>
@@ -408,8 +408,8 @@ function ProofMoment() {
 
         {/* Closing + CTA */}
         <div style={{ textAlign: "center", marginTop: m ? 40 : 56, ...fadeIn(visible, 200) }}>
-          <p style={{ fontSize: m ? 20 : 24, fontWeight: 600, color: C.navy, marginBottom: 8 }}>RunPayway measures the difference.</p>
-          <p style={{ fontSize: 16, color: C.textSecondary, marginBottom: 32 }}>Every income has a breaking point.</p>
+          <p style={{ fontSize: m ? 20 : 24, fontWeight: 600, color: C.navy, marginBottom: 8 }}>RunPayway&trade; measures the difference.</p>
+          <p style={{ fontSize: 16, color: C.textSecondary, marginBottom: 32 }}>See where yours stands.</p>
           <CtaButton m={m} variant="primary" />
         </div>
       </div>
