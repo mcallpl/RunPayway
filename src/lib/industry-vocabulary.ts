@@ -39,22 +39,6 @@ export interface IndustryVocabulary {
     lock_forward: string;
   };
 
-  // Industry-specific labels for each action (replaces generic labels)
-  actionLabels: {
-    convert_retainer: string;
-    add_client: string;
-    build_passive: string;
-    lock_forward: string;
-  };
-
-  // Industry-specific micro-steps (3 steps per action)
-  microSteps: {
-    convert_retainer: string[];
-    add_client: string[];
-    build_passive: string[];
-    lock_forward: string[];
-  };
-
   // Constraint explanations — what each weakness means for YOU in this industry
   constraints: Record<string, string>;
 
@@ -80,16 +64,16 @@ export interface IndustryVocabulary {
     labor: string;
   };
 
-  // Short labels for action presets (used in dashboard cards and roadmap)
-  actionLabels?: {
+  // Industry-specific labels for each action (replaces generic labels)
+  actionLabels: {
     convert_retainer: string;
     add_client: string;
     build_passive: string;
     lock_forward: string;
   };
 
-  // 3 micro-steps per action (used in "Your Next 3 Moves" prompt)
-  microSteps?: {
+  // Industry-specific micro-steps (3 steps per action)
+  microSteps: {
     convert_retainer: string[];
     add_client: string[];
     build_passive: string[];
@@ -267,20 +251,6 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
         "Have you hired showing assistants, buyer's agents, or established referral partnerships that generate income without your personal presence at every transaction?",
     },
 
-    actionLabels: {
-      convert_retainer: "Sign a Management Retainer",
-      add_client: "Farm a New Neighborhood",
-      build_passive: "Acquire a Rental Property",
-      lock_forward: "Lock in Listing Agreements",
-    },
-
-    microSteps: {
-      convert_retainer: ["Pick your top investor client who owns rental units", "Draft a one-page property management proposal with a monthly fee", "Send it today — position it as protecting their investment"],
-      add_client: ["Choose one subdivision or zip code where you have zero listings", "Create a simple monthly market report for that area", "Door-knock or mail 50 homes this week to introduce yourself"],
-      build_passive: ["Search your MLS for duplexes under $250K in your target market", "Run the rental income numbers on the top 3 properties", "Schedule showings this week — you already know how to negotiate"],
-      lock_forward: ["Identify 2 past clients who may sell in the next 6 months", "Call them and offer a free pre-listing consultation", "Get a signed listing agreement with a 90-day window"],
-    },
-
     worker_context: {
       pressure_framing:
         "This person is a real estate professional whose income depends entirely on closing transactions. Pressure points include deal drought between closings, concentration on a small number of referral sources, and zero income when not actively working. Frame risks in terms of listings lost, pipelines dried up, and commissions that vanish when the market shifts.",
@@ -449,20 +419,6 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
         "Over the last two quarters, has the spread between your highest-revenue month and lowest-revenue month narrowed?",
       labor:
         "Have you hired associates, engaged subcontractors, or launched any productized offerings that generate revenue without requiring your personal delivery hours?",
-    },
-
-    actionLabels: {
-      convert_retainer: "Propose a Monthly Retainer",
-      add_client: "Expand to a New Industry",
-      build_passive: "Productize Your Framework",
-      lock_forward: "Extend Engagement Terms",
-    },
-
-    microSteps: {
-      convert_retainer: ["Identify your most engaged project client who keeps coming back", "Draft a retainer proposal: fixed monthly fee for defined hours and access", "Send it this week — frame it as continuity of insight they already trust"],
-      add_client: ["Pick one adjacent industry where your methodology clearly applies", "Write a short LinkedIn post showing how your approach solves their problem", "Reach out to 3 people in that industry for a 15-minute intro call"],
-      build_passive: ["List the framework or process you repeat for every new client", "Outline a self-service version someone could buy without your involvement", "Set a 30-day deadline to build and price the first version"],
-      lock_forward: ["Review your current engagement letters for commitment length", "Draft an amendment extending your top 2 clients to 6-month minimums", "Send the proposals with 90-day termination notice clauses"],
     },
 
     worker_context: {
@@ -1954,6 +1910,7 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       variability: "Did your month-to-month income even out, or are the peaks and valleys still as dramatic as before?",
       labor: "Have you launched any asynchronous courses, licensed materials, or other income streams that do not require your live presence?",
     },
+
     worker_context: {
       pressure_framing: "As an educator, your income pressure often comes from institutional dependency and calendar-driven enrollment gaps that leave you without revenue for months at a time.",
       tailwind_framing: "Your expertise has compounding value — every course you develop, every curriculum you refine, and every student outcome you document becomes a reusable asset that can generate income across multiple channels.",
@@ -2076,6 +2033,7 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       variability: "Has your month-to-month revenue become more consistent, or are the seasonal spikes and valleys still extreme?",
       labor: "Have you automated more operations or hired help, or are you still the bottleneck for daily fulfillment and customer service?",
     },
+
     worker_context: {
       pressure_framing: "As a retail or e-commerce operator, your income pressure stems from platform dependency, inventory risk, and the constant battle for consumer attention in a crowded marketplace.",
       tailwind_framing: "Every repeat customer, every subscription sign-up, and every new channel you open compounds your resilience — the infrastructure you build today keeps generating sales without starting from zero each morning.",
@@ -2198,6 +2156,7 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       variability: "Have your off-peak months improved, or is the gap between your best and worst months still just as wide?",
       labor: "Can your operation run without you for a week now? Have you reduced the number of tasks that only you can perform?",
     },
+
     worker_context: {
       pressure_framing: "As a hospitality professional, your income pressure comes from high fixed costs that run whether or not guests walk through the door, combined with seasonal demand swings that can leave you empty during slow periods.",
       tailwind_framing: "Every standing corporate account, every loyal regular, and every recurring event you secure acts as a revenue anchor — these relationships compound over time and give you a predictable foundation beneath the variable walk-in traffic.",
@@ -2229,6 +2188,21 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       build_passive: "If you own equipment that sits idle — trailers, chassis, containers — list them for rental on peer-to-peer platforms or lease them to other carriers. Idle assets should be generating income even when they are not hauling your freight.",
       lock_forward: "Negotiate quarterly or annual rate agreements with your best shippers before peak season. Lock in favorable rates while demand is strong and commit to capacity that keeps your trucks moving through slow periods at agreed-upon volumes.",
     },
+
+    actionLabels: {
+      convert_retainer: "Lock in minimum-volume commitments with top shippers",
+      add_client: "Register with new brokers in untapped industries",
+      build_passive: "Rent idle trailers and equipment to other carriers",
+      lock_forward: "Negotiate annual rate agreements before peak season",
+    },
+
+    microSteps: {
+      convert_retainer: ["Identify your top 3 shippers by weekly load volume", "Propose guaranteed truck availability in exchange for minimum weekly loads", "Lock in a rate that provides margin stability through slow periods"],
+      add_client: ["Register with 3 new freight brokers or shipper directories", "Target industries you have not served — agriculture, manufacturing, or retail", "Run one load for each new relationship to prove reliability"],
+      build_passive: ["Inventory all equipment that sits idle between loads", "List trailers and chassis on peer-to-peer rental platforms", "Set rental rates and availability windows for off-peak periods"],
+      lock_forward: ["List your most profitable lanes over the past 12 months", "Approach those shippers about quarterly or annual rate agreements", "Lock in rates before the next peak season begins"],
+    },
+
     constraints: {
       high_concentration: "The majority of your weekly loads come from a single shipper or broker. If they cut volume, renegotiate rates, or switch carriers, your fleet utilization drops to a level that cannot cover your fixed equipment and insurance costs.",
       weak_forward_visibility: "You rarely know what next week's loads look like until the weekend. Spot market dependence means you are constantly reacting to today's available freight rather than planning around confirmed future shipments.",
@@ -2305,6 +2279,7 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       variability: "Has your rate per mile and weekly revenue become more consistent, or are you still riding the spot market roller coaster?",
       labor: "Have you improved driver retention, added capacity, or reduced your personal involvement in daily dispatch operations?",
     },
+
     worker_context: {
       pressure_framing: "As a transportation operator, your income pressure comes from the brutal combination of high fixed equipment costs, volatile freight rates, and the reality that parked trucks bleed money every single day.",
       tailwind_framing: "Every standing contract you secure, every new shipper relationship you build, and every lane you lock in ahead of time creates a foundation of predictable revenue that insulates you from spot market chaos.",
@@ -2336,6 +2311,21 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       build_passive: "License your proprietary tooling designs, jigs, or processes to non-competing manufacturers in other regions. If you have developed custom fixtures or production methods, those intellectual assets can generate royalty income without consuming any shop floor time.",
       lock_forward: "Push for quarterly or annual purchase orders with firm delivery schedules instead of accepting one-off job orders. Offer a small volume discount for commitments that extend beyond 90 days to incentivize longer-term planning from your buyers.",
     },
+
+    actionLabels: {
+      convert_retainer: "Negotiate blanket purchase orders with top buyers",
+      add_client: "Win customers in a new industry vertical",
+      build_passive: "License proprietary tooling or processes for royalty income",
+      lock_forward: "Push for quarterly or annual purchase orders with firm schedules",
+    },
+
+    microSteps: {
+      convert_retainer: ["Identify your top 3 buyers by annual production volume", "Propose blanket purchase orders with monthly releases at locked pricing", "Frame it as price certainty and priority capacity for them"],
+      add_client: ["Identify 2 industries where your equipment and skills apply", "Attend a trade show in a vertical you have never served", "Submit competitive quotes on 3 new RFQs this quarter"],
+      build_passive: ["Inventory proprietary tooling, jigs, or processes you have developed", "Identify non-competing manufacturers who could license them", "Draft a simple licensing agreement with per-unit or annual royalty terms"],
+      lock_forward: ["Review all current customers on one-off job orders", "Propose quarterly or annual purchase orders with volume discounts", "Get at least 2 blanket orders signed this quarter"],
+    },
+
     constraints: {
       high_concentration: "One buyer accounts for a dangerous percentage of your production volume. If their demand drops, their business fails, or they find an alternative supplier, your fixed costs remain the same but your revenue collapses to a fraction of what it was.",
       weak_forward_visibility: "Your production schedule only extends as far as your current purchase orders. Beyond that, you are guessing based on customer forecasts that often turn out to be optimistic, leaving you either overcommitted or idle.",
@@ -2412,6 +2402,7 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       variability: "Has your monthly production volume stabilized, or do you still experience dramatic swings between busy and idle periods?",
       labor: "Have you reduced skill bottlenecks through cross-training, documentation, or automation since your last assessment?",
     },
+
     worker_context: {
       pressure_framing: "As a manufacturer, your income pressure comes from the gap between your high fixed costs — machines, space, skilled labor — and production volume that fluctuates with customer demand cycles you cannot control.",
       tailwind_framing: "Every standing order you lock in, every new industry you qualify for, and every proprietary capability you develop makes your shop harder to replace — these compound into a moat that protects your revenue through market cycles.",
@@ -2443,6 +2434,21 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       build_passive: "Launch a monthly giving program with automated recurring donations. Even at small individual amounts, a base of 200 monthly donors creates a reliable revenue floor that no single grant decision can take away.",
       lock_forward: "Secure multi-year pledge commitments from your top individual donors by presenting a compelling three-year strategic plan. Ask them to pledge annual gifts for the full period, giving you bankable forward revenue for program planning.",
     },
+
+    actionLabels: {
+      convert_retainer: "Convert annual grants into multi-year commitments",
+      add_client: "Submit tailored LOIs to three new funders",
+      build_passive: "Launch a monthly giving program with automated donations",
+      lock_forward: "Secure multi-year pledge commitments from top donors",
+    },
+
+    microSteps: {
+      convert_retainer: ["Identify your most consistent program funders", "Present an impact case showing how multi-year funding improves outcomes", "Ask for a 3-year commitment at the next renewal conversation"],
+      add_client: ["Research 3 new foundations whose priorities align with your mission", "Submit tailored LOIs to each this quarter", "Follow up with a personal introduction to your program director"],
+      build_passive: ["Set up a monthly giving page with automated recurring donation processing", "Email your full donor list with a specific ask to convert to monthly giving", "Set a goal of 50 new monthly donors in the first 90 days"],
+      lock_forward: ["Identify your top 10 individual donors by giving history", "Present a compelling 3-year strategic plan to each", "Ask for annual pledge commitments covering the full period"],
+    },
+
     constraints: {
       high_concentration: "One funder — a single foundation, government agency, or major donor — provides a disproportionate share of your budget. Their funding decision cycle controls your organization's survival, and a single decline letter can trigger a fiscal crisis.",
       weak_forward_visibility: "Grant cycles, donor decisions, and government appropriations operate on timelines you do not control. You often do not know whether critical funding will continue until weeks before it is needed, making program planning feel like guesswork.",
@@ -2519,6 +2525,7 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       variability: "Has your monthly cash flow stabilized, or are you still experiencing dramatic swings between funding peaks and valleys?",
       labor: "Could your fundraising and programs continue if you personally stepped away for a month? Have you reduced single-person dependencies?",
     },
+
     worker_context: {
       pressure_framing: "As a nonprofit leader, your income pressure comes from the fundamental instability of philanthropic funding — grant cycles that reset annually, donor retention rates that hover below 50%, and the constant tension between mission urgency and financial reality.",
       tailwind_framing: "Every multi-year grant you secure, every monthly donor you onboard, and every earned revenue stream you develop creates financial resilience that lets you focus on impact instead of survival.",
@@ -2550,6 +2557,21 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       build_passive: "Lease underutilized acreage to other operators, rent out idle equipment during off-season months, or enroll marginal land in conservation reserve programs that pay annual per-acre fees. These income streams require no additional planting or harvest labor from you.",
       lock_forward: "Forward-price 60-70% of your expected harvest through futures contracts or direct buyer agreements before the season begins. Accept a slightly lower ceiling in exchange for a guaranteed floor that covers your production costs regardless of what spot prices do at harvest.",
     },
+
+    actionLabels: {
+      convert_retainer: "Lock in annual supply agreements with top buyers",
+      add_client: "Approach three new buyers with samples this season",
+      build_passive: "Lease idle acreage or enroll in conservation programs",
+      lock_forward: "Forward-price 60-70% of your expected harvest",
+    },
+
+    microSteps: {
+      convert_retainer: ["Identify your top 3 restaurant, grocery, or distributor buyers", "Propose annual supply agreements with pre-agreed volumes and prices", "Sign them before planting season so revenue is confirmed early"],
+      add_client: ["List 3 new buyers — farmers markets, restaurant groups, or food co-ops", "Send samples of your best product to each this month", "Follow up within a week to discuss standing order terms"],
+      build_passive: ["Identify any acreage or equipment sitting idle during off-season", "List equipment for rental or lease land to neighboring operators", "Explore conservation reserve program enrollment for marginal acres"],
+      lock_forward: ["Research futures contract options for your primary commodity", "Forward-price at least 50% of expected production before planting", "Lock in direct buyer agreements for the remaining committed volume"],
+    },
+
     constraints: {
       high_concentration: "One buyer or one crop dominates your revenue. If that buyer switches suppliers or that commodity's price crashes, your entire year's income is compromised because you have no diversification to absorb the impact.",
       weak_forward_visibility: "You plant based on hope and historical pricing, but you will not know your actual revenue until harvest — and even then, it depends on yield, quality, and a market price you cannot predict. Months of work happen before any income materializes.",
@@ -2626,6 +2648,7 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       variability: "Has your monthly cash flow smoothed out, or is your income still arriving in one or two large lumps around harvest?",
       labor: "Could your farm operate for two weeks without you personally in the field? Have you reduced your physical dependency through equipment, training, or hired help?",
     },
+
     worker_context: {
       pressure_framing: "As a farmer or rancher, your income pressure comes from the brutal reality that months of labor and investment happen before any revenue arrives, and the final outcome depends on weather, commodity prices, and market forces you cannot control.",
       tailwind_framing: "Every forward contract you secure, every new buyer you onboard, and every direct-to-consumer channel you build gives you more control over your revenue — turning your operation from a commodity gamble into a planned business.",
@@ -2657,6 +2680,21 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       build_passive: "Structure deals where you retain ownership of installed systems and sell power through PPAs. Each system you own becomes a long-term revenue-generating asset that pays you monthly whether or not you install a single new system this quarter.",
       lock_forward: "Get contracts signed and deposits collected for approved projects immediately rather than letting them linger in the pipeline. Offer a small incentive for customers who commit and pay within 30 days of proposal acceptance to accelerate your confirmed backlog.",
     },
+
+    actionLabels: {
+      convert_retainer: "Offer maintenance and monitoring retainers to past clients",
+      add_client: "Pursue commercial or municipal clients in a new segment",
+      build_passive: "Retain system ownership and sell power through PPAs",
+      lock_forward: "Collect signed contracts and deposits on approved projects now",
+    },
+
+    microSteps: {
+      convert_retainer: ["Pull a list of every system you have installed in the past 3 years", "Draft an annual maintenance and monitoring retainer proposal", "Contact your top 10 past clients with the offer this month"],
+      add_client: ["Identify a client segment you have not served — commercial, municipal, or industrial", "Attend a local business association meeting and present the energy ROI case", "Follow up with 3 personalized proposals within 2 weeks"],
+      build_passive: ["Evaluate which upcoming projects could work as PPA-owned systems", "Model the long-term cash flow from retaining ownership vs. selling outright", "Propose PPA terms to your next qualified customer"],
+      lock_forward: ["Review all approved but unsigned projects in your pipeline", "Offer a small incentive for commitment within 30 days", "Collect deposits on every signed contract before mobilization"],
+    },
+
     constraints: {
       high_concentration: "A large share of your projects flow through one developer, one utility territory, or one client type. If that partner relationship changes, that utility's interconnection process stalls, or that market segment pauses, your revenue drops precipitously.",
       weak_forward_visibility: "Energy projects involve long permitting timelines, unpredictable approval processes, and policy dependencies that can shift mid-project. You often cannot tell whether a pipeline project will convert to revenue this quarter or next year.",
@@ -2733,6 +2771,7 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       variability: "Has your monthly revenue stabilized through recurring services, or is it still driven entirely by project-based installation timing?",
       labor: "Have you expanded your team's capacity or reduced your personal involvement in on-site project execution?",
     },
+
     worker_context: {
       pressure_framing: "As an energy professional, your income pressure comes from the intersection of long project timelines, policy-dependent economics, and the project-based nature of installation revenue that generates nothing between completed jobs.",
       tailwind_framing: "Every system you install is a potential long-term revenue asset — through maintenance contracts, monitoring fees, expansion projects, and referrals — if you build the structures to capture that ongoing value.",
@@ -2764,6 +2803,21 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       build_passive: "Create a digital training program — a 12-week transformation guide, a mobility course, or a nutrition protocol — and sell it through your website and social channels. Once built, every sale generates revenue without requiring your physical presence.",
       lock_forward: "Offer a meaningful discount for clients who purchase 6-month or annual training commitments paid upfront. Pre-paid packages give you bankable revenue today and dramatically improve client retention because they have skin in the game.",
     },
+
+    actionLabels: {
+      convert_retainer: "Move top clients to monthly coaching retainers",
+      add_client: "Partner with local health businesses for cross-referrals",
+      build_passive: "Create a digital training program for online sales",
+      lock_forward: "Offer discounted 6-month or annual prepaid commitments",
+    },
+
+    microSteps: {
+      convert_retainer: ["Identify your 5 most consistent per-session clients", "Draft a monthly retainer that includes sessions, programming, and check-ins", "Present the retainer as more value for a predictable monthly fee"],
+      add_client: ["List 3 local PT offices, chiropractors, or corporate HR departments", "Propose a formal cross-referral partnership with each", "Offer a free workshop or lunch-and-learn to get the relationship started"],
+      build_passive: ["Identify your most popular training methodology or program", "Record it as a 12-week digital course or downloadable guide", "Launch it on your website with a 30-day promotional campaign"],
+      lock_forward: ["Review which clients are currently booking session-by-session", "Offer a 10-15% discount for 6-month or annual prepaid commitments", "Present the offer to your top 10 clients this week"],
+    },
+
     constraints: {
       high_concentration: "A few high-paying private clients account for most of your income. Losing even one or two of them creates an immediate and painful revenue gap that cannot be filled by a single week of marketing.",
       weak_forward_visibility: "Most clients book week to week, and even those on packages can pause or cancel with minimal notice. You rarely know what your income will look like more than 30 days out because client commitment is inherently short-term.",
@@ -2840,6 +2894,7 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       variability: "Have your seasonal income swings reduced, or is January still dramatically better than July?",
       labor: "Have you created any income source that does not require your physical presence — digital programs, group formats, passive products?",
     },
+
     worker_context: {
       pressure_framing: "As a fitness or wellness professional, your income pressure comes from the hard ceiling of tradeable hours in a day, the fragility of client motivation, and seasonal demand cycles that mirror human psychology more than market fundamentals.",
       tailwind_framing: "Every client you convert to a monthly retainer, every digital product you launch, and every group format you fill multiplies the value of your expertise beyond what one-on-one sessions alone can generate.",
@@ -2882,6 +2937,20 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
         "Create a product, tool, or subscription offering based on your expertise that generates revenue without requiring your direct involvement in delivery. Even a modest passive income stream fundamentally changes your financial resilience.",
       lock_forward:
         "Structure all new agreements with minimum commitment periods and advance payment terms. Multi-month contracts with defined termination notice windows give you forward revenue visibility and time to adjust if a client decides to leave.",
+    },
+
+    actionLabels: {
+      convert_retainer: "Convert your best client to a recurring monthly arrangement",
+      add_client: "Diversify into a new client segment or industry",
+      build_passive: "Create a product or subscription from your expertise",
+      lock_forward: "Structure agreements with minimum commitment periods",
+    },
+
+    microSteps: {
+      convert_retainer: ["Identify the client you work with most frequently on a project basis", "Draft a monthly retainer proposal with defined deliverables and access", "Send it this week — position it as budget predictability for them"],
+      add_client: ["Identify an industry or segment you do not currently serve", "Send personalized outreach to 3 prospects in that segment this week", "Offer a free diagnostic or consultation as an entry point"],
+      build_passive: ["Identify your most repeatable process or deliverable", "Package it as a template, toolkit, or online course", "Set a 30-day deadline to launch a minimum viable version"],
+      lock_forward: ["Review all current agreements for commitment terms", "Add 6-month minimums and 90-day termination notice to new contracts", "Propose renewal terms to your top 3 clients before current engagements end"],
     },
 
     constraints: {
