@@ -105,32 +105,21 @@ export default function SignInPage() {
   return (
     <div style={{ fontFamily: sans, overflowX: "hidden" }}>
       {/* ══ HERO ══ */}
-      <section ref={heroAnim.ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 56 : 88, paddingLeft: px(m), paddingRight: px(m) }}>
+      <section ref={heroAnim.ref} style={{ backgroundColor: C.sand, paddingTop: m ? 80 : 112, paddingBottom: m ? 40 : 64, paddingLeft: px(m), paddingRight: px(m) }}>
         <div style={{ maxWidth: 860, margin: "0 auto", textAlign: "center" }}>
           <div style={{ ...fadeIn(heroAnim.visible) }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 16 }}>
-              <span style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal }}>Monitoring Portal</span>
-            </div>
-            <h1 style={{ fontSize: m ? 30 : 64, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16 }}>
+            <h1 style={{ fontSize: m ? 28 : 40, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16 }}>
               Monitor Your Income Stability
             </h1>
-            <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.45, color: C.textSecondary, maxWidth: 620, margin: "0 auto 16px" }}>
-              Track how your income holds up over time.
+            <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 560, margin: "0 auto" }}>
+              Sign in to access your RunPayway&#8482; Stability Monitoring Dashboard.
             </p>
-            <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 560, margin: "0 auto 24px" }}>
-              Sign in to access your RunPayway&#8482; Stability Monitoring Dashboard, take assessments, and review your history.
-            </p>
-            <div style={{ display: "flex", justifyContent: "center", gap: m ? 12 : 24, flexWrap: "wrap" as const }}>
-              {["Email + PIN authentication", "No passwords required", "3 assessments included"].map(t => (
-                <span key={t} style={{ fontSize: 14, fontWeight: 600, color: C.textMuted }}>{t}</span>
-              ))}
-            </div>
           </div>
         </div>
       </section>
 
       {/* ══ SIGN-IN / DASHBOARD ══ */}
-      <section style={{ backgroundColor: "#FAFAFA", paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
+      <section style={{ backgroundColor: C.panelFill, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
         <div ref={formAnim.ref} style={{ maxWidth: 520, margin: "0 auto", ...fadeIn(formAnim.visible) }}>
           <div style={{ ...cardStyle, borderRadius: 16, padding: m ? "32px 16px" : "48px 44px", boxShadow: "0 8px 32px rgba(14,26,43,0.05)" }}>
 
@@ -159,7 +148,7 @@ export default function SignInPage() {
                         placeholder="you@example.com"
                         style={{
                           width: "100%", height: 52, padding: "0 18px", borderRadius: 12,
-                          border: `1px solid ${C.softBorder}`, background: "#FAFAFA", fontSize: 14, fontFamily: sans, color: C.navy,
+                          border: `1px solid ${C.softBorder}`, background: C.panelFill, fontSize: 14, fontFamily: sans, color: C.navy,
                           outline: "none", boxSizing: "border-box" as const,
                         }}
                         onKeyDown={(e) => { if (e.key === "Enter") handleForgotPin(); }}
@@ -207,7 +196,7 @@ export default function SignInPage() {
                         placeholder="you@example.com"
                         style={{
                           width: "100%", height: 52, padding: "0 18px", borderRadius: 12,
-                          border: `1px solid ${C.softBorder}`, background: "#FAFAFA", fontSize: 14, fontFamily: sans, color: C.navy,
+                          border: `1px solid ${C.softBorder}`, background: C.panelFill, fontSize: 14, fontFamily: sans, color: C.navy,
                           outline: "none", transition: "border-color 200ms ease, box-shadow 200ms ease", boxSizing: "border-box" as const,
                         }}
                         onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
@@ -228,7 +217,7 @@ export default function SignInPage() {
                         placeholder="&#8226;&#8226;&#8226;&#8226;"
                         style={{
                           width: "100%", height: 52, padding: "0 18px", borderRadius: 12,
-                          border: `1px solid ${C.softBorder}`, background: "#FAFAFA",
+                          border: `1px solid ${C.softBorder}`, background: C.panelFill,
                           fontSize: 24, fontFamily: mono, color: C.navy, letterSpacing: "0.3em", textAlign: "center" as const,
                           outline: "none", transition: "border-color 200ms ease, box-shadow 200ms ease", boxSizing: "border-box" as const,
                         }}
@@ -270,7 +259,7 @@ export default function SignInPage() {
                     <div style={{ height: 1, background: C.softBorder, margin: "28px 0 20px" }} />
                     <div style={{ textAlign: "center" }}>
                       <p style={{ ...T.micro, color: C.light, margin: 0 }}>
-                        Deterministic &#183; Email + PIN authentication &#183; Encrypted
+                        Consistent &#183; Email + PIN authentication &#183; Encrypted
                       </p>
                     </div>
                   </>
@@ -322,7 +311,7 @@ export default function SignInPage() {
                       <div key={recordId} style={{
                         display: "flex", justifyContent: "space-between", alignItems: "center",
                         padding: "12px 16px", borderRadius: 12,
-                        background: "#FAFAFA", border: `1px solid ${C.softBorder}`,
+                        background: C.panelFill, border: `1px solid ${C.softBorder}`,
                         marginBottom: i < session.assessment_records.length - 1 ? 8 : 0,
                       }}>
                         <span style={{ fontSize: 14, fontWeight: 600, color: C.navy }}>Assessment {i + 1}</span>
@@ -376,7 +365,7 @@ export default function SignInPage() {
                 <div style={{ height: 1, background: C.softBorder, margin: "28px 0 20px" }} />
                 <div style={{ textAlign: "center" }}>
                   <p style={{ ...T.micro, color: C.light, margin: 0 }}>
-                    Deterministic &#183; Versioned &#183; Same inputs, same score
+                    Consistent &#183; Versioned &#183; Same inputs, same score
                   </p>
                 </div>
               </>
@@ -399,12 +388,13 @@ export default function SignInPage() {
 
           <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? 16 : 24 }}>
             {[
-              { num: "01", title: "Stability Is Not Static", desc: "Your score evolves based on how your income behaves.", color: C.teal },
-              { num: "02", title: "Reassess on Your Terms", desc: "Each assessment captures a new structural snapshot, calibrated to your current income.", color: C.teal },
-              { num: "03", title: "Observe the Trajectory", desc: "Track your income\u2019s evolution. Each assessment reveals what changed, what held, and what to act on next.", color: C.teal },
+              { num: "01", title: "Your Score Evolves", desc: "Your score evolves based on how your income behaves.", color: C.teal, accent: C.teal },
+              { num: "02", title: "Reassess on Your Terms", desc: "Each assessment captures a new structural snapshot, calibrated to your current income.", color: C.teal, accent: C.purple },
+              { num: "03", title: "Observe the Trajectory", desc: "Track your income\u2019s evolution. Each assessment reveals what changed, what held, and what to act on next.", color: C.teal, accent: C.navy },
             ].map((card, i) => (
               <div key={card.num} style={{
                 ...cardStyle, borderRadius: 16, padding: m ? "28px 24px" : "32px 28px",
+                borderLeft: `4px solid ${card.accent}`,
                 ...fadeIn(infoAnim.visible, 100 + i * 80),
               }}>
                 <div style={{ fontSize: 28, fontWeight: 700, fontFamily: mono, color: card.color, marginBottom: 16 }}>
@@ -426,7 +416,7 @@ export default function SignInPage() {
               Your Income Has a Structure.
             </h2>
             <p style={{ ...body(m), color: C.sandMuted, maxWidth: 480, margin: "0 auto 16px" }}>
-              Now you can measure it under fixed rules.
+              Now you can measure it.
             </p>
             <p style={{ fontSize: 16, color: C.sandLight, maxWidth: 440, margin: "0 auto 40px", lineHeight: 1.6 }}>
               The Free Score shows where you stand. The Full Diagnostic shows exactly what to do about it.
@@ -436,11 +426,11 @@ export default function SignInPage() {
                 ...ctaButtonLight, height: m ? 56 : 60, paddingLeft: 32, paddingRight: 32, borderRadius: 16,
                 backgroundColor: C.white, color: C.navy,
               }}>
-                Get My Free Score
+                Get Your Income Stability Score
               </Link>
             </div>
             <div style={{ marginTop: 20, fontSize: 14, fontWeight: 500, color: C.sandLight }}>
-              Under 2 minutes | Instant result | Private by default
+              $69 &#183; Score, scripts, roadmap, and lifetime access
             </div>
           </div>
         </div>
