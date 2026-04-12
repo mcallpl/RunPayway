@@ -1065,7 +1065,7 @@ export default function ReviewPage() {
   };
 
   // ── Page names for navigation ──
-  const pageNames = ["Cover", "Stability Plan", "Key Findings", "Resilience Profile"];
+  const pageNames = ["Cover", "Stability Plan", "Key Findings", "Path Forward"];
 
 
   // ── Paginated page contents (shared between PDF container and on-screen view) ──
@@ -1431,98 +1431,117 @@ export default function ReviewPage() {
         </div>
     </>,
 
-    // Page 3: Resilience Profile — elevated card
-    <>
-        {/* Navy header */}
-        <div style={{ backgroundColor: B.navy, padding: mobile ? "24px 24px 28px" : "32px 40px 36px", position: "relative" as const }}>
-          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${B.bandLimited}, ${B.bandDeveloping})` }} />
-          <div style={{ fontSize: mobile ? 20 : 24, fontWeight: 600, color: "#fff", marginBottom: 6 }}>Your Resilience Profile</div>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", margin: 0 }}>What your income can absorb — and where to strengthen it.</p>
-        </div>
+    // Page 3: Path Forward — closing page with projection + CTA
+    (() => {
+      const topMoves = (v2Lift?.lift_scenarios || []).filter((s: { lift: number }) => s.lift > 0).sort((a: { lift: number }, b: { lift: number }) => b.lift - a.lift).slice(0, 3);
+      const totalLift = topMoves.reduce((sum: number, s: { lift: number }) => sum + s.lift, 0);
+      const projectedScore = Math.min(100, score + totalLift);
+      const projectedTier: "limited" | "developing" | "established" | "high" =
+        projectedScore >= 75 ? "high" : projectedScore >= 50 ? "established" : projectedScore >= 30 ? "developing" : "limited";
+      const projectedBandName = projectedTier === "high" ? "High Stability" : projectedTier === "established" ? "Established Stability" : projectedTier === "developing" ? "Developing Stability" : "Limited Stability";
+      const currentBandName = tier === "high" ? "High Stability" : tier === "established" ? "Established Stability" : tier === "developing" ? "Developing Stability" : "Limited Stability";
+      const projectedBandColor = bandColorFn(projectedScore);
 
-        {/* Scenarios */}
-        <div style={{ padding: mobile ? "16px 24px" : "24px 40px" }}>
-          {Array.isArray(v2Scenarios) && v2Scenarios.length > 0 && v2Scenarios.slice(0, 3).map((sc: { title: string; label?: string; original_score: number; scenario_score: number; score_drop: number; narrative?: string; band_shift?: boolean; original_band?: string; scenario_band?: string }, idx: number) => {
-            const severityLabel = sc.score_drop > score * 0.5 ? "Severe" : sc.score_drop > score * 0.25 ? "Significant" : "Moderate";
-            const severityColor = sc.score_drop > score * 0.5 ? B.bandLimited : sc.score_drop > score * 0.25 ? B.bandDeveloping : B.teal;
-            // Clean up generic scenario titles using the cleanTitle map
-            const scenarioTitleMap: Record<string, string> = { "Largest Source Removed": "If your top source disappears", "Active Labor Interrupted": "If you cannot work for 90 days", "Forward Commitments Delayed": "If expected income arrives late", "Client Concentration Loss": "If your biggest client leaves", "Market Contraction": "If demand in your industry drops", "High Volatility Month": "If you have a slow month with no backup", "Key Client Loss": "If you lose a key client or contract", "Revenue Model Disruption": "If your primary income model stops working", "Seasonal Revenue Gap": "If a seasonal slowdown cuts your income", "Pricing Pressure": "If what you can charge drops", "Recurring Stream Degrades": "If a repeating income stream weakens", "Referral Pipeline Dries": "If new business or referrals dry up", "Contract Non Renewal": "If a major contract is not renewed" };
-            const cleanScTitle = scenarioTitleMap[sc.title || ""] || sc.label || sc.title || "Disruption scenario";
-            return (
-              <div key={idx} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 0", borderBottom: idx < Math.min(v2Scenarios.length, 3) - 1 ? "1px solid rgba(14,26,43,0.06)" : "none" }}>
-                <div style={{ flex: 1 }}>
-                  <span style={{ fontSize: 15, fontWeight: 500, color: B.navy }}>{cleanScTitle}</span>
+      const liftLabels: Record<string, string> = {
+        reduce_labor_dependence: "Reduce how much income requires your daily effort",
+        reduce_active_dependence: "Reduce how much income requires your daily effort",
+        extend_forward_visibility: "Lock in revenue before each month starts",
+        improve_forward_secured: "Lock in revenue before each month starts",
+        reduce_concentration: "Reduce dependence on your largest income source",
+        reduce_largest_source: "Spread income across more sources",
+        increase_persistence: "Shift income to recurring revenue",
+        increase_persistent_revenue: "Build income that repeats without re-selling",
+        strengthen_persistence: "Build income that repeats without re-selling",
+        add_income_sources: "Add more independent income sources",
+        diversify_sources: "Spread income across more independent sources",
+        reduce_variability: "Smooth out month-to-month income swings",
+        increase_continuity: "Build backup revenue that works without you",
+        extend_continuity: "Extend how long income lasts if you stop working",
+      };
+
+      return (
+        <>
+          {/* Navy header */}
+          <div style={{ backgroundColor: B.navy, padding: mobile ? "24px 24px 28px" : "32px 40px 36px", position: "relative" as const }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${B.teal}, ${B.purple})` }} />
+            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.40)", marginBottom: 10 }}>YOUR PATH FORWARD</div>
+            <div style={{ fontSize: mobile ? 22 : 28, fontWeight: 600, color: "#fff", marginBottom: 6 }}>
+              From <span style={{ fontFamily: mono }}>{score}</span> to <span style={{ fontFamily: mono, color: B.teal }}>{projectedScore}</span>
+            </div>
+            <p style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", margin: 0 }}>Your 12-week plan to strengthen your income stability.</p>
+          </div>
+
+          {/* Where you are today */}
+          <div style={{ padding: mobile ? "20px 24px 0" : "28px 40px 0" }}>
+            <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: "#FAFAF8", border: "1px solid rgba(14,26,43,0.06)", display: "flex", alignItems: "center", gap: 16 }}>
+              <div style={{ width: 52, height: 52, borderRadius: 12, backgroundColor: `${bandColor}12`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <span style={{ fontSize: 24, fontWeight: 300, fontFamily: mono, color: bandColor }}>{score}</span>
+              </div>
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: bandColor }} />
+                  <span style={{ fontSize: 13, fontWeight: 600, color: bandColor }}>{currentBandName}</span>
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: mobile ? 10 : 16, flexShrink: 0 }}>
-                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.04em", color: severityColor, padding: "3px 10px", borderRadius: 6, backgroundColor: `${severityColor}08` }}>{severityLabel}</span>
-                  <div style={{ display: "flex", alignItems: "baseline", gap: 4, minWidth: 70, justifyContent: "flex-end" }}>
-                    <span style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: "rgba(14,26,43,0.30)" }}>{sc.scenario_score}</span>
-                    <span style={{ fontSize: mobile ? 20 : 24, fontWeight: 700, fontFamily: mono, color: severityColor }}>{"\u2212"}{sc.score_drop}</span>
+                <p style={{ fontSize: 13, color: B.muted, margin: 0, lineHeight: 1.5 }}>
+                  You{"\u2019"}re in the {currentBandName.toLowerCase().replace(" stability", "")} range. Here{"\u2019"}s how to move forward.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Your 3 moves */}
+          <div style={{ padding: mobile ? "20px 24px" : "24px 40px" }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.muted, marginBottom: 14 }}>YOUR 3 MOVES</div>
+            {topMoves.map((scenario: { scenario_id: string; label: string; lift: number; change_description?: string }, idx: number) => (
+              <div key={scenario.scenario_id} style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "14px 0", borderBottom: idx < topMoves.length - 1 ? "1px solid rgba(14,26,43,0.06)" : "none" }}>
+                <div style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: B.navy, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, fontFamily: mono, color: "#fff", flexShrink: 0 }}>{idx + 1}</div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 12, marginBottom: 2 }}>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: B.navy }}>{liftLabels[scenario.scenario_id] || scenario.label}</span>
+                    <span style={{ fontSize: 15, fontWeight: 700, fontFamily: mono, color: B.teal, flexShrink: 0 }}>+{scenario.lift}</span>
                   </div>
+                  <span style={{ fontSize: 12, color: B.muted, lineHeight: 1.5 }}>{scenario.change_description ? (scenario.change_description.length > 90 ? scenario.change_description.substring(0, 90) + "..." : scenario.change_description) : scenario.label}</span>
                 </div>
               </div>
-            );
-          })}
-
-          {/* Real-world impact cards */}
-          <div style={{ display: mobile ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 20, marginBottom: 16 }}>
-            <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: "#FAFAF8", border: `1px solid rgba(197,48,48,0.10)`, marginBottom: mobile ? 10 : 0 }}>
-              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandLimited, marginBottom: 6 }}>IF YOUR {(reportVocab?.nouns?.top_client || "TOP SOURCE").split(/[,/]/)[0].trim().toUpperCase().slice(0, 30)} LEAVES</div>
-              <div style={{ fontSize: 22, fontWeight: 300, color: B.navy, fontFamily: mono, marginBottom: 2 }}>{score} {"\u2192"} {riskScenarioScore}</div>
-              <div style={{ fontSize: 12, color: B.muted }}>Score drops by <span style={{ fontFamily: mono, fontWeight: 600 }}>{riskScenarioDrop}</span> points</div>
-            </div>
-            <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: "#FAFAF8", border: `1px solid rgba(183,121,31,0.10)` }}>
-              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandDeveloping, marginBottom: 6 }}>IF YOU STOP {(reportVocab?.nouns?.active_work || "WORKING").split(/[,/]/)[0].trim().toUpperCase().slice(0, 30)}</div>
-              <div style={{ fontSize: 22, fontWeight: 300, color: B.navy, fontFamily: mono, marginBottom: 2 }}>{continuityDisplay}</div>
-              <div style={{ fontSize: 12, color: B.muted }}>{continuityText}</div>
-            </div>
+            ))}
           </div>
-        </div>
 
-        {/* Summary — navy block */}
-        <div style={{ backgroundColor: B.navy, padding: mobile ? "20px 24px" : "28px 40px" }}>
-          <div style={{ display: mobile ? "block" : "flex", gap: 32 }}>
-            <div style={{ flex: 1, marginBottom: mobile ? 16 : 0 }}>
-              <div style={{ fontSize: 15, fontWeight: 600, color: "#fff", marginBottom: 6 }}>
-                {v2Fragility ? `Stability type: ${(v2Fragility as { fragility_class: string }).fragility_class.charAt(0).toUpperCase() + (v2Fragility as { fragility_class: string }).fragility_class.slice(1)}` : `Stability type: ${record.stability_band}`}
+          {/* Where you'll be — projection */}
+          <div style={{ backgroundColor: B.navy, padding: mobile ? "24px 24px" : "28px 40px" }}>
+            <div style={{ textAlign: "center", marginBottom: 16 }}>
+              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.35)", marginBottom: 14 }}>WHERE YOU{"\u2019"}LL BE</div>
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 12 }}>
+                <span style={{ fontSize: 28, fontWeight: 300, fontFamily: mono, color: "rgba(244,241,234,0.40)" }}>{score}</span>
+                <span style={{ fontSize: 16, color: "rgba(244,241,234,0.25)" }}>&rarr;</span>
+                <span style={{ fontSize: mobile ? 36 : 44, fontWeight: 700, fontFamily: mono, color: projectedBandColor }}>{projectedScore}</span>
               </div>
-              <p style={{ fontSize: 13, color: "rgba(244,241,234,0.55)", lineHeight: 1.6, margin: 0 }}>
-                {v2Fragility ? (fragilityClassLabel[(v2Fragility as { fragility_class: string }).fragility_class] || "Your income has a mixed structural profile.") : coverBandDesc[tier]}
-              </p>
-            </div>
-            <div style={{ flexShrink: 0, padding: "14px 20px", borderRadius: 12, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}>
-              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandLimited, marginBottom: 4 }}>AREA TO STRENGTHEN</div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: "#fff" }}>
-                {v2Fragility ? (failureModeLabel[(v2Fragility as { primary_failure_mode: string }).primary_failure_mode] || "Primary area for improvement") : `Loss of primary income source`}
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 14px", borderRadius: 100, backgroundColor: `${projectedBandColor}18`, marginTop: 10 }}>
+                <div style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: projectedBandColor }} />
+                <span style={{ fontSize: 12, fontWeight: 600, color: projectedBandColor }}>{projectedBandName}</span>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Command Center + methodology footer */}
-        <div style={{ padding: mobile ? "20px 24px" : "24px 40px 28px" }}>
-          <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: "rgba(75,63,174,0.03)", border: "1px solid rgba(75,63,174,0.08)", marginBottom: 16 }}>
-            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 8 }}>COMMAND CENTER ACCESS</div>
-            <p style={{ fontSize: 12, color: B.navy, margin: "0 0 10px", lineHeight: 1.55 }}>
-              Open at <span style={{ fontWeight: 600 }}>runpayway.com/dashboard</span> using the access code on your cover page.
+            <p style={{ fontSize: 13, color: "rgba(244,241,234,0.55)", lineHeight: 1.6, margin: 0, textAlign: "center" }}>
+              If you execute all three moves, your score moves from {score} to {projectedScore}.
+              {tier !== projectedTier && <><br /><span style={{ fontWeight: 600, color: "rgba(244,241,234,0.75)" }}>{currentBandName} &rarr; {projectedBandName}</span></>}
             </p>
-            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 8, marginBottom: 12 }}>
-              {["PressureMap\u2122 intelligence", "What-if simulator", "12-week roadmap", "Industry baselines"].map(item => (
-                <div key={item} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: B.teal, flexShrink: 0 }} />
-                  <span style={{ fontSize: 11, color: B.navy }}>{item}</span>
-                </div>
-              ))}
+          </div>
+
+          {/* Start now CTA */}
+          <div style={{ padding: mobile ? "24px 24px 28px" : "28px 40px 32px", textAlign: "center" }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 10 }}>START NOW</div>
+            <p style={{ fontSize: 13, color: B.muted, lineHeight: 1.6, margin: "0 0 16px", maxWidth: 400, marginLeft: "auto", marginRight: "auto" }}>
+              Your dashboard is ready. Open it to see your full scripts, track your progress, and start executing your plan.
+            </p>
+            <div onClick={() => router.push("/dashboard")} style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 28px", borderRadius: 10, backgroundColor: B.navy, color: "#fff", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>
+              Open Your Dashboard &rarr;
             </div>
-            <div onClick={() => router.push("/dashboard")} style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px", borderRadius: 8, backgroundColor: B.navy, color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
-              Open Command Center &rarr;
+            <div style={{ marginTop: 12 }}>
+              <span style={{ fontSize: 11, color: "rgba(14,26,43,0.30)" }}>peoplestar.com/RunPayway/dashboard</span>
             </div>
           </div>
-          <div style={{ textAlign: "center" }}>
-            <span style={{ fontSize: 11, color: "rgba(14,26,43,0.25)" }}>Your plan targets these areas first.</span>
-          </div>
-        </div>
-    </>,
+        </>
+      );
+    })(),
 
   ];
 
