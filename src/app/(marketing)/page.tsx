@@ -634,7 +634,7 @@ function UseCaseArchitecture() {
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>
@@ -642,29 +642,28 @@ function UseCaseArchitecture() {
           </h2>
         </div>
 
-        {/* Primary — Individuals */}
+        {/* Primary — Individuals — full navy hero */}
         <div style={{
-          borderRadius: 24, backgroundColor: C.white,
-          boxShadow: "0 10px 40px rgba(14,26,43,0.08)",
-          border: "1px solid rgba(14,26,43,0.06)",
+          borderRadius: 28, backgroundColor: C.navy,
+          boxShadow: "0 20px 60px rgba(14,26,43,0.25), 0 8px 24px rgba(14,26,43,0.12)",
           position: "relative" as const, overflow: "hidden",
           marginBottom: m ? 24 : 40,
           ...fadeIn(visible, 80),
         }}>
-          <div style={{ height: 4, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
-          <div style={{ padding: m ? "32px 24px" : "48px 56px", display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "center" }}>
+          {/* Gradient accent top */}
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
+
+          <div style={{ padding: m ? "36px 24px" : "56px 64px", display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 56, alignItems: "center" }}>
             {/* Left — copy */}
-            <div style={{ marginBottom: m ? 32 : 0 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
-                <div style={{ width: 48, height: 48, borderRadius: 14, backgroundColor: `${C.teal}10`, display: "flex", alignItems: "center", justifyContent: "center", color: C.teal, flexShrink: 0 }}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-4 3-7 7-7s7 3 7 7"/></svg>
-                </div>
-                <div style={{ fontSize: 20, fontWeight: 700, color: C.navy }}>For individuals</div>
+            <div style={{ marginBottom: m ? 36 : 0 }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "5px 14px", borderRadius: 100, backgroundColor: "rgba(31,109,122,0.15)", marginBottom: 24 }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-4 3-7 7-7s7 3 7 7"/></svg>
+                <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: C.teal }}>FOR INDIVIDUALS</span>
               </div>
-              <p style={{ fontSize: m ? 18 : 22, fontWeight: 600, color: C.navy, lineHeight: 1.35, marginBottom: 20 }}>
+              <p style={{ fontSize: m ? 22 : 28, fontWeight: 700, color: C.sandText, lineHeight: 1.2, letterSpacing: "-0.02em", marginBottom: 20 }}>
                 You earn well. Now see how much of it is actually&nbsp;protected.
               </p>
-              <div style={{ display: "flex", flexDirection: "column" as const, gap: 14, marginBottom: 28 }}>
+              <div style={{ display: "flex", flexDirection: "column" as const, gap: 16, marginBottom: 32 }}>
                 {[
                   "Know which income source failing would hurt you the most\u2014and how to fix it before it does",
                   "Get the exact conversation to have with your biggest client this week",
@@ -672,27 +671,27 @@ function UseCaseArchitecture() {
                 ].map((b, i) => (
                   <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
                     <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
-                    <span style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.55 }}>{b}</span>
+                    <span style={{ fontSize: 15, color: "rgba(244,241,234,0.60)", lineHeight: 1.55 }}>{b}</span>
                   </div>
                 ))}
               </div>
               <Link href="/begin" style={{
                 display: "inline-flex", alignItems: "center", justifyContent: "center",
-                height: 56, padding: "0 32px", borderRadius: 16,
+                height: 56, padding: "0 36px", borderRadius: 16,
                 backgroundColor: C.teal, color: "#fff",
                 fontSize: 16, fontWeight: 600, textDecoration: "none",
-                boxShadow: "0 8px 24px rgba(31,109,122,0.20)",
+                boxShadow: "0 8px 28px rgba(31,109,122,0.30)",
                 transition: "transform 200ms, box-shadow 200ms",
               }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(31,109,122,0.28)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(31,109,122,0.20)"; }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 36px rgba(31,109,122,0.40)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(31,109,122,0.30)"; }}
               >
                 Get your score &mdash; takes 2 minutes
               </Link>
             </div>
 
-            {/* Right — mini score preview */}
-            <div style={{ backgroundColor: C.navy, borderRadius: 20, padding: m ? 24 : 32, position: "relative" }}>
+            {/* Right — score preview */}
+            <div style={{ backgroundColor: "rgba(255,255,255,0.03)", borderRadius: 20, padding: m ? 24 : 32, border: "1px solid rgba(255,255,255,0.06)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
                 <div style={{ position: "relative", width: 64, height: 64, flexShrink: 0 }}>
                   <ScoreRing score={72} size={64} stroke={5} color="#2B5EA7" trackColor="rgba(255,255,255,0.06)" />
@@ -729,77 +728,82 @@ function UseCaseArchitecture() {
 
         {/* Secondary — Advisors + Organizations */}
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, ...fadeIn(visible, 160) }}>
-          {/* Advisors */}
+          {/* Advisors — purple accent */}
           <div style={{
             borderRadius: 20, backgroundColor: C.white,
-            boxShadow: "0 1px 4px rgba(14,26,43,0.04)",
-            border: "1px solid rgba(14,26,43,0.06)",
-            padding: m ? "28px 24px" : "32px 36px",
+            boxShadow: "0 4px 20px rgba(14,26,43,0.06)",
+            borderLeft: `4px solid ${C.purple}`,
+            border: `1px solid rgba(14,26,43,0.06)`,
+            borderLeftWidth: 4, borderLeftColor: C.purple,
+            padding: m ? "28px 24px" : "36px 40px",
             marginBottom: m ? 16 : 0,
             transition: "box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 320ms cubic-bezier(0.22, 1, 0.36, 1)",
           }}
-            onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 12px 36px rgba(14,26,43,0.08)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 1px 4px rgba(14,26,43,0.04)"; e.currentTarget.style.transform = "translateY(0)"; }}
+            onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 16px 48px rgba(75,63,174,0.12)"; e.currentTarget.style.transform = "translateY(-3px)"; }}
+            onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 4px 20px rgba(14,26,43,0.06)"; e.currentTarget.style.transform = "translateY(0)"; }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-              <div style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: `${C.purple}10`, display: "flex", alignItems: "center", justifyContent: "center", color: C.purple, flexShrink: 0 }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M9 12l2 2 4-4"/><path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9-9 9-9-1.8-9-9 1.8-9 9-9z"/></svg>
-              </div>
-              <div style={{ fontSize: 18, fontWeight: 700, color: C.navy }}>For advisors</div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "4px 12px", borderRadius: 100, backgroundColor: `${C.purple}08`, marginBottom: 20 }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round"><path d="M9 12l2 2 4-4"/><path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9-9 9-9-1.8-9-9 1.8-9 9-9z"/></svg>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: C.purple }}>FOR ADVISORS</span>
             </div>
-            <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.45, marginBottom: 12 }}>
+            <p style={{ fontSize: m ? 18 : 20, fontWeight: 700, color: C.navy, lineHeight: 1.3, marginBottom: 12 }}>
               Give every client a number for the risk you already&nbsp;see.
             </p>
-            <p style={{ fontSize: 14, color: C.textSecondary, lineHeight: 1.55, marginBottom: 20 }}>
+            <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.55, marginBottom: 24 }}>
               Run structural assessments across your book. Turn income conversations into planning engagements with data behind&nbsp;them.
             </p>
             <Link href="/advisors" style={{
-              display: "inline-flex", alignItems: "center", gap: 6,
-              fontSize: 15, fontWeight: 600, color: C.purple, textDecoration: "none",
-              transition: "opacity 200ms",
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              height: 44, padding: "0 24px", borderRadius: 12,
+              backgroundColor: "transparent", color: C.purple,
+              border: `1.5px solid ${C.purple}30`,
+              fontSize: 14, fontWeight: 600, textDecoration: "none",
+              transition: "all 200ms",
             }}
-              onMouseEnter={e => { e.currentTarget.style.opacity = "0.7"; }}
-              onMouseLeave={e => { e.currentTarget.style.opacity = "1"; }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = `${C.purple}06`; e.currentTarget.style.borderColor = `${C.purple}50`; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.borderColor = `${C.purple}30`; }}
             >
               See the advisor model
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ marginLeft: 8 }}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </Link>
           </div>
 
-          {/* Organizations */}
+          {/* Organizations — navy accent */}
           <div style={{
             borderRadius: 20, backgroundColor: C.white,
-            boxShadow: "0 1px 4px rgba(14,26,43,0.04)",
-            border: "1px solid rgba(14,26,43,0.06)",
-            padding: m ? "28px 24px" : "32px 36px",
+            boxShadow: "0 4px 20px rgba(14,26,43,0.06)",
+            border: `1px solid rgba(14,26,43,0.06)`,
+            borderLeftWidth: 4, borderLeftColor: C.navy,
+            padding: m ? "28px 24px" : "36px 40px",
             marginBottom: m ? 16 : 0,
             transition: "box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 320ms cubic-bezier(0.22, 1, 0.36, 1)",
           }}
-            onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 12px 36px rgba(14,26,43,0.08)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 1px 4px rgba(14,26,43,0.04)"; e.currentTarget.style.transform = "translateY(0)"; }}
+            onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 16px 48px rgba(14,26,43,0.10)"; e.currentTarget.style.transform = "translateY(-3px)"; }}
+            onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 4px 20px rgba(14,26,43,0.06)"; e.currentTarget.style.transform = "translateY(0)"; }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-              <div style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: "rgba(14,26,43,0.06)", display: "flex", alignItems: "center", justifyContent: "center", color: C.navy, flexShrink: 0 }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-              </div>
-              <div style={{ fontSize: 18, fontWeight: 700, color: C.navy }}>For organizations</div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "4px 12px", borderRadius: 100, backgroundColor: "rgba(14,26,43,0.04)", marginBottom: 20 }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: C.navy }}>FOR ORGANIZATIONS</span>
             </div>
-            <p style={{ fontSize: 16, fontWeight: 500, color: C.navy, lineHeight: 1.45, marginBottom: 12 }}>
+            <p style={{ fontSize: m ? 18 : 20, fontWeight: 700, color: C.navy, lineHeight: 1.3, marginBottom: 12 }}>
               Measure workforce income stability before it becomes your&nbsp;liability.
             </p>
-            <p style={{ fontSize: 14, color: C.textSecondary, lineHeight: 1.55, marginBottom: 20 }}>
+            <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.55, marginBottom: 24 }}>
               Assess contractor and employee stability at scale. One auditable system for underwriting, onboarding, and&nbsp;compliance.
             </p>
             <Link href="/organizations" style={{
-              display: "inline-flex", alignItems: "center", gap: 6,
-              fontSize: 15, fontWeight: 600, color: C.navy, textDecoration: "none",
-              transition: "opacity 200ms",
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              height: 44, padding: "0 24px", borderRadius: 12,
+              backgroundColor: "transparent", color: C.navy,
+              border: "1.5px solid rgba(14,26,43,0.15)",
+              fontSize: 14, fontWeight: 600, textDecoration: "none",
+              transition: "all 200ms",
             }}
-              onMouseEnter={e => { e.currentTarget.style.opacity = "0.7"; }}
-              onMouseLeave={e => { e.currentTarget.style.opacity = "1"; }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = "rgba(14,26,43,0.03)"; e.currentTarget.style.borderColor = "rgba(14,26,43,0.30)"; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.borderColor = "rgba(14,26,43,0.15)"; }}
             >
               Explore enterprise
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ marginLeft: 8 }}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </Link>
           </div>
         </div>
