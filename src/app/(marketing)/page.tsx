@@ -207,7 +207,7 @@ function HeroSection() {
             </h1>
 
             <p style={{ fontSize: m ? 17 : 22, fontWeight: 500, lineHeight: 1.45, color: C.navy, maxWidth: 480, marginBottom: 16, ...fadeIn(visible, 80) }}>
-              RunPayway scores how much of your income is protected, how much is at risk, and what to do about&nbsp;it.
+              RunPayway&trade; scores how much of your income is protected, how much is at risk, and what to do about&nbsp;it.
             </p>
 
             <div style={{ marginBottom: m ? 32 : 40, ...fadeIn(visible, 100) }} />
