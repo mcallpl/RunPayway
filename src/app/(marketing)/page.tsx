@@ -158,18 +158,25 @@ function CtaMicrocopy({ variant = "dark" }: { variant?: "dark" | "light" }) {
 /* ================================================================ */
 
 const INDUSTRIES = [
-  { key: "consulting", name: "Consulting", constraint: "You are the product", desc: "Your clients pay for your time, not a system. If you stop delivering, 85% of your income stops with you.", median: 38, risk: "Labor dependence", atRisk: 78, recurring: 12, protected: 10 },
-  { key: "real_estate", name: "Real Estate", constraint: "Pipeline dependency", desc: "One delayed closing or one lost listing can erase a quarter of annual earnings. Nothing is contractually yours until it closes.", median: 29, risk: "Forward visibility", atRisk: 82, recurring: 8, protected: 10 },
-  { key: "sales", name: "Sales / Brokerage", shortName: "Sales", constraint: "Nothing carries forward", desc: "Last quarter was strong. But your structure doesn't carry that forward. Next quarter starts from zero unless you close again.", median: 31, risk: "Income persistence", atRisk: 80, recurring: 10, protected: 10 },
-  { key: "creative", name: "Freelance / Creative", shortName: "Freelance", constraint: "Every month starts at zero", desc: "No project means no income. No retainer means no floor. You are re-earning your entire livelihood every 30 days.", median: 27, risk: "Concentration", atRisk: 85, recurring: 8, protected: 7 },
-  { key: "construction", name: "Construction / Trades", shortName: "Construction", constraint: "The next job isn't signed yet", desc: "The current project is solid. The next one is a handshake. Your income has no structural buffer between jobs.", median: 33, risk: "Forward visibility", atRisk: 75, recurring: 15, protected: 10 },
-  { key: "media", name: "Media / Entertainment", shortName: "Media / Ent.", constraint: "Between projects, income is zero", desc: "Strong projects create strong months. But between them, your income is not low — it is zero. No carry. No residual.", median: 25, risk: "Continuity gap", atRisk: 88, recurring: 5, protected: 7 },
-  { key: "insurance", name: "Insurance", constraint: "New business masks renewal erosion", desc: "Strong production quarters feel like growth. But if renewals are slipping underneath, your structure is compounding backwards.", median: 44, risk: "Concentration", atRisk: 55, recurring: 30, protected: 15 },
-  { key: "legal", name: "Legal Services", constraint: "Three matters carry the practice", desc: "Count your top three matters. They likely carry 60–70% of your billings. When one concludes, the gap arrives all at once.", median: 41, risk: "Concentration", atRisk: 62, recurring: 22, protected: 16 },
-  { key: "technology", name: "Technology", constraint: "One employer, one system, one decision", desc: "Your compensation feels stable because the system around it is stable. But it's one layoff away from a total structural shift.", median: 48, risk: "Source diversity", atRisk: 50, recurring: 35, protected: 15 },
-  { key: "finance", name: "Finance / Banking", shortName: "Finance", constraint: "The variable component is the one that matters", desc: "Base salary creates a floor. But the bonus, the production credit — that's where real earnings live. And that part can vanish in one cycle.", median: 46, risk: "Variability", atRisk: 52, recurring: 30, protected: 18 },
-  { key: "healthcare", name: "Healthcare", constraint: "One system, no alternatives", desc: "Steady pay from one institution feels safe until the institution restructures. When your sole employer changes models, you have no alternative.", median: 52, risk: "Source diversity", atRisk: 45, recurring: 40, protected: 15 },
-  { key: "fitness", name: "Fitness / Wellness", shortName: "Fitness", constraint: "Clients cancel. Revenue disappears the same day.", desc: "Your income is a collection of individual decisions that can reverse without notice. One slow month and the calendar empties.", median: 26, risk: "Persistence", atRisk: 84, recurring: 10, protected: 6 },
+  { key: "consulting", name: "Consulting", constraint: "You are the product", desc: "Your clients pay for your time, not a system. If you stop delivering, 85% of your income stops with you." },
+  { key: "real_estate", name: "Real Estate", constraint: "Pipeline dependency", desc: "One delayed closing or one lost listing can erase a quarter of annual earnings. Nothing is contractually yours until it closes." },
+  { key: "sales", name: "Sales / Brokerage", constraint: "Nothing carries forward", desc: "Last quarter was strong. But your structure doesn\u2019t carry that forward. Next quarter starts from zero unless you close again." },
+  { key: "creative", name: "Freelance / Creative", constraint: "Every month starts at zero", desc: "No project means no income. No retainer means no floor. You are re-earning your entire livelihood every 30 days." },
+  { key: "construction", name: "Construction / Trades", constraint: "The next job isn\u2019t signed yet", desc: "The current project is solid. The next one is a handshake. Your income has no structural buffer between jobs." },
+  { key: "media", name: "Media / Entertainment", constraint: "Between projects, income is zero", desc: "Strong projects create strong months. But between them, your income is not low \u2014 it is zero. No carry. No residual." },
+  { key: "insurance", name: "Insurance", constraint: "New business masks renewal erosion", desc: "Strong production quarters feel like growth. But if renewals are slipping underneath, your structure is compounding backwards." },
+  { key: "legal", name: "Legal Services", constraint: "Three matters carry the practice", desc: "Count your top three matters. They likely carry 60\u201370% of your billings. When one concludes, the gap arrives all at once." },
+  { key: "technology", name: "Technology", constraint: "One employer, one system, one decision", desc: "Your compensation feels stable because the system around it is stable. But it\u2019s one layoff away from a total structural shift." },
+  { key: "finance", name: "Finance / Banking", constraint: "The variable component is the one that matters", desc: "Base salary creates a floor. But the bonus, the production credit \u2014 that\u2019s where real earnings live. And that part can vanish in one cycle." },
+  { key: "healthcare", name: "Healthcare", constraint: "One system, no alternatives", desc: "Steady pay from one institution feels safe until the institution restructures. When your sole employer changes models, you have no alternative." },
+  { key: "retail", name: "Retail / E-Commerce", constraint: "Revenue is not income", desc: "Sales look strong until you subtract inventory, returns, and platform fees. What you deposit and what you keep are two different numbers." },
+  { key: "hospitality", name: "Hospitality / Food Service", constraint: "Demand disappears overnight", desc: "One slow season, one bad review, one shift in foot traffic. Your revenue is a daily vote that customers can stop casting without notice." },
+  { key: "transportation", name: "Transportation / Logistics", constraint: "Utilization is everything", desc: "An idle truck or an empty route earns nothing. Your income depends on constant movement \u2014 and one breakdown changes the entire month." },
+  { key: "manufacturing", name: "Manufacturing", constraint: "One contract carries the floor", desc: "Your largest buyer likely represents 40%+ of output. If they renegotiate, delay, or leave, your fixed costs don\u2019t shrink with them." },
+  { key: "education", name: "Education", constraint: "The ceiling is the structure", desc: "Your income is predictable because the system caps it. Stability is high, but so is the cost of staying \u2014 growth requires leaving." },
+  { key: "nonprofit", name: "Nonprofit / Public Sector", constraint: "Funding cycles dictate everything", desc: "Your salary exists because a grant was renewed or a budget was approved. When the cycle turns, positions disappear regardless of performance." },
+  { key: "agriculture", name: "Agriculture", constraint: "You can\u2019t control the two things that matter most", desc: "Weather and market price. You plant in hope and harvest in uncertainty. No contract protects you from a bad season." },
+  { key: "energy", name: "Energy / Utilities", constraint: "Commodity prices set your margin", desc: "Your operation runs the same whether prices are up or down. But your income doesn\u2019t. One market shift reprices six months of work." },
 ];
 
 
@@ -827,17 +834,17 @@ function IndustryProfiles() {
         </div>
 
         {/* Industry pill grid */}
-        <div style={{ display: "flex", flexWrap: "wrap" as const, justifyContent: "center", gap: m ? 8 : 10, maxWidth: 800, margin: "0 auto", marginBottom: active ? (m ? 32 : 40) : 0, ...fadeIn(visible, 80) }}>
+        <div style={{ display: "flex", flexWrap: "wrap" as const, justifyContent: "center", gap: m ? 8 : 10, maxWidth: 840, margin: "0 auto", marginBottom: active ? (m ? 32 : 40) : 0, ...fadeIn(visible, 80) }}>
           {INDUSTRIES.map((ind) => {
             const isActive = active?.key === ind.key;
             return (
               <button key={ind.key} onClick={() => setSelected(isActive ? null : ind)}
                 style={{
                   display: "inline-flex", alignItems: "center", gap: 8,
-                  height: m ? 40 : 44, padding: m ? "0 14px" : "0 18px",
+                  height: m ? 40 : 44, padding: m ? "0 14px" : "0 20px",
                   borderRadius: 100,
                   backgroundColor: isActive ? C.navy : "transparent",
-                  border: isActive ? "1px solid transparent" : `1px solid rgba(14,26,43,0.10)`,
+                  border: isActive ? "1.5px solid transparent" : `1.5px solid rgba(14,26,43,0.10)`,
                   fontSize: m ? 13 : 14, fontWeight: isActive ? 600 : 500,
                   color: isActive ? "#fff" : C.textSecondary,
                   cursor: "pointer",
@@ -845,42 +852,60 @@ function IndustryProfiles() {
                 }}
                 onMouseEnter={e => { if (!isActive) { e.currentTarget.style.backgroundColor = "rgba(14,26,43,0.04)"; e.currentTarget.style.borderColor = "rgba(14,26,43,0.18)"; } }}
                 onMouseLeave={e => { if (!isActive) { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.borderColor = "rgba(14,26,43,0.10)"; } }}>
-                {m && (ind as { shortName?: string }).shortName ? (ind as { shortName?: string }).shortName : ind.name}
+                {ind.name}
               </button>
             );
           })}
         </div>
 
-        {/* Constraint reveal — only shows when an industry is selected */}
+        {/* Elevated reveal card */}
         {active && (
           <div style={{
-            maxWidth: 600, margin: "0 auto",
-            textAlign: "center",
-            padding: m ? "28px 24px" : "36px 40px",
-            borderRadius: 20,
-            backgroundColor: C.sand,
-            border: `1px solid rgba(14,26,43,0.06)`,
+            maxWidth: 680, margin: "0 auto",
+            borderRadius: 24,
+            backgroundColor: C.navy,
+            boxShadow: "0 16px 56px rgba(14,26,43,0.18), 0 4px 16px rgba(14,26,43,0.08)",
+            position: "relative" as const, overflow: "hidden",
           }}>
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 12 }}>{active.name.toUpperCase()}</div>
-            <p style={{ fontSize: m ? 18 : 22, fontWeight: 600, color: C.navy, lineHeight: 1.35, marginBottom: 16 }}>
-              {active.constraint}
-            </p>
-            <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.6, marginBottom: 24 }}>
-              {active.desc}
-            </p>
-            <Link href="/begin" style={{
-              display: "inline-flex", alignItems: "center", justifyContent: "center",
-              height: 48, padding: "0 28px", borderRadius: 14,
-              backgroundColor: C.navy, color: "#fff",
-              fontSize: 15, fontWeight: 600, textDecoration: "none",
-              boxShadow: ctaShadow,
-              transition: "transform 200ms, box-shadow 200ms",
-            }}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = ctaShadow; }}
-            >
-              See how your {active.name.toLowerCase()} income scores
-            </Link>
+            {/* Gradient accent top */}
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
+
+            <div style={{ padding: m ? "32px 24px" : "44px 48px" }}>
+              {/* Industry name + badge */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
+                <div>
+                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 8 }}>INDUSTRY PROFILE</div>
+                  <div style={{ fontSize: m ? 22 : 28, fontWeight: 700, color: C.sandText, letterSpacing: "-0.02em" }}>{active.name}</div>
+                </div>
+                <div style={{ padding: "6px 14px", borderRadius: 100, backgroundColor: "rgba(31,109,122,0.12)", flexShrink: 0 }}>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: C.teal }}>Calibrated</span>
+                </div>
+              </div>
+
+              {/* Constraint — the headline */}
+              <div style={{ padding: m ? "18px 20px" : "22px 28px", borderRadius: 16, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", marginBottom: 20 }}>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.35)", marginBottom: 8 }}>THE STRUCTURAL RISK</div>
+                <div style={{ fontSize: m ? 17 : 20, fontWeight: 600, color: C.sandText, lineHeight: 1.35 }}>{active.constraint}</div>
+              </div>
+
+              {/* Description */}
+              <p style={{ fontSize: m ? 15 : 16, color: "rgba(244,241,234,0.55)", lineHeight: 1.7, margin: "0 0 28px" }}>{active.desc}</p>
+
+              {/* CTA */}
+              <Link href="/begin" style={{
+                display: "inline-flex", alignItems: "center", justifyContent: "center",
+                height: 52, padding: "0 32px", borderRadius: 14, width: m ? "100%" : "auto",
+                backgroundColor: C.teal, color: "#fff",
+                fontSize: 15, fontWeight: 600, textDecoration: "none",
+                boxShadow: "0 8px 24px rgba(31,109,122,0.25)",
+                transition: "transform 200ms, box-shadow 200ms",
+              }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(31,109,122,0.35)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(31,109,122,0.25)"; }}
+              >
+                Get your {active.name.toLowerCase().split(" /")[0]} income score
+              </Link>
+            </div>
           </div>
         )}
       </div>
