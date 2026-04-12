@@ -16,6 +16,12 @@ function useMobile(bp = 768) {
   return m;
 }
 
+function useTablet() {
+  const [t, setT] = useState(false);
+  useEffect(() => { const c = () => setT(window.innerWidth > 768 && window.innerWidth <= 1024); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
+  return t;
+}
+
 function useInView(threshold = 0) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -45,7 +51,9 @@ const border = "#E5E7EB";
 
 export default function ContactPage() {
   const mobile = useMobile();
+  const tablet = useTablet();
   const { t } = useLanguage();
+  const sidePad = mobile ? 28 : tablet ? 56 : 48;
   const heroAnim = useInView();
   const formAnim = useInView();
   const sideAnim = useInView();
@@ -75,7 +83,7 @@ export default function ContactPage() {
 
   const inputStyle: React.CSSProperties = {
     width: "100%", height: 48, padding: "0 18px", borderRadius: 12,
-    border: `1px solid ${border}`, background: "#FAFAFA",
+    border: `1px solid ${border}`, background: C.panelFill,
     fontSize: 15, fontFamily: sans, color: C.navy, outline: "none",
     transition: "border-color 200ms ease", boxSizing: "border-box",
   };
@@ -91,10 +99,10 @@ export default function ContactPage() {
   });
 
   return (
-    <div style={{ background: "#FAFAFA", fontFamily: sans }}>
+    <div style={{ background: C.panelFill, fontFamily: sans }}>
 
       {/* HERO */}
-      <header style={{ backgroundColor: C.sand, position: "relative", overflow: "hidden", paddingTop: mobile ? 104 : 152, paddingBottom: mobile ? 56 : 88, paddingLeft: mobile ? 24 : 48, paddingRight: mobile ? 24 : 48 }}>
+      <header style={{ backgroundColor: C.sand, position: "relative", overflow: "hidden", paddingTop: mobile ? 104 : 152, paddingBottom: mobile ? 56 : 88, paddingLeft: sidePad, paddingRight: sidePad }}>
         <div ref={heroAnim.ref} style={{ maxWidth: 860, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1, ...fade(heroAnim.visible) }}>
           <div style={{ fontSize: mobile ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>
             {t.contact.heroTag}
@@ -113,7 +121,7 @@ export default function ContactPage() {
 
       {/* FORM + SIDEBAR */}
       <section style={{ paddingTop: mobile ? 56 : 112, paddingBottom: mobile ? 56 : 112 }}>
-        <div style={{ maxWidth: 1040, margin: "0 auto", paddingLeft: mobile ? 24 : 24, paddingRight: mobile ? 24 : 24, display: "flex", flexDirection: mobile ? "column" : "row", gap: mobile ? 28 : 36, alignItems: "start" }}>
+        <div style={{ maxWidth: 1040, margin: "0 auto", paddingLeft: sidePad, paddingRight: sidePad, display: "flex", flexDirection: mobile ? "column" : "row", gap: mobile ? 28 : 36, alignItems: "start" }}>
 
           {/* Form card */}
           <div ref={formAnim.ref} style={{
@@ -235,7 +243,7 @@ export default function ContactPage() {
                 ].map((link) => (
                   <Link key={link.label} href={link.href} style={{
                     display: "flex", alignItems: "center", justifyContent: "space-between",
-                    padding: "14px 18px", borderRadius: 12, background: "#FAFAFA", border: `1px solid ${border}`,
+                    padding: "14px 18px", borderRadius: 12, background: C.panelFill, border: `1px solid ${border}`,
                     fontSize: 14, fontWeight: 600, color: C.navy, textDecoration: "none",
                     transition: "border-color 200ms ease",
                   }}
@@ -265,7 +273,7 @@ export default function ContactPage() {
       </section>
 
       {/* FINAL CTA */}
-      <section style={{ backgroundColor: C.navy, paddingTop: mobile ? 88 : 128, paddingBottom: mobile ? 88 : 128, paddingLeft: mobile ? 24 : 48, paddingRight: mobile ? 24 : 48 }}>
+      <section style={{ backgroundColor: C.navy, paddingTop: mobile ? 88 : 128, paddingBottom: mobile ? 88 : 128, paddingLeft: sidePad, paddingRight: sidePad }}>
         <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
           <h2 style={{ fontSize: mobile ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 32 }}>
             {t.contact.closingSubtitle}
@@ -282,10 +290,10 @@ export default function ContactPage() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get Your Structural Income Report
+            Get Your Income Stability Score
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.40)", marginTop: 16 }}>
-            Under 2 minutes | Instant result | Private by default
+            $69 &middot; Score, scripts, roadmap, and lifetime access
           </p>
           <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 24, letterSpacing: "0.04em" }}>
             {t.contact.poweredBy}

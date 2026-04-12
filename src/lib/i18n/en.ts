@@ -628,8 +628,8 @@ export const en: Translations = {
     securityTag: "Security Notice",
     securityP1: "For your protection, do not include sensitive financial information in your message.",
     securityP2: "",
-    closingSubtitle: "We\u2019re here to help. Let us know how we can assist you.",
-    poweredBy: "Income Stability Score™ \u00b7 Powered by Structural Stability Model RP-2.0",
+    closingSubtitle: "Your income has a structure. See yours.",
+    poweredBy: "Income Stability Score\u2122 \u00b7 RunPayway\u2122",
   },
 
   // ── FAQ page ──
