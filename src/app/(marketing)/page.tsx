@@ -524,7 +524,7 @@ function WhatYouReceive() {
             What&rsquo;s in your report
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: explanatoryW, margin: "0 auto" }}>
-            Everything is generated from your actual answers&mdash;personalized to your industry and income&nbsp;type.
+            Most people don&rsquo;t find out their income is fragile until something breaks. Your report shows you before that&nbsp;happens.
           </p>
         </div>
 
@@ -544,7 +544,7 @@ function WhatYouReceive() {
                 <div style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: "#2B5EA7" }} />
                 <span style={{ fontSize: 12, fontWeight: 600, color: "#2B5EA7" }}>Established Stability</span>
               </div>
-              <div style={{ fontSize: 13, color: C.sandMuted }}>Your stability score and where you stand</div>
+              <div style={{ fontSize: 13, color: C.sandMuted }}>How much of your income is protected, recurring, or at&nbsp;risk</div>
             </div>
           </div>
           <div>
@@ -572,9 +572,9 @@ function WhatYouReceive() {
             <div style={{ width: 48, height: 48, borderRadius: 14, backgroundColor: `${C.teal}10`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg>
             </div>
-            <div style={{ fontSize: 16, fontWeight: 700, color: C.navy, marginBottom: 8 }}>Your first move</div>
+            <div style={{ fontSize: 16, fontWeight: 700, color: C.navy, marginBottom: 8 }}>Your highest-impact move</div>
             <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.55, margin: 0 }}>
-              The single highest-impact action you can take this week, based on your specific income&nbsp;structure.
+              One specific action to take this week&mdash;like converting a client to retainer or diversifying a single-source dependency. Not a suggestion. A&nbsp;directive.
             </p>
           </div>
 
@@ -585,7 +585,7 @@ function WhatYouReceive() {
             </div>
             <div style={{ fontSize: 16, fontWeight: 700, color: C.navy, marginBottom: 8 }}>Negotiation scripts</div>
             <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.55, margin: 0 }}>
-              Word-for-word scripts written from your actual numbers. Includes what to say if they push&nbsp;back.
+              Exact language to ask for a retainer, renegotiate a rate, or restructure a contract&mdash;built from your income data. Includes responses for common&nbsp;objections.
             </p>
           </div>
 
@@ -596,15 +596,18 @@ function WhatYouReceive() {
             </div>
             <div style={{ fontSize: 16, fontWeight: 700, color: C.navy, marginBottom: 8 }}>12-week roadmap</div>
             <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.55, margin: 0 }}>
-              Step-by-step milestones with projected score improvements, personalized to where you&nbsp;start.
+              Week-by-week actions with projected score at each milestone. You&rsquo;ll know exactly where you should be by week 4, 8, and&nbsp;12.
             </p>
           </div>
         </div>
 
         {/* Price + CTA */}
         <div style={{ textAlign: "center", ...fadeIn(visible, 240) }}>
-          <p style={{ fontSize: 16, fontWeight: 500, color: C.textSecondary, marginBottom: 24 }}>
-            All included with the $69 diagnostic. Lifetime access.
+          <p style={{ fontSize: 16, fontWeight: 500, color: C.textSecondary, marginBottom: 8 }}>
+            Score, scripts, roadmap, and lifetime access&mdash;$69.
+          </p>
+          <p style={{ fontSize: 14, color: C.textMuted, marginBottom: 24 }}>
+            Less than one hour of billable time. Protects every hour after&nbsp;it.
           </p>
           <CtaButton m={m} variant="primary" />
         </div>
