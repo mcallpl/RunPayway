@@ -503,31 +503,6 @@ function WhatChanges() {
 }
 
 
-/* ================================================================ */
-/* SECTION 6 — HOW THE SCORING WORKS                                 */
-/* ================================================================ */
-
-function ScoringSystem() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-
-  return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
-      <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24 }}>
-            A fixed system.{m ? " " : <br />}Not a changing opinion.
-          </h2>
-          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: explanatoryW, margin: "0 auto" }}>
-            Same inputs, same result. Every time.
-          </p>
-        </div>
-
-      </div>
-    </section>
-  );
-}
 
 
 /* ================================================================ */
@@ -1158,7 +1133,6 @@ export default function LandingPage() {
         <CategoryDeclaration />
         <ProofMoment />
         <WhatChanges />
-        <ScoringSystem />
         <WhatYouReceive />
         <UseCaseArchitecture />
         <IndustryProfiles />
