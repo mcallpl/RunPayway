@@ -964,13 +964,29 @@ function DashboardContent() {
 
             {/* Hero */}
             <div style={{ textAlign: "center", marginBottom: mobile ? 36 : 48, animation: "fadeSlideIn 600ms ease-out" }}>
-              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", color: B.teal, marginBottom: 16 }}>DASHBOARD</div>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", color: B.teal, marginBottom: 16 }}>YOUR DASHBOARD IS READY</div>
               <h1 style={{ fontSize: mobile ? 28 : 36, fontWeight: 300, color: B.navy, margin: "0 0 14px", lineHeight: 1.25, letterSpacing: "-0.02em" }}>
-                Everything about how your income is built — in one place.
+                Unlock your personalized action plan.
               </h1>
-              <p style={{ fontSize: 17, color: B.navy, opacity: 0.6, margin: "0 0 32px", lineHeight: 1.65, maxWidth: 520, marginLeft: "auto", marginRight: "auto" }}>
-                Your report, simulator, action plan, and progress tracker. Complete an assessment to unlock everything below.
+              <p style={{ fontSize: 17, color: B.navy, opacity: 0.6, margin: "0 0 28px", lineHeight: 1.65, maxWidth: 520, marginLeft: "auto", marginRight: "auto" }}>
+                Your free score showed you where you stand. Your full report + dashboard shows you exactly what to do about it.
               </p>
+              <div style={{ display: "flex", flexDirection: "column" as const, gap: 14, maxWidth: 440, margin: "0 auto 24px", textAlign: "left" as const }}>
+                {[
+                  "Your personalized action plan with projected score improvements",
+                  "Word-for-word negotiation scripts built from your income data",
+                  "12-week roadmap with weekly milestones",
+                  "What-If Explorer to test scenarios before you act",
+                  "Progress tracking across reassessments",
+                  "Lifetime access to your dashboard",
+                ].map((item, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginTop: 3 }}><path d="M20 6L9 17l-5-5"/></svg>
+                    <span style={{ fontSize: 16, color: B.navy, opacity: 0.75, lineHeight: 1.5 }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+              <p style={{ fontSize: 16, fontWeight: 600, color: B.teal, textAlign: "center", marginBottom: 24 }}>$69 · One assessment. Lifetime access.</p>
               <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" as const }}>
                 <a href={STRIPE_URL} style={{
                   display: "inline-flex", alignItems: "center", justifyContent: "center",
@@ -982,7 +998,7 @@ function DashboardContent() {
                 }}
                   onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
                   onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}
-                >Get Your Assessment</a>
+                >Unlock Your Full Report + Dashboard</a>
               </div>
             </div>
 
@@ -1042,10 +1058,10 @@ function DashboardContent() {
             <div style={{ textAlign: "center", padding: mobile ? "40px 24px" : "56px 48px", borderRadius: 20, background: `linear-gradient(135deg, ${B.navy} 0%, #1a1840 50%, ${B.purple} 100%)`, boxShadow: "0 8px 32px rgba(14,26,43,0.12)" }}>
               <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 16 }}>READY?</div>
               <h2 style={{ fontSize: mobile ? 22 : 28, fontWeight: 300, color: C.sandText, margin: "0 0 14px", lineHeight: 1.3 }}>
-                See what your income can actually withstand.
+                Your income has a structure. Now see yours.
               </h2>
               <p style={{ fontSize: 16, color: C.sandMuted, margin: "0 0 28px", lineHeight: 1.65, maxWidth: 460, marginLeft: "auto", marginRight: "auto" }}>
-                One assessment. Every section above populates with your real data. No samples. No hypotheticals. Just the truth about how your income is built.
+                Score, scripts, roadmap, and lifetime dashboard access. Under 2 minutes to complete.
               </p>
               <a href={STRIPE_URL} style={{
                 display: "inline-flex", alignItems: "center", justifyContent: "center",
@@ -1057,13 +1073,13 @@ function DashboardContent() {
               }}
                 onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(244,241,234,0.15)"; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}
-              >Get Your Assessment</a>
+              >Unlock Your Full Report + Dashboard</a>
             </div>
 
             {/* Footer */}
             <div style={{ paddingTop: 32, textAlign: "center" }}>
-              <p style={{ fontSize: 14, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; | Model RP-2.0 | PeopleStar Enterprises, INC.</p>
-              <p style={{ fontSize: 12, color: `${B.taupe}80`, margin: 0 }}>Fixed rules | Same answers, same score | Private by default</p>
+              <p style={{ fontSize: 14, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; | PeopleStar Enterprises, INC.</p>
+              <p style={{ fontSize: 12, color: `${B.taupe}80`, margin: 0 }}>Consistent scoring | Private by default</p>
             </div>
           </div>
         </div>
