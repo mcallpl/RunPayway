@@ -1003,14 +1003,34 @@ function StructuralIncomeBrief() {
 
       <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
         <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
-          STAY INFORMED
+          THE STRUCTURAL INCOME BRIEF
         </div>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 16, ...fadeIn(visible, 60) }}>
-          The Structural Income Brief
+          Know what&rsquo;s shifting before{m ? " " : <br />}it hits your income.
         </h2>
-        <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted, marginBottom: m ? 32 : 40, maxWidth: 520, marginLeft: "auto", marginRight: "auto", ...fadeIn(visible, 120) }}>
+        <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted, marginBottom: m ? 28 : 36, maxWidth: 520, marginLeft: "auto", marginRight: "auto", ...fadeIn(visible, 120) }}>
           One email per month. Industry-specific income patterns, structural risks most people miss, and the data behind&nbsp;them.
         </p>
+
+        {/* Sample brief preview */}
+        <div style={{
+          maxWidth: 480, margin: "0 auto", marginBottom: m ? 28 : 36,
+          padding: m ? "16px 18px" : "18px 24px",
+          borderRadius: 14,
+          backgroundColor: "rgba(255,255,255,0.03)",
+          border: "1px solid rgba(255,255,255,0.06)",
+          textAlign: "left" as const,
+          ...fadeIn(visible, 150),
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal }} />
+            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.35)" }}>RECENT BRIEF</span>
+          </div>
+          <p style={{ fontSize: m ? 14 : 15, fontWeight: 500, color: C.sandText, lineHeight: 1.45, margin: 0 }}>
+            Why 62% of consulting income is structurally unprotected&mdash;and the three patterns that separate stable from&nbsp;fragile.
+          </p>
+        </div>
+
         <div style={{ display: "flex", justifyContent: "center", ...fadeIn(visible, 180) }}>
           <EmailCapture variant="standalone" source="homepage_brief_section" />
         </div>
