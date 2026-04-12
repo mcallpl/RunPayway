@@ -71,7 +71,7 @@ const sectionPx = (m: boolean) => m ? 24 : 48;
 const cardShadow = "0 10px 30px rgba(14,26,43,0.06)";
 const ctaShadow = "0 8px 24px rgba(14,26,43,0.12)";
 const border = "rgba(14,26,43,0.12)";
-const purple = "#6C5CE7";
+const purple = "#4B3FAE";
 
 
 /* ================================================================ */
@@ -475,7 +475,7 @@ function RequestAccessSection() {
             <>
               <button onClick={handleSubmit} disabled={!canSubmit} style={{
                 width: "100%", height: 60, borderRadius: 16,
-                background: canSubmit ? C.navy : "rgba(14,26,43,0.08)",
+                background: canSubmit ? purple : "rgba(14,26,43,0.08)",
                 color: canSubmit ? C.white : C.textMuted,
                 fontSize: 16, fontWeight: 600, border: "none",
                 cursor: canSubmit ? "pointer" : "not-allowed",
@@ -528,7 +528,7 @@ function FinalCta() {
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: m ? 56 : 60, width: m ? "100%" : "auto",
             padding: m ? "0 28px" : "0 32px",
-            borderRadius: 16, backgroundColor: C.white, color: C.navy,
+            borderRadius: 16, backgroundColor: C.white, color: purple,
             fontSize: 16, fontWeight: 600,
             boxShadow: "0 8px 24px rgba(14,26,43,0.08)",
             border: `1px solid ${C.borderSoft}`,
