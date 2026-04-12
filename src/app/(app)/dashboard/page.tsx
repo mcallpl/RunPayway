@@ -1347,6 +1347,11 @@ function DashboardContent() {
           )}
 
           {/* ════════════════════════════════════════════════════════ */}
+          {/*  WEEKLY PULSE — check-in engagement card                   */}
+          {/* ════════════════════════════════════════════════════════ */}
+          <WeeklyPulse mobile={mobile} nextMoveLabel={roadmap[0]?.action} />
+
+          {/* ════════════════════════════════════════════════════════ */}
           {/*  YOUR PLAN — "What should I do?" (action-first)          */}
           {/* ════════════════════════════════════════════════════════ */}
           <PhaseSep label="Your Plan" color={B.navy} tint="rgba(14,26,43,0.015)" id="phase-plan" mobile={mobile}>
