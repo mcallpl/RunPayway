@@ -1321,7 +1321,7 @@ function DashboardContent() {
           {/* ════════════════════════════════════════════════════════ */}
           {/*  DECIDE — "What should I do?"                           */}
           {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="What To Do" color={B.navy} tint="rgba(14,26,43,0.015)" id="phase-plan" mobile={mobile}>
+          <PhaseSep label="Your Plan" color={B.navy} tint="rgba(14,26,43,0.015)" id="phase-plan" mobile={mobile}>
 
           {/* ── NEGOTIATION PLAYBOOK — white, in Your Plan ── */}
           {(() => {
