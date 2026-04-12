@@ -308,11 +308,11 @@ function CategoryDeclaration() {
 
       <div style={{ maxWidth: 820, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
         <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.03em", color: C.sandText, marginBottom: 32, ...fadeIn(visible) }}>
-          Your income has a structure.
+          Not how much you make.{m ? " " : <br />}How your income is built.
         </h2>
 
         <p style={{ fontSize: m ? 17 : 20, fontWeight: 400, lineHeight: 1.65, color: "rgba(244,241,234,0.60)", maxWidth: 600, margin: "0 auto 48px", ...fadeIn(visible, 80) }}>
-          Not how much you earn. How it&rsquo;s built. Whether it depends on one client, one employer, one deal closing on time. Whether it continues if you stop. Whether it holds when conditions change.
+          Whether it depends on one client, one employer, or one deal closing on time. Whether it continues if you stop. Whether it holds when conditions change.
         </p>
 
         {/* Three pillars */}
@@ -320,7 +320,7 @@ function CategoryDeclaration() {
           {[
             { label: "Credit scores", measures: "Borrowing behavior" },
             { label: "Income verification", measures: "How much you earn" },
-            { label: "RunPayway", measures: "How your income is built", highlight: true },
+            { label: "RunPayway\u2122", measures: "How your income is built", highlight: true },
           ].map((item, i) => (
             <div key={i} style={{
               padding: m ? "20px 24px" : "24px 20px",
@@ -335,7 +335,7 @@ function CategoryDeclaration() {
         </div>
 
         <p style={{ fontSize: m ? 17 : 20, fontWeight: 600, lineHeight: 1.5, color: C.sandText, maxWidth: 560, margin: "0 auto", ...fadeIn(visible, 200) }}>
-          This is the layer nobody measures.{m ? " " : <br />}Until now.
+          RunPayway&trade; measures the layer between earning and&nbsp;keeping.
         </p>
       </div>
     </section>
