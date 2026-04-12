@@ -918,41 +918,6 @@ function IndustryProfiles() {
 }
 
 
-/* ================================================================ */
-/* SECTION 10 — QUIET AUTHORITY                                      */
-/* ================================================================ */
-
-function QuietAuthority() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-
-  return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
-      <div style={{ maxWidth: narrowW, margin: "0 auto", textAlign: "center" }}>
-        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 24, ...fadeIn(visible) }}>
-          Used to understand income{m ? " " : <br />}before it is relied on.
-        </h2>
-        <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted, marginBottom: m ? 48 : 64, ...fadeIn(visible, 80) }}>
-          Applied by individuals, advisors, and organizations to evaluate income structure before significant decisions.
-        </p>
-
-        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr 1fr", gap: m ? 16 : 24, ...fadeIn(visible, 160) }}>
-          {[
-            "No financial accounts required",
-            "No credit pull",
-            "Private by default",
-            "Deterministic output",
-          ].map((item, i) => (
-            <div key={i} style={{ padding: "16px 12px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.06)" }}>
-              <span style={{ fontSize: 14, fontWeight: 500, color: C.sandMuted }}>{item}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 
 /* ================================================================ */
@@ -1126,7 +1091,6 @@ export default function LandingPage() {
         <WhatYouReceive />
         <UseCaseArchitecture />
         <IndustryProfiles />
-        <QuietAuthority />
         <BeforeYouBegin />
         <StructuralIncomeBrief />
         <FinalCta />
