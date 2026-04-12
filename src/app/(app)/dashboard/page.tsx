@@ -48,9 +48,9 @@ const B = {
 /* ================================================================== */
 const PHASE_NAV = [
   { id: "phase-diagnosis", label: "Your Score", color: B.purple },
-  { id: "phase-plan", label: "What To Do", color: B.navy },
-  { id: "phase-test", label: "What If", color: B.teal },
+  { id: "phase-plan", label: "Your Plan", color: B.navy },
   { id: "phase-progress", label: "Progress", color: B.taupe },
+  { id: "phase-explore", label: "Explore", color: B.teal },
 ] as const;
 
 /* ================================================================== */
@@ -266,7 +266,7 @@ function constraintNarrative(c: string, i: CanonicalInputs, sector: string): str
     low_persistence: `Only ${i.income_persistence_pct}% of your income repeats automatically. The rest must be re-earned from scratch each month.`,
     low_source_diversity: `You have ${i.source_diversity_count} income source${i.source_diversity_count === 1 ? "" : "s"}. A single client decision has outsized power over your stability.`,
     high_variability: `Your income variability is ${i.income_variability_level}. Month-to-month swings make it harder to plan, save, and invest.`,
-    weak_durability: `Your income quality score indicates fragility. The contracts and agreements backing your income may not withstand market pressure.`,
+    weak_durability: `Your income quality score is developing. The contracts and agreements backing your income are exposed to market pressure.`,
     shallow_continuity: `Your income runway is critically short. If active work stops, income drops to near zero within weeks. Building any continuity buffer is the priority.`,
   };
   return n[c] || `Your primary area — ${c.replace(/_/g, " ")} — is the biggest lever for improving your score.`;
@@ -622,7 +622,7 @@ function DashboardContent() {
   const zones = [
     { id: "active", label: "Income That Stops", pct: activeInc, color: B.red, lift: redR.l, sev: redSev,
       txt: activeInc >= 70
-        ? `In ${indName.toLowerCase()}, ${activeInc}% active income is critically high. If you cannot work for 90 days, your score drops by ${stNWDrop} points. Industry baseline: ${indData.redAvg}% — you are ${activeInc - indData.redAvg}% above that.`
+        ? `In ${indName.toLowerCase()}, ${activeInc}% active income is critically high. If you cannot work for 90 days, your score would shift by ${stNWDrop} points. Industry baseline: ${indData.redAvg}% — you are ${activeInc - indData.redAvg}% above that.`
         : activeInc >= 40
         ? `${activeInc}% of your income requires active daily work. In ${indName.toLowerCase()}, the industry baseline is ${indData.redAvg}%. ${activeInc > indData.redAvg ? `You are ${activeInc - indData.redAvg}% more exposed than the baseline.` : `You are ${indData.redAvg - activeInc}% below the industry baseline.`}`
         : `${activeInc}% active income is well below the ${indName.toLowerCase()} baseline of ${indData.redAvg}%. Your structure has meaningful protection against work stoppages.`,
@@ -878,10 +878,10 @@ function DashboardContent() {
           hover: "Every income setup has a bottleneck — one area suppressing your score more than all the others combined. This identifies the exact lever that moves the needle, so you stop wasting effort on changes that feel productive but change nothing.",
         },
         {
-          title: "What Could Go Wrong",
+          title: "What To Strengthen",
           icon: "alert",
           desc: "See how your score holds up if your top client leaves or you can't work for 90 days.",
-          hover: "Two real scenarios. Two honest numbers. Most people are surprised by how much their score drops under pressure they assumed was unlikely — until it happens.",
+          hover: "Two real scenarios. Two honest numbers. Most people are surprised by how much their score shifts under pressure they assumed was unlikely — until it happens.",
         },
       ],
     },
@@ -900,7 +900,7 @@ function DashboardContent() {
           title: "12-Week Roadmap",
           icon: "path",
           desc: "A visual timeline with dynamic milestones calculated from your starting numbers.",
-          hover: "Not generic advice. Each milestone references your actual percentages: 'Reliance on top source drops from 72% to below 57%.' Score checkpoints at every stage. Completion tracking that shows your progress in real time.",
+          hover: "Not generic advice. Each milestone references your actual percentages: 'Reliance on top source shifts from 72% to below 57%.' Score checkpoints at every stage. Completion tracking that shows your progress in real time.",
         },
       ],
     },
@@ -1267,7 +1267,7 @@ function DashboardContent() {
               <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 10 }}>PRESSUREMAP™{indLabel ? ` — ${indLabel.toUpperCase()}` : ""}</div>
               <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 500, color: B.navy, margin: 0, lineHeight: 1.35 }}>
                 {activeInc >= 60
-                  ? `${activeInc}% of your income stops the moment you stop. Here's how that breaks down.`
+                  ? `${activeInc}% of your income stops the moment you stop. Here's how that is structured.`
                   : persInc >= 30
                   ? `${persInc}% of your income is protected. Here's where the rest stands.`
                   : `Your income splits into three zones. Here's what each one means for you.`
@@ -1308,29 +1308,13 @@ function DashboardContent() {
             {/* Biggest risk — clean, below zones */}
             <div style={{ marginTop: 24, padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 14, backgroundColor: `${B.red}04`, borderLeft: `3px solid ${B.red}` }}>
               <p style={{ fontSize: mobile ? 16 : 18, fontWeight: 500, color: B.navy, margin: "0 0 8px", lineHeight: 1.4 }}>
-                {vocabDash.scenarios.lose_top_client.split(/[.!?]/)[0]}  — your score drops {dScore - stLCDrop < 30 && dScore >= 30 ? "into Limited Stability." : `from ${dScore} to ${dScore - stLCDrop}.`}
+                {vocabDash.scenarios.lose_top_client.split(/[.!?]/)[0]}  — your score would shift {dScore - stLCDrop < 30 && dScore >= 30 ? "into Limited Stability in this scenario." : `from ${dScore} to ${dScore - stLCDrop} in this scenario.`}
               </p>
               <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>{constraintNarrative(rootCon, base, sector)}</p>
             </div>
           </section>
 
-          {/* Removed: secondary constraint, model stamps — noise that doesn't answer "what does this do for me?" */}
-
-          {/* Stress tests — what could go wrong */}
-          <section style={{ marginBottom: 24 }}>
-            <div style={{ display: "flex", gap: mobile ? 12 : 16, flexDirection: mobile ? "column" : "row" }} className="d-2col">
-              {[
-                { label: vocabDash.scenarios.lose_top_client.split(/[.!?]/)[0], insight: stLC ? `Your score drops to ${stLC.overall_score}.${stLC.overall_score < 30 && dScore >= 30 ? " That puts you in Limited Stability." : ""}` : "Loading...", val: stLC ? `${dScore} → ${stLC.overall_score}` : "..." },
-                { label: vocabDash.scenarios.cant_work_90_days.split(/[.!?]/)[0], insight: stNW ? `Your score drops to ${stNW.overall_score}.${stNW.overall_score < 30 && dScore >= 30 ? " That puts you in Limited Stability." : ""}` : "Loading...", val: stNW ? `${dScore} → ${stNW.overall_score}` : "..." },
-              ].map(row => (
-                <div key={row.label} style={{ flex: 1, padding: mobile ? "22px 20px" : "26px 28px", borderRadius: 16, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${B.red}` }}>
-                  <p style={{ fontSize: 15, fontWeight: 500, color: B.navy, margin: "0 0 6px", lineHeight: 1.4 }}>{row.label}</p>
-                  <p style={{ fontSize: 14, color: B.muted, margin: "0 0 8px", lineHeight: 1.55 }}>{row.insight}</p>
-                  <span style={{ fontSize: 13, fontFamily: mono, color: B.red }}>{row.val}</span>
-                </div>
-              ))}
-            </div>
-          </section>
+          {/* Removed: secondary constraint, model stamps, standalone stress tests (folded into What-If Explorer) */}
 
           </PhaseSep>
 
@@ -1392,8 +1376,8 @@ function DashboardContent() {
               };
               const briefingMap: Record<string, string> = {
                 convert_retainer: `Right now, only ${base.income_persistence_pct}% of your income recurs automatically. The rest must be re-earned every month. Converting your largest client to a retainer would move persistence from ${base.income_persistence_pct}% to ~${Math.min(70, base.income_persistence_pct + 20)}% — and your score from ${dScore} to ${move.projected}.`,
-                add_client: `Your top source carries ${base.largest_source_pct}% of your income. If that relationship changes, your score drops from ${dScore} to ${dScore - stLCDrop}. Adding one meaningful source would reduce that exposure and lift your score by ${move.lift} points.`,
-                build_passive: `${base.labor_dependence_pct}% of your income requires your active daily work. If you can't work for 90 days, your score drops by ${stNWDrop} points. Building one passive stream creates a floor that protects you.`,
+                add_client: `Your top source carries ${base.largest_source_pct}% of your income. If that relationship changes, your score would shift from ${dScore} to ${dScore - stLCDrop}. Adding one meaningful source would reduce that exposure and lift your score by ${move.lift} points.`,
+                build_passive: `${base.labor_dependence_pct}% of your income requires your active daily work. If you can't work for 90 days, your score would shift by ${stNWDrop} points. Building one passive stream creates a floor that protects you.`,
                 lock_forward: `Only ${base.forward_secured_pct}% of your income is committed forward. You're re-selling your time every month. Locking in next quarter's revenue would move visibility from ${base.forward_secured_pct}% to ~${Math.min(50, base.forward_secured_pct + 15)}%.`,
               };
               const openingLine = sc ? sc.script.split("\n").find(l => l.trim().length > 20 && !l.includes("[")) || "" : "";
@@ -1698,7 +1682,7 @@ function DashboardContent() {
                       {sDelta > 0
                         ? `If you ${aPO.label.toLowerCase()}, your score goes from ${dScore} to ${sResult.overall_score}.`
                         : sDelta < 0
-                        ? `If ${aPO.label.toLowerCase().replace("lose ", "you lose ").replace("can't", "you can't")}, your score drops from ${dScore} to ${sResult.overall_score}.`
+                        ? `If ${aPO.label.toLowerCase().replace("lose ", "you lose ").replace("can't", "you can't")}, your score would shift from ${dScore} to ${sResult.overall_score}.`
                         : `${aPO.label} would not change your score.`
                       }
                     </p>
