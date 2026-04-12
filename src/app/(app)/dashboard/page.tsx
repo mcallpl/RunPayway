@@ -1231,6 +1231,9 @@ function DashboardContent() {
                           Industry Position: {bm.peer_percentile > 70 ? "Above industry baseline" : bm.peer_percentile >= 40 ? "At industry baseline" : "Below industry baseline"}
                         </div>
                       )}
+                      <div style={{ fontSize: 12, fontWeight: 500, color: B.muted, marginTop: 8 }}>
+                        Measured by RunPayway&#8482; &middot; Model RP-2.0
+                      </div>
                     </div>
                   </div>
 

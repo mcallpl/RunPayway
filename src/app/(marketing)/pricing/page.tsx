@@ -208,10 +208,10 @@ function PricingCards() {
     <div style={{ backgroundColor: C.white, borderRadius: 18, padding: m ? 36 : 36, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", boxShadow: "0 20px 48px rgba(14,26,43,0.12)", border: `1.5px solid rgba(14,26,43,0.18)`, order: m ? order : undefined }}>
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.teal }} />
 
-      {/* Most used tag */}
-      <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 16 }}>
+      {/* Most popular badge */}
+      <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 16, backgroundColor: "rgba(31,109,122,0.08)", padding: "6px 14px", borderRadius: 20 }}>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2.5" strokeLinecap="round"><path d="M20 6 9 17l-5-5"/></svg>
-        <span style={{ fontSize: 12, fontWeight: 600, color: C.teal }}>Most used</span>
+        <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: C.teal, textTransform: "uppercase" as const }}>Most Popular</span>
       </div>
 
       <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.navy, marginBottom: 20 }}>
@@ -347,6 +347,11 @@ function PricingCards() {
         {/* Cross-card strip */}
         <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, textAlign: "center", marginTop: m ? 32 : 44, lineHeight: 1.6 }}>
           Every user is evaluated using the same fixed system.{m ? " " : <br />}Only your level of visibility changes.
+        </p>
+
+        {/* Decoy reinforcement — nudge toward $69 tier */}
+        <p style={{ textAlign: "center", fontSize: 14, color: C.textMuted, marginTop: 32, lineHeight: 1.6 }}>
+          Most people start with the full report. It includes everything in the free score, plus your action plan, scripts, and lifetime dashboard&nbsp;access.
         </p>
       </div>
     </section>

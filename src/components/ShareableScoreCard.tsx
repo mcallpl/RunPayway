@@ -66,8 +66,8 @@ export default function ShareableScoreCard({ score, band, industry, accessCode, 
   const bColor = bandColorFromLabel(band);
   const verifyUrl = `${BASE_URL}/verify?code=${encodeURIComponent(accessCode)}`;
 
-  const linkedInText = `My income structure has been measured. Income Stability Score: ${score}/100 — ${band}. Verified by RunPayway™. ${verifyUrl}`;
-  const xText = `Income Stability Score: ${score}/100 — ${band}. Verified by RunPayway™. ${verifyUrl}`;
+  const linkedInText = `My Income Stability Score is ${score}/100. I'm in the ${band} range. Measured by RunPayway™. ${verifyUrl}`;
+  const xText = `My Income Stability Score is ${score}/100. I'm in the ${band} range. Measured by RunPayway™. ${verifyUrl}`;
 
   const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(verifyUrl)}&summary=${encodeURIComponent(linkedInText)}`;
   const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(xText)}`;
