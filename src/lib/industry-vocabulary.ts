@@ -39,6 +39,22 @@ export interface IndustryVocabulary {
     lock_forward: string;
   };
 
+  // Industry-specific labels for each action (replaces generic labels)
+  actionLabels: {
+    convert_retainer: string;
+    add_client: string;
+    build_passive: string;
+    lock_forward: string;
+  };
+
+  // Industry-specific micro-steps (3 steps per action)
+  microSteps: {
+    convert_retainer: string[];
+    add_client: string[];
+    build_passive: string[];
+    lock_forward: string[];
+  };
+
   // Constraint explanations — what each weakness means for YOU in this industry
   constraints: Record<string, string>;
 
@@ -62,6 +78,22 @@ export interface IndustryVocabulary {
     forward: string;
     variability: string;
     labor: string;
+  };
+
+  // Short labels for action presets (used in dashboard cards and roadmap)
+  actionLabels?: {
+    convert_retainer: string;
+    add_client: string;
+    build_passive: string;
+    lock_forward: string;
+  };
+
+  // 3 micro-steps per action (used in "Your Next 3 Moves" prompt)
+  microSteps?: {
+    convert_retainer: string[];
+    add_client: string[];
+    build_passive: string[];
+    lock_forward: string[];
   };
 
   // Context for Claude prompts via the worker
@@ -106,13 +138,27 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
 
     actions: {
       convert_retainer:
-        "Approach your top three investor clients and pitch a monthly property management retainer — a flat fee to oversee their rental units, handle tenant issues, and manage maintenance. This converts a one-time commission relationship into a monthly revenue stream that pays you whether or not a new deal closes. Even $1,500 per month per client creates $54,000 in annual baseline income that doesn't depend on market conditions.",
+        "Build a systematic referral engine — a past-client nurture system, quarterly check-ins, and referral partnerships with lenders, title companies, and home inspectors. Most top-producing agents generate 60%+ of deals from repeat and referral business. This converts random deal flow into predictable, relationship-driven pipeline.",
       add_client:
         "Launch a geographic farming campaign in a specific subdivision or zip code where you don't currently have market share. Send monthly market reports, door-knock on weekends, and sponsor a neighborhood event. Within six months, a consistent farming effort typically yields two to four new listing appointments, diversifying your deal flow beyond your current referral network.",
       build_passive:
         "Acquire a small rental property — even a single duplex — and use it to generate monthly cash flow that is completely independent of your brokerage commissions. As an agent, you have market access and negotiation skills that give you an acquisition advantage. One paid-off duplex generating $2,400 per month in net rent replaces an entire commission check without requiring a single showing.",
       lock_forward:
         "Sign exclusive listing agreements with sellers 60-90 days before they plan to go to market. Offer a pre-marketing package — professional photos, staging consultation, and a coming-soon campaign — in exchange for a signed agreement today. This gives you contractual certainty on future commissions and lets you plan your quarter around deals that are locked in, not hoped for.",
+    },
+
+    actionLabels: {
+      convert_retainer: "Build a systematic referral engine",
+      add_client: "Farm a new neighborhood for listing appointments",
+      build_passive: "Acquire a rental property for monthly cash flow",
+      lock_forward: "Sign exclusive listing agreements before sellers go to market",
+    },
+
+    microSteps: {
+      convert_retainer: ["List your 20 best past clients and referral partners", "Schedule quarterly touchpoints with each — calls, market updates, or coffee", "Ask each for one referral this month — the outreach script is below"],
+      add_client: ["Pick a specific subdivision or zip code you want to own", "Commit to monthly mailers and weekend door-knocking for 6 months", "Sponsor one neighborhood event this quarter to build local visibility"],
+      build_passive: ["Identify a below-market duplex or small multi-family in your area", "Run the numbers on net monthly cash flow after PITI and maintenance", "Make an offer this quarter — your agent access gives you a sourcing edge"],
+      lock_forward: ["Identify sellers in your sphere who plan to list in the next 90 days", "Offer a pre-marketing package in exchange for a signed exclusive agreement now", "Lock in at least two listing agreements before the end of the month"],
     },
 
     constraints: {
@@ -221,6 +267,20 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
         "Have you hired showing assistants, buyer's agents, or established referral partnerships that generate income without your personal presence at every transaction?",
     },
 
+    actionLabels: {
+      convert_retainer: "Sign a Management Retainer",
+      add_client: "Farm a New Neighborhood",
+      build_passive: "Acquire a Rental Property",
+      lock_forward: "Lock in Listing Agreements",
+    },
+
+    microSteps: {
+      convert_retainer: ["Pick your top investor client who owns rental units", "Draft a one-page property management proposal with a monthly fee", "Send it today — position it as protecting their investment"],
+      add_client: ["Choose one subdivision or zip code where you have zero listings", "Create a simple monthly market report for that area", "Door-knock or mail 50 homes this week to introduce yourself"],
+      build_passive: ["Search your MLS for duplexes under $250K in your target market", "Run the rental income numbers on the top 3 properties", "Schedule showings this week — you already know how to negotiate"],
+      lock_forward: ["Identify 2 past clients who may sell in the next 6 months", "Call them and offer a free pre-listing consultation", "Get a signed listing agreement with a 90-day window"],
+    },
+
     worker_context: {
       pressure_framing:
         "This person is a real estate professional whose income depends entirely on closing transactions. Pressure points include deal drought between closings, concentration on a small number of referral sources, and zero income when not actively working. Frame risks in terms of listings lost, pipelines dried up, and commissions that vanish when the market shifts.",
@@ -269,6 +329,20 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
         "Productize your most repeatable framework into a licensed methodology, online course, or subscription-based toolkit that clients can purchase without your direct delivery involvement. If you run the same diagnostic process for every new engagement, package that into a self-service product at $2,000-$5,000 per license. This creates revenue that scales without adding hours to your calendar.",
       lock_forward:
         "Structure your engagement letters with minimum commitment periods — six-month retainers with 90-day termination notice, or project fees paid 50% upfront with milestone-based billing. Every signed engagement with a forward commitment window gives you contractual certainty that improves your ability to plan hiring, investment, and personal financial decisions.",
+    },
+
+    actionLabels: {
+      convert_retainer: "Convert your top client to a monthly retainer",
+      add_client: "Land one new recurring engagement",
+      build_passive: "Productize your expertise into a course or template",
+      lock_forward: "Get written SOWs for next quarter's work",
+    },
+
+    microSteps: {
+      convert_retainer: ["Identify your most engaged project client", "Draft a retainer proposal with a fixed monthly fee", "Send it this week — the script is ready below"],
+      add_client: ["List 3 companies in an adjacent industry that need your expertise", "Send a personalized outreach to each this week", "Offer a free 30-minute diagnostic call"],
+      build_passive: ["Identify your most repeatable framework or methodology", "Outline it as a 4-module online course or toolkit", "Set a 30-day launch deadline"],
+      lock_forward: ["List all engagements ending in the next 90 days", "Draft renewal proposals with 6-month minimum terms", "Send them before the current contract winds down"],
     },
 
     constraints: {
@@ -377,6 +451,20 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
         "Have you hired associates, engaged subcontractors, or launched any productized offerings that generate revenue without requiring your personal delivery hours?",
     },
 
+    actionLabels: {
+      convert_retainer: "Propose a Monthly Retainer",
+      add_client: "Expand to a New Industry",
+      build_passive: "Productize Your Framework",
+      lock_forward: "Extend Engagement Terms",
+    },
+
+    microSteps: {
+      convert_retainer: ["Identify your most engaged project client who keeps coming back", "Draft a retainer proposal: fixed monthly fee for defined hours and access", "Send it this week — frame it as continuity of insight they already trust"],
+      add_client: ["Pick one adjacent industry where your methodology clearly applies", "Write a short LinkedIn post showing how your approach solves their problem", "Reach out to 3 people in that industry for a 15-minute intro call"],
+      build_passive: ["List the framework or process you repeat for every new client", "Outline a self-service version someone could buy without your involvement", "Set a 30-day deadline to build and price the first version"],
+      lock_forward: ["Review your current engagement letters for commitment length", "Draft an amendment extending your top 2 clients to 6-month minimums", "Send the proposals with 90-day termination notice clauses"],
+    },
+
     worker_context: {
       pressure_framing:
         "This person is a consultant or professional services provider whose income depends on active client engagements. Pressure points include retainer cancellations, project gaps between engagements, concentration on a small number of anchor clients, and pure labor-based delivery that caps revenue at available hours. Frame risks in terms of retainers lost, pipelines gone cold, and the constant restart cycle of project-based work.",
@@ -418,13 +506,27 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
 
     actions: {
       convert_retainer:
-        "Propose a managed services agreement to your top contract clients — a monthly fee that covers ongoing maintenance, security updates, feature enhancements, and priority support for the systems you built. Position it as protecting their investment rather than paying for new work. A $3,000/month maintenance contract with four clients generates $144,000 in annual revenue that auto-renews and requires far less effort than net-new development.",
+        "For contractors and consultants: propose a managed services or ongoing support agreement to your current client — a monthly fee for maintenance, on-call support, and priority access. For employees: negotiate a longer employment term with retention bonus, severance provisions, or equity vesting that rewards staying.",
       add_client:
         "Target a specific vertical where your technical stack solves a known pain point and build a case study-driven outreach campaign. Attend their industry conference, publish a technical blog post about their domain problem, and offer a paid technical discovery engagement as an entry point. Winning one client in a new vertical opens a referral network within that entire industry.",
       build_passive:
         "Take the reusable components, integrations, or tools you have already built for client projects and package them as a standalone SaaS product or marketplace plugin. If you have built a custom Shopify integration three times, productize it at $49/month and market it to the thousands of stores with the same need. This converts sunk development time into recurring passive revenue.",
       lock_forward:
         "Structure all new SOWs with phased milestones and minimum engagement durations — a six-month development roadmap with monthly billing rather than a single deliverable contract. Include a maintenance phase after launch that extends the revenue window by 12 months. Every multi-phase SOW gives you forward revenue visibility that single-project contracts do not.",
+    },
+
+    actionLabels: {
+      convert_retainer: "Secure ongoing engagement terms",
+      add_client: "Win a client in a new vertical",
+      build_passive: "Productize a reusable component into a SaaS tool",
+      lock_forward: "Structure multi-phase SOWs with minimum durations",
+    },
+
+    microSteps: {
+      convert_retainer: ["Review your current contract or employment agreement end date", "Draft a proposal for extended or recurring terms", "Schedule the conversation this week — framing notes are below"],
+      add_client: ["Identify a vertical where your stack solves a known pain point", "Publish a case study or blog post about that domain problem", "Offer a paid technical discovery engagement as an entry point"],
+      build_passive: ["Identify your most reusable component, integration, or internal tool", "Scope a standalone SaaS version with subscription pricing", "Set a 60-day MVP launch deadline"],
+      lock_forward: ["List all current engagements and their end dates", "Draft renewal SOWs with 6-month minimums and maintenance phases", "Send them before the current scope wraps up"],
     },
 
     constraints: {
@@ -574,13 +676,27 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
 
     actions: {
       convert_retainer:
-        "Launch a direct-pay membership practice alongside your insurance-based care — patients pay $150-$300 per month for enhanced access, same-day appointments, longer visits, and wellness services not covered by insurance. Even 50 membership patients at $200/month creates $120,000 in annual revenue that does not depend on insurance reimbursement rates or claims processing. This is predictable, recurring income that arrives on the first of every month.",
+        "Negotiate a multi-year employment agreement or contract with guaranteed base compensation, severance provisions, and non-compete clarity. For independent practitioners, secure annual service agreements with healthcare systems or group practices that commit to minimum volume.",
       add_client:
         "Establish referral relationships with three to five new physician practices or healthcare organizations outside your current referral network. Offer to present at their staff meetings, provide same-day consultation reports, and create a seamless referral experience. Diversifying your referral sources beyond one hospital system or physician group protects your patient volume from single-source dependency.",
       build_passive:
         "Develop a telehealth wellness program or chronic disease management subscription that patients can access remotely — automated check-ins, educational content, and scheduled virtual visits for a monthly fee. This creates scalable revenue that is not limited by your physical clinic capacity and continues generating income even when you are not in the office seeing patients face-to-face.",
       lock_forward:
         "Structure treatment plans with pre-authorized multi-visit protocols — physical therapy series, post-surgical follow-ups, or chronic care management programs that book patients for six to twelve visits in advance. This creates forward visibility on your schedule and revenue, allowing you to staff and plan your practice with confidence about upcoming volume.",
+    },
+
+    actionLabels: {
+      convert_retainer: "Secure a multi-year contract with guaranteed terms",
+      add_client: "Build referral relationships with new physician practices",
+      build_passive: "Launch a telehealth or chronic care subscription",
+      lock_forward: "Pre-authorize multi-visit treatment protocols",
+    },
+
+    microSteps: {
+      convert_retainer: ["Review your current contract's expiration date and renewal terms", "Research market rates for your specialty in your region", "Request a meeting with your administrator to discuss a multi-year commitment"],
+      add_client: ["Identify 3-5 physician practices outside your current referral network", "Offer to present at their next staff meeting on a relevant clinical topic", "Follow up with same-day consultation reports to demonstrate your responsiveness"],
+      build_passive: ["Identify your most common patient education or monitoring workflow", "Scope a telehealth subscription with automated check-ins and virtual visits", "Pilot it with 20 existing patients this quarter"],
+      lock_forward: ["Review which treatment plans could be structured as multi-visit protocols", "Pre-authorize 6-12 visit series for your most common conditions", "Book those visits in advance to create schedule and revenue visibility"],
     },
 
     constraints: {
@@ -739,6 +855,20 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
         "Structure all new engagement letters with minimum commitment periods and advance retainer deposits. For ongoing advisory relationships, propose annual engagement frameworks with quarterly scope reviews and 90-day termination notice requirements. For litigation, secure funding commitments for the full anticipated case lifecycle rather than phase-by-phase approval.",
     },
 
+    actionLabels: {
+      convert_retainer: "Convert your top corporate client to a monthly retainer",
+      add_client: "Build relationships in a new client industry",
+      build_passive: "Launch a legal compliance subscription for small businesses",
+      lock_forward: "Structure engagement letters with minimum commitment periods",
+    },
+
+    microSteps: {
+      convert_retainer: ["Identify your most engaged corporate client billing hourly", "Draft a fixed monthly retainer proposal with defined scope", "Present it this week as budget predictability for them and stability for you"],
+      add_client: ["Join two industry organizations where your ideal clients gather", "Commit to publishing one article this quarter in their trade publication", "Attend their next event and build three new relationships"],
+      build_passive: ["Identify your most repeatable legal workflow — compliance reviews, template packages, or regulatory updates", "Package it as a monthly subscription for small businesses in a specific sector", "Launch a pilot with 10 businesses this quarter"],
+      lock_forward: ["Review all current engagement letters for commitment terms", "Add minimum 6-month commitment periods and 90-day termination notice to new letters", "Propose annual engagement frameworks to your top 5 clients"],
+    },
+
     constraints: {
       high_concentration:
         "Your billings are dominated by a small number of clients, and in legal services this concentration carries reputational and financial risk simultaneously. Losing your top client does not just reduce revenue — it may signal to the market that something went wrong, making replacement even harder. Your financial stability depends on decisions made by a handful of business owners and general counsel you do not control.",
@@ -895,6 +1025,20 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
         "Implement multi-year financial planning agreements with annual prepayment — clients commit to a three to five year planning relationship with fees locked in advance. Structure advisory agreements with 90-day termination notice requirements. These commitments give you contractual certainty on fee revenue and reduce the risk of impulsive asset transfers during market volatility.",
     },
 
+    actionLabels: {
+      convert_retainer: "Move your largest clients to fee-based advisory accounts",
+      add_client: "Build a centers-of-influence referral strategy",
+      build_passive: "Launch a flat-fee planning subscription for mass-affluent clients",
+      lock_forward: "Implement multi-year planning agreements with prepayment",
+    },
+
+    microSteps: {
+      convert_retainer: ["Identify your top 5 commission-based accounts by annual revenue", "Draft a fee-based advisory proposal for each", "Present the transition as smoother billing and aligned incentives"],
+      add_client: ["List 3 CPAs, estate attorneys, or business brokers serving your ideal demographic", "Invite each to co-host a client education event this quarter", "Establish a reciprocal referral tracking system"],
+      build_passive: ["Define a flat-fee planning package for clients below your AUM minimum", "Set pricing at $200-$500/month with annual reviews and plan updates", "Market it to your existing network as a feeder for future full advisory relationships"],
+      lock_forward: ["Review all current advisory agreements for commitment terms", "Propose 3-year planning commitments with prepaid annual fees to your top clients", "Add 90-day termination notice clauses to all new agreements"],
+    },
+
     constraints: {
       high_concentration:
         "A disproportionate share of your AUM and fee revenue comes from a handful of large households. In wealth management, this concentration is magnified by the personal nature of client relationships — high-net-worth clients are loyal to their advisor, not to a firm, and a single dissatisfied client can take millions in AUM with a single phone call. Your financial stability is hostage to the satisfaction and life circumstances of a few individuals.",
@@ -1042,13 +1186,27 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
 
     actions: {
       convert_retainer:
-        "Approach your top commercial clients about a fee-based risk management advisory service — a monthly retainer for loss control consulting, safety program development, and annual coverage reviews that supplements your commission income. This adds $1,000-$3,000/month per client in revenue that is independent of carrier commissions and renewal cycles. Position it as proactive risk reduction that saves them money on claims and premiums.",
+        "Strengthen your renewal retention rate — your book of business IS your recurring revenue engine. Implement a systematic 90-day pre-renewal review process for your top 50 accounts. Proactive retention prevents the silent erosion that new production masks.",
       add_client:
         "Launch an industry-specific prospecting campaign targeting a business sector where you have deep expertise (restaurants, contractors, medical offices) and build a vertical reputation as the specialist agent. Attend their association meetings, publish risk management content in their trade publications, and offer free coverage audits. Industry-focused agents close at double the rate of generalists because prospects trust specialists with their coverage decisions.",
       build_passive:
         "Grow your book of personal lines policies — auto, home, umbrella — that renew annually with minimal service requirements. A book of 200 personal lines households generates $40,000-$60,000 in annual renewal commissions that arrives automatically. These accounts require far less service than commercial lines and create a stable income base that supports your practice even during slow production months.",
       lock_forward:
         "Implement a three-year account review cycle with your top 50 commercial clients, scheduling annual stewardship meetings and mid-year reviews on a calendar that locks their attention and relationship to your agency. Propose multi-year policies where available, and cross-sell additional lines of coverage at each review meeting. Every additional line you write on a commercial account increases switching costs and reduces the probability of loss at renewal.",
+    },
+
+    actionLabels: {
+      convert_retainer: "Strengthen your renewal retention rate",
+      add_client: "Build a vertical specialty in a new business sector",
+      build_passive: "Grow your personal lines book for automatic renewal income",
+      lock_forward: "Lock top accounts into a multi-year review cycle",
+    },
+
+    microSteps: {
+      convert_retainer: ["Pull your renewal report for the next 90 days", "Call your top 5 upcoming renewals to review coverage and confirm retention", "Document the commitments — the retention conversation script is below"],
+      add_client: ["Pick one business sector where you have deep expertise", "Attend their next association meeting and offer free coverage audits", "Publish one risk management article in their trade publication this quarter"],
+      build_passive: ["Set a goal to add 5 new personal lines households per month", "Create a simple referral incentive for existing clients", "Automate quoting and onboarding to minimize service time per account"],
+      lock_forward: ["Schedule annual stewardship meetings with your top 50 commercial accounts", "Cross-sell at least one additional coverage line at each meeting", "Propose multi-year policies where carriers offer them"],
     },
 
     constraints: {
@@ -1198,13 +1356,27 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
 
     actions: {
       convert_retainer:
-        "Negotiate residual commission structures or recurring fee arrangements with your top accounts — instead of earning a one-time commission on each transaction, propose an ongoing advisory fee or trailing commission on repeat orders. Even a 2-3% residual on a major account's annual purchasing volume generates predictable income that arrives monthly without requiring you to close a new deal. Position it as an ongoing partnership rather than a transactional relationship.",
+        "Focus on building accounts with residual or trailing commission structures — subscription products, renewal-based services, or managed accounts that generate ongoing revenue from existing relationships without requiring a new sale each quarter.",
       add_client:
         "Build a systematic outbound prospecting engine — 25 targeted outreach touches per week to qualified prospects in a defined market segment. Use a multi-channel approach (direct calls, LinkedIn engagement, industry event networking, and warm referral requests). Consistent prospecting activity is the only reliable cure for pipeline gaps, and the discipline of maintaining it during busy closing periods is what separates sustainably successful reps from boom-bust producers.",
       build_passive:
         "Develop an income stream outside of direct deal-making — recruit and train junior reps and earn override commissions on their production, build a referral network that pays you fees for qualified introductions, or create a market intelligence product for your industry that generates subscription revenue. The goal is income that arrives even during months when you are not personally closing deals.",
       lock_forward:
         "Structure deals with larger upfront commitments and longer contract terms — multi-year agreements, volume commitments with scheduled deliveries, or retainer-style arrangements that lock clients into ongoing purchasing relationships. Every deal you close with a multi-period commitment creates forward revenue visibility that single-transaction commissions cannot provide. Push for signed LOIs and binding purchase agreements as early in the process as possible.",
+    },
+
+    actionLabels: {
+      convert_retainer: "Build accounts with residual commissions",
+      add_client: "Launch a systematic outbound prospecting engine",
+      build_passive: "Build override income from junior reps or referral fees",
+      lock_forward: "Structure deals with multi-year commitments",
+    },
+
+    microSteps: {
+      convert_retainer: ["Identify which products in your portfolio have recurring revenue structures", "Shift your next 3 pitches toward those products", "Track trailing commission as a separate line item in your pipeline"],
+      add_client: ["Define a specific market segment to target this quarter", "Commit to 25 outreach touches per week using calls, LinkedIn, and warm referrals", "Track conversion from outreach to meeting to close"],
+      build_passive: ["Identify one junior rep you could recruit and mentor", "Structure an override arrangement on their production", "Set a 90-day goal for their first closed deals"],
+      lock_forward: ["Review your current pipeline for single-transaction deals", "Propose multi-year terms or volume commitments on your next 3 closes", "Push for signed LOIs and binding agreements as early as possible"],
     },
 
     constraints: {
@@ -1354,13 +1526,27 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
 
     actions: {
       convert_retainer:
-        "Propose a monthly creative retainer to your top three brand partners — a set monthly fee for a defined content package (social posts, video content, event appearances) that replaces project-by-project negotiations. A $4,000/month retainer with three brands creates $144,000 in annual revenue that bills automatically and eliminates the feast-or-famine cycle of one-off production deals. Frame it as guaranteed access to your creative output and audience.",
+        "Secure recurring content or production agreements — annual sponsorship deals, ongoing brand partnerships, or multi-episode/multi-project commitments rather than one-off gigs. For talent: negotiate deal structures that include residuals, licensing fees, or backend participation that pay beyond the initial project.",
       add_client:
         "Diversify your client base by targeting brands in three distinct industry categories — if your current sponsors are all in one sector (beauty, tech, fitness), actively pitch brands in complementary categories. Build a media kit that demonstrates audience crossover potential, and attend industry events where marketing decision-makers from those sectors are present. Each new industry vertical you crack opens an entirely independent pipeline of sponsorship opportunities.",
       build_passive:
         "Invest in creating evergreen content assets — courses, templates, presets, music, stock footage, or print-on-demand products — that generate revenue indefinitely without additional production effort. A single well-designed digital product priced at $29-$99 and marketed to your audience can generate $2,000-$10,000 per month in passive sales. This converts your creative expertise into a product that earns while you sleep.",
       lock_forward:
         "Sign multi-month or annual sponsorship and production contracts with upfront payment terms — six-month brand partnerships, annual content licensing deals, and pre-paid production retainers. Negotiate 30-50% upfront payment on all production projects to establish cash flow before delivery. Every long-term contract you sign provides months of forward revenue certainty that ad-hoc project work cannot match.",
+    },
+
+    actionLabels: {
+      convert_retainer: "Secure a recurring content or production deal",
+      add_client: "Pitch brands in three new industry categories",
+      build_passive: "Create an evergreen digital product from your expertise",
+      lock_forward: "Sign multi-month or annual production contracts",
+    },
+
+    microSteps: {
+      convert_retainer: ["Identify your strongest brand or production relationship", "Propose a multi-month or annual content agreement", "Send the pitch this week — the partnership framework is below"],
+      add_client: ["List 3 industry categories beyond your current sponsor base", "Build a media kit showing audience crossover potential", "Pitch one brand in each new category this month"],
+      build_passive: ["Identify your most in-demand creative skill or process", "Package it as a course, template pack, or digital product at $29-$99", "Launch it to your audience with a 30-day marketing push"],
+      lock_forward: ["Review all current project-based agreements", "Propose 6-month or annual terms on your next 3 brand conversations", "Negotiate 30-50% upfront payment on all new production deals"],
     },
 
     constraints: {
@@ -1510,13 +1696,27 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
 
     actions: {
       convert_retainer:
-        "Approach your top 20 past clients — homeowners, property managers, and commercial building owners — and offer an annual maintenance agreement. For HVAC, plumbing, or electrical, a $150-$300/month service contract covers semi-annual inspections, priority scheduling, and discounted repair rates. Twenty clients at $200/month generates $48,000 in annual recurring revenue that arrives monthly regardless of your project pipeline. This becomes your financial floor.",
+        "For service-oriented trades (HVAC, plumbing, electrical, landscaping): offer annual maintenance agreements to your past clients — a flat monthly or annual fee for priority service, seasonal maintenance, and discounted emergency rates. For project-based trades (GC, roofing, specialty): focus on locking multi-phase projects under single contracts with progress billing.",
       add_client:
         "Build relationships with three to five new general contractors, property management companies, or commercial building owners who are not currently in your network. Attend local builder association meetings, join the chamber of commerce, and offer competitive pricing on your first project with each new contact to demonstrate reliability and quality. In construction, trust is earned on the job site — one well-executed project with a new GC can generate years of repeat subcontract work.",
       build_passive:
         "Invest in specialized equipment that you can rent to other contractors when not in use on your own jobs. A scissor lift, excavator, or concrete pump sitting idle between projects can generate $500-$2,000 per week in rental income. Alternatively, acquire a small rental property where you can use your trade skills to renovate and maintain it yourself, generating monthly rental cash flow at a fraction of the cost an investor without your skills would face.",
       lock_forward:
         "Push for signed contracts with deposits on every project before mobilization — a 30-50% deposit upon contract execution, with milestone-based progress billing through completion. Submit bids on larger, longer-duration projects that provide three to six months of work per contract rather than one to two week jobs. Every multi-month contract you sign provides forward revenue visibility that short-term service calls cannot match.",
+    },
+
+    actionLabels: {
+      convert_retainer: "Add a recurring service or maintenance line",
+      add_client: "Build relationships with new GCs and property managers",
+      build_passive: "Rent idle equipment or acquire a rental property",
+      lock_forward: "Lock in multi-month contracts with deposits before mobilization",
+    },
+
+    microSteps: {
+      convert_retainer: ["List your top 20 past clients from the last 2 years", "Draft a simple annual maintenance or priority service agreement", "Send the proposal this week — the template is below"],
+      add_client: ["Identify 3-5 GCs or property managers outside your current network", "Attend the next local builder association meeting", "Offer competitive pricing on a first project to earn trust on the job site"],
+      build_passive: ["Inventory any specialized equipment that sits idle between projects", "List it on peer-to-peer rental platforms or offer it to other contractors", "Alternatively, identify a small rental property to renovate with your trade skills"],
+      lock_forward: ["Review your current pipeline for projects without signed contracts", "Require 30-50% deposits and milestone billing on every new project", "Bid on at least one larger, multi-month project this quarter"],
     },
 
     constraints: {
@@ -1659,10 +1859,24 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       pipeline_dries_up: "Summer break hits, corporate budgets freeze for Q4 planning, and your course registration page goes quiet. You have zero new sign-ups, no workshop inquiries, and months of dead air ahead.",
     },
     actions: {
-      convert_retainer: "Propose a semester-long or annual training retainer to your top institutional clients. Frame it as guaranteed priority scheduling and curriculum customization in exchange for committed monthly payments, giving you predictable baseline income regardless of enrollment swings.",
+      convert_retainer: "For independent trainers and tutors: propose annual retainers to institutional clients — guaranteed workshops per semester at a locked rate. For employed educators: negotiate multi-year contracts with step increases and guaranteed placement. For adjuncts: secure course commitments for the full academic year, not semester-by-semester.",
       add_client: "Reach out to three new schools, districts, or corporate HR departments this month with a tailored pitch deck showing measurable learning outcomes from your programs. Each new institutional relationship reduces your dependence on any single contract.",
       build_passive: "Record your highest-demand workshop or lecture series as a polished self-paced course on a platform like Teachable or Udemy. Once published, every sale generates income whether you are lecturing that day or not.",
       lock_forward: "Get next semester's contracts signed before the current one ends. Push for multi-term agreements with institutions and ask corporate clients to book their entire annual training calendar now at a locked-in rate.",
+    },
+
+    actionLabels: {
+      convert_retainer: "Lock in multi-term commitments",
+      add_client: "Pitch three new institutional clients this month",
+      build_passive: "Record your top workshop as a self-paced course",
+      lock_forward: "Sign next semester's contracts before this one ends",
+    },
+
+    microSteps: {
+      convert_retainer: ["Identify your top 3 institutional clients or your department head", "Draft a proposal for a full-year or multi-semester commitment", "Present it before the current term scheduling window closes"],
+      add_client: ["List 3 schools, districts, or corporate HR departments you have never pitched", "Send a tailored pitch showing measurable learning outcomes", "Offer a free sample workshop or pilot session to demonstrate value"],
+      build_passive: ["Identify your highest-demand workshop or lecture series", "Record and package it as a self-paced course on Teachable or Udemy", "Set a 60-day launch deadline and promote it to your existing network"],
+      lock_forward: ["List all current contracts and their end dates", "Begin renewal conversations at the midpoint of each engagement", "Push for full academic year commitments at locked-in rates"],
     },
     constraints: {
       high_concentration: "A huge share of your teaching income flows from one institution or one corporate client. If that relationship ends — whether from budget cuts, leadership turnover, or restructuring — you face an immediate income cliff with no quick replacement.",
@@ -1771,6 +1985,21 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       build_passive: "Set up a subscription box or auto-replenishment program for your consumable or frequently reordered products. Customers opt in once and generate recurring revenue every month without any additional marketing spend per order.",
       lock_forward: "Run a pre-sale campaign for your next product launch or seasonal collection. Collect deposits or full payments before you commit to production, giving you confirmed demand and cash flow before inventory costs hit.",
     },
+
+    actionLabels: {
+      convert_retainer: "Set up subscription or auto-replenish for top products",
+      add_client: "Open your products on two new sales channels",
+      build_passive: "Launch a subscription box or auto-replenishment program",
+      lock_forward: "Run a pre-sale campaign for your next product launch",
+    },
+
+    microSteps: {
+      convert_retainer: ["Identify your 3 best-selling consumable or repeat-purchase products", "Set up a subscription option with a 10-15% discount for commitment", "Email your top 50 customers with the subscription offer this week"],
+      add_client: ["Research 2 new sales channels — a niche marketplace, retail partnership, or B2B portal", "List your top products on each new channel this quarter", "Track channel-specific performance weekly for the first 90 days"],
+      build_passive: ["Identify which products customers reorder most frequently", "Create a curated monthly subscription box or auto-ship option", "Promote it with a launch discount to your existing customer list"],
+      lock_forward: ["Plan your next product launch or seasonal collection", "Set up a pre-sale page to collect deposits before committing to production", "Promote the pre-sale to your email list and social channels"],
+    },
+
     constraints: {
       high_concentration: "Most of your sales volume flows through a single marketplace or one dominant wholesale account. If that platform changes its fee structure or that buyer finds a cheaper source, your primary revenue channel collapses with no backup ready.",
       weak_forward_visibility: "You cannot see further than your current inventory cycle. Consumer demand shifts on a dime, trending products peak and crash unpredictably, and you are always reacting to last week's sales data instead of next month's confirmed orders.",
@@ -1878,6 +2107,21 @@ const VOCABULARY: Record<string, IndustryVocabulary> = {
       build_passive: "License your signature recipes, sauces, or branded products for retail or online sale. Develop a venue rental package for photo shoots, pop-ups, or co-working that generates income from your space even when you are not serving guests.",
       lock_forward: "Require deposits for all bookings over 30 days out and offer a 10% discount for events booked and paid six months in advance. Convert tentative holds into confirmed, deposited commitments that give you bankable forward revenue.",
     },
+
+    actionLabels: {
+      convert_retainer: "Pitch corporate clients on annual event retainers",
+      add_client: "Build relationships with new corporate and event clients",
+      build_passive: "License recipes or develop venue rental packages",
+      lock_forward: "Convert tentative holds into deposited commitments",
+    },
+
+    microSteps: {
+      convert_retainer: ["List your top 5 corporate accounts from the past year", "Draft an annual hospitality package with monthly retainer pricing", "Send the proposal this week — the pitch template is below"],
+      add_client: ["Identify 3 corporate offices, wedding planners, or event agencies nearby", "Send a personalized tasting invitation or venue tour offer", "Follow up within one week to schedule the visit"],
+      build_passive: ["Identify your signature recipes, sauces, or branded products", "Explore retail packaging or online sale options", "Develop a venue rental package for photo shoots or pop-ups"],
+      lock_forward: ["Review all tentative holds and pending inquiries", "Require deposits on all bookings over 30 days out", "Offer a 10% discount for events booked and paid 6 months in advance"],
+    },
+
     constraints: {
       high_concentration: "One corporate account or event type dominates your bookings. If that single client restructures their office, changes caterers, or cancels their annual gala, you lose a disproportionate chunk of revenue with no immediate way to replace it.",
       weak_forward_visibility: "Event inquiries and reservations often come in waves with little advance notice. You cannot reliably predict what next month's covers, bookings, or catering orders will look like until they are actually on the books.",

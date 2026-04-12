@@ -679,7 +679,7 @@ function DashboardContent() {
     const projected = cumulativeScore + m.lift;
     const step = {
       ...phases[i],
-      action: m.label,
+      action: vocabDash?.actionLabels?.[m.id as keyof typeof vocabDash.actionLabels] || m.label,
       pid: m.id,
       lift: m.lift,
       desc: getIndustryAction(m.id) || m.description,
@@ -1171,20 +1171,15 @@ function DashboardContent() {
                       ) : nextMove ? (
                         <>
                           <div style={{ fontSize: mobile ? 17 : 19, fontWeight: 500, color: B.navy, lineHeight: 1.4, marginBottom: 8 }}>
-                            Focus on one thing: <strong>{nextMove.label.toLowerCase()}</strong>.
+                            Focus on one thing: <strong>{(vocabDash?.actionLabels?.[nextMove.id as keyof typeof vocabDash.actionLabels] || nextMove.label).toLowerCase()}</strong>.
                           </div>
                           <p style={{ fontSize: 14, color: B.muted, margin: "0 0 12px", lineHeight: 1.55 }}>
                             You don't need to do everything at once. This is the single move that matters most right now.
                           </p>
                           {/* Micro-actions — the 5-minute version */}
                           {(() => {
-                            const microSteps: Record<string, string[]> = {
-                              convert_retainer: ["Open your contacts and find your top client's name", "Draft a 2-sentence message proposing a monthly arrangement", "Send it today — the script is ready for you below"],
-                              add_client: ["Think of one person in your network who could refer work to you", "Write them a short message reconnecting", "Ask for a 15-minute call this week"],
-                              build_passive: ["List one thing you've built that others have asked about", "Outline a simple version someone could buy or subscribe to", "Set a deadline to launch it within 30 days"],
-                              lock_forward: ["Identify your top 2 clients whose agreements expire soon", "Draft a renewal or extension proposal with clear terms", "Send it before the end of this week"],
-                            };
-                            const steps = microSteps[nextMove.id];
+                            const vocabSteps = vocabDash?.microSteps?.[nextMove.id as keyof typeof vocabDash.microSteps];
+                            const steps = vocabSteps && vocabSteps.length > 0 ? vocabSteps : null;
                             if (!steps) return null;
                             return (
                               <div style={{ marginBottom: 12 }}>
