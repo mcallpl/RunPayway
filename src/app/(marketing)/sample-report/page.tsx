@@ -346,16 +346,16 @@ function Page02() {
             {/* Strength + Constraint */}
             <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
               <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: C.sand, border: `1px solid ${C.teal}15`, marginBottom: m ? 10 : 0 }}>
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 6 }}>STRONGEST FACTOR</div>
+                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 6 }}>STRONGEST FACTOR</div>
                 <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, margin: 0, lineHeight: 1.5 }}>Income remains steady month to month</p>
               </div>
               <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: C.sand, border: `1px solid ${C.risk}15` }}>
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: C.risk, marginBottom: 6 }}>PRIMARY CONSTRAINT</div>
+                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.risk, marginBottom: 6 }}>PRIMARY CONSTRAINT</div>
                 <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, margin: 0, lineHeight: 1.5 }}>Too much reliance on a single source</p>
               </div>
             </div>
 
-            <p style={{ fontSize: 11, color: "rgba(14,26,43,0.25)", margin: 0, textAlign: "center" }}>This is what defines your score.</p>
+            <p style={{ fontSize: 12, color: "rgba(14,26,43,0.25)", margin: 0, textAlign: "center" }}>This is what defines your score.</p>
           </div>
         </div>
       </div>
@@ -394,7 +394,7 @@ function Page03() {
               { num: "03", action: "Introduce recurring income", desc: "Convert one-time work into repeating income", lift: "+5", priority: "Medium", color: C.moderate },
             ].map((a, i) => (
               <div key={i} style={{ display: "flex", gap: 16, alignItems: "flex-start", padding: "18px 0", borderBottom: i < 2 ? `1px solid rgba(14,26,43,0.06)` : "none" }}>
-                <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: C.navy, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, fontFamily: mono, color: "#fff", flexShrink: 0 }}>{a.num}</div>
+                <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: C.navy, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, fontFamily: mono, color: "#fff", flexShrink: 0 }}>{a.num}</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4, gap: 12 }}>
                     <span style={{ fontSize: 15, fontWeight: 600, color: C.navy }}>{a.action}</span>
@@ -402,7 +402,7 @@ function Page03() {
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <span style={{ fontSize: 13, color: C.textSecondary }}>{a.desc}</span>
-                    <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.04em", color: a.color, padding: "2px 8px", borderRadius: 4, backgroundColor: `${a.color}08`, flexShrink: 0 }}>{a.priority}</span>
+                    <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.04em", color: a.color, padding: "2px 8px", borderRadius: 4, backgroundColor: `${a.color}08`, flexShrink: 0 }}>{a.priority}</span>
                   </div>
                 </div>
               </div>
@@ -411,13 +411,13 @@ function Page03() {
 
           {/* Impact block — navy */}
           <div style={{ backgroundColor: C.navy, padding: m ? "24px 24px" : "28px 40px", textAlign: "center" }}>
-            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.35)", marginBottom: 12 }}>IF IMPLEMENTED TOGETHER</div>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.35)", marginBottom: 12 }}>IF IMPLEMENTED TOGETHER</div>
             <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 12 }}>
               <span style={{ fontSize: 28, fontWeight: 300, fontFamily: mono, color: "rgba(244,241,234,0.40)" }}>72</span>
               <span style={{ fontSize: 16, color: "rgba(244,241,234,0.25)" }}>&rarr;</span>
               <span style={{ fontSize: m ? 36 : 44, fontWeight: 700, fontFamily: mono, color: C.teal }}>96</span>
             </div>
-            <p style={{ fontSize: 11, color: "rgba(244,241,234,0.30)", marginTop: 12, marginBottom: 0 }}>The model shows what changes your structure &mdash; not just what it is.</p>
+            <p style={{ fontSize: 12, color: "rgba(244,241,234,0.30)", marginTop: 12, marginBottom: 0 }}>The model shows what changes your structure &mdash; not just what it is.</p>
           </div>
 
           {/* CTA */}
@@ -496,7 +496,7 @@ function Page04() {
                 </p>
               </div>
               <div style={{ flexShrink: 0, padding: "14px 20px", borderRadius: 12, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}>
-                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: C.risk, marginBottom: 4 }}>KEY VULNERABILITY</div>
+                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.risk, marginBottom: 4 }}>KEY VULNERABILITY</div>
                 <div style={{ fontSize: 14, fontWeight: 600, color: "#fff" }}>Loss of a primary income source</div>
               </div>
             </div>
@@ -504,7 +504,7 @@ function Page04() {
 
           {/* Footer */}
           <div style={{ padding: "12px 40px 16px", textAlign: "center" }}>
-            <span style={{ fontSize: 11, color: "rgba(14,26,43,0.25)" }}>Structure determines outcome under stress.</span>
+            <span style={{ fontSize: 12, color: "rgba(14,26,43,0.25)" }}>Structure determines outcome under stress.</span>
           </div>
         </div>
       </div>
