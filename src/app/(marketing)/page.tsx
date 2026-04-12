@@ -315,25 +315,6 @@ function CategoryDeclaration() {
           Whether it depends on one client, one employer, or one deal closing on time. Whether it continues if you stop. Whether it holds when conditions change.
         </p>
 
-        {/* Three pillars */}
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1, maxWidth: 720, margin: "0 auto 48px", borderRadius: 16, overflow: "hidden", ...fadeIn(visible, 120) }}>
-          {[
-            { label: "Credit scores", measures: "Borrowing behavior" },
-            { label: "Income verification", measures: "How much you earn" },
-            { label: "RunPayway\u2122", measures: "How your income is built", highlight: true },
-          ].map((item, i) => (
-            <div key={i} style={{
-              padding: m ? "20px 24px" : "24px 20px",
-              backgroundColor: item.highlight ? "rgba(31,109,122,0.12)" : "rgba(255,255,255,0.03)",
-              textAlign: "center",
-              marginBottom: m ? 1 : 0,
-            }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: item.highlight ? C.teal : "rgba(244,241,234,0.35)", marginBottom: 8 }}>{item.label.toUpperCase()}</div>
-              <div style={{ fontSize: m ? 15 : 16, fontWeight: item.highlight ? 700 : 500, color: item.highlight ? C.teal : "rgba(244,241,234,0.55)" }}>{item.measures}</div>
-            </div>
-          ))}
-        </div>
-
         <p style={{ fontSize: m ? 17 : 20, fontWeight: 600, lineHeight: 1.5, color: C.sandText, maxWidth: 560, margin: "0 auto", ...fadeIn(visible, 200) }}>
           RunPayway&trade; measures the layer between earning and&nbsp;keeping.
         </p>
