@@ -779,7 +779,7 @@ export default function ReviewPage() {
   };
 
   const p3Intro: Record<string, string> = {
-    A1: `As a ${structureDesc} in ${industrySector} with ${incomeModelDesc} income, these are the biggest threats to your structure right now.`,
+    A1: `As a ${structureDesc} in ${industrySector} with ${incomeModelDesc} income, these are the biggest pressure points in your structure right now.`,
     A2: `These are the scenarios that would hurt your ${incomeModelDesc} income most given the current weak structure.`,
     A3: `These risks are specific to your ${incomeModelDesc} setup in ${industrySector} while the structure is still below stable.`,
     B1: `These risks show where your ${incomeModelDesc} structure in ${industrySector} is still exposed.`,
@@ -1058,14 +1058,14 @@ export default function ReviewPage() {
   };
 
   const p3Summary: Record<string, string> = {
-    limited: "Most of your income depends on your active effort every day. Here is exactly how it breaks down.",
-    developing: "Most of your income depends on your active effort every day. Here is exactly how it breaks down.",
+    limited: "Most of your income depends on your active effort every day. Here is exactly how it shifts under pressure.",
+    developing: "Most of your income depends on your active effort every day. Here is exactly how it shifts under pressure.",
     established: "Your income has multiple layers of protection. Here is the detailed composition.",
     high: "Your income has multiple layers of protection. Here is the detailed composition.",
   };
 
   // ── Page names for navigation ──
-  const pageNames = ["Cover", "Key Findings", "Stability Plan", "Stress Testing"];
+  const pageNames = ["Cover", "Stability Plan", "Key Findings", "Resilience Profile"];
 
 
   // ── Paginated page contents (shared between PDF container and on-screen view) ──
@@ -1216,7 +1216,7 @@ export default function ReviewPage() {
             );
           })()}
           <div style={{ textAlign: "center" }}>
-            <span style={{ fontSize: 11, color: "rgba(14,26,43,0.25)" }}>Deterministic scoring &middot; Version-locked &middot; Same inputs produce the same result</span>
+            <span style={{ fontSize: 11, color: "rgba(14,26,43,0.25)" }}>Consistent scoring &middot; Version-locked &middot; Same inputs produce the same result</span>
           </div>
         </div>
     </>,
