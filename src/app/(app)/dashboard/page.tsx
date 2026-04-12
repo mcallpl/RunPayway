@@ -98,6 +98,86 @@ function PhaseSep({ label, color, tint, children, id, mobile }: { label: string;
 }
 
 /* ================================================================== */
+/*  WEEKLY PULSE — lightweight weekly check-in for engagement          */
+/* ================================================================== */
+function WeeklyPulse({ mobile, nextMoveLabel }: { mobile: boolean; nextMoveLabel?: string }) {
+  const [pulseState, setPulseState] = useState<"prompt" | "yes" | "no">("prompt");
+  const [streak, setStreak] = useState(0);
+
+  const getISOWeek = (d: Date): string => {
+    const dt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    dt.setUTCDate(dt.getUTCDate() + 4 - (dt.getUTCDay() || 7));
+    const yearStart = new Date(Date.UTC(dt.getUTCFullYear(), 0, 1));
+    const weekNo = Math.ceil(((dt.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+    return `${dt.getUTCFullYear()}-W${weekNo}`;
+  };
+
+  const getLastISOWeek = (): string => {
+    const d = new Date();
+    d.setDate(d.getDate() - 7);
+    return getISOWeek(d);
+  };
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("rp_pulse_streak");
+      if (!raw) return;
+      const data = JSON.parse(raw) as { count: number; lastCheckin: string };
+      const lastWeek = getISOWeek(new Date(data.lastCheckin));
+      const currentWeek = getISOWeek(new Date());
+      const previousWeek = getLastISOWeek();
+      if (lastWeek === currentWeek) { setPulseState("yes"); setStreak(data.count); }
+      else if (lastWeek === previousWeek) { setStreak(data.count); }
+      else { setStreak(0); }
+    } catch { /* ignore corrupt data */ }
+  }, []);
+
+  const handleYes = () => {
+    const currentWeek = getISOWeek(new Date());
+    let raw: { count: number; lastCheckin: string } | null = null;
+    try { raw = JSON.parse(localStorage.getItem("rp_pulse_streak") || "null"); } catch { /* */ }
+    let newCount = 1;
+    if (raw) {
+      const lw = getISOWeek(new Date(raw.lastCheckin));
+      newCount = lw === currentWeek ? raw.count : raw.count + 1;
+    }
+    localStorage.setItem("rp_pulse_streak", JSON.stringify({ count: newCount, lastCheckin: new Date().toISOString() }));
+    setStreak(newCount);
+    setPulseState("yes");
+  };
+
+  const handleNo = () => {
+    localStorage.setItem("rp_pulse_streak", JSON.stringify({ count: 0, lastCheckin: new Date().toISOString() }));
+    setStreak(0);
+    setPulseState("no");
+  };
+
+  return (
+    <div style={{ borderRadius: 20, padding: mobile ? "24px 24px" : "28px 32px", backgroundColor: B.white || "#fff", border: "1px solid rgba(14,26,43,0.06)", boxShadow: "0 2px 12px rgba(14,26,43,0.04)", marginBottom: 36 }}>
+      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 14, textTransform: "uppercase" as const }}>WEEKLY PULSE</div>
+      {pulseState === "prompt" && (<>
+        <p style={{ fontSize: 17, fontWeight: 600, color: B.navy, margin: "0 0 20px", lineHeight: 1.4 }}>Did you take action on your plan this week?</p>
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+          <button onClick={handleYes} style={{ flex: 1, minWidth: 160, height: 44, borderRadius: 12, backgroundColor: B.teal, color: "#fff", border: "none", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>Yes, I made progress</button>
+          <button onClick={handleNo} style={{ flex: 1, minWidth: 120, height: 44, borderRadius: 12, backgroundColor: "transparent", color: B.navy, border: "1px solid rgba(14,26,43,0.12)", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>Not yet</button>
+        </div>
+      </>)}
+      {pulseState === "yes" && (<div>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="11" fill={B.teal} /><path d="M6.5 11.5L9.5 14.5L15.5 8" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          <span style={{ fontSize: 17, fontWeight: 600, color: B.navy }}>Nice work. Keep building.</span>
+        </div>
+        {streak > 0 && <span style={{ fontSize: 15, fontFamily: mono, color: B.teal, fontWeight: 500 }}>{"\uD83D\uDD25"} {streak} week{streak !== 1 ? "s" : ""} in a row</span>}
+      </div>)}
+      {pulseState === "no" && (<div>
+        <p style={{ fontSize: 16, fontWeight: 500, color: B.navy, margin: "0 0 8px", lineHeight: 1.4 }}>No pressure. Your plan is here when you&apos;re ready.</p>
+        {nextMoveLabel && <p style={{ fontSize: 14, color: B.taupe, margin: 0 }}>Your next move: <span style={{ fontWeight: 600, color: B.navy }}>{nextMoveLabel}</span></p>}
+      </div>)}
+    </div>
+  );
+}
+
+/* ================================================================== */
 /*  STICKY PHASE NAV                                                   */
 /* ================================================================== */
 function PhaseNav({ activePhase, mobile }: { activePhase: string; mobile: boolean }) {
