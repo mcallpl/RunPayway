@@ -806,153 +806,83 @@ function UseCaseArchitecture() {
 /* SECTION 9 — INDUSTRY PROFILES                                     */
 /* ================================================================ */
 
-function IndustryMiniRing({ score, size = 56 }: { score: number; size?: number }) {
-  const stroke = 5;
-  const r = (size - stroke) / 2;
-  const circ = 2 * Math.PI * r;
-  const offset = circ - (score / 100) * circ;
-  const color = score >= 50 ? C.teal : score >= 30 ? C.moderate : C.risk;
-  return (
-    <div style={{ position: "relative", width: size, height: size, flexShrink: 0 }}>
-      <svg width={size} height={size} style={{ transform: "rotate(-90deg)" }}>
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={stroke} />
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={stroke}
-          strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round"
-          style={{ transition: "stroke-dashoffset 800ms cubic-bezier(0.22, 1, 0.36, 1), stroke 400ms" }} />
-      </svg>
-      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <span style={{ fontSize: size * 0.32, fontWeight: 600, fontFamily: mono, color: "#fff", lineHeight: 1 }}>{score}</span>
-      </div>
-    </div>
-  );
-}
-
 function IndustryProfiles() {
   const { ref, visible } = useInView();
   const m = useMobile();
   const fadeIn = useFadeIn();
   const [selected, setSelected] = useState<typeof INDUSTRIES[0] | null>(null);
-  const [autoIndex, setAutoIndex] = useState(0);
-  const pausedRef = useRef(false);
 
-  // Auto-rotate when nothing manually selected
-  useEffect(() => {
-    if (!visible) return;
-    const interval = setInterval(() => {
-      if (!pausedRef.current) setAutoIndex(prev => (prev + 1) % INDUSTRIES.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [visible]);
-
-  const active = selected || INDUSTRIES[autoIndex];
-  const bandLabel = active.median >= 50 ? "Established" : active.median >= 30 ? "Developing" : "Limited";
-  const bandColor2 = active.median >= 50 ? C.teal : active.median >= 30 ? C.moderate : C.risk;
+  const active = selected;
 
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
-      <div style={{ maxWidth: innerW, margin: "0 auto" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
-          <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>BY INDUSTRY</div>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>
-            Every industry has a structural{m ? " " : <br />}breaking point.
+            Find your industry
           </h2>
-          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 560, margin: "0 auto" }}>
-            Select yours to see where income typically fails&mdash;and why.
+          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 480, margin: "0 auto" }}>
+            RunPayway&trade; is calibrated for how each industry actually earns. Select yours.
           </p>
         </div>
 
-        {/* Split layout: list + insight card */}
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1.2fr", gap: 32, maxWidth: 1020, margin: "0 auto", ...fadeIn(visible, 100) }}>
-
-          {/* Industry list */}
-          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr", gap: m ? 8 : 10, marginBottom: m ? 24 : 0 }}>
-            {INDUSTRIES.map((ind) => {
-              const isActive = active.key === ind.key;
-              return (
-                <button key={ind.key} onClick={() => { setSelected(ind); pausedRef.current = true; }}
-                  style={{
-                    display: "flex", alignItems: "center", gap: 10,
-                    height: m ? 44 : 48, padding: m ? "0 12px" : "0 16px",
-                    borderRadius: 12,
-                    backgroundColor: isActive ? C.navy : "transparent",
-                    border: isActive ? "1px solid transparent" : "1px solid rgba(14,26,43,0.08)",
-                    fontSize: m ? 13 : 14, fontWeight: isActive ? 600 : 500,
-                    color: isActive ? "#fff" : C.textSecondary,
-                    cursor: "pointer", textAlign: "left" as const,
-                    transition: "all 240ms cubic-bezier(0.22, 1, 0.36, 1)",
-                  }}
-                  onMouseEnter={e => { if (!isActive) { e.currentTarget.style.backgroundColor = "rgba(14,26,43,0.03)"; e.currentTarget.style.borderColor = "rgba(14,26,43,0.15)"; } }}
-                  onMouseLeave={e => { if (!isActive) { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.borderColor = "rgba(14,26,43,0.08)"; } }}>
-                  {isActive && <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: bandColor2, flexShrink: 0 }} />}
-                  {m && (ind as { shortName?: string }).shortName ? (ind as { shortName?: string }).shortName : ind.name}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Insight card — persistent DOM, content crossfades */}
-          <div style={{
-            backgroundColor: C.navy, borderRadius: 24, padding: m ? "28px 24px" : "36px 40px",
-            boxShadow: "0 12px 48px rgba(14,26,43,0.15), 0 4px 16px rgba(14,26,43,0.08)",
-            position: "relative" as const, overflow: "hidden",
-          }}>
-            {/* Gradient accent top — color transitions smoothly */}
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${bandColor2}, ${C.purple})`, transition: "background 500ms ease" }} />
-
-            {/* Header: industry + score ring */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
-              <div>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.40)", marginBottom: 6 }}>STRUCTURAL PROFILE</div>
-                <div style={{ fontSize: m ? 20 : 24, fontWeight: 600, color: C.sandText, letterSpacing: "-0.02em", transition: "opacity 300ms ease" }}>{active.name}</div>
-              </div>
-              <IndustryMiniRing score={active.median} size={m ? 52 : 64} />
-            </div>
-
-            {/* Constraint callout */}
-            <div style={{ padding: m ? "14px 16px" : "16px 20px", borderRadius: 14, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", marginBottom: 20 }}>
-              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: C.risk, marginBottom: 6 }}>PRIMARY CONSTRAINT</div>
-              <div style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: C.sandText, lineHeight: 1.4 }}>{active.constraint}</div>
-            </div>
-
-            {/* Description */}
-            <p style={{ fontSize: m ? 14 : 15, color: "rgba(244,241,234,0.55)", lineHeight: 1.7, margin: "0 0 24px" }}>{active.desc}</p>
-
-            {/* Income pressure bar */}
-            <div style={{ marginBottom: 20 }}>
-              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.35)", marginBottom: 10 }}>TYPICAL INCOME STRUCTURE</div>
-              <div style={{ display: "flex", height: 10, borderRadius: 999, overflow: "hidden" }}>
-                <div style={{ width: `${active.atRisk}%`, backgroundColor: C.risk, transition: "width 800ms cubic-bezier(0.22, 1, 0.36, 1)" }} />
-                <div style={{ width: `${active.recurring}%`, backgroundColor: C.moderate, transition: "width 800ms cubic-bezier(0.22, 1, 0.36, 1)" }} />
-                <div style={{ width: `${active.protected}%`, backgroundColor: C.teal, transition: "width 800ms cubic-bezier(0.22, 1, 0.36, 1)" }} />
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8 }}>
-                <span style={{ fontSize: m ? 10 : 11, color: C.risk, fontWeight: 600 }}>{m ? "Risk" : "At risk"} {active.atRisk}%</span>
-                <span style={{ fontSize: m ? 10 : 11, color: C.moderate, fontWeight: 600 }}>{m ? "Recur." : "Recurring"} {active.recurring}%</span>
-                <span style={{ fontSize: m ? 10 : 11, color: C.teal, fontWeight: 600 }}>{m ? "Prot." : "Protected"} {active.protected}%</span>
-              </div>
-            </div>
-
-            {/* Bottom stats row */}
-            <div style={{ display: "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr", gap: m ? 12 : 0, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-              <div style={{ textAlign: "center", padding: m ? "8px 0" : "0 16px", borderRight: m ? "none" : "1px solid rgba(255,255,255,0.06)" }}>
-                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 4 }}>BASELINE SCORE</div>
-                <div style={{ fontSize: 20, fontWeight: 700, fontFamily: mono, color: bandColor2, transition: "color 500ms ease" }}>{active.median}</div>
-              </div>
-              <div style={{ textAlign: "center", padding: m ? "8px 0" : "0 16px", borderRight: m ? "none" : "1px solid rgba(255,255,255,0.06)" }}>
-                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 4 }}>STABILITY BAND</div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: bandColor2, transition: "color 500ms ease" }}>{bandLabel}</div>
-              </div>
-              <div style={{ textAlign: "center", padding: m ? "8px 0" : "0 16px", gridColumn: m ? "1 / -1" : "auto" }}>
-                <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 4 }}>TOP RISK</div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: C.sandText }}>{active.risk}</div>
-              </div>
-            </div>
-          </div>
+        {/* Industry pill grid */}
+        <div style={{ display: "flex", flexWrap: "wrap" as const, justifyContent: "center", gap: m ? 8 : 10, maxWidth: 800, margin: "0 auto", marginBottom: active ? (m ? 32 : 40) : 0, ...fadeIn(visible, 80) }}>
+          {INDUSTRIES.map((ind) => {
+            const isActive = active?.key === ind.key;
+            return (
+              <button key={ind.key} onClick={() => setSelected(isActive ? null : ind)}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  height: m ? 40 : 44, padding: m ? "0 14px" : "0 18px",
+                  borderRadius: 100,
+                  backgroundColor: isActive ? C.navy : "transparent",
+                  border: isActive ? "1px solid transparent" : `1px solid rgba(14,26,43,0.10)`,
+                  fontSize: m ? 13 : 14, fontWeight: isActive ? 600 : 500,
+                  color: isActive ? "#fff" : C.textSecondary,
+                  cursor: "pointer",
+                  transition: "all 200ms cubic-bezier(0.22, 1, 0.36, 1)",
+                }}
+                onMouseEnter={e => { if (!isActive) { e.currentTarget.style.backgroundColor = "rgba(14,26,43,0.04)"; e.currentTarget.style.borderColor = "rgba(14,26,43,0.18)"; } }}
+                onMouseLeave={e => { if (!isActive) { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.borderColor = "rgba(14,26,43,0.10)"; } }}>
+                {m && (ind as { shortName?: string }).shortName ? (ind as { shortName?: string }).shortName : ind.name}
+              </button>
+            );
+          })}
         </div>
 
-        <p style={{ fontSize: 14, color: C.textMuted, textAlign: "center", marginTop: m ? 32 : 44, lineHeight: 1.6, maxWidth: explanatoryW, marginLeft: "auto", marginRight: "auto" }}>
-          Industry baselines derived from structural income modeling. Your individual score depends on your specific setup. Baselines are refined as assessment data grows.
-        </p>
+        {/* Constraint reveal — only shows when an industry is selected */}
+        {active && (
+          <div style={{
+            maxWidth: 600, margin: "0 auto",
+            textAlign: "center",
+            padding: m ? "28px 24px" : "36px 40px",
+            borderRadius: 20,
+            backgroundColor: C.sand,
+            border: `1px solid rgba(14,26,43,0.06)`,
+          }}>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 12 }}>{active.name.toUpperCase()}</div>
+            <p style={{ fontSize: m ? 18 : 22, fontWeight: 600, color: C.navy, lineHeight: 1.35, marginBottom: 16 }}>
+              {active.constraint}
+            </p>
+            <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.6, marginBottom: 24 }}>
+              {active.desc}
+            </p>
+            <Link href="/begin" style={{
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              height: 48, padding: "0 28px", borderRadius: 14,
+              backgroundColor: C.navy, color: "#fff",
+              fontSize: 15, fontWeight: 600, textDecoration: "none",
+              boxShadow: ctaShadow,
+              transition: "transform 200ms, box-shadow 200ms",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = ctaShadow; }}
+            >
+              See how your {active.name.toLowerCase()} income scores
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );
