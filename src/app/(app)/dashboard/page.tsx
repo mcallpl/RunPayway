@@ -812,7 +812,7 @@ function DashboardContent() {
                 </div>
 
                 {/* This Week section */}
-                <div style={{ padding: mobile ? "20px 18px" : "24px 28px", borderRadius: 16, backgroundColor: "rgba(14,26,43,0.015)", borderLeft: `3px solid ${C.teal}20` }}>
+                <div style={{ padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 16, backgroundColor: "rgba(14,26,43,0.015)", borderLeft: `3px solid ${C.teal}20` }}>
                   <div style={skBone("80%", 18, 8, { marginBottom: 10 })} />
                   <div style={skBone("60%", 14, 8)} />
                 </div>
@@ -1158,7 +1158,7 @@ function DashboardContent() {
 
                   {/* This Week — lead with the sentence, not labels */}
                   {topMoves.length > 0 && (
-                    <div style={{ padding: mobile ? "20px 18px" : "24px 28px", borderRadius: 16, backgroundColor: `${B.teal}03`, borderLeft: `3px solid ${B.teal}` }}>
+                    <div style={{ padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 16, backgroundColor: `${B.teal}03`, borderLeft: `3px solid ${B.teal}` }}>
                       {stepsDone >= stepsTotal ? (
                         <>
                           <div style={{ fontSize: mobile ? 17 : 19, fontWeight: 500, color: B.navy, lineHeight: 1.4, marginBottom: 6 }}>
@@ -1295,7 +1295,7 @@ function DashboardContent() {
             {/* Zone cards — insight-first, data secondary */}
             <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
               {zones.map(z => (
-                <div key={z.id} style={{ padding: mobile ? "18px 16px" : "22px 28px", borderRadius: 14, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${z.color}` }}>
+                <div key={z.id} style={{ padding: mobile ? "18px 20px" : "22px 28px", borderRadius: 14, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${z.color}` }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
                     <span style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{z.label} — <span style={{ fontFamily: mono, color: z.color }}>{z.pct}%</span></span>
                     {z.peer && <span style={{ fontSize: 12, color: B.taupe }}>{z.peer}</span>}
@@ -1306,7 +1306,7 @@ function DashboardContent() {
             </div>
 
             {/* Biggest risk — clean, below zones */}
-            <div style={{ marginTop: 24, padding: mobile ? "20px 18px" : "24px 28px", borderRadius: 14, backgroundColor: `${B.red}04`, borderLeft: `3px solid ${B.red}` }}>
+            <div style={{ marginTop: 24, padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 14, backgroundColor: `${B.red}04`, borderLeft: `3px solid ${B.red}` }}>
               <p style={{ fontSize: mobile ? 16 : 18, fontWeight: 500, color: B.navy, margin: "0 0 8px", lineHeight: 1.4 }}>
                 {vocabDash.scenarios.lose_top_client.split(/[.!?]/)[0]}  — your score drops {dScore - stLCDrop < 30 && dScore >= 30 ? "into Limited Stability." : `from ${dScore} to ${dScore - stLCDrop}.`}
               </p>
@@ -1323,7 +1323,7 @@ function DashboardContent() {
                 { label: vocabDash.scenarios.lose_top_client.split(/[.!?]/)[0], insight: stLC ? `Your score drops to ${stLC.overall_score}.${stLC.overall_score < 30 && dScore >= 30 ? " That puts you in Limited Stability." : ""}` : "Loading...", val: stLC ? `${dScore} → ${stLC.overall_score}` : "..." },
                 { label: vocabDash.scenarios.cant_work_90_days.split(/[.!?]/)[0], insight: stNW ? `Your score drops to ${stNW.overall_score}.${stNW.overall_score < 30 && dScore >= 30 ? " That puts you in Limited Stability." : ""}` : "Loading...", val: stNW ? `${dScore} → ${stNW.overall_score}` : "..." },
               ].map(row => (
-                <div key={row.label} style={{ flex: 1, padding: mobile ? "22px 18px" : "26px 28px", borderRadius: 16, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${B.red}` }}>
+                <div key={row.label} style={{ flex: 1, padding: mobile ? "22px 20px" : "26px 28px", borderRadius: 16, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${B.red}` }}>
                   <p style={{ fontSize: 15, fontWeight: 500, color: B.navy, margin: "0 0 6px", lineHeight: 1.4 }}>{row.label}</p>
                   <p style={{ fontSize: 14, color: B.muted, margin: "0 0 8px", lineHeight: 1.55 }}>{row.insight}</p>
                   <span style={{ fontSize: 13, fontFamily: mono, color: B.red }}>{row.val}</span>
@@ -1431,7 +1431,7 @@ function DashboardContent() {
                     return (
                       <div key={play.id} style={{ borderRadius: 14, backgroundColor: "#FAFAFA", border: `1px solid ${B.stone}`, overflow: "hidden" }}>
                         <button onClick={() => setExpandedPlaybook(isExp ? null : play.id)}
-                          style={{ width: "100%", padding: mobile ? "18px 16px" : "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, background: "none", border: "none", cursor: "pointer", textAlign: "left" as const, minHeight: 44 }}>
+                          style={{ width: "100%", padding: mobile ? "18px 20px" : "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, background: "none", border: "none", cursor: "pointer", textAlign: "left" as const, minHeight: 44, boxSizing: "border-box" as const }}>
                           <div style={{ flex: 1 }}>
                             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4, flexWrap: "wrap" as const }}>
                               <div style={{ width: 24, height: 24, borderRadius: 6, backgroundColor: `${B.teal}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -1448,7 +1448,7 @@ function DashboardContent() {
                           </div>
                         </button>
                         {isExp && (
-                          <div style={{ padding: mobile ? "0 16px 20px" : "0 24px 24px" }}>
+                          <div style={{ padding: mobile ? "0 24px 20px" : "0 24px 24px" }}>
                             {/* Why this matters for YOU */}
                             {play.briefing && (
                               <div style={{ padding: "14px 16px", borderRadius: 10, borderLeft: `3px solid ${B.teal}`, backgroundColor: `${B.teal}04`, marginBottom: 16 }}>
@@ -1476,7 +1476,7 @@ function DashboardContent() {
                             {/* The script */}
                             {play.script && (
                               <div style={{ position: "relative", marginBottom: 16 }}>
-                                <pre style={{ fontSize: 14, color: B.navy, lineHeight: 1.65, whiteSpace: "pre-wrap" as const, margin: 0, padding: mobile ? "16px 14px" : "20px 24px", backgroundColor: B.white, borderRadius: 10, border: `1px solid ${B.stone}`, fontFamily: sans }}>{play.script}</pre>
+                                <pre style={{ fontSize: 14, color: B.navy, lineHeight: 1.65, whiteSpace: "pre-wrap" as const, margin: 0, padding: mobile ? "16px 20px" : "20px 24px", backgroundColor: B.white, borderRadius: 10, border: `1px solid ${B.stone}`, fontFamily: sans }}>{play.script}</pre>
                                 <button aria-label="Copy playbook script to clipboard" onClick={() => copyPB(play.script, play.id)}
                                   style={{ position: "absolute", top: 10, right: 10, fontSize: 13, fontWeight: 600, color: copiedPlaybook === play.id ? B.teal : B.muted, backgroundColor: copiedPlaybook === play.id ? `${B.teal}08` : "#FAFAFA", border: `1px solid ${B.stone}`, borderRadius: 8, padding: "8px 14px", cursor: "pointer", minHeight: 36, transition: "all 200ms" }}>
                                   {copiedPlaybook === play.id ? "Copied!" : "Copy"}
@@ -1568,7 +1568,7 @@ function DashboardContent() {
                         </div>
                       ) : isFirst ? (
                         /* Active step — fully expanded */
-                        <div style={{ padding: mobile ? "20px 18px" : "24px 28px", borderRadius: 16, backgroundColor: `${B.purple}03`, border: `1px solid ${B.purple}15` }}>
+                        <div style={{ padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 16, backgroundColor: `${B.purple}03`, border: `1px solid ${B.purple}15` }}>
                           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 10 }}>YOUR CURRENT STEP</div>
 
                           <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 6, lineHeight: 1.3 }}>{step.action}</div>
@@ -1616,7 +1616,7 @@ function DashboardContent() {
           {/* What-If Explorer — categorized, visual, recommended */}
           <section className="cc-section">
             <button onClick={() => setWhatIfOpen(!whatIfOpen)}
-              style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: mobile ? "24px 22px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: whatIfOpen ? "14px 14px 0 0" : 14, backgroundColor: B.surface, cursor: "pointer", transition: "border-radius 200ms", boxShadow: "0 1px 3px rgba(14,26,43,0.02)" }}>
+              style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: mobile ? "24px 22px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: whatIfOpen ? "14px 14px 0 0" : 14, backgroundColor: B.surface, cursor: "pointer", transition: "border-radius 200ms", boxShadow: "0 1px 3px rgba(14,26,43,0.02)", boxSizing: "border-box" as const }}>
               <div style={{ textAlign: "left" as const, flex: 1 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 4 }}>WHAT-IF EXPLORER</div>
                 <div style={{ fontSize: 14, color: B.muted }}>Test changes before you commit. See the exact score impact.</div>
@@ -2039,7 +2039,7 @@ function DashboardContent() {
                       </span>
                     </div>
                     {snapshotTip === item.key && (
-                      <div style={{ padding: mobile ? "12px 14px" : "14px 18px", marginBottom: 10, borderRadius: 10, backgroundColor: `${B.purple}04`, borderLeft: `3px solid ${B.purple}20`, animation: "fadeSlideIn 200ms ease-out" }}>
+                      <div style={{ padding: mobile ? "14px 16px" : "14px 18px", marginBottom: 10, borderRadius: 10, backgroundColor: `${B.purple}04`, borderLeft: `3px solid ${B.purple}20`, animation: "fadeSlideIn 200ms ease-out" }}>
                         <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: B.purple, marginBottom: 4 }}>TIP FOR {ind.toUpperCase()}</div>
                         <p style={{ fontSize: 14, color: B.navy, margin: 0, lineHeight: 1.55 }}>{item.tip}</p>
                       </div>
@@ -2049,7 +2049,7 @@ function DashboardContent() {
               })()}
             </div>
 
-            <div style={{ marginTop: 24, padding: mobile ? "18px 16px" : "20px 24px", borderRadius: 12, backgroundColor: "#FAFAFA", textAlign: "center" }}>
+            <div style={{ marginTop: 24, padding: mobile ? "18px 20px" : "20px 24px", borderRadius: 12, backgroundColor: "#FAFAFA", textAlign: "center" }}>
               <p style={{ fontSize: 15, color: B.navy, margin: "0 0 16px", lineHeight: 1.55 }}>
                 If your structure has changed, your score may not reflect where you are today.
               </p>
