@@ -1009,7 +1009,7 @@ function StructuralIncomeBrief() {
           The Structural Income Brief
         </h2>
         <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted, marginBottom: m ? 32 : 40, maxWidth: 520, marginLeft: "auto", marginRight: "auto", ...fadeIn(visible, 120) }}>
-          A periodic analysis of income stability patterns across industries. Data-driven. No fluff. Delivered to your inbox.
+          One email per month. Industry-specific income patterns, structural risks most people miss, and the data behind&nbsp;them.
         </p>
         <div style={{ display: "flex", justifyContent: "center", ...fadeIn(visible, 180) }}>
           <EmailCapture variant="standalone" source="homepage_brief_section" />
