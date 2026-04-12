@@ -73,6 +73,15 @@ const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace'
 
 const ARTICLES = [
   {
+    slug: "the-income-stability-gap",
+    title: "The Income Stability Gap: What Your Accountant, Advisor, and Bank All Miss",
+    excerpt: "Three professionals look at your money. None of them measure the one thing that determines whether your income survives next quarter.",
+    category: "INSIGHT",
+    readTime: "8 min read",
+    date: "April 12, 2026",
+    author: "RunPayway Research",
+  },
+  {
     slug: "what-is-income-stability",
     title: "What Is Income Stability \u2014 And Why Nobody Measures It",
     excerpt: "Credit scores measure borrowing. Income verification measures amounts. Nobody measures how income is built. That gap has consequences.",

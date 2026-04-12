@@ -84,6 +84,15 @@ interface ArticleMeta {
 
 const ARTICLES: ArticleMeta[] = [
   {
+    slug: "the-income-stability-gap",
+    title: "The Income Stability Gap: What Your Accountant, Advisor, and Bank All Miss",
+    category: "INSIGHT",
+    readTime: "8 min read",
+    date: "April 12, 2026",
+    author: "RunPayway Research",
+    excerpt: "Three professionals look at your money. None of them measure the one thing that determines whether your income survives next quarter.",
+  },
+  {
     slug: "what-is-income-stability",
     title: "What Is Income Stability \u2014 And Why Nobody Measures It",
     category: "FUNDAMENTALS",
@@ -438,11 +447,127 @@ function Article3() {
 
 function getArticleContent(slug: string): React.ReactNode | null {
   switch (slug) {
+    case "the-income-stability-gap": return <Article4 />;
     case "what-is-income-stability": return <Article1 />;
     case "hidden-risk-in-commission-income": return <Article2 />;
     case "recurring-revenue-for-service-businesses": return <Article3 />;
     default: return null;
   }
+}
+
+
+/* ================================================================ */
+/* ARTICLE 4: THE INCOME STABILITY GAP                               */
+/* ================================================================ */
+
+function Article4() {
+  return (
+    <>
+      <P>
+        Three professionals look at your money. Your accountant tracks what you earned last year. Your financial advisor manages what you&rsquo;ve accumulated. Your bank verifies how much comes in each month. Between the three of them, they cover income history, asset growth, and cash flow.
+      </P>
+      <P>
+        None of them measure the one thing that determines whether your income survives next quarter.
+      </P>
+
+      <H2>The Gap Nobody Talks About</H2>
+      <P>
+        Consider a management consultant earning $180,000 a year. On paper, everything looks strong. The accountant files clean returns. The advisor allocates a healthy portfolio. The bank approves the mortgage. Every system says &ldquo;this person is doing well.&rdquo;
+      </P>
+      <P>
+        But here&rsquo;s what none of them see: 70% of that $180,000 comes from a single client on a handshake agreement. Nothing is contracted beyond the current quarter. There&rsquo;s no recurring revenue, no retainer, no written commitment past 90 days. If that client changes direction, $126,000 vanishes&mdash;and there&rsquo;s nothing in the pipeline to replace it.
+      </P>
+      <P>
+        The consultant&rsquo;s income isn&rsquo;t $180,000. It&rsquo;s $180,000 <em>if nothing changes</em>. That distinction is invisible to every tool in the current financial system.
+      </P>
+
+      <PullQuote>
+        Your accountant sees what happened. Your advisor manages what accumulated. Your bank verifies what arrived. Nobody measures whether it will continue.
+      </PullQuote>
+
+      <H2>What Your Accountant Misses</H2>
+      <P>
+        Accountants are essential. They organize financial records, ensure tax compliance, and identify deductions. But their lens is backward-looking by design. They work with what has already occurred.
+      </P>
+      <P>
+        A tax return shows $180,000 in revenue. It does not show that $126,000 of it came from one source with no contract. It does not show that income arrived in three large deposits with nothing in the months between. It does not show that the entire earning structure depends on one relationship continuing exactly as it has.
+      </P>
+      <P>
+        The accountant&rsquo;s job is to report accurately on the past. The stability of the income going forward is outside that scope&mdash;not because they don&rsquo;t care, but because no tool exists to measure it.
+      </P>
+
+      <H2>What Your Financial Advisor Misses</H2>
+      <P>
+        Financial advisors focus on what you&rsquo;ve built: retirement accounts, investment portfolios, insurance coverage, estate plans. Their expertise is in managing accumulated wealth and protecting it over time.
+      </P>
+      <P>
+        But the income funding those accounts? That&rsquo;s treated as a given. The standard planning conversation assumes income continues at roughly the same level. The advisor models what happens to your portfolio over 20 years&mdash;but rarely asks what happens if the income feeding it drops 40% in the next six months.
+      </P>
+      <P>
+        This isn&rsquo;t negligence. It&rsquo;s a blind spot built into the advisory model. Financial planning tools don&rsquo;t have an input field for &ldquo;how much of your income is actually protected.&rdquo; The question has never had a measurable answer.
+      </P>
+
+      <H2>What Your Bank Misses</H2>
+      <P>
+        Banks verify income for one purpose: to determine whether you can service a debt. Mortgage underwriting looks at two years of tax returns, recent pay stubs, and bank statements. The question is simple: does enough money come in to cover the payment?
+      </P>
+      <P>
+        What they don&rsquo;t evaluate is how that income is constructed. A W-2 employee earning $180,000 from a Fortune 500 company and a freelance consultant earning $180,000 from a single client look identical on a loan application. Both show the same annual income. Both can demonstrate consistent deposits.
+      </P>
+      <P>
+        But the risk profiles are completely different. The employee has contractual protections, severance provisions, and unemployment insurance. The consultant has none of those. The bank&rsquo;s system can&rsquo;t distinguish between the two because it was never designed to.
+      </P>
+
+      <H2>The Layer Between Earning and Keeping</H2>
+      <P>
+        This is the income stability gap. Not a gap in how much you earn&mdash;a gap in understanding <em>how</em> you earn it. Specifically:
+      </P>
+      <BulletList items={[
+        "How many sources does your income depend on?",
+        "How much of it is contractually committed beyond this month?",
+        "What percentage is recurring versus one-time?",
+        "What happens to your total income if your largest source disappears?",
+        "How far ahead can you see with reasonable certainty?",
+      ]} />
+      <P>
+        These aren&rsquo;t abstract questions. They determine whether a bad quarter is an inconvenience or a crisis. And until now, no system existed to answer them with a consistent, measurable score.
+      </P>
+
+      <H2>Why This Gap Exists</H2>
+      <P>
+        The financial system evolved around three pillars: credit risk, asset management, and income verification. Each serves a critical function. But each was built for a world where most income was salaried, predictable, and employer-backed.
+      </P>
+      <P>
+        That world is shrinking. Today, over 36% of the U.S. workforce earns through freelance, contract, gig, or commission-based arrangements. For these earners, income is not a fixed input&mdash;it&rsquo;s a variable output that depends on client retention, deal flow, market conditions, and personal capacity.
+      </P>
+      <P>
+        The tools that evaluate financial health were not built for this reality. Credit scores don&rsquo;t account for it. Financial plans assume around it. Bank underwriting ignores it. The result is a growing population of earners whose financial picture looks complete on the surface&mdash;but has a critical measurement missing underneath.
+      </P>
+
+      <PullQuote>
+        The financial system was built for salaried income. The workforce moved on. The measurement tools didn&rsquo;t.
+      </PullQuote>
+
+      <H2>Closing the Gap</H2>
+      <P>
+        RunPayway&#8482; was built to fill this gap. The Income Stability Score&#8482; measures the six key dimensions of how income is constructed&mdash;not the amount. It evaluates source diversity, income persistence, forward visibility, concentration risk, labor dependence, and earnings consistency.
+      </P>
+      <P>
+        The result is a score from 0 to 100 that tells you what no accountant, advisor, or bank currently can: how much of your income is protected, how much is at risk, and what specific actions would strengthen it.
+      </P>
+      <P>
+        It doesn&rsquo;t replace any of these professionals. It gives them&mdash;and you&mdash;the measurement that&rsquo;s been missing. The one that sits between earning money and being able to count on it.
+      </P>
+
+      <H2>What To Do Next</H2>
+      <P>
+        If you earn variable income&mdash;through consulting, freelancing, commissions, business ownership, or any arrangement where next quarter isn&rsquo;t guaranteed&mdash;the stability gap applies to you. The question isn&rsquo;t whether your income is good. It&rsquo;s whether your income is built to last.
+      </P>
+      <P style={{ fontWeight: 600, color: "#0E1A2B" }}>
+        RunPayway&#8482; measures that in under two minutes. No financial accounts required. No documents. Just what you already know about how your income works.
+      </P>
+    </>
+  );
 }
 
 
@@ -512,13 +637,13 @@ function ArticleCta() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 100, paddingBottom: m ? 72 : 100, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center" }}>
         <p style={{ fontFamily: mono, fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
-          STRUCTURAL ASSESSMENT
+          YOUR INCOME SCORE
         </p>
         <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 16, ...fadeIn(visible, 50) }}>
-          See how your income is built.
+          Your income has a structure. See&nbsp;yours.
         </h2>
         <p style={{ fontSize: 17, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted, marginBottom: 32, ...fadeIn(visible, 100) }}>
-          The Income Stability Score measures the structural properties of your income&mdash;not the amount. Under 2 minutes. Fully deterministic. Private by default.
+          RunPayway&#8482; scores how much of your income is protected, how much is at risk, and what to do about it. Under 2 minutes. Consistent results. Private by&nbsp;default.
         </p>
         <div style={{ ...fadeIn(visible, 150) }}>
           <Link href="/begin" style={{
@@ -533,7 +658,7 @@ function ArticleCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get Your Structural Income Report
+            Get Your Income Stability Score
           </Link>
         </div>
       </div>
