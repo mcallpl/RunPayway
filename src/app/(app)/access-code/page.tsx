@@ -10,7 +10,7 @@ const B = {
   purple: C.purple,
   teal: C.teal,
   white: C.white,
-  bg: "#FAFAFA",
+  bg: C.panelFill,
   surface: C.white,
   stone: "#E5E7EB",
   taupe: C.light,
@@ -70,20 +70,20 @@ function AccessCodeContent() {
       <div style={{ minHeight: "100vh", backgroundColor: B.bg, fontFamily: sans }}>
         <SuiteHeader current="access-code" />
 
-        <div style={{ maxWidth: 520, margin: "0 auto", padding: mobile ? "48px 20px 100px" : "80px 36px 96px" }}>
+        <div style={{ maxWidth: 520, margin: "0 auto", padding: mobile ? "48px 28px 100px" : "80px 36px 96px" }}>
 
           <div style={{ textAlign: "center", marginBottom: 40 }}>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: B.purple, marginBottom: 16 }}>ACCESS CODE</div>
             <h1 style={{ fontSize: mobile ? 22 : 28, fontWeight: 300, color: B.navy, margin: "0 0 12px", lineHeight: 1.25, letterSpacing: "-0.02em" }}>
-              Load your Dashboard.
+              Open your action plan.
             </h1>
             <p style={{ fontSize: 15, color: B.muted, margin: 0, lineHeight: 1.65 }}>
-              Paste the access code from your RunPayway™ report to open your full diagnostic, simulator, and roadmap.
+              Paste the access code from your RunPayway&#8482; report to unlock your personalized plan, scripts, and progress&nbsp;tracking.
             </p>
           </div>
 
           <div style={{
-            padding: mobile ? "24px 16px" : "36px 32px",
+            padding: mobile ? "28px 24px" : "36px 32px",
             borderRadius: 16,
             border: `1px solid ${B.stone}`,
             backgroundColor: B.surface,
@@ -130,7 +130,7 @@ function AccessCodeContent() {
               Your access code is on page 1 and page 4 of your RunPayway™ report.
             </p>
             <p style={{ fontSize: 13, color: `${B.taupe}80`, margin: 0 }}>
-              Same code, same score. Deterministic by design.
+              Same code, same score. Consistent by design.
             </p>
           </div>
 
