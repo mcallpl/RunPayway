@@ -961,7 +961,7 @@ export default function DiagnosticPage() {
         <style dangerouslySetInnerHTML={{ __html: `${VIEWPORT_LOCK_CSS} @keyframes quoteLoadBar { 0% { width: 0%; } 30% { width: 35%; } 60% { width: 70%; } 90% { width: 92%; } 100% { width: 100%; } }` }} />
 
         {/* Quote — the hero of this page */}
-        <div style={{ maxWidth: 520, padding: mobile ? "0 20px" : "0 32px", textAlign: "center", width: "100%" }}>
+        <div style={{ maxWidth: 520, padding: mobile ? "0 28px" : "0 32px", textAlign: "center", width: "100%", boxSizing: "border-box" as const }}>
           <div style={{ minHeight: mobile ? 100 : 140, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <div style={{ opacity: quoteFade ? 1 : 0, transition: "opacity 500ms ease" }}>
               <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 300, color: C.navy, lineHeight: 1.5, margin: "0 0 16px", letterSpacing: "-0.01em" }}>
@@ -1029,7 +1029,7 @@ export default function DiagnosticPage() {
         </div>
       )}
       {/* Dark branded header */}
-      <div style={{ background: C.navy, padding: mobile ? "14px 16px" : "16px 24px", textAlign: "center" }}>
+      <div style={{ background: C.navy, padding: mobile ? "14px 24px" : "16px 24px", textAlign: "center" }}>
         <div style={{ fontSize: mobile ? 11 : 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.sandMuted }}>
           Income Stability Score&#8482; &middot; Model RP-2.0
         </div>
@@ -1174,7 +1174,7 @@ export default function DiagnosticPage() {
       </div>
     )}
     {/* Dark branded header */}
-    <div style={{ background: C.navy, padding: mobile ? "14px 16px" : "16px 24px", textAlign: "center" }}>
+    <div style={{ background: C.navy, padding: mobile ? "14px 24px" : "16px 24px", textAlign: "center" }}>
       <div style={{ fontSize: mobile ? 11 : 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.sandMuted }}>
         Income Stability Score&#8482;
       </div>
@@ -1251,7 +1251,7 @@ export default function DiagnosticPage() {
           background: C.white,
           borderRadius: 16,
           border: "1px solid rgba(14,26,43,0.06)",
-          padding: mobile ? "24px 20px" : "32px 28px",
+          padding: mobile ? "24px 24px" : "32px 28px",
           flex: 1,
           display: "flex",
           flexDirection: "column",
@@ -1399,8 +1399,8 @@ export default function DiagnosticPage() {
               disabled={selected === null}
               style={{
                 height: 44,
-                paddingLeft: mobile ? 20 : 24,
-                paddingRight: mobile ? 20 : 24,
+                paddingLeft: mobile ? 24 : 24,
+                paddingRight: mobile ? 24 : 24,
                 borderRadius: 10,
                 background: selected === null ? "rgba(14,26,43,0.08)" : C.navy,
                 color: selected === null ? C.light : C.white,

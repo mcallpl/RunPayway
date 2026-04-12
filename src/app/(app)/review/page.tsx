@@ -1121,7 +1121,7 @@ export default function ReviewPage() {
               <div style={{ fontSize: mobile ? 17 : 22, fontWeight: 500, color: "#fff", marginBottom: 6 }}>{record.assessment_title}</div>
 
               {/* Next level callout */}
-              <div style={{ padding: mobile ? "14px 16px" : "16px 20px", borderRadius: 14, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", marginBottom: 20 }}>
+              <div style={{ padding: mobile ? "14px 24px" : "16px 20px", borderRadius: 14, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", marginBottom: 20 }}>
                 <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 6 }}>
                   {tier === "high" ? "TOP BAND" : "NEXT LEVEL"}
                 </div>
@@ -1199,7 +1199,7 @@ export default function ReviewPage() {
             const payload = { p: niCover.income_persistence_pct, c: niCover.largest_source_pct, s: niCover.source_diversity_count, f: niCover.forward_secured_pct, v: niCover.income_variability_level, l: niCover.labor_dependence_pct, q: (v2Cover?.quality as Record<string, number>)?.quality_score ?? 5, n: record.assessment_title || "", i: record.industry_sector || "", m: record.primary_income_model || "" };
             const code = btoa(JSON.stringify(payload));
             return (
-              <div style={{ padding: mobile ? "14px 16px" : "16px 20px", borderRadius: 14, backgroundColor: "rgba(14,26,43,0.02)", border: "1px solid rgba(14,26,43,0.06)", marginBottom: 12 }}>
+              <div style={{ padding: mobile ? "14px 24px" : "16px 20px", borderRadius: 14, backgroundColor: "rgba(14,26,43,0.02)", border: "1px solid rgba(14,26,43,0.06)", marginBottom: 12 }}>
                 <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(14,26,43,0.30)", marginBottom: 6 }}>COMMAND CENTER ACCESS</div>
                 <div style={{ fontSize: 11, color: "rgba(14,26,43,0.45)", marginBottom: 6 }}>Enter at runpayway.com/dashboard to access your interactive tools.</div>
                 <div style={{ fontFamily: mono, fontSize: mobile ? 10 : 11, color: "rgba(14,26,43,0.55)", letterSpacing: "0.01em", wordBreak: "break-all" as const, lineHeight: 1.4 }}>{code}</div>

@@ -86,7 +86,7 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
 /* ================================================================== */
 function PhaseSep({ label, color, tint, children, id, mobile }: { label: string; color: string; tint?: string; children?: React.ReactNode; id?: string; mobile?: boolean }) {
   return (
-    <div id={id} className="d-phase" style={{ margin: mobile ? "0 -16px" : "0 -32px", padding: mobile ? "0 16px 32px" : "0 32px 40px", backgroundColor: tint || "transparent", borderRadius: 4, overflow: "hidden" }}>
+    <div id={id} className="d-phase" style={{ margin: 0, padding: mobile ? "0 0 32px" : "0 0 40px", backgroundColor: tint || "transparent", borderRadius: 4, overflow: "hidden" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 14, padding: mobile ? "36px 0 20px" : "56px 0 28px" }}>
         <div style={{ width: 4, height: 40, borderRadius: 2, backgroundColor: color, opacity: 0.30, flexShrink: 0 }} />
         <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color, textTransform: "uppercase" as const, whiteSpace: "nowrap" as const }}>{label}</span>
@@ -783,7 +783,7 @@ function DashboardContent() {
         <div style={{ minHeight: "100vh", backgroundColor: C.sand, fontFamily: sans }}>
           <SuiteHeader current="dashboard" />
 
-          <div style={{ maxWidth: 960, margin: "0 auto", padding: mobile ? "20px 16px 120px" : "48px 36px 96px" }}>
+          <div style={{ maxWidth: 960, margin: "0 auto", padding: mobile ? "20px 28px 120px" : "48px 36px 96px" }}>
 
             {/* Skeleton: Score hero card */}
             <div style={{ marginBottom: 36 }}>
@@ -960,7 +960,7 @@ function DashboardContent() {
         <div style={{ minHeight: "100vh", backgroundColor: C.sand, fontFamily: sans }}>
           <SuiteHeader current="dashboard" />
 
-          <div style={{ maxWidth: 720, margin: "0 auto", padding: mobile ? "24px 16px 100px" : "48px 36px 96px" }}>
+          <div style={{ maxWidth: 720, margin: "0 auto", padding: mobile ? "24px 28px 100px" : "48px 36px 96px" }}>
 
             {/* Hero */}
             <div style={{ textAlign: "center", marginBottom: mobile ? 36 : 48, animation: "fadeSlideIn 600ms ease-out" }}>
@@ -1083,7 +1083,7 @@ function DashboardContent() {
             .d-metrics{flex-direction:column!important;}
             .d-compare{flex-direction:column!important;}
             .d-score-hero{flex-direction:column!important;align-items:center!important;text-align:center!important;}
-            .d-phase{margin:0 -16px!important;padding:0 16px 24px!important;}
+            .d-phase{margin:0!important;padding:0 0 24px!important;}
           }
           @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
           .cc-section { opacity: 0; transform: translateY(16px); transition: opacity 500ms ease, transform 500ms ease; }
@@ -1095,7 +1095,7 @@ function DashboardContent() {
         {/* Phase nav */}
         <PhaseNav activePhase={activePhase} mobile={mobile} />
 
-        <div style={{ maxWidth: 960, margin: "0 auto", padding: mobile ? "20px 16px 120px" : "48px 36px 96px", overflow: "hidden" }}>
+        <div style={{ maxWidth: 960, margin: "0 auto", padding: mobile ? "20px 28px 120px" : "48px 36px 96px", overflow: "hidden" }}>
 
           {/* ── MERGED: Score + This Week — one unified top section ── */}
           {(() => {

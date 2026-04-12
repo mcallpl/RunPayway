@@ -570,7 +570,7 @@ export default function InitializationPage() {
 
       {/* Top bar — institutional header */}
       <div style={{
-        background: C.navy, padding: mobile ? "14px 16px" : "14px 24px",
+        background: C.navy, padding: mobile ? "14px 24px" : "14px 24px",
         display: "flex", justifyContent: "space-between", alignItems: "center",
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: mobile ? 8 : 12 }}>
