@@ -95,8 +95,8 @@ const FAQ_DATA: FaqItem[] = [
   { id: "assess-retake", category: "assessment", categoryLabel: "Assessment", question: "Can I retake the assessment?", answer: "Yes. Each assessment reflects the inputs at that time.", keywords: ["retake", "again", "redo", "repeat"] },
 
   // --- Report ---
-  { id: "report-included", category: "report", categoryLabel: "Assessment Report", question: "What is included in the report?", answer: "Score and stability classification, structural breakdown, primary constraint, stress testing, and action plan. Each section is generated from your inputs.", keywords: ["report contents", "what is included", "report sections", "what do I get"] },
-  { id: "report-calculated", category: "report", categoryLabel: "Assessment Report", question: "How is the score calculated?", answer: "Using fixed rules defined in the Structural Stability Model. The same inputs always produce the same score.", keywords: ["how calculated", "calculation", "formula", "method", "deterministic"] },
+  { id: "report-included", category: "report", categoryLabel: "Assessment Report", question: "What is included in the report?", answer: "Score and stability classification, structural breakdown, biggest risk, stress testing, and action plan. Each section is generated from your inputs.", keywords: ["report contents", "what is included", "report sections", "what do I get"] },
+  { id: "report-calculated", category: "report", categoryLabel: "Assessment Report", question: "How is the score calculated?", answer: "Using consistent rules defined in a fixed scoring system. The same inputs always produce the same score.", keywords: ["how calculated", "calculation", "formula", "method", "consistent"] },
 
   // --- Dashboard ---
   { id: "cc-what", category: "command-center", categoryLabel: "Dashboard", question: "What is the Dashboard?", answer: "A structured interface for applying your results.", keywords: ["command center", "dashboard", "what is it"] },
@@ -107,24 +107,24 @@ const FAQ_DATA: FaqItem[] = [
 
   // --- Privacy ---
   { id: "privacy-data", category: "privacy", categoryLabel: "Privacy and Data", question: "How is my data handled?", answer: "Your inputs are used only to generate your score and report.", keywords: ["data", "privacy", "how used", "what happens to data"] },
-  { id: "privacy-shared", category: "privacy", categoryLabel: "Privacy and Data", question: "Is my information shared?", answer: "No. RunPayway does not sell or share your data.", keywords: ["shared", "sold", "third party", "sell data"] },
+  { id: "privacy-shared", category: "privacy", categoryLabel: "Privacy and Data", question: "Is my information shared?", answer: "No. RunPayway\u2122 does not sell or share your data.", keywords: ["shared", "sold", "third party", "sell data"] },
 
   // --- Pricing ---
   { id: "pricing-diff", category: "pricing", categoryLabel: "Pricing", question: "What is the difference between the free score and the full report?", answer: "The score shows your position. The report shows what defines it\u2014and what changes it.", keywords: ["free vs paid", "difference", "what do I get", "pricing", "cost"] },
   { id: "pricing-account", category: "pricing", categoryLabel: "Pricing", question: "Do I need an account?", answer: "Not for the free score or the $69 Dashboard\u2014those work without an account. The $149/year Monitoring plan requires a sign-in so your three annual assessments can be tracked and compared over time.", keywords: ["account", "sign up", "registration", "login", "sign in", "monitoring"] },
 
   // --- Enterprise ---
-  { id: "ent-multiple", category: "enterprise", categoryLabel: "Enterprise", question: "Can RunPayway assess multiple income profiles?", answer: "Yes. The system can evaluate multiple individuals using the same model.", keywords: ["multiple", "team", "bulk", "organization"] },
-  { id: "ent-volume", category: "enterprise", categoryLabel: "Enterprise", question: "Does RunPayway offer volume access?", answer: "Yes. Structured access can be provided for teams and organizations.", keywords: ["volume", "enterprise", "team access", "organization"] },
+  { id: "ent-multiple", category: "enterprise", categoryLabel: "Enterprise", question: "Can RunPayway\u2122 assess multiple income profiles?", answer: "Yes. The system can evaluate multiple individuals using the same model.", keywords: ["multiple", "team", "bulk", "organization"] },
+  { id: "ent-volume", category: "enterprise", categoryLabel: "Enterprise", question: "Does RunPayway\u2122 offer volume access?", answer: "Yes. Structured access can be provided for teams and organizations.", keywords: ["volume", "enterprise", "team access", "organization"] },
   { id: "ent-share", category: "enterprise", categoryLabel: "Enterprise", question: "Can assessment records be shared?", answer: "Yes. Reports can be shared at the discretion of the individual.", keywords: ["share", "send", "export", "advisor"] },
-  { id: "ent-integrate", category: "enterprise", categoryLabel: "Enterprise", question: "Can we integrate RunPayway into workflows?", answer: "Integration options can be discussed for enterprise use.", keywords: ["integrate", "api", "workflow", "embed"] },
+  { id: "ent-integrate", category: "enterprise", categoryLabel: "Enterprise", question: "Can we integrate RunPayway\u2122 into workflows?", answer: "Integration options can be discussed for enterprise use.", keywords: ["integrate", "api", "workflow", "embed"] },
 
   // --- Compliance ---
   { id: "comp-soc2", category: "compliance", categoryLabel: "Compliance", question: "Is RunPayway SOC 2 compliant?", answer: "RunPayway\u2122 is building toward SOC 2 Type II readiness. Our security controls are designed around the Trust Services Criteria (security, availability, processing integrity, confidentiality, and privacy). Formal certification is part of our compliance roadmap. Enterprise customers may request additional security documentation through our contact form.", keywords: ["soc 2", "soc2", "compliance", "security", "certified", "audit", "trust services"] },
   { id: "comp-iso27001", category: "compliance", categoryLabel: "Compliance", question: "Does RunPayway align with ISO 27001?", answer: "RunPayway\u2122 security practices are informed by the ISO 27001 framework, including risk assessment, access control, and continuous improvement. Formal certification is part of our compliance roadmap.", keywords: ["iso 27001", "iso", "information security", "isms", "framework"] },
   { id: "comp-gdpr", category: "compliance", categoryLabel: "Compliance", question: "Is RunPayway GDPR ready?", answer: "RunPayway\u2122 is designed with GDPR principles in mind. We publish a Data Processing Agreement, identify legal bases for processing, support data subject rights (access, rectification, erasure, portability, restriction, objection), implement Standard Contractual Clauses for international transfers, and maintain a 72-hour breach notification commitment.", keywords: ["gdpr", "european", "data protection", "dpa", "eu", "eea"] },
   { id: "comp-ccpa", category: "compliance", categoryLabel: "Compliance", question: "Does RunPayway comply with CCPA/CPRA?", answer: "RunPayway\u2122 supports California privacy rights as outlined in our Privacy Policy. We do not sell personal information, do not share data for cross-context behavioral advertising, and provide mechanisms for access, deletion, correction, and opt-out requests.", keywords: ["ccpa", "cpra", "california", "privacy rights"] },
-  { id: "comp-dpa", category: "compliance", categoryLabel: "Compliance", question: "Does RunPayway offer a Data Processing Agreement?", answer: "Yes. A standard Data Processing Agreement is published on our website and available at /data-processing-agreement. Enterprise customers requiring custom DPA terms may contact us through the contact form.", keywords: ["dpa", "data processing", "agreement", "contract", "enterprise"] },
+  { id: "comp-dpa", category: "compliance", categoryLabel: "Compliance", question: "Does RunPayway\u2122 offer a Data Processing Agreement?", answer: "Yes. A standard Data Processing Agreement is published on our website and available at /data-processing-agreement. Enterprise customers requiring custom DPA terms may contact us through the contact form.", keywords: ["dpa", "data processing", "agreement", "contract", "enterprise"] },
 
   // --- Licensing ---
   { id: "lic-score", category: "licensing", categoryLabel: "Licensing", question: "Can the score be licensed?", answer: "Yes. Licensing options are available for organizations.", keywords: ["license", "licensing", "use score"] },
@@ -254,7 +254,9 @@ function SearchResults({ results, query }: { results: FaqItem[]; query: string }
         <p style={{ fontSize: 16, color: C.textMuted }}>Try a different term.</p>
         <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 8, justifyContent: "center", marginTop: 24 }}>
           {["score", "assessment", "report", "privacy"].map(s => (
-            <span key={s} style={{ fontSize: 13, fontWeight: 500, color: C.teal, padding: "6px 14px", borderRadius: 8, backgroundColor: `${C.teal}08`, cursor: "default" }}>{s}</span>
+            <span key={s} style={{ fontSize: 13, fontWeight: 500, color: C.teal, padding: "6px 14px", borderRadius: 8, backgroundColor: "rgba(31,109,122,0.03)", border: "1px solid transparent", cursor: "default", transition: "background-color 150ms, border-color 150ms" }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = "rgba(31,109,122,0.08)"; e.currentTarget.style.borderColor = "rgba(31,109,122,0.20)"; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = "rgba(31,109,122,0.03)"; e.currentTarget.style.borderColor = "transparent"; }}>{s}</span>
           ))}
         </div>
       </div>
@@ -267,7 +269,7 @@ function SearchResults({ results, query }: { results: FaqItem[]; query: string }
   return (
     <div style={{ maxWidth: 780, margin: "0 auto", padding: m ? "40px 20px" : "64px 48px" }}>
       {/* Direct answer card */}
-      <div style={{ padding: m ? 28 : 36, borderRadius: 16, backgroundColor: C.sand, border: `1px solid rgba(14,26,43,0.06)`, marginBottom: 40 }}>
+      <div style={{ padding: m ? 28 : 36, borderRadius: 16, backgroundColor: C.sand, border: `1px solid rgba(14,26,43,0.06)`, boxShadow: "0 2px 8px rgba(14,26,43,0.04)", marginBottom: 40 }}>
         <p style={{ fontSize: m ? 18 : 20, fontWeight: 600, color: C.navy, marginBottom: 16, lineHeight: 1.35 }}>{top.question}</p>
         <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, color: C.textSecondary, lineHeight: 1.6, margin: 0, whiteSpace: "pre-line" }}>{top.answer}</p>
         <div style={{ display: "flex", alignItems: "center", marginTop: 20, paddingTop: 20, borderTop: `1px solid rgba(14,26,43,0.06)` }}>
@@ -278,7 +280,7 @@ function SearchResults({ results, query }: { results: FaqItem[]; query: string }
       {/* Related questions */}
       {related.length > 0 && (
         <div>
-          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 20 }}>RELATED</div>
+          <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.teal, marginBottom: 20 }}>RELATED</div>
           {related.map(item => (
             <div key={item.id} style={{ borderTop: `1px solid ${C.borderSoft}` }}>
               <button onClick={() => setExpanded(expanded === item.id ? null : item.id)}
@@ -423,7 +425,7 @@ function BrowseView({ activeCategory, setActiveCategory }: { activeCategory: str
               transition: "color 150ms",
             }}
             onClick={e => { e.preventDefault(); setExpanded(item.id); document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>
-            {item.question.length > 44 ? item.question.slice(0, 44) + "\u2026" : item.question}
+            <span style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.question}</span>
           </a>
         ))}
       </nav>
@@ -441,7 +443,7 @@ function FooterStrip() {
   return (
     <div style={{ backgroundColor: C.sand, padding: m ? "40px 20px" : "48px 48px", textAlign: "center" }}>
       <p style={{ fontSize: 13, fontWeight: 400, color: C.textMuted, margin: 0, letterSpacing: "0.02em" }}>
-        Income Stability Score&#8482; &bull; Powered by Structural Stability Model RP-2.0
+        Income Stability Score&#8482; &bull; Powered by fixed scoring system RP-2.0
       </p>
     </div>
   );
@@ -476,7 +478,7 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get Your Structural Income Report
+            Get Your Income Stability Score
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 16 }}>
             Under 2 minutes | Instant result | Private by default
