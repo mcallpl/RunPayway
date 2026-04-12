@@ -930,10 +930,10 @@ function BeforeYouBegin() {
   const fadeIn = useFadeIn();
 
   const items = [
-    { num: "01", question: "How much of your income renews automatically?", why: "Select a range \u2014 A through E" },
-    { num: "02", question: "How spread out is your income across sources?", why: "No need to count every dollar" },
-    { num: "03", question: "How far ahead is your income already committed?", why: "Just a general timeframe" },
-    { num: "04", question: "How consistent is your monthly income?", why: "Compare your best and slowest months" },
+    { num: "01", question: "How much of your income renews automatically?", why: "A general sense is all you need" },
+    { num: "02", question: "How spread out is your income across sources?", why: "Think sources, not exact amounts" },
+    { num: "03", question: "How far ahead is your income already committed?", why: "A rough timeframe works" },
+    { num: "04", question: "How consistent is your monthly income?", why: "Your best guess is enough" },
   ];
 
   return (
@@ -943,7 +943,7 @@ function BeforeYouBegin() {
 
           {/* Left — copy */}
           <div style={{ marginBottom: m ? 40 : 0, ...fadeIn(visible) }}>
-            <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>BEFORE YOU BEGIN</div>
+            <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>READY IN 2 MINUTES</div>
             <h2 style={{ fontSize: m ? 28 : 36, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.028em", color: C.navy, marginBottom: 20 }}>
               No documents.{m ? " " : <br />}No bank connection.{m ? " " : <br />}No account needed.
             </h2>
@@ -953,7 +953,7 @@ function BeforeYouBegin() {
             <div style={{ padding: m ? "18px 20px" : "20px 24px", borderRadius: 16, backgroundColor: C.white, border: "1px solid rgba(14,26,43,0.06)" }}>
               <div style={{ fontSize: 13, fontWeight: 600, color: C.navy, marginBottom: 6 }}>You don&rsquo;t need exact numbers.</div>
               <p style={{ fontSize: 14, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>
-                Reasonable estimates work. The model is designed for directional accuracy&mdash;not decimal precision.
+                Close enough is good enough. The system is built to work with&nbsp;estimates.
               </p>
             </div>
           </div>
