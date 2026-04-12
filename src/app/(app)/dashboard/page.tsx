@@ -334,6 +334,7 @@ function DashboardContent() {
   const [expandedPlaybook, setExpandedPlaybook] = useState<string | null>(null);
   const [copiedRecord, setCopiedRecord] = useState(false);
   const [snapshotTip, setSnapshotTip] = useState<string | null>(null);
+  const [expandedTipText, setExpandedTipText] = useState<Record<string, boolean>>({});
   const [showShareModal, setShowShareModal] = useState(false);
   const [simResults, setSimResults] = useState<Record<string, SimulationResult> | null>(null);
   const [activeTimeline, setActiveTimeline] = useState<TimelinePoint[] | null>(null);
@@ -804,7 +805,7 @@ function DashboardContent() {
                 {/* Metrics row */}
                 <div style={{ display: "flex", gap: 12, marginBottom: 28, flexDirection: mobile ? "column" : "row" }}>
                   {[1, 2, 3].map(i => (
-                    <div key={i} style={{ flex: 1, padding: mobile ? "12px 14px" : "14px 16px", borderRadius: 10, backgroundColor: "#FAFAFA", display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                    <div key={i} style={{ flex: 1, padding: mobile ? "12px 14px" : "14px 16px", borderRadius: 10, backgroundColor: `${B.teal}03`, display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
                       <div style={skBone(80, 10, 6)} />
                       <div style={skBone(60, 20, 8)} />
                     </div>
@@ -907,7 +908,7 @@ function DashboardContent() {
     {
       phase: "Test Your Options",
       color: B.teal,
-      tint: "rgba(31,109,122,0.02)",
+      tint: "rgba(14,26,43,0.015)",
       sections: [
         {
           title: "What-If Simulator",
@@ -1160,7 +1161,7 @@ function DashboardContent() {
                       { label: vocabDash.scenarios.lose_top_client.split(/[.!?]/)[0].slice(0, 40) || "If Top Source Leaves", value: `−${riskDrop} pts`, color: riskDrop > 15 ? B.red : B.amber },
                       { label: "Stability Type", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" || fragLabel === "Supported" ? B.teal : B.amber },
                     ].map((m) => (
-                      <div key={m.label} style={{ flex: 1, padding: mobile ? "12px 14px" : "14px 16px", textAlign: "center" as const, borderRadius: 10, backgroundColor: "#FAFAFA" }}>
+                      <div key={m.label} style={{ flex: 1, padding: mobile ? "12px 14px" : "14px 16px", textAlign: "center" as const, borderRadius: 10, backgroundColor: `${B.teal}03` }}>
                         <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 4 }}>{m.label.toUpperCase()}</div>
                         <div style={{ fontSize: 18, fontWeight: 600, fontFamily: mono, color: m.color }}>{m.value}</div>
                       </div>
@@ -1348,10 +1349,13 @@ function DashboardContent() {
                           </div>
                         </div>
                       ) : (
-                        /* Future step — collapsed, just the title */
-                        <div style={{ padding: "14px 20px", borderRadius: 12, backgroundColor: "#FAFAFA", border: `1px solid ${B.stone}`, opacity: 0.6 }}>
+                        /* Future step — collapsed, muted but readable */
+                        <div style={{ padding: "14px 20px", borderRadius: 12, backgroundColor: `${B.purple}03`, border: `1px solid rgba(14,26,43,0.08)` }}>
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
-                            <span style={{ fontSize: 15, fontWeight: 500, color: B.navy }}>{step.action}</span>
+                            <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+                              <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, padding: "2px 6px", borderRadius: 4, backgroundColor: "rgba(14,26,43,0.04)", flexShrink: 0 }}>UPCOMING</span>
+                              <span style={{ fontSize: 15, fontWeight: 500, color: B.muted }}>{step.action}</span>
+                            </div>
                             <span style={{ fontSize: 12, color: B.taupe, flexShrink: 0, whiteSpace: "nowrap" as const }}>{step.weeks}</span>
                           </div>
                         </div>
@@ -1453,7 +1457,7 @@ function DashboardContent() {
                   {playbookMoves.map((play, i) => {
                     const isExp = expandedPlaybook === play.id;
                     return (
-                      <div key={play.id} style={{ borderRadius: 14, backgroundColor: "#FAFAFA", border: `1px solid ${B.stone}`, overflow: "hidden" }}>
+                      <div key={play.id} style={{ borderRadius: 14, backgroundColor: `${B.purple}03`, border: `1px solid ${B.stone}`, overflow: "hidden" }}>
                         <button onClick={() => setExpandedPlaybook(isExp ? null : play.id)}
                           style={{ width: "100%", padding: mobile ? "18px 20px" : "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, background: "none", border: "none", cursor: "pointer", textAlign: "left" as const, minHeight: 44, boxSizing: "border-box" as const }}>
                           <div style={{ flex: 1 }}>
@@ -1500,7 +1504,7 @@ function DashboardContent() {
                             {/* The script */}
                             {play.script && (
                               <div style={{ position: "relative", marginBottom: 16 }}>
-                                <pre style={{ fontSize: 14, color: B.navy, lineHeight: 1.65, whiteSpace: "pre-wrap" as const, margin: 0, padding: mobile ? "16px 20px" : "20px 24px", backgroundColor: B.white, borderRadius: 10, border: `1px solid ${B.stone}`, fontFamily: sans }}>{play.script}</pre>
+                                <pre style={{ fontSize: mobile ? 12 : 14, color: B.navy, lineHeight: 1.65, whiteSpace: "pre-wrap" as const, wordBreak: "break-word" as const, overflowX: "auto" as const, margin: 0, padding: mobile ? "16px 20px" : "20px 24px", backgroundColor: B.white, borderRadius: 10, border: `1px solid ${B.stone}`, fontFamily: sans }}>{play.script}</pre>
                                 <button aria-label="Copy playbook script to clipboard" onClick={() => copyPB(play.script, play.id)}
                                   style={{ position: "absolute", top: 10, right: 10, fontSize: 13, fontWeight: 600, color: copiedPlaybook === play.id ? B.teal : B.muted, backgroundColor: copiedPlaybook === play.id ? `${B.teal}08` : "#FAFAFA", border: `1px solid ${B.stone}`, borderRadius: 8, padding: "8px 14px", cursor: "pointer", minHeight: 36, transition: "all 200ms" }}>
                                   {copiedPlaybook === play.id ? "Copied!" : "Copy"}
@@ -1663,7 +1667,7 @@ function DashboardContent() {
           {/* ════════════════════════════════════════════════════════ */}
           {/*  EXPLORE — PressureMap + What-If (context & exploration)  */}
           {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="Explore" color={B.teal} tint="rgba(31,109,122,0.02)" id="phase-explore" mobile={mobile}>
+          <PhaseSep label="Explore" color={B.teal} tint="rgba(14,26,43,0.015)" id="phase-explore" mobile={mobile}>
 
           {/* PRESSUREMAP™ — moved here from top for context-after-action order */}
           <section className="cc-section" style={{ padding: mobile ? "32px 22px" : "44px 48px", borderRadius: 24, backgroundColor: B.surface, border: `1px solid ${B.stone}`, marginBottom: 24, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
@@ -1701,7 +1705,7 @@ function DashboardContent() {
             {/* Zone cards — insight-first, data secondary */}
             <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
               {zones.map(z => (
-                <div key={z.id} style={{ padding: mobile ? "18px 20px" : "22px 28px", borderRadius: 14, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${z.color}` }}>
+                <div key={z.id} style={{ padding: mobile ? "18px 20px" : "22px 28px", borderRadius: 14, backgroundColor: "rgba(14,26,43,0.015)", borderLeft: `3px solid ${z.color}` }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
                     <span style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{z.label} — <span style={{ fontFamily: mono, color: z.color }}>{z.pct}%</span></span>
                     {z.peer && <span style={{ fontSize: 12, color: B.taupe }}>{z.peer}</span>}
@@ -1758,7 +1762,7 @@ function DashboardContent() {
                     const why = isTop ? `Recommended \u2014 addresses your root constraint (${rootCon.replace(/_/g, " ")})` : null;
                     return (
                       <button key={pr.id} onClick={() => setActivePreset(isA && activePreset === pr.id ? null : pr.id)}
-                        style={{ padding: "18px 22px", textAlign: "left" as const, borderRadius: 14, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? `${B.purple}30` : isTop ? `${B.teal}15` : B.stone}`, backgroundColor: isA ? `${B.purple}04` : isTop ? `${B.teal}02` : "#FAFAFA", minHeight: 48 }}>
+                        style={{ padding: "18px 22px", textAlign: "left" as const, borderRadius: 14, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? `${B.purple}30` : isTop ? `${B.teal}15` : B.stone}`, backgroundColor: isA ? `${B.purple}04` : isTop ? `${B.teal}02` : "rgba(14,26,43,0.015)", minHeight: 48 }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 4 }}>
                           <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
                             <span style={{ fontSize: mobile ? 13 : 14, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
@@ -1800,7 +1804,7 @@ function DashboardContent() {
 
                 {/* SCENARIO RESULT — clean, answers "what would this do for me?" */}
                 {effectivePreset && aPO && sResult && (
-                  <div style={{ padding: mobile ? "22px 20px" : "24px 28px", borderRadius: 16, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${sDelta >= 0 ? B.teal : B.red}` }}>
+                  <div style={{ padding: mobile ? "22px 20px" : "24px 28px", borderRadius: 16, backgroundColor: "rgba(14,26,43,0.015)", borderLeft: `3px solid ${sDelta >= 0 ? B.teal : B.red}` }}>
                     <p style={{ fontSize: 16, fontWeight: 500, color: B.navy, margin: "0 0 8px", lineHeight: 1.4 }}>
                       {sDelta > 0
                         ? `If you ${aPO.label.toLowerCase()}, your score goes from ${dScore} to ${sResult.overall_score}.`
@@ -2026,18 +2030,30 @@ function DashboardContent() {
                         {snapshotTip === item.key ? "Close" : "Is this still true?"}
                       </span>
                     </div>
-                    {snapshotTip === item.key && (
+                    {snapshotTip === item.key && (() => {
+                      const sentences = item.tip.split(". ");
+                      const firstSentence = sentences[0] + (sentences.length > 1 ? "." : "");
+                      const hasMore = sentences.length > 1;
+                      const isFullyExpanded = expandedTipText[item.key];
+                      return (
                       <div style={{ padding: mobile ? "14px 16px" : "14px 18px", marginBottom: 10, borderRadius: 10, backgroundColor: `${B.purple}04`, borderLeft: `3px solid ${B.purple}20`, animation: "fadeSlideIn 200ms ease-out" }}>
                         <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: B.purple, marginBottom: 4 }}>TIP FOR {ind.toUpperCase()}</div>
-                        <p style={{ fontSize: 14, color: B.navy, margin: 0, lineHeight: 1.55 }}>{item.tip}</p>
+                        <p style={{ fontSize: 14, color: B.navy, margin: 0, lineHeight: 1.55 }}>{isFullyExpanded ? item.tip : firstSentence}</p>
+                        {hasMore && (
+                          <button onClick={(e) => { e.stopPropagation(); setExpandedTipText(prev => ({ ...prev, [item.key]: !prev[item.key] })); }}
+                            style={{ fontSize: 13, fontWeight: 500, color: B.teal, cursor: "pointer", border: "none", background: "none", padding: "6px 0 0", display: "inline-block" }}>
+                            {isFullyExpanded ? "Show less" : "Read more"}
+                          </button>
+                        )}
                       </div>
-                    )}
+                      );
+                    })()}
                   </div>
                 ));
               })()}
             </div>
 
-            <div style={{ marginTop: 24, padding: mobile ? "18px 20px" : "20px 24px", borderRadius: 12, backgroundColor: "#FAFAFA", textAlign: "center" }}>
+            <div style={{ marginTop: 24, padding: mobile ? "18px 20px" : "20px 24px", borderRadius: 12, backgroundColor: "rgba(14,26,43,0.015)", textAlign: "center" }}>
               <p style={{ fontSize: 15, color: B.navy, margin: "0 0 16px", lineHeight: 1.55 }}>
                 If your structure has changed, your score may not reflect where you are today.
               </p>
@@ -2063,7 +2079,7 @@ function DashboardContent() {
             const copyId = () => { if (recordId) { navigator.clipboard.writeText(recordId); setCopiedRecord(true); setTimeout(() => setCopiedRecord(false), 2000); } };
             if (!recordId || recordId.startsWith("sim-")) return null;
             return (
-              <div style={{ marginTop: 32, padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 14, backgroundColor: "#FAFAFA", border: `1px solid ${B.stone}`, textAlign: "center" }}>
+              <div style={{ marginTop: 32, padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 14, backgroundColor: "rgba(14,26,43,0.015)", border: `1px solid ${B.stone}`, textAlign: "center" }}>
                 <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 12 }}>ASSESSMENT RECORD</div>
                 <div style={{ display: "flex", justifyContent: "center", gap: mobile ? 16 : 32, flexWrap: "wrap" as const, marginBottom: 14 }}>
                   {[
