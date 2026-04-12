@@ -804,7 +804,7 @@ function DashboardContent() {
                 {/* Metrics row */}
                 <div style={{ display: "flex", gap: 12, marginBottom: 28, flexDirection: mobile ? "column" : "row" }}>
                   {[1, 2, 3].map(i => (
-                    <div key={i} style={{ flex: 1, padding: mobile ? "12px 10px" : "14px 16px", borderRadius: 10, backgroundColor: "#FAFAFA", display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                    <div key={i} style={{ flex: 1, padding: mobile ? "12px 14px" : "14px 16px", borderRadius: 10, backgroundColor: "#FAFAFA", display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
                       <div style={skBone(80, 10, 6)} />
                       <div style={skBone(60, 20, 8)} />
                     </div>
@@ -1149,7 +1149,7 @@ function DashboardContent() {
                       { label: vocabDash.scenarios.lose_top_client.split(/[.!?]/)[0].slice(0, 40) || "If Top Source Leaves", value: `−${riskDrop} pts`, color: riskDrop > 15 ? B.red : B.amber },
                       { label: "Stability Type", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" || fragLabel === "Supported" ? B.teal : B.amber },
                     ].map((m) => (
-                      <div key={m.label} style={{ flex: 1, padding: mobile ? "12px 10px" : "14px 16px", textAlign: "center" as const, borderRadius: 10, backgroundColor: "#FAFAFA" }}>
+                      <div key={m.label} style={{ flex: 1, padding: mobile ? "12px 14px" : "14px 16px", textAlign: "center" as const, borderRadius: 10, backgroundColor: "#FAFAFA" }}>
                         <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 4 }}>{m.label.toUpperCase()}</div>
                         <div style={{ fontSize: 18, fontWeight: 600, fontFamily: mono, color: m.color }}>{m.value}</div>
                       </div>
