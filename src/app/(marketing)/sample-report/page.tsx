@@ -123,7 +123,7 @@ function Declaration() {
           This is not a template.
         </h2>
         <p style={{ fontSize: m ? 20 : 24, fontWeight: 500, lineHeight: 1.35, color: C.teal, textAlign: "center", marginBottom: 24, ...fadeIn(visible, 60) }}>
-          It is a <strong>fixed reading</strong>&mdash;generated using your inputs and a deterministic system.
+          It is a <strong>fixed reading</strong>&mdash;generated using your inputs and a consistent, fixed system.
         </p>
         <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, textAlign: "center", marginBottom: 32, ...fadeIn(visible, 100) }}>
           What you see here is exactly how the system behaves. No randomness. No variation. Every number is based on your structure.
@@ -187,7 +187,7 @@ function Page01() {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: m ? "16px 24px" : "18px 40px", borderBottom: `1px solid rgba(14,26,43,0.06)` }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <span style={{ fontSize: 14, fontWeight: 700, color: C.navy }}>RunPayway&#8482;</span>
-              <span style={{ fontSize: 11, fontWeight: 600, color: C.teal }}>Structural Income Report</span>
+              <span style={{ fontSize: 11, fontWeight: 600, color: C.teal }}>Income Stability Report</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
               <span style={{ fontSize: 11, color: C.textMuted }}>2026-03-15</span>
@@ -557,7 +557,7 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get Your Structural Income Report
+            Get Your Income Stability Score
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 16 }}>
             Under 2 minutes | Instant result | Private by default

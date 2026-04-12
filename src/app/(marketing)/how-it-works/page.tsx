@@ -96,7 +96,7 @@ function HeroSection() {
           How your income is built&mdash;and how it holds under pressure.
         </p>
         <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 560, margin: "0 auto 32px", ...fadeIn(visible, 120) }}>
-          RunPayway measures how your income behaves under real conditions. Same answers always produce the same result.
+          RunPayway{"\u2122"} measures how your income behaves under real conditions. Same answers always produce the same result.
         </p>
         <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", ...fadeIn(visible, 180) }}>
           <Link href="/begin" style={{
@@ -110,7 +110,7 @@ function HeroSection() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = ctaShadow; }}>
-            Get Your Structural Income Report
+            Get Your Income Stability Score
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, marginTop: 16 }}>
             Under 2 minutes | Instant result | Private by default
@@ -141,7 +141,7 @@ function Declaration() {
           Same rules. Every time.
         </p>
         <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, ...fadeIn(visible, 100) }}>
-          RunPayway uses fixed rules applied the same way each time.
+          RunPayway{"\u2122"} uses fixed rules applied the same way each time.
         </p>
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, maxWidth: 380, margin: "0 auto", ...fadeIn(visible, 140) }}>
           {[
@@ -149,7 +149,7 @@ function Declaration() {
             "No algorithm changes.",
           ].map((line, i) => (
             <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", justifyContent: "center" }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginTop: 5 }}><path d="M20 6L9 17l-5-5"/></svg>
               <span style={{ fontSize: 18, fontWeight: 500, color: C.textSecondary, lineHeight: 1.6 }}>{line}</span>
             </div>
           ))}
@@ -192,7 +192,7 @@ function ProcessOverview() {
             {
               num: "02",
               title: "Six dimensions scored",
-              body: "Six structural factors are evaluated with fixed rules. The model combines them into one result.",
+              body: "Six key factors are evaluated with fixed rules. The model combines them into one result.",
               footer: "Same answers always produce the same result.",
             },
             {

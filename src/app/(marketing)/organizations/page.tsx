@@ -93,7 +93,7 @@ function HeroSection() {
           Standardize and Scale Income{m ? " " : <br />}Structure Assessment with{m ? " " : <br />}One Fixed Methodology
         </h1>
         <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: narrowW, margin: "0 auto 24px", ...fadeIn(visible, 100) }}>
-          Income evaluation across your organization is subjective. RunPayway standardizes it&mdash;with a deterministic system that produces the same result every time.
+          Income evaluation across your organization is subjective. RunPayway\u2122 standardizes it&mdash;with a consistent system that produces the same result every time.
         </p>
         <div style={{ display: "flex", justifyContent: "center", gap: m ? 12 : 20, flexWrap: "wrap" as const, ...fadeIn(visible, 150) }}>
           {["API-ready", "Deterministic", "Compliant by design"].map((badge, i) => (

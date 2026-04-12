@@ -91,11 +91,11 @@ function HeroSection() {
           Evaluate and Mitigate Client{m ? " " : <br />}Income Risk Before It Becomes{m ? " " : <br />}a Problem
         </h1>
         <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: narrowW, margin: "0 auto 24px", ...fadeIn(visible, 100) }}>
-          Your clients tell you what they earn. Not how it&rsquo;s built. RunPayway gives you a standardized way to assess income structure&mdash;and act on it before problems surface.
+          Your clients tell you what they earn. Not how it&rsquo;s built. RunPayway&#8482; gives you a standardized way to assess income structure&mdash;and act on it before problems surface.
         </p>
         <div style={{ display: "flex", justifyContent: "center", gap: m ? 12 : 24, flexWrap: "wrap" as const, ...fadeIn(visible, 150) }}>
           {["Standardized methodology", "Fixed rules", "Private by default"].map((badge, i) => (
-            <span key={i} style={{ fontSize: 14, fontWeight: 600, color: C.textMuted }}>{badge}</span>
+            <span key={i} style={{ fontSize: 14, fontWeight: 600, color: C.teal, padding: "5px 12px", borderRadius: 100, backgroundColor: "rgba(31,109,122,0.06)", border: "1px solid rgba(31,109,122,0.15)" }}>{badge}</span>
           ))}
         </div>
       </div>
@@ -127,7 +127,7 @@ function TheProblem() {
             The Gap in Client Assessment
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
-            You evaluate assets, liabilities, and cash flow. But income structure&nbsp;&mdash; how income is built, how it holds under pressure, and what breaks first&nbsp;&mdash; is invisible. Until now.
+            You evaluate assets, liabilities, and cash flow. But income structure&nbsp;&mdash; how income is built, how it holds under pressure, and what&rsquo;s most exposed&nbsp;&mdash; is invisible. Until now.
           </p>
         </div>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, ...fadeIn(visible, 100) }}>

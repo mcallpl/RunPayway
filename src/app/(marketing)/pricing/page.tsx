@@ -94,7 +94,7 @@ function HeroSection() {
           Start with the score.{m ? " " : <br />}Understand what defines it.
         </h1>
         <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.45, color: C.textSecondary, maxWidth: 680, margin: "0 auto 8px", ...fadeIn(visible, 100) }}>
-          RunPayway reveals how your income is built&mdash;and whether it holds under pressure.
+          RunPayway&#8482; reveals how your income is built&mdash;and whether it holds under pressure.
         </p>
         <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 620, margin: "0 auto 24px", ...fadeIn(visible, 120) }}>
           The score is a fixed result. The diagnostic reveals what defines it.
@@ -129,7 +129,7 @@ function Declaration() {
           Same rules. Every time.
         </p>
         <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 28, ...fadeIn(visible, 100) }}>
-          RunPayway measures your income under fixed rules applied consistently every time. What changes is how deeply you can see:
+          RunPayway&#8482; measures your income under fixed rules applied consistently every time. What changes is how deeply you can see:
         </p>
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, maxWidth: 420, margin: "0 auto", ...fadeIn(visible, 160) }}>
           {[
@@ -180,7 +180,7 @@ function PricingCards() {
       </p>
       <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: C.textMuted, marginBottom: 14 }}>WHAT YOU GET FOR FREE</div>
       <div style={{ marginBottom: 28, flex: 1, color: C.textSecondary }}>
-        {check("Structural Income Score (0\u2013100)")}
+        {check("Income Stability Score (0\u2013100)")}
         {check("Stability classification")}
         {check("Primary structural risk")}
         {check("Distance to next level")}
@@ -228,7 +228,7 @@ function PricingCards() {
       <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 20, marginBottom: 20 }} />
 
       <div style={{ marginBottom: 20, flex: 1, color: C.textSecondary }}>
-        {check("Identify where your income holds\u2014and where it breaks")}
+        {check("Identify where your income holds \u2014 and where it\u2019s exposed")}
         {check("See what actually limits your stability")}
         {check("Know the single move that creates the biggest impact")}
         {check("Test changes before you make them")}
@@ -378,7 +378,7 @@ function PositioningStrip() {
             This is not a subscription to software.
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, margin: 0 }}>
-            RunPayway is a measurement system &mdash; fixed rules. Consistent results. Every time.
+            RunPayway&#8482; is a measurement system &mdash; fixed rules. Consistent results. Every time.
           </p>
         </div>
       </div>
@@ -459,7 +459,7 @@ function FaqSection() {
     { q: "How are roadmap milestones personalized?", a: "They are generated directly from your inputs — not templates or assumptions." },
     { q: "What does Monitoring include?", a: "Multiple assessments, change tracking, and visibility over time." },
     { q: "How is the score calculated?", a: "Using fixed rules applied consistently to your answers." },
-    { q: "Do you access my bank or credit?", a: "No. RunPayway does not connect to financial accounts." },
+    { q: "Do you access my bank or credit?", a: "No. RunPayway&#8482; does not connect to financial accounts." },
     { q: "What if it doesn\u2019t reveal anything new?", a: "You receive a full refund." },
   ];
 
@@ -540,7 +540,7 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get Your Structural Income Report
+            Get Your Income Stability Score
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 16 }}>
             Under 2 minutes | Instant result | Private by default
