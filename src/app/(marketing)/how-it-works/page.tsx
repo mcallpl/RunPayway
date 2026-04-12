@@ -506,6 +506,9 @@ function FinalCta() {
           <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 16 }}>
             Under 2 minutes | Instant result | Private by default
           </p>
+          <Link href="/methodology" style={{ fontSize: 14, fontWeight: 600, color: C.teal, textDecoration: "none", marginTop: 16, display: "inline-block" }}>
+            Read our full methodology &rarr;
+          </Link>
         </div>
       </div>
     </section>

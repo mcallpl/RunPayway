@@ -44,12 +44,18 @@ function useFadeIn() {
 /* DESIGN SYSTEM                                                       */
 /* ================================================================== */
 
-const C = { navy: "#1C1635", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
+const C = { navy: "#0E1A2B", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
 const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
 const muted = "rgba(14,26,43,0.68)";
 const light = "rgba(14,26,43,0.62)";
 const contentW = 1040;
-const px = (m: boolean) => m ? 24 : 24;
+function useTablet() {
+  const [t, setT] = useState(false);
+  useEffect(() => { const c = () => setT(window.innerWidth > 768 && window.innerWidth <= 1024); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
+  return t;
+}
+
+const px = (m: boolean, t?: boolean) => m ? 28 : t ? 56 : 48;
 
 
 /* ================================================================== */
@@ -59,9 +65,10 @@ const px = (m: boolean) => m ? 24 : 24;
 function HeroSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
   return (
-    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 56 : 88, paddingLeft: px(m), paddingRight: px(m) }}>
+    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 56 : 88, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
         <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>METHODOLOGY</div>
         <h1 style={{ fontSize: m ? 30 : 64, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible, 50) }}>
@@ -91,9 +98,10 @@ function HeroSection() {
 function WhatMakesItDifferent() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 60 : 104, paddingBottom: m ? 60 : 104, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 60 : 104, paddingBottom: m ? 60 : 104, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: 880, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>What makes this different from other assessments?</h2>
@@ -178,9 +186,10 @@ function WhatMakesItDifferent() {
 function Integrity() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 60 : 104, paddingBottom: m ? 60 : 104, paddingLeft: px(m), paddingRight: px(m), position: "relative", overflow: "hidden" }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 60 : 104, paddingBottom: m ? 60 : 104, paddingLeft: px(m, t), paddingRight: px(m, t), position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "50%", left: "50%", width: m ? 300 : 500, height: m ? 300 : 500, transform: "translate(-50%, -50%)", borderRadius: "50%", background: `radial-gradient(circle, ${C.purple}06 0%, transparent 70%)`, pointerEvents: "none" }} />
       <div style={{ maxWidth: 880, margin: "0 auto", position: "relative", zIndex: 1 }}>
 
@@ -257,9 +266,10 @@ function Integrity() {
 function Transparency() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 112, paddingBottom: m ? 72 : 112, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 112, paddingBottom: m ? 72 : 112, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: 720, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 36 : 48, ...fadeIn(visible) }}>
           <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>TRANSPARENCY</div>
@@ -271,7 +281,7 @@ function Transparency() {
         <div style={{ display: "flex", flexDirection: "column" as const, gap: m ? 16 : 20, ...fadeIn(visible, 100) }}>
           {[
             {
-              title: "The scoring model is deterministic and fixed",
+              title: "The scoring model is consistent and fixed",
               body: "RP-2.0 uses a published, version-locked rule set. Same inputs produce the same output, every time. No AI interpretation. No subjective adjustment. The methodology is transparent and auditable.",
             },
             {
@@ -284,10 +294,10 @@ function Transparency() {
             },
             {
               title: "Your score reflects structure, not prediction",
-              body: "RunPayway does not predict whether you will experience a disruption. It measures how your income is built and how it would behave if conditions changed. The constraint diagnosis, action plan, and stress tests are structural analyses \u2014 they show what defines your score, not what will happen next.",
+              body: "RunPayway\u2122 does not predict whether you will experience a disruption. It measures how your income is built and how it would behave if conditions changed. The constraint diagnosis, action plan, and stress tests are structural analyses \u2014 they show what defines your score, not what will happen next.",
             },
           ].map((item, i) => (
-            <div key={i} style={{ padding: m ? "24px 20px" : "28px 32px", borderRadius: 16, backgroundColor: "#FAFAF8", border: "1px solid rgba(14,26,43,0.06)" }}>
+            <div key={i} style={{ padding: m ? "24px 20px" : "28px 32px", borderRadius: 16, backgroundColor: "#F8F6F1", border: "1px solid rgba(14,26,43,0.06)" }}>
               <div style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: C.navy, marginBottom: 8, lineHeight: 1.35 }}>{item.title}</div>
               <p style={{ fontSize: 14, color: muted, lineHeight: 1.7, margin: 0 }}>{item.body}</p>
             </div>
@@ -306,9 +316,10 @@ function Transparency() {
 function FinalCta() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 60 : 104, paddingBottom: m ? 64 : 112, paddingLeft: px(m), paddingRight: px(m), borderTop: "1px solid rgba(244,241,234,0.04)" }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 60 : 104, paddingBottom: m ? 64 : 112, paddingLeft: px(m, t), paddingRight: px(m, t), borderTop: "1px solid rgba(244,241,234,0.04)" }}>
       <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
         <p style={{ fontSize: m ? 18 : 22, fontWeight: 600, color: C.sand, lineHeight: 1.35, marginBottom: 8, ...fadeIn(visible) }}>
           The rules are fixed.
@@ -329,10 +340,10 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(244,241,234,0.15)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get Your Structural Income Report
+            Get Your Income Stability Score
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.45)", marginTop: 16 }}>
-            Under 2 minutes | Instant result | Private by default
+            $69 &middot; Score, scripts, roadmap, and lifetime access
           </p>
         </div>
       </div>

@@ -742,6 +742,7 @@ export default function MarketingLayout({
                 {[
                   { href: "/how-it-works", label: t.nav.howItWorks },
                   { href: "/sample-report", label: t.nav.sampleReport },
+                  { href: "/methodology", label: "Methodology" },
                   { href: "/pricing", label: t.nav.pricing },
                   { href: "/advisors", label: "For Advisors" },
                   { href: "/organizations", label: "For Organizations" },

@@ -301,6 +301,11 @@ function ComplianceSection() {
             </div>
           ))}
         </div>
+        <div style={{ textAlign: "center", marginTop: 32, ...fadeIn(visible, 150) }}>
+          <Link href="/methodology" style={{ fontSize: 14, fontWeight: 600, color: C.navy, textDecoration: "none" }}>
+            Read our full methodology &rarr;
+          </Link>
+        </div>
       </div>
     </section>
   );

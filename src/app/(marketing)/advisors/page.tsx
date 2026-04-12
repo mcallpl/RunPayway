@@ -335,6 +335,11 @@ function SystemIntegrity() {
             </div>
           ))}
         </div>
+        <div style={{ textAlign: "center", marginTop: 32, ...fadeIn(visible, 150) }}>
+          <Link href="/methodology" style={{ fontSize: 14, fontWeight: 600, color: "#4B3FAE", textDecoration: "none" }}>
+            Read our full methodology &rarr;
+          </Link>
+        </div>
       </div>
     </section>
   );
