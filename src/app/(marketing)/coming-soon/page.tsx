@@ -44,12 +44,17 @@ function useFadeIn() {
 /* DESIGN SYSTEM                                                       */
 /* ================================================================== */
 
-const C = { navy: "#1C1635", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
+const C = { navy: "#0E1A2B", purple: "#4B3FAE", teal: "#1F6D7A", sand: "#F4F1EA", white: "#FFFFFF", border: "#E5E7EB" };
 const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
 const muted = "rgba(14,26,43,0.68)";
 const light = "rgba(14,26,43,0.62)";
 const contentW = 1040;
-const px = (m: boolean) => m ? 24 : 24;
+function useTablet() {
+  const [t, setT] = useState(false);
+  useEffect(() => { const c = () => setT(window.innerWidth > 768 && window.innerWidth <= 1024); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
+  return t;
+}
+const px = (m: boolean, t?: boolean) => m ? 28 : t ? 56 : 48;
 
 
 /* ================================================================== */
@@ -59,19 +64,17 @@ const px = (m: boolean) => m ? 24 : 24;
 function HeroSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
   return (
-    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 56 : 88, paddingLeft: px(m), paddingRight: px(m) }}>
+    <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 152, paddingBottom: m ? 56 : 88, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: 860, margin: "0 auto", textAlign: "center" }}>
-        <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>NEW RELEASES</div>
-        <h1 style={{ fontSize: m ? 30 : 64, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible, 50) }}>
-          What We&rsquo;ve Shipped.{m ? " " : <br />}What&rsquo;s Coming Next.
+        <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>WHAT&apos;S NEW</div>
+        <h1 style={{ fontSize: m ? 28 : 40, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16, ...fadeIn(visible, 50) }}>
+          What&apos;s New
         </h1>
         <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.6, maxWidth: 600, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
-          RunPayway&#8482; is actively developed. Every update is versioned, tested, and deployed without disrupting existing assessments.
-        </p>
-        <p style={{ fontSize: m ? 15 : 16, fontWeight: 500, color: light, ...fadeIn(visible, 140) }}>
-          Explore our most recent updates, and see what&rsquo;s coming in the future.
+          Every update is versioned, tested, and deployed without disrupting existing assessments.
         </p>
       </div>
     </header>
@@ -86,18 +89,19 @@ function HeroSection() {
 function Shipped() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   const releases = [
     {
       version: "RP-2.0",
       date: "Q1 2026",
-      title: "Structural Stability Model",
+      title: "Income Stability Model",
       icon: "M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6M15 19v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6M9 13V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v8",
       color: C.teal,
       items: [
-        "Deterministic scoring with fixed, versioned rules",
-        "Six structural dimensions with cross-dimension interaction analysis",
+        "Consistent scoring with fixed, versioned rules",
+        "Six key dimensions with cross-dimension interaction analysis",
         "4-page diagnostic report with PressureMap\u2122 intelligence",
         "Integrity verification on every assessment record",
         "Consolidated scoring architecture — one model, one source of truth",
@@ -163,7 +167,7 @@ function Shipped() {
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: "#F5F4F1", paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.teal, marginBottom: 12 }}>Shipped</h2>
@@ -178,7 +182,7 @@ function Shipped() {
               position: "relative" as const, overflow: "hidden",
               ...fadeIn(visible, 100 + i * 80),
             }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${r.color}20` }} />
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, backgroundColor: `${r.color}40` }} />
 
               {/* Header */}
               <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
@@ -220,6 +224,7 @@ function Shipped() {
 function RoadmapSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   const upcoming = [
@@ -247,7 +252,7 @@ function RoadmapSection() {
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: "#F8F6F1", paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: contentW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 12 }}>Roadmap</h2>
@@ -260,8 +265,9 @@ function RoadmapSection() {
             const isDev = item.status === "development";
             return (
               <div key={i} style={{
-                backgroundColor: "#FAFAFA", borderRadius: 14, padding: m ? 24 : 28,
-                boxShadow: "0 1px 2px rgba(14,26,43,0.03)",
+                backgroundColor: C.white, borderRadius: 14, padding: m ? 24 : 28,
+                boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)",
+                borderLeft: `4px solid ${isDev ? C.purple : C.navy}`,
                 position: "relative" as const, overflow: "hidden",
                 ...fadeIn(visible, 100 + i * 80),
               }}>
@@ -303,9 +309,10 @@ function RoadmapSection() {
 function FinalCta() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sand, marginBottom: 16, ...fadeIn(visible) }}>
           The Platform Is Live.{m ? " " : <br />}Your assessment is waiting.
@@ -326,10 +333,10 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(244,241,234,0.15)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Start Your Free Assessment
+            Get Your Income Stability Score
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.40)", marginTop: 16 }}>
-            Under 2 minutes | Instant result | Private by default
+            $69 &middot; Score, scripts, roadmap, and lifetime access
           </p>
         </div>
       </div>
