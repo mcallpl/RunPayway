@@ -1221,86 +1221,7 @@ export default function ReviewPage() {
         </div>
     </>,
 
-    // Page 1: Key Findings — elevated card
-    <>
-        {/* Navy header */}
-        <div style={{ backgroundColor: B.navy, padding: mobile ? "24px 24px 28px" : "32px 40px 36px", position: "relative" as const }}>
-          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${B.teal}, ${B.purple})` }} />
-          <div style={{ fontSize: mobile ? 20 : 24, fontWeight: 600, color: "#fff", marginBottom: 8 }}>What Your Score Reveals</div>
-          {/* Key takeaway */}
-          <div style={{ borderLeft: `3px solid ${B.teal}`, padding: "12px 16px", borderRadius: "0 10px 10px 0", backgroundColor: "rgba(255,255,255,0.04)" }}>
-            <p style={{ fontSize: mobile ? 15 : 16, fontWeight: 500, color: "rgba(244,241,234,0.80)", margin: 0, lineHeight: 1.5 }}>
-              {tier === "high" ? "Your income is strong and well-protected."
-                : tier === "established" ? "Your income is stable \u2014 but one constraint still limits you."
-                : tier === "developing" ? "Your income is building, and building momentum."
-                : "Your income is in the early stages — here's your plan."}
-            </p>
-          </div>
-        </div>
-
-        {/* Content */}
-        <div style={{ padding: mobile ? "24px 24px 28px" : "32px 40px 36px" }}>
-          {/* Income behavior bar */}
-          <div style={{ marginBottom: 28 }}>
-            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.muted, marginBottom: 12 }}>YOUR INCOME BREAKDOWN</div>
-            <div style={{ display: "flex", height: 12, borderRadius: 999, overflow: "hidden", marginBottom: 12 }}>
-              {record.active_income_level > 0 && <div style={{ width: `${record.active_income_level}%`, backgroundColor: B.bandLimited }} />}
-              {record.semi_persistent_income_level > 0 && <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: B.bandDeveloping }} />}
-              {record.persistent_income_level > 0 && <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: B.teal }} />}
-            </div>
-            <div style={{ display: "flex", gap: 16, flexWrap: "wrap" as const }}>
-              {[
-                { label: "Stops if you stop", value: `${record.active_income_level}%`, color: B.bandLimited },
-                { label: "Continues temporarily", value: `${record.semi_persistent_income_level}%`, color: B.bandDeveloping },
-                { label: "Protected", value: `${record.persistent_income_level}%`, color: B.teal },
-              ].map((s, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <div style={{ width: 6, height: 6, borderRadius: 2, backgroundColor: s.color }} />
-                  <span style={{ fontSize: 12, color: B.muted }}>{s.label}: <strong style={{ fontFamily: mono, fontWeight: 600, color: B.navy }}>{s.value}</strong></span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Strength + Constraint */}
-          <div style={{ display: mobile ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
-            <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: "#FAFAF8", border: `1px solid rgba(31,109,122,0.15)`, marginBottom: mobile ? 10 : 0 }}>
-              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 6 }}>STRONGEST FACTOR</div>
-              <p style={{ fontSize: 14, fontWeight: 600, color: B.navy, margin: 0, lineHeight: 1.5 }}>
-                {tier === "high"
-                  ? `Only ${record.active_income_level}% of your income requires daily effort`
-                  : tier === "established"
-                  ? `${100 - record.active_income_level}% of earnings have structural protection`
-                  : `${record.semi_persistent_income_level + record.persistent_income_level}% has some repeating foundation`}
-              </p>
-            </div>
-            <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: "#FAFAF8", border: `1px solid rgba(197,48,48,0.15)` }}>
-              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandLimited, marginBottom: 6 }}>YOUR BIGGEST OPPORTUNITY</div>
-              <p style={{ fontSize: 14, fontWeight: 600, color: B.navy, margin: 0, lineHeight: 1.5 }}>
-                {dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) : "Key areas to strengthen remain"}
-              </p>
-            </div>
-          </div>
-
-          {/* PressureMap intelligence */}
-          {Array.isArray(olSelectedScenarios) && olSelectedScenarios.length > 0 && (
-            <div style={{ marginBottom: 20 }}>
-              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 12 }}>PRESSUREMAP&#8482; INTELLIGENCE</div>
-              {olSelectedScenarios.slice(0, 3).map((sc, idx) => (
-                <div key={idx} style={{ marginBottom: idx < Math.min(olSelectedScenarios.length, 3) - 1 ? 12 : 0 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{sc.label}</div>
-                  <p style={{ fontSize: 12, color: B.muted, margin: 0, lineHeight: 1.5 }}>{sc.why_it_matters}</p>
-                </div>
-              ))}
-              <div style={{ fontSize: 10, color: "rgba(14,26,43,0.20)", marginTop: 4, letterSpacing: "0.04em" }}>✦ AI-generated insight</div>
-            </div>
-          )}
-
-          <p style={{ fontSize: 11, color: "rgba(14,26,43,0.25)", margin: 0, textAlign: "center" }}>This is what defines your score.</p>
-        </div>
-    </>,
-
-    // Page 2: Stability Plan — elevated card
+    // Page 1: Stability Plan — elevated card (action-first)
     <>
         {/* Navy header */}
         <div style={{ backgroundColor: B.navy, padding: mobile ? "24px 24px 28px" : "32px 40px 36px", position: "relative" as const }}>
@@ -1431,7 +1352,86 @@ export default function ReviewPage() {
         })()}
     </>,
 
-    // Page 3: Stress Testing — elevated card
+    // Page 2: Key Findings — elevated card
+    <>
+        {/* Navy header */}
+        <div style={{ backgroundColor: B.navy, padding: mobile ? "24px 24px 28px" : "32px 40px 36px", position: "relative" as const }}>
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${B.teal}, ${B.purple})` }} />
+          <div style={{ fontSize: mobile ? 20 : 24, fontWeight: 600, color: "#fff", marginBottom: 8 }}>What Your Score Reveals</div>
+          {/* Key takeaway */}
+          <div style={{ borderLeft: `3px solid ${B.teal}`, padding: "12px 16px", borderRadius: "0 10px 10px 0", backgroundColor: "rgba(255,255,255,0.04)" }}>
+            <p style={{ fontSize: mobile ? 15 : 16, fontWeight: 500, color: "rgba(244,241,234,0.80)", margin: 0, lineHeight: 1.5 }}>
+              {tier === "high" ? "Your income is strong and well-protected."
+                : tier === "established" ? "Your income is stable \u2014 but one constraint still limits you."
+                : tier === "developing" ? "Your income is building, and building momentum."
+                : "Your income is in the early stages — here's your plan."}
+            </p>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div style={{ padding: mobile ? "24px 24px 28px" : "32px 40px 36px" }}>
+          {/* Income behavior bar */}
+          <div style={{ marginBottom: 28 }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.muted, marginBottom: 12 }}>YOUR INCOME BREAKDOWN</div>
+            <div style={{ display: "flex", height: 12, borderRadius: 999, overflow: "hidden", marginBottom: 12 }}>
+              {record.active_income_level > 0 && <div style={{ width: `${record.active_income_level}%`, backgroundColor: B.bandLimited }} />}
+              {record.semi_persistent_income_level > 0 && <div style={{ width: `${record.semi_persistent_income_level}%`, backgroundColor: B.bandDeveloping }} />}
+              {record.persistent_income_level > 0 && <div style={{ width: `${record.persistent_income_level}%`, backgroundColor: B.teal }} />}
+            </div>
+            <div style={{ display: "flex", gap: 16, flexWrap: "wrap" as const }}>
+              {[
+                { label: "Stops if you stop", value: `${record.active_income_level}%`, color: B.bandLimited },
+                { label: "Continues temporarily", value: `${record.semi_persistent_income_level}%`, color: B.bandDeveloping },
+                { label: "Protected", value: `${record.persistent_income_level}%`, color: B.teal },
+              ].map((s, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <div style={{ width: 6, height: 6, borderRadius: 2, backgroundColor: s.color }} />
+                  <span style={{ fontSize: 12, color: B.muted }}>{s.label}: <strong style={{ fontFamily: mono, fontWeight: 600, color: B.navy }}>{s.value}</strong></span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Strength + Constraint */}
+          <div style={{ display: mobile ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
+            <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: "#FAFAF8", border: `1px solid rgba(31,109,122,0.15)`, marginBottom: mobile ? 10 : 0 }}>
+              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 6 }}>STRONGEST FACTOR</div>
+              <p style={{ fontSize: 14, fontWeight: 600, color: B.navy, margin: 0, lineHeight: 1.5 }}>
+                {tier === "high"
+                  ? `Only ${record.active_income_level}% of your income requires daily effort`
+                  : tier === "established"
+                  ? `${100 - record.active_income_level}% of earnings have structural protection`
+                  : `${record.semi_persistent_income_level + record.persistent_income_level}% has some repeating foundation`}
+              </p>
+            </div>
+            <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: "#FAFAF8", border: `1px solid rgba(197,48,48,0.15)` }}>
+              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandLimited, marginBottom: 6 }}>YOUR BIGGEST OPPORTUNITY</div>
+              <p style={{ fontSize: 14, fontWeight: 600, color: B.navy, margin: 0, lineHeight: 1.5 }}>
+                {dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) : "Key areas to strengthen remain"}
+              </p>
+            </div>
+          </div>
+
+          {/* PressureMap intelligence */}
+          {Array.isArray(olSelectedScenarios) && olSelectedScenarios.length > 0 && (
+            <div style={{ marginBottom: 20 }}>
+              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 12 }}>PRESSUREMAP&#8482; INTELLIGENCE</div>
+              {olSelectedScenarios.slice(0, 3).map((sc, idx) => (
+                <div key={idx} style={{ marginBottom: idx < Math.min(olSelectedScenarios.length, 3) - 1 ? 12 : 0 }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{sc.label}</div>
+                  <p style={{ fontSize: 12, color: B.muted, margin: 0, lineHeight: 1.5 }}>{sc.why_it_matters}</p>
+                </div>
+              ))}
+              <div style={{ fontSize: 10, color: "rgba(14,26,43,0.20)", marginTop: 4, letterSpacing: "0.04em" }}>✦ AI-generated insight</div>
+            </div>
+          )}
+
+          <p style={{ fontSize: 11, color: "rgba(14,26,43,0.25)", margin: 0, textAlign: "center" }}>This is what defines your score.</p>
+        </div>
+    </>,
+
+    // Page 3: Resilience Profile — elevated card
     <>
         {/* Navy header */}
         <div style={{ backgroundColor: B.navy, padding: mobile ? "24px 24px 28px" : "32px 40px 36px", position: "relative" as const }}>
