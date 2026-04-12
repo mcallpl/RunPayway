@@ -569,7 +569,6 @@ export default function HowItWorksPage() {
         <BeforeYouBegin />
         <FinalCta />
       </main>
-      <StickyCta />
     </div>
   );
 }
