@@ -131,15 +131,15 @@ function Declaration() {
         <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 28, ...fadeIn(visible, 100) }}>
           RunPayway&#8482; measures your income under fixed rules applied consistently every time. What changes is how deeply you can see:
         </p>
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, maxWidth: 420, margin: "0 auto", ...fadeIn(visible, 160) }}>
+        <div style={{ display: m ? "flex" : "grid", flexDirection: m ? "column" as const : undefined, gridTemplateColumns: m ? undefined : "1fr 1fr 1fr", gap: 12, maxWidth: m ? 420 : 680, margin: "0 auto", ...fadeIn(visible, 160) }}>
           {[
             "What defines your score",
             "What limits your score",
             "What moves it forward",
           ].map((line, i) => (
-            <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", justifyContent: "center" }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
-              <span style={{ fontSize: 17, fontWeight: 500, color: C.navy, lineHeight: 1.6 }}>{line}</span>
+            <div key={i} style={{ display: "flex", gap: 10, alignItems: "center", justifyContent: m ? "center" : "flex-start", backgroundColor: "rgba(14,26,43,0.02)", borderRadius: 12, padding: "16px 20px" }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2.5" strokeLinecap="round" style={{ flexShrink: 0 }}><path d="M20 6 9 17l-5-5"/></svg>
+              <span style={{ fontSize: 15, fontWeight: 600, color: C.navy, lineHeight: 1.4 }}>{line}</span>
             </div>
           ))}
         </div>
@@ -364,20 +364,19 @@ function PositioningStrip() {
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
-        {/* Highlighted system integrity block */}
-        <div style={{ padding: m ? "28px 24px" : "36px 40px", borderRadius: 20, borderLeft: `4px solid ${C.navy}`, backgroundColor: C.sand, ...fadeIn(visible) }}>
+        <div style={{ padding: m ? "28px 24px" : "36px 40px", borderRadius: 20, ...fadeIn(visible) }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-            <div style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: `${C.navy}10`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={C.navy} strokeWidth="2.5" strokeLinecap="round"><path d="M20 6 9 17l-5-5"/></svg>
+            <div style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(244,241,234,0.12)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={C.sand} strokeWidth="2.5" strokeLinecap="round"><path d="M20 6 9 17l-5-5"/></svg>
             </div>
-            <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.06em", color: C.navy }}>SYSTEM INTEGRITY</span>
+            <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.06em", color: C.sand }}>SYSTEM INTEGRITY</span>
           </div>
-          <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.028em", color: C.navy, marginBottom: 12 }}>
+          <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 12 }}>
             This is not a subscription to software.
           </h2>
-          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, margin: 0 }}>
+          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted, margin: 0 }}>
             RunPayway&#8482; is a measurement system &mdash; fixed rules. Consistent results. Every time.
           </p>
         </div>
@@ -396,10 +395,16 @@ function OutcomesSection() {
   const m = useMobile();
   const fadeIn = useFadeIn();
 
+  const outcomeAccents = [C.teal, C.purple, C.navy];
+  const outcomeIcons = [
+    /* Clarity — eye */ <svg key="ic0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+    /* Structure — layers */ <svg key="ic1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+    /* Control — sliders */ <svg key="ic2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.navy} strokeWidth="2" strokeLinecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>,
+  ];
   const outcomes = [
     { title: "Clarity", desc: "You see how your income behaves under pressure." },
     { title: "Structure", desc: "You understand what defines your stability." },
-    { title: "Control", desc: "You know exactly what to change — and in what order." },
+    { title: "Control", desc: "You know exactly what to change \u2014 and in what order." },
   ];
 
   return (
@@ -413,7 +418,8 @@ function OutcomesSection() {
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, ...fadeIn(visible, 100) }}>
           {outcomes.map((item, i) => (
-            <div key={i} style={{ padding: m ? 28 : 32, borderRadius: 18, backgroundColor: C.white, boxShadow: cardShadow, marginBottom: m ? 16 : 0 }}>
+            <div key={i} style={{ padding: m ? 28 : 32, borderRadius: 18, backgroundColor: C.white, boxShadow: cardShadow, marginBottom: m ? 16 : 0, borderLeft: `4px solid ${outcomeAccents[i]}` }}>
+              <div style={{ marginBottom: 12 }}>{outcomeIcons[i]}</div>
               <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.35 }}>{item.title}</div>
               <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>{item.desc}</p>
             </div>
