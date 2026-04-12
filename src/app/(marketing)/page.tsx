@@ -430,24 +430,24 @@ function WhatChanges() {
   const steps = [
     {
       num: "01",
-      step: "Identify",
-      desc: "See exactly where your income is exposed\u2014the blind spots you can\u2019t find in a bank statement.",
-      detail: "Which source disappearing would hurt the most?",
-      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>,
+      step: "Answer",
+      desc: "Tell us about your income\u2014how many sources, how they pay, what\u2019s contracted. Takes under two minutes.",
+      detail: "No bank accounts. No documents. Just what you know.",
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>,
     },
     {
       num: "02",
-      step: "Understand",
-      desc: "Know how your income actually behaves under pressure\u2014not how it feels when things are going well.",
-      detail: "What happens if you can\u2019t work for 90 days?",
-      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
+      step: "See your score",
+      desc: "RunPayway\u2122 analyzes your income structure across 20 engines and returns a stability score from 0\u2013100.",
+      detail: "Same inputs, same result. Every time.",
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>,
     },
     {
       num: "03",
-      step: "Act",
-      desc: "Get the exact moves\u2014with scripts, sequences, and projected impact\u2014before the problem arrives.",
-      detail: "One structural change could shift your score 15+ points.",
-      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>,
+      step: "Get your plan",
+      desc: "Your report shows what\u2019s protected, what\u2019s at risk, and the specific moves to strengthen your position.",
+      detail: "Personalized to your industry and income type.",
+      icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>,
     },
   ];
 
@@ -457,7 +457,7 @@ function WhatChanges() {
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>HOW IT WORKS</div>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>
-            From blind spot to structural clarity{m ? " " : <br />}in under two minutes.
+            How it works
           </h2>
         </div>
 
