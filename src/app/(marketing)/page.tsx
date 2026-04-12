@@ -1053,15 +1053,16 @@ function FinalCta() {
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m), paddingRight: sectionPx(m), borderTop: "1px solid rgba(255,255,255,0.04)" }}>
-      <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center" }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m), paddingRight: sectionPx(m), position: "relative" as const, overflow: "hidden" }}>
+      <div className="navy-grain" />
+      <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
         <h2 style={{ fontSize: m ? 28 : 52, fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.035em", color: C.sandText, marginBottom: 20, ...fadeIn(visible) }}>
-          Know how your income holds up{m ? " " : <br />}before you rely on it.
+          Your income has a structure.{m ? " " : <br />}See&nbsp;yours.
         </h2>
         <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", ...fadeIn(visible, 160) }}>
           <CtaButton m={m} variant="light" />
           <p style={{ fontSize: 14, fontWeight: 500, lineHeight: 1.45, color: C.sandLight, marginTop: 16, textAlign: "center" }}>
-            Under 2 minutes | Instant result | Private by default
+            $69 &middot; Score, scripts, roadmap, and lifetime access
           </p>
         </div>
       </div>
