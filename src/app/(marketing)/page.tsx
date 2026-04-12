@@ -517,108 +517,96 @@ function WhatYouReceive() {
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "5fr 7fr", gap: 56 }}>
 
-          {/* Left — text */}
-          <div style={{ marginBottom: m ? 40 : 0, ...fadeIn(visible) }}>
-            <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>YOUR REPORT</div>
-            <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24 }}>
-              What your structure reveals
-            </h2>
-            <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 32 }}>
-              Everything generated from your actual numbers — personalized to your industry and your primary constraint.
-            </p>
-            <div style={{ display: "flex", flexDirection: "column" as const, gap: 16 }}>
-              {[
-                "Your Structural Income Score and classification band",
-                "Primary constraint and exposure analysis",
-                "Personalized negotiation scripts built from your numbers",
-                "12-week action roadmap with projected milestones",
-              ].map((item, i) => (
-                <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                  <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
-                  <span style={{ fontSize: 16, fontWeight: 500, color: C.textSecondary, lineHeight: 1.45 }}>{item}</span>
-                </div>
-              ))}
+        {/* Centered heading */}
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24 }}>
+            What&rsquo;s in your report
+          </h2>
+          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: explanatoryW, margin: "0 auto" }}>
+            Everything is generated from your actual answers&mdash;personalized to your industry and income&nbsp;type.
+          </p>
+        </div>
+
+        {/* Hero product card — score preview */}
+        <div style={{ backgroundColor: C.navy, borderRadius: 28, padding: m ? "28px 24px 24px" : "40px 48px 36px", position: "relative", overflow: "hidden", maxWidth: 720, margin: "0 auto", marginBottom: m ? 40 : 56, ...fadeIn(visible, 80) }}>
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
+          <div style={{ display: "flex", alignItems: "center", gap: 24, marginBottom: 24 }}>
+            <div style={{ position: "relative", width: 80, height: 80, flexShrink: 0 }}>
+              <ScoreRing score={72} size={80} stroke={6} color="#2B5EA7" trackColor="rgba(255,255,255,0.06)" />
+              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ fontSize: 26, fontWeight: 300, fontFamily: mono, color: C.sandText, lineHeight: 1 }}>72</span>
+              </div>
             </div>
-            <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, marginTop: 32 }}>
-              All included with the $69 diagnostic. Lifetime access.
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: C.sandText, marginBottom: 6 }}>72 / 100</div>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "4px 12px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.12)", marginBottom: 6 }}>
+                <div style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: "#2B5EA7" }} />
+                <span style={{ fontSize: 12, fontWeight: 600, color: "#2B5EA7" }}>Established Stability</span>
+              </div>
+              <div style={{ fontSize: 13, color: C.sandMuted }}>Your stability score and where you stand</div>
+            </div>
+          </div>
+          <div>
+            <div style={{ display: "flex", height: 10, borderRadius: 999, overflow: "hidden" }}>
+              <div style={{ width: "28%", backgroundColor: C.teal }} />
+              <div style={{ width: "40%", backgroundColor: C.moderate }} />
+              <div style={{ width: "32%", backgroundColor: C.risk }} />
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8 }}>
+              <span style={{ fontSize: 11, color: C.teal, fontWeight: 600 }}>Protected 28%</span>
+              <span style={{ fontSize: 11, color: C.moderate, fontWeight: 600 }}>Recurring 40%</span>
+              <span style={{ fontSize: 11, color: C.risk, fontWeight: 600 }}>At risk 32%</span>
+            </div>
+          </div>
+          <div style={{ textAlign: "center", paddingTop: 16 }}>
+            <span style={{ fontSize: 10, color: "rgba(244,241,234,0.20)", letterSpacing: "0.04em" }}>Example report</span>
+          </div>
+        </div>
+
+        {/* Three feature columns */}
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 32, maxWidth: 960, margin: "0 auto", marginBottom: m ? 40 : 56, ...fadeIn(visible, 160) }}>
+
+          {/* Your first move */}
+          <div style={{ marginBottom: m ? 32 : 0, textAlign: "center" }}>
+            <div style={{ width: 48, height: 48, borderRadius: 14, backgroundColor: `${C.teal}10`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg>
+            </div>
+            <div style={{ fontSize: 16, fontWeight: 700, color: C.navy, marginBottom: 8 }}>Your first move</div>
+            <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.55, margin: 0 }}>
+              The single highest-impact action you can take this week, based on your specific income&nbsp;structure.
             </p>
           </div>
 
-          {/* Right — product cards */}
-          <div style={{ display: "flex", flexDirection: "column" as const, gap: 20, ...fadeIn(visible, 120) }}>
-
-            {/* This Week */}
-            <div style={{ backgroundColor: C.navy, borderRadius: 24, padding: m ? 24 : 32 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 18 }}>
-                <div style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: `${C.teal}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg>
-                </div>
-                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: C.teal }}>THIS WEEK</span>
-              </div>
-              <div style={{ padding: "14px 16px", borderRadius: 12, backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", marginBottom: 14 }}>
-                <div style={{ fontSize: 16, fontWeight: 600, color: C.sandText, marginBottom: 4 }}>
-                  Convert to retainer. <span style={{ fontWeight: 300, fontFamily: mono, color: C.teal }}>Highest impact</span>
-                </div>
-                <div style={{ fontSize: 13, color: C.sandMuted }}>Your most important conversation this week.</div>
-              </div>
-              <p style={{ fontSize: 13, color: C.sandLight, margin: 0, lineHeight: 1.55 }}>
-                Every time you return, it shows the <strong style={{ color: C.sandText }}>one thing</strong> that matters most right now.
-              </p>
+          {/* Negotiation scripts */}
+          <div style={{ marginBottom: m ? 32 : 0, textAlign: "center" }}>
+            <div style={{ width: 48, height: 48, borderRadius: 14, backgroundColor: `${C.purple}10`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round"><path d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5m-1.414-9.414a2 2 0 1 1 2.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
             </div>
-
-            {/* Negotiation Playbook */}
-            <div style={{ backgroundColor: C.navy, borderRadius: 24, padding: m ? 24 : 32 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 18 }}>
-                <div style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: `${C.purple}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="2" strokeLinecap="round"><path d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-5m-1.414-9.414a2 2 0 1 1 2.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
-                </div>
-                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: C.purple }}>NEGOTIATION PLAYBOOK</span>
-              </div>
-              <div style={{ padding: "14px 16px", borderRadius: 12, backgroundColor: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", marginBottom: 14 }}>
-                <div style={{ fontSize: 13, color: C.sandText, marginBottom: 8 }}>Scripts with <strong>your actual numbers</strong>.</div>
-                <div style={{ fontSize: 13, color: C.sandMuted, lineHeight: 1.55, fontStyle: "italic" }}>
-                  &ldquo;I wanted to propose something that several of my long-term clients have found valuable — an ongoing advisory retainer...&rdquo;
-                </div>
-              </div>
-              <p style={{ fontSize: 13, color: C.sandLight, margin: 0, lineHeight: 1.55 }}>
-                Includes what to say if they push back, and how to tell if it worked.
-              </p>
-            </div>
-
-            {/* 12-Week Roadmap */}
-            <div style={{ backgroundColor: C.navy, borderRadius: 24, padding: m ? 24 : 32 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 18 }}>
-                <div style={{ width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.sandText} strokeWidth="2" strokeLinecap="round"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg>
-                </div>
-                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: C.sandText }}>12-WEEK ROADMAP</span>
-              </div>
-              <div style={{ position: "relative", paddingLeft: 20, marginBottom: 14 }}>
-                <div style={{ position: "absolute", left: 5, top: 0, bottom: 0, width: 2, backgroundColor: "rgba(255,255,255,0.06)" }} />
-                {[
-                  { week: "WK 1–2", action: "Convert to retainer", score: "62" },
-                  { week: "WK 3–4", action: "Add a new client", score: "70" },
-                  { week: "WK 5–8", action: "Build passive stream", score: "75" },
-                ].map((step, i) => (
-                  <div key={i} style={{ position: "relative", marginBottom: 12 }}>
-                    <div style={{ position: "absolute", left: -16, top: 3, width: 10, height: 10, borderRadius: "50%", backgroundColor: i === 0 ? C.teal : "transparent", border: `2px solid ${i === 0 ? C.teal : "rgba(255,255,255,0.15)"}` }} />
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                      <div>
-                        <span style={{ fontSize: 11, color: C.sandLight }}>{step.week}</span>
-                        <div style={{ fontSize: 14, fontWeight: 500, color: C.sandText }}>{step.action}</div>
-                      </div>
-                      <span style={{ fontSize: 14, fontFamily: mono, fontWeight: 600, color: C.teal }}>{step.score}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <p style={{ fontSize: 13, color: C.sandLight, margin: 0, lineHeight: 1.55 }}>
-                Milestones from <strong style={{ color: C.sandText }}>your starting numbers</strong>. Not generic advice.
-              </p>
-            </div>
+            <div style={{ fontSize: 16, fontWeight: 700, color: C.navy, marginBottom: 8 }}>Negotiation scripts</div>
+            <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.55, margin: 0 }}>
+              Word-for-word scripts written from your actual numbers. Includes what to say if they push&nbsp;back.
+            </p>
           </div>
+
+          {/* 12-week roadmap */}
+          <div style={{ marginBottom: m ? 32 : 0, textAlign: "center" }}>
+            <div style={{ width: 48, height: 48, borderRadius: 14, backgroundColor: "rgba(14,26,43,0.06)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px" }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+            </div>
+            <div style={{ fontSize: 16, fontWeight: 700, color: C.navy, marginBottom: 8 }}>12-week roadmap</div>
+            <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.55, margin: 0 }}>
+              Step-by-step milestones with projected score improvements, personalized to where you&nbsp;start.
+            </p>
+          </div>
+        </div>
+
+        {/* Price + CTA */}
+        <div style={{ textAlign: "center", ...fadeIn(visible, 240) }}>
+          <p style={{ fontSize: 16, fontWeight: 500, color: C.textSecondary, marginBottom: 24 }}>
+            All included with the $69 diagnostic. Lifetime access.
+          </p>
+          <CtaButton m={m} variant="primary" />
         </div>
       </div>
     </section>
