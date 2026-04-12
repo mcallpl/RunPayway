@@ -767,7 +767,7 @@ export default function ReviewPage() {
 
 
   const p2Intro: Record<string, string> = {
-    A1: `Here is how your ${incomeModelDesc} income in ${industrySector} actually works — where it comes from, how it flows, and where it breaks.`,
+    A1: `Here is how your ${incomeModelDesc} income in ${industrySector} actually works — where it comes from, how it flows, and where it's exposed.`,
     A2: `This is the structural breakdown of your income. As a ${structureDesc} with ${revenueDesc}, here is what the data shows.`,
     A3: `You have early structure. Here is the composition of your ${incomeModelDesc} income in ${industrySector} — and where the gaps are.`,
     B1: `Your ${incomeModelDesc} income in ${industrySector} is developing. Here is the breakdown — what is working and what is exposed.`,
@@ -798,7 +798,7 @@ export default function ReviewPage() {
     concentration_collapse: "Too much weight on a single source",
     labor_interruption: "Income stops when you stop working",
     visibility_gap: "Not enough income locked in ahead",
-    durability_thinness: "Recurring income is fragile or cancelable",
+    durability_thinness: "Recurring income is developing or cancelable",
   };
   const constraintLabel: Record<string, string> = {
     weak_forward_visibility: "Too little income locked in ahead",
@@ -806,11 +806,11 @@ export default function ReviewPage() {
     high_concentration: "Too much dependence on one source",
     low_persistence: "Not enough recurring income",
     high_variability: "Too much earnings variability",
-    weak_durability: "Income quality is too fragile",
+    weak_durability: "Income quality is still developing",
     shallow_continuity: "Continuity window is too short",
   };
   const fragilityClassLabel: Record<string, string> = {
-    brittle: "Your income is highly exposed to any disruption", thin: "Your income could break with one disruption", uneven: "Your income has gaps that targeted changes can fix", supported: "Your income has meaningful protection in place", resilient: "Your income can absorb a major hit and keep going",
+    brittle: "Your income has room to strengthen across several areas", thin: "Your income is developing resilience — targeted changes will help", uneven: "Your income has gaps that targeted changes can fix", supported: "Your income has meaningful protection in place", resilient: "Your income can absorb a major hit and keep going",
   };
   const confidenceColor: Record<string, string> = {
     high: B.teal, moderate: B.bandEstablished, guarded: B.bandDeveloping, low: B.bandLimited,
@@ -1044,14 +1044,14 @@ export default function ReviewPage() {
 
   // ── Page summary sentences ──
   const coverBandDesc: Record<string, string> = {
-    limited: "Your income is highly vulnerable to disruption right now.",
+    limited: "Your income is in the early stages of building stability.",
     developing: "Some structure is in place, but important weaknesses still remain.",
     established: "Your income has meaningful structural protection in place.",
     high: "Your income is well-protected against most disruptions.",
   };
 
   const p1Summary: Record<string, string> = {
-    limited: "Your income is structurally vulnerable right now — but this report shows you exactly how to fix it.",
+    limited: "Your income is at the starting line — and this report shows you exactly how to build from here.",
     developing: "Your income has some structure, but important weaknesses still remain.",
     established: "Your income is well-protected. This report shows the remaining gaps and how to close them.",
     high: "Your income is strong. This report confirms what is working and where to focus next.",
@@ -1232,8 +1232,8 @@ export default function ReviewPage() {
             <p style={{ fontSize: mobile ? 15 : 16, fontWeight: 500, color: "rgba(244,241,234,0.80)", margin: 0, lineHeight: 1.5 }}>
               {tier === "high" ? "Your income is strong and well-protected."
                 : tier === "established" ? "Your income is stable \u2014 but one constraint still limits you."
-                : tier === "developing" ? "Your income is building, but not yet secure."
-                : "Your income is structurally vulnerable right now."}
+                : tier === "developing" ? "Your income is building, and building momentum."
+                : "Your income is in the early stages — here's your plan."}
             </p>
           </div>
         </div>
@@ -1275,9 +1275,9 @@ export default function ReviewPage() {
               </p>
             </div>
             <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: "#FAFAF8", border: `1px solid rgba(197,48,48,0.15)` }}>
-              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandLimited, marginBottom: 6 }}>WHAT LIMITS YOUR SCORE</div>
+              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandLimited, marginBottom: 6 }}>YOUR BIGGEST OPPORTUNITY</div>
               <p style={{ fontSize: 14, fontWeight: 600, color: B.navy, margin: 0, lineHeight: 1.5 }}>
-                {dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) : "Key structural gaps remain"}
+                {dominantConstraintPlain[dominantConstraint] ? dominantConstraintPlain[dominantConstraint].charAt(0).toUpperCase() + dominantConstraintPlain[dominantConstraint].slice(1) : "Key areas to strengthen remain"}
               </p>
             </div>
           </div>
@@ -1370,7 +1370,7 @@ export default function ReviewPage() {
             const nextTier = tier === "limited" ? "developing" : tier === "developing" ? "established" : tier === "established" ? "high" : null;
             const unlocksByTier: Record<string, { title: string; desc: string }[]> = {
               developing: [
-                { title: "Walk away from bad deals", desc: "You\u2019re no longer one disruption from crisis \u2014 you can say no to work that doesn\u2019t fit." },
+                { title: "Walk away from bad deals", desc: "You\u2019re one strong move from the next level \u2014 you can say no to work that doesn\u2019t fit." },
                 { title: "Plan more than 30 days ahead", desc: "With a base forming underneath, you can start making decisions for next quarter, not just this week." },
               ],
               established: [
@@ -1436,8 +1436,8 @@ export default function ReviewPage() {
         {/* Navy header */}
         <div style={{ backgroundColor: B.navy, padding: mobile ? "24px 24px 28px" : "32px 40px 36px", position: "relative" as const }}>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${B.bandLimited}, ${B.bandDeveloping})` }} />
-          <div style={{ fontSize: mobile ? 20 : 24, fontWeight: 600, color: "#fff", marginBottom: 6 }}>Stress Testing Your Income</div>
-          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", margin: 0 }}>What happens to your income when disruptions occur.</p>
+          <div style={{ fontSize: mobile ? 20 : 24, fontWeight: 600, color: "#fff", marginBottom: 6 }}>Your Resilience Profile</div>
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", margin: 0 }}>What your income can absorb — and where to strengthen it.</p>
         </div>
 
         {/* Scenarios */}
@@ -1491,9 +1491,9 @@ export default function ReviewPage() {
               </p>
             </div>
             <div style={{ flexShrink: 0, padding: "14px 20px", borderRadius: 12, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}>
-              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandLimited, marginBottom: 4 }}>KEY VULNERABILITY</div>
+              <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.bandLimited, marginBottom: 4 }}>AREA TO STRENGTHEN</div>
               <div style={{ fontSize: 14, fontWeight: 600, color: "#fff" }}>
-                {v2Fragility ? (failureModeLabel[(v2Fragility as { primary_failure_mode: string }).primary_failure_mode] || "Primary structural weakness") : `Loss of primary income source`}
+                {v2Fragility ? (failureModeLabel[(v2Fragility as { primary_failure_mode: string }).primary_failure_mode] || "Primary area for improvement") : `Loss of primary income source`}
               </div>
             </div>
           </div>
@@ -1519,7 +1519,7 @@ export default function ReviewPage() {
             </div>
           </div>
           <div style={{ textAlign: "center" }}>
-            <span style={{ fontSize: 11, color: "rgba(14,26,43,0.25)" }}>Structure determines outcome under stress.</span>
+            <span style={{ fontSize: 11, color: "rgba(14,26,43,0.25)" }}>Your plan targets these areas first.</span>
           </div>
         </div>
     </>,
