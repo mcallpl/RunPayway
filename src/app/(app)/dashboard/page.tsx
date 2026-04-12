@@ -260,14 +260,14 @@ function constraintNarrative(c: string, i: CanonicalInputs, sector: string): str
   const vocab = getVocabulary(sector);
   if (vocab.constraints[c]) return vocab.constraints[c];
   const n: Record<string, string> = {
-    high_concentration: `Your largest source represents ${i.largest_source_pct}% of income. If that single relationship changes, ${i.largest_source_pct}% of your revenue disappears in one decision.`,
+    high_concentration: `Your largest source represents ${i.largest_source_pct}% of income. If that single relationship changes, ${i.largest_source_pct}% of your revenue is exposed in one decision.`,
     weak_forward_visibility: `Only ${i.forward_secured_pct}% of your income is committed forward. You are re-selling your time every month.`,
     high_labor_dependence: `${i.labor_dependence_pct}% of your income requires your active daily work. A 90-day disruption stops ${i.labor_dependence_pct}% of income.`,
     low_persistence: `Only ${i.income_persistence_pct}% of your income repeats automatically. The rest must be re-earned from scratch each month.`,
     low_source_diversity: `You have ${i.source_diversity_count} income source${i.source_diversity_count === 1 ? "" : "s"}. A single client decision has outsized power over your stability.`,
     high_variability: `Your income variability is ${i.income_variability_level}. Month-to-month swings make it harder to plan, save, and invest.`,
     weak_durability: `Your income quality score is developing. The contracts and agreements backing your income are exposed to market pressure.`,
-    shallow_continuity: `Your income runway is critically short. If active work stops, income drops to near zero within weeks. Building any continuity buffer is the priority.`,
+    shallow_continuity: `Your income runway is critically short. If active work stops, income shifts to near zero within weeks. Building any continuity buffer is the priority.`,
   };
   return n[c] || `Your primary area — ${c.replace(/_/g, " ")} — is the biggest lever for improving your score.`;
 }
@@ -1110,13 +1110,8 @@ function DashboardContent() {
             const stepsTotal = roadmap.length;
             const stepsDone = completedSteps.length;
 
-            const copyBriefing = () => {
-              const text = `RunPayway™ Weekly Briefing — ${custName || "Assessment"}\n\nScore: ${dScore}/100 (${dBand})\n${gap > 0 ? `${gap} points to ${nextB}` : "Highest band achieved"}\n\nThis week: ${nextMove?.label || "Complete Step 1"}\nProjected impact: +${nextMove?.lift || 0} points → ${nextMove?.projected || dScore}\n\n${stepsDone}/${stepsTotal} steps completed · ${daysSince} days since assessment\n\n— RunPayway™ Dashboard`;
-              navigator.clipboard.writeText(text);
-            };
-
             return (
-              <div style={{ marginBottom: 36, animation: "fadeSlideIn 600ms ease-out" }}>
+              <div id="phase-diagnosis" style={{ marginBottom: 36, animation: "fadeSlideIn 600ms ease-out" }}>
                 <div style={{ padding: mobile ? "28px 22px" : "40px 44px", borderRadius: mobile ? 16 : 24, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
 
                   {/* Top row: Score ring + context — generous spacing */}
@@ -1255,73 +1250,102 @@ function DashboardContent() {
           )}
 
           {/* ════════════════════════════════════════════════════════ */}
-          {/*  DIAGNOSE — PressureMap (now after Plan)                  */}
-          {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="Your Score" color={B.purple} tint="rgba(75,63,174,0.02)" id="phase-diagnosis" mobile={mobile}>
-
-          {/* 2. PRESSUREMAP™ */}
-          <section className="cc-section" style={{ padding: mobile ? "32px 22px" : "44px 48px", borderRadius: 24, backgroundColor: B.surface, border: `1px solid ${B.stone}`, marginBottom: 24, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
-
-            {/* Header — clean, confident */}
-            <div style={{ marginBottom: 28 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 10 }}>PRESSUREMAP™{indLabel ? ` — ${indLabel.toUpperCase()}` : ""}</div>
-              <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 500, color: B.navy, margin: 0, lineHeight: 1.35 }}>
-                {activeInc >= 60
-                  ? `${activeInc}% of your income stops the moment you stop. Here's how that is structured.`
-                  : persInc >= 30
-                  ? `${persInc}% of your income is protected. Here's where the rest stands.`
-                  : `Your income splits into three zones. Here's what each one means for you.`
-                }
-              </p>
-            </div>
-
-            {/* Visual bar — larger, more breathing room */}
-            <div style={{ marginBottom: 28 }}>
-              <div style={{ display: "flex", height: 16, borderRadius: 8, overflow: "hidden", marginBottom: 10 }}>
-                {zones.map(z => z.pct > 0 ? <div key={z.id} style={{ width: `${z.pct}%`, backgroundColor: `${z.color}35`, borderRight: z.id !== "persistent" ? `2px solid ${B.white}` : "none" }} /> : null)}
-              </div>
-              <div style={{ display: "flex" }}>
-                {zones.map(z => z.pct > 0 ? <div key={`label-${z.id}`} style={{ width: `${z.pct}%` }}>{z.pct >= 10 && <span style={{ fontSize: 12, fontWeight: 600, color: z.color }}>{z.label} <span style={{ fontFamily: mono }}>{z.pct}%</span></span>}</div> : null)}
-              </div>
-            </div>
-
-            {/* Industry insight — one confident sentence */}
-            {indData.general && (
-              <p style={{ fontSize: 15, fontWeight: 500, color: B.teal, margin: "0 0 28px", lineHeight: 1.5, borderLeft: `3px solid ${B.teal}`, paddingLeft: 16 }}>
-                {indData.general}
-              </p>
-            )}
-
-            {/* Zone cards — insight-first, data secondary */}
-            <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
-              {zones.map(z => (
-                <div key={z.id} style={{ padding: mobile ? "18px 20px" : "22px 28px", borderRadius: 14, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${z.color}` }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
-                    <span style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{z.label} — <span style={{ fontFamily: mono, color: z.color }}>{z.pct}%</span></span>
-                    {z.peer && <span style={{ fontSize: 12, color: B.taupe }}>{z.peer}</span>}
-                  </div>
-                  <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>{z.txt}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Biggest risk — clean, below zones */}
-            <div style={{ marginTop: 24, padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 14, backgroundColor: `${B.red}04`, borderLeft: `3px solid ${B.red}` }}>
-              <p style={{ fontSize: mobile ? 16 : 18, fontWeight: 500, color: B.navy, margin: "0 0 8px", lineHeight: 1.4 }}>
-                {vocabDash.scenarios.lose_top_client.split(/[.!?]/)[0]}  — your score would shift {dScore - stLCDrop < 30 && dScore >= 30 ? "into Limited Stability in this scenario." : `from ${dScore} to ${dScore - stLCDrop} in this scenario.`}
-              </p>
-              <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>{constraintNarrative(rootCon, base, sector)}</p>
-            </div>
-          </section>
-
-          {/* Removed: secondary constraint, model stamps, standalone stress tests (folded into What-If Explorer) */}
-
-          </PhaseSep>
-
-          {/* ════════════════════════════════════════════════════════ */}
-          {/*  DECIDE — "What should I do?"                           */}
+          {/*  YOUR PLAN — "What should I do?" (action-first)          */}
           {/* ════════════════════════════════════════════════════════ */}
           <PhaseSep label="Your Plan" color={B.navy} tint="rgba(14,26,43,0.015)" id="phase-plan" mobile={mobile}>
+
+          {/* 12-WEEK ROADMAP — moved first for action-first order */}
+          {roadmap.length > 1 && (
+            <section className="cc-section" style={{ padding: mobile ? "32px 22px" : "44px 48px", borderRadius: 24, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+              <div style={{ marginBottom: 24 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple, marginBottom: 10 }}>12-WEEK ROADMAP</div>
+                <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 500, color: B.navy, margin: "0 0 6px", lineHeight: 1.35 }}>
+                  {totalLift > 0 ? `${roadmap.length} moves. ${dScore} → ${dScore + totalLift}. Here's the order.` : "Your execution timeline."}
+                </p>
+                {completedSteps.length > 0 && <p style={{ fontSize: 14, color: B.teal, fontWeight: 500, margin: 0 }}>{completedSteps.length} of {roadmap.length} complete</p>}
+              </div>
+
+              {/* Timeline steps */}
+              <div style={{ position: "relative", paddingLeft: mobile ? 28 : 36 }}>
+                {/* Vertical timeline line */}
+                <div style={{ position: "absolute", left: mobile ? 13 : 17, top: 0, bottom: 0, width: 2, backgroundColor: B.stone }} />
+
+                {roadmap.map((step, i) => {
+                  const done = completedSteps.includes(i);
+                  const prevDone = i === 0 || completedSteps.includes(i - 1);
+                  const isFirst = !done && prevDone && !completedSteps.includes(i);
+                  const plainMilestone: Record<string, string> = {
+                    add_client: "No single client carries more than half your income",
+                    convert_retainer: "At least some of your income repeats automatically each month",
+                    build_passive: "You have income that comes in whether you work that day or not",
+                    lock_forward: "Next quarter's revenue is already committed — not hoped for",
+                  };
+                  const timeEstimate: Record<string, string> = {
+                    add_client: "2–4 weeks",
+                    convert_retainer: "1–2 conversations",
+                    build_passive: "4–8 weeks to set up",
+                    lock_forward: "1–3 conversations",
+                  };
+                  const successSignal: Record<string, string> = {
+                    add_client: "You've signed a new client or agreement that generates real revenue",
+                    convert_retainer: "A client has agreed to a recurring arrangement — even a small one",
+                    build_passive: "Revenue came in that didn't require your active work that week",
+                    lock_forward: "You have a signed commitment for income beyond this month",
+                  };
+                  return (
+                    <div key={i} style={{ position: "relative", marginBottom: i < roadmap.length - 1 ? 20 : 0, transition: "opacity 300ms" }}>
+                      {/* Timeline dot */}
+                      <button role="checkbox" aria-checked={done} aria-label={`Mark step ${i + 1} as ${done ? 'incomplete' : 'complete'}`} onClick={() => toggleStep(i)} style={{ position: "absolute", left: mobile ? -28 : -36, top: done ? 6 : isFirst ? 14 : 6, width: 28, height: 28, borderRadius: "50%", backgroundColor: done ? B.teal : isFirst ? B.purple : `${B.teal}08`, border: `2px solid ${done ? B.teal : isFirst ? B.purple : `${B.teal}40`}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 200ms", zIndex: 1 }}>
+                        {done ? <span style={{ color: B.white, fontSize: 12, fontWeight: 700 }}>&#10003;</span> : <span style={{ fontSize: 12, fontWeight: 700, color: isFirst ? B.white : B.teal }}>{i + 1}</span>}
+                      </button>
+
+                      {/* Completed step — compact with celebration */}
+                      {done ? (
+                        <div style={{ padding: "14px 20px", borderRadius: 12, backgroundColor: `${B.teal}04`, border: `1px solid ${B.teal}12` }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                            <span style={{ fontSize: 15, fontWeight: 500, color: B.teal, textDecoration: "line-through", opacity: 0.7 }}>{step.action}</span>
+                            <span style={{ fontSize: 12, fontFamily: mono, color: B.teal, flexShrink: 0, whiteSpace: "nowrap" as const }}>+{step.lift} pts</span>
+                          </div>
+                        </div>
+                      ) : isFirst ? (
+                        /* Active step — fully expanded */
+                        <div style={{ padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 16, backgroundColor: `${B.purple}03`, border: `1px solid ${B.purple}15` }}>
+                          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 10 }}>YOUR CURRENT STEP</div>
+
+                          <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 6, lineHeight: 1.3 }}>{step.action}</div>
+                          <p style={{ fontSize: 14, color: B.muted, margin: "0 0 14px", lineHeight: 1.6 }}>{step.desc}</p>
+
+                          <div style={{ display: "flex", gap: mobile ? 8 : 16, marginBottom: 14, flexWrap: "wrap" as const }}>
+                            <span style={{ fontSize: 12, color: B.taupe }}>{step.weeks}</span>
+                            {timeEstimate[step.pid] && <span style={{ fontSize: 12, color: B.taupe }}>Takes {timeEstimate[step.pid]}</span>}
+                            <span style={{ fontSize: 12, color: B.taupe }}>{step.effortLabel}</span>
+                          </div>
+
+                          <div style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: B.white, borderLeft: `3px solid ${B.teal}` }}>
+                            <div style={{ fontSize: 13, fontWeight: 500, color: B.navy, marginBottom: 6 }}>{plainMilestone[step.pid] || step.target}</div>
+                            {successSignal[step.pid] && (
+                              <p style={{ fontSize: 13, color: B.muted, margin: "0 0 6px", lineHeight: 1.5 }}>
+                                <span style={{ fontWeight: 600, color: B.teal }}>Done when:</span> {successSignal[step.pid]}
+                              </p>
+                            )}
+                            <span style={{ fontSize: 12, fontFamily: mono, color: B.taupe }}>Score: {step.cumulativeFrom} → {step.cumulativeTo}</span>
+                          </div>
+                        </div>
+                      ) : (
+                        /* Future step — collapsed, just the title */
+                        <div style={{ padding: "14px 20px", borderRadius: 12, backgroundColor: "#FAFAFA", border: `1px solid ${B.stone}`, opacity: 0.6 }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                            <span style={{ fontSize: 15, fontWeight: 500, color: B.navy }}>{step.action}</span>
+                            <span style={{ fontSize: 12, color: B.taupe, flexShrink: 0, whiteSpace: "nowrap" as const }}>{step.weeks}</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
 
           {/* ── NEGOTIATION PLAYBOOK — white, in Your Plan ── */}
           {(() => {
@@ -1497,212 +1521,14 @@ function DashboardContent() {
             );
           })()}
 
-          {/* 4. 12-WEEK ROADMAP — timeline with dynamic milestones */}
-          {roadmap.length > 1 && (
-            <section className="cc-section" style={{ padding: mobile ? "32px 22px" : "44px 48px", borderRadius: 24, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
-              <div style={{ marginBottom: 24 }}>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple, marginBottom: 10 }}>12-WEEK ROADMAP</div>
-                <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 500, color: B.navy, margin: "0 0 6px", lineHeight: 1.35 }}>
-                  {totalLift > 0 ? `${roadmap.length} moves. ${dScore} → ${dScore + totalLift}. Here's the order.` : "Your execution timeline."}
-                </p>
-                {completedSteps.length > 0 && <p style={{ fontSize: 14, color: B.teal, fontWeight: 500, margin: 0 }}>{completedSteps.length} of {roadmap.length} complete</p>}
-              </div>
-
-              {/* Timeline steps */}
-              <div style={{ position: "relative", paddingLeft: mobile ? 28 : 36 }}>
-                {/* Vertical timeline line */}
-                <div style={{ position: "absolute", left: mobile ? 13 : 17, top: 0, bottom: 0, width: 2, backgroundColor: B.stone }} />
-
-                {roadmap.map((step, i) => {
-                  const done = completedSteps.includes(i);
-                  const prevDone = i === 0 || completedSteps.includes(i - 1);
-                  const isFirst = !done && prevDone && !completedSteps.includes(i);
-                  const plainMilestone: Record<string, string> = {
-                    add_client: "No single client carries more than half your income",
-                    convert_retainer: "At least some of your income repeats automatically each month",
-                    build_passive: "You have income that comes in whether you work that day or not",
-                    lock_forward: "Next quarter's revenue is already committed — not hoped for",
-                  };
-                  const timeEstimate: Record<string, string> = {
-                    add_client: "2–4 weeks",
-                    convert_retainer: "1–2 conversations",
-                    build_passive: "4–8 weeks to set up",
-                    lock_forward: "1–3 conversations",
-                  };
-                  const successSignal: Record<string, string> = {
-                    add_client: "You've signed a new client or agreement that generates real revenue",
-                    convert_retainer: "A client has agreed to a recurring arrangement — even a small one",
-                    build_passive: "Revenue came in that didn't require your active work that week",
-                    lock_forward: "You have a signed commitment for income beyond this month",
-                  };
-                  return (
-                    <div key={i} style={{ position: "relative", marginBottom: i < roadmap.length - 1 ? 20 : 0, transition: "opacity 300ms" }}>
-                      {/* Timeline dot */}
-                      <button role="checkbox" aria-checked={done} aria-label={`Mark step ${i + 1} as ${done ? 'incomplete' : 'complete'}`} onClick={() => toggleStep(i)} style={{ position: "absolute", left: mobile ? -28 : -36, top: done ? 6 : isFirst ? 14 : 6, width: 28, height: 28, borderRadius: "50%", backgroundColor: done ? B.teal : isFirst ? B.purple : `${B.teal}08`, border: `2px solid ${done ? B.teal : isFirst ? B.purple : `${B.teal}40`}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 200ms", zIndex: 1 }}>
-                        {done ? <span style={{ color: B.white, fontSize: 12, fontWeight: 700 }}>&#10003;</span> : <span style={{ fontSize: 12, fontWeight: 700, color: isFirst ? B.white : B.teal }}>{i + 1}</span>}
-                      </button>
-
-                      {/* Completed step — compact with celebration */}
-                      {done ? (
-                        <div style={{ padding: "14px 20px", borderRadius: 12, backgroundColor: `${B.teal}04`, border: `1px solid ${B.teal}12` }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
-                            <span style={{ fontSize: 15, fontWeight: 500, color: B.teal, textDecoration: "line-through", opacity: 0.7 }}>{step.action}</span>
-                            <span style={{ fontSize: 12, fontFamily: mono, color: B.teal, flexShrink: 0, whiteSpace: "nowrap" as const }}>+{step.lift} pts</span>
-                          </div>
-                        </div>
-                      ) : isFirst ? (
-                        /* Active step — fully expanded */
-                        <div style={{ padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 16, backgroundColor: `${B.purple}03`, border: `1px solid ${B.purple}15` }}>
-                          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 10 }}>YOUR CURRENT STEP</div>
-
-                          <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 6, lineHeight: 1.3 }}>{step.action}</div>
-                          <p style={{ fontSize: 14, color: B.muted, margin: "0 0 14px", lineHeight: 1.6 }}>{step.desc}</p>
-
-                          <div style={{ display: "flex", gap: mobile ? 8 : 16, marginBottom: 14, flexWrap: "wrap" as const }}>
-                            <span style={{ fontSize: 12, color: B.taupe }}>{step.weeks}</span>
-                            {timeEstimate[step.pid] && <span style={{ fontSize: 12, color: B.taupe }}>Takes {timeEstimate[step.pid]}</span>}
-                            <span style={{ fontSize: 12, color: B.taupe }}>{step.effortLabel}</span>
-                          </div>
-
-                          <div style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: B.white, borderLeft: `3px solid ${B.teal}` }}>
-                            <div style={{ fontSize: 13, fontWeight: 500, color: B.navy, marginBottom: 6 }}>{plainMilestone[step.pid] || step.target}</div>
-                            {successSignal[step.pid] && (
-                              <p style={{ fontSize: 13, color: B.muted, margin: "0 0 6px", lineHeight: 1.5 }}>
-                                <span style={{ fontWeight: 600, color: B.teal }}>Done when:</span> {successSignal[step.pid]}
-                              </p>
-                            )}
-                            <span style={{ fontSize: 12, fontFamily: mono, color: B.taupe }}>Score: {step.cumulativeFrom} → {step.cumulativeTo}</span>
-                          </div>
-                        </div>
-                      ) : (
-                        /* Future step — collapsed, just the title */
-                        <div style={{ padding: "14px 20px", borderRadius: 12, backgroundColor: "#FAFAFA", border: `1px solid ${B.stone}`, opacity: 0.6 }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
-                            <span style={{ fontSize: 15, fontWeight: 500, color: B.navy }}>{step.action}</span>
-                            <span style={{ fontSize: 12, color: B.taupe, flexShrink: 0, whiteSpace: "nowrap" as const }}>{step.weeks}</span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
-          )}
-
           </PhaseSep>
 
           {/* ════════════════════════════════════════════════════════ */}
-          {/*  ACT — "Let me test it"                                 */}
-          {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="What If" color={B.teal} tint="rgba(31,109,122,0.02)" id="phase-test" mobile={mobile}>
-
-          {/* What-If Explorer — categorized, visual, recommended */}
-          <section className="cc-section">
-            <button onClick={() => setWhatIfOpen(!whatIfOpen)}
-              style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: mobile ? "24px 22px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: whatIfOpen ? "14px 14px 0 0" : 14, backgroundColor: B.surface, cursor: "pointer", transition: "border-radius 200ms", boxShadow: "0 1px 3px rgba(14,26,43,0.02)", boxSizing: "border-box" as const }}>
-              <div style={{ textAlign: "left" as const, flex: 1 }}>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 4 }}>WHAT-IF EXPLORER</div>
-                <div style={{ fontSize: 14, color: B.muted }}>Test changes before you commit. See the exact score impact.</div>
-              </div>
-              {!whatIfOpen && topMoves[0] && (
-                <div style={{ textAlign: "right" as const, flexShrink: 0, marginLeft: 16, marginRight: 8 }}>
-                  <div style={{ fontSize: 16, fontWeight: 300, fontFamily: mono, color: B.teal }}>+{topMoves[0].lift}</div>
-                  <div style={{ fontSize: 11, color: B.taupe }}>best move</div>
-                </div>
-              )}
-              <span style={{ fontSize: 16, color: B.taupe, flexShrink: 0, marginLeft: 16, transition: "transform 200ms", transform: whatIfOpen ? "rotate(180deg)" : "rotate(0deg)" }}>▼</span>
-            </button>
-
-            {whatIfOpen && (() => {
-              const growthPresetsMeta = presetMeta.filter(p => !["lose_top_client", "cant_work_90_days"].includes(p.id));
-              const stressPresetsMeta = presetMeta.filter(p => ["lose_top_client", "cant_work_90_days"].includes(p.id));
-
-              return (
-              <div style={{ border: `1px solid ${B.stone}`, borderTop: "none", borderRadius: "0 0 14px 14px", backgroundColor: B.surface, padding: mobile ? "24px 20px" : "28px 32px" }}>
-
-                {simLoading && !simResults ? (
-                  <div style={{ textAlign: "center", padding: "24px 0", color: B.taupe, fontSize: 14 }}>Loading simulations...</div>
-                ) : (
-                <>
-                {/* GROWTH MOVES */}
-                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, marginBottom: 12 }}>GROWTH MOVES</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 24 }}>
-                  {growthPresetsMeta.map((pr) => {
-                    const res = simResults?.[pr.id]; const lift = res ? res.overall_score - dScore : 0;
-                    const isA = effectivePreset === pr.id;
-                    const isTop = topMoves[0]?.id === pr.id;
-                    const why = isTop ? `Recommended \u2014 addresses your root constraint (${rootCon.replace(/_/g, " ")})` : null;
-                    return (
-                      <button key={pr.id} onClick={() => setActivePreset(isA && activePreset === pr.id ? null : pr.id)}
-                        style={{ padding: "18px 22px", textAlign: "left" as const, borderRadius: 14, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? `${B.purple}30` : isTop ? `${B.teal}15` : B.stone}`, backgroundColor: isA ? `${B.purple}04` : isTop ? `${B.teal}02` : "#FAFAFA", minHeight: 48 }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 4 }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
-                            <span style={{ fontSize: mobile ? 13 : 14, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
-                            {isTop && <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: `${B.teal}10`, color: B.teal, flexShrink: 0 }}>#1</span>}
-                          </div>
-                          <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal, flexShrink: 0, whiteSpace: "nowrap" as const }}>+{lift}</span>
-                        </div>
-                        <p style={{ fontSize: 14, color: B.taupe, margin: 0, lineHeight: 1.6 }}>{pr.description}</p>
-                        {why && <p style={{ fontSize: 12, color: B.teal, margin: "6px 0 0", fontWeight: 500 }}>{why}</p>}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* STRESS TESTS */}
-                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: B.red, marginBottom: 12 }}>STRESS TESTS</div>
-                <div style={{ display: "flex", gap: 8, marginBottom: 24, flexDirection: mobile ? "column" : "row" }}>
-                  {stressPresetsMeta.map(pr => {
-                    const res = simResults?.[pr.id]; const lift = res ? res.overall_score - dScore : 0;
-                    const isA = effectivePreset === pr.id;
-                    const scenarioKey = pr.id as keyof typeof vocabDash.scenarios;
-                    const vocabScenario = vocabDash.scenarios[scenarioKey];
-                    const scenarioLabel = vocabScenario ? vocabScenario.split(/[.!?]/)[0] : pr.label;
-                    const scenarioDesc = vocabScenario || pr.description;
-                    return (
-                      <button key={pr.id} onClick={() => setActivePreset(isA && activePreset === pr.id ? null : pr.id)}
-                        style={{ flex: 1, padding: "16px 20px", textAlign: "left" as const, borderRadius: 12, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? `${B.red}40` : B.stone}`, backgroundColor: isA ? `${B.red}04` : "transparent", minHeight: 48 }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 4 }}>
-                          <span style={{ fontSize: mobile ? 13 : 14, fontWeight: 600, color: isA ? B.navy : B.muted }}>{scenarioLabel}</span>
-                          <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.red, flexShrink: 0, whiteSpace: "nowrap" as const }}>{lift}</span>
-                        </div>
-                        <p style={{ fontSize: 14, color: B.taupe, margin: 0, lineHeight: 1.6 }}>{scenarioDesc}</p>
-                      </button>
-                    );
-                  })}
-                </div>
-                </>
-                )}
-
-                {/* SCENARIO RESULT — clean, answers "what would this do for me?" */}
-                {effectivePreset && aPO && sResult && (
-                  <div style={{ padding: mobile ? "22px 20px" : "24px 28px", borderRadius: 16, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${sDelta >= 0 ? B.teal : B.red}` }}>
-                    <p style={{ fontSize: 16, fontWeight: 500, color: B.navy, margin: "0 0 8px", lineHeight: 1.4 }}>
-                      {sDelta > 0
-                        ? `If you ${aPO.label.toLowerCase()}, your score goes from ${dScore} to ${sResult.overall_score}.`
-                        : sDelta < 0
-                        ? `If ${aPO.label.toLowerCase().replace("lose ", "you lose ").replace("can't", "you can't")}, your score would shift from ${dScore} to ${sResult.overall_score}.`
-                        : `${aPO.label} would not change your score.`
-                      }
-                    </p>
-                    {sResult.band !== dBand && <p style={{ fontSize: 14, fontWeight: 500, color: sDelta >= 0 ? B.teal : B.red, margin: "0 0 6px" }}>That moves you to {sResult.band}.</p>}
-                    <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.55 }}>{aPO.description}</p>
-                  </div>
-                )}
-              </div>
-              );
-            })()}
-          </section>
-
-          </PhaseSep>
-
-          {/* ════════════════════════════════════════════════════════ */}
-          {/*  MONITOR — Score history (multi-assessment only)          */}
+          {/*  PROGRESS — Score history (multi-assessment only)         */}
           {/* ════════════════════════════════════════════════════════ */}
           <PhaseSep label="Progress" color={B.taupe} tint="rgba(14,26,43,0.01)" id="phase-progress" mobile={mobile}>
 
-          {/* ──── MONITORING FEATURES — Score History + Factor Deltas + Benchmark Evolution ──── */}
+          {/* ──── Score History + Factor Deltas + Benchmark Evolution ──── */}
           {assessments.length >= 2 && (
             <section className="cc-section" style={{ marginBottom: 20, padding: mobile ? "28px 24px" : "36px 40px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
               <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 10 }}>STABILITY MONITORING</div>
@@ -1815,6 +1641,168 @@ function DashboardContent() {
               })()}
             </section>
           )}
+
+          </PhaseSep>
+
+          {/* ════════════════════════════════════════════════════════ */}
+          {/*  EXPLORE — PressureMap + What-If (context & exploration)  */}
+          {/* ════════════════════════════════════════════════════════ */}
+          <PhaseSep label="Explore" color={B.teal} tint="rgba(31,109,122,0.02)" id="phase-explore" mobile={mobile}>
+
+          {/* PRESSUREMAP™ — moved here from top for context-after-action order */}
+          <section className="cc-section" style={{ padding: mobile ? "32px 22px" : "44px 48px", borderRadius: 24, backgroundColor: B.surface, border: `1px solid ${B.stone}`, marginBottom: 24, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+
+            {/* Header — clean, confident */}
+            <div style={{ marginBottom: 28 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 10 }}>PRESSUREMAP™{indLabel ? ` — ${indLabel.toUpperCase()}` : ""}</div>
+              <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 500, color: B.navy, margin: 0, lineHeight: 1.35 }}>
+                {activeInc >= 60
+                  ? `${activeInc}% of your income stops the moment you stop. Here's how that is structured.`
+                  : persInc >= 30
+                  ? `${persInc}% of your income is protected. Here's where the rest stands.`
+                  : `Your income splits into three zones. Here's what each one means for you.`
+                }
+              </p>
+            </div>
+
+            {/* Visual bar — larger, more breathing room */}
+            <div style={{ marginBottom: 28 }}>
+              <div style={{ display: "flex", height: 16, borderRadius: 8, overflow: "hidden", marginBottom: 10 }}>
+                {zones.map(z => z.pct > 0 ? <div key={z.id} style={{ width: `${z.pct}%`, backgroundColor: `${z.color}35`, borderRight: z.id !== "persistent" ? `2px solid ${B.white}` : "none" }} /> : null)}
+              </div>
+              <div style={{ display: "flex" }}>
+                {zones.map(z => z.pct > 0 ? <div key={`label-${z.id}`} style={{ width: `${z.pct}%` }}>{z.pct >= 10 && <span style={{ fontSize: 12, fontWeight: 600, color: z.color }}>{z.label} <span style={{ fontFamily: mono }}>{z.pct}%</span></span>}</div> : null)}
+              </div>
+            </div>
+
+            {/* Industry insight — one confident sentence */}
+            {indData.general && (
+              <p style={{ fontSize: 15, fontWeight: 500, color: B.teal, margin: "0 0 28px", lineHeight: 1.5, borderLeft: `3px solid ${B.teal}`, paddingLeft: 16 }}>
+                {indData.general}
+              </p>
+            )}
+
+            {/* Zone cards — insight-first, data secondary */}
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
+              {zones.map(z => (
+                <div key={z.id} style={{ padding: mobile ? "18px 20px" : "22px 28px", borderRadius: 14, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${z.color}` }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
+                    <span style={{ fontSize: 15, fontWeight: 600, color: B.navy }}>{z.label} — <span style={{ fontFamily: mono, color: z.color }}>{z.pct}%</span></span>
+                    {z.peer && <span style={{ fontSize: 12, color: B.taupe }}>{z.peer}</span>}
+                  </div>
+                  <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>{z.txt}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* What to strengthen — clean, below zones */}
+            <div style={{ marginTop: 24, padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 14, backgroundColor: `${B.red}04`, borderLeft: `3px solid ${B.red}` }}>
+              <p style={{ fontSize: mobile ? 16 : 18, fontWeight: 500, color: B.navy, margin: "0 0 8px", lineHeight: 1.4 }}>
+                {vocabDash.scenarios.lose_top_client.split(/[.!?]/)[0]}  — your score would shift {dScore - stLCDrop < 30 && dScore >= 30 ? "into Limited Stability in this scenario." : `from ${dScore} to ${dScore - stLCDrop} in this scenario.`}
+              </p>
+              <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>{constraintNarrative(rootCon, base, sector)}</p>
+            </div>
+          </section>
+
+          {/* What-If Explorer — categorized, visual, recommended */}
+          <section className="cc-section">
+            <button onClick={() => setWhatIfOpen(!whatIfOpen)}
+              style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: mobile ? "24px 22px" : "28px 32px", border: `1px solid ${B.stone}`, borderRadius: whatIfOpen ? "14px 14px 0 0" : 14, backgroundColor: B.surface, cursor: "pointer", transition: "border-radius 200ms", boxShadow: "0 1px 3px rgba(14,26,43,0.02)", boxSizing: "border-box" as const }}>
+              <div style={{ textAlign: "left" as const, flex: 1 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 4 }}>WHAT-IF EXPLORER</div>
+                <div style={{ fontSize: 14, color: B.muted }}>Test changes before you commit. See the exact score impact.</div>
+              </div>
+              {!whatIfOpen && topMoves[0] && (
+                <div style={{ textAlign: "right" as const, flexShrink: 0, marginLeft: 16, marginRight: 8 }}>
+                  <div style={{ fontSize: 16, fontWeight: 300, fontFamily: mono, color: B.teal }}>+{topMoves[0].lift}</div>
+                  <div style={{ fontSize: 11, color: B.taupe }}>best move</div>
+                </div>
+              )}
+              <span style={{ fontSize: 16, color: B.taupe, flexShrink: 0, marginLeft: 16, transition: "transform 200ms", transform: whatIfOpen ? "rotate(180deg)" : "rotate(0deg)" }}>▼</span>
+            </button>
+
+            {whatIfOpen && (() => {
+              const growthPresetsMeta = presetMeta.filter(p => !["lose_top_client", "cant_work_90_days"].includes(p.id));
+              const stressPresetsMeta = presetMeta.filter(p => ["lose_top_client", "cant_work_90_days"].includes(p.id));
+
+              return (
+              <div style={{ border: `1px solid ${B.stone}`, borderTop: "none", borderRadius: "0 0 14px 14px", backgroundColor: B.surface, padding: mobile ? "24px 20px" : "28px 32px" }}>
+
+                {simLoading && !simResults ? (
+                  <div style={{ textAlign: "center", padding: "24px 0", color: B.taupe, fontSize: 14 }}>Loading simulations...</div>
+                ) : (
+                <>
+                {/* GROWTH MOVES */}
+                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: B.teal, marginBottom: 12 }}>GROWTH MOVES</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 24 }}>
+                  {growthPresetsMeta.map((pr) => {
+                    const res = simResults?.[pr.id]; const lift = res ? res.overall_score - dScore : 0;
+                    const isA = effectivePreset === pr.id;
+                    const isTop = topMoves[0]?.id === pr.id;
+                    const why = isTop ? `Recommended \u2014 addresses your root constraint (${rootCon.replace(/_/g, " ")})` : null;
+                    return (
+                      <button key={pr.id} onClick={() => setActivePreset(isA && activePreset === pr.id ? null : pr.id)}
+                        style={{ padding: "18px 22px", textAlign: "left" as const, borderRadius: 14, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? `${B.purple}30` : isTop ? `${B.teal}15` : B.stone}`, backgroundColor: isA ? `${B.purple}04` : isTop ? `${B.teal}02` : "#FAFAFA", minHeight: 48 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 4 }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+                            <span style={{ fontSize: mobile ? 13 : 14, fontWeight: 600, color: isA ? B.navy : B.muted }}>{pr.label}</span>
+                            {isTop && <span style={{ fontSize: 11, fontWeight: 600, padding: "2px 8px", borderRadius: 10, backgroundColor: `${B.teal}10`, color: B.teal, flexShrink: 0 }}>#1</span>}
+                          </div>
+                          <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.teal, flexShrink: 0, whiteSpace: "nowrap" as const }}>+{lift}</span>
+                        </div>
+                        <p style={{ fontSize: 14, color: B.taupe, margin: 0, lineHeight: 1.6 }}>{pr.description}</p>
+                        {why && <p style={{ fontSize: 12, color: B.teal, margin: "6px 0 0", fontWeight: 500 }}>{why}</p>}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* STRESS TESTS */}
+                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: B.red, marginBottom: 12 }}>STRESS TESTS</div>
+                <div style={{ display: "flex", gap: 8, marginBottom: 24, flexDirection: mobile ? "column" : "row" }}>
+                  {stressPresetsMeta.map(pr => {
+                    const res = simResults?.[pr.id]; const lift = res ? res.overall_score - dScore : 0;
+                    const isA = effectivePreset === pr.id;
+                    const scenarioKey = pr.id as keyof typeof vocabDash.scenarios;
+                    const vocabScenario = vocabDash.scenarios[scenarioKey];
+                    const scenarioLabel = vocabScenario ? vocabScenario.split(/[.!?]/)[0] : pr.label;
+                    const scenarioDesc = vocabScenario || pr.description;
+                    return (
+                      <button key={pr.id} onClick={() => setActivePreset(isA && activePreset === pr.id ? null : pr.id)}
+                        style={{ flex: 1, padding: "16px 20px", textAlign: "left" as const, borderRadius: 12, cursor: "pointer", transition: "all 200ms", border: `1px solid ${isA ? `${B.red}40` : B.stone}`, backgroundColor: isA ? `${B.red}04` : "transparent", minHeight: 48 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 4 }}>
+                          <span style={{ fontSize: mobile ? 13 : 14, fontWeight: 600, color: isA ? B.navy : B.muted }}>{scenarioLabel}</span>
+                          <span style={{ fontSize: 14, fontWeight: 600, fontFamily: mono, color: B.red, flexShrink: 0, whiteSpace: "nowrap" as const }}>{lift}</span>
+                        </div>
+                        <p style={{ fontSize: 14, color: B.taupe, margin: 0, lineHeight: 1.6 }}>{scenarioDesc}</p>
+                      </button>
+                    );
+                  })}
+                </div>
+                </>
+                )}
+
+                {/* SCENARIO RESULT — clean, answers "what would this do for me?" */}
+                {effectivePreset && aPO && sResult && (
+                  <div style={{ padding: mobile ? "22px 20px" : "24px 28px", borderRadius: 16, backgroundColor: "#FAFAFA", borderLeft: `3px solid ${sDelta >= 0 ? B.teal : B.red}` }}>
+                    <p style={{ fontSize: 16, fontWeight: 500, color: B.navy, margin: "0 0 8px", lineHeight: 1.4 }}>
+                      {sDelta > 0
+                        ? `If you ${aPO.label.toLowerCase()}, your score goes from ${dScore} to ${sResult.overall_score}.`
+                        : sDelta < 0
+                        ? `If ${aPO.label.toLowerCase().replace("lose ", "you lose ").replace("can't", "you can't")}, your score would shift from ${dScore} to ${sResult.overall_score}.`
+                        : `${aPO.label} would not change your score.`
+                      }
+                    </p>
+                    {sResult.band !== dBand && <p style={{ fontSize: 14, fontWeight: 500, color: sDelta >= 0 ? B.teal : B.red, margin: "0 0 6px" }}>That moves you to {sResult.band}.</p>}
+                    <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.55 }}>{aPO.description}</p>
+                  </div>
+                )}
+              </div>
+              );
+            })()}
+          </section>
+
+          </PhaseSep>
 
           {/* ── YOUR INCOME WHEN YOU WERE ASSESSED ── */}
           <section className="cc-section" style={{ marginTop: 24, padding: mobile ? "28px 20px" : "36px 40px", borderRadius: 20, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
@@ -2050,8 +2038,6 @@ function DashboardContent() {
               </Link>
             </div>
           </section>
-
-          </PhaseSep>
 
           {/* ── RECORD CARD ── */}
           {(() => {
