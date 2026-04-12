@@ -158,9 +158,17 @@ function StructureOverview() {
   return (
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 48 : 80, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto", textAlign: "center" }}>
-        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>
+        <div style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 56, height: 56, borderRadius: 16, backgroundColor: C.white, boxShadow: cardShadow, marginBottom: 24, ...fadeIn(visible) }}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+        </div>
+        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16, ...fadeIn(visible, 40) }}>
           Four pages. Each one shows{m ? " " : <br />}something specific.
         </h2>
+        <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 540, margin: "0 auto", ...fadeIn(visible, 80) }}>
+          Your report covers score, findings, action plan, and stress testing&mdash;each built directly from your answers.
+        </p>
       </div>
     </section>
   );
@@ -179,7 +187,7 @@ function Page01() {
   return (
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: 0, paddingBottom: m ? 64 : 80, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: 780, margin: "0 auto", ...fadeIn(visible) }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 16 }}>PAGE 01</div>
+        {/* Page label removed — redundant with card header */}
 
         {/* Report card */}
         <div style={{ backgroundColor: C.white, borderRadius: 24, overflow: "hidden", boxShadow: "0 16px 48px rgba(14,26,43,0.08), 0 4px 12px rgba(14,26,43,0.04)" }}>
@@ -187,11 +195,11 @@ function Page01() {
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: m ? "16px 24px" : "18px 40px", borderBottom: `1px solid rgba(14,26,43,0.06)` }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <span style={{ fontSize: 14, fontWeight: 700, color: C.navy }}>RunPayway&#8482;</span>
-              <span style={{ fontSize: 11, fontWeight: 600, color: C.teal }}>Income Stability Report</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: C.teal }}>Income Stability Report</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <span style={{ fontSize: 11, color: C.textMuted }}>2026-03-15</span>
-              <span style={{ fontSize: 10, fontWeight: 600, fontFamily: mono, color: C.textMuted, padding: "3px 8px", borderRadius: 6, backgroundColor: "rgba(14,26,43,0.04)" }}>RP-7X2K</span>
+              <span style={{ fontSize: 12, color: C.textMuted }}>2026-03-15</span>
+              <span style={{ fontSize: 12, fontWeight: 600, fontFamily: mono, color: C.textMuted, padding: "3px 8px", borderRadius: 6, backgroundColor: "rgba(14,26,43,0.04)" }}>RP-7X2K</span>
             </div>
           </div>
 
@@ -211,7 +219,7 @@ function Page01() {
                   </svg>
                   <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center" }}>
                     <span style={{ fontSize: m ? 36 : 44, fontWeight: 300, fontFamily: mono, color: "#fff", lineHeight: 1, letterSpacing: "-0.04em" }}>72</span>
-                    <span style={{ fontSize: 11, color: "rgba(244,241,234,0.40)", marginTop: 2 }}>/100</span>
+                    <span style={{ fontSize: 12, color: "rgba(244,241,234,0.40)", marginTop: 2 }}>/100</span>
                   </div>
                 </div>
               </div>
@@ -224,10 +232,10 @@ function Page01() {
                 </div>
 
                 {/* Next level callout — replaces vague "3 pts" */}
-                <div style={{ padding: m ? "14px 16px" : "16px 20px", borderRadius: 14, backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", marginBottom: 20 }}>
-                  <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: 6 }}>NEXT LEVEL</div>
-                  <div style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: "#fff", lineHeight: 1.4 }}>3 points to High Stability (75+)</div>
-                  <p style={{ fontSize: 13, color: "rgba(244,241,234,0.50)", lineHeight: 1.5, margin: "6px 0 0" }}>Converting one client to a retainer arrangement would close this gap.</p>
+                <div style={{ padding: m ? "14px 16px" : "16px 20px", borderRadius: "0 14px 14px 0", backgroundColor: "rgba(255,255,255,0.07)", borderLeft: `4px solid ${C.teal}`, marginBottom: 20 }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.45)", marginBottom: 6 }}>NEXT LEVEL</div>
+                  <div style={{ fontSize: m ? 15 : 16, fontWeight: 700, color: "#fff", lineHeight: 1.4 }}>3 points to High Stability (75+)</div>
+                  <p style={{ fontSize: 13, color: "rgba(244,241,234,0.55)", lineHeight: 1.5, margin: "6px 0 0" }}>Converting one client to a retainer arrangement would close this gap.</p>
                 </div>
 
                 {/* Meta row */}
@@ -248,7 +256,7 @@ function Page01() {
           </div>
 
           {/* Scale bar — below the navy section */}
-          <div style={{ padding: m ? "20px 24px 16px" : "24px 40px 20px", backgroundColor: "#FAFAF8" }}>
+          <div style={{ padding: m ? "20px 24px 16px" : "24px 40px 20px", backgroundColor: C.sand }}>
             <div style={{ position: "relative", height: 12, borderRadius: 999, overflow: "hidden" }}>
               <div style={{ position: "absolute", inset: 0, borderRadius: 999, display: "flex" }}>
                 <div style={{ width: "29%", backgroundColor: `${C.risk}30` }} />
@@ -273,9 +281,9 @@ function Page01() {
             </div>
           </div>
 
-          {/* Deterministic footer */}
+          {/* Consistent scoring footer */}
           <div style={{ padding: "12px 40px 16px", textAlign: "center" }}>
-            <span style={{ fontSize: 11, color: "rgba(14,26,43,0.25)" }}>Deterministic scoring &middot; Version-locked &middot; Same inputs produce the same result</span>
+            <span style={{ fontSize: 12, color: "rgba(14,26,43,0.25)" }}>Consistent scoring &middot; Version-locked &middot; Same inputs produce the same result</span>
           </div>
         </div>
       </div>
@@ -296,7 +304,7 @@ function Page02() {
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 64 : 80, paddingBottom: m ? 64 : 80, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: 780, margin: "0 auto", ...fadeIn(visible) }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 16 }}>PAGE 02</div>
+        {/* Page label removed — redundant with card header */}
 
         <div style={{ backgroundColor: C.white, borderRadius: 24, overflow: "hidden", boxShadow: "0 16px 48px rgba(14,26,43,0.08), 0 4px 12px rgba(14,26,43,0.04)" }}>
           {/* Navy header */}
@@ -337,11 +345,11 @@ function Page02() {
 
             {/* Strength + Constraint */}
             <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
-              <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: "#FAFAF8", border: `1px solid ${C.teal}15`, marginBottom: m ? 10 : 0 }}>
+              <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: C.sand, border: `1px solid ${C.teal}15`, marginBottom: m ? 10 : 0 }}>
                 <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 6 }}>STRONGEST FACTOR</div>
                 <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, margin: 0, lineHeight: 1.5 }}>Income remains steady month to month</p>
               </div>
-              <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: "#FAFAF8", border: `1px solid ${C.risk}15` }}>
+              <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: C.sand, border: `1px solid ${C.risk}15` }}>
                 <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: C.risk, marginBottom: 6 }}>PRIMARY CONSTRAINT</div>
                 <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, margin: 0, lineHeight: 1.5 }}>Too much reliance on a single source</p>
               </div>
@@ -368,7 +376,7 @@ function Page03() {
   return (
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 64 : 80, paddingBottom: m ? 64 : 80, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: 780, margin: "0 auto", ...fadeIn(visible) }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 16 }}>PAGE 03</div>
+        {/* Page label removed — redundant with card header */}
 
         <div style={{ backgroundColor: C.white, borderRadius: 24, overflow: "hidden", boxShadow: "0 16px 48px rgba(14,26,43,0.08), 0 4px 12px rgba(14,26,43,0.04)" }}>
           {/* Navy header */}
@@ -424,7 +432,7 @@ function Page03() {
             }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
-              Unlock full diagnostic
+              Get Your Income Stability Score
             </Link>
           </div>
         </div>
@@ -446,7 +454,7 @@ function Page04() {
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 64 : 80, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: 780, margin: "0 auto", ...fadeIn(visible) }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted, marginBottom: 16 }}>PAGE 04</div>
+        {/* Page label removed — redundant with card header */}
 
         <div style={{ backgroundColor: C.white, borderRadius: 24, overflow: "hidden", boxShadow: "0 16px 48px rgba(14,26,43,0.08), 0 4px 12px rgba(14,26,43,0.04)" }}>
           {/* Navy header */}
@@ -459,16 +467,16 @@ function Page04() {
           {/* Scenarios */}
           <div style={{ padding: m ? "16px 24px" : "24px 40px" }}>
             {[
-              { scenario: "Largest client lost", severity: "Severe", score: 44, delta: -28, color: C.risk },
-              { scenario: "Unable to work for 90 days", severity: "Significant", score: 53, delta: -19, color: C.moderate },
-              { scenario: "Pipeline delay (3 months)", severity: "Moderate", score: 64, delta: -8, color: C.teal },
+              { scenario: "Largest client lost", severity: "Severe", score: 44, delta: -28, color: C.risk, bg: `${C.risk}06` },
+              { scenario: "Unable to work for 90 days", severity: "Significant", score: 53, delta: -19, color: C.moderate, bg: `${C.moderate}06` },
+              { scenario: "Pipeline delay (3 months)", severity: "Moderate", score: 64, delta: -8, color: C.teal, bg: `${C.teal}06` },
             ].map((s, i) => (
-              <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 0", borderBottom: i < 2 ? `1px solid rgba(14,26,43,0.06)` : "none" }}>
+              <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 20px", margin: "0 -20px", borderRadius: 12, backgroundColor: s.bg, borderBottom: i < 2 ? `1px solid rgba(14,26,43,0.06)` : "none" }}>
                 <div style={{ flex: 1 }}>
                   <span style={{ fontSize: 15, fontWeight: 500, color: C.navy }}>{s.scenario}</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: m ? 10 : 16, flexShrink: 0 }}>
-                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.04em", color: s.color, padding: "3px 10px", borderRadius: 6, backgroundColor: `${s.color}08` }}>{s.severity}</span>
+                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.04em", color: s.color, padding: "3px 10px", borderRadius: 6, backgroundColor: `${s.color}10` }}>{s.severity}</span>
                   <div style={{ display: "flex", alignItems: "baseline", gap: 4, minWidth: 70, justifyContent: "flex-end" }}>
                     <span style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: "rgba(14,26,43,0.30)" }}>{s.score}</span>
                     <span style={{ fontSize: m ? 20 : 24, fontWeight: 700, fontFamily: mono, color: s.color }}>{s.delta}</span>

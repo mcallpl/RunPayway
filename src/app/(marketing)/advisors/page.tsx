@@ -132,7 +132,7 @@ function TheProblem() {
         </div>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, ...fadeIn(visible, 100) }}>
           {cards.map((card, i) => (
-            <div key={i} style={{ padding: 28, borderRadius: 16, backgroundColor: C.white, boxShadow: cardShadow, border: `1px solid ${C.borderSoft}`, marginBottom: m ? 16 : 0 }}>
+            <div key={i} style={{ padding: 28, borderRadius: 16, backgroundColor: C.white, boxShadow: cardShadow, border: `1px solid ${C.borderSoft}`, borderLeft: "4px solid #4B3FAE", marginBottom: m ? 16 : 0 }}>
               <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.4 }}>{card.says}</p>
               <p style={{ fontSize: 15, fontWeight: 400, color: C.textSecondary, lineHeight: 1.5, margin: 0 }}>{card.hidden}</p>
             </div>
@@ -154,9 +154,9 @@ function WhatItReveals() {
   const fadeIn = useFadeIn();
 
   const items = [
-    "Structural Income Score (0\u2013100) \u2014 where they stand",
+    "Income Stability Score (0\u2013100) \u2014 where they stand",
     "Stability classification \u2014 Limited, Developing, Established, or High Stability",
-    "Primary structural constraint \u2014 what limits their stability",
+    "Biggest income risk \u2014 what limits their stability",
     "Stress test outcomes \u2014 what happens if a source disappears",
     "Distance to next level \u2014 how far from the next stability band",
   ];
@@ -168,12 +168,12 @@ function WhatItReveals() {
           What the System Reveals About Your Client
         </h2>
         <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 32, ...fadeIn(visible, 50) }}>
-          Every assessment produces a fixed, deterministic result. No interpretation. No variation.
+          Every assessment produces a fixed, consistent result. No interpretation. No variation.
         </p>
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 14, ...fadeIn(visible, 100) }}>
           {items.map((item, i) => (
             <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginTop: 5 }}><path d="M20 6L9 17l-5-5"/></svg>
               <span style={{ fontSize: 17, color: C.textSecondary, lineHeight: 1.6 }}>{item}</span>
             </div>
           ))}
@@ -195,7 +195,7 @@ function HowItWorks() {
 
   const steps = [
     { num: "01", title: "Assess", desc: "Run the assessment on behalf of your client. Under 2 minutes. No financial documents required." },
-    { num: "02", title: "Review", desc: "Receive the score, structural breakdown, stress test, and primary constraint \u2014 all generated from fixed rules." },
+    { num: "02", title: "Review", desc: "Receive the score, structural breakdown, stress test, and main vulnerability \u2014 all generated from fixed rules." },
     { num: "03", title: "Act", desc: "Use the results to inform client conversations, identify risk, and build a plan before problems surface." },
   ];
 
@@ -209,7 +209,7 @@ function HowItWorks() {
         </div>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, ...fadeIn(visible, 100) }}>
           {steps.map((step, i) => (
-            <div key={i} style={{ padding: 28, borderRadius: 16, backgroundColor: C.white, boxShadow: cardShadow, marginBottom: m ? 16 : 0 }}>
+            <div key={i} style={{ padding: 28, borderRadius: 16, backgroundColor: C.white, boxShadow: cardShadow, borderLeft: "4px solid #4B3FAE", marginBottom: m ? 16 : 0 }}>
               <div style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.teal, marginBottom: 12 }}>{step.num}</div>
               <div style={{ fontSize: 20, fontWeight: 600, color: C.navy, marginBottom: 8 }}>{step.title}</div>
               <p style={{ fontSize: 15, fontWeight: 400, color: C.textSecondary, lineHeight: 1.55, margin: 0 }}>{step.desc}</p>
@@ -248,7 +248,7 @@ function UseCases() {
         </div>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, ...fadeIn(visible, 100) }}>
           {cases.map((c, i) => (
-            <div key={i} style={{ padding: 28, borderRadius: 16, backgroundColor: C.white, boxShadow: cardShadow, marginBottom: m ? 16 : 0 }}>
+            <div key={i} style={{ padding: 28, borderRadius: 16, backgroundColor: C.white, boxShadow: cardShadow, borderLeft: "4px solid #4B3FAE", marginBottom: m ? 16 : 0 }}>
               <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 8 }}>{c.title}</div>
               <p style={{ fontSize: 15, fontWeight: 400, color: C.textSecondary, lineHeight: 1.55, margin: 0 }}>{c.desc}</p>
             </div>
@@ -280,13 +280,13 @@ function WhatYouGet() {
 
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
-      <div style={{ maxWidth: 680, margin: "0 auto" }}>
-        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 32, ...fadeIn(visible) }}>
+      <div style={{ maxWidth: innerW, margin: "0 auto" }}>
+        <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 32, textAlign: "center", ...fadeIn(visible) }}>
           What Advisors Get with Access
         </h2>
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 20, ...fadeIn(visible, 100) }}>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: 20, ...fadeIn(visible, 100) }}>
           {items.map((item, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
+            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 14, padding: 24, borderRadius: 16, backgroundColor: C.white, boxShadow: cardShadow, border: `1px solid ${C.borderSoft}`, borderLeft: "4px solid #4B3FAE" }}>
               <span style={{ color: C.teal, fontSize: 16, flexShrink: 0, marginTop: 2 }}>&#10003;</span>
               <div>
                 <span style={{ fontSize: 16, fontWeight: 600, color: C.navy }}>{item.title}</span>
@@ -311,7 +311,7 @@ function SystemIntegrity() {
   const fadeIn = useFadeIn();
 
   const badges = [
-    "Deterministic output",
+    "Consistent output",
     "No financial accounts required",
     "Private by default",
     "Version-controlled methodology",
@@ -387,8 +387,8 @@ function RequestAccessForm() {
   };
 
   const labelStyle: React.CSSProperties = {
-    display: "block", fontSize: 11, fontWeight: 600, color: C.navy,
-    letterSpacing: "0.10em", textTransform: "uppercase", marginBottom: 8,
+    display: "block", fontSize: 12, fontWeight: 600, color: C.navy,
+    marginBottom: 8,
   };
 
   return (
@@ -420,7 +420,7 @@ function RequestAccessForm() {
                   type="text" value={name} onChange={e => setName(e.target.value)}
                   placeholder="Your full name"
                   style={inputStyle}
-                  onFocus={e => { e.currentTarget.style.borderColor = "#6B4C9A"; }}
+                  onFocus={e => { e.currentTarget.style.borderColor = "#4B3FAE"; }}
                   onBlur={e => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
                 />
               </div>
@@ -431,7 +431,7 @@ function RequestAccessForm() {
                   type="email" value={email} onChange={e => setEmail(e.target.value)}
                   placeholder="you@firm.com"
                   style={inputStyle}
-                  onFocus={e => { e.currentTarget.style.borderColor = "#6B4C9A"; }}
+                  onFocus={e => { e.currentTarget.style.borderColor = "#4B3FAE"; }}
                   onBlur={e => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
                 />
               </div>
@@ -442,7 +442,7 @@ function RequestAccessForm() {
                   type="text" value={firm} onChange={e => setFirm(e.target.value)}
                   placeholder="Your firm or practice"
                   style={inputStyle}
-                  onFocus={e => { e.currentTarget.style.borderColor = "#6B4C9A"; }}
+                  onFocus={e => { e.currentTarget.style.borderColor = "#4B3FAE"; }}
                   onBlur={e => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
                 />
               </div>
@@ -459,7 +459,7 @@ function RequestAccessForm() {
                       cursor: "pointer",
                       color: role ? C.navy : C.textMuted,
                     }}
-                    onFocus={e => { e.currentTarget.style.borderColor = "#6B4C9A"; }}
+                    onFocus={e => { e.currentTarget.style.borderColor = "#4B3FAE"; }}
                     onBlur={e => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
                   >
                     <option value="" disabled>Select your role</option>
@@ -480,7 +480,7 @@ function RequestAccessForm() {
               </div>
 
               <div style={{ marginBottom: 24 }}>
-                <label style={labelStyle}>How would you use RunPayway?</label>
+                <label style={labelStyle}>How would you use RunPayway&#8482;?</label>
                 <textarea
                   value={message} onChange={e => setMessage(e.target.value)}
                   placeholder="Tell us about your use case..."
@@ -492,7 +492,7 @@ function RequestAccessForm() {
                     resize: "vertical" as const,
                     lineHeight: 1.5,
                   }}
-                  onFocus={e => { e.currentTarget.style.borderColor = "#6B4C9A"; }}
+                  onFocus={e => { e.currentTarget.style.borderColor = "#4B3FAE"; }}
                   onBlur={e => { e.currentTarget.style.borderColor = "rgba(14,26,43,0.12)"; }}
                 />
               </div>
@@ -506,7 +506,7 @@ function RequestAccessForm() {
                 disabled={!canSubmit}
                 style={{
                   width: "100%", height: 60, borderRadius: 16,
-                  backgroundColor: canSubmit ? C.navy : "rgba(14,26,43,0.35)",
+                  backgroundColor: canSubmit ? "#4B3FAE" : "rgba(75,63,174,0.35)",
                   color: C.white, fontSize: 16, fontWeight: 600,
                   border: "none", cursor: canSubmit ? "pointer" : "default",
                   transition: "transform 200ms, box-shadow 200ms",

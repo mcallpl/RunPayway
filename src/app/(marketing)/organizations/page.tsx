@@ -96,8 +96,8 @@ function HeroSection() {
           Income evaluation across your organization is subjective. RunPayway\u2122 standardizes it&mdash;with a consistent system that produces the same result every time.
         </p>
         <div style={{ display: "flex", justifyContent: "center", gap: m ? 12 : 20, flexWrap: "wrap" as const, ...fadeIn(visible, 150) }}>
-          {["API-ready", "Deterministic", "Compliant by design"].map((badge, i) => (
-            <span key={i} style={{ fontSize: m ? 13 : 14, fontWeight: 600, color: C.teal, padding: "6px 14px", borderRadius: 20, backgroundColor: `${C.teal}10`, border: `1px solid ${C.teal}18` }}>
+          {["API-ready", "Consistent", "Compliant by design"].map((badge, i) => (
+            <span key={i} style={{ fontSize: m ? 13 : 14, fontWeight: 600, color: C.teal, padding: "5px 12px", borderRadius: 100, backgroundColor: "rgba(31,109,122,0.06)" }}>
               {badge}
             </span>
           ))}
@@ -131,13 +131,13 @@ function ProblemSection() {
             The Problem with Subjective{m ? " " : <br />}Income Evaluation
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
-            Every department, every analyst, every advisor evaluates income differently. There is no standard. RunPayway provides one.
+            Every department, every analyst, every advisor evaluates income differently. There is no standard. RunPayway&#8482; provides one.
           </p>
         </div>
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, ...fadeIn(visible, 100) }}>
           {cards.map((card, i) => (
-            <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, border: `1px solid ${C.borderSoft}`, boxShadow: cardShadow, marginBottom: m ? 16 : 0 }}>
+            <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, border: `1px solid ${C.borderSoft}`, borderLeft: `4px solid ${C.navy}`, boxShadow: cardShadow, marginBottom: m ? 16 : 0 }}>
               <h3 style={{ fontSize: 20, fontWeight: 700, color: C.navy, marginBottom: 12 }}>{card.title}</h3>
               <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, margin: 0 }}>{card.desc}</p>
             </div>
@@ -159,7 +159,7 @@ function SystemSection() {
   const fadeIn = useFadeIn();
 
   const attrs = [
-    { title: "Deterministic", desc: "Identical inputs always produce identical results. No variability, no exceptions." },
+    { title: "Consistent", desc: "Identical inputs always produce identical results. No variability, no exceptions." },
     { title: "Version-Controlled", desc: "Every model version is locked and immutable. Scores are always traceable to their methodology." },
     { title: "Auditable", desc: "Every assessment is stamped with model version, timestamp, and authentication code. Fully traceable." },
     { title: "Private by Default", desc: "No bank accounts. No credit pull. No financial data required. Assessment inputs only." },
@@ -173,13 +173,13 @@ function SystemSection() {
             One System. Fixed Rules.{m ? " " : <br />}Every Time.
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
-            The Income Stability Score&#8482; is produced by a deterministic model. No AI. No subjective judgment. Same inputs always produce the same result.
+            The Income Stability Score&#8482; is produced by a fixed model. No AI. No subjective judgment. Same inputs always produce the same result.
           </p>
         </div>
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, ...fadeIn(visible, 100) }}>
           {attrs.map((attr, i) => (
-            <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, border: `1px solid ${C.borderSoft}`, boxShadow: cardShadow, marginBottom: m ? 16 : 0 }}>
+            <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, border: `1px solid ${C.borderSoft}`, borderLeft: `4px solid ${C.navy}`, boxShadow: cardShadow, marginBottom: m ? 16 : 0 }}>
               <h3 style={{ fontSize: 20, fontWeight: 700, color: C.navy, marginBottom: 12 }}>{attr.title}</h3>
               <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, margin: 0 }}>{attr.desc}</p>
             </div>
@@ -201,7 +201,7 @@ function IntegrationSection() {
   const fadeIn = useFadeIn();
 
   const items = [
-    { num: "01", title: "API Access", desc: "Programmatically access scoring and structural breakdowns. Send inputs via API, receive scores, bands, and risk factors as JSON." },
+    { num: "01", title: "API Access", desc: "Programmatically access scoring and income breakdowns. Send inputs via API, receive scores, bands, and risk factors as JSON." },
     { num: "02", title: "Batch Assessment", desc: "Assess hundreds of income profiles at once using the fixed model. Upload inputs, receive standardized, comparable results." },
     { num: "03", title: "White-Label Reporting", desc: "Generate branded reports with your organization\u2019s identity. Same data, same methodology, your brand. Powered by RunPayway\u2122." },
   ];
@@ -214,20 +214,23 @@ function IntegrationSection() {
             Built for Integration
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
-            RunPayway is designed to fit into your existing infrastructure.
+            RunPayway&#8482; is designed to fit into your existing infrastructure.
           </p>
         </div>
 
         <div style={{ maxWidth: 720, margin: "0 auto", display: "flex", flexDirection: "column" as const, gap: 24, ...fadeIn(visible, 100) }}>
-          {items.map((item, i) => (
-            <div key={i} style={{ display: "flex", gap: m ? 16 : 24, alignItems: "flex-start", padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, border: `1px solid ${C.borderSoft}`, boxShadow: cardShadow }}>
-              <div style={{ fontSize: 14, fontWeight: 700, color: C.teal, fontFamily: mono, flexShrink: 0, marginTop: 2 }}>{item.num}</div>
+          {items.map((item, i) => {
+            const stepColors = [C.teal, purple, C.navy];
+            return (
+            <div key={i} style={{ display: "flex", gap: m ? 16 : 24, alignItems: "flex-start", padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, border: `1px solid ${C.borderSoft}`, borderLeft: `4px solid ${stepColors[i]}`, boxShadow: cardShadow }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "#FFFFFF", fontFamily: mono, flexShrink: 0, width: 32, height: 32, borderRadius: "50%", backgroundColor: stepColors[i], display: "flex", alignItems: "center", justifyContent: "center" }}>{item.num}</div>
               <div>
                 <h3 style={{ fontSize: 20, fontWeight: 700, color: C.navy, marginBottom: 8 }}>{item.title}</h3>
                 <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, margin: 0 }}>{item.desc}</p>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
@@ -244,13 +247,31 @@ function ComplianceSection() {
   const m = useMobile();
   const fadeIn = useFadeIn();
 
-  const items = [
-    { title: "SOC 2 Type II", desc: "Building toward readiness" },
-    { title: "ISO 27001", desc: "Informed by ISMS framework" },
-    { title: "GDPR", desc: "Data Processing Agreement available" },
-    { title: "CCPA/CPRA", desc: "California privacy rights supported" },
-    { title: "Data Processing Agreement", desc: "Published and available" },
-    { title: "Model Version Policy", desc: "Immutable, version-controlled methodology" },
+  const categories = [
+    {
+      label: "Security",
+      color: C.navy,
+      items: [
+        { title: "SOC 2 Type II", desc: "Designed for compliance" },
+        { title: "ISO 27001", desc: "Informed by ISMS framework" },
+      ],
+    },
+    {
+      label: "Privacy",
+      color: C.teal,
+      items: [
+        { title: "GDPR", desc: "Data Processing Agreement available" },
+        { title: "CCPA/CPRA", desc: "California privacy rights supported" },
+        { title: "Data Processing Agreement", desc: "Published and available" },
+      ],
+    },
+    {
+      label: "Auditability",
+      color: purple,
+      items: [
+        { title: "Model Version Policy", desc: "Immutable, version-controlled methodology" },
+      ],
+    },
   ];
 
   return (
@@ -261,15 +282,22 @@ function ComplianceSection() {
             Enterprise Compliance Readiness
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
-            RunPayway is designed to align with the security and privacy frameworks your organization requires.
+            RunPayway&#8482; is designed to align with the security and privacy frameworks your organization requires.
           </p>
         </div>
 
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, ...fadeIn(visible, 100) }}>
-          {items.map((item, i) => (
-            <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, border: `1px solid ${C.borderSoft}`, boxShadow: cardShadow, marginBottom: m ? 16 : 0 }}>
-              <h3 style={{ fontSize: 18, fontWeight: 700, color: C.navy, marginBottom: 8 }}>{item.title}</h3>
-              <p style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, margin: 0 }}>{item.desc}</p>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 40, ...fadeIn(visible, 100) }}>
+          {categories.map((cat, ci) => (
+            <div key={ci}>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: cat.color, marginBottom: 16 }}>{cat.label}</div>
+              <div style={{ display: m ? "block" : "grid", gridTemplateColumns: cat.items.length === 1 ? "1fr" : cat.items.length === 2 ? "1fr 1fr" : "1fr 1fr 1fr", gap: 24 }}>
+                {cat.items.map((item, i) => (
+                  <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, border: `1px solid ${C.borderSoft}`, borderLeft: `4px solid ${cat.color}`, boxShadow: cardShadow, marginBottom: m ? 16 : 0 }}>
+                    <h3 style={{ fontSize: 18, fontWeight: 700, color: C.navy, marginBottom: 8 }}>{item.title}</h3>
+                    <p style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, margin: 0 }}>{item.desc}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>
@@ -289,10 +317,10 @@ function UseCasesSection() {
   const fadeIn = useFadeIn();
 
   const cases = [
-    { title: "Lending & Underwriting", desc: "Integrate a structural income layer into credit decisions. Standardize income assessment across different analysts and eliminate subjective variation." },
-    { title: "Workforce Platforms", desc: "Quickly assess contractor and freelancer income stability at onboarding and renewal. One consistent standard across your entire platform." },
-    { title: "Advisory Platforms", desc: "Give financial advisors a standardized tool to evaluate client income risk, making assessments consistent across your entire client base." },
-    { title: "Benefits & Insurance", desc: "Use income structure evaluation for eligibility determination, risk pricing, or coverage decisions. Replace subjective review with fixed methodology." },
+    { title: "Lending & Underwriting", color: C.navy, icon: "\u{1F3E6}", desc: "Integrate an income stability layer into credit decisions. Standardize income assessment across different analysts and eliminate subjective variation." },
+    { title: "Workforce Platforms", color: C.teal, icon: "\u{1F465}", desc: "Quickly assess contractor and freelancer income stability at onboarding and renewal. One consistent standard across your entire platform." },
+    { title: "Advisory Platforms", color: purple, icon: "\u{1F4CA}", desc: "Give financial advisors a standardized tool to evaluate client income risk, making assessments consistent across your entire client base." },
+    { title: "Benefits & Insurance", color: "#2D6A4F", icon: "\u{1F6E1}", desc: "Use income structure evaluation for eligibility determination, risk pricing, or coverage decisions. Replace subjective review with fixed methodology." },
   ];
 
   return (
@@ -306,7 +334,8 @@ function UseCasesSection() {
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, ...fadeIn(visible, 100) }}>
           {cases.map((item, i) => (
-            <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, border: `1px solid ${C.borderSoft}`, boxShadow: cardShadow, marginBottom: m ? 16 : 0 }}>
+            <div key={i} style={{ padding: m ? 24 : 28, borderRadius: 16, backgroundColor: C.white, border: `1px solid ${C.borderSoft}`, borderLeft: `4px solid ${item.color}`, boxShadow: cardShadow, marginBottom: m ? 16 : 0 }}>
+              <div style={{ fontSize: 22, marginBottom: 8 }}>{item.icon}</div>
               <h3 style={{ fontSize: 20, fontWeight: 700, color: C.navy, marginBottom: 12 }}>{item.title}</h3>
               <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, margin: 0 }}>{item.desc}</p>
             </div>
@@ -433,7 +462,7 @@ function RequestAccessSection() {
           {/* Message */}
           <div style={{ marginBottom: 28 }}>
             <label style={labelStyle}>Tell us about your use case</label>
-            <textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Describe how you plan to use RunPayway" rows={5}
+            <textarea value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Describe how you plan to use RunPayway\u2122" rows={5}
               style={{ ...inputStyle, height: "auto", padding: "14px 18px", resize: "vertical" as const, minHeight: 130, fontFamily: "inherit", lineHeight: 1.6 }}
               onFocus={e => { e.currentTarget.style.borderColor = purple; }} onBlur={e => { e.currentTarget.style.borderColor = `rgba(14,26,43,0.12)`; }} />
           </div>
@@ -511,7 +540,7 @@ function FinalCta() {
             Request Enterprise Briefing
           </button>
           <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 16 }}>
-            Deterministic | Version-controlled | Compliant by design
+            Consistent | Version-controlled | Compliant by design
           </p>
         </div>
       </div>

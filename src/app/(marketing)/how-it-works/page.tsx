@@ -198,7 +198,7 @@ function ProcessOverview() {
             {
               num: "03",
               title: "Your result",
-              body: "Your score, stability level, and structural breakdown. The diagnostic adds context without changing the score.",
+              body: "Your score, stability level, and income breakdown. The diagnostic adds context without changing the score.",
               footer: "",
             },
           ].map((step, i) => (
@@ -230,16 +230,19 @@ function WhatIsMeasured() {
       title: "How it\u2019s earned",
       desc: "Where your income comes from and how it\u2019s distributed.",
       icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      accent: C.teal,
     },
     {
       title: "How it holds",
       desc: "Whether it continues under pressure or disappears with disruption.",
       icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      accent: C.purple,
     },
     {
       title: "How it depends on you",
       desc: "What happens to your income if you step away.",
       icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+      accent: C.navy,
     },
   ];
 
@@ -247,9 +250,8 @@ function WhatIsMeasured() {
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: 960, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
-          <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>MEASUREMENT</div>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24 }}>
-            Six structural dimensions. One result.
+            Six key dimensions. One result.
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: explanatoryW, margin: "0 auto" }}>
             Your income is evaluated across six fixed factors &mdash; covering how it&rsquo;s built, how it holds, and what happens if something changes.
@@ -258,7 +260,7 @@ function WhatIsMeasured() {
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, maxWidth: 860, margin: "0 auto", ...fadeIn(visible, 100) }}>
           {themes.map((t, i) => (
-            <div key={i} style={{ padding: m ? 28 : 32, borderRadius: 20, backgroundColor: C.white, boxShadow: cardShadow, textAlign: "center", marginBottom: m ? 16 : 0 }}>
+            <div key={i} style={{ padding: m ? 28 : 32, borderRadius: 20, backgroundColor: C.white, boxShadow: cardShadow, textAlign: "center", marginBottom: m ? 16 : 0, borderLeft: `4px solid ${t.accent}` }}>
               <div style={{ width: 56, height: 56, borderRadius: 14, backgroundColor: `${C.teal}08`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
                 {t.icon}
               </div>
@@ -290,7 +292,7 @@ function ScoreVsDiagnostic() {
             The Score and the Diagnostic are Separate.
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: explanatoryW, margin: "0 auto 8px" }}>
-            The score is deterministic&mdash;calculated from your answers only. No changes. No exceptions.
+            The score is consistent &mdash; same inputs, same result. Calculated from your answers only. No changes. No exceptions.
           </p>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: explanatoryW, margin: "0 auto" }}>
             The diagnostic provides industry context and recommendations without altering your score.
@@ -299,7 +301,7 @@ function ScoreVsDiagnostic() {
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: m ? 24 : 36, ...fadeIn(visible, 100) }}>
           {/* The Score */}
-          <div style={{ padding: m ? 28 : 32, borderRadius: 20, backgroundColor: C.white, boxShadow: cardShadow, marginBottom: m ? 20 : 0, position: "relative" as const, overflow: "hidden" }}>
+          <div style={{ padding: m ? 28 : 32, borderRadius: 20, backgroundColor: "rgba(31,109,122,0.02)", boxShadow: cardShadow, marginBottom: m ? 20 : 0, position: "relative" as const, overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.teal }} />
             <div style={{ fontSize: 20, fontWeight: 600, color: C.navy, marginBottom: 12 }}>The Score</div>
             <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.6, marginBottom: 20 }}>
@@ -308,7 +310,7 @@ function ScoreVsDiagnostic() {
             <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
               {["Score", "Stability level", "Primary structural risk", "Stress test outcome"].map((item, i) => (
                 <div key={i} style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0 }} />
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}><path d="M20 6L9 17l-5-5"/></svg>
                   <span style={{ fontSize: 15, fontWeight: 500, color: C.navy }}>{item}</span>
                 </div>
               ))}
@@ -316,7 +318,7 @@ function ScoreVsDiagnostic() {
           </div>
 
           {/* The Diagnostic */}
-          <div style={{ padding: m ? 28 : 32, borderRadius: 20, backgroundColor: C.white, boxShadow: cardShadow, position: "relative" as const, overflow: "hidden" }}>
+          <div style={{ padding: m ? 28 : 32, borderRadius: 20, backgroundColor: "rgba(75,63,174,0.02)", boxShadow: cardShadow, position: "relative" as const, overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.purple }} />
             <div style={{ fontSize: 20, fontWeight: 600, color: C.navy, marginBottom: 12 }}>The Diagnostic</div>
             <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.6, marginBottom: 20 }}>
@@ -325,7 +327,7 @@ function ScoreVsDiagnostic() {
             <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
               {["Industry context", "Scenario analysis", "What to do first"].map((item, i) => (
                 <div key={i} style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                  <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.purple, flexShrink: 0 }} />
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0 }}><path d="M20 6L9 17l-5-5"/></svg>
                   <span style={{ fontSize: 15, fontWeight: 500, color: C.navy }}>{item}</span>
                 </div>
               ))}
@@ -358,7 +360,6 @@ function SystemIntegrity() {
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
-          <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>SYSTEM INTEGRITY</div>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 12 }}>
             Built for consistency.
           </h2>
@@ -380,18 +381,6 @@ function SystemIntegrity() {
           </p>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: m ? 10 : 14, maxWidth: 480, margin: "0 auto 40px", ...fadeIn(visible, 140) }}>
-          {[
-            { label: "Model", value: "RP-2.0" },
-            { label: "Ruleset", value: "Fixed" },
-            { label: "Output", value: "Deterministic" },
-          ].map((item, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: m ? "16px 24px" : "20px 32px", borderRadius: 16, backgroundColor: C.sand, border: `1px solid rgba(14,26,43,0.04)` }}>
-              <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", color: C.textMuted }}>{item.label.toUpperCase()}</div>
-              <div style={{ fontSize: m ? 20 : 24, fontWeight: 700, fontFamily: mono, color: C.navy }}>{item.value}</div>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -415,7 +404,7 @@ function ShiftMoment() {
             Once measured, your income{m ? " " : <br />}is no longer a guess.
           </h2>
           <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary }}>
-            You know where your income holds&mdash;and where it breaks.
+            You know where your income holds&mdash;and where it&rsquo;s exposed.
           </p>
         </div>
 
@@ -423,12 +412,12 @@ function ShiftMoment() {
         <div style={{ maxWidth: 640, margin: "0 auto", padding: m ? "24px 20px" : "28px 36px", borderRadius: 18, borderLeft: `4px solid ${C.teal}`, backgroundColor: C.white, boxShadow: cardShadow, ...fadeIn(visible, 100) }}>
           <div style={{ display: "flex", flexDirection: "column" as const, gap: 16 }}>
             {[
-              "You see where your income holds — and where it breaks",
+              "You see where your income holds \u2014 and where it\u2019s exposed",
               "You understand what happens under real conditions",
               "You act before problems appear — not after",
             ].map((item, i) => (
               <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 10 }} />
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginTop: 4 }}><path d="M20 6L9 17l-5-5"/></svg>
                 <p style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: C.navy, margin: 0, lineHeight: 1.4 }}>{item}</p>
               </div>
             ))}
@@ -470,7 +459,7 @@ function BeforeYouBegin() {
             "What would change if your biggest source went away tomorrow",
           ].map((item, i) => (
             <div key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-              <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 10 }} />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginTop: 5 }}><path d="M20 6L9 17l-5-5"/></svg>
               <span style={{ fontSize: 17, fontWeight: 500, color: C.navy, lineHeight: 1.5 }}>{item}</span>
             </div>
           ))}
@@ -513,7 +502,7 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get Your Structural Income Report
+            Get Your Income Stability Score
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 16 }}>
             Under 2 minutes | Instant result | Private by default
