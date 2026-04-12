@@ -197,17 +197,17 @@ function HeroSection() {
           <div style={{ marginBottom: m ? 48 : 0 }}>
             {/* Trust badges */}
             <div style={{ display: "flex", flexWrap: "wrap" as const, gap: m ? 12 : 16, marginBottom: m ? 28 : 36, ...fadeIn(visible) }}>
-              {["Private by default", "No credit pull", "Instant result"].map((item, i) => (
+              {["Private by default", "No credit pull", "2-minute assessment"].map((item, i) => (
                 <span key={i} style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.04em", color: C.teal, padding: "5px 12px", borderRadius: 100, border: `1px solid ${C.teal}25`, backgroundColor: `${C.teal}06` }}>{item}</span>
               ))}
             </div>
 
             <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.035em", color: C.navy, marginBottom: m ? 16 : 20, ...fadeIn(visible, 50) }}>
-              Structural Income.{m ? " " : <br />}Measured.
+              Your income has{m ? " " : <br />}a structure.{m ? " " : <br />}Now you can measure&nbsp;it.
             </h1>
 
-            <p style={{ fontSize: m ? 17 : 22, fontWeight: 500, lineHeight: 1.45, color: C.navy, maxWidth: 440, marginBottom: 16, ...fadeIn(visible, 80) }}>
-              Know how your income holds up&mdash;before you rely on it.
+            <p style={{ fontSize: m ? 17 : 22, fontWeight: 500, lineHeight: 1.45, color: C.navy, maxWidth: 480, marginBottom: 16, ...fadeIn(visible, 80) }}>
+              RunPayway scores how much of your income is protected, how much is at risk, and what to do about&nbsp;it.
             </p>
 
             <div style={{ marginBottom: m ? 32 : 40, ...fadeIn(visible, 100) }} />
@@ -219,20 +219,6 @@ function HeroSection() {
               </p>
             </div>
 
-            {/* Trust strip */}
-            <div style={{ display: "flex", justifyContent: "center", gap: m ? 24 : 48, flexWrap: "wrap" as const, marginTop: 32 }}>
-              {[
-                { label: "19 Industries", sub: "Calibrated" },
-                { label: "20 Engines", sub: "Deterministic" },
-                { label: "RP-2.0", sub: "Version-locked" },
-                { label: "SHA-256", sub: "Verified" },
-              ].map((item, i) => (
-                <div key={i} style={{ textAlign: "center" as const }}>
-                  <div style={{ fontSize: 16, fontWeight: 700, fontFamily: mono, color: C.navy }}>{item.label}</div>
-                  <div style={{ fontSize: 11, color: C.textMuted, letterSpacing: "0.06em" }}>{item.sub}</div>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* Right — product preview (pill shape) */}
@@ -265,21 +251,6 @@ function HeroSection() {
                 </div>
               </div>
 
-              {/* Stats bar — horizontal single row */}
-              <div style={{ display: "flex", borderRadius: 12, overflow: "hidden", border: "1px solid rgba(255,255,255,0.06)", marginBottom: 20 }}>
-                {[
-                  { label: "BUFFER", value: "4.2 mo", color: C.teal },
-                  { label: "VISIBILITY", value: "68%", color: C.teal },
-                  { label: "TOP RISK", value: "Concen.", color: "#E57373" },
-                  { label: "TYPE", value: "Uneven", color: "#D4A843" },
-                ].map((stat, i, arr) => (
-                  <div key={i} style={{ flex: 1, padding: "12px 10px", textAlign: "center", borderRight: i < arr.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none", backgroundColor: "rgba(255,255,255,0.02)" }}>
-                    <div style={{ fontSize: 8, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.30)", marginBottom: 5 }}>{stat.label}</div>
-                    <div style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: stat.color }}>{stat.value}</div>
-                  </div>
-                ))}
-              </div>
-
               {/* Income pressure bar */}
               <div>
                 <div style={{ display: "flex", height: 8, borderRadius: 999, overflow: "hidden" }}>
@@ -295,10 +266,25 @@ function HeroSection() {
               </div>
 
               <div style={{ textAlign: "center", paddingTop: 14 }}>
-                <span style={{ fontSize: 10, color: "rgba(244,241,234,0.20)", letterSpacing: "0.04em" }}>Example output &middot; Model RP-2.0</span>
+                <span style={{ fontSize: 10, color: "rgba(244,241,234,0.20)", letterSpacing: "0.04em" }}>Example report</span>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Trust strip — full width */}
+        <div style={{ display: "flex", justifyContent: "center", gap: m ? 24 : 56, flexWrap: "wrap" as const, marginTop: m ? 48 : 64, paddingTop: m ? 32 : 40, borderTop: `1px solid ${C.borderSoft}` }}>
+          {[
+            { label: "19 Industries", sub: "Built for" },
+            { label: "Instant", sub: "Results" },
+            { label: "No Accounts", sub: "Linked" },
+            { label: "Encrypted", sub: "& Private" },
+          ].map((item, i) => (
+            <div key={i} style={{ textAlign: "center" as const }}>
+              <div style={{ fontSize: 16, fontWeight: 700, fontFamily: mono, color: C.navy }}>{item.label}</div>
+              <div style={{ fontSize: 11, color: C.textMuted, letterSpacing: "0.06em" }}>{item.sub}</div>
+            </div>
+          ))}
         </div>
       </div>
     </header>
