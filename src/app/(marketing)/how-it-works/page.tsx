@@ -545,7 +545,7 @@ function StickyCta() {
         borderRadius: 12, backgroundColor: C.white, color: C.navy,
         fontSize: 16, fontWeight: 600, textDecoration: "none",
       }}>
-        Get Your Structural Income Report
+        Get Your Income Stability Score
       </Link>
     </div>
   );

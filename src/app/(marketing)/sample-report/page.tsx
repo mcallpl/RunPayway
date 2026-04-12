@@ -246,7 +246,7 @@ function Page01() {
                     ...(!m ? [{ label: "ACCESS CODE", value: "RP-7X2K" }] : []),
                   ].map((item, i) => (
                     <div key={i}>
-                      <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.30)", marginBottom: 4 }}>{item.label}</div>
+                      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.30)", marginBottom: 4 }}>{item.label}</div>
                       <div style={{ fontSize: 13, fontWeight: 600, fontFamily: mono, color: "rgba(244,241,234,0.75)" }}>{item.value}</div>
                     </div>
                   ))}
@@ -323,7 +323,7 @@ function Page02() {
           <div style={{ padding: m ? "24px 24px 28px" : "32px 40px 36px" }}>
             {/* Structure breakdown */}
             <div style={{ marginBottom: 28 }}>
-              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: C.textMuted, marginBottom: 12 }}>HOW YOUR INCOME BEHAVES</div>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: C.textMuted, marginBottom: 12 }}>HOW YOUR INCOME BEHAVES</div>
               <div style={{ display: "flex", height: 12, borderRadius: 999, overflow: "hidden", marginBottom: 12 }}>
                 <div style={{ width: "55%", backgroundColor: C.risk }} />
                 <div style={{ width: "20%", backgroundColor: C.moderate }} />
