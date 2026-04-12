@@ -742,11 +742,9 @@ export default function MarketingLayout({
                 {[
                   { href: "/how-it-works", label: t.nav.howItWorks },
                   { href: "/sample-report", label: t.nav.sampleReport },
-                  { href: "/dashboard", label: "Dashboard" },
                   { href: "/pricing", label: t.nav.pricing },
                   { href: "/advisors", label: "For Advisors" },
                   { href: "/organizations", label: "For Organizations" },
-                  { href: "/developers", label: "Developers" },
                 ].map((link) => (
                   <Link key={link.label} href={link.href}
                     style={{ fontSize: 14, color: "rgba(14,26,43,0.55)", lineHeight: 1.4, transition: "color 160ms ease, font-weight 160ms ease" }}
@@ -766,7 +764,7 @@ export default function MarketingLayout({
                   { href: "/about", label: t.nav.about },
                   { href: "/blog", label: "Blog" },
                   { href: "/faq", label: t.nav.faq },
-                  { href: "/coming-soon", label: "New Releases" },
+                  { href: "/coming-soon", label: "What\u2019s New" },
                   { href: "/contact", label: t.nav.contact },
                 ].map((link) => (
                   <Link key={link.label} href={link.href}
@@ -802,25 +800,6 @@ export default function MarketingLayout({
               </div>
             </div>
           </nav>
-
-          {/* Structural Income Brief — footer capture */}
-          <div style={{
-            display: "flex",
-            flexDirection: mobile ? "column" : "row",
-            alignItems: mobile ? "flex-start" : "center",
-            gap: mobile ? 12 : 24,
-            padding: mobile ? "24px 20px" : "24px 28px",
-            borderRadius: 14,
-            backgroundColor: "#0E1A2B",
-            marginBottom: mobile ? 28 : 36,
-          }}>
-            <span style={{ fontSize: 14, fontWeight: 600, color: "#F4F1EA", whiteSpace: "nowrap", flexShrink: 0 }}>
-              Structural Income Brief
-            </span>
-            <div style={{ flex: 1, width: mobile ? "100%" : "auto" }}>
-              <EmailCapture variant="inline" source="footer" />
-            </div>
-          </div>
 
           {/* Divider */}
           <div style={{ height: 1, width: "100%", background: "rgba(14,26,43,0.06)", marginBottom: 20 }} />

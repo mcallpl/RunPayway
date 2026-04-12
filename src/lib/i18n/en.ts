@@ -35,7 +35,7 @@ export const en: Translations = {
     workEmail: "Work email",
     joinWaitlist: "Join the Waitlist",
     incomeStabilityScore: "Income Stability Score™",
-    legal: "\u00a9 2026 RunPayway\u2122 | PeopleStar Enterprises, INC. | Orange County, California, USA | Structural Stability Model RP-2.0",
+    legal: "\u00a9 2026 RunPayway\u2122 | PeopleStar Enterprises, INC. | Orange County, California, USA",
   },
 
   // ── Cookie Consent ──
