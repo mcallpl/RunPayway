@@ -29,6 +29,12 @@ function useMobile(bp = 768) {
   return m;
 }
 
+function useTablet() {
+  const [t, setT] = useState(false);
+  useEffect(() => { const c = () => setT(window.innerWidth > 768 && window.innerWidth <= 1024); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
+  return t;
+}
+
 function useReducedMotion() {
   const [r, setR] = useState(false);
   useEffect(() => { setR(window.matchMedia("(prefers-reduced-motion: reduce)").matches); }, []);
@@ -75,7 +81,7 @@ const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace'
 const innerW = 1120;
 const narrowW = 720;
 const explanatoryW = 640;
-const sectionPx = (m: boolean) => m ? 24 : 48;
+const sectionPx = (m: boolean, t?: boolean) => m ? 28 : t ? 56 : 48;
 const cardShadow = "0 10px 30px rgba(14,26,43,0.06)";
 const ctaShadow = "0 8px 24px rgba(14,26,43,0.12)";
 
@@ -187,6 +193,7 @@ const INDUSTRIES = [
 function HeroSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
@@ -195,7 +202,7 @@ function HeroSection() {
         @keyframes ringDraw { from { stroke-dashoffset: 745; } to { stroke-dashoffset: 538; } }
       `}</style>
 
-      <div style={{ maxWidth: innerW, margin: "0 auto", paddingTop: m ? 80 : 112, paddingBottom: m ? 64 : 96, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+      <div style={{ maxWidth: innerW, margin: "0 auto", paddingTop: m ? 80 : 112, paddingBottom: m ? 64 : 96, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
 
         {/* Two-column: copy left, product preview right */}
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center", maxWidth: 1080, margin: "0 auto" }}>
@@ -306,10 +313,11 @@ function HeroSection() {
 function CategoryDeclaration() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m), position: "relative" as const, overflow: "hidden" }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t), position: "relative" as const, overflow: "hidden" }}>
       {/* Subtle grain */}
       <div className="navy-grain" />
 
@@ -338,10 +346,11 @@ function CategoryDeclaration() {
 function ProofMoment() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 52, fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24 }}>
@@ -432,6 +441,7 @@ function ProofMoment() {
 function WhatChanges() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   const steps = [
@@ -459,7 +469,7 @@ function WhatChanges() {
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: 960, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>
@@ -519,10 +529,11 @@ function WhatChanges() {
 function WhatYouReceive() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
 
         {/* Centered heading */}
@@ -631,10 +642,11 @@ function WhatYouReceive() {
 function UseCaseArchitecture() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>
@@ -820,13 +832,14 @@ function UseCaseArchitecture() {
 function IndustryProfiles() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
   const [selected, setSelected] = useState<typeof INDUSTRIES[0] | null>(null);
 
   const active = selected;
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: 960, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>
@@ -927,6 +940,7 @@ function IndustryProfiles() {
 function BeforeYouBegin() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   const items = [
@@ -937,7 +951,7 @@ function BeforeYouBegin() {
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: 860, margin: "0 auto" }}>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1.1fr", gap: 64, alignItems: "start" }}>
 
@@ -994,10 +1008,11 @@ function BeforeYouBegin() {
 function StructuralIncomeBrief() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m), position: "relative" as const, overflow: "hidden" }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t), position: "relative" as const, overflow: "hidden" }}>
       {/* Subtle grain */}
       <div className="navy-grain" />
 
@@ -1050,10 +1065,11 @@ function StructuralIncomeBrief() {
 function FinalCta() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m), paddingRight: sectionPx(m), position: "relative" as const, overflow: "hidden" }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t), position: "relative" as const, overflow: "hidden" }}>
       <div className="navy-grain" />
       <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
         <h2 style={{ fontSize: m ? 28 : 52, fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.035em", color: C.sandText, marginBottom: 20, ...fadeIn(visible) }}>
