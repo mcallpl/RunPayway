@@ -14,7 +14,7 @@ const C = {
   border: "rgba(14,26,43,0.08)",
 };
 
-export default function SuiteHeader({ current }: { current: "suite" | "pressuremap" | "simulator" | "dashboard" | "access-code" }) {
+export default function SuiteHeader({ current }: { current: "suite" | "pressuremap" | "simulator" | "dashboard" | "access-code" | "advisor-portal" }) {
   const [mobile, setMobile] = useState(false);
   useEffect(() => { const c = () => setMobile(window.innerWidth <= 640); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
 
@@ -62,6 +62,7 @@ export default function SuiteHeader({ current }: { current: "suite" | "pressurem
           {([
             { href: "/dashboard", label: "Simulator", key: "dashboard" },
             { href: "/access-code", label: "Access Code", key: "access-code" },
+            { href: "/advisor-portal", label: "Advisors", key: "advisor-portal" },
           ] as const).map(link => {
             const isActive = current === link.key;
             return (
