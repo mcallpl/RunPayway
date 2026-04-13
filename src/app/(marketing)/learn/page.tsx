@@ -260,6 +260,9 @@ export default function LearnHub() {
       {/* FEATURED INSIGHT */}
       <RealityCheck statement="Most income isn't unstable because it's low. It's unstable because it's concentrated." />
 
+      {/* INDUSTRY SCENARIOS */}
+      <IndustryScenarios m={m} />
+
       {/* PREVENTATIVE MEASUREMENT */}
       <section style={{ backgroundColor: L.white, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
         <div style={{ maxWidth: 1120, margin: "0 auto" }}>
@@ -344,6 +347,111 @@ export default function LearnHub() {
     </main>
   );
 }
+
+/* ================================================================ */
+/* INDUSTRY SCENARIOS                                                */
+/* ================================================================ */
+
+const industryScenarios = [
+  { industry: "Real Estate", slug: "income-stability-real-estate-agents", scenario: "Top producer earning $200K through commissions. No recurring revenue, no retainers. Market slows 30%.", score: "25\u201335", risk: "Pipeline dependency", color: "#C74634" },
+  { industry: "Freelance / Creative", slug: "income-stability-freelancers", scenario: "Designer earning $95K from 3 clients. Largest client is 50% of income. They don\u2019t renew.", score: "20\u201335", risk: "Client concentration", color: "#C74634" },
+  { industry: "Consulting", slug: "income-stability-consultants", scenario: "Management consultant earning $200K from 2 project-based clients. No contracts beyond current quarter.", score: "30\u201345", risk: "Labor dependence", color: "#D0A23A" },
+  { industry: "Sales / Brokerage", slug: "income-stability-sales-professionals", scenario: "SaaS rep earning $180K with 60% commission. Quota resets every quarter. Pipeline is 90-day visibility.", score: "25\u201340", risk: "Income persistence", color: "#D0A23A" },
+  { industry: "Insurance", slug: "income-stability-insurance-agents", scenario: "Agent earning $200K. Strong new business production masks declining renewal retention rate of 78%.", score: "35\u201355", risk: "Renewal erosion", color: "#D0A23A" },
+  { industry: "Mortgage", slug: "income-stability-mortgage-brokers", scenario: "Broker earning $180K. 70% of volume is refinance. Rates rise 200 basis points.", score: "15\u201325", risk: "Rate cycle dependency", color: "#C74634" },
+  { industry: "Legal Services", slug: "income-stability-lawyers", scenario: "Litigation partner billing $250K. Top 3 matters carry 65% of revenue. Two conclude simultaneously.", score: "35\u201350", risk: "Matter concentration", color: "#D0A23A" },
+  { industry: "Healthcare", slug: "income-stability-doctors", scenario: "Employed physician earning $350K from one hospital system. System restructures compensation model.", score: "40\u201355", risk: "Single employer dependency", color: "#D0A23A" },
+  { industry: "Construction / Trades", slug: "income-stability-contractors", scenario: "GC finishing a $400K project. Nothing signed for next quarter. 6-week gap between contracts.", score: "28\u201340", risk: "Forward visibility gap", color: "#D0A23A" },
+  { industry: "Media / Entertainment", slug: "income-stability-creators", scenario: "YouTuber earning $120K. 60% from brand deals with no long-term contracts. Algorithm changes.", score: "20\u201335", risk: "Platform dependency", color: "#C74634" },
+  { industry: "Technology", slug: "income-stability-tech-workers", scenario: "Senior engineer earning $250K total comp. 40% is RSUs. Company stock drops 50% in a correction.", score: "40\u201355", risk: "Compensation structure risk", color: "#D0A23A" },
+  { industry: "Small Business", slug: "income-stability-small-business-owners", scenario: "Marketing agency owner. 3 clients, largest is 55% of revenue. They move to an in-house team.", score: "30\u201345", risk: "Revenue concentration", color: "#D0A23A" },
+  { industry: "Retail / E-Commerce", slug: "income-stability-retail-owners", scenario: "Boutique owner earning $140K. 60% of revenue comes from Q4 holiday season. Supply chain delays hit.", score: "30\u201340", risk: "Seasonal concentration", color: "#D0A23A" },
+  { industry: "Hospitality", slug: "income-stability-hospitality-workers", scenario: "Restaurant owner earning $160K. 40% from catering revenue. Corporate clients cut event budgets.", score: "25\u201340", risk: "Demand volatility", color: "#D0A23A" },
+  { industry: "Transportation", slug: "income-stability-transportation-workers", scenario: "Owner-operator running 70% spot freight. Fuel costs spike 25%. Spot rates drop simultaneously.", score: "30\u201340", risk: "Utilization + cost exposure", color: "#D0A23A" },
+  { industry: "Education", slug: "is-my-income-stable", scenario: "Independent trainer earning $90K. Semester-by-semester contracts. One institution doesn\u2019t renew.", score: "28\u201342", risk: "Term-based uncertainty", color: "#D0A23A" },
+  { industry: "Manufacturing", slug: "income-stability-index", scenario: "Shop owner with $500K revenue. Largest buyer is 45% of output. They renegotiate terms downward 20%.", score: "35\u201350", risk: "Buyer concentration", color: "#D0A23A" },
+  { industry: "Nonprofit", slug: "how-to-improve-income-stability", scenario: "Executive director. 60% of funding from one foundation grant. Grant cycle is annual with no guarantee.", score: "30\u201345", risk: "Funding cycle dependency", color: "#D0A23A" },
+  { industry: "Agriculture", slug: "income-dependency-explained", scenario: "Farm operator with $300K revenue. 70% forward-priced through futures. Drought cuts yield 30%.", score: "30\u201345", risk: "Weather + market exposure", color: "#D0A23A" },
+];
+
+function IndustryScenarios({ m }: { m: boolean }) {
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  const scenariosSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Income Stability Scenarios by Industry",
+    "numberOfItems": industryScenarios.length,
+    "itemListElement": industryScenarios.map((s, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "name": `${s.industry}: ${s.scenario.slice(0, 80)}`,
+    })),
+  };
+
+  return (
+    <section style={{ backgroundColor: L.white, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: m ? 28 : 48, paddingRight: m ? 28 : 48 }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(scenariosSchema) }} />
+      <div style={{ maxWidth: 1120, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: m ? 36 : 48 }}>
+          <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: L.teal, marginBottom: 16 }}>INCOME RISK BY INDUSTRY</div>
+          <h2 style={{ fontSize: m ? 24 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: L.navy, marginBottom: 16 }}>
+            What income risk looks like in your industry.
+          </h2>
+          <p style={{ fontSize: m ? 16 : 18, lineHeight: 1.6, color: L.textSecondary, maxWidth: 560, margin: "0 auto" }}>
+            Every industry has a different income structure. Each scenario below is calibrated to how income actually works in that field.
+          </p>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 12 : 16, maxWidth: 960, margin: "0 auto" }}>
+          {industryScenarios.map((s) => {
+            const isOpen = expanded === s.industry;
+            return (
+              <div key={s.industry}
+                onClick={() => setExpanded(isOpen ? null : s.industry)}
+                style={{
+                  padding: m ? "18px 20px" : "22px 24px",
+                  borderLeft: `4px solid ${s.color}`,
+                  backgroundColor: isOpen ? L.panelFill : L.white,
+                  border: `1px solid ${isOpen ? L.teal + "20" : L.divider}`,
+                  borderLeftWidth: 4,
+                  borderLeftColor: s.color,
+                  cursor: "pointer",
+                  transition: "background-color 200ms, border-color 200ms",
+                }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: isOpen ? 12 : 0 }}>
+                  <div style={{ fontSize: 15, fontWeight: 600, color: L.navy }}>{s.industry}</div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ fontSize: 12, fontWeight: 600, fontFamily: '"SF Mono", monospace', color: s.color }}>{s.score}</span>
+                    <span style={{ fontSize: 14, color: L.textMuted, transform: isOpen ? "rotate(180deg)" : "none", transition: "transform 200ms" }}>&darr;</span>
+                  </div>
+                </div>
+                {isOpen && (
+                  <div>
+                    <p style={{ fontSize: 14, lineHeight: 1.6, color: L.textSecondary, margin: "0 0 10px" }}>{s.scenario}</p>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span style={{ fontSize: 12, fontWeight: 600, color: s.color }}>Primary risk: {s.risk}</span>
+                      <Link href={`/learn/${s.slug}`} onClick={(e) => e.stopPropagation()} style={{ fontSize: 13, fontWeight: 600, color: L.teal, textDecoration: "none" }}>
+                        Read full analysis &rarr;
+                      </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        <div style={{ textAlign: "center", marginTop: 32 }}>
+          <p style={{ fontSize: 15, fontWeight: 500, color: L.textSecondary }}>
+            RunPayway&#8482; is calibrated for <strong style={{ color: L.navy }}>19 industries</strong>. Each scenario uses the Income Stability Score&#8482; to measure how income structure holds under real-world&nbsp;conditions.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 
 function CategoryColumn({
   title,
