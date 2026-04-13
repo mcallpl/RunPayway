@@ -2,7 +2,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import SuiteHeader from "@/components/SuiteHeader";
+import Image from "next/image";
+import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import { C, mono, sans } from "@/lib/design-tokens";
 import { WORKER_URL } from "@/lib/config";
 
@@ -90,6 +91,74 @@ function conversationStarter(name: string, score: number, band: string, topRisk:
 
 function uid(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+
+/* ── Advisor Header (standalone — no consumer nav) ────── */
+function AdvisorHeader({ activated, mobile: m }: { activated: boolean; mobile: boolean }) {
+  const links = activated
+    ? [
+        { href: "#book-overview", label: "Dashboard" },
+        { href: "#client-list", label: "Clients" },
+        { href: "#add-client", label: "Add Client" },
+      ]
+    : [];
+
+  return (
+    <header style={{
+      borderBottom: `1px solid ${C.border}`,
+      backgroundColor: "rgba(247,246,243,0.97)",
+      backdropFilter: "blur(12px)",
+      position: "sticky",
+      top: 0,
+      zIndex: 50,
+    }}>
+      <div style={{
+        maxWidth: 1200,
+        margin: "0 auto",
+        height: m ? 56 : 64,
+        padding: m ? "0 16px" : "0 40px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: m ? 10 : 16, minWidth: 0 }}>
+          <Link href="/" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+            <Image src={logoBlue} alt="RunPayway" width={m ? 100 : 140} height={16} style={{ height: "auto" }} />
+          </Link>
+          <div style={{ width: 1, height: 24, backgroundColor: C.border }} />
+          <span style={{
+            fontSize: 13,
+            fontWeight: 700,
+            letterSpacing: "0.10em",
+            textTransform: "uppercase" as const,
+            color: C.purple,
+          }}>
+            ADVISOR PORTAL
+          </span>
+        </div>
+
+        {links.length > 0 && (
+          <nav style={{ display: "flex", alignItems: "center", gap: m ? 12 : 20 }}>
+            {links.map(link => (
+              <a key={link.href} href={link.href} style={{
+                fontSize: m ? 13 : 14, fontWeight: 500,
+                color: C.muted,
+                textDecoration: "none",
+                borderBottom: "2px solid transparent",
+                paddingBottom: 2,
+                transition: "color 150ms",
+                minHeight: 44,
+                display: "inline-flex",
+                alignItems: "center",
+              }}>
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        )}
+      </div>
+    </header>
+  );
 }
 
 /* ── Component ─────────────────────────────────────────── */
@@ -293,7 +362,7 @@ export default function AdvisorPortalPage() {
 
     return (
       <div style={{ minHeight: "100vh", backgroundColor: C.panelFill, fontFamily: sans }}>
-        <SuiteHeader current="advisor-portal" />
+        <AdvisorHeader activated={false} mobile={mobile} />
 
         {/* Hero */}
         <section style={{ maxWidth: 1200, margin: "0 auto", padding: mobile ? "48px 28px 32px" : "72px 48px 48px", textAlign: "center" }}>
@@ -403,11 +472,12 @@ export default function AdvisorPortalPage() {
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   return (
     <div style={{ minHeight: "100vh", backgroundColor: C.panelFill, fontFamily: sans }}>
-      <SuiteHeader current="advisor-portal" />
+      <AdvisorHeader activated={true} mobile={mobile} />
 
       {/* ── SECTION 1: BOOK OVERVIEW ── */}
-      <section style={{
+      <section id="book-overview" style={{
         backgroundColor: C.navy, padding: mobile ? "48px 28px 40px" : "64px 48px 56px",
+        scrollMarginTop: mobile ? 56 : 64,
       }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: C.purple, marginBottom: 12 }}>
@@ -481,7 +551,7 @@ export default function AdvisorPortalPage() {
         )}
 
         {/* ── SECTION 3: CLIENT LIST ── */}
-        <section style={{ marginBottom: 40 }}>
+        <section id="client-list" style={{ marginBottom: 40, scrollMarginTop: mobile ? 72 : 80 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 8 }}>
             <h2 style={{ fontSize: mobile ? 20 : 24, fontWeight: 700, color: C.navy, margin: 0, fontFamily: sans }}>
               Client list
@@ -622,7 +692,7 @@ export default function AdvisorPortalPage() {
         </section>
 
         {/* ── SECTION 4: ADD NEW CLIENT ── */}
-        <section style={{ marginBottom: 40 }}>
+        <section id="add-client" style={{ marginBottom: 40, scrollMarginTop: mobile ? 72 : 80 }}>
           <h2 style={{ fontSize: mobile ? 20 : 24, fontWeight: 700, color: C.navy, margin: "0 0 16px", fontFamily: sans }}>
             Add new client
           </h2>
