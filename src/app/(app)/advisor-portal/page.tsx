@@ -288,7 +288,7 @@ export default function AdvisorPortalPage() {
       "Get conversation starters before every meeting",
       "Track client progress across reassessments",
       "Identify which clients need attention this quarter",
-      "$15\u201325 per report \u00b7 No subscription \u00b7 No minimum",
+      "Volume pricing available \u00b7 No subscription \u00b7 No minimum",
     ];
 
     return (
