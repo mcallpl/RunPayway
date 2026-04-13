@@ -68,6 +68,16 @@ export function generateStaticParams() {
     { slug: "passive-income-illusion" },
     { slug: "income-drop-40-percent" },
     { slug: "stop-working-30-days" },
+    // Score Interpretation (5)
+    { slug: "what-a-35-score-means" },
+    { slug: "what-a-50-score-means" },
+    { slug: "what-a-72-score-means" },
+    { slug: "what-a-90-score-means" },
+    { slug: "is-70-a-good-income-stability-score" },
+    // Governance (3)
+    { slug: "model-governance" },
+    { slug: "how-versioning-works" },
+    { slug: "what-runpayway-does-not-do" },
   ];
 }
 

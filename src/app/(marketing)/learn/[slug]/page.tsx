@@ -68,6 +68,16 @@ import SalesHighPerformerRisk from "./pages/sales-high-performer-risk";
 import ConsultantHighIncomeLow from "./pages/consultant-high-income-low-stability";
 // Batch 5 — Final Scenarios
 import CreatorViralIncomeRisk from "./pages/creator-viral-income-risk";
+// Batch 6 — Score Interpretation
+import WhatA35ScoreMeans from "./pages/what-a-35-score-means";
+import WhatA50ScoreMeans from "./pages/what-a-50-score-means";
+import WhatA72ScoreMeans from "./pages/what-a-72-score-means";
+import WhatA90ScoreMeans from "./pages/what-a-90-score-means";
+import Is70AGoodScore from "./pages/is-70-a-good-income-stability-score";
+// Batch 6 — Governance
+import ModelGovernance from "./pages/model-governance";
+import HowVersioningWorks from "./pages/how-versioning-works";
+import WhatRunPaywayDoesNotDo from "./pages/what-runpayway-does-not-do";
 import SmallBusinessSeasonalRisk from "./pages/small-business-seasonal-risk";
 import MultiIncomeProfessional from "./pages/multi-income-professional";
 import SingleIncomeEarner from "./pages/single-income-earner";
@@ -149,6 +159,16 @@ export default function LearnPage() {
     case "passive-income-illusion": return <PassiveIncomeIllusion />;
     case "income-drop-40-percent": return <IncomeDrop40Percent />;
     case "stop-working-30-days": return <StopWorking30Days />;
+    // Score Interpretation
+    case "what-a-35-score-means": return <WhatA35ScoreMeans />;
+    case "what-a-50-score-means": return <WhatA50ScoreMeans />;
+    case "what-a-72-score-means": return <WhatA72ScoreMeans />;
+    case "what-a-90-score-means": return <WhatA90ScoreMeans />;
+    case "is-70-a-good-income-stability-score": return <Is70AGoodScore />;
+    // Governance
+    case "model-governance": return <ModelGovernance />;
+    case "how-versioning-works": return <HowVersioningWorks />;
+    case "what-runpayway-does-not-do": return <WhatRunPaywayDoesNotDo />;
     default: return <div style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "system-ui", color: "#5E6873" }}>This page is coming soon.</div>;
   }
 }
