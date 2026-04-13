@@ -192,12 +192,12 @@ function Article1() {
         There is a measurement gap at the center of personal finance. Credit scores evaluate borrowing behavior. Income verification confirms amounts. Net worth calculations tally accumulated assets. But none of these instruments answer a more fundamental question: how is income actually built?
       </P>
       <P>
-        This is not a theoretical distinction. The structural characteristics of income&mdash;how it arrives, what it depends on, and how it behaves when conditions change&mdash;determine financial resilience more than the dollar figure on a tax return. Two individuals earning $150,000 per year can have radically different financial positions depending on whether that income is contractually recurring or entirely contingent on new sales each quarter.
+        This is not a theoretical distinction. The structural characteristics of income&mdash;how it arrives, what it depends on, and how it behaves when conditions change&mdash;determine financial resilience more than the dollar figure on a tax return. Understanding your <Link href="/learn/what-is-income-structure" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>income structure</Link> is the first step. Two individuals earning $150,000 per year can have radically different financial positions depending on whether that income is contractually recurring or entirely contingent on new sales each quarter.
       </P>
 
       <H2>The Measurement That Does Not Exist</H2>
       <P>
-        Credit scoring, introduced in the 1950s and standardized by FICO in 1989, addressed a real problem: lenders needed a consistent way to evaluate borrowing risk. The system works. But it measures one dimension of financial life&mdash;how you manage debt&mdash;and says nothing about the income that services it.
+        <Link href="/learn/income-stability-vs-credit-score" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>Credit scoring</Link>, introduced in the 1950s and standardized by FICO in 1989, addressed a real problem: lenders needed a consistent way to evaluate borrowing risk. The system works. But it measures one dimension of financial life&mdash;how you manage debt&mdash;and says nothing about the income that services it.
       </P>
       <P>
         Income verification, used in mortgage underwriting and employment screening, confirms that income exists and reaches a certain threshold. It answers the question of &ldquo;how much&rdquo; while ignoring the question of &ldquo;how.&rdquo;
@@ -211,7 +211,7 @@ function Article1() {
         Income stability is not income predictability. Predictability implies forecasting&mdash;an attempt to estimate future amounts. Stability, as defined structurally, describes the architectural properties of how income is generated right now.
       </P>
       <P>
-        Six dimensions define it:
+        <Link href="/learn/how-to-measure-income-stability" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>Six dimensions</Link> define it:
       </P>
       <BulletList items={[
         "Source diversification \u2014 how concentrated income is across clients, contracts, or revenue streams",
@@ -270,7 +270,7 @@ function Article2() {
         Commission-based income occupies a peculiar position in the financial landscape. On paper, commission earners frequently outperform their salaried counterparts. Top real estate agents, insurance producers, and enterprise sales professionals routinely generate annual income well into six figures. By conventional metrics&mdash;gross income, year-over-year growth, even net worth accumulation&mdash;they appear financially strong.
       </P>
       <P>
-        But income amount is not income structure. And when you evaluate commission income structurally, a different picture emerges&mdash;one defined by concentration, fragility, and dependence on conditions that the earner does not control.
+        But income amount is not <Link href="/learn/what-is-income-structure" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>income structure</Link>. And when you evaluate commission income structurally, a different picture emerges&mdash;one defined by concentration, fragility, and dependence on conditions that the earner does not control.
       </P>
 
       <H2>The Structural Profile of Commission Income</H2>
@@ -282,7 +282,7 @@ function Article2() {
         Commission income, by definition, is earned at the point of transaction. There is no backlog, no contracted future revenue, no pipeline that constitutes a binding obligation. A salesperson who closed $400,000 last quarter may close $80,000 next quarter. There is no structural mechanism that prevents this.
       </P>
       <P>
-        Forward visibility&mdash;the degree to which future income is committed or contracted&mdash;is one of the most heavily weighted dimensions in income stability measurement. Commission structures typically score near zero on this dimension.
+        Forward visibility&mdash;the degree to which future income is committed or contracted&mdash;is one of the most heavily weighted dimensions in <Link href="/learn/what-is-income-stability" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>income stability</Link> measurement. Commission structures typically score near zero on this dimension.
       </P>
 
       <H3>Full Labor Dependence</H3>
@@ -339,7 +339,7 @@ function Article2() {
         None of these changes require earning less or working differently in a fundamental sense. They require restructuring how existing economic activity is organized&mdash;converting transactional relationships into structural ones.
       </P>
       <P>
-        The first step is measurement. Until the structural properties of income are visible, the specific improvements remain unclear. That is the problem structural income scoring solves.
+        The first step is measurement. Until the structural properties of income are visible, the specific improvements remain unclear. That is the problem <Link href="/learn/how-to-measure-income-stability" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>structural income scoring</Link> solves.
       </P>
     </>
   );
@@ -357,7 +357,7 @@ function Article3() {
         Service businesses&mdash;consulting firms, agencies, professional practices, freelance operations&mdash;share a common structural default: project-based revenue. A client engages for a defined scope, the work is delivered, payment is collected, and the cycle resets. Each new period requires new sales to replace the revenue that expired with the last deliverable.
       </P>
       <P>
-        This model is functional. Millions of service businesses operate profitably on project-based revenue. But profitability and structural resilience are different measurements, and on the dimension that matters most for long-term stability&mdash;how income behaves under change&mdash;project-based revenue has significant weaknesses.
+        This model is functional. Millions of service businesses operate profitably on project-based revenue. But profitability and structural resilience are different measurements, and on the dimension that matters most for long-term <Link href="/learn/what-is-income-stability" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>income stability</Link>&mdash;how income behaves under change&mdash;project-based revenue has significant weaknesses.
       </P>
 
       <H2>The Structural Problem with Project Revenue</H2>
@@ -425,7 +425,7 @@ function Article3() {
         The structural impact of recurring revenue compounds. Each new retainer or subscription adds to a base that persists independently. A service business that converts three clients to monthly retainers per quarter accumulates a recurring base that grows by twelve clients per year. After two years, the business has a structural foundation of 24 recurring relationships generating predictable monthly revenue.
       </P>
       <P>
-        This compounding effect is visible in structural scoring. A service business that begins with a score driven primarily by project revenue will see measurable improvement with each recurring arrangement added&mdash;not because income increases, but because the architecture of that income changes.
+        This compounding effect is visible in structural scoring. A service business that begins with a score driven primarily by project revenue will see <Link href="/learn/how-to-measure-income-stability" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>measurable improvement</Link> with each recurring arrangement added&mdash;not because income increases, but because the <Link href="/learn/what-is-income-structure" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>architecture of that income</Link> changes.
       </P>
       <PullQuote>
         The question is not whether recurring revenue is better than project revenue. Structurally, this is settled. The question is how quickly a service business can shift its income architecture toward a recurring base.
@@ -512,7 +512,7 @@ function Article4() {
         Banks verify income for one purpose: to determine whether you can service a debt. Mortgage underwriting looks at two years of tax returns, recent pay stubs, and bank statements. The question is simple: does enough money come in to cover the payment?
       </P>
       <P>
-        What they don&rsquo;t evaluate is how that income is constructed. A W-2 employee earning $180,000 from a Fortune 500 company and a freelance consultant earning $180,000 from a single client look identical on a loan application. Both show the same annual income. Both can demonstrate consistent deposits.
+        What they don&rsquo;t evaluate is how that <Link href="/learn/what-is-income-structure" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>income is constructed</Link>. A W-2 employee earning $180,000 from a Fortune 500 company and a freelance consultant earning $180,000 from a single client look identical on a loan application. Both show the same annual income. Both can demonstrate consistent deposits.
       </P>
       <P>
         But the risk profiles are completely different. The employee has contractual protections, severance provisions, and unemployment insurance. The consultant has none of those. The bank&rsquo;s system can&rsquo;t distinguish between the two because it was never designed to.
@@ -541,7 +541,7 @@ function Article4() {
         That world is shrinking. Today, over 36% of the U.S. workforce earns through freelance, contract, gig, or commission-based arrangements. For these earners, income is not a fixed input&mdash;it&rsquo;s a variable output that depends on client retention, deal flow, market conditions, and personal capacity.
       </P>
       <P>
-        The tools that evaluate financial health were not built for this reality. Credit scores don&rsquo;t account for it. Financial plans assume around it. Bank underwriting ignores it. The result is a growing population of earners whose financial picture looks complete on the surface&mdash;but has a critical measurement missing underneath.
+        The tools that evaluate financial health were not built for this reality. <Link href="/learn/income-stability-vs-credit-score" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>Credit scores</Link> don&rsquo;t account for it. Financial plans assume around it. Bank underwriting ignores it. The result is a growing population of earners whose financial picture looks complete on the surface&mdash;but has a critical measurement missing underneath.
       </P>
 
       <PullQuote>
@@ -550,7 +550,7 @@ function Article4() {
 
       <H2>Closing the Gap</H2>
       <P>
-        RunPayway&#8482; was built to fill this gap. The Income Stability Score&#8482; measures the six key dimensions of how income is constructed&mdash;not the amount. It evaluates source diversity, income persistence, forward visibility, concentration risk, labor dependence, and earnings consistency.
+        RunPayway&#8482; was built to fill this gap. The Income Stability Score&#8482; measures the <Link href="/learn/how-to-measure-income-stability" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>six key dimensions</Link> of how income is constructed&mdash;not the amount. It evaluates source diversity, income persistence, forward visibility, concentration risk, labor dependence, and earnings consistency.
       </P>
       <P>
         The result is a score from 0 to 100 that tells you what no accountant, advisor, or bank currently can: how much of your income is protected, how much is at risk, and what specific actions would strengthen it.
@@ -645,7 +645,7 @@ function ArticleCta() {
         <p style={{ fontSize: 17, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted, marginBottom: 32, ...fadeIn(visible, 100) }}>
           RunPayway&#8482; scores how much of your income is protected, how much is at risk, and what to do about it. Under 2 minutes. Consistent results. Private by&nbsp;default.
         </p>
-        <div style={{ ...fadeIn(visible, 150) }}>
+        <div style={{ ...fadeIn(visible, 150), display: "flex", flexDirection: "column" as const, alignItems: "center" }}>
           <Link href="/begin" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: m ? 52 : 56, width: m ? "100%" : "auto",
@@ -659,6 +659,9 @@ function ArticleCta() {
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
             Get Your Income Stability Score
+          </Link>
+          <Link href="/learn" style={{ display: "inline-block", marginTop: 16, fontSize: 14, fontWeight: 600, color: "rgba(244,241,234,0.50)", textDecoration: "none" }}>
+            Explore the Learn Center →
           </Link>
         </div>
       </div>

@@ -318,6 +318,11 @@ export default function BlogPage() {
     <div className="overflow-x-hidden">
       <main>
         <HeroSection />
+        <div style={{ textAlign: "center", marginBottom: 32, paddingTop: 8 }}>
+          <Link href="/learn" style={{ fontSize: 14, fontWeight: 600, color: "#1F6D7A", textDecoration: "none" }}>
+            Looking for in-depth guides? Visit the Learn Center →
+          </Link>
+        </div>
         <ArticlesGrid />
         <FinalCta />
       </main>
