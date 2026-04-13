@@ -13,6 +13,14 @@ import IncomeStabilityConsultants from "./pages/income-stability-consultants";
 import IncomeStabilitySalesProfessionals from "./pages/income-stability-sales-professionals";
 import FreelancerFiveClients from "./pages/150k-freelancer-five-clients";
 import ConsultantContractsVsRetainers from "./pages/consultant-no-contracts-vs-retainers";
+import IncomeStabilityVsIncome from "./pages/income-stability-vs-income";
+import IncomeStabilityVsNetWorth from "./pages/income-stability-vs-net-worth";
+import IncomeStructureExplained from "./pages/income-structure-explained";
+import WhatMakesIncomeStable from "./pages/what-makes-income-stable";
+import WhatMakesIncomeUnstable from "./pages/what-makes-income-unstable";
+import IncomeRiskExplained from "./pages/income-risk-explained";
+import IncomeFragilityExplained from "./pages/income-fragility-explained";
+import IncomeContinuityExplained from "./pages/income-continuity-explained";
 
 export default function LearnPage() {
   const { slug } = useParams();
@@ -30,6 +38,14 @@ export default function LearnPage() {
     case "150k-freelancer-one-client": return <FreelancerOneClient />;
     case "150k-freelancer-five-clients": return <FreelancerFiveClients />;
     case "consultant-no-contracts-vs-retainers": return <ConsultantContractsVsRetainers />;
+    case "income-stability-vs-income": return <IncomeStabilityVsIncome />;
+    case "income-stability-vs-net-worth": return <IncomeStabilityVsNetWorth />;
+    case "income-structure-explained": return <IncomeStructureExplained />;
+    case "what-makes-income-stable": return <WhatMakesIncomeStable />;
+    case "what-makes-income-unstable": return <WhatMakesIncomeUnstable />;
+    case "income-risk-explained": return <IncomeRiskExplained />;
+    case "income-fragility-explained": return <IncomeFragilityExplained />;
+    case "income-continuity-explained": return <IncomeContinuityExplained />;
     default: return <div style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "system-ui", color: "#5E6873" }}>This page is coming soon.</div>;
   }
 }
