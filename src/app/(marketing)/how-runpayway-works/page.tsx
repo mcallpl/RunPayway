@@ -86,7 +86,6 @@ const specs = [
   { title: "Version Governance", href: "/version-governance", desc: "Model version management" },
   { title: "Assessment Registry", href: "/assessment-registry", desc: "Score verification and integrity" },
   { title: "Security Practices", href: "/security-practices", desc: "Data protection standards" },
-  { title: "API Documentation", href: "/developers", desc: "Integration guide" },
 ];
 
 function SpecCard({ title, href, desc, mobile }: { title: string; href: string; desc: string; mobile: boolean }) {

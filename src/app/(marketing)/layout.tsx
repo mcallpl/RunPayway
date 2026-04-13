@@ -297,7 +297,6 @@ export default function MarketingLayout({
     { href: "/sample-report", label: t.nav.sampleReport },
     { href: "/advisors", label: "For Advisors" },
     { href: "/organizations", label: "For Organizations" },
-    { href: "/developers", label: "Developers" },
     { href: "/blog", label: "Blog" },
     { href: "/about", label: t.nav.about },
     { href: "/faq", label: t.nav.faq },
