@@ -66,6 +66,14 @@ import FreelancerHalfRetainer from "./pages/freelancer-50-percent-retainer";
 import RealEstateBoomVsSlow from "./pages/real-estate-boom-vs-slow-market";
 import SalesHighPerformerRisk from "./pages/sales-high-performer-risk";
 import ConsultantHighIncomeLow from "./pages/consultant-high-income-low-stability";
+// Batch 5 — Final Scenarios
+import CreatorViralIncomeRisk from "./pages/creator-viral-income-risk";
+import SmallBusinessSeasonalRisk from "./pages/small-business-seasonal-risk";
+import MultiIncomeProfessional from "./pages/multi-income-professional";
+import SingleIncomeEarner from "./pages/single-income-earner";
+import PassiveIncomeIllusion from "./pages/passive-income-illusion";
+import IncomeDrop40Percent from "./pages/income-drop-40-percent";
+import StopWorking30Days from "./pages/stop-working-30-days";
 
 export default function LearnPage() {
   const { slug } = useParams();
@@ -133,6 +141,14 @@ export default function LearnPage() {
     case "income-stability-retail-owners": return <IncomeStabilityRetailOwners />;
     case "income-stability-hospitality-workers": return <IncomeStabilityHospitality />;
     case "income-stability-transportation-workers": return <IncomeStabilityTransportation />;
+    // Final Scenarios (batch 5)
+    case "creator-viral-income-risk": return <CreatorViralIncomeRisk />;
+    case "small-business-seasonal-risk": return <SmallBusinessSeasonalRisk />;
+    case "multi-income-professional": return <MultiIncomeProfessional />;
+    case "single-income-earner": return <SingleIncomeEarner />;
+    case "passive-income-illusion": return <PassiveIncomeIllusion />;
+    case "income-drop-40-percent": return <IncomeDrop40Percent />;
+    case "stop-working-30-days": return <StopWorking30Days />;
     default: return <div style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "system-ui", color: "#5E6873" }}>This page is coming soon.</div>;
   }
 }
