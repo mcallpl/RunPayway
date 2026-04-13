@@ -93,11 +93,20 @@ function HeroSection() {
         <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: narrowW, margin: "0 auto 24px", ...fadeIn(visible, 100) }}>
           Your clients tell you what they earn. Not how it&rsquo;s built. RunPayway&#8482; gives you a standardized way to assess income structure&mdash;and act on it before problems surface.
         </p>
-        <div style={{ display: "flex", justifyContent: "center", gap: m ? 12 : 24, flexWrap: "wrap" as const, ...fadeIn(visible, 150) }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: m ? 12 : 24, flexWrap: "wrap" as const, marginBottom: 32, ...fadeIn(visible, 150) }}>
           {["Standardized methodology", "Fixed rules", "Private by default"].map((badge, i) => (
             <span key={i} style={{ fontSize: 14, fontWeight: 600, color: C.teal, padding: "5px 12px", borderRadius: 100, backgroundColor: "rgba(31,109,122,0.06)", border: "1px solid rgba(31,109,122,0.15)" }}>{badge}</span>
           ))}
         </div>
+        <Link href="/advisor-portal/dashboard" style={{
+          display: "inline-flex", alignItems: "center", justifyContent: "center",
+          padding: m ? "14px 28px" : "16px 36px", fontSize: m ? 16 : 18, fontWeight: 600,
+          color: C.white, backgroundColor: C.navy, borderRadius: 14,
+          textDecoration: "none", boxShadow: ctaShadow,
+          ...fadeIn(visible, 200),
+        }}>
+          Open Advisor Dashboard &rarr;
+        </Link>
       </div>
     </header>
   );
