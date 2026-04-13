@@ -35,12 +35,12 @@ const INDUSTRIES = [
 const CLIENT_OPTIONS = ["1\u201310", "11\u201350", "51\u2013200", "200+"] as const;
 
 const RISK_OPTIONS = [
-  "Concentration",
-  "Labor dependence",
-  "Forward visibility",
-  "Income persistence",
-  "Variability",
-  "Source diversity",
+  "Income Concentration",
+  "Labor Dependence",
+  "Forward Visibility",
+  "Low Persistence",
+  "Income Variability",
+  "Source Diversity",
 ] as const;
 
 /* ── Types ─────────────────────────────────────────────── */
@@ -58,35 +58,35 @@ interface AdvisorClient {
 /* ── Helpers ───────────────────────────────────────────── */
 function bandFromScore(s: number): string {
   if (s <= 0) return "Pending";
-  if (s < 30) return "Limited";
-  if (s < 50) return "Developing";
-  if (s < 75) return "Established";
-  return "High";
+  if (s < 30) return "Limited Stability";
+  if (s < 50) return "Developing Stability";
+  if (s < 75) return "Established Stability";
+  return "High Stability";
 }
 
 function bandColor(band: string): string {
   switch (band) {
-    case "Limited": return C.risk;
-    case "Developing": return C.moderate;
-    case "Established": return C.bandEstablished;
-    case "High": return C.teal;
+    case "Limited Stability": return C.risk;
+    case "Developing Stability": return C.moderate;
+    case "Established Stability": return C.bandEstablished;
+    case "High Stability": return C.teal;
     default: return C.textMuted;
   }
 }
 
 function conversationStarter(name: string, score: number, band: string, topRisk: string, industry: string): string {
   const riskActions: Record<string, string> = {
-    Concentration: `Ask about diversifying revenue sources. In ${industry}, heavy reliance on one or two clients or channels creates fragility. Explore what a second revenue line could look like.`,
-    "Labor dependence": `Discuss ways to decouple income from hours worked. In ${industry}, building recurring revenue or productized services reduces personal labor risk.`,
-    "Forward visibility": `Explore pipeline predictability. In ${industry}, short-term visibility makes planning difficult. Ask about retainers, contracts, or lead indicators they track.`,
-    "Income persistence": `Talk about income durability. In ${industry}, project-based income restarts from zero. Ask what percentage of this year's income was already locked in on January 1.`,
-    Variability: `Address income volatility. In ${industry}, month-to-month swings complicate planning. Ask about smoothing strategies — reserves, payment schedules, or seasonal adjustments.`,
-    "Source diversity": `Focus on source mix. In ${industry}, relying on a single income type creates risk. Explore adding complementary revenue streams.`,
+    "Income Concentration": `Ask about diversifying revenue sources. In ${industry}, heavy reliance on one or two clients or channels creates fragility. Explore what a second revenue line could look like.`,
+    "Labor Dependence": `Discuss ways to decouple income from hours worked. In ${industry}, building recurring revenue or productized services reduces personal labor risk.`,
+    "Forward Visibility": `Explore pipeline predictability. In ${industry}, short-term visibility makes planning difficult. Ask about retainers, contracts, or lead indicators they track.`,
+    "Low Persistence": `Talk about income durability. In ${industry}, project-based income restarts from zero. Ask what percentage of this year's income was already locked in on January 1.`,
+    "Income Variability": `Address income volatility. In ${industry}, month-to-month swings complicate planning. Ask about smoothing strategies — reserves, payment schedules, or seasonal adjustments.`,
+    "Source Diversity": `Focus on source mix. In ${industry}, relying on a single income type creates risk. Explore adding complementary revenue streams.`,
     Pending: "Complete the assessment first to unlock conversation recommendations.",
   };
   const action = riskActions[topRisk] || riskActions["Pending"];
   if (band === "Pending") return `${name} has not been assessed yet. Run the Income Stability Score assessment to generate insights.`;
-  return `Before your meeting with ${name}: Their score is ${score}, in the ${band} range. Their biggest risk is ${topRisk}. Recommended conversation: ${action}`;
+  return `Before your meeting with ${name}: Their score is ${score}, rated ${band}. Their biggest risk is ${topRisk}. Recommended conversation: ${action}`;
 }
 
 function uid(): string {
@@ -377,6 +377,30 @@ export default function AdvisorPortalPage() {
           </p>
         </section>
 
+        {/* Activate code — prominent for returning advisors */}
+        <section style={{ maxWidth: 720, margin: "0 auto", padding: mobile ? `0 ${pad} 32px` : `0 ${pad} 40px` }}>
+          <div style={{
+            ...cardBase, padding: mobile ? "24px 24px" : "28px 36px",
+            display: "flex", gap: mobile ? 14 : 16, alignItems: mobile ? "stretch" : "center",
+            flexDirection: mobile ? "column" : "row",
+          }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, margin: "0 0 4px", fontFamily: sans }}>Already have an advisor code?</p>
+              <p style={{ fontSize: 14, color: C.textSecondary, margin: 0, fontFamily: sans }}>Enter your code to open your dashboard.</p>
+            </div>
+            <div style={{ display: "flex", gap: 10, alignItems: "center", flexShrink: 0, flexDirection: mobile ? "column" : "row" }}>
+              <input type="text" value={codeInput} onChange={e => setCodeInput(e.target.value)} placeholder="Advisor code" style={{ ...inputStyle, width: mobile ? "100%" : 180, fontFamily: mono, fontSize: 14, letterSpacing: "0.03em" }} />
+              <button onClick={handleActivate} style={{
+                padding: "14px 24px", fontSize: 15, fontWeight: 600, fontFamily: sans, color: C.white,
+                backgroundColor: C.purple, border: "none", borderRadius: 10, cursor: "pointer", whiteSpace: "nowrap" as const,
+                boxShadow: "0 8px 24px rgba(75,63,174,0.18)", width: mobile ? "100%" : "auto",
+              }}>
+                Open Dashboard
+              </button>
+            </div>
+          </div>
+        </section>
+
         {/* Form card */}
         <section style={{ maxWidth: 720, margin: "0 auto", padding: mobile ? `0 ${pad} 64px` : `0 ${pad} 96px` }}>
           <div style={{ ...cardBase, padding: mobile ? "32px 28px" : "44px" }}>
@@ -448,19 +472,6 @@ export default function AdvisorPortalPage() {
               </>
             )}
 
-            {/* Activate code */}
-            <div style={{ marginTop: 36, paddingTop: 28, borderTop: `1px solid ${C.border}` }}>
-              <p style={{ fontSize: 15, color: C.textSecondary, margin: "0 0 14px", fontFamily: sans }}>Already have an advisor code?</p>
-              <div style={{ display: "flex", gap: 10, alignItems: mobile ? "stretch" : "center", flexDirection: mobile ? "column" : "row" }}>
-                <input type="text" value={codeInput} onChange={e => setCodeInput(e.target.value)} placeholder="Advisor code" style={{ ...inputStyle, flex: 1, fontFamily: mono, fontSize: 14, letterSpacing: "0.03em" }} />
-                <button onClick={handleActivate} style={{
-                  padding: "14px 24px", fontSize: 15, fontWeight: 600, fontFamily: sans, color: C.purple,
-                  backgroundColor: "rgba(75,63,174,0.06)", border: `1px solid rgba(75,63,174,0.18)`, borderRadius: 10, cursor: "pointer", whiteSpace: "nowrap" as const,
-                }}>
-                  Activate
-                </button>
-              </div>
-            </div>
           </div>
         </section>
       </div>
