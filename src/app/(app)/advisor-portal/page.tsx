@@ -101,7 +101,9 @@ function AdvisorHeader({ activated, mobile: m }: { activated: boolean; mobile: b
         { href: "#client-list", label: "Clients" },
         { href: "#add-client", label: "Add Client" },
       ]
-    : [];
+    : [
+        { href: "#activate", label: "Dashboard" },
+      ];
 
   return (
     <header style={{
@@ -378,7 +380,7 @@ export default function AdvisorPortalPage() {
         </section>
 
         {/* Activate code — prominent for returning advisors */}
-        <section style={{ maxWidth: 720, margin: "0 auto", padding: mobile ? `0 ${pad} 32px` : `0 ${pad} 40px` }}>
+        <section id="activate" style={{ maxWidth: 720, margin: "0 auto", padding: mobile ? `0 ${pad} 32px` : `0 ${pad} 40px`, scrollMarginTop: mobile ? 72 : 80 }}>
           <div style={{
             ...cardBase, padding: mobile ? "24px 24px" : "28px 36px",
             display: "flex", gap: mobile ? 14 : 16, alignItems: mobile ? "stretch" : "center",
