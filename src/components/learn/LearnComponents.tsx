@@ -59,12 +59,13 @@ const px = (m: boolean, t?: boolean) => m ? 28 : t ? 56 : 48;
 /* SECTION 1 — HERO                                                  */
 /* ================================================================ */
 
-export function LearnHero({ label, title, definition, subtitle, description, cta }: {
+export function LearnHero({ label, title, definition, subtitle, description, slug, cta }: {
   label?: string;
   title: string;
   definition?: string;
   subtitle?: string;
   description?: string;
+  slug?: string;
   cta?: { label: string; href: string };
 }) {
   const m = useMobile();
@@ -91,6 +92,13 @@ export function LearnHero({ label, title, definition, subtitle, description, cta
 
   return (
     <header style={{ backgroundColor: L.sand, paddingTop: m ? 104 : 148, paddingBottom: m ? 56 : 80, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
+      <title>{title} | RunPayway&#8482; Learn</title>
+      <meta name="description" content={description || definition || subtitle || `${title} — Income stability measurement by RunPayway™`} />
+      {slug && <link rel="canonical" href={`https://peoplestar.com/RunPayway/learn/${slug}`} />}
+      <meta property="og:title" content={`${title} | RunPayway™`} />
+      <meta property="og:description" content={description || definition || subtitle || ""} />
+      <meta property="og:type" content="article" />
+      {slug && <meta property="og:url" content={`https://peoplestar.com/RunPayway/learn/${slug}`} />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
