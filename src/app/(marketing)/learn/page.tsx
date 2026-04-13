@@ -21,10 +21,27 @@ const coreSlugs = [
   { slug: "what-is-income-stability", label: "What Is Income Stability?" },
   { slug: "income-stability-explained", label: "Income Stability Explained" },
   { slug: "how-to-measure-income-stability", label: "How to Measure Income Stability" },
-  { slug: "income-stability-vs-credit-score", label: "Income Stability vs. Credit Score" },
+  { slug: "income-stability-vs-credit-score", label: "Income Stability vs Credit Score" },
+  { slug: "income-stability-vs-income", label: "Income Stability vs Income" },
+  { slug: "income-stability-vs-net-worth", label: "Income Stability vs Net Worth" },
   { slug: "what-is-income-structure", label: "What Is Income Structure?" },
+  { slug: "income-structure-explained", label: "Income Structure Explained" },
   { slug: "what-makes-income-stable", label: "What Makes Income Stable?" },
+  { slug: "what-makes-income-unstable", label: "What Makes Income Unstable?" },
   { slug: "income-risk-explained", label: "Income Risk Explained" },
+  { slug: "income-fragility-explained", label: "Income Fragility Explained" },
+  { slug: "income-continuity-explained", label: "Income Continuity Explained" },
+  { slug: "income-concentration-risk", label: "Income Concentration Risk" },
+  { slug: "active-vs-passive-income-stability", label: "Active vs Passive Income Stability" },
+  { slug: "recurring-vs-non-recurring-income", label: "Recurring vs Non-Recurring Income" },
+  { slug: "predictable-vs-unpredictable-income", label: "Predictable vs Unpredictable Income" },
+  { slug: "how-income-breaks-under-pressure", label: "How Income Breaks Under Pressure" },
+  { slug: "structural-income-risk-explained", label: "Structural Income Risk Explained" },
+  { slug: "income-stability-index", label: "Income Stability Index" },
+  { slug: "income-stress-testing-explained", label: "Income Stress Testing Explained" },
+  { slug: "income-dependency-explained", label: "Income Dependency Explained" },
+  { slug: "how-stable-is-your-income", label: "How Stable Is Your Income?" },
+  { slug: "is-my-income-stable", label: "Is My Income Stable?" },
   { slug: "how-to-improve-income-stability", label: "How to Improve Income Stability" },
 ];
 
@@ -34,20 +51,44 @@ const industrySlugs = [
   { slug: "income-stability-consultants", label: "Consultants" },
   { slug: "income-stability-sales-professionals", label: "Sales Professionals" },
   { slug: "income-stability-insurance-agents", label: "Insurance Agents" },
+  { slug: "income-stability-mortgage-brokers", label: "Mortgage Brokers" },
   { slug: "income-stability-lawyers", label: "Lawyers" },
+  { slug: "income-stability-doctors", label: "Doctors" },
   { slug: "income-stability-contractors", label: "Contractors" },
+  { slug: "income-stability-creators", label: "Creators" },
   { slug: "income-stability-tech-workers", label: "Tech Workers" },
+  { slug: "income-stability-small-business-owners", label: "Small Business Owners" },
+  { slug: "income-stability-retail-owners", label: "Retail Owners" },
+  { slug: "income-stability-hospitality-workers", label: "Hospitality Workers" },
+  { slug: "income-stability-transportation-workers", label: "Transportation Workers" },
 ];
 
 const scenarioSlugs = [
-  { slug: "150k-freelancer-one-client", label: "$150K Freelancer, One Client" },
-  { slug: "150k-freelancer-five-clients", label: "$150K Freelancer, Five Clients" },
-  { slug: "200k-realtor-commission-heavy", label: "$200K Realtor, Commission-Heavy" },
-  { slug: "consultant-no-contracts-vs-retainers", label: "Consultant: No Contracts vs. Retainers" },
-  { slug: "sales-rep-base-plus-commission", label: "Sales Rep: Base + Commission" },
-  { slug: "business-owner-one-vs-three-sources", label: "Business Owner: 1 vs. 3 Sources" },
-  { slug: "contractor-project-based-risk", label: "Contractor: Project-Based Risk" },
-  { slug: "freelancer-no-recurring-income", label: "Freelancer: No Recurring Income" },
+  { slug: "150k-freelancer-one-client", label: "$150K Freelancer — One Client" },
+  { slug: "150k-freelancer-five-clients", label: "$150K Freelancer — Five Clients" },
+  { slug: "200k-realtor-commission-heavy", label: "$200K Realtor — Commission Heavy" },
+  { slug: "200k-realtor-diversified-pipeline", label: "$200K Realtor — Diversified Pipeline" },
+  { slug: "consultant-no-contracts-vs-retainers", label: "Consultant — No Contracts vs Retainers" },
+  { slug: "sales-rep-base-plus-commission", label: "Sales Rep — Base + Commission" },
+  { slug: "business-owner-one-vs-three-sources", label: "Business Owner — 1 vs 3 Sources" },
+  { slug: "creator-brand-deals-vs-mixed-income", label: "Creator — Brand Deals vs Mixed Income" },
+  { slug: "contractor-project-based-risk", label: "Contractor — Project-Based Risk" },
+  { slug: "lawyer-hourly-vs-retainer", label: "Lawyer — Hourly vs Retainer" },
+  { slug: "doctor-salary-vs-private-practice", label: "Doctor — Salary vs Private Practice" },
+  { slug: "insurance-renewal-vs-new-business", label: "Insurance — Renewal vs New Business" },
+  { slug: "mortgage-refi-dependent", label: "Mortgage — Refi Dependent" },
+  { slug: "freelancer-no-recurring-income", label: "Freelancer — No Recurring Income" },
+  { slug: "freelancer-50-percent-retainer", label: "Freelancer — 50% Retainer" },
+  { slug: "real-estate-boom-vs-slow-market", label: "Real Estate — Boom vs Slow Market" },
+  { slug: "sales-high-performer-risk", label: "Sales — High Performer Risk" },
+  { slug: "consultant-high-income-low-stability", label: "Consultant — High Income, Low Stability" },
+  { slug: "creator-viral-income-risk", label: "Creator — Viral Income Risk" },
+  { slug: "small-business-seasonal-risk", label: "Small Business — Seasonal Risk" },
+  { slug: "multi-income-professional", label: "Multi-Income Professional" },
+  { slug: "single-income-earner", label: "Single Income Earner" },
+  { slug: "passive-income-illusion", label: "Passive Income Illusion" },
+  { slug: "income-drop-40-percent", label: "Income Drop 40%" },
+  { slug: "stop-working-30-days", label: "Stop Working 30 Days" },
 ];
 
 const steps = [
@@ -140,28 +181,9 @@ export default function LearnHub() {
           }}
         >
           {/* Core Concepts */}
-          <CategoryColumn
-            title="Core Concepts"
-            total={25}
-            items={coreSlugs}
-            m={m}
-          />
-
-          {/* Industries */}
-          <CategoryColumn
-            title="Industries"
-            total={15}
-            items={industrySlugs}
-            m={m}
-          />
-
-          {/* Real-World Scenarios */}
-          <CategoryColumn
-            title="Real-World Scenarios"
-            total={25}
-            items={scenarioSlugs}
-            m={m}
-          />
+          <CategoryColumn title="Core Concepts" items={coreSlugs} m={m} />
+          <CategoryColumn title="Industries" items={industrySlugs} m={m} />
+          <CategoryColumn title="Real-World Scenarios" items={scenarioSlugs} m={m} />
         </div>
       </section>
 
@@ -252,15 +274,17 @@ export default function LearnHub() {
 
 function CategoryColumn({
   title,
-  total,
   items,
   m,
 }: {
   title: string;
-  total: number;
   items: { slug: string; label: string }[];
   m: boolean;
 }) {
+  const [expanded, setExpanded] = useState(false);
+  const visible = expanded ? items : items.slice(0, 8);
+  const hasMore = items.length > 8;
+
   return (
     <div style={{ marginBottom: m ? 40 : 0 }}>
       <div
@@ -273,10 +297,10 @@ function CategoryColumn({
           marginBottom: 20,
         }}
       >
-        {title}
+        {title} ({items.length})
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-        {items.map((item, i) => (
+        {visible.map((item, i) => (
           <Link
             key={i}
             href={`/learn/${item.slug}`}
@@ -295,19 +319,25 @@ function CategoryColumn({
           </Link>
         ))}
       </div>
-      <Link
-        href="/learn"
-        style={{
-          display: "inline-block",
-          marginTop: 16,
-          fontSize: 14,
-          fontWeight: 600,
-          color: L.teal,
-          textDecoration: "none",
-        }}
-      >
-        See all {total} topics &rarr;
-      </Link>
+      {hasMore && (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          style={{
+            display: "inline-block",
+            marginTop: 16,
+            fontSize: 14,
+            fontWeight: 600,
+            color: L.teal,
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            padding: 0,
+            fontFamily: "inherit",
+          }}
+        >
+          {expanded ? "Show fewer \u2191" : `See all ${items.length} topics \u2192`}
+        </button>
+      )}
     </div>
   );
 }
