@@ -71,8 +71,8 @@ export function LearnHero({ label, title, definition, subtitle, cta }: {
   return (
     <header style={{ backgroundColor: L.sand, paddingTop: m ? 104 : 148, paddingBottom: m ? 56 : 80, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
-        {label && <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: L.teal, marginBottom: 16 }}>{label}</div>}
-        <h1 style={{ fontSize: m ? 28 : 48, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.03em", color: L.navy, marginBottom: definition ? 24 : 16 }}>
+        {label && <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: L.teal, marginBottom: 16 }}>{label}</div>}
+        <h1 style={{ fontSize: m ? 30 : 64, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: L.navy, marginBottom: definition ? 24 : 16 }}>
           {title}
         </h1>
         {definition && (
