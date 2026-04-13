@@ -21,31 +21,83 @@ import WhatMakesIncomeUnstable from "./pages/what-makes-income-unstable";
 import IncomeRiskExplained from "./pages/income-risk-explained";
 import IncomeFragilityExplained from "./pages/income-fragility-explained";
 import IncomeContinuityExplained from "./pages/income-continuity-explained";
+// Batch 2b — Industry
+import IncomeStabilityInsuranceAgents from "./pages/income-stability-insurance-agents";
+import IncomeStabilityMortgageBrokers from "./pages/income-stability-mortgage-brokers";
+import IncomeStabilityLawyers from "./pages/income-stability-lawyers";
+import IncomeStabilityDoctors from "./pages/income-stability-doctors";
+// Batch 2b — Scenarios
+import RealtorCommissionHeavy from "./pages/200k-realtor-commission-heavy";
+import RealtorDiversifiedPipeline from "./pages/200k-realtor-diversified-pipeline";
+import SalesRepBaseCommission from "./pages/sales-rep-base-plus-commission";
+// Batch 3a — Core
+import IncomeConcentrationRisk from "./pages/income-concentration-risk";
+import ActiveVsPassive from "./pages/active-vs-passive-income-stability";
+import RecurringVsNonRecurring from "./pages/recurring-vs-non-recurring-income";
+import PredictableVsUnpredictable from "./pages/predictable-vs-unpredictable-income";
+import HowIncomeBreaks from "./pages/how-income-breaks-under-pressure";
+import StructuralIncomeRisk from "./pages/structural-income-risk-explained";
+import IncomeStabilityIndex from "./pages/income-stability-index";
+// Batch 3b — Industry
+import IncomeStabilityContractors from "./pages/income-stability-contractors";
+import IncomeStabilityCreators from "./pages/income-stability-creators";
+import IncomeStabilityTechWorkers from "./pages/income-stability-tech-workers";
+import IncomeStabilitySmallBusiness from "./pages/income-stability-small-business-owners";
+// Batch 3b — Scenarios
+import BusinessOwnerSources from "./pages/business-owner-one-vs-three-sources";
+import CreatorBrandVsMixed from "./pages/creator-brand-deals-vs-mixed-income";
+import ContractorProjectRisk from "./pages/contractor-project-based-risk";
+import LawyerHourlyVsRetainer from "./pages/lawyer-hourly-vs-retainer";
 
 export default function LearnPage() {
   const { slug } = useParams();
   switch (slug) {
+    // Core
     case "what-is-income-stability": return <WhatIsIncomeStability />;
     case "income-stability-explained": return <IncomeStabilityExplained />;
     case "how-to-measure-income-stability": return <HowToMeasureIncomeStability />;
     case "income-stability-vs-credit-score": return <IncomeStabilityVsCreditScore />;
-    case "what-is-income-structure": return <WhatIsIncomeStructure />;
-    case "how-to-improve-income-stability": return <HowToImproveIncomeStability />;
-    case "income-stability-real-estate-agents": return <IncomeStabilityRealEstateAgents />;
-    case "income-stability-freelancers": return <IncomeStabilityFreelancers />;
-    case "income-stability-consultants": return <IncomeStabilityConsultants />;
-    case "income-stability-sales-professionals": return <IncomeStabilitySalesProfessionals />;
-    case "150k-freelancer-one-client": return <FreelancerOneClient />;
-    case "150k-freelancer-five-clients": return <FreelancerFiveClients />;
-    case "consultant-no-contracts-vs-retainers": return <ConsultantContractsVsRetainers />;
     case "income-stability-vs-income": return <IncomeStabilityVsIncome />;
     case "income-stability-vs-net-worth": return <IncomeStabilityVsNetWorth />;
+    case "what-is-income-structure": return <WhatIsIncomeStructure />;
     case "income-structure-explained": return <IncomeStructureExplained />;
     case "what-makes-income-stable": return <WhatMakesIncomeStable />;
     case "what-makes-income-unstable": return <WhatMakesIncomeUnstable />;
     case "income-risk-explained": return <IncomeRiskExplained />;
     case "income-fragility-explained": return <IncomeFragilityExplained />;
     case "income-continuity-explained": return <IncomeContinuityExplained />;
+    case "income-concentration-risk": return <IncomeConcentrationRisk />;
+    case "active-vs-passive-income-stability": return <ActiveVsPassive />;
+    case "recurring-vs-non-recurring-income": return <RecurringVsNonRecurring />;
+    case "predictable-vs-unpredictable-income": return <PredictableVsUnpredictable />;
+    case "how-income-breaks-under-pressure": return <HowIncomeBreaks />;
+    case "structural-income-risk-explained": return <StructuralIncomeRisk />;
+    case "income-stability-index": return <IncomeStabilityIndex />;
+    case "how-to-improve-income-stability": return <HowToImproveIncomeStability />;
+    // Industry
+    case "income-stability-real-estate-agents": return <IncomeStabilityRealEstateAgents />;
+    case "income-stability-freelancers": return <IncomeStabilityFreelancers />;
+    case "income-stability-consultants": return <IncomeStabilityConsultants />;
+    case "income-stability-sales-professionals": return <IncomeStabilitySalesProfessionals />;
+    case "income-stability-insurance-agents": return <IncomeStabilityInsuranceAgents />;
+    case "income-stability-mortgage-brokers": return <IncomeStabilityMortgageBrokers />;
+    case "income-stability-lawyers": return <IncomeStabilityLawyers />;
+    case "income-stability-doctors": return <IncomeStabilityDoctors />;
+    case "income-stability-contractors": return <IncomeStabilityContractors />;
+    case "income-stability-creators": return <IncomeStabilityCreators />;
+    case "income-stability-tech-workers": return <IncomeStabilityTechWorkers />;
+    case "income-stability-small-business-owners": return <IncomeStabilitySmallBusiness />;
+    // Scenarios
+    case "150k-freelancer-one-client": return <FreelancerOneClient />;
+    case "150k-freelancer-five-clients": return <FreelancerFiveClients />;
+    case "200k-realtor-commission-heavy": return <RealtorCommissionHeavy />;
+    case "200k-realtor-diversified-pipeline": return <RealtorDiversifiedPipeline />;
+    case "consultant-no-contracts-vs-retainers": return <ConsultantContractsVsRetainers />;
+    case "sales-rep-base-plus-commission": return <SalesRepBaseCommission />;
+    case "business-owner-one-vs-three-sources": return <BusinessOwnerSources />;
+    case "creator-brand-deals-vs-mixed-income": return <CreatorBrandVsMixed />;
+    case "contractor-project-based-risk": return <ContractorProjectRisk />;
+    case "lawyer-hourly-vs-retainer": return <LawyerHourlyVsRetainer />;
     default: return <div style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "system-ui", color: "#5E6873" }}>This page is coming soon.</div>;
   }
 }
