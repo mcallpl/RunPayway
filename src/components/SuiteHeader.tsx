@@ -61,6 +61,7 @@ export default function SuiteHeader({ current }: { current: "suite" | "pressurem
         <nav style={{ display: "flex", alignItems: "center", gap: mobile ? 12 : 20 }}>
           {([
             { href: "/dashboard", label: "Simulator", key: "dashboard" },
+            { href: "/advisor-portal", label: "Advisor Portal", key: "advisor-portal" },
             { href: "/access-code", label: "Access Code", key: "access-code" },
           ] as const).map(link => {
             const isActive = current === link.key;
