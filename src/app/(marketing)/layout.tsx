@@ -288,6 +288,7 @@ export default function MarketingLayout({
 
   const NAV_LINKS = [
     { href: "/how-it-works", label: t.nav.howItWorks },
+    { href: "/learn", label: "Learn" },
     { href: "/pricing", label: t.nav.pricing },
     { href: "/dashboard", label: "Dashboard" },
   ];
@@ -741,6 +742,7 @@ export default function MarketingLayout({
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {[
                   { href: "/how-it-works", label: t.nav.howItWorks },
+                  { href: "/learn", label: "Learn" },
                   { href: "/sample-report", label: t.nav.sampleReport },
                   { href: "/methodology", label: "Methodology" },
                   { href: "/pricing", label: t.nav.pricing },

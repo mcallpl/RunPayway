@@ -31,6 +31,12 @@ function useMobile(bp = 768) {
   return m;
 }
 
+function useTablet() {
+  const [t, setT] = useState(false);
+  useEffect(() => { const c = () => setT(window.innerWidth > 768 && window.innerWidth <= 1024); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
+  return t;
+}
+
 function useInView(threshold = 0) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -46,7 +52,7 @@ function useInView(threshold = 0) {
   return { ref, visible };
 }
 
-const px = (m: boolean) => m ? 28 : 48;
+const px = (m: boolean, t?: boolean) => m ? 28 : t ? 56 : 48;
 
 
 /* ================================================================ */
@@ -61,8 +67,9 @@ export function LearnHero({ label, title, definition, subtitle, cta }: {
   cta?: { label: string; href: string };
 }) {
   const m = useMobile();
+  const t = useTablet();
   return (
-    <header style={{ backgroundColor: L.sand, paddingTop: m ? 104 : 148, paddingBottom: m ? 56 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
+    <header style={{ backgroundColor: L.sand, paddingTop: m ? 104 : 148, paddingBottom: m ? 56 : 80, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         {label && <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: L.teal, marginBottom: 16 }}>{label}</div>}
         <h1 style={{ fontSize: m ? 28 : 48, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.03em", color: L.navy, marginBottom: definition ? 24 : 16 }}>
@@ -97,8 +104,9 @@ export function LearnHero({ label, title, definition, subtitle, cta }: {
 
 export function QuickInsightStrip({ items }: { items: [string, string, string] }) {
   const m = useMobile();
+  const t = useTablet();
   return (
-    <section style={{ backgroundColor: L.white, borderBottom: `1px solid ${L.divider}`, paddingTop: m ? 32 : 40, paddingBottom: m ? 32 : 40, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section style={{ backgroundColor: L.white, borderBottom: `1px solid ${L.divider}`, paddingTop: m ? 32 : 40, paddingBottom: m ? 32 : 40, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: maxW, margin: "0 auto", display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 32 }}>
         {items.map((item, i) => (
           <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: m ? 16 : 0 }}>
@@ -118,8 +126,9 @@ export function QuickInsightStrip({ items }: { items: [string, string, string] }
 
 export function CoreContent({ sections }: { sections: { heading: string; body: string | React.ReactNode }[] }) {
   const m = useMobile();
+  const t = useTablet();
   return (
-    <section style={{ backgroundColor: L.white, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section style={{ backgroundColor: L.white, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         {sections.map((s, i) => (
           <div key={i} style={{ marginBottom: i < sections.length - 1 ? (m ? 40 : 56) : 0 }}>
@@ -145,8 +154,9 @@ export function P({ children }: { children: React.ReactNode }) {
 
 export function SystemBlock() {
   const m = useMobile();
+  const t = useTablet();
   return (
-    <section style={{ backgroundColor: L.navy, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section style={{ backgroundColor: L.navy, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: L.teal, marginBottom: 16 }}>HOW RUNPAYWAY&#8482; MEASURES THIS</div>
         <p style={{ fontSize: m ? 17 : 20, fontWeight: 500, lineHeight: 1.6, color: L.sand, marginBottom: 24 }}>
@@ -169,8 +179,9 @@ export function SystemBlock() {
 
 export function VisualModel({ protected: prot, recurring, atRisk }: { protected: number; recurring: number; atRisk: number }) {
   const m = useMobile();
+  const t = useTablet();
   return (
-    <section style={{ backgroundColor: L.panelFill, paddingTop: m ? 48 : 64, paddingBottom: m ? 48 : 64, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section style={{ backgroundColor: L.panelFill, paddingTop: m ? 48 : 64, paddingBottom: m ? 48 : 64, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: 560, margin: "0 auto" }}>
         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: L.textMuted, marginBottom: 16 }}>INCOME STRUCTURE</div>
         <div style={{ display: "flex", height: 12, borderRadius: 6, overflow: "hidden", marginBottom: 12 }}>
@@ -200,8 +211,9 @@ export function ScenarioBlock({ title, setup, risk, outcome }: {
   outcome: string;
 }) {
   const m = useMobile();
+  const t = useTablet();
   return (
-    <section style={{ backgroundColor: L.white, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section style={{ backgroundColor: L.white, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: L.purple, marginBottom: 16 }}>SCENARIO</div>
         <h3 style={{ fontSize: m ? 20 : 24, fontWeight: 600, lineHeight: 1.25, color: L.navy, marginBottom: 24 }}>{title}</h3>
@@ -233,8 +245,9 @@ export function ContrastBlock({ left, right, explanation }: {
   explanation: string;
 }) {
   const m = useMobile();
+  const t = useTablet();
   return (
-    <section style={{ backgroundColor: L.panelFill, paddingTop: m ? 48 : 64, paddingBottom: m ? 48 : 64, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section style={{ backgroundColor: L.panelFill, paddingTop: m ? 48 : 64, paddingBottom: m ? 48 : 64, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: m ? 16 : 24, marginBottom: 20 }}>
           <span style={{ fontSize: m ? 18 : 22, fontWeight: 600, color: L.navy }}>{left}</span>
@@ -254,8 +267,9 @@ export function ContrastBlock({ left, right, explanation }: {
 
 export function RealityCheck({ statement }: { statement: string }) {
   const m = useMobile();
+  const t = useTablet();
   return (
-    <section style={{ backgroundColor: L.navy, paddingTop: m ? 48 : 64, paddingBottom: m ? 48 : 64, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section style={{ backgroundColor: L.navy, paddingTop: m ? 48 : 64, paddingBottom: m ? 48 : 64, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto", textAlign: "center" }}>
         <p style={{ fontSize: m ? 20 : 28, fontWeight: 600, lineHeight: 1.3, letterSpacing: "-0.02em", color: L.sand, margin: 0 }}>
           {statement}
@@ -272,8 +286,9 @@ export function RealityCheck({ statement }: { statement: string }) {
 
 export function RelatedTopics({ links }: { links: { href: string; label: string }[] }) {
   const m = useMobile();
+  const t = useTablet();
   return (
-    <section style={{ backgroundColor: L.white, paddingTop: m ? 48 : 64, paddingBottom: m ? 48 : 64, paddingLeft: px(m), paddingRight: px(m), borderTop: `1px solid ${L.divider}` }}>
+    <section style={{ backgroundColor: L.white, paddingTop: m ? 48 : 64, paddingBottom: m ? 48 : 64, paddingLeft: px(m, t), paddingRight: px(m, t), borderTop: `1px solid ${L.divider}` }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: L.textMuted, marginBottom: 20 }}>RELATED TOPICS</div>
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 0 }}>
@@ -302,9 +317,10 @@ export function RelatedTopics({ links }: { links: { href: string; label: string 
 
 export function LearnFAQ({ items }: { items: { q: string; a: string }[] }) {
   const m = useMobile();
+  const t = useTablet();
   const [open, setOpen] = useState<number | null>(null);
   return (
-    <section style={{ backgroundColor: L.panelFill, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section style={{ backgroundColor: L.panelFill, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: L.textMuted, marginBottom: 24 }}>FREQUENTLY ASKED QUESTIONS</div>
         {items.map((item, i) => (
@@ -334,8 +350,9 @@ export function LearnFAQ({ items }: { items: { q: string; a: string }[] }) {
 
 export function MicroConversion({ items }: { items: { text: string; href: string }[] }) {
   const m = useMobile();
+  const t = useTablet();
   return (
-    <section style={{ backgroundColor: L.white, paddingTop: m ? 48 : 64, paddingBottom: m ? 48 : 64, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section style={{ backgroundColor: L.white, paddingTop: m ? 48 : 64, paddingBottom: m ? 48 : 64, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: 560, margin: "0 auto", display: m ? "block" : "flex", gap: 16, justifyContent: "center" }}>
         {items.map((item, i) => (
           <Link key={i} href={item.href} style={{
@@ -361,8 +378,9 @@ export function MicroConversion({ items }: { items: { text: string; href: string
 
 export function LearnCTA({ heading, sub }: { heading?: string; sub?: string }) {
   const m = useMobile();
+  const t = useTablet();
   return (
-    <section style={{ backgroundColor: L.navy, paddingTop: m ? 72 : 96, paddingBottom: m ? 72 : 96, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section style={{ backgroundColor: L.navy, paddingTop: m ? 72 : 96, paddingBottom: m ? 72 : 96, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
         <h2 style={{ fontSize: m ? 24 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: L.sand, marginBottom: 16 }}>
           {heading || "Get Your Income Stability Score"}
@@ -419,8 +437,9 @@ export function IndustryBlock({ industry, howIncomeWorks, typicalRange, biggestR
   biggestRisk: string;
 }) {
   const m = useMobile();
+  const t = useTablet();
   return (
-    <section style={{ backgroundColor: L.white, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m), paddingRight: px(m), borderTop: `1px solid ${L.divider}` }}>
+    <section style={{ backgroundColor: L.white, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m, t), paddingRight: px(m, t), borderTop: `1px solid ${L.divider}` }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: L.purple, marginBottom: 24 }}>{industry.toUpperCase()} INCOME PROFILE</div>
         {[
@@ -451,8 +470,9 @@ export function ScenarioExtension({ setup, riskExposure, disruption, scoreRange,
   howToFix: string;
 }) {
   const m = useMobile();
+  const t = useTablet();
   return (
-    <section style={{ backgroundColor: L.panelFill, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
+    <section style={{ backgroundColor: L.panelFill, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: L.navy, marginBottom: 24 }}>SCENARIO ANALYSIS</div>
         {[
