@@ -56,11 +56,26 @@ const terms = [
   },
 ];
 
+const termsSchema = {
+  "@context": "https://schema.org",
+  "@type": "DefinedTermSet",
+  "name": "Income Stability Terms",
+  "hasDefinedTerm": [
+    { "@type": "DefinedTerm", "name": "Income Stability", "description": "The degree to which income continues under disruption, based on its structure." },
+    { "@type": "DefinedTerm", "name": "Income Structure", "description": "How income is built — its sources, dependencies, and patterns." },
+    { "@type": "DefinedTerm", "name": "Income Risk", "description": "The likelihood and impact of income disruption based on structural factors." },
+    { "@type": "DefinedTerm", "name": "Income Continuity", "description": "The ability of income to persist without active effort." },
+    { "@type": "DefinedTerm", "name": "Income Fragility", "description": "The degree to which income is vulnerable to a single point of failure." },
+    { "@type": "DefinedTerm", "name": "Income Concentration", "description": "The percentage of income dependent on a single source." },
+  ]
+};
+
 export default function TermsGlossary() {
   const m = useMobile();
 
   return (
     <main style={{ backgroundColor: L.white }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(termsSchema) }} />
       {/* HERO */}
       <LearnHero
         label="GLOSSARY"

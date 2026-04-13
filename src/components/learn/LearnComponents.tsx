@@ -59,17 +59,40 @@ const px = (m: boolean, t?: boolean) => m ? 28 : t ? 56 : 48;
 /* SECTION 1 — HERO                                                  */
 /* ================================================================ */
 
-export function LearnHero({ label, title, definition, subtitle, cta }: {
+export function LearnHero({ label, title, definition, subtitle, description, cta }: {
   label?: string;
   title: string;
   definition?: string;
   subtitle?: string;
+  description?: string;
   cta?: { label: string; href: string };
 }) {
   const m = useMobile();
   const t = useTablet();
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": title,
+    "description": description || definition || subtitle || "",
+    "author": { "@type": "Organization", "name": "RunPayway\u2122 Research" },
+    "publisher": { "@type": "Organization", "name": "RunPayway\u2122", "url": "https://peoplestar.com/RunPayway" },
+    "dateModified": "2026-04-12",
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Learn", "item": "https://peoplestar.com/RunPayway/learn" },
+      { "@type": "ListItem", "position": 2, "name": title },
+    ]
+  };
+
   return (
     <header style={{ backgroundColor: L.sand, paddingTop: m ? 104 : 148, paddingBottom: m ? 56 : 80, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         {label && <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: L.teal, marginBottom: 16 }}>{label}</div>}
         <h1 style={{ fontSize: m ? 30 : 64, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: L.navy, marginBottom: definition ? 24 : 16 }}>
@@ -411,7 +434,37 @@ export function LearnCTA({ heading, sub }: { heading?: string; sub?: string }) {
 
 
 /* ================================================================ */
-/* SECTION 13 — META FOOTER                                          */
+/* SECTION 13a — AUTHOR BLOCK                                        */
+/* ================================================================ */
+
+export function AuthorBlock() {
+  return (
+    <section style={{ backgroundColor: L.white, borderTop: `1px solid ${L.divider}`, paddingTop: 24, paddingBottom: 24, paddingLeft: 28, paddingRight: 28 }}>
+      <div style={{ maxWidth: 720, margin: "0 auto", display: "flex", flexWrap: "wrap" as const, gap: 24, alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ width: 32, height: 32, borderRadius: "50%", backgroundColor: L.navy, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <span style={{ fontSize: 12, fontWeight: 700, color: L.white }}>RP</span>
+          </div>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: L.navy }}>RunPayway&#8482; Research</div>
+            <div style={{ fontSize: 11, color: L.textMuted }}>Income Stability Measurement</div>
+          </div>
+        </div>
+        <div style={{ fontSize: 12, color: L.textMuted, display: "flex", gap: 16, flexWrap: "wrap" as const }}>
+          <span>Model: RP-2.0</span>
+          <span>&middot;</span>
+          <span>Fixed scoring methodology</span>
+          <span>&middot;</span>
+          <span>Educational &mdash; not financial advice</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================ */
+/* SECTION 13b — META FOOTER                                         */
 /* ================================================================ */
 
 export function MetaFooter({ updated }: { updated: string }) {
