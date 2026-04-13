@@ -260,6 +260,79 @@ export default function LearnHub() {
       {/* FEATURED INSIGHT */}
       <RealityCheck statement="Most income isn't unstable because it's low. It's unstable because it's concentrated." />
 
+      {/* PREVENTATIVE MEASUREMENT */}
+      <section style={{ backgroundColor: L.white, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
+        <div style={{ maxWidth: 1120, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: m ? 36 : 48 }}>
+            <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: L.teal, marginBottom: 16 }}>PREVENTATIVE MEASUREMENT</div>
+            <h2 style={{ fontSize: m ? 24 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: L.navy, marginBottom: 16 }}>
+              Measure before it matters.
+            </h2>
+            <p style={{ fontSize: m ? 16 : 18, lineHeight: 1.6, color: L.textSecondary, maxWidth: 560, margin: "0 auto" }}>
+              Most people discover income risk after a disruption. RunPayway&#8482; measures it before.
+            </p>
+          </div>
+
+          <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, maxWidth: 960, margin: "0 auto 40px" }}>
+            {[
+              {
+                label: "Before a major decision",
+                body: "Taking on a mortgage, hiring an employee, or leaving a job? Your Income Stability Score\u2122 tells you if your income structure can support it.",
+                color: L.teal,
+              },
+              {
+                label: "Before a market shift",
+                body: "Rate changes, client consolidation, seasonal dips \u2014 know how your income holds before conditions change. Structure determines outcome under pressure.",
+                color: "#4B3FAE",
+              },
+              {
+                label: "Before it\u2019s urgent",
+                body: "The best time to strengthen your income structure is when things are going well. That\u2019s when you have leverage to negotiate retainers, diversify, and lock forward commitments.",
+                color: L.navy,
+              },
+            ].map((card, i) => (
+              <div key={i} style={{
+                padding: m ? "24px 24px" : "28px 28px",
+                borderLeft: `4px solid ${card.color}`,
+                backgroundColor: L.panelFill,
+                marginBottom: m ? 16 : 0,
+              }}>
+                <div style={{ fontSize: 16, fontWeight: 600, color: L.navy, marginBottom: 10 }}>{card.label}</div>
+                <p style={{ fontSize: 15, lineHeight: 1.65, color: L.textSecondary, margin: 0 }}>{card.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <p style={{ fontSize: 16, fontWeight: 600, color: L.navy, textAlign: "center", maxWidth: 600, margin: "0 auto" }}>
+            RunPayway&#8482; doesn&rsquo;t predict disruption. It measures whether your income is ready for&nbsp;it.
+          </p>
+        </div>
+      </section>
+
+      {/* STRATEGIC VALUE */}
+      <section style={{ backgroundColor: L.navy, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
+        <div style={{ maxWidth: 720, margin: "0 auto" }}>
+          <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", color: L.teal, marginBottom: 16 }}>STRATEGIC APPLICATIONS</div>
+          <h2 style={{ fontSize: m ? 24 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 32 }}>
+            How RunPayway&#8482; creates strategic advantage.
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 0 }}>
+            {[
+              { title: "Negotiate from data, not instinct", body: "Your stability score gives you a factual basis for retainer conversations, rate negotiations, and contract terms. Clients respond to structured data differently than they respond to requests." },
+              { title: "Identify your weakest income point before it fails", body: "The score pinpoints exactly which dimension is most exposed \u2014 concentration, labor dependence, forward visibility. You fix the right thing first, not the most obvious thing." },
+              { title: "Track structural improvement over time", body: "Each reassessment captures a new snapshot. Over 12 months, you can see whether your income structure is strengthening or eroding \u2014 independent of how much you earned." },
+              { title: "Make career and business decisions with structural clarity", body: "Should you take on a partner? Leave your job? Raise your rates? The stability score tells you whether your income structure can absorb the transition." },
+              { title: "Give advisors and lenders a new data point", body: "Your accountant, financial advisor, and bank see income amount. RunPayway\u2122 gives them income structure. It\u2019s the layer between earning and keeping." },
+            ].map((item, i) => (
+              <div key={i} style={{ padding: "20px 0", borderBottom: i < 4 ? "1px solid rgba(244,241,234,0.08)" : "none" }}>
+                <div style={{ fontSize: 17, fontWeight: 600, color: "#F4F1EA", marginBottom: 8 }}>{item.title}</div>
+                <p style={{ fontSize: 15, lineHeight: 1.65, color: "rgba(244,241,234,0.55)", margin: 0 }}>{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* FINAL CTA */}
       <LearnCTA
         heading="Get Your Income Stability Score"
