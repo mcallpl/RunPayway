@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logoBlue from "../../../../../public/runpayway-logo-blue.png";
 import { C, mono, sans } from "@/lib/design-tokens";
@@ -49,7 +48,7 @@ interface AdvisorClient {
   band: string;
   topRisk: string;
   assessmentDate: string;
-  notes?: string;
+  notes: string;
 }
 
 /* ── Helpers ───────────────────────────────────────────── */
@@ -71,19 +70,16 @@ function bandColor(band: string): string {
   }
 }
 
-function conversationStarter(name: string, score: number, band: string, topRisk: string, industry: string): string {
-  const riskActions: Record<string, string> = {
-    "Income Concentration": `Ask about diversifying revenue sources. In ${industry}, heavy reliance on one or two clients or channels creates fragility. Explore what a second revenue line could look like.`,
-    "Labor Dependence": `Discuss ways to decouple income from hours worked. In ${industry}, building recurring revenue or productized services reduces personal labor risk.`,
-    "Forward Visibility": `Explore pipeline predictability. In ${industry}, short-term visibility makes planning difficult. Ask about retainers, contracts, or lead indicators they track.`,
-    "Low Persistence": `Talk about income durability. In ${industry}, project-based income restarts from zero. Ask what percentage of this year's income was already locked in on January 1.`,
-    "Income Variability": `Address income volatility. In ${industry}, month-to-month swings complicate planning. Ask about smoothing strategies — reserves, payment schedules, or seasonal adjustments.`,
-    "Source Diversity": `Focus on source mix. In ${industry}, relying on a single income type creates risk. Explore adding complementary revenue streams.`,
-    Pending: "Complete the assessment first to unlock conversation recommendations.",
+function talkingPoint(topRisk: string, industry: string): string {
+  const points: Record<string, string> = {
+    "Income Concentration": `In ${industry}, heavy reliance on one or two clients creates fragility. Ask about diversifying revenue sources.`,
+    "Labor Dependence": `In ${industry}, income tied to hours worked limits growth. Discuss recurring revenue or productized services.`,
+    "Forward Visibility": `In ${industry}, short-term visibility makes planning difficult. Explore retainers, contracts, or pipeline indicators.`,
+    "Low Persistence": `In ${industry}, project-based income restarts from zero. Ask what percentage of this year's income was locked in on January 1.`,
+    "Income Variability": `In ${industry}, month-to-month swings complicate planning. Ask about smoothing strategies or seasonal adjustments.`,
+    "Source Diversity": `In ${industry}, relying on a single income type creates risk. Explore complementary revenue streams.`,
   };
-  const action = riskActions[topRisk] || riskActions["Pending"];
-  if (band === "Pending") return `${name} has not been assessed yet. Run the Income Stability Score assessment to generate insights.`;
-  return `Before your meeting with ${name}: Their score is ${score}, rated ${band}. Their biggest risk is ${topRisk}. Recommended conversation: ${action}`;
+  return points[topRisk] || "";
 }
 
 function uid(): string {
@@ -91,7 +87,7 @@ function uid(): string {
 }
 
 /* ── Dashboard Header ────────────────────────────────────── */
-function DashboardHeader({ mobile: m }: { mobile: boolean }) {
+function DashboardHeader({ mobile: m, reportsUsed, reportsTotal }: { mobile: boolean; reportsUsed: number; reportsTotal: number }) {
   return (
     <header style={{
       borderBottom: `1px solid ${C.border}`,
@@ -122,22 +118,41 @@ function DashboardHeader({ mobile: m }: { mobile: boolean }) {
             ADVISOR DASHBOARD
           </span>
         </div>
-        <nav style={{ display: "flex", alignItems: "center", gap: m ? 12 : 20 }}>
-          {[
-            { href: "#book-overview", label: "Overview" },
-            { href: "#client-list", label: "Clients" },
-            { href: "#add-client", label: "Add Client" },
-          ].map(link => (
-            <a key={link.href} href={link.href} style={{
-              fontSize: m ? 13 : 14, fontWeight: 500,
-              color: C.muted, textDecoration: "none",
-              minHeight: 44, display: "inline-flex", alignItems: "center",
-              transition: "color 150ms",
+        <div style={{ display: "flex", alignItems: "center", gap: m ? 12 : 20 }}>
+          {/* Usage meter */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{
+              width: m ? 60 : 80, height: 6, borderRadius: 3,
+              backgroundColor: "rgba(14,26,43,0.08)", overflow: "hidden",
             }}>
-              {link.label}
-            </a>
-          ))}
-        </nav>
+              <div style={{
+                height: "100%", borderRadius: 3,
+                width: reportsTotal > 0 ? `${Math.min(100, (reportsUsed / reportsTotal) * 100)}%` : "0%",
+                backgroundColor: reportsUsed >= reportsTotal ? C.risk : C.teal,
+                transition: "width 300ms",
+              }} />
+            </div>
+            <span style={{ fontSize: 12, fontWeight: 600, color: C.textMuted, fontFamily: mono, whiteSpace: "nowrap" as const }}>
+              {reportsUsed}/{reportsTotal}
+            </span>
+          </div>
+          {!m && (
+            <nav style={{ display: "flex", alignItems: "center", gap: 16 }}>
+              {[
+                { href: "#book-overview", label: "Overview" },
+                { href: "#client-list", label: "Clients" },
+              ].map(link => (
+                <a key={link.href} href={link.href} style={{
+                  fontSize: 14, fontWeight: 500,
+                  color: C.muted, textDecoration: "none",
+                  minHeight: 44, display: "inline-flex", alignItems: "center",
+                }}>
+                  {link.label}
+                </a>
+              ))}
+            </nav>
+          )}
+        </div>
       </div>
     </header>
   );
@@ -145,7 +160,6 @@ function DashboardHeader({ mobile: m }: { mobile: boolean }) {
 
 /* ── Component ─────────────────────────────────────────── */
 export default function AdvisorDashboardPage() {
-  const router = useRouter();
   const [mobile, setMobile] = useState(false);
   const [advisorCode, setAdvisorCode] = useState<string | null>(null);
   const [codeInput, setCodeInput] = useState("");
@@ -160,10 +174,18 @@ export default function AdvisorDashboardPage() {
   const [newName, setNewName] = useState("");
   const [newIndustry, setNewIndustry] = useState("");
 
-  /* Update score form */
+  /* Enter results form */
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editScore, setEditScore] = useState("");
   const [editRisk, setEditRisk] = useState("");
+
+  /* Notes editing */
+  const [editingNotesId, setEditingNotesId] = useState<string | null>(null);
+  const [notesDraft, setNotesDraft] = useState("");
+
+  /* Usage tracking (placeholder — will be server-driven) */
+  const [reportsUsed, setReportsUsed] = useState(0);
+  const reportsTotal = 25; // Tier default — will come from server
 
   /* ── Effects ── */
   useEffect(() => {
@@ -178,8 +200,13 @@ export default function AdvisorDashboardPage() {
     if (stored) setAdvisorCode(stored);
     const raw = localStorage.getItem("rp_advisor_clients");
     if (raw) {
-      try { setClients(JSON.parse(raw)); } catch { /* corrupt data, ignore */ }
+      try {
+        const parsed = JSON.parse(raw);
+        setClients(parsed.map((c: AdvisorClient) => ({ ...c, notes: c.notes || "" })));
+      } catch { /* corrupt data, ignore */ }
     }
+    const usage = localStorage.getItem("rp_advisor_usage");
+    if (usage) setReportsUsed(parseInt(usage, 10) || 0);
     setLoading(false);
   }, []);
 
@@ -206,22 +233,38 @@ export default function AdvisorDashboardPage() {
       band: "Pending",
       topRisk: "Pending",
       assessmentDate: new Date().toISOString().slice(0, 10),
+      notes: "",
     };
     persistClients([...clients, entry]);
     setNewName("");
     setNewIndustry("");
   };
 
-  const updateScore = (id: string) => {
+  const enterResults = (id: string) => {
     const s = parseInt(editScore, 10);
     if (isNaN(s) || s < 0 || s > 100 || !editRisk) return;
+    const wasNew = clients.find(c => c.id === id)?.score === 0;
     const next = clients.map(c =>
       c.id === id ? { ...c, score: s, band: bandFromScore(s), topRisk: editRisk, assessmentDate: new Date().toISOString().slice(0, 10) } : c
     );
     persistClients(next);
+    if (wasNew) {
+      const newUsage = reportsUsed + 1;
+      setReportsUsed(newUsage);
+      localStorage.setItem("rp_advisor_usage", String(newUsage));
+    }
     setEditingId(null);
     setEditScore("");
     setEditRisk("");
+  };
+
+  const saveNotes = (id: string) => {
+    const next = clients.map(c =>
+      c.id === id ? { ...c, notes: notesDraft } : c
+    );
+    persistClients(next);
+    setEditingNotesId(null);
+    setNotesDraft("");
   };
 
   const removeClient = (id: string) => {
@@ -230,6 +273,7 @@ export default function AdvisorDashboardPage() {
 
   /* ── Derived analytics ── */
   const assessed = clients.filter(c => c.score > 0);
+  const pending = clients.filter(c => c.score === 0);
   const avgScore = assessed.length ? Math.round(assessed.reduce((a, c) => a + c.score, 0) / assessed.length) : 0;
   const redZone = assessed.filter(c => c.score < 30).length;
   const improvable = assessed.filter(c => c.score < 85 && c.score >= 30).length;
@@ -290,6 +334,14 @@ export default function AdvisorDashboardPage() {
     boxShadow: "0 10px 30px rgba(14,26,43,0.06)",
     border: `1px solid ${C.border}`,
   };
+  const btnPrimary: React.CSSProperties = {
+    fontSize: 13, fontWeight: 600, color: C.purple, backgroundColor: "rgba(75,63,174,0.06)",
+    border: `1px solid rgba(75,63,174,0.15)`, borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontFamily: sans,
+  };
+  const btnTeal: React.CSSProperties = {
+    fontSize: 13, fontWeight: 600, color: C.teal, backgroundColor: "rgba(31,109,122,0.06)",
+    border: `1px solid rgba(31,109,122,0.15)`, borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontFamily: sans,
+  };
 
   /* ── Loading state ── */
   if (loading) {
@@ -297,7 +349,7 @@ export default function AdvisorDashboardPage() {
   }
 
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-  /* CODE GATE — require advisor code to use dashboard        */
+  /* CODE GATE                                                */
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   if (!advisorCode) {
     return (
@@ -345,9 +397,9 @@ export default function AdvisorDashboardPage() {
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   return (
     <div style={{ minHeight: "100vh", backgroundColor: C.panelFill, fontFamily: sans }}>
-      <DashboardHeader mobile={mobile} />
+      <DashboardHeader mobile={mobile} reportsUsed={reportsUsed} reportsTotal={reportsTotal} />
 
-      {/* ── SECTION 1: BOOK OVERVIEW ── */}
+      {/* ── BOOK OVERVIEW ── */}
       <section id="book-overview" style={{
         backgroundColor: C.navy, padding: mobile ? "48px 28px 40px" : "64px 48px 56px",
         scrollMarginTop: mobile ? 56 : 64,
@@ -361,9 +413,26 @@ export default function AdvisorDashboardPage() {
           </h1>
 
           {clients.length === 0 ? (
-            <p style={{ fontSize: 17, color: C.sandMuted, margin: 0, fontFamily: sans }}>
-              Add your first client to see book-level insights.
-            </p>
+            /* ── Empty state: clear first action ── */
+            <div style={{
+              padding: mobile ? "32px 24px" : "40px 36px", borderRadius: 16,
+              backgroundColor: "rgba(255,255,255,0.05)", border: `1px solid ${C.sandBorder}`,
+              textAlign: "center", maxWidth: 520,
+            }}>
+              <p style={{ fontSize: 18, fontWeight: 600, color: C.sandText, margin: "0 0 8px" }}>
+                Get started
+              </p>
+              <p style={{ fontSize: 15, color: C.sandMuted, margin: "0 0 20px", lineHeight: 1.5 }}>
+                Add a client to your book, then run their Income Stability Score&#8482; assessment. Results appear here automatically.
+              </p>
+              <a href="#add-client" style={{
+                display: "inline-flex", alignItems: "center", padding: "12px 28px",
+                fontSize: 15, fontWeight: 600, color: C.navy, backgroundColor: C.sandText,
+                borderRadius: 10, textDecoration: "none",
+              }}>
+                Add your first client
+              </a>
+            </div>
           ) : (
             <div style={{
               display: "grid", gridTemplateColumns: mobile ? "1fr 1fr" : "repeat(4, 1fr)", gap: mobile ? 12 : 20,
@@ -394,13 +463,22 @@ export default function AdvisorDashboardPage() {
 
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: mobile ? `32px ${pad} 64px` : `40px ${pad} 96px` }}>
 
-        {/* ── SECTION 2: OPPORTUNITY ALERTS ── */}
-        {assessed.length >= 3 && (
+        {/* ── NEEDS ATTENTION (pending clients + alerts) ── */}
+        {(pending.length > 0 || redZone > 0) && (
           <section style={{ marginBottom: 32 }}>
             <h2 style={{ fontSize: mobile ? 20 : 24, fontWeight: 700, color: C.navy, margin: "0 0 16px", fontFamily: sans }}>
-              Opportunity alerts
+              Needs attention
             </h2>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {pending.length > 0 && (
+                <div style={{ ...cardBase, padding: "16px 20px", display: "flex", alignItems: "center", gap: 12 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: C.moderate, flexShrink: 0 }} />
+                  <span style={{ fontSize: 15, color: C.textPrimary }}>
+                    <strong>{pending.length} client{pending.length > 1 ? "s" : ""}</strong> added but not yet assessed &mdash;{" "}
+                    <a href="#client-list" style={{ color: C.purple, fontWeight: 600, textDecoration: "none" }}>run their assessments</a>
+                  </span>
+                </div>
+              )}
               {redZone > 0 && (
                 <div style={{ ...cardBase, padding: "16px 20px", display: "flex", alignItems: "center", gap: 12 }}>
                   <div style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: C.risk, flexShrink: 0 }} />
@@ -416,23 +494,22 @@ export default function AdvisorDashboardPage() {
               {topRiskEntry && (
                 <div style={{ ...cardBase, padding: "16px 20px", display: "flex", alignItems: "center", gap: 12 }}>
                   <div style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: C.purple, flexShrink: 0 }} />
-                  <span style={{ fontSize: 15, color: C.textPrimary }}>Your book&rsquo;s biggest risk concentration is <strong>{topRiskEntry[0]}</strong></span>
+                  <span style={{ fontSize: 15, color: C.textPrimary }}>Book&rsquo;s biggest risk concentration: <strong>{topRiskEntry[0]}</strong></span>
                 </div>
               )}
             </div>
           </section>
         )}
 
-        {/* ── SECTION 3: CLIENT LIST ── */}
+        {/* ── CLIENT LIST ── */}
         <section id="client-list" style={{ marginBottom: 40, scrollMarginTop: mobile ? 72 : 80 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 8 }}>
             <h2 style={{ fontSize: mobile ? 20 : 24, fontWeight: 700, color: C.navy, margin: 0, fontFamily: sans }}>
-              Client list
+              Clients
             </h2>
             {clients.length > 1 && (
               <button onClick={() => setSortAsc(!sortAsc)} style={{
-                fontSize: 13, fontWeight: 600, color: C.purple, backgroundColor: "rgba(75,63,174,0.06)",
-                border: `1px solid rgba(75,63,174,0.15)`, borderRadius: 8, padding: "8px 14px", cursor: "pointer", fontFamily: sans,
+                ...btnPrimary, fontSize: 12,
               }}>
                 Sort: {sortAsc ? "Lowest first" : "Highest first"}
               </button>
@@ -441,14 +518,18 @@ export default function AdvisorDashboardPage() {
 
           {clients.length === 0 ? (
             <div style={{ ...cardBase, padding: "40px 24px", textAlign: "center" }}>
-              <p style={{ fontSize: 16, color: C.textSecondary, margin: 0 }}>No clients yet. Add your first client below.</p>
+              <p style={{ fontSize: 16, color: C.textSecondary, margin: "0 0 4px" }}>No clients in your book yet.</p>
+              <p style={{ fontSize: 14, color: C.textMuted, margin: 0 }}>Add a client below to get started.</p>
             </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {sorted.map(client => {
                 const isExpanded = expandedId === client.id;
                 const isEditing = editingId === client.id;
+                const isEditingNotes = editingNotesId === client.id;
                 const bc = bandColor(client.band);
+                const tp = client.score > 0 && client.topRisk !== "Pending" ? talkingPoint(client.topRisk, client.industry) : "";
+
                 return (
                   <div key={client.id} style={{ ...cardBase, padding: mobile ? "20px 20px" : "24px 28px" }}>
                     {/* Header row */}
@@ -482,58 +563,118 @@ export default function AdvisorDashboardPage() {
                       </div>
                     </div>
 
-                    {/* Action row */}
-                    <div style={{ display: "flex", gap: 10, marginTop: 14, flexWrap: "wrap", alignItems: "center" }}>
-                      <button onClick={() => setExpandedId(isExpanded ? null : client.id)} style={{
-                        fontSize: 13, fontWeight: 600, color: C.purple, backgroundColor: "rgba(75,63,174,0.06)",
-                        border: `1px solid rgba(75,63,174,0.15)`, borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontFamily: sans,
+                    {/* Inline talking point — always visible for assessed clients */}
+                    {tp && (
+                      <div style={{
+                        marginTop: 12, padding: "12px 16px", borderRadius: 10,
+                        backgroundColor: "rgba(75,63,174,0.03)", border: `1px solid rgba(75,63,174,0.06)`,
                       }}>
-                        {isExpanded ? "Close" : "Meeting Prep"}
-                      </button>
-                      {client.band === "Pending" ? (
-                        <button onClick={() => { setEditingId(isEditing ? null : client.id); setEditScore(""); setEditRisk(""); }} style={{
-                          fontSize: 13, fontWeight: 600, color: C.teal, backgroundColor: "rgba(31,109,122,0.06)",
-                          border: `1px solid rgba(31,109,122,0.15)`, borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontFamily: sans,
-                        }}>
-                          {isEditing ? "Cancel" : "Update Score"}
+                        <p style={{ fontSize: 13, lineHeight: 1.5, color: C.textSecondary, margin: 0 }}>
+                          <strong style={{ color: C.textPrimary }}>Talking point:</strong> {tp}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Notes — always visible if present */}
+                    {client.notes && !isEditingNotes && (
+                      <div style={{ marginTop: 8, padding: "10px 16px", borderRadius: 10, backgroundColor: C.panelFill }}>
+                        <p style={{ fontSize: 13, lineHeight: 1.5, color: C.textSecondary, margin: 0, fontStyle: "italic" }}>
+                          {client.notes}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Action row */}
+                    <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap", alignItems: "center" }}>
+                      {client.score > 0 && (
+                        <button onClick={() => setExpandedId(isExpanded ? null : client.id)} style={btnPrimary}>
+                          {isExpanded ? "Close" : "Full Meeting Prep"}
                         </button>
-                      ) : (
-                        <Link href="/begin" style={{
-                          fontSize: 13, fontWeight: 600, color: C.teal, backgroundColor: "rgba(31,109,122,0.06)",
-                          border: `1px solid rgba(31,109,122,0.15)`, borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontFamily: sans,
-                          textDecoration: "none", display: "inline-block",
-                        }}>
-                          Reassess
-                        </Link>
                       )}
-                      <button onClick={() => removeClient(client.id)} style={{
-                        fontSize: 13, color: C.textMuted, background: "none", border: "none", cursor: "pointer", padding: "8px 4px", fontFamily: sans,
+                      {client.band === "Pending" ? (
+                        <>
+                          <Link href="/begin" style={{ ...btnTeal, textDecoration: "none", display: "inline-flex", alignItems: "center" }}>
+                            Run Assessment
+                          </Link>
+                          <button onClick={() => { setEditingId(isEditing ? null : client.id); setEditScore(""); setEditRisk(""); }} style={btnPrimary}>
+                            {isEditing ? "Cancel" : "Enter Results"}
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <Link href="/begin" style={{ ...btnTeal, textDecoration: "none", display: "inline-flex", alignItems: "center" }}>
+                            Reassess
+                          </Link>
+                          <Link href="/review" style={{ ...btnPrimary, textDecoration: "none", display: "inline-flex", alignItems: "center" }}>
+                            View Report
+                          </Link>
+                        </>
+                      )}
+                      <button onClick={() => {
+                        if (isEditingNotes) { saveNotes(client.id); } else { setEditingNotesId(client.id); setNotesDraft(client.notes); }
+                      }} style={{
+                        fontSize: 13, fontWeight: 500, color: C.textMuted, background: "none", border: "none",
+                        cursor: "pointer", padding: "8px 4px", fontFamily: sans,
                         textDecoration: "underline", textUnderlineOffset: "2px",
+                      }}>
+                        {isEditingNotes ? "Save Note" : client.notes ? "Edit Note" : "Add Note"}
+                      </button>
+                      <button onClick={() => removeClient(client.id)} style={{
+                        fontSize: 13, color: C.risk, background: "none", border: "none", cursor: "pointer",
+                        padding: "8px 4px", fontFamily: sans, textDecoration: "underline", textUnderlineOffset: "2px",
+                        opacity: 0.6,
                       }}>
                         Remove
                       </button>
                     </div>
 
-                    {/* Meeting prep expanded */}
+                    {/* Notes editor */}
+                    {isEditingNotes && (
+                      <div style={{ marginTop: 10 }}>
+                        <textarea
+                          value={notesDraft}
+                          onChange={e => setNotesDraft(e.target.value)}
+                          placeholder="Add a note about this client..."
+                          rows={3}
+                          style={{
+                            ...inputStyle, fontSize: 14, resize: "vertical" as const,
+                            fontFamily: sans, lineHeight: 1.5,
+                          }}
+                        />
+                      </div>
+                    )}
+
+                    {/* Full meeting prep expanded */}
                     {isExpanded && (
                       <div style={{
-                        marginTop: 14, padding: "16px 20px", borderRadius: 12,
+                        marginTop: 12, padding: "16px 20px", borderRadius: 12,
                         backgroundColor: "rgba(75,63,174,0.03)", border: `1px solid rgba(75,63,174,0.08)`,
                       }}>
+                        <p style={{ fontSize: 13, fontWeight: 700, color: C.purple, margin: "0 0 8px", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                          MEETING PREP &mdash; {client.name}
+                        </p>
+                        <p style={{ fontSize: 14, lineHeight: 1.6, color: C.textPrimary, margin: "0 0 12px" }}>
+                          Score: <strong>{client.score}</strong> &middot; Band: <strong>{client.band}</strong> &middot; Top risk: <strong>{client.topRisk}</strong>
+                        </p>
                         <p style={{ fontSize: 14, lineHeight: 1.6, color: C.textPrimary, margin: 0 }}>
-                          {conversationStarter(client.name, client.score, client.band, client.topRisk, client.industry)}
+                          <strong>Recommended conversation:</strong> {talkingPoint(client.topRisk, client.industry)}
                         </p>
                       </div>
                     )}
 
-                    {/* Update score form */}
+                    {/* Enter results form */}
                     {isEditing && (
                       <div style={{
-                        marginTop: 14, padding: "16px 20px", borderRadius: 12,
+                        marginTop: 12, padding: "16px 20px", borderRadius: 12,
                         backgroundColor: "rgba(31,109,122,0.03)", border: `1px solid rgba(31,109,122,0.08)`,
                       }}>
+                        <p style={{ fontSize: 13, fontWeight: 600, color: C.navy, margin: "0 0 4px" }}>
+                          Enter assessment results
+                        </p>
                         <p style={{ fontSize: 13, color: C.textSecondary, margin: "0 0 12px" }}>
-                          Run the assessment with your client now. When complete, enter their results below.
+                          Run the assessment at{" "}
+                          <Link href="/begin" style={{ color: C.teal, fontWeight: 600, textDecoration: "none" }}>/begin</Link>
+                          , then enter the score and top risk below.
                         </p>
                         <div style={{ display: "flex", gap: 10, flexDirection: mobile ? "column" : "row", alignItems: mobile ? "stretch" : "flex-end" }}>
                           <div style={{ flex: 1 }}>
@@ -547,7 +688,7 @@ export default function AdvisorDashboardPage() {
                               {RISK_OPTIONS.map(r => <option key={r} value={r}>{r}</option>)}
                             </select>
                           </div>
-                          <button onClick={() => updateScore(client.id)} style={{
+                          <button onClick={() => enterResults(client.id)} style={{
                             padding: "14px 20px", fontSize: 14, fontWeight: 600, fontFamily: sans, color: C.white,
                             backgroundColor: C.teal, border: "none", borderRadius: 10, cursor: "pointer", whiteSpace: "nowrap" as const,
                           }}>
@@ -563,12 +704,15 @@ export default function AdvisorDashboardPage() {
           )}
         </section>
 
-        {/* ── SECTION 4: ADD NEW CLIENT ── */}
+        {/* ── ADD CLIENT ── */}
         <section id="add-client" style={{ marginBottom: 40, scrollMarginTop: mobile ? 72 : 80 }}>
           <h2 style={{ fontSize: mobile ? 20 : 24, fontWeight: 700, color: C.navy, margin: "0 0 16px", fontFamily: sans }}>
-            Add new client
+            Add client to book
           </h2>
           <div style={{ ...cardBase, padding: mobile ? "24px 20px" : "28px 28px" }}>
+            <p style={{ fontSize: 14, color: C.textSecondary, margin: "0 0 16px" }}>
+              Add a client to your book first. Once added, you can run their assessment and enter results.
+            </p>
             <div style={{ display: "flex", gap: 12, flexDirection: mobile ? "column" : "row", alignItems: mobile ? "stretch" : "flex-end" }}>
               <div style={{ flex: 1 }}>
                 <label style={labelStyle}>Client name</label>
@@ -586,13 +730,13 @@ export default function AdvisorDashboardPage() {
                 backgroundColor: C.purple, border: "none", borderRadius: 12, cursor: "pointer", whiteSpace: "nowrap" as const,
                 boxShadow: "0 8px 24px rgba(75,63,174,0.18)",
               }}>
-                Run Assessment &rarr;
+                Add Client
               </button>
             </div>
           </div>
         </section>
 
-        {/* ── SECTION 5: BOOK HEALTH OVER TIME ── */}
+        {/* ── BOOK HEALTH ── */}
         {assessed.length >= 1 && (
           <section style={{ marginBottom: 40 }}>
             <h2 style={{ fontSize: mobile ? 20 : 24, fontWeight: 700, color: C.navy, margin: "0 0 16px", fontFamily: sans }}>
@@ -623,12 +767,16 @@ export default function AdvisorDashboardPage() {
                     </span>
                   </div>
                 )}
+                <div style={{ fontSize: 15, color: C.textPrimary }}>
+                  <span style={{ color: C.textMuted, fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.04em" }}>Reports used:</span>{" "}
+                  {reportsUsed} of {reportsTotal}
+                </div>
               </div>
             </div>
           </section>
         )}
 
-        {/* ── BOTTOM ── */}
+        {/* ── FOOTER ── */}
         <footer style={{ textAlign: "center", paddingTop: 16, paddingBottom: 32 }}>
           <div style={{ display: "flex", justifyContent: "center", gap: 24, flexWrap: "wrap", marginBottom: 20 }}>
             <Link href="/methodology" style={{ fontSize: 14, fontWeight: 600, color: C.purple, textDecoration: "none", fontFamily: sans }}>
