@@ -520,7 +520,7 @@ function Article4() {
 
       <H2>The Layer Between Earning and Keeping</H2>
       <P>
-        This is the income stability gap. Not a gap in how much you earn&mdash;a gap in understanding <em>how</em> you earn it. Specifically:
+        This is the <Link href="/learn/what-is-income-stability" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>income stability</Link> gap. Not a gap in how much you earn&mdash;a gap in understanding <em>how</em> you earn it. Specifically:
       </P>
       <BulletList items={[
         "How many sources does your income depend on?",

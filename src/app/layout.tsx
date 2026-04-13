@@ -13,16 +13,27 @@ export const metadata: Metadata = {
   title: "RunPayway™ — Income Stability Score",
   description:
     "Measure how stable your income structure actually is. Six questions. 90 seconds. Deterministic scoring. Built for consultants, contractors, freelancers, and business owners.",
+  icons: {
+    icon: [{ url: "/RunPayway/favicon.svg", type: "image/svg+xml" }],
+  },
   openGraph: {
     title: "RunPayway™ — Income Stability Score",
     description: "The structural assessment that reveals income weakness before disruption makes it obvious.",
     siteName: "RunPayway",
     type: "website",
+    images: [
+      {
+        url: "https://peoplestar.com/RunPayway/og-image.svg",
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "RunPayway™ — Income Stability Score",
     description: "Measure how stable your income structure actually is. Deterministic scoring.",
+    images: ["https://peoplestar.com/RunPayway/og-image.svg"],
   },
 };
 
