@@ -12,7 +12,10 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "RunPayway™ — Income Stability Score",
   description:
-    "Measure how stable your income structure actually is. Six questions. 90 seconds. Deterministic scoring. Built for consultants, contractors, freelancers, and business owners.",
+    "Measure how stable your income structure actually is. Six questions. 90 seconds. Consistent scoring. Built for consultants, contractors, freelancers, and business owners.",
+  verification: {
+    google: "5m6xwNlo1Wihest8Qlgi8TEClC93pxwzzTdiMLsH4ZA",
+  },
   icons: {
     icon: [{ url: "/RunPayway/favicon.svg", type: "image/svg+xml" }],
   },
