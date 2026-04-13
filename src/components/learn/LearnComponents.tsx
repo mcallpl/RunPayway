@@ -413,16 +413,47 @@ export function MicroConversion({ items }: { items?: { text: string; href: strin
 /* SECTION 12 — FINAL CTA                                            */
 /* ================================================================ */
 
+/* ================================================================ */
+/* SECTION 11b — ABOUT THIS MEASUREMENT                              */
+/* ================================================================ */
+
+export function AboutMeasurement() {
+  const m = useMobile();
+  const t = useTablet();
+  return (
+    <section style={{ backgroundColor: L.panelFill, paddingTop: m ? 40 : 56, paddingBottom: m ? 40 : 56, paddingLeft: px(m, t), paddingRight: px(m, t), borderTop: `1px solid ${L.divider}` }}>
+      <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
+        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: L.textMuted, marginBottom: 16 }}>ABOUT THIS MEASUREMENT</div>
+        <p style={{ fontSize: 15, lineHeight: 1.7, color: L.textSecondary, margin: "0 0 12px" }}>
+          The <strong style={{ color: L.navy }}>Income Stability Score&#8482;</strong> is produced by <strong style={{ color: L.navy }}>RunPayway&#8482;</strong> using a consistent, version-locked scoring model. It measures <strong style={{ color: L.navy }}>income stability</strong> and <strong style={{ color: L.navy }}>income structure</strong> &mdash; not income amount.
+        </p>
+        <p style={{ fontSize: 15, lineHeight: 1.7, color: L.textSecondary, margin: 0 }}>
+          The system uses <strong style={{ color: L.navy }}>fixed rules</strong> with no AI and no subjective interpretation. Same inputs always produce the same result. Every assessment is stamped with the model version used.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================ */
+/* SECTION 12 — FINAL CTA                                            */
+/* ================================================================ */
+
 export function LearnCTA({ heading, sub }: { heading?: string; sub?: string }) {
   const m = useMobile();
   const t = useTablet();
   return (
+    <>
+    <AboutMeasurement />
     <section style={{ backgroundColor: L.navy, paddingTop: m ? 72 : 96, paddingBottom: m ? 72 : 96, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
         <h2 style={{ fontSize: m ? 24 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: L.sand, marginBottom: 16 }}>
-          {heading || "Get Your Income Stability Score"}
+          {heading || "Get Your Income Stability Score\u2122"}
         </h2>
-        {sub && <p style={{ fontSize: 16, lineHeight: 1.6, color: "rgba(244,241,234,0.50)", marginBottom: 28 }}>{sub}</p>}
+        <p style={{ fontSize: 16, lineHeight: 1.6, color: "rgba(244,241,234,0.50)", marginBottom: 28 }}>
+          {sub || "RunPayway\u2122 measures your income structure using fixed rules. Consistent scoring. Version-locked. No interpretation."}
+        </p>
         <Link href="/begin" style={{
           display: "inline-flex", alignItems: "center", justifyContent: "center",
           height: 56, padding: "0 32px", borderRadius: 14,
@@ -437,6 +468,7 @@ export function LearnCTA({ heading, sub }: { heading?: string; sub?: string }) {
         </p>
       </div>
     </section>
+    </>
   );
 }
 
