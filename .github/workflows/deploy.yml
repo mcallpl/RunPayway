@@ -1,4 +1,4 @@
-name: Build & Deploy to GoDaddy
+name: Deploy to DigitalOcean
 
 on:
   push:
@@ -42,15 +42,15 @@ jobs:
           if [ -d src/app/_api_dev ]; then mv src/app/_api_dev src/app/api; fi
           if [ -f src/_middleware_dev.ts ]; then mv src/_middleware_dev.ts src/middleware.ts; fi
 
-      - name: Deploy frontend to GoDaddy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy via rsync over SSH
+        uses: easingthemes/ssh-deploy@v5.1.0
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./out/
-          server-dir: /public_html/RunPayway/
-          dangerous-clean-slate: false
-
-      - name: Smoke test — verify worker endpoints
-        run: bash scripts/smoke-test.sh
+          SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          REMOTE_HOST: 64.227.108.128
+          REMOTE_USER: root
+          SOURCE: out/
+          TARGET: /var/www/html/RunPayway/
+          EXCLUDE: >-
+            .git/,
+            .github/,
+            .DS_Store
