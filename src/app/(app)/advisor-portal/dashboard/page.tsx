@@ -33,14 +33,6 @@ const INDUSTRIES = [
   "Energy / Utilities",
 ] as const;
 
-const RISK_OPTIONS = [
-  "Income Concentration",
-  "Labor Dependence",
-  "Forward Visibility",
-  "Low Persistence",
-  "Income Variability",
-  "Source Diversity",
-] as const;
 
 /* ── Types ─────────────────────────────────────────────── */
 interface AdvisorClient {
@@ -58,7 +50,7 @@ interface AdvisorClient {
 
 /* ── Helpers ───────────────────────────────────────────── */
 function bandFromScore(s: number): string {
-  if (s <= 0) return "Pending";
+  if (s <= 0) return "Not assessed";
   if (s < 30) return "Limited Stability";
   if (s < 50) return "Developing Stability";
   if (s < 75) return "Established Stability";
@@ -179,10 +171,6 @@ export default function AdvisorDashboardPage() {
   const [newName, setNewName] = useState("");
   const [newIndustry, setNewIndustry] = useState("");
 
-  /* Enter results form */
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [editScore, setEditScore] = useState("");
-  const [editRisk, setEditRisk] = useState("");
 
   /* Notes editing */
   const [editingNotesId, setEditingNotesId] = useState<string | null>(null);
@@ -293,8 +281,8 @@ export default function AdvisorDashboardPage() {
       name: newName.trim(),
       industry: newIndustry,
       score: 0,
-      band: "Pending",
-      topRisk: "Pending",
+      band: "Not assessed",
+      topRisk: "Not assessed",
       assessmentDate: new Date().toISOString().slice(0, 10),
       notes: "",
     };
@@ -303,17 +291,7 @@ export default function AdvisorDashboardPage() {
     setNewIndustry("");
   };
 
-  const enterResults = (id: string) => {
-    const s = parseInt(editScore, 10);
-    if (isNaN(s) || s < 0 || s > 100 || !editRisk) return;
-    const next = clients.map(c =>
-      c.id === id ? { ...c, score: s, band: bandFromScore(s), topRisk: editRisk, assessmentDate: new Date().toISOString().slice(0, 10) } : c
-    );
-    persistClients(next);
-    setEditingId(null);
-    setEditScore("");
-    setEditRisk("");
-  };
+
 
   const saveNotes = (id: string) => {
     const next = clients.map(c =>
@@ -340,7 +318,7 @@ export default function AdvisorDashboardPage() {
   /* Risk concentration */
   const riskCounts: Record<string, number> = {};
   assessed.forEach(c => {
-    if (c.topRisk !== "Pending") riskCounts[c.topRisk] = (riskCounts[c.topRisk] || 0) + 1;
+    if (c.topRisk !== "Not assessed") riskCounts[c.topRisk] = (riskCounts[c.topRisk] || 0) + 1;
   });
   const topRiskEntry = Object.entries(riskCounts).sort((a, b) => b[1] - a[1])[0];
 
@@ -485,7 +463,7 @@ export default function AdvisorDashboardPage() {
                 Get started
               </p>
               <p style={{ fontSize: 15, color: C.sandMuted, margin: "0 0 20px", lineHeight: 1.5 }}>
-                Add a client to your book, then run their Income Stability Score&#8482; assessment. Results appear here automatically.
+                Add a client below, then select &ldquo;Run Assessment&rdquo; on their card. The score, stability band, and top risk will populate automatically.
               </p>
               <a href="#add-client" style={{
                 display: "inline-flex", alignItems: "center", padding: "12px 28px",
@@ -587,10 +565,9 @@ export default function AdvisorDashboardPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {sorted.map(client => {
                 const isExpanded = expandedId === client.id;
-                const isEditing = editingId === client.id;
                 const isEditingNotes = editingNotesId === client.id;
                 const bc = bandColor(client.band);
-                const tp = client.score > 0 && client.topRisk !== "Pending" ? talkingPoint(client.topRisk, client.industry) : "";
+                const tp = client.score > 0 && client.topRisk !== "Not assessed" ? talkingPoint(client.topRisk, client.industry) : "";
 
                 return (
                   <div key={client.id} style={{ ...cardBase, padding: mobile ? "20px 20px" : "24px 28px" }}>
@@ -620,7 +597,7 @@ export default function AdvisorDashboardPage() {
                           </span>
                         </div>
                         <div style={{ fontSize: 13, color: C.textMuted, marginTop: 4 }}>
-                          {client.topRisk !== "Pending" ? `Top risk: ${client.topRisk}` : "Assessment pending"} &middot; {client.assessmentDate}
+                          {client.topRisk !== "Not assessed" ? `Top risk: ${client.topRisk}` : "Not yet assessed"} &middot; {client.assessmentDate}
                         </div>
                       </div>
                     </div>
@@ -653,22 +630,9 @@ export default function AdvisorDashboardPage() {
                           {isExpanded ? "Close" : "Full Meeting Prep"}
                         </button>
                       )}
-                      {client.band === "Pending" ? (
-                        <>
-                          <button onClick={() => setAssessingId(assessingId === client.id ? null : client.id)} style={btnTeal}>
-                            {assessingId === client.id ? "Cancel Assessment" : "Run Assessment"}
-                          </button>
-                          <button onClick={() => { setEditingId(isEditing ? null : client.id); setEditScore(""); setEditRisk(""); }} style={btnPrimary}>
-                            {isEditing ? "Cancel" : "Enter Results"}
-                          </button>
-                        </>
-                      ) : (
-                        <>
-                          <button onClick={() => setAssessingId(assessingId === client.id ? null : client.id)} style={btnTeal}>
-                            {assessingId === client.id ? "Cancel" : "Reassess"}
-                          </button>
-                        </>
-                      )}
+                      <button onClick={() => setAssessingId(assessingId === client.id ? null : client.id)} style={btnTeal}>
+                        {assessingId === client.id ? "Cancel" : (client.score > 0 ? "Reassess" : "Run Assessment")}
+                      </button>
                       <button onClick={() => {
                         if (isEditingNotes) { saveNotes(client.id); } else { setEditingNotesId(client.id); setNotesDraft(client.notes); }
                       }} style={{
@@ -759,41 +723,6 @@ export default function AdvisorDashboardPage() {
                       </div>
                     )}
 
-                    {/* Enter results form */}
-                    {isEditing && (
-                      <div style={{
-                        marginTop: 12, padding: "16px 20px", borderRadius: 12,
-                        backgroundColor: "rgba(31,109,122,0.03)", border: `1px solid rgba(31,109,122,0.08)`,
-                      }}>
-                        <p style={{ fontSize: 13, fontWeight: 600, color: C.navy, margin: "0 0 4px" }}>
-                          Enter assessment results
-                        </p>
-                        <p style={{ fontSize: 13, color: C.textSecondary, margin: "0 0 12px" }}>
-                          Run the assessment at{" "}
-                          <Link href="/begin" style={{ color: C.teal, fontWeight: 600, textDecoration: "none" }}>/begin</Link>
-                          , then enter the score and top risk below.
-                        </p>
-                        <div style={{ display: "flex", gap: 10, flexDirection: mobile ? "column" : "row", alignItems: mobile ? "stretch" : "flex-end" }}>
-                          <div style={{ flex: 1 }}>
-                            <label style={{ ...labelStyle, fontSize: 12 }}>Score (0&ndash;100)</label>
-                            <input type="number" min="0" max="100" value={editScore} onChange={e => setEditScore(e.target.value)} placeholder="e.g. 42" style={{ ...inputStyle, fontSize: 14 }} />
-                          </div>
-                          <div style={{ flex: 1 }}>
-                            <label style={{ ...labelStyle, fontSize: 12 }}>Top Risk</label>
-                            <select value={editRisk} onChange={e => setEditRisk(e.target.value)} style={{ ...selectStyle, fontSize: 14, color: editRisk ? C.textPrimary : C.textMuted }}>
-                              <option value="" disabled>Select risk</option>
-                              {RISK_OPTIONS.map(r => <option key={r} value={r}>{r}</option>)}
-                            </select>
-                          </div>
-                          <button onClick={() => enterResults(client.id)} style={{
-                            padding: "14px 20px", fontSize: 14, fontWeight: 600, fontFamily: sans, color: C.white,
-                            backgroundColor: C.teal, border: "none", borderRadius: 10, cursor: "pointer", whiteSpace: "nowrap" as const,
-                          }}>
-                            Save
-                          </button>
-                        </div>
-                      </div>
-                    )}
                   </div>
                 );
               })}
@@ -808,7 +737,7 @@ export default function AdvisorDashboardPage() {
           </h2>
           <div style={{ ...cardBase, padding: mobile ? "24px 20px" : "28px 28px" }}>
             <p style={{ fontSize: 14, color: C.textSecondary, margin: "0 0 16px" }}>
-              Add a client to your book first. Once added, you can run their assessment and enter results.
+              Add a client by name and industry. Once added, select &ldquo;Run Assessment&rdquo; on their card to score their income structure.
             </p>
             <div style={{ display: "flex", gap: 12, flexDirection: mobile ? "column" : "row", alignItems: mobile ? "stretch" : "flex-end" }}>
               <div style={{ flex: 1 }}>
