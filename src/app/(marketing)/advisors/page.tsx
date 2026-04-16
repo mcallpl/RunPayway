@@ -98,14 +98,14 @@ function HeroSection() {
             <span key={i} style={{ fontSize: 14, fontWeight: 600, color: C.teal, padding: "5px 12px", borderRadius: 100, backgroundColor: "rgba(31,109,122,0.06)", border: "1px solid rgba(31,109,122,0.15)" }}>{badge}</span>
           ))}
         </div>
-        <Link href="/advisor-portal/dashboard" style={{
+        <Link href="/advisor-portal" style={{
           display: "inline-flex", alignItems: "center", justifyContent: "center",
           padding: m ? "14px 28px" : "16px 36px", fontSize: m ? 16 : 18, fontWeight: 600,
           color: C.white, backgroundColor: C.navy, borderRadius: 14,
           textDecoration: "none", boxShadow: ctaShadow,
           ...fadeIn(visible, 200),
         }}>
-          Open Advisor Dashboard &rarr;
+          Get Advisor Access &rarr;
         </Link>
       </div>
     </header>
