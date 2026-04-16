@@ -6,6 +6,7 @@ import { handleSimulate, handleSimulateBatch, handleTimeline, handleActionScript
 import { handleSaveRecord, handleGetRecord, handleStats, ensureErrorReportsTable, handleErrorReport, handleGetErrorReports } from "./lib/records.js";
 import { handleEntitlementCreate, handleEntitlementCheck, handleEntitlementUse, handleEntitlementLookup, ensureEntitlementsTable } from "./lib/entitlements.js";
 import { handleSendEmail, handleContact, handleNurture, handleFollowUpCron, processNurtureQueue, ensureNurtureTable } from "./lib/emails.js";
+import { handleAdvisorCreate, handleAdvisorValidate, handleAdvisorUsage, handleAdvisorMeter, ensureAdvisorTables } from "./lib/advisor.js";
 
 // ══════════════════════════════════════════════════════════
 // RATE LIMITING — in-memory per-isolate
@@ -15,6 +16,7 @@ const RATE_LIMITS = {
   default:     { maxRequests: 60, windowMs: 60000 },
   scoring:     { maxRequests: 10, windowMs: 60000 },
   entitlement: { maxRequests: 20, windowMs: 60000 },
+  advisor:     { maxRequests: 20, windowMs: 60000 },
 };
 
 const rateLimitMap = new Map();
@@ -44,6 +46,7 @@ function cleanupRateLimits() {
 function getRateLimitCategory(path) {
   if (["/pressuremap", "/plain-english", "/action-plan", "/personalize", "/"].includes(path)) return "scoring";
   if (path.startsWith("/entitlement/")) return "entitlement";
+  if (path.startsWith("/advisor/")) return "advisor";
   return "default";
 }
 
@@ -59,6 +62,7 @@ async function ensureAllTables(env) {
     ensureEntitlementsTable(env),
     ensureErrorReportsTable(env),
     ensureNurtureTable(env),
+    ensureAdvisorTables(env),
   ]);
   tablesInitialized = true;
 }
@@ -201,6 +205,10 @@ export default {
       else if (path === "/analytics") response = handleAnalytics(body, corsHeaders);
       else if (path === "/personalize") response = await handlePersonalize(body, env, corsHeaders);
       else if (path === "/error-report") response = await handleErrorReport(body, env, corsHeaders);
+      else if (path === "/advisor/create") response = await handleAdvisorCreate(body, env, corsHeaders);
+      else if (path === "/advisor/validate") response = await handleAdvisorValidate(body, env, corsHeaders);
+      else if (path === "/advisor/usage") response = await handleAdvisorUsage(body, env, corsHeaders);
+      else if (path === "/advisor/meter") response = await handleAdvisorMeter(body, env, corsHeaders);
       else {
         response = new Response(JSON.stringify({ error: "Unknown endpoint" }), {
           status: 404, headers: corsHeaders,

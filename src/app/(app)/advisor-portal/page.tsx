@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import logoBlue from "../../../../public/runpayway-logo-blue.png";
 import { C, mono, sans } from "@/lib/design-tokens";
+import { STRIPE_ADVISOR_STARTER, STRIPE_ADVISOR_PROFESSIONAL, STRIPE_ADVISOR_ENTERPRISE } from "@/lib/config";
 
 /* ── Advisor Header ──────────────────────────────────────── */
 function AdvisorHeader({ mobile: m }: { mobile: boolean }) {
@@ -67,7 +68,6 @@ export default function AdvisorPortalPage() {
     "Get conversation starters before every meeting",
     "Track client progress across reassessments",
     "Identify which clients need attention this quarter",
-    "Volume pricing available \u00b7 No subscription \u00b7 No minimum",
   ];
 
   const pad = mobile ? "28px" : "48px";
@@ -126,18 +126,109 @@ export default function AdvisorPortalPage() {
           </ul>
         </div>
 
-        {/* Request access CTA */}
-        <div style={{ textAlign: "center", marginTop: 32 }}>
-          <p style={{ fontSize: 16, color: C.textSecondary, margin: "0 0 12px", fontFamily: sans }}>
-            Interested in advisor access?
-          </p>
-          <Link href="/contact" style={{
-            fontSize: 15, fontWeight: 600, color: C.purple, textDecoration: "none", fontFamily: sans,
-            borderBottom: `1px solid rgba(75,63,174,0.3)`, paddingBottom: 2,
-          }}>
-            Contact us to get started
-          </Link>
+      </section>
+
+      {/* Pricing */}
+      <section style={{ maxWidth: 1120, margin: "0 auto", padding: mobile ? `0 ${pad} 64px` : `0 ${pad} 96px` }}>
+        <h2 style={{ fontSize: mobile ? 28 : 36, fontWeight: 700, color: C.navy, textAlign: "center", margin: "0 0 12px", fontFamily: sans, letterSpacing: "-0.02em" }}>
+          Choose your plan
+        </h2>
+        <p style={{ fontSize: 17, color: C.textSecondary, textAlign: "center", margin: "0 auto 40px", maxWidth: 540, fontFamily: sans }}>
+          Each assessment produces a score, stability band, top risk, and meeting-ready talking points for one client.
+        </p>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: mobile ? "1fr" : "repeat(3, 1fr)",
+          gap: mobile ? 16 : 20,
+        }}>
+          {([
+            {
+              name: "Starter",
+              price: "$249",
+              interval: "/ quarter",
+              reports: "15 assessments per quarter",
+              features: ["Book-level analytics", "Meeting prep per client", "Client notes", "Score + band + top risk"],
+              href: STRIPE_ADVISOR_STARTER,
+              highlight: false,
+            },
+            {
+              name: "Professional",
+              price: "$179",
+              interval: "/ month",
+              reports: "50 assessments per month",
+              features: ["Everything in Starter", "Higher volume for firms", "Priority support"],
+              href: STRIPE_ADVISOR_PROFESSIONAL,
+              highlight: true,
+            },
+            {
+              name: "Enterprise",
+              price: "$149",
+              interval: "/ seat / month",
+              reports: "Unlimited assessments",
+              features: ["Everything in Professional", "Multi-advisor seats", "White-label reporting", "Dedicated onboarding"],
+              href: STRIPE_ADVISOR_ENTERPRISE || "/contact",
+              highlight: false,
+            },
+          ] as const).map((tier) => (
+            <div key={tier.name} style={{
+              ...cardBase,
+              padding: mobile ? "28px 24px" : "36px 32px",
+              border: tier.highlight ? `2px solid ${C.purple}` : `1px solid ${C.border}`,
+              position: "relative" as const,
+            }}>
+              {tier.highlight && (
+                <div style={{
+                  position: "absolute", top: -12, left: "50%", transform: "translateX(-50%)",
+                  fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const,
+                  color: C.white, backgroundColor: C.purple, borderRadius: 6, padding: "4px 14px",
+                }}>
+                  MOST POPULAR
+                </div>
+              )}
+              <h3 style={{ fontSize: 20, fontWeight: 700, color: C.navy, margin: "0 0 8px", fontFamily: sans }}>
+                {tier.name}
+              </h3>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 4 }}>
+                <span style={{ fontSize: 36, fontWeight: 700, color: C.navy, fontFamily: mono, letterSpacing: "-0.02em" }}>
+                  {tier.price}
+                </span>
+                <span style={{ fontSize: 15, color: C.textMuted }}>{tier.interval}</span>
+              </div>
+              <p style={{ fontSize: 14, color: C.teal, fontWeight: 600, margin: "0 0 20px" }}>
+                {tier.reports}
+              </p>
+              <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px" }}>
+                {tier.features.map((f, i) => (
+                  <li key={i} style={{ fontSize: 14, color: C.textPrimary, marginBottom: 8, display: "flex", alignItems: "center", gap: 8 }}>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
+                      <path d="M3.5 7.5l2 2 5-5" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <a href={tier.href || "/contact"} style={{
+                display: "block", textAlign: "center", padding: "14px 20px",
+                fontSize: 15, fontWeight: 600, fontFamily: sans, borderRadius: 10,
+                textDecoration: "none", transition: "opacity 150ms",
+                color: tier.highlight ? C.white : C.purple,
+                backgroundColor: tier.highlight ? C.purple : "rgba(75,63,174,0.06)",
+                border: tier.highlight ? "none" : `1px solid rgba(75,63,174,0.15)`,
+                boxShadow: tier.highlight ? "0 8px 24px rgba(75,63,174,0.18)" : "none",
+              }}>
+                {tier.name === "Enterprise" ? "Contact Sales" : "Get Started"}
+              </a>
+            </div>
+          ))}
         </div>
+
+        <p style={{ fontSize: 14, color: C.textMuted, textAlign: "center", marginTop: 24, fontFamily: sans }}>
+          Already have an advisor code?{" "}
+          <Link href="/advisor-portal/dashboard" style={{ color: C.purple, fontWeight: 600, textDecoration: "none" }}>
+            Open your dashboard
+          </Link>
+        </p>
       </section>
 
       {/* Footer */}

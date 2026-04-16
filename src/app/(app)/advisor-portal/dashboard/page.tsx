@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import logoBlue from "../../../../../public/runpayway-logo-blue.png";
 import { C, mono, sans } from "@/lib/design-tokens";
+import { WORKER_URL } from "@/lib/config";
 
 /* ── Industry list (matches engine profiles) ──────────── */
 const INDUSTRIES = [
@@ -183,9 +184,10 @@ export default function AdvisorDashboardPage() {
   const [editingNotesId, setEditingNotesId] = useState<string | null>(null);
   const [notesDraft, setNotesDraft] = useState("");
 
-  /* Usage tracking (placeholder — will be server-driven) */
+  /* Usage tracking — server-driven */
   const [reportsUsed, setReportsUsed] = useState(0);
-  const reportsTotal = 25; // Tier default — will come from server
+  const [reportsTotal, setReportsTotal] = useState(15);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   /* ── Effects ── */
   useEffect(() => {
@@ -197,7 +199,8 @@ export default function AdvisorDashboardPage() {
 
   useEffect(() => {
     const stored = localStorage.getItem("rp_advisor_code");
-    if (stored) setAdvisorCode(stored);
+
+    // Load client data from localStorage
     const raw = localStorage.getItem("rp_advisor_clients");
     if (raw) {
       try {
@@ -205,9 +208,38 @@ export default function AdvisorDashboardPage() {
         setClients(parsed.map((c: AdvisorClient) => ({ ...c, notes: c.notes || "" })));
       } catch { /* corrupt data, ignore */ }
     }
-    const usage = localStorage.getItem("rp_advisor_usage");
-    if (usage) setReportsUsed(parseInt(usage, 10) || 0);
-    setLoading(false);
+
+    if (!stored) {
+      setLoading(false);
+      return;
+    }
+
+    // Validate code server-side
+    fetch(`${WORKER_URL}/advisor/validate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ advisor_code: stored }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data?.valid) {
+          setAdvisorCode(stored);
+          setReportsUsed(data.reports_used || 0);
+          setReportsTotal(data.reports_limit === -1 ? -1 : (data.reports_limit || 15));
+        } else {
+          localStorage.removeItem("rp_advisor_code");
+          setValidationError(
+            data?.reason === "expired" ? "Your subscription has expired."
+            : data?.reason === "inactive" ? "Your account is no longer active."
+            : "Invalid advisor code."
+          );
+        }
+      })
+      .catch(() => {
+        // Network error — allow offline access with stored code
+        setAdvisorCode(stored);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const persistClients = (next: AdvisorClient[]) => {
@@ -215,11 +247,35 @@ export default function AdvisorDashboardPage() {
     localStorage.setItem("rp_advisor_clients", JSON.stringify(next));
   };
 
-  const handleActivate = () => {
+  const handleActivate = async () => {
     const trimmed = codeInput.trim();
     if (!trimmed) return;
-    localStorage.setItem("rp_advisor_code", trimmed);
-    setAdvisorCode(trimmed);
+    setValidationError(null);
+    setLoading(true);
+    try {
+      const res = await fetch(`${WORKER_URL}/advisor/validate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ advisor_code: trimmed }),
+      });
+      const data = await res.json();
+      if (data?.valid) {
+        localStorage.setItem("rp_advisor_code", trimmed);
+        setAdvisorCode(trimmed);
+        setReportsUsed(data.reports_used || 0);
+        setReportsTotal(data.reports_limit === -1 ? -1 : (data.reports_limit || 15));
+      } else {
+        setValidationError(
+          data?.reason === "expired" ? "This code has expired."
+          : data?.reason === "not_found" ? "Code not recognized. Check your code and try again."
+          : "Invalid advisor code."
+        );
+      }
+    } catch {
+      setValidationError("Unable to verify code. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   /* ── Client mutations ── */
@@ -243,16 +299,10 @@ export default function AdvisorDashboardPage() {
   const enterResults = (id: string) => {
     const s = parseInt(editScore, 10);
     if (isNaN(s) || s < 0 || s > 100 || !editRisk) return;
-    const wasNew = clients.find(c => c.id === id)?.score === 0;
     const next = clients.map(c =>
       c.id === id ? { ...c, score: s, band: bandFromScore(s), topRisk: editRisk, assessmentDate: new Date().toISOString().slice(0, 10) } : c
     );
     persistClients(next);
-    if (wasNew) {
-      const newUsage = reportsUsed + 1;
-      setReportsUsed(newUsage);
-      localStorage.setItem("rp_advisor_usage", String(newUsage));
-    }
     setEditingId(null);
     setEditScore("");
     setEditRisk("");
@@ -364,6 +414,11 @@ export default function AdvisorDashboardPage() {
           <p style={{ fontSize: 16, color: C.textSecondary, margin: "0 0 32px", fontFamily: sans }}>
             Enter your advisor code to continue.
           </p>
+          {validationError && (
+            <p style={{ fontSize: 14, color: C.risk, margin: "0 0 16px", fontFamily: sans, fontWeight: 600 }}>
+              {validationError}
+            </p>
+          )}
           <div style={{ display: "flex", gap: 10, flexDirection: mobile ? "column" : "row" }}>
             <input
               type="text"
