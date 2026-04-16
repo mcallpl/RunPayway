@@ -1,6 +1,6 @@
 # RUNPAYWAY™ — Production Implementation Specification
 
-**Model RP-1.0 | Version 2.0 Build Spec**
+**Model RP-2.0 | Build Spec**
 **Deterministic Structural Income Diagnostic Platform**
 **Date: 2026-03-20**
 
@@ -119,11 +119,12 @@ src/
 │   │   │   │   ├── 19-comparative-reassessment.ts
 │   │   │   │   └── 20-integrity-manifest.ts
 │   │   │   │
-│   │   │   ├── schemas/                     # Zod schemas
+│   │   │   ├── schemas/                     # Zod schemas + canonical types
 │   │   │   │   ├── input.schema.ts
 │   │   │   │   ├── profile.schema.ts
 │   │   │   │   ├── extended-input.schema.ts
-│   │   │   │   └── output.schema.ts
+│   │   │   │   ├── output.schema.ts
+│   │   │   │   └── canonical-record.ts      # Advisor canonical record schema
 │   │   │   │
 │   │   │   └── data/
 │   │   │       ├── sector-benchmarks.ts
@@ -135,6 +136,14 @@ src/
 │   │       ├── scoring.ts
 │   │       ├── constants.ts
 │   │       └── ...
+│   │
+│   ├── agents/                              # Agent layer (advisor product)
+│   │   ├── intake-agent.ts                  # Intake state machine
+│   │   ├── gatekeeper.ts                    # Validation + scoring + stamping
+│   │   └── interpretation.ts                # Deterministic interpretation
+│   │
+│   ├── advisor-questions.ts                 # Third-person question framing
+│   ├── industry-map.ts                      # Dashboard industry → engine sector
 │   │
 │   ├── db/
 │   │   ├── schema.sql                       # PostgreSQL DDL
@@ -164,7 +173,14 @@ src/
 │   │   ├── verify/[id]/page.tsx             # Verification page
 │   │   ├── compare/page.tsx                 # Reassessment compare
 │   │   ├── advisor/[id]/page.tsx            # Advisor summary
-│   │   └── history/page.tsx                 # Assessment history
+│   │   ├── history/page.tsx                 # Assessment history
+│   │   │
+│   │   ├── advisor-portal/                  # Advisor product (paywalled)
+│   │   │   ├── page.tsx                     # Landing + pricing
+│   │   │   ├── success/page.tsx             # Post-Stripe checkout
+│   │   │   └── dashboard/
+│   │   │       ├── page.tsx                 # Working dashboard
+│   │   │       └── InlineAssessment.tsx     # Inline assessment wizard
 │   │
 │   └── api/
 │       └── v2/
@@ -4103,5 +4119,379 @@ Priority  Page                                File
 
 ---
 
+## 17. ADVISOR PRODUCT ARCHITECTURE
+
+**Added: 2026-04-16 | Status: Built and deployed**
+
+The advisor product is a separate, paywalled product that uses the same deterministic scoring engine as the consumer product but delivers a different output: score, band, top risk, and meeting-ready talking points. Advisors pay for volume access to structural income intelligence across their client book. They do not receive the consumer deliverables (PDF report, simulator, PressureMap, action plan, scripts).
+
+### 17.1 Advisor Pricing Model
+
+| Tier | Price | Assessments | Period | Target |
+|------|-------|-------------|--------|--------|
+| Starter | $249/quarter | 15/quarter | Quarterly | Solo advisors |
+| Professional | $179/month | 50/month | Monthly | Small firms |
+| Enterprise | $149/seat/month | Unlimited | Monthly | RIAs, broker-dealers, organizations |
+
+Consumer pricing: $69 one-time (full diagnostic), $149/year (monitoring + 3 reassessments).
+
+The advisor is paying for a different product — book-level income intelligence — not a stripped-down consumer product.
+
+### 17.2 Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    ADVISOR PRODUCT STACK                         │
+│                                                                 │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │  FRONTEND (Next.js Static Export → GoDaddy FTP)          │   │
+│  │                                                          │   │
+│  │  /advisor-portal          Landing + pricing              │   │
+│  │  /advisor-portal/success  Post-Stripe checkout           │   │
+│  │  /advisor-portal/dashboard  Working dashboard            │   │
+│  │    └── InlineAssessment.tsx  Inline assessment wizard     │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│                          │                                      │
+│              ┌───────────▼───────────────┐                     │
+│              │   AGENT PIPELINE          │                     │
+│              │   (client-side)           │                     │
+│              │                           │                     │
+│              │  Intake Agent             │                     │
+│              │    ↓ (validates, flags)    │                     │
+│              │  Gatekeeper               │                     │
+│              │    ↓ (engine + stamp)      │                     │
+│              │  Interpretation Agent     │                     │
+│              │    ↓ (talking points)      │                     │
+│              │  Canonical Record          │                     │
+│              └───────────┬───────────────┘                     │
+│                          │                                      │
+│              ┌───────────▼───────────────┐                     │
+│              │  CLOUDFLARE WORKER (D1)   │                     │
+│              │                           │                     │
+│              │  /advisor/create          │                     │
+│              │  /advisor/validate        │                     │
+│              │  /advisor/usage           │                     │
+│              │  /advisor/meter           │                     │
+│              │  /advisor/save-record     │                     │
+│              │  /advisor/get-record      │                     │
+│              └───────────────────────────┘                     │
+│                          │                                      │
+│              ┌───────────▼───────────────┐                     │
+│              │  STRIPE CHECKOUT          │                     │
+│              │  (hosted payment links)   │                     │
+│              └───────────────────────────┘                     │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### 17.3 D1 Database Schema (Advisor Tables)
+
+```sql
+-- advisor_accounts: one row per paying advisor
+CREATE TABLE IF NOT EXISTS advisor_accounts (
+  advisor_code TEXT PRIMARY KEY,        -- "ADV-XXXXXXXX"
+  org_id TEXT,                          -- for enterprise multi-seat (future)
+  email TEXT NOT NULL,
+  tier TEXT NOT NULL DEFAULT 'advisor_starter',
+  reports_limit INTEGER NOT NULL DEFAULT 15,  -- -1 = unlimited
+  reports_used INTEGER NOT NULL DEFAULT 0,
+  period_start TEXT NOT NULL,           -- ISO 8601
+  period_end TEXT NOT NULL,             -- ISO 8601
+  stripe_session_id TEXT,
+  stripe_subscription_id TEXT,
+  active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+-- advisor_seats: enterprise multi-advisor (created, not yet used)
+CREATE TABLE IF NOT EXISTS advisor_seats (
+  seat_id TEXT PRIMARY KEY,
+  org_id TEXT NOT NULL,
+  advisor_code TEXT NOT NULL,
+  email TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'active',
+  created_at TEXT NOT NULL
+);
+
+-- advisor_usage_log: audit trail of every assessment consumed
+CREATE TABLE IF NOT EXISTS advisor_usage_log (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  advisor_code TEXT NOT NULL,
+  assessment_id TEXT NOT NULL,           -- maps to record_id in advisor_records
+  client_name TEXT,
+  created_at TEXT NOT NULL
+);
+
+-- advisor_records: canonical records persisted server-side
+CREATE TABLE IF NOT EXISTS advisor_records (
+  record_id TEXT PRIMARY KEY,            -- "REC-" + UUID
+  advisor_code TEXT NOT NULL,
+  client_id TEXT NOT NULL,
+  client_name TEXT,
+  industry_sector TEXT,
+  score INTEGER,
+  band TEXT,
+  top_risk TEXT,
+  checksum TEXT NOT NULL,                -- SHA-256 of normalized_inputs + scores
+  model_version TEXT NOT NULL DEFAULT 'RP-2.0',
+  record_data TEXT NOT NULL,             -- full CanonicalAdvisorRecord as JSON
+  created_at TEXT NOT NULL
+);
+```
+
+### 17.4 Worker Endpoints
+
+All endpoints follow the existing handler pattern: sanitize inputs → validate → D1 query → JSON response with corsHeaders. Rate limited at 20 req/min per IP.
+
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/advisor/create` | POST | Called by success page after Stripe payment. Generates `ADV-XXXXXXXX` code, inserts into D1. Duplicate detection by stripe_session_id and email+tier within 24h. |
+| `/advisor/validate` | POST | Called by dashboard on every load. Checks code exists, is active, period hasn't expired. Returns `{ valid, tier, reports_used, reports_limit, period_end }`. |
+| `/advisor/usage` | POST | Returns current usage stats for an advisor code. |
+| `/advisor/meter` | POST | Called after each completed assessment. Checks limit, increments reports_used, logs to usage_log. Returns 402 if limit reached. Idempotent by assessment_id. |
+| `/advisor/save-record` | POST | Persists a CanonicalAdvisorRecord to D1. Idempotent by record_id. Verifies advisor is active. |
+| `/advisor/get-record` | POST | Retrieves record by record_id. Verifies checksum integrity on retrieval. Returns `integrity_valid: true/false`. |
+
+### 17.5 Stripe Integration
+
+Three Stripe Checkout hosted payment links (not server-created sessions). Each redirects to:
+
+```
+/advisor-portal/success/?session_id={CHECKOUT_SESSION_ID}&email={CUSTOMER_EMAIL}&plan={tier}
+```
+
+Configured in `src/lib/config.ts`:
+
+```typescript
+export const ADVISOR_PLANS = {
+  advisor_starter:      { key: "advisor_starter",      reports: 15,  price_cents: 24900, period_months: 3 },
+  advisor_professional: { key: "advisor_professional",  reports: 50,  price_cents: 17900, period_months: 1 },
+  advisor_enterprise:   { key: "advisor_enterprise",    reports: -1,  price_cents: 14900, period_months: 1 },
+} as const;
+
+export const STRIPE_ADVISOR_STARTER = "https://buy.stripe.com/...";
+export const STRIPE_ADVISOR_PROFESSIONAL = "https://buy.stripe.com/...";
+export const STRIPE_ADVISOR_ENTERPRISE = "https://buy.stripe.com/...";
+```
+
+**Not yet built:** Stripe webhook handler for `invoice.paid` events to extend `period_end` on subscription renewal.
+
+### 17.6 Agent Architecture
+
+Three agents + a canonical record schema. All deterministic. No AI calls. The agent pipeline runs client-side.
+
+#### Canonical Record Schema
+
+```typescript
+// src/lib/engine/v2/schemas/canonical-record.ts
+
+interface CanonicalAdvisorRecord {
+  record_id: string;                  // "REC-" + UUID, immutable
+  advisor_code: string;
+  client_id: string;
+  client_name: string;
+  industry_sector: IndustrySector;
+  profile: ProfileContext;
+  raw_inputs: RawDiagnosticInput;
+  assessment: AssessmentRecord;       // Full engine output
+  interpretation: InterpretationResult;
+  intake_agent_version: string;
+  gatekeeper_version: string;
+  interpretation_agent_version: string;
+  checksum: string;                   // SHA-256 of normalized_inputs + scores
+  model_version: string;              // "RP-2.0"
+  created_at: string;
+}
+
+interface InterpretationResult {
+  score: number;
+  band: StabilityBand;
+  top_risk: string;                   // Display label
+  top_risk_key: ConstraintKey;        // Engine key
+  one_sentence_talking_point: string;
+  one_paragraph_meeting_prep: string;
+}
+```
+
+This schema is the contract between all layers. Every agent reads from and writes to it.
+
+#### Intake Agent (v1.0.0)
+
+**File:** `src/lib/agents/intake-agent.ts`
+
+A state machine, not a chatbot. Manages the step-by-step intake flow.
+
+- **Steps:** `operating_structure` → `primary_income_model` → `revenue_structure` → `years_in_structure` → `q1` through `q6` → `review` → `complete`
+- **Validation:** Each input validated against permitted values (type unions from engine types)
+- **Ambiguity detection:** Rule-based flags for unusual field combinations:
+  - Solo service + subscription model → "Confirm your client runs a subscription-based business"
+  - Salary + asset-heavy revenue → "Confirm significant passive income alongside salary"
+  - Commission + recurring-heavy → "Confirm residual or trailing commissions"
+  - Rental income + solo service → "Consider portfolio operator or asset supported structure"
+- **Interface:** `advanceIntake(state, { field, value }) → nextState` — pure function
+- **Output:** `extractInputs(state) → { profile: ProfileContext, rawInputs: RawDiagnosticInput }`
+
+#### Gatekeeper (v1.0.0)
+
+**File:** `src/lib/agents/gatekeeper.ts`
+
+Pure validation + deterministic scoring + stamping. No AI. Enforces the wall between agents and the official standard.
+
+1. Validate all 6 raw inputs are present and A-E
+2. Validate all 6 profile fields are present and from permitted type unions
+3. Run `executeAssessment({ rawInputs, profile })` — the deterministic engine
+4. Compute SHA-256 checksum of `JSON.stringify(normalized_inputs) + JSON.stringify(scores)` via Web Crypto API
+5. Issue immutable record ID: `"REC-" + crypto.randomUUID()`
+6. Stamp model version from engine manifest
+7. Assemble and return `CanonicalAdvisorRecord`
+
+Returns `GatekeeperResult`: `{ valid: boolean, errors: string[], warnings: string[], record: CanonicalAdvisorRecord | null }`
+
+#### Interpretation Agent (v1.0.0)
+
+**File:** `src/lib/agents/interpretation.ts`
+
+Deterministic function. No Claude API calls. Instant. Free.
+
+Reads the `AssessmentRecord` and produces:
+- `score` — `record.scores.overall_score`
+- `band` — `record.bands.primary_band`
+- `top_risk` — maps `record.constraints.root_constraint` to display label (e.g., `weak_forward_visibility` → "Forward Visibility")
+- `one_sentence_talking_point` — from `record.explainability.one_thing_that_matters` or generated from risk + industry
+- `one_paragraph_meeting_prep` — assembled from `why_this_score`, fragility class warning, risk conversation starter, and highest lift opportunity
+
+### 17.7 Inline Assessment Component
+
+**File:** `src/app/(app)/advisor-portal/dashboard/InlineAssessment.tsx`
+
+Wizard that runs inside a client card on the dashboard. No page navigation.
+
+**Flow:**
+1. Intake Agent drives step-by-step: 4 profile selects → 6 advisor-framed questions → review (with ambiguity warnings) → confirm
+2. Questions use `buildAdvisorQuestions()` — third-person framing ("your client's income" not "your income")
+3. Industry pre-filled from client card, mapped via `mapIndustryToSector()`
+4. On confirm: engine runs client-side → Interpretation Agent → Gatekeeper → canonical record produced
+5. Record persisted to D1 via `/advisor/save-record`
+6. Usage metered via `/advisor/meter`
+7. `onComplete` fires with score, band, topRisk, canonicalRecord, interpretation
+8. Dashboard client card updates immediately
+
+**UI:**
+- Progress bar across all steps (profile + questions + review)
+- One field/question visible at a time
+- A-E answer buttons with letter badges
+- Back navigation works by replaying state machine from beginning
+- Ambiguity flags render as amber warning cards before the review step
+- Scoring state shows brief spinner: "Scoring {name}'s income structure..."
+
+### 17.8 Dashboard Page
+
+**File:** `src/app/(app)/advisor-portal/dashboard/page.tsx`
+
+**Code gate:** Server-side validation on every load via `/advisor/validate`. Invalid/expired codes show clear error messages. Activate flow also validates server-side.
+
+**Sections (when authenticated):**
+1. **Book Overview** — Clients assessed, average score, red zone count, improvable count. Empty state guides first action.
+2. **Needs Attention** — Pending clients (not yet assessed), red zone clients, improvable clients, book risk concentration.
+3. **Client List** — Each card shows: score badge, name, industry, band, top risk, date. Inline talking point visible for assessed clients (from Interpretation Agent when available, fallback to template). Actions: Run Assessment, Reassess, Full Meeting Prep, Add Note, Remove.
+4. **Add Client** — Name + industry. Helper text explains two-step flow.
+5. **Book Health** — First/most recent assessment dates, trend (after 6+ clients), reports used/remaining.
+
+**Usage meter:** Visual progress bar in sticky header showing reports used/total. Server-driven values from `/advisor/validate`.
+
+**Client record type:**
+
+```typescript
+interface AdvisorClient {
+  id: string;
+  name: string;
+  industry: string;
+  score: number;
+  band: string;
+  topRisk: string;
+  assessmentDate: string;
+  notes: string;
+  canonicalRecord?: CanonicalAdvisorRecord;
+  interpretation?: InterpretationResult;
+}
+```
+
+### 17.9 Advisor Portal Landing Page
+
+**File:** `src/app/(app)/advisor-portal/page.tsx`
+
+**Header:** Logo + "ADVISOR PORTAL" label + "Sign In" link (goes to dashboard code gate).
+
+**Sections:**
+1. **Hero** — "Know how your client's income is built before the next meeting." + "See Plans" CTA scrolling to pricing.
+2. **What every assessment produces** — Four concrete output cards: Income Stability Score, Stability Band, Top Structural Risk, Meeting-Ready Talking Points.
+3. **Under two minutes. Three steps.** — Add client → Classify and answer → Get the result.
+4. **Pricing** — Three-tier cards with Stripe CTAs. Each tier has: price, interval, assessment count, "who it's for" line, feature checklist.
+5. **Footer** — "Already have an advisor code? Sign in to your dashboard."
+
+### 17.10 Advisor File Inventory
+
+#### Created Files
+
+| File | Purpose |
+|------|---------|
+| `worker/lib/advisor.js` | D1 tables + 6 worker endpoints |
+| `src/lib/config.ts` | Updated with ADVISOR_PLANS + Stripe URLs |
+| `src/lib/industry-map.ts` | Dashboard display names → engine sector keys |
+| `src/lib/advisor-questions.ts` | Third-person question framing |
+| `src/lib/engine/v2/schemas/canonical-record.ts` | Canonical record + interpretation types |
+| `src/lib/agents/intake-agent.ts` | Intake state machine |
+| `src/lib/agents/gatekeeper.ts` | Validation + scoring + stamping |
+| `src/lib/agents/interpretation.ts` | Deterministic interpretation |
+| `src/app/(app)/advisor-portal/page.tsx` | Landing + pricing |
+| `src/app/(app)/advisor-portal/success/page.tsx` | Post-checkout |
+| `src/app/(app)/advisor-portal/dashboard/page.tsx` | Working dashboard |
+| `src/app/(app)/advisor-portal/dashboard/InlineAssessment.tsx` | Inline assessment wizard |
+
+#### Modified Files
+
+| File | Changes |
+|------|---------|
+| `worker/index.js` | Imports, routes, rate limits, table init for advisor endpoints |
+
+### 17.11 Advisor Flow Diagram
+
+```
+NEW ADVISOR:
+  /advisors (marketing) → "Get Advisor Access" →
+  /advisor-portal (pricing) → Stripe Checkout →
+  /advisor-portal/success (code issued, stored in D1 + localStorage) →
+  /advisor-portal/dashboard (validated, dashboard loads)
+
+RETURNING ADVISOR:
+  /advisor-portal → "Sign In" →
+  /advisor-portal/dashboard → enters code → validated server-side → dashboard loads
+
+ASSESSMENT FLOW (inline, no page navigation):
+  Dashboard → Add Client (name + industry) →
+  Client Card → "Run Assessment" →
+  InlineAssessment opens:
+    Intake Agent: operating_structure → income_model → revenue_structure → years →
+    6 questions (advisor-framed, one at a time, progress bar) →
+    Review (ambiguity flags shown) → "Generate Score" →
+    Agent Pipeline: Engine → Interpretation → Gatekeeper →
+    Record saved to D1 + usage metered →
+  Client card updates: score, band, topRisk, talking point
+```
+
+### 17.12 Future Advisor Work (Not Yet Built)
+
+| Feature | When to Build | Why Wait |
+|---------|---------------|----------|
+| Stripe webhook for subscription renewal (`invoice.paid` → extend `period_end`) | When first advisor subscribes | No paying advisors yet |
+| Evidence Agent (document upload → field extraction) | When 10+ advisors paying | Makes Professional tier worth $179/mo |
+| Enterprise Workflow Agent (multi-case routing, audit trails, seat management) | When enterprise buyer asks | Don't build enterprise tooling without enterprise customer |
+| AI-powered interpretation (Claude-generated meeting prep) | After deterministic version validated | Current deterministic version is sufficient |
+| Crypto/DeFi vocabulary pack | When crypto user contacts | Engine already handles it; only intake vocabulary needed |
+| Reassessment comparison (prior vs current) | After advisors have 2+ assessments per client | `comparison` field exists in AssessmentRecord; surface when data exists |
+
+---
+
 *End of Implementation Specification*
-*RUNPAYWAY™ | Model RP-1.0 | Version 2.0 Build Spec*
+*RUNPAYWAY™ | Model RP-2.0 | Version 2.0 Build Spec*
+*Advisor Architecture Added: 2026-04-16*
