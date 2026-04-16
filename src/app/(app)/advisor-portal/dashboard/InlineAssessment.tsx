@@ -6,6 +6,10 @@ import { C, mono, sans } from "@/lib/design-tokens";
 import { buildAdvisorQuestions } from "@/lib/advisor-questions";
 import { mapIndustryToSector } from "@/lib/industry-map";
 import { WORKER_URL } from "@/lib/config";
+import { generateInterpretation, INTERPRETATION_AGENT_VERSION } from "@/lib/agents/interpretation";
+import { runGatekeeper, GATEKEEPER_VERSION } from "@/lib/agents/gatekeeper";
+import { INTAKE_AGENT_VERSION } from "@/lib/agents/intake-agent";
+import type { CanonicalAdvisorRecord, InterpretationResult } from "@/lib/engine/v2/schemas/canonical-record";
 
 /* ── Profile field options (same as consumer diagnostic) ── */
 const OPERATING_STRUCTURES = [
@@ -76,6 +80,8 @@ interface InlineAssessmentProps {
     band: string;
     topRisk: string;
     assessmentId: string;
+    canonicalRecord: CanonicalAdvisorRecord;
+    interpretation: InterpretationResult;
   }) => void;
   onCancel: () => void;
 }
@@ -214,55 +220,84 @@ export default function InlineAssessment({
       if (currentQ < 5) {
         setCurrentQ(currentQ + 1);
       } else {
-        // All 6 answered — score
+        // All 6 answered — run agent pipeline
         setStep("scoring");
         setError(null);
 
         try {
           const rawInputsV2 = {
-            q1_recurring_revenue_base: answers[0],
-            q2_income_concentration: answers[1],
-            q3_income_source_diversity: answers[2],
-            q4_forward_revenue_visibility: answers[3],
-            q5_earnings_variability: answers[4],
-            q6_income_continuity_without_labor: selectedAnswer, // current answer for q6
+            q1_recurring_revenue_base: answers[0] as "A" | "B" | "C" | "D" | "E",
+            q2_income_concentration: answers[1] as "A" | "B" | "C" | "D" | "E",
+            q3_income_source_diversity: answers[2] as "A" | "B" | "C" | "D" | "E",
+            q4_forward_revenue_visibility: answers[3] as "A" | "B" | "C" | "D" | "E",
+            q5_earnings_variability: answers[4] as "A" | "B" | "C" | "D" | "E",
+            q6_income_continuity_without_labor: selectedAnswer as "A" | "B" | "C" | "D" | "E",
           };
 
           const profileV2 = {
             profile_class: "individual" as const,
-            operating_structure: structureMap[operatingStructure] || "solo_service",
-            primary_income_model: modelMap[incomeModel] || "other",
-            revenue_structure: revenueMap[revenueStructure] || "mixed",
+            operating_structure: (structureMap[operatingStructure] || "solo_service") as "solo_service" | "small_agency",
+            primary_income_model: (modelMap[incomeModel] || "other") as "commission" | "retainer" | "project_fee" | "subscription" | "salary" | "mixed_services" | "licensing" | "rental" | "ecommerce" | "digital_products" | "other",
+            revenue_structure: (revenueMap[revenueStructure] || "mixed") as "active_heavy" | "hybrid" | "recurring_heavy" | "asset_heavy" | "mixed",
             industry_sector: sector,
             maturity_stage: "developing" as const,
           };
 
+          // Step 1: Run engine for interpretation (need the record first)
           const { executeAssessment } = await import("@/lib/engine/v2/index");
-          const record = executeAssessment({
+          const assessmentRecord = executeAssessment({
             rawInputs: rawInputsV2,
             profile: profileV2,
           });
 
-          const score = record.scores.overall_score;
-          const band = record.bands.primary_band;
-          const topRiskKey = record.constraints.root_constraint || record.constraints.primary_constraint;
-          const topRisk = CONSTRAINT_LABELS[topRiskKey] || "Income Concentration";
-          const assessmentId = record.assessment_id;
+          // Step 2: Interpretation Agent — produce advisor-facing summary
+          const interpretation = generateInterpretation(
+            assessmentRecord,
+            clientName,
+            sector,
+          );
 
-          // Meter usage
+          // Step 3: Gatekeeper — validate, stamp, issue canonical record
+          const gatekeeperResult = await runGatekeeper({
+            advisorCode,
+            clientId,
+            clientName,
+            profile: profileV2,
+            rawInputs: rawInputsV2,
+            interpretation,
+            intakeAgentVersion: INTAKE_AGENT_VERSION,
+            interpretationAgentVersion: INTERPRETATION_AGENT_VERSION,
+          });
+
+          if (!gatekeeperResult.valid || !gatekeeperResult.record) {
+            setError(`Validation failed: ${gatekeeperResult.errors.join(", ")}`);
+            setStep("questions");
+            return;
+          }
+
+          const canonicalRecord = gatekeeperResult.record;
+
+          // Step 4: Meter usage
           try {
             await fetch(`${WORKER_URL}/advisor/meter`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 advisor_code: advisorCode,
-                assessment_id: assessmentId,
+                assessment_id: canonicalRecord.record_id,
                 client_name: clientName,
               }),
             });
           } catch { /* metering failure shouldn't block results */ }
 
-          onComplete({ score, band, topRisk, assessmentId });
+          onComplete({
+            score: interpretation.score,
+            band: interpretation.band,
+            topRisk: interpretation.top_risk,
+            assessmentId: canonicalRecord.record_id,
+            canonicalRecord,
+            interpretation,
+          });
         } catch (err) {
           setError("Assessment failed. Please try again.");
           setStep("questions");

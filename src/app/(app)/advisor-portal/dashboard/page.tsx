@@ -6,6 +6,7 @@ import logoBlue from "../../../../../public/runpayway-logo-blue.png";
 import { C, mono, sans } from "@/lib/design-tokens";
 import { WORKER_URL } from "@/lib/config";
 import InlineAssessment from "./InlineAssessment";
+import type { CanonicalAdvisorRecord, InterpretationResult } from "@/lib/engine/v2/schemas/canonical-record";
 
 /* ── Industry list (matches engine profiles) ──────────── */
 const INDUSTRIES = [
@@ -51,6 +52,8 @@ interface AdvisorClient {
   topRisk: string;
   assessmentDate: string;
   notes: string;
+  canonicalRecord?: CanonicalAdvisorRecord;
+  interpretation?: InterpretationResult;
 }
 
 /* ── Helpers ───────────────────────────────────────────── */
@@ -623,13 +626,13 @@ export default function AdvisorDashboardPage() {
                     </div>
 
                     {/* Inline talking point — always visible for assessed clients */}
-                    {tp && (
+                    {(client.interpretation?.one_sentence_talking_point || tp) && (
                       <div style={{
                         marginTop: 12, padding: "12px 16px", borderRadius: 10,
                         backgroundColor: "rgba(75,63,174,0.03)", border: `1px solid rgba(75,63,174,0.06)`,
                       }}>
                         <p style={{ fontSize: 13, lineHeight: 1.5, color: C.textSecondary, margin: 0 }}>
-                          <strong style={{ color: C.textPrimary }}>Talking point:</strong> {tp}
+                          <strong style={{ color: C.textPrimary }}>Talking point:</strong> {client.interpretation?.one_sentence_talking_point || tp}
                         </p>
                       </div>
                     )}
@@ -711,7 +714,15 @@ export default function AdvisorDashboardPage() {
                         onComplete={(result) => {
                           const next = clients.map(c =>
                             c.id === client.id
-                              ? { ...c, score: result.score, band: result.band, topRisk: result.topRisk, assessmentDate: new Date().toISOString().slice(0, 10) }
+                              ? {
+                                  ...c,
+                                  score: result.score,
+                                  band: result.band,
+                                  topRisk: result.topRisk,
+                                  assessmentDate: new Date().toISOString().slice(0, 10),
+                                  canonicalRecord: result.canonicalRecord,
+                                  interpretation: result.interpretation,
+                                }
                               : c
                           );
                           persistClients(next);
@@ -735,8 +746,16 @@ export default function AdvisorDashboardPage() {
                           Score: <strong>{client.score}</strong> &middot; Band: <strong>{client.band}</strong> &middot; Top risk: <strong>{client.topRisk}</strong>
                         </p>
                         <p style={{ fontSize: 14, lineHeight: 1.6, color: C.textPrimary, margin: 0 }}>
-                          <strong>Recommended conversation:</strong> {talkingPoint(client.topRisk, client.industry)}
+                          {client.interpretation
+                            ? client.interpretation.one_paragraph_meeting_prep
+                            : <><strong>Recommended conversation:</strong> {talkingPoint(client.topRisk, client.industry)}</>
+                          }
                         </p>
+                        {client.canonicalRecord && (
+                          <p style={{ fontSize: 11, color: C.textMuted, margin: "10px 0 0", fontFamily: mono }}>
+                            Record {client.canonicalRecord.record_id} &middot; Model {client.canonicalRecord.model_version}
+                          </p>
+                        )}
                       </div>
                     )}
 
