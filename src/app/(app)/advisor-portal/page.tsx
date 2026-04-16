@@ -44,7 +44,7 @@ function AdvisorHeader({ mobile: m }: { mobile: boolean }) {
             textDecoration: "none", minHeight: 44,
             display: "inline-flex", alignItems: "center",
           }}>
-            Open Dashboard
+            Sign In
           </Link>
         </nav>
       </div>
@@ -62,14 +62,6 @@ export default function AdvisorPortalPage() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const valueItems = [
-    "Run Income Stability Score\u2122 assessments during client meetings",
-    "See book-level analytics \u2014 average score, risk distribution, opportunities",
-    "Get conversation starters before every meeting",
-    "Track client progress across reassessments",
-    "Identify which clients need attention this quarter",
-  ];
-
   const pad = mobile ? "28px" : "48px";
   const cardBase: React.CSSProperties = {
     backgroundColor: C.white,
@@ -85,56 +77,95 @@ export default function AdvisorPortalPage() {
       {/* Hero */}
       <section style={{ maxWidth: 1200, margin: "0 auto", padding: mobile ? "48px 28px 32px" : "72px 48px 48px", textAlign: "center" }}>
         <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: C.purple, marginBottom: 16, fontFamily: sans }}>
-          ADVISOR PORTAL
+          FOR ADVISORS
         </div>
         <h1 style={{ fontSize: mobile ? 32 : 48, fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.035em", color: C.navy, margin: "0 0 16px", fontFamily: sans }}>
-          Income intelligence across your entire book.
+          Know how your client&rsquo;s income is built{mobile ? " " : <br />}before the next meeting.
         </h1>
-        <p style={{ fontSize: mobile ? 17 : 20, lineHeight: 1.5, color: C.textSecondary, maxWidth: 640, margin: "0 auto 36px", fontFamily: sans }}>
-          Run assessments for your clients. See their scores, risks, and opportunities &mdash; all in one place.
+        <p style={{ fontSize: mobile ? 17 : 20, lineHeight: 1.5, color: C.textSecondary, maxWidth: 600, margin: "0 auto 36px", fontFamily: sans }}>
+          RunPayway&#8482; gives you a standardized income structure assessment for every client. Score, top risk, and talking points &mdash; in under two minutes.
         </p>
-        <Link href="/advisor-portal/dashboard" style={{
+        <a href="#pricing" style={{
           display: "inline-flex", alignItems: "center", justifyContent: "center",
           padding: "16px 36px", fontSize: 17, fontWeight: 600, fontFamily: sans,
           color: C.white, backgroundColor: C.purple, borderRadius: 12,
           textDecoration: "none", boxShadow: "0 8px 24px rgba(75,63,174,0.18)",
         }}>
-          Open Dashboard &rarr;
-        </Link>
+          See Plans &rarr;
+        </a>
       </section>
 
-      {/* Value prop */}
-      <section style={{ maxWidth: 720, margin: "0 auto", padding: mobile ? `0 ${pad} 64px` : `0 ${pad} 96px` }}>
-        <div style={{ ...cardBase, padding: mobile ? "32px 28px" : "44px" }}>
-          <h2 style={{ fontSize: mobile ? 24 : 28, fontWeight: 700, color: C.navy, margin: "0 0 12px", fontFamily: sans }}>
-            What advisors get
-          </h2>
-          <p style={{ fontSize: 16, lineHeight: 1.6, color: C.textSecondary, margin: "0 0 28px", fontFamily: sans }}>
-            RunPayway&#8482; Advisor Access lets you run Income Stability Score&#8482; assessments for your clients, view their results, and use the data in your planning conversations.
-          </p>
-
-          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-            {valueItems.map((item, i) => (
-              <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 14, fontSize: 15, lineHeight: 1.5, color: C.textPrimary, fontFamily: sans }}>
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0, marginTop: 2 }}>
-                  <circle cx="9" cy="9" r="9" fill="rgba(31,109,122,0.10)" />
-                  <path d="M5.5 9.5l2 2 5-5" stroke={C.teal} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                {item}
-              </li>
-            ))}
-          </ul>
+      {/* What you get — concrete outputs, not activities */}
+      <section style={{ maxWidth: 900, margin: "0 auto", padding: mobile ? `0 ${pad} 48px` : `0 ${pad} 72px` }}>
+        <h2 style={{ fontSize: mobile ? 24 : 28, fontWeight: 700, color: C.navy, margin: "0 0 24px", textAlign: "center", fontFamily: sans }}>
+          What every assessment produces
+        </h2>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
+          gap: mobile ? 12 : 16,
+        }}>
+          {[
+            { label: "Income Stability Score", desc: "0\u2013100 standardized score based on six structural factors. Same inputs, same result, every time." },
+            { label: "Stability Band", desc: "Limited, Developing, Established, or High Stability. Instantly classifies where your client stands." },
+            { label: "Top Structural Risk", desc: "The single biggest factor limiting your client\u2019s income stability \u2014 concentration, labor dependence, visibility, or variability." },
+            { label: "Meeting-Ready Talking Points", desc: "Industry-specific conversation guidance based on your client\u2019s actual score and risk profile. Ready before you walk in." },
+          ].map((item, i) => (
+            <div key={i} style={{
+              ...cardBase, padding: mobile ? "20px 20px" : "24px 28px",
+            }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: C.navy, margin: "0 0 6px", fontFamily: sans }}>
+                {item.label}
+              </p>
+              <p style={{ fontSize: 14, lineHeight: 1.5, color: C.textSecondary, margin: 0, fontFamily: sans }}>
+                {item.desc}
+              </p>
+            </div>
+          ))}
         </div>
+      </section>
 
+      {/* How it works — three steps */}
+      <section style={{ maxWidth: 900, margin: "0 auto", padding: mobile ? `0 ${pad} 48px` : `0 ${pad} 72px` }}>
+        <h2 style={{ fontSize: mobile ? 24 : 28, fontWeight: 700, color: C.navy, margin: "0 0 24px", textAlign: "center", fontFamily: sans }}>
+          Under two minutes. Three steps.
+        </h2>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: mobile ? "1fr" : "1fr 1fr 1fr",
+          gap: mobile ? 12 : 16,
+        }}>
+          {[
+            { num: "1", title: "Add a client", desc: "Enter their name and industry. That\u2019s all you need to start." },
+            { num: "2", title: "Classify and answer", desc: "Four classification fields and six questions about your client\u2019s income structure. No documents required." },
+            { num: "3", title: "Get the result", desc: "Score, band, top risk, and a talking point appear instantly on the client card. Assessment is permanently recorded." },
+          ].map((step, i) => (
+            <div key={i} style={{ textAlign: "center", padding: mobile ? "20px 16px" : "28px 24px" }}>
+              <div style={{
+                width: 40, height: 40, borderRadius: 20, margin: "0 auto 12px",
+                backgroundColor: "rgba(75,63,174,0.08)", display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 18, fontWeight: 700, color: C.purple, fontFamily: mono,
+              }}>
+                {step.num}
+              </div>
+              <p style={{ fontSize: 16, fontWeight: 700, color: C.navy, margin: "0 0 6px", fontFamily: sans }}>
+                {step.title}
+              </p>
+              <p style={{ fontSize: 14, lineHeight: 1.5, color: C.textSecondary, margin: 0, fontFamily: sans }}>
+                {step.desc}
+              </p>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Pricing */}
-      <section style={{ maxWidth: 1120, margin: "0 auto", padding: mobile ? `0 ${pad} 64px` : `0 ${pad} 96px` }}>
+      <section id="pricing" style={{ maxWidth: 1120, margin: "0 auto", padding: mobile ? `0 ${pad} 64px` : `0 ${pad} 96px`, scrollMarginTop: mobile ? 72 : 80 }}>
         <h2 style={{ fontSize: mobile ? 28 : 36, fontWeight: 700, color: C.navy, textAlign: "center", margin: "0 0 12px", fontFamily: sans, letterSpacing: "-0.02em" }}>
-          Choose your plan
+          Simple pricing. No per-report fees.
         </h2>
         <p style={{ fontSize: 17, color: C.textSecondary, textAlign: "center", margin: "0 auto 40px", maxWidth: 540, fontFamily: sans }}>
-          Each assessment produces a score, stability band, top risk, and meeting-ready talking points for one client.
+          One subscription covers your assessments, dashboard, and all advisor tools.
         </p>
 
         <div style={{
@@ -148,7 +179,8 @@ export default function AdvisorPortalPage() {
               price: "$249",
               interval: "/ quarter",
               reports: "15 assessments per quarter",
-              features: ["Book-level analytics", "Meeting prep per client", "Client notes", "Score + band + top risk"],
+              who: "For solo advisors evaluating a focused book.",
+              features: ["Income Stability Score&#8482; per client", "Stability band + top risk", "Meeting prep talking points", "Book-level analytics", "Client notes"],
               href: STRIPE_ADVISOR_STARTER,
               highlight: false,
             },
@@ -157,7 +189,8 @@ export default function AdvisorPortalPage() {
               price: "$179",
               interval: "/ month",
               reports: "50 assessments per month",
-              features: ["Everything in Starter", "Higher volume for firms", "Priority support"],
+              who: "For firms running assessments across multiple advisors or client segments.",
+              features: ["Everything in Starter", "50 assessments per month", "Priority support", "Quarterly usage reporting"],
               href: STRIPE_ADVISOR_PROFESSIONAL,
               highlight: true,
             },
@@ -166,7 +199,8 @@ export default function AdvisorPortalPage() {
               price: "$149",
               interval: "/ seat / month",
               reports: "Unlimited assessments",
-              features: ["Everything in Professional", "Multi-advisor seats", "White-label reporting", "Dedicated onboarding"],
+              who: "For RIAs, broker-dealers, and organizations standardizing income risk assessment.",
+              features: ["Everything in Professional", "Unlimited assessments per seat", "Multi-advisor seat management", "White-label reporting", "Dedicated onboarding + SLA"],
               href: STRIPE_ADVISOR_ENTERPRISE || "/contact",
               highlight: false,
             },
@@ -195,8 +229,11 @@ export default function AdvisorPortalPage() {
                 </span>
                 <span style={{ fontSize: 15, color: C.textMuted }}>{tier.interval}</span>
               </div>
-              <p style={{ fontSize: 14, color: C.teal, fontWeight: 600, margin: "0 0 20px" }}>
+              <p style={{ fontSize: 14, color: C.teal, fontWeight: 600, margin: "0 0 8px" }}>
                 {tier.reports}
+              </p>
+              <p style={{ fontSize: 13, color: C.textSecondary, margin: "0 0 20px", lineHeight: 1.4 }}>
+                {tier.who}
               </p>
               <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px" }}>
                 {tier.features.map((f, i) => (
@@ -204,7 +241,7 @@ export default function AdvisorPortalPage() {
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
                       <path d="M3.5 7.5l2 2 5-5" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                    {f}
+                    <span dangerouslySetInnerHTML={{ __html: f }} />
                   </li>
                 ))}
               </ul>
@@ -226,7 +263,7 @@ export default function AdvisorPortalPage() {
         <p style={{ fontSize: 14, color: C.textMuted, textAlign: "center", marginTop: 24, fontFamily: sans }}>
           Already have an advisor code?{" "}
           <Link href="/advisor-portal/dashboard" style={{ color: C.purple, fontWeight: 600, textDecoration: "none" }}>
-            Open your dashboard
+            Sign in to your dashboard
           </Link>
         </p>
       </section>
