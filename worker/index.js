@@ -6,7 +6,7 @@ import { handleSimulate, handleSimulateBatch, handleTimeline, handleActionScript
 import { handleSaveRecord, handleGetRecord, handleStats, ensureErrorReportsTable, handleErrorReport, handleGetErrorReports } from "./lib/records.js";
 import { handleEntitlementCreate, handleEntitlementCheck, handleEntitlementUse, handleEntitlementLookup, ensureEntitlementsTable } from "./lib/entitlements.js";
 import { handleSendEmail, handleContact, handleNurture, handleFollowUpCron, processNurtureQueue, ensureNurtureTable } from "./lib/emails.js";
-import { handleAdvisorCreate, handleAdvisorValidate, handleAdvisorUsage, handleAdvisorMeter, ensureAdvisorTables } from "./lib/advisor.js";
+import { handleAdvisorCreate, handleAdvisorValidate, handleAdvisorUsage, handleAdvisorMeter, handleAdvisorSaveRecord, handleAdvisorGetRecord, ensureAdvisorTables } from "./lib/advisor.js";
 
 // ══════════════════════════════════════════════════════════
 // RATE LIMITING — in-memory per-isolate
@@ -209,6 +209,8 @@ export default {
       else if (path === "/advisor/validate") response = await handleAdvisorValidate(body, env, corsHeaders);
       else if (path === "/advisor/usage") response = await handleAdvisorUsage(body, env, corsHeaders);
       else if (path === "/advisor/meter") response = await handleAdvisorMeter(body, env, corsHeaders);
+      else if (path === "/advisor/save-record") response = await handleAdvisorSaveRecord(body, env, corsHeaders);
+      else if (path === "/advisor/get-record") response = await handleAdvisorGetRecord(body, env, corsHeaders);
       else {
         response = new Response(JSON.stringify({ error: "Unknown endpoint" }), {
           status: 404, headers: corsHeaders,

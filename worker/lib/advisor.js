@@ -53,6 +53,25 @@ export async function ensureAdvisorTables(env) {
     )
   `).run();
   await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_usage_advisor ON advisor_usage_log(advisor_code)`).run();
+
+  await env.DB.prepare(`
+    CREATE TABLE IF NOT EXISTS advisor_records (
+      record_id TEXT PRIMARY KEY,
+      advisor_code TEXT NOT NULL,
+      client_id TEXT NOT NULL,
+      client_name TEXT,
+      industry_sector TEXT,
+      score INTEGER,
+      band TEXT,
+      top_risk TEXT,
+      checksum TEXT NOT NULL,
+      model_version TEXT NOT NULL DEFAULT 'RP-2.0',
+      record_data TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    )
+  `).run();
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_records_advisor ON advisor_records(advisor_code)`).run();
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_records_client ON advisor_records(client_id)`).run();
 }
 
 /* ── Helpers ───────────────────────────────────────────── */
@@ -307,5 +326,112 @@ export async function handleAdvisorMeter(body, env, corsHeaders) {
     reports_used: newUsed,
     reports_limit: account.reports_limit,
     remaining,
+  }), { headers: corsHeaders });
+}
+
+/* ── POST /advisor/save-record ─────────────────────────── */
+export async function handleAdvisorSaveRecord(body, env, corsHeaders) {
+  const advisor_code = sanitizeString(body.advisor_code, 100);
+  const record_id = sanitizeString(body.record_id, 100);
+  const client_id = sanitizeString(body.client_id, 100);
+  const client_name = sanitizeString(body.client_name, 200);
+  const industry_sector = sanitizeString(body.industry_sector, 100);
+  const score = typeof body.score === "number" ? Math.round(body.score) : null;
+  const band = sanitizeString(body.band, 100);
+  const top_risk = sanitizeString(body.top_risk, 100);
+  const checksum = sanitizeString(body.checksum, 128);
+  const model_version = sanitizeString(body.model_version, 20) || "RP-2.0";
+  const record_data = typeof body.record_data === "string" ? body.record_data : JSON.stringify(body.record_data || {});
+
+  if (!advisor_code || !record_id || !client_id || !checksum) {
+    return new Response(JSON.stringify({ error: "Missing required fields" }), {
+      status: 400, headers: corsHeaders,
+    });
+  }
+
+  // Verify advisor is active
+  const account = await env.DB.prepare(
+    "SELECT active FROM advisor_accounts WHERE advisor_code = ?"
+  ).bind(advisor_code).first();
+
+  if (!account || account.active !== 1) {
+    return new Response(JSON.stringify({ error: "Account not found or inactive" }), {
+      status: 403, headers: corsHeaders,
+    });
+  }
+
+  // Idempotency: if record_id already exists, return it
+  const existing = await env.DB.prepare(
+    "SELECT record_id FROM advisor_records WHERE record_id = ?"
+  ).bind(record_id).first();
+
+  if (existing) {
+    return new Response(JSON.stringify({ success: true, record_id, duplicate: true }), {
+      headers: corsHeaders,
+    });
+  }
+
+  const now = new Date().toISOString();
+
+  await env.DB.prepare(
+    `INSERT INTO advisor_records
+     (record_id, advisor_code, client_id, client_name, industry_sector, score, band, top_risk, checksum, model_version, record_data, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).bind(
+    record_id, advisor_code, client_id, client_name || null,
+    industry_sector || null, score, band || null, top_risk || null,
+    checksum, model_version, record_data, now,
+  ).run();
+
+  return new Response(JSON.stringify({ success: true, record_id }), { headers: corsHeaders });
+}
+
+/* ── POST /advisor/get-record ──────────────────────────── */
+export async function handleAdvisorGetRecord(body, env, corsHeaders) {
+  const record_id = sanitizeString(body.record_id, 100);
+
+  if (!record_id) {
+    return new Response(JSON.stringify({ error: "Missing record_id" }), {
+      status: 400, headers: corsHeaders,
+    });
+  }
+
+  const row = await env.DB.prepare(
+    "SELECT * FROM advisor_records WHERE record_id = ?"
+  ).bind(record_id).first();
+
+  if (!row) {
+    return new Response(JSON.stringify({ error: "Record not found" }), {
+      status: 404, headers: corsHeaders,
+    });
+  }
+
+  // Verify checksum integrity
+  let record;
+  let integrityValid = false;
+  try {
+    record = JSON.parse(row.record_data);
+    if (record && record.checksum === row.checksum) {
+      integrityValid = true;
+    }
+  } catch {
+    integrityValid = false;
+  }
+
+  return new Response(JSON.stringify({
+    success: true,
+    record_id: row.record_id,
+    advisor_code: row.advisor_code,
+    client_id: row.client_id,
+    client_name: row.client_name,
+    industry_sector: row.industry_sector,
+    score: row.score,
+    band: row.band,
+    top_risk: row.top_risk,
+    checksum: row.checksum,
+    model_version: row.model_version,
+    created_at: row.created_at,
+    integrity_valid: integrityValid,
+    record: integrityValid ? record : null,
   }), { headers: corsHeaders });
 }

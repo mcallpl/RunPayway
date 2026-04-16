@@ -1,74 +1,86 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { C, mono, sans } from "@/lib/design-tokens";
 import { buildAdvisorQuestions } from "@/lib/advisor-questions";
 import { mapIndustryToSector } from "@/lib/industry-map";
 import { WORKER_URL } from "@/lib/config";
 import { generateInterpretation, INTERPRETATION_AGENT_VERSION } from "@/lib/agents/interpretation";
-import { runGatekeeper, GATEKEEPER_VERSION } from "@/lib/agents/gatekeeper";
-import { INTAKE_AGENT_VERSION } from "@/lib/agents/intake-agent";
+import { runGatekeeper } from "@/lib/agents/gatekeeper";
+import {
+  createInitialState,
+  advanceIntake,
+  extractInputs,
+  getStepIndex,
+  TOTAL_STEPS,
+  INTAKE_AGENT_VERSION,
+  type IntakeState,
+  type IntakeStep,
+} from "@/lib/agents/intake-agent";
 import type { CanonicalAdvisorRecord, InterpretationResult } from "@/lib/engine/v2/schemas/canonical-record";
 
-/* ── Profile field options (same as consumer diagnostic) ── */
-const OPERATING_STRUCTURES = [
-  "Employee (W-2)",
-  "Independent Contractor",
-  "Business Owner / Firm",
-  "Partnership",
-  "Nonprofit Organization",
-];
-
-const INCOME_MODELS = [
-  "Employee Salary",
-  "Commission-Based",
-  "Contract-Based",
-  "Consulting / Client Services",
-  "Agency / Brokerage Income",
-  "Project-Based Work",
-  "Subscription / Retainer Services",
-  "Licensing / Royalty Income",
-  "Product Sales",
-  "Digital Product Sales",
-  "Real Estate Rental Income",
-  "Real Estate Brokerage Income",
-  "Hybrid Multiple Income Sources",
-];
-
-const REVENUE_STRUCTURES = [
-  "Mostly One-Time Payments",
-  "Repeat Clients / Returning Customers",
-  "Monthly Recurring Payments",
-  "Contracted Multi-Month Revenue",
-  "Long-Term Recurring Income",
-  "Mixed Revenue Structure",
-];
-
-const YEARS_OPTIONS = [
-  "Less than 1 year",
-  "1\u20133 years",
-  "3\u20135 years",
-  "5+ years",
-];
-
-/* ── Profile-to-engine mappers (same as diagnostic/page.tsx) ── */
+/* ── Display-name → engine-value mappers ── */
 const structureMap: Record<string, string> = { "Employee (W-2)": "solo_service", "Independent Contractor": "solo_service", "Business Owner / Firm": "small_agency", "Partnership": "small_agency", "Nonprofit Organization": "small_agency" };
 const modelMap: Record<string, string> = { "Employee Salary": "salary", "Commission-Based": "commission", "Contract-Based": "project_fee", "Consulting / Client Services": "retainer", "Agency / Brokerage Income": "commission", "Project-Based Work": "project_fee", "Subscription / Retainer Services": "subscription", "Licensing / Royalty Income": "licensing", "Product Sales": "ecommerce", "Digital Product Sales": "digital_products", "Real Estate Rental Income": "rental", "Real Estate Brokerage Income": "commission", "Hybrid Multiple Income Sources": "mixed_services" };
 const revenueMap: Record<string, string> = { "Mostly One-Time Payments": "active_heavy", "Repeat Clients / Returning Customers": "hybrid", "Monthly Recurring Payments": "recurring_heavy", "Contracted Multi-Month Revenue": "recurring_heavy", "Long-Term Recurring Income": "asset_heavy", "Mixed Revenue Structure": "mixed" };
 
-/* ── Constraint key to display label ── */
-const CONSTRAINT_LABELS: Record<string, string> = {
-  weak_forward_visibility: "Forward Visibility",
-  high_labor_dependence: "Labor Dependence",
-  high_concentration: "Income Concentration",
-  low_persistence: "Low Persistence",
-  high_variability: "Income Variability",
-  weak_durability: "Source Diversity",
-  shallow_continuity: "Source Diversity",
-};
+/* ── Display options ── */
+const PROFILE_FIELDS: { step: IntakeStep; label: string; options: { display: string; value: string }[]; mapper: Record<string, string> }[] = [
+  {
+    step: "operating_structure", label: "Operating structure",
+    options: [
+      { display: "Employee (W-2)", value: "solo_service" },
+      { display: "Independent Contractor", value: "solo_service" },
+      { display: "Business Owner / Firm", value: "small_agency" },
+      { display: "Partnership", value: "small_agency" },
+      { display: "Nonprofit Organization", value: "small_agency" },
+    ],
+    mapper: structureMap,
+  },
+  {
+    step: "primary_income_model", label: "Primary income model",
+    options: [
+      { display: "Employee Salary", value: "salary" },
+      { display: "Commission-Based", value: "commission" },
+      { display: "Contract-Based", value: "project_fee" },
+      { display: "Consulting / Client Services", value: "retainer" },
+      { display: "Agency / Brokerage Income", value: "commission" },
+      { display: "Project-Based Work", value: "project_fee" },
+      { display: "Subscription / Retainer Services", value: "subscription" },
+      { display: "Licensing / Royalty Income", value: "licensing" },
+      { display: "Product Sales", value: "ecommerce" },
+      { display: "Digital Product Sales", value: "digital_products" },
+      { display: "Real Estate Rental Income", value: "rental" },
+      { display: "Real Estate Brokerage Income", value: "commission" },
+      { display: "Hybrid Multiple Income Sources", value: "mixed_services" },
+    ],
+    mapper: modelMap,
+  },
+  {
+    step: "revenue_structure", label: "Revenue structure",
+    options: [
+      { display: "Mostly One-Time Payments", value: "active_heavy" },
+      { display: "Repeat Clients / Returning Customers", value: "hybrid" },
+      { display: "Monthly Recurring Payments", value: "recurring_heavy" },
+      { display: "Contracted Multi-Month Revenue", value: "recurring_heavy" },
+      { display: "Long-Term Recurring Income", value: "asset_heavy" },
+      { display: "Mixed Revenue Structure", value: "mixed" },
+    ],
+    mapper: revenueMap,
+  },
+  {
+    step: "years_in_structure", label: "Years in this structure",
+    options: [
+      { display: "Less than 1 year", value: "Less than 1 year" },
+      { display: "1\u20133 years", value: "1\u20133 years" },
+      { display: "3\u20135 years", value: "3\u20135 years" },
+      { display: "5+ years", value: "5+ years" },
+    ],
+    mapper: {},
+  },
+];
 
-/* ── Types ── */
+/* ─�� Props ── */
 interface InlineAssessmentProps {
   clientId: string;
   clientName: string;
@@ -86,8 +98,6 @@ interface InlineAssessmentProps {
   onCancel: () => void;
 }
 
-type Step = "profile" | "questions" | "scoring" | "done";
-
 /* ── Component ── */
 export default function InlineAssessment({
   clientId,
@@ -98,245 +108,337 @@ export default function InlineAssessment({
   onComplete,
   onCancel,
 }: InlineAssessmentProps) {
-  const [step, setStep] = useState<Step>("profile");
-
-  /* Profile fields */
-  const [operatingStructure, setOperatingStructure] = useState("");
-  const [incomeModel, setIncomeModel] = useState("");
-  const [revenueStructure, setRevenueStructure] = useState("");
-  const [yearsInStructure, setYearsInStructure] = useState("");
-
-  /* Questions */
   const sector = mapIndustryToSector(industry);
   const questions = buildAdvisorQuestions(sector);
-  const [currentQ, setCurrentQ] = useState(0);
-  const [answers, setAnswers] = useState<string[]>([]);
 
-  /* Result */
+  // Intake Agent is the single source of truth for flow state
+  const [intakeState, setIntakeState] = useState<IntakeState>(() => createInitialState(sector));
+  const [scoring, setScoring] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  /* Styles */
-  const inputStyle: React.CSSProperties = {
+  // Track display values for selects (agent stores engine values)
+  const [displayValues, setDisplayValues] = useState<Record<string, string>>({});
+
+  const currentStep = intakeState.currentStep;
+  const stepIndex = getStepIndex(currentStep);
+  const isProfileStep = ["operating_structure", "primary_income_model", "revenue_structure", "years_in_structure"].includes(currentStep);
+  const isQuestionStep = currentStep.startsWith("q") && currentStep.length === 2;
+  const qIndex = isQuestionStep ? parseInt(currentStep.slice(1)) - 1 : -1;
+
+  /* ── Styles ── */
+  const selectStyle: React.CSSProperties = {
     width: "100%", padding: "12px 14px", fontSize: 15, fontFamily: sans,
     border: `1px solid ${C.borderSoft}`, borderRadius: 10,
     backgroundColor: C.panelFill, color: C.textPrimary, outline: "none", boxSizing: "border-box",
-  };
-  const selectStyle: React.CSSProperties = {
-    ...inputStyle,
     appearance: "none" as const,
     backgroundImage: `url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%235E6873' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
     backgroundRepeat: "no-repeat",
     backgroundPosition: "right 14px center",
     paddingRight: 36,
   };
-  const labelStyle: React.CSSProperties = {
-    fontSize: 13, fontWeight: 600, color: C.textPrimary, fontFamily: sans, marginBottom: 4, display: "block",
+
+  /* ── Handle profile field selection ── */
+  const handleProfileSelect = (step: IntakeStep, displayValue: string, engineValue: string) => {
+    setDisplayValues(prev => ({ ...prev, [step]: displayValue }));
+    const next = advanceIntake(intakeState, { field: step, value: engineValue });
+    setIntakeState(next);
+    setError(next.errors.length > 0 ? next.errors[0] : null);
   };
 
-  /* ── Step 1: Profile ── */
-  if (step === "profile") {
-    const canContinue = operatingStructure && incomeModel && revenueStructure && yearsInStructure;
+  /* ── Handle question answer ── */
+  const handleAnswer = (letter: string) => {
+    const next = advanceIntake(intakeState, { field: currentStep, value: letter });
+    setIntakeState(next);
+    setError(next.errors.length > 0 ? next.errors[0] : null);
+  };
+
+  /* ── Handle back navigation ── */
+  const handleBack = () => {
+    // Reconstruct previous step by creating a new state and replaying
+    // For simplicity, rebuild from scratch up to the previous step
+    const prevStepIdx = Math.max(0, stepIndex - 1);
+    const steps: IntakeStep[] = ["operating_structure", "primary_income_model", "revenue_structure", "years_in_structure", "q1", "q2", "q3", "q4", "q5", "q6"];
+    let rebuilt = createInitialState(sector);
+    for (let i = 0; i < prevStepIdx; i++) {
+      const s = steps[i];
+      let val = "";
+      if (s === "operating_structure") val = intakeState.operatingStructure;
+      else if (s === "primary_income_model") val = intakeState.primaryIncomeModel;
+      else if (s === "revenue_structure") val = intakeState.revenueStructure;
+      else if (s === "years_in_structure") val = intakeState.yearsInStructure;
+      else if (s.startsWith("q")) {
+        const qi = parseInt(s.slice(1)) - 1;
+        val = intakeState.answers[qi] || "";
+      }
+      if (val) rebuilt = advanceIntake(rebuilt, { field: s, value: val });
+    }
+    setIntakeState(rebuilt);
+    setError(null);
+  };
+
+  /* ── Run scoring pipeline ── */
+  const runScoring = async () => {
+    const extracted = extractInputs(intakeState);
+    if (!extracted) {
+      setError("Incomplete assessment data.");
+      return;
+    }
+
+    setScoring(true);
+    setError(null);
+
+    try {
+      // 1. Run engine
+      const { executeAssessment } = await import("@/lib/engine/v2/index");
+      const assessmentRecord = executeAssessment({
+        rawInputs: extracted.rawInputs,
+        profile: extracted.profile,
+      });
+
+      // 2. Interpretation Agent
+      const interpretation = generateInterpretation(assessmentRecord, clientName, sector);
+
+      // 3. Gatekeeper — validate, stamp, issue canonical record
+      const gatekeeperResult = await runGatekeeper({
+        advisorCode,
+        clientId,
+        clientName,
+        profile: extracted.profile,
+        rawInputs: extracted.rawInputs,
+        interpretation,
+        intakeAgentVersion: INTAKE_AGENT_VERSION,
+        interpretationAgentVersion: INTERPRETATION_AGENT_VERSION,
+      });
+
+      if (!gatekeeperResult.valid || !gatekeeperResult.record) {
+        setError(`Validation failed: ${gatekeeperResult.errors.join(", ")}`);
+        setScoring(false);
+        return;
+      }
+
+      const canonicalRecord = gatekeeperResult.record;
+
+      // 4. Persist record to server
+      try {
+        await fetch(`${WORKER_URL}/advisor/save-record`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            advisor_code: advisorCode,
+            record_id: canonicalRecord.record_id,
+            client_id: clientId,
+            client_name: clientName,
+            industry_sector: sector,
+            score: interpretation.score,
+            band: interpretation.band,
+            top_risk: interpretation.top_risk,
+            checksum: canonicalRecord.checksum,
+            model_version: canonicalRecord.model_version,
+            record_data: JSON.stringify(canonicalRecord),
+          }),
+        });
+      } catch { /* persistence failure shouldn't block results */ }
+
+      // 5. Meter usage
+      try {
+        await fetch(`${WORKER_URL}/advisor/meter`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            advisor_code: advisorCode,
+            assessment_id: canonicalRecord.record_id,
+            client_name: clientName,
+          }),
+        });
+      } catch { /* metering failure shouldn't block results */ }
+
+      onComplete({
+        score: interpretation.score,
+        band: interpretation.band,
+        topRisk: interpretation.top_risk,
+        assessmentId: canonicalRecord.record_id,
+        canonicalRecord,
+        interpretation,
+      });
+    } catch {
+      setError("Assessment failed. Please try again.");
+      setScoring(false);
+    }
+  };
+
+  /* ── Container ── */
+  const container: React.CSSProperties = {
+    marginTop: 12, padding: mobile ? "20px 16px" : "24px 24px", borderRadius: 14,
+    backgroundColor: "rgba(31,109,122,0.03)", border: `1px solid rgba(31,109,122,0.10)`,
+  };
+
+  const cancelBtn = (
+    <button onClick={onCancel} style={{
+      fontSize: 13, color: C.textMuted, background: "none", border: "none", cursor: "pointer",
+      textDecoration: "underline", textUnderlineOffset: "2px", fontFamily: sans,
+    }}>
+      Cancel
+    </button>
+  );
+
+  /* ── Scoring state ── */
+  if (scoring) {
     return (
-      <div style={{
-        marginTop: 12, padding: mobile ? "20px 16px" : "24px 24px", borderRadius: 14,
-        backgroundColor: "rgba(31,109,122,0.03)", border: `1px solid rgba(31,109,122,0.10)`,
-      }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-          <p style={{ fontSize: 15, fontWeight: 700, color: C.navy, margin: 0 }}>
-            Assess {clientName}
-          </p>
-          <button onClick={onCancel} style={{
-            fontSize: 13, color: C.textMuted, background: "none", border: "none", cursor: "pointer",
-            textDecoration: "underline", textUnderlineOffset: "2px", fontFamily: sans,
-          }}>
-            Cancel
-          </button>
-        </div>
-
-        <p style={{ fontSize: 13, color: C.textSecondary, margin: "0 0 16px" }}>
-          Step 1 of 2 &mdash; Classify your client&rsquo;s income structure.
+      <div style={{ ...container, textAlign: "center", padding: "32px 24px" }}>
+        <div style={{
+          width: 36, height: 36, borderRadius: 18, margin: "0 auto 16px",
+          border: `3px solid ${C.border}`, borderTopColor: C.teal,
+          animation: "spin 0.8s linear infinite",
+        }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        <p style={{ fontSize: 15, color: C.textSecondary, margin: 0 }}>
+          Scoring {clientName}&rsquo;s income structure...
         </p>
-
-        <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 12 }}>
-          <div>
-            <label style={labelStyle}>Operating structure</label>
-            <select value={operatingStructure} onChange={e => setOperatingStructure(e.target.value)} style={{ ...selectStyle, color: operatingStructure ? C.textPrimary : C.textMuted }}>
-              <option value="" disabled>Select</option>
-              {OPERATING_STRUCTURES.map(o => <option key={o} value={o}>{o}</option>)}
-            </select>
-          </div>
-          <div>
-            <label style={labelStyle}>Primary income model</label>
-            <select value={incomeModel} onChange={e => setIncomeModel(e.target.value)} style={{ ...selectStyle, color: incomeModel ? C.textPrimary : C.textMuted }}>
-              <option value="" disabled>Select</option>
-              {INCOME_MODELS.map(o => <option key={o} value={o}>{o}</option>)}
-            </select>
-          </div>
-          <div>
-            <label style={labelStyle}>Revenue structure</label>
-            <select value={revenueStructure} onChange={e => setRevenueStructure(e.target.value)} style={{ ...selectStyle, color: revenueStructure ? C.textPrimary : C.textMuted }}>
-              <option value="" disabled>Select</option>
-              {REVENUE_STRUCTURES.map(o => <option key={o} value={o}>{o}</option>)}
-            </select>
-          </div>
-          <div>
-            <label style={labelStyle}>Years in this structure</label>
-            <select value={yearsInStructure} onChange={e => setYearsInStructure(e.target.value)} style={{ ...selectStyle, color: yearsInStructure ? C.textPrimary : C.textMuted }}>
-              <option value="" disabled>Select</option>
-              {YEARS_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
-            </select>
-          </div>
-        </div>
-
-        <button
-          onClick={() => canContinue && setStep("questions")}
-          disabled={!canContinue}
-          style={{
-            marginTop: 16, padding: "12px 24px", fontSize: 15, fontWeight: 600, fontFamily: sans,
-            color: C.white, backgroundColor: canContinue ? C.teal : C.textMuted,
-            border: "none", borderRadius: 10, cursor: canContinue ? "pointer" : "default",
-            opacity: canContinue ? 1 : 0.5,
-          }}
-        >
-          Continue to questions
-        </button>
       </div>
     );
   }
 
-  /* ── Step 2: Questions (one at a time) ── */
-  if (step === "questions") {
-    const q = questions[currentQ];
-    const selectedAnswer = answers[currentQ] || "";
-
-    const handleAnswer = (letter: string) => {
-      const next = [...answers];
-      next[currentQ] = letter;
-      setAnswers(next);
-    };
-
-    const handleNext = async () => {
-      if (!selectedAnswer) return;
-      if (currentQ < 5) {
-        setCurrentQ(currentQ + 1);
-      } else {
-        // All 6 answered — run agent pipeline
-        setStep("scoring");
-        setError(null);
-
-        try {
-          const rawInputsV2 = {
-            q1_recurring_revenue_base: answers[0] as "A" | "B" | "C" | "D" | "E",
-            q2_income_concentration: answers[1] as "A" | "B" | "C" | "D" | "E",
-            q3_income_source_diversity: answers[2] as "A" | "B" | "C" | "D" | "E",
-            q4_forward_revenue_visibility: answers[3] as "A" | "B" | "C" | "D" | "E",
-            q5_earnings_variability: answers[4] as "A" | "B" | "C" | "D" | "E",
-            q6_income_continuity_without_labor: selectedAnswer as "A" | "B" | "C" | "D" | "E",
-          };
-
-          const profileV2 = {
-            profile_class: "individual" as const,
-            operating_structure: (structureMap[operatingStructure] || "solo_service") as "solo_service" | "small_agency",
-            primary_income_model: (modelMap[incomeModel] || "other") as "commission" | "retainer" | "project_fee" | "subscription" | "salary" | "mixed_services" | "licensing" | "rental" | "ecommerce" | "digital_products" | "other",
-            revenue_structure: (revenueMap[revenueStructure] || "mixed") as "active_heavy" | "hybrid" | "recurring_heavy" | "asset_heavy" | "mixed",
-            industry_sector: sector,
-            maturity_stage: "developing" as const,
-          };
-
-          // Step 1: Run engine for interpretation (need the record first)
-          const { executeAssessment } = await import("@/lib/engine/v2/index");
-          const assessmentRecord = executeAssessment({
-            rawInputs: rawInputsV2,
-            profile: profileV2,
-          });
-
-          // Step 2: Interpretation Agent — produce advisor-facing summary
-          const interpretation = generateInterpretation(
-            assessmentRecord,
-            clientName,
-            sector,
-          );
-
-          // Step 3: Gatekeeper — validate, stamp, issue canonical record
-          const gatekeeperResult = await runGatekeeper({
-            advisorCode,
-            clientId,
-            clientName,
-            profile: profileV2,
-            rawInputs: rawInputsV2,
-            interpretation,
-            intakeAgentVersion: INTAKE_AGENT_VERSION,
-            interpretationAgentVersion: INTERPRETATION_AGENT_VERSION,
-          });
-
-          if (!gatekeeperResult.valid || !gatekeeperResult.record) {
-            setError(`Validation failed: ${gatekeeperResult.errors.join(", ")}`);
-            setStep("questions");
-            return;
-          }
-
-          const canonicalRecord = gatekeeperResult.record;
-
-          // Step 4: Meter usage
-          try {
-            await fetch(`${WORKER_URL}/advisor/meter`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                advisor_code: advisorCode,
-                assessment_id: canonicalRecord.record_id,
-                client_name: clientName,
-              }),
-            });
-          } catch { /* metering failure shouldn't block results */ }
-
-          onComplete({
-            score: interpretation.score,
-            band: interpretation.band,
-            topRisk: interpretation.top_risk,
-            assessmentId: canonicalRecord.record_id,
-            canonicalRecord,
-            interpretation,
-          });
-        } catch (err) {
-          setError("Assessment failed. Please try again.");
-          setStep("questions");
-        }
-      }
-    };
-
-    const handleBack = () => {
-      if (currentQ > 0) {
-        setCurrentQ(currentQ - 1);
-      } else {
-        setStep("profile");
-      }
-    };
-
+  /* ── Review step ── */
+  if (currentStep === "review") {
     return (
-      <div style={{
-        marginTop: 12, padding: mobile ? "20px 16px" : "24px 24px", borderRadius: 14,
-        backgroundColor: "rgba(31,109,122,0.03)", border: `1px solid rgba(31,109,122,0.10)`,
-      }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-          <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, margin: 0, textTransform: "uppercase", letterSpacing: "0.06em" }}>
-            Question {currentQ + 1} of 6
+      <div style={container}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <p style={{ fontSize: 15, fontWeight: 700, color: C.navy, margin: 0 }}>
+            Review &mdash; {clientName}
           </p>
-          <button onClick={onCancel} style={{
-            fontSize: 13, color: C.textMuted, background: "none", border: "none", cursor: "pointer",
-            textDecoration: "underline", textUnderlineOffset: "2px", fontFamily: sans,
+          {cancelBtn}
+        </div>
+        <p style={{ fontSize: 13, color: C.textSecondary, margin: "0 0 16px" }}>
+          All fields complete. Confirm to generate the Income Stability Score&#8482;.
+        </p>
+
+        {intakeState.ambiguityFlags.length > 0 && (
+          <div style={{ marginBottom: 16 }}>
+            {intakeState.ambiguityFlags.map((flag, i) => (
+              <div key={i} style={{
+                padding: "10px 14px", borderRadius: 8, marginBottom: 8,
+                backgroundColor: "rgba(208,162,58,0.08)", border: "1px solid rgba(208,162,58,0.20)",
+              }}>
+                <p style={{ fontSize: 13, color: C.moderate, margin: 0, fontWeight: 600 }}>
+                  {flag}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div style={{ display: "flex", gap: 10 }}>
+          <button onClick={handleBack} style={{
+            padding: "10px 20px", fontSize: 14, fontWeight: 600, fontFamily: sans,
+            color: C.textMuted, backgroundColor: "transparent",
+            border: `1px solid ${C.borderSoft}`, borderRadius: 10, cursor: "pointer",
           }}>
-            Cancel
+            Back
+          </button>
+          <button onClick={runScoring} style={{
+            padding: "10px 24px", fontSize: 14, fontWeight: 600, fontFamily: sans,
+            color: C.white, backgroundColor: C.teal,
+            border: "none", borderRadius: 10, cursor: "pointer",
+          }}>
+            Generate Score
           </button>
         </div>
 
-        {/* Progress bar */}
+        {error && <p style={{ fontSize: 13, color: C.risk, margin: "12px 0 0" }}>{error}</p>}
+      </div>
+    );
+  }
+
+  /* ── Profile steps ── */
+  if (isProfileStep) {
+    const field = PROFILE_FIELDS.find(f => f.step === currentStep);
+    if (!field) return null;
+
+    const progressPct = (stepIndex / TOTAL_STEPS) * 100;
+
+    return (
+      <div style={container}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+          <p style={{ fontSize: 15, fontWeight: 700, color: C.navy, margin: 0 }}>
+            Assess {clientName}
+          </p>
+          {cancelBtn}
+        </div>
+
+        {/* Progress */}
         <div style={{ height: 4, borderRadius: 2, backgroundColor: "rgba(31,109,122,0.10)", marginBottom: 16 }}>
-          <div style={{
-            height: "100%", borderRadius: 2, backgroundColor: C.teal,
-            width: `${((currentQ + (selectedAnswer ? 1 : 0)) / 6) * 100}%`,
-            transition: "width 300ms",
-          }} />
+          <div style={{ height: "100%", borderRadius: 2, backgroundColor: C.teal, width: `${progressPct}%`, transition: "width 300ms" }} />
+        </div>
+
+        <p style={{ fontSize: 13, color: C.textSecondary, margin: "0 0 12px" }}>
+          Classify your client&rsquo;s income structure.
+        </p>
+
+        {/* Ambiguity warnings */}
+        {intakeState.ambiguityFlags.length > 0 && (
+          <div style={{ marginBottom: 12 }}>
+            {intakeState.ambiguityFlags.map((flag, i) => (
+              <div key={i} style={{
+                padding: "10px 14px", borderRadius: 8, marginBottom: 8,
+                backgroundColor: "rgba(208,162,58,0.08)", border: "1px solid rgba(208,162,58,0.20)",
+              }}>
+                <p style={{ fontSize: 13, color: C.moderate, margin: 0 }}>
+                  {flag}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <label style={{ fontSize: 13, fontWeight: 600, color: C.textPrimary, fontFamily: sans, marginBottom: 6, display: "block" }}>
+          {field.label}
+        </label>
+        <select
+          value={displayValues[currentStep] || ""}
+          onChange={e => {
+            const display = e.target.value;
+            const engine = field.mapper[display] || display;
+            handleProfileSelect(currentStep, display, engine);
+          }}
+          style={{ ...selectStyle, color: displayValues[currentStep] ? C.textPrimary : C.textMuted, marginBottom: 12 }}
+        >
+          <option value="" disabled>Select</option>
+          {field.options.map(o => <option key={o.display} value={o.display}>{o.display}</option>)}
+        </select>
+
+        {stepIndex > 0 && (
+          <button onClick={handleBack} style={{
+            padding: "8px 16px", fontSize: 13, fontWeight: 600, fontFamily: sans,
+            color: C.textMuted, backgroundColor: "transparent",
+            border: `1px solid ${C.borderSoft}`, borderRadius: 8, cursor: "pointer",
+          }}>
+            Back
+          </button>
+        )}
+
+        {error && <p style={{ fontSize: 13, color: C.risk, margin: "8px 0 0" }}>{error}</p>}
+      </div>
+    );
+  }
+
+  /* ── Question steps ── */
+  if (isQuestionStep && qIndex >= 0 && qIndex < 6) {
+    const q = questions[qIndex];
+    const selectedAnswer = intakeState.answers[qIndex] || "";
+    const progressPct = (stepIndex / TOTAL_STEPS) * 100;
+
+    return (
+      <div style={container}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+          <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, margin: 0, textTransform: "uppercase", letterSpacing: "0.06em" }}>
+            Question {qIndex + 1} of 6
+          </p>
+          {cancelBtn}
+        </div>
+
+        {/* Progress */}
+        <div style={{ height: 4, borderRadius: 2, backgroundColor: "rgba(31,109,122,0.10)", marginBottom: 16 }}>
+          <div style={{ height: "100%", borderRadius: 2, backgroundColor: C.teal, width: `${progressPct}%`, transition: "width 300ms" }} />
         </div>
 
         <p style={{ fontSize: 11, fontWeight: 600, color: C.textMuted, margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.06em" }}>
@@ -383,52 +485,15 @@ export default function InlineAssessment({
           })}
         </div>
 
-        <div style={{ display: "flex", gap: 10 }}>
-          <button onClick={handleBack} style={{
-            padding: "10px 20px", fontSize: 14, fontWeight: 600, fontFamily: sans,
-            color: C.textMuted, backgroundColor: "transparent",
-            border: `1px solid ${C.borderSoft}`, borderRadius: 10, cursor: "pointer",
-          }}>
-            Back
-          </button>
-          <button
-            onClick={handleNext}
-            disabled={!selectedAnswer}
-            style={{
-              padding: "10px 24px", fontSize: 14, fontWeight: 600, fontFamily: sans,
-              color: C.white, backgroundColor: selectedAnswer ? C.teal : C.textMuted,
-              border: "none", borderRadius: 10, cursor: selectedAnswer ? "pointer" : "default",
-              opacity: selectedAnswer ? 1 : 0.5,
-            }}
-          >
-            {currentQ < 5 ? "Next" : "Score"}
-          </button>
-        </div>
+        <button onClick={handleBack} style={{
+          padding: "10px 20px", fontSize: 14, fontWeight: 600, fontFamily: sans,
+          color: C.textMuted, backgroundColor: "transparent",
+          border: `1px solid ${C.borderSoft}`, borderRadius: 10, cursor: "pointer",
+        }}>
+          Back
+        </button>
 
-        {error && (
-          <p style={{ fontSize: 13, color: C.risk, margin: "12px 0 0", fontFamily: sans }}>{error}</p>
-        )}
-      </div>
-    );
-  }
-
-  /* ── Step 3: Scoring (brief loading) ── */
-  if (step === "scoring") {
-    return (
-      <div style={{
-        marginTop: 12, padding: "32px 24px", borderRadius: 14,
-        backgroundColor: "rgba(31,109,122,0.03)", border: `1px solid rgba(31,109,122,0.10)`,
-        textAlign: "center",
-      }}>
-        <div style={{
-          width: 36, height: 36, borderRadius: 18, margin: "0 auto 16px",
-          border: `3px solid ${C.border}`, borderTopColor: C.teal,
-          animation: "spin 0.8s linear infinite",
-        }} />
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-        <p style={{ fontSize: 15, color: C.textSecondary, margin: 0 }}>
-          Scoring {clientName}&rsquo;s income structure...
-        </p>
+        {error && <p style={{ fontSize: 13, color: C.risk, margin: "12px 0 0" }}>{error}</p>}
       </div>
     );
   }
