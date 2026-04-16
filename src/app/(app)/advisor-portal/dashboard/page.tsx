@@ -5,6 +5,7 @@ import Image from "next/image";
 import logoBlue from "../../../../../public/runpayway-logo-blue.png";
 import { C, mono, sans } from "@/lib/design-tokens";
 import { WORKER_URL } from "@/lib/config";
+import InlineAssessment from "./InlineAssessment";
 
 /* ── Industry list (matches engine profiles) ──────────── */
 const INDUSTRIES = [
@@ -183,6 +184,9 @@ export default function AdvisorDashboardPage() {
   /* Notes editing */
   const [editingNotesId, setEditingNotesId] = useState<string | null>(null);
   const [notesDraft, setNotesDraft] = useState("");
+
+  /* Inline assessment */
+  const [assessingId, setAssessingId] = useState<string | null>(null);
 
   /* Usage tracking — server-driven */
   const [reportsUsed, setReportsUsed] = useState(0);
@@ -648,21 +652,18 @@ export default function AdvisorDashboardPage() {
                       )}
                       {client.band === "Pending" ? (
                         <>
-                          <Link href="/begin" style={{ ...btnTeal, textDecoration: "none", display: "inline-flex", alignItems: "center" }}>
-                            Run Assessment
-                          </Link>
+                          <button onClick={() => setAssessingId(assessingId === client.id ? null : client.id)} style={btnTeal}>
+                            {assessingId === client.id ? "Cancel Assessment" : "Run Assessment"}
+                          </button>
                           <button onClick={() => { setEditingId(isEditing ? null : client.id); setEditScore(""); setEditRisk(""); }} style={btnPrimary}>
                             {isEditing ? "Cancel" : "Enter Results"}
                           </button>
                         </>
                       ) : (
                         <>
-                          <Link href="/begin" style={{ ...btnTeal, textDecoration: "none", display: "inline-flex", alignItems: "center" }}>
-                            Reassess
-                          </Link>
-                          <Link href="/review" style={{ ...btnPrimary, textDecoration: "none", display: "inline-flex", alignItems: "center" }}>
-                            View Report
-                          </Link>
+                          <button onClick={() => setAssessingId(assessingId === client.id ? null : client.id)} style={btnTeal}>
+                            {assessingId === client.id ? "Cancel" : "Reassess"}
+                          </button>
                         </>
                       )}
                       <button onClick={() => {
@@ -697,6 +698,28 @@ export default function AdvisorDashboardPage() {
                           }}
                         />
                       </div>
+                    )}
+
+                    {/* Inline assessment */}
+                    {assessingId === client.id && (
+                      <InlineAssessment
+                        clientId={client.id}
+                        clientName={client.name}
+                        industry={client.industry}
+                        advisorCode={advisorCode || ""}
+                        mobile={mobile}
+                        onComplete={(result) => {
+                          const next = clients.map(c =>
+                            c.id === client.id
+                              ? { ...c, score: result.score, band: result.band, topRisk: result.topRisk, assessmentDate: new Date().toISOString().slice(0, 10) }
+                              : c
+                          );
+                          persistClients(next);
+                          setAssessingId(null);
+                          setReportsUsed(prev => prev + 1);
+                        }}
+                        onCancel={() => setAssessingId(null)}
+                      />
                     )}
 
                     {/* Full meeting prep expanded */}
