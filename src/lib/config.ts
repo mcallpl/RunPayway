@@ -15,10 +15,10 @@ export const ADVISOR_PLANS = {
   advisor_enterprise:   { key: "advisor_enterprise",    reports: -1,  price_cents: 14900, period_months: 1,  label: "Enterprise",   interval: "seat/month" },
 } as const;
 
-// Stripe Checkout hosted links — replace with real URLs after creating in Stripe dashboard
-export const STRIPE_ADVISOR_STARTER = process.env.NEXT_PUBLIC_STRIPE_ADVISOR_STARTER || "";
-export const STRIPE_ADVISOR_PROFESSIONAL = process.env.NEXT_PUBLIC_STRIPE_ADVISOR_PROFESSIONAL || "";
-export const STRIPE_ADVISOR_ENTERPRISE = process.env.NEXT_PUBLIC_STRIPE_ADVISOR_ENTERPRISE || "";
+// Stripe Checkout hosted links
+export const STRIPE_ADVISOR_STARTER = process.env.NEXT_PUBLIC_STRIPE_ADVISOR_STARTER || "https://buy.stripe.com/00wdR148EffabVMfnj2Nq07";
+export const STRIPE_ADVISOR_PROFESSIONAL = process.env.NEXT_PUBLIC_STRIPE_ADVISOR_PROFESSIONAL || "https://buy.stripe.com/dRm7sD8oU8QM4tk3EB2Nq08";
+export const STRIPE_ADVISOR_ENTERPRISE = process.env.NEXT_PUBLIC_STRIPE_ADVISOR_ENTERPRISE || "https://buy.stripe.com/fZu5kv8oU5EA1h82Ax2Nq09";
 
 export const MODEL_VERSION = "RP-2.0";
 
