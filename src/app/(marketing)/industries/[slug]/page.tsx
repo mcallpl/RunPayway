@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { INDUSTRY_PAGES, getIndustryBySlug } from "@/lib/industry-pages";
+import EmailCapture from "@/components/EmailCapture";
 
 const OTHER_COUNT = 6; // how many "other industries" to show at the bottom
 
@@ -245,6 +246,16 @@ export default async function IndustryPage({
           >
             Get My Score &rarr;
           </Link>
+          <div
+            style={{
+              marginTop: 16,
+              fontSize: 13,
+              color: "rgba(244,241,234,0.40)",
+              letterSpacing: "0.01em",
+            }}
+          >
+            Full report &mdash; $69 &middot; Results in under two minutes &middot; No documents required
+          </div>
         </div>
       </section>
 
@@ -788,6 +799,127 @@ export default async function IndustryPage({
         </div>
       </section>
 
+      {/* ── Sample Report Link ── */}
+      <section
+        className="ind-pad"
+        style={{
+          backgroundColor: C.navy,
+          paddingTop: 0,
+          paddingBottom: 32,
+          textAlign: "center",
+        }}
+      >
+        <Link
+          href="/sample-report"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            fontSize: 13,
+            fontWeight: 500,
+            color: "rgba(244,241,234,0.45)",
+            textDecoration: "none",
+            borderBottom: "1px solid rgba(244,241,234,0.15)",
+            paddingBottom: 2,
+          }}
+        >
+          Not sure what you&rsquo;re getting? See a sample report &rarr;
+        </Link>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section
+        className="ind-pad"
+        style={{
+          backgroundColor: C.white,
+          paddingTop: 88,
+          paddingBottom: 88,
+          borderTop: `1px solid ${C.borderSoft}`,
+        }}
+      >
+        <div style={{ maxWidth: 720, margin: "0 auto" }}>
+          <div
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: "0.12em",
+              color: C.teal,
+              marginBottom: 16,
+              textAlign: "center",
+            }}
+          >
+            COMMON QUESTIONS
+          </div>
+          <h2
+            style={{
+              fontSize: 28,
+              fontWeight: 700,
+              lineHeight: 1.1,
+              letterSpacing: "-0.02em",
+              color: C.navy,
+              textAlign: "center",
+              marginBottom: 52,
+            }}
+          >
+            What people ask before they start.
+          </h2>
+
+          {[
+            {
+              q: `Is RunPayway™ relevant to ${page.name.split(" /")[0].toLowerCase()} income specifically?`,
+              a: page.because,
+            },
+            {
+              q: "How long does the assessment take?",
+              a: "Under two minutes. Six questions about how your income is structured — not how much you make. No documents, no financial accounts, no login required.",
+            },
+            {
+              q: "What does the full report cost?",
+              a: "$69. You receive your Income Stability Score (0–100), your stability band, your top structural constraint, how you compare to others in your income type, a 12-week action plan specific to your structure, and scripts for advisor and lender conversations.",
+            },
+            {
+              q: "How is this different from a credit score?",
+              a: "A credit score measures whether you repay what you've borrowed. RunPayway™ measures whether your income is likely to continue — the structure behind the number, not the number itself. Credit scores don't capture concentration risk, contracted forward income, or whether your income resets to zero each month.",
+            },
+            {
+              q: "Do I need to prepare anything before I start?",
+              a: "No documents required. If you have a rough sense of what percentage of your income comes from your top client or source, and whether any of your income is contracted forward, you have everything you need. The assessment asks — you answer.",
+            },
+          ].map((faq, i, arr) => (
+            <div
+              key={i}
+              style={{
+                paddingTop: 28,
+                paddingBottom: 28,
+                borderBottom: i < arr.length - 1 ? `1px solid ${C.borderSoft}` : "none",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 16,
+                  fontWeight: 700,
+                  color: C.textPrimary,
+                  lineHeight: 1.35,
+                  marginBottom: 10,
+                }}
+              >
+                {faq.q}
+              </div>
+              <p
+                style={{
+                  fontSize: 15,
+                  color: C.textSecondary,
+                  lineHeight: 1.65,
+                  margin: 0,
+                }}
+              >
+                {faq.a}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* ── Professional Handoff ── */}
       <section
         className="ind-pad"
@@ -830,6 +962,64 @@ export default async function IndustryPage({
           >
             See RunPayway™ for professionals &rarr;
           </Link>
+        </div>
+      </section>
+
+      {/* ── Email Capture ── */}
+      <section
+        className="ind-pad"
+        style={{
+          backgroundColor: C.navy,
+          paddingTop: 72,
+          paddingBottom: 72,
+        }}
+      >
+        <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
+          <div
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: "0.12em",
+              color: C.teal,
+              marginBottom: 16,
+            }}
+          >
+            NOT READY YET?
+          </div>
+          <h2
+            style={{
+              fontSize: 24,
+              fontWeight: 700,
+              lineHeight: 1.15,
+              letterSpacing: "-0.02em",
+              color: C.sandText,
+              marginBottom: 12,
+            }}
+          >
+            Get the {page.name.split(" /")[0]} income stability guide — free.
+          </h2>
+          <p
+            style={{
+              fontSize: 15,
+              color: C.sandMuted,
+              lineHeight: 1.6,
+              marginBottom: 32,
+            }}
+          >
+            A short brief on how {page.name.split(" /")[0].toLowerCase()} income is typically scored, what the structural patterns are, and what separates stable earners from fragile ones.
+          </p>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <EmailCapture variant="inline" source={`industry-${page.slug}`} />
+          </div>
+          <p
+            style={{
+              fontSize: 12,
+              color: "rgba(244,241,234,0.28)",
+              marginTop: 14,
+            }}
+          >
+            No spam. Unsubscribe anytime.
+          </p>
         </div>
       </section>
 
