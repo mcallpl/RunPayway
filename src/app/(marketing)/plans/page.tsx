@@ -194,13 +194,18 @@ export default function PlansPage() {
               FOR INDIVIDUALS
             </div>
 
-            <div style={{ fontSize: 22, fontWeight: 700, color: C.textPrimary, lineHeight: 1.2, marginBottom: 10 }}>
+            <div style={{ fontSize: 22, fontWeight: 700, color: C.textPrimary, lineHeight: 1.2, marginBottom: 6 }}>
               Your Income Stability Score
             </div>
 
+            {/* Price */}
+            <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 10 }}>
+              <span style={{ fontSize: 34, fontWeight: 700, color: C.navy, lineHeight: 1, fontFamily: "'SF Mono','Fira Code',monospace" }}>$69</span>
+              <span style={{ fontSize: 14, color: C.textMuted }}>one-time &middot; lifetime access</span>
+            </div>
+
             <p style={{ fontSize: 15, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, flex: 1 }}>
-              Six questions. Under two minutes. Your score, what&apos;s at risk,
-              and a 12-week plan built for your income structure.
+              Your score, what&apos;s limiting it, a 12-week plan, and scripts for your industry — delivered instantly.
             </p>
 
             <div style={{ borderTop: `1px solid ${C.borderSoft}`, paddingTop: 20, marginBottom: 24 }}>
@@ -232,30 +237,33 @@ export default function PlansPage() {
               ))}
             </div>
 
-            <div style={{
-              marginBottom: 20, display: "flex", alignItems: "center", gap: 10,
-              padding: "11px 14px", borderRadius: 10, backgroundColor: "rgba(31,109,122,0.06)",
-            }}>
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
-                <circle cx="8" cy="8" r="7" stroke={C.teal} strokeWidth="1.5" />
-                <path d="M8 5v3.5l2 1.5" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-              <span style={{ fontSize: 13, fontWeight: 600, color: C.teal }}>
-                One-time payment &middot; Delivered instantly
-              </span>
-            </div>
+            <a
+              href="https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"
+              className="plans-card-cta"
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "center",
+                height: 50, borderRadius: 12,
+                backgroundColor: C.teal, color: C.white,
+                fontSize: 15, fontWeight: 600, textDecoration: "none",
+                boxShadow: "0 4px 16px rgba(31,109,122,0.28)",
+                marginBottom: 12,
+              }}
+            >
+              Get Your Full Report &mdash; $69
+            </a>
 
-            <Link href="/begin" className="plans-card-cta" style={{
+            <Link href="/begin" style={{
               display: "flex", alignItems: "center", justifyContent: "center",
-              height: 50, borderRadius: 12,
-              backgroundColor: C.teal, color: C.white,
-              fontSize: 15, fontWeight: 600, textDecoration: "none",
-              boxShadow: "0 4px 16px rgba(31,109,122,0.28)",
+              height: 38, borderRadius: 10,
+              backgroundColor: "transparent", color: C.teal,
+              fontSize: 13, fontWeight: 600, textDecoration: "none",
+              border: `1px solid rgba(31,109,122,0.25)`,
+              marginBottom: 14,
             }}>
-              Get My Stability Class — Free &rarr;
+              Or get your stability class free &rarr;
             </Link>
 
-            <p style={{ textAlign: "center", fontSize: 13, color: C.textMuted, margin: "14px 0 0" }}>
+            <p style={{ textAlign: "center", fontSize: 13, color: C.textMuted, margin: 0 }}>
               Already have an account?{" "}
               <Link href="/sign-in" style={{ fontWeight: 600, color: C.navy, textDecoration: "none" }}>
                 Sign in to your dashboard
