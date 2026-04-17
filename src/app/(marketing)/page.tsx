@@ -311,40 +311,7 @@ function HeroSection() {
 
 
 /* ================================================================ */
-/* SECTION 3 — CATEGORY DECLARATION                                  */
-/* ================================================================ */
-
-function CategoryDeclaration() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const t = useTablet();
-  const fadeIn = useFadeIn();
-
-  return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t), position: "relative" as const, overflow: "hidden" }}>
-      {/* Subtle grain */}
-      <div className="navy-grain" />
-
-      <div style={{ maxWidth: 820, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-        <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.03em", color: C.sandText, marginBottom: 32, ...fadeIn(visible) }}>
-          Not how much you make.{m ? " " : <br />}How your income is built.
-        </h2>
-
-        <p style={{ fontSize: m ? 17 : 20, fontWeight: 400, lineHeight: 1.65, color: "rgba(244,241,234,0.60)", maxWidth: 600, margin: "0 auto 48px", ...fadeIn(visible, 80) }}>
-          Whether it depends on one client, one employer, or one deal closing on time. Whether it continues if you stop.
-        </p>
-
-        <p style={{ fontSize: m ? 17 : 20, fontWeight: 600, lineHeight: 1.5, color: C.sandText, maxWidth: 560, margin: "0 auto", ...fadeIn(visible, 200) }}>
-          RunPayway™ puts a score on that.
-        </p>
-      </div>
-    </section>
-  );
-}
-
-
-/* ================================================================ */
-/* SECTION 4 — PROOF MOMENT                                          */
+/* SECTION 2 — PROOF MOMENT                                          */
 /* ================================================================ */
 
 function ProofMoment() {
@@ -810,197 +777,6 @@ function WhatYouReceive() {
   );
 }
 
-
-/* ================================================================ */
-/* SECTION 8 — USE CASE ARCHITECTURE                                 */
-/* ================================================================ */
-
-function UseCaseArchitecture() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const t = useTablet();
-  const fadeIn = useFadeIn();
-
-  return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
-      <div style={{ maxWidth: innerW, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
-          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>
-            Your score. Your industry. Your report.
-          </h2>
-        </div>
-
-        {/* Primary — Individuals — full navy hero */}
-        <div style={{
-          borderRadius: 28, backgroundColor: C.navy,
-          boxShadow: "0 20px 60px rgba(14,26,43,0.25), 0 8px 24px rgba(14,26,43,0.12)",
-          position: "relative" as const, overflow: "hidden",
-          marginBottom: m ? 24 : 40,
-          ...fadeIn(visible, 80),
-        }}>
-          {/* Gradient accent top */}
-          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
-
-          <div style={{ padding: m ? "36px 24px" : "56px 64px", display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 56, alignItems: "center" }}>
-            {/* Left — copy */}
-            <div style={{ marginBottom: m ? 36 : 0 }}>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "5px 14px", borderRadius: 100, backgroundColor: "rgba(31,109,122,0.15)", marginBottom: 24 }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-4 3-7 7-7s7 3 7 7"/></svg>
-                <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: C.teal }}>FOR INDIVIDUALS</span>
-              </div>
-              <p style={{ fontSize: m ? 22 : 28, fontWeight: 700, color: C.sandText, lineHeight: 1.2, letterSpacing: "-0.02em", marginBottom: 20 }}>
-                Now see how much of your income is actually&nbsp;protected.
-              </p>
-              <div style={{ display: "flex", flexDirection: "column" as const, gap: 16, marginBottom: 32 }}>
-                {[
-                  "Know which income source failing would hurt you the most\u2014and how to fix it before it does",
-                  "Know exactly what to change first \u2014 and what difference it makes to your score",
-                  "See your full report the moment you finish",
-                ].map((b, i) => (
-                  <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                    <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
-                    <span style={{ fontSize: 15, color: "rgba(244,241,234,0.60)", lineHeight: 1.55 }}>{b}</span>
-                  </div>
-                ))}
-              </div>
-              <Link href="/begin" style={{
-                display: "inline-flex", alignItems: "center", justifyContent: "center",
-                height: 56, padding: "0 36px", borderRadius: 16,
-                backgroundColor: C.teal, color: "#fff",
-                fontSize: 16, fontWeight: 600, textDecoration: "none",
-                boxShadow: "0 8px 28px rgba(31,109,122,0.30)",
-                transition: "transform 200ms, box-shadow 200ms",
-              }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 36px rgba(31,109,122,0.40)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(31,109,122,0.30)"; }}
-              >
-                Get your score &mdash; takes 2 minutes
-              </Link>
-            </div>
-
-            {/* Right — score preview */}
-            <div style={{ backgroundColor: "rgba(255,255,255,0.03)", borderRadius: 20, padding: m ? 24 : 32, border: "1px solid rgba(255,255,255,0.06)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
-                <div style={{ position: "relative", width: 64, height: 64, flexShrink: 0 }}>
-                  <ScoreRing score={72} size={64} stroke={5} color="#2B5EA7" trackColor="rgba(255,255,255,0.06)" />
-                  <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <span style={{ fontSize: 20, fontWeight: 300, fontFamily: mono, color: C.sandText, lineHeight: 1 }}>72</span>
-                  </div>
-                </div>
-                <div>
-                  <div style={{ fontSize: 12, fontWeight: 600, fontFamily: mono, color: C.sandText, marginBottom: 4 }}>72 / 100</div>
-                  <div style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 10px", borderRadius: 100, backgroundColor: "rgba(43,94,167,0.12)" }}>
-                    <div style={{ width: 5, height: 5, borderRadius: 2, backgroundColor: "#2B5EA7" }} />
-                    <span style={{ fontSize: 11, fontWeight: 600, color: "#2B5EA7" }}>Established Stability</span>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div style={{ display: "flex", height: 8, borderRadius: 999, overflow: "hidden" }}>
-                  <div style={{ width: "28%", backgroundColor: C.teal }} />
-                  <div style={{ width: "40%", backgroundColor: C.moderate }} />
-                  <div style={{ width: "32%", backgroundColor: C.risk }} />
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
-                  <span style={{ fontSize: 10, color: C.teal, fontWeight: 600 }}>Protected 28%</span>
-                  <span style={{ fontSize: 10, color: C.moderate, fontWeight: 600 }}>Recurring 40%</span>
-                  <span style={{ fontSize: 10, color: C.risk, fontWeight: 600 }}>At risk 32%</span>
-                </div>
-              </div>
-              <div style={{ textAlign: "center", paddingTop: 12 }}>
-                <span style={{ fontSize: 10, color: "rgba(244,241,234,0.20)", letterSpacing: "0.04em" }}>Example report</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Secondary — Advisors + Organizations */}
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, ...fadeIn(visible, 160) }}>
-          {/* Advisors — purple accent */}
-          <div style={{
-            borderRadius: 20, backgroundColor: C.white,
-            boxShadow: "0 4px 20px rgba(14,26,43,0.06)",
-            borderLeft: `4px solid ${C.purple}`,
-            border: `1px solid rgba(14,26,43,0.06)`,
-            borderLeftWidth: 4, borderLeftColor: C.purple,
-            padding: m ? "28px 24px" : "36px 40px",
-            marginBottom: m ? 16 : 0,
-            transition: "box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 320ms cubic-bezier(0.22, 1, 0.36, 1)",
-          }}
-            onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 16px 48px rgba(75,63,174,0.12)"; e.currentTarget.style.transform = "translateY(-3px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 4px 20px rgba(14,26,43,0.06)"; e.currentTarget.style.transform = "translateY(0)"; }}
-          >
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "4px 12px", borderRadius: 100, backgroundColor: `${C.purple}08`, marginBottom: 20 }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round"><path d="M9 12l2 2 4-4"/><path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9-9 9-9-1.8-9-9 1.8-9 9-9z"/></svg>
-              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: C.purple }}>FOR ADVISORS</span>
-            </div>
-            <p style={{ fontSize: m ? 18 : 20, fontWeight: 700, color: C.navy, lineHeight: 1.3, marginBottom: 12 }}>
-              Give every client a number for the risk you already&nbsp;see.
-            </p>
-            <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.55, marginBottom: 24 }}>
-              Run structural assessments across your book. Turn income conversations into planning engagements with data behind&nbsp;them.
-            </p>
-            <Link href="/advisors" style={{
-              display: "inline-flex", alignItems: "center", justifyContent: "center",
-              height: 44, padding: "0 24px", borderRadius: 12,
-              backgroundColor: "transparent", color: C.purple,
-              border: `1.5px solid ${C.purple}30`,
-              fontSize: 14, fontWeight: 600, textDecoration: "none",
-              transition: "all 200ms",
-            }}
-              onMouseEnter={e => { e.currentTarget.style.backgroundColor = `${C.purple}06`; e.currentTarget.style.borderColor = `${C.purple}50`; }}
-              onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.borderColor = `${C.purple}30`; }}
-            >
-              See the advisor model
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ marginLeft: 8 }}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </Link>
-          </div>
-
-          {/* Organizations — navy accent */}
-          <div style={{
-            borderRadius: 20, backgroundColor: C.white,
-            boxShadow: "0 4px 20px rgba(14,26,43,0.06)",
-            border: `1px solid rgba(14,26,43,0.06)`,
-            borderLeftWidth: 4, borderLeftColor: C.navy,
-            padding: m ? "28px 24px" : "36px 40px",
-            marginBottom: m ? 16 : 0,
-            transition: "box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 320ms cubic-bezier(0.22, 1, 0.36, 1)",
-          }}
-            onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 16px 48px rgba(14,26,43,0.10)"; e.currentTarget.style.transform = "translateY(-3px)"; }}
-            onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 4px 20px rgba(14,26,43,0.06)"; e.currentTarget.style.transform = "translateY(0)"; }}
-          >
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "4px 12px", borderRadius: 100, backgroundColor: "rgba(14,26,43,0.04)", marginBottom: 20 }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: C.navy }}>FOR ORGANIZATIONS</span>
-            </div>
-            <p style={{ fontSize: m ? 18 : 20, fontWeight: 700, color: C.navy, lineHeight: 1.3, marginBottom: 12 }}>
-              Measure workforce income stability before it becomes your&nbsp;liability.
-            </p>
-            <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.55, marginBottom: 24 }}>
-              Assess contractor and employee stability at scale. One auditable system for underwriting, onboarding, and&nbsp;compliance.
-            </p>
-            <Link href="/organizations" style={{
-              display: "inline-flex", alignItems: "center", justifyContent: "center",
-              height: 44, padding: "0 24px", borderRadius: 12,
-              backgroundColor: "transparent", color: C.navy,
-              border: "1.5px solid rgba(14,26,43,0.15)",
-              fontSize: 14, fontWeight: 600, textDecoration: "none",
-              transition: "all 200ms",
-            }}
-              onMouseEnter={e => { e.currentTarget.style.backgroundColor = "rgba(14,26,43,0.03)"; e.currentTarget.style.borderColor = "rgba(14,26,43,0.30)"; }}
-              onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.borderColor = "rgba(14,26,43,0.15)"; }}
-            >
-              Explore enterprise
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" style={{ marginLeft: 8 }}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-
 /* ================================================================ */
 /* SECTION 9 — INDUSTRY PROFILES                                     */
 /* ================================================================ */
@@ -1135,81 +911,6 @@ function IndustryProfiles() {
   );
 }
 
-
-
-
-/* ================================================================ */
-/* SECTION 11 — BEFORE YOU BEGIN                                     */
-/* ================================================================ */
-
-function BeforeYouBegin() {
-  const { ref, visible } = useInView();
-  const m = useMobile();
-  const t = useTablet();
-  const fadeIn = useFadeIn();
-
-  const items = [
-    { num: "01", question: "How much of your income renews automatically?", why: "A general sense is all you need" },
-    { num: "02", question: "How spread out is your income across sources?", why: "Think sources, not exact amounts" },
-    { num: "03", question: "How far ahead is your income already committed?", why: "A rough timeframe works" },
-    { num: "04", question: "How consistent is your monthly income?", why: "Your best guess is enough" },
-  ];
-
-  return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
-      <div style={{ maxWidth: 860, margin: "0 auto" }}>
-        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1.1fr", gap: 64, alignItems: "start" }}>
-
-          {/* Left — copy */}
-          <div style={{ marginBottom: m ? 40 : 0, ...fadeIn(visible) }}>
-            <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>READY IN 2 MINUTES</div>
-            <h2 style={{ fontSize: m ? 28 : 36, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.028em", color: C.navy, marginBottom: 20 }}>
-              No documents.{m ? " " : <br />}No bank connection.{m ? " " : <br />}No account needed.
-            </h2>
-            <p style={{ fontSize: m ? 16 : 17, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 28 }}>
-              Under two minutes. The system needs general knowledge of your income structure&mdash;not access to your finances.
-            </p>
-            <div style={{ padding: m ? "18px 20px" : "20px 24px", borderRadius: 16, backgroundColor: C.white, border: "1px solid rgba(14,26,43,0.06)" }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: C.navy, marginBottom: 6 }}>You don&rsquo;t need exact numbers.</div>
-              <p style={{ fontSize: 14, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>
-                Close enough is good enough. The system is built to work with&nbsp;estimates.
-              </p>
-            </div>
-          </div>
-
-          {/* Right — question cards */}
-          <div style={{ display: "flex", flexDirection: "column" as const, gap: 0, ...fadeIn(visible, 120) }}>
-            {items.map((item, i) => (
-              <div key={i} style={{
-                display: "flex", gap: m ? 16 : 20, padding: m ? "20px 0" : "24px 0",
-                borderBottom: i < items.length - 1 ? "1px solid rgba(14,26,43,0.06)" : "none",
-              }}>
-                <div style={{
-                  width: 36, height: 36, borderRadius: 10, flexShrink: 0,
-                  backgroundColor: C.navy, color: "#fff",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 12, fontWeight: 700, fontFamily: mono,
-                }}>
-                  {item.num}
-                </div>
-                <div>
-                  <div style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: C.navy, lineHeight: 1.4, marginBottom: 4 }}>{item.question}</div>
-                  <div style={{ fontSize: 13, color: C.textMuted, lineHeight: 1.5 }}>{item.why}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <p style={{ fontSize: 15, fontWeight: 500, color: C.navy, marginTop: 32, textAlign: "center", opacity: 0.7 }}>
-          Your income structure changes every quarter. The sooner you measure it, the sooner you can act.
-        </p>
-      </div>
-    </section>
-  );
-}
-
-
 /* ================================================================ */
 /* SECTION 11B — STRUCTURAL INCOME BRIEF (Email Capture)             */
 /* ================================================================ */
@@ -1331,11 +1032,11 @@ export default function LandingPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(PRODUCT_SCHEMA) }} />
       <main id="main-content">
         <HeroSection />
-        <ProofMoment />
-        <WhatYouReceive />
         <ConsequenceSection />
-        <WhatChanges />
+        <ProofMoment />
         <WhatYourScoreChanges />
+        <WhatChanges />
+        <WhatYouReceive />
         <IndustryProfiles />
         <StructuralIncomeBrief />
         <FinalCta />
