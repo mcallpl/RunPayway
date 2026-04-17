@@ -164,8 +164,8 @@ export default function AdvisorPortalPage() {
         <h2 style={{ fontSize: mobile ? 28 : 36, fontWeight: 700, color: C.navy, textAlign: "center", margin: "0 0 12px", fontFamily: sans, letterSpacing: "-0.02em" }}>
           Simple pricing. No per-report fees.
         </h2>
-        <p style={{ fontSize: 17, color: C.textSecondary, textAlign: "center", margin: "0 auto 40px", maxWidth: 540, fontFamily: sans }}>
-          One subscription covers your assessments, dashboard, and all advisor tools.
+        <p style={{ fontSize: 17, color: C.textSecondary, textAlign: "center", margin: "0 auto 40px", maxWidth: 520, fontFamily: sans }}>
+          Assessments, dashboard, and all advisor tools included. No per-report fees.
         </p>
 
         <div style={{
@@ -176,10 +176,11 @@ export default function AdvisorPortalPage() {
           {([
             {
               name: "Starter",
-              price: "$249",
-              interval: "/ quarter",
-              reports: "15 assessments per quarter",
-              who: "For solo advisors evaluating a focused book.",
+              price: "$83",
+              interval: "/ mo",
+              billing: "billed $249/quarter",
+              reports: "15 assessments / quarter",
+              who: "Solo advisors adding income structure to their client process.",
               features: ["Income Stability Score™ per client", "Stability band + top risk", "Meeting prep talking points", "Book-level analytics", "Client notes"],
               href: STRIPE_ADVISOR_STARTER,
               highlight: false,
@@ -187,19 +188,21 @@ export default function AdvisorPortalPage() {
             {
               name: "Professional",
               price: "$179",
-              interval: "/ month",
-              reports: "50 assessments per month",
-              who: "For firms running assessments across multiple advisors or client segments.",
-              features: ["Everything in Starter", "50 assessments per month", "Priority support", "Quarterly usage reporting"],
+              interval: "/ mo",
+              billing: "billed monthly",
+              reports: "50 assessments / month",
+              who: "Growing practices that assess clients regularly across a full book.",
+              features: ["Everything in Starter", "Priority support", "Quarterly usage reporting"],
               href: STRIPE_ADVISOR_PROFESSIONAL,
               highlight: true,
             },
             {
               name: "Enterprise",
               price: "$149",
-              interval: "/ seat / month",
+              interval: "/ seat/mo",
+              billing: "billed monthly per seat",
               reports: "Unlimited assessments",
-              who: "For RIAs, broker-dealers, and organizations standardizing income risk assessment.",
+              who: "RIAs, broker-dealers, and firms standardizing income risk across teams.",
               features: ["Everything in Professional", "Unlimited assessments per seat", "Multi-advisor seat management", "White-label reporting", "Dedicated onboarding + SLA"],
               href: STRIPE_ADVISOR_ENTERPRISE || "/contact",
               highlight: false,
@@ -223,12 +226,15 @@ export default function AdvisorPortalPage() {
               <h3 style={{ fontSize: 20, fontWeight: 700, color: C.navy, margin: "0 0 8px", fontFamily: sans }}>
                 {tier.name}
               </h3>
-              <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 4 }}>
-                <span style={{ fontSize: 36, fontWeight: 700, color: C.navy, fontFamily: mono, letterSpacing: "-0.02em" }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 2, flexWrap: "nowrap" as const, whiteSpace: "nowrap" as const }}>
+                <span style={{ fontSize: 36, fontWeight: 700, color: C.navy, fontFamily: mono, letterSpacing: "-0.02em", flexShrink: 0 }}>
                   {tier.price}
                 </span>
-                <span style={{ fontSize: 15, color: C.textMuted }}>{tier.interval}</span>
+                <span style={{ fontSize: 13, color: C.textMuted, flexShrink: 0 }}>{tier.interval}</span>
               </div>
+              <p style={{ fontSize: 12, color: C.textMuted, margin: "0 0 8px" }}>
+                {tier.billing}
+              </p>
               <p style={{ fontSize: 14, color: C.teal, fontWeight: 600, margin: "0 0 8px" }}>
                 {tier.reports}
               </p>

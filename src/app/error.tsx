@@ -98,7 +98,7 @@ export default function Error({
         </div>
 
         <p style={{ fontSize: 11, color: "#9CA3AF", marginTop: 20 }}>
-          If this keeps happening, <a href="/RunPayway/contact" style={{ color: "#4B3FAE" }}>contact support</a>.
+          If this keeps happening, <a href="/contact" style={{ color: "#4B3FAE" }}>contact support</a>.
         </p>
       </div>
     </div>

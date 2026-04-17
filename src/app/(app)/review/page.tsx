@@ -300,7 +300,7 @@ function PageFooter({ section, page }: { section: string; page: number }) {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <span style={{ fontSize: 11, fontWeight: 400, color: "rgba(14,26,43,0.28)", letterSpacing: "0.02em" }}>Confidential &mdash; {section}</span>
         <span style={{ fontSize: 11, fontWeight: 500, color: "rgba(14,26,43,0.28)", fontFamily: mono }}>Page {page} of 3</span>
-        <a href="/RunPayway/contact" style={{ fontSize: 11, fontWeight: 400, color: "rgba(14,26,43,0.28)", textDecoration: "none" }}>Contact Us</a>
+        <a href="/contact" style={{ fontSize: 11, fontWeight: 400, color: "rgba(14,26,43,0.28)", textDecoration: "none" }}>Contact Us</a>
       </div>
     </div>
   );
