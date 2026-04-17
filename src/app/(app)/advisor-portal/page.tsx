@@ -137,7 +137,7 @@ export default function AdvisorPortalPage() {
         }}>
           {[
             { num: "1", title: "Add a client", desc: "Enter their name and industry. That\u2019s all you need to start." },
-            { num: "2", title: "Classify and answer", desc: "Four classification fields and six questions about your client\u2019s income structure. No documents required." },
+            { num: "2", title: "Classify and evaluate", desc: "Four classification fields and six structural factors about your client\u2019s income structure. No documents required." },
             { num: "3", title: "Get the result", desc: "Score, band, top risk, and a talking point appear instantly on the client card. Assessment is permanently recorded." },
           ].map((step, i) => (
             <div key={i} style={{ textAlign: "center", padding: mobile ? "20px 16px" : "28px 24px" }}>

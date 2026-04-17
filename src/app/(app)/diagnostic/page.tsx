@@ -816,7 +816,7 @@ export default function DiagnosticPage() {
             Pick up where you left off.
           </p>
           <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.6, marginBottom: 28 }}>
-            {resumeData.answersGiven} of 6 questions answered
+            {resumeData.answersGiven} of 6 factors evaluated
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <button
@@ -904,7 +904,7 @@ export default function DiagnosticPage() {
             Welcome back
           </h2>
           <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.6, marginBottom: 28 }}>
-            You have {answeredCount} of 6 questions answered{savedAgo ? ` from ${savedAgo}` : " from a recent session"}. Would you like to pick up where you left off?
+            You have {answeredCount} of 6 factors evaluated{savedAgo ? ` from ${savedAgo}` : " from a recent session"}. Would you like to pick up where you left off?
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <button
@@ -1291,7 +1291,7 @@ export default function DiagnosticPage() {
       {/* Time estimate — only on first question */}
       {currentQuestion === 0 && (
         <div style={{ fontSize: 13, color: "rgba(14,26,43,0.35)", textAlign: "center", marginBottom: 16 }}>
-          6 questions &middot; About 90 seconds
+          6 structural factors &middot; About 90 seconds
         </div>
       )}
 

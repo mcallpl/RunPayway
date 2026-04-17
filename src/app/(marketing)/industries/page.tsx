@@ -337,8 +337,8 @@ export default function IndustriesIndexPage() {
               marginBottom: 36,
             }}
           >
-            The assessment asks directly. Answer six questions about how your
-            income is structured. You&rsquo;ll get your score, stability band,
+            The assessment evaluates six structural factors about how your
+            income is built. You&rsquo;ll get your score, stability band,
             and full report in under two minutes.
           </p>
           <Link

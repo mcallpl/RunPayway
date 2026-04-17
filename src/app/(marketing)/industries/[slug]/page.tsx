@@ -47,8 +47,8 @@ const sans = '"Inter", system-ui, -apple-system, sans-serif';
 const HOW_IT_WORKS = [
   {
     num: "1",
-    title: "Answer six structural questions",
-    desc: "No documents. No financial accounts. Questions about how your income is built — not how much you make.",
+    title: "Six structural factors. No documents.",
+    desc: "Each factor maps a dimension of how your income is built — not how much you make. No financial accounts, no login required.",
   },
   {
     num: "2",
@@ -871,7 +871,7 @@ export default async function IndustryPage({
             },
             {
               q: "How long does the assessment take?",
-              a: "Under two minutes. Six questions about how your income is structured — not how much you make. No documents, no financial accounts, no login required.",
+              a: "Under two minutes. The assessment evaluates six structural factors about how your income is built — not how much you make. No documents, no financial accounts, no login required.",
             },
             {
               q: "What does the full report cost?",
@@ -1192,7 +1192,7 @@ export default async function IndustryPage({
               margin: "0 auto 40px",
             }}
           >
-            Six questions. Under two minutes. Your Income Stability Score, top
+            Six structural factors. Under two minutes. Your Income Stability Score, top
             constraint, and full report — ready instantly.
           </p>
           <Link
