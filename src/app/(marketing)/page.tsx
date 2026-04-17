@@ -654,7 +654,7 @@ function UseCaseArchitecture() {
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>
-            Built for how you earn
+            Your score. Your industry. Your report.
           </h2>
         </div>
 
@@ -677,13 +677,13 @@ function UseCaseArchitecture() {
                 <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: C.teal }}>FOR INDIVIDUALS</span>
               </div>
               <p style={{ fontSize: m ? 22 : 28, fontWeight: 700, color: C.sandText, lineHeight: 1.2, letterSpacing: "-0.02em", marginBottom: 20 }}>
-                You earn well. Now see how much of it is actually&nbsp;protected.
+                Now see how much of your income is actually&nbsp;protected.
               </p>
               <div style={{ display: "flex", flexDirection: "column" as const, gap: 16, marginBottom: 32 }}>
                 {[
                   "Know which income source failing would hurt you the most\u2014and how to fix it before it does",
-                  "Get the exact conversation to have with your biggest client this week",
-                  "See your score move as you make each structural change",
+                  "Know exactly what to change first \u2014 and what difference it makes to your score",
+                  "See your full report the moment you finish",
                 ].map((b, i) => (
                   <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
                     <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 9 }} />
