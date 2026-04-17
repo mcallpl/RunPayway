@@ -470,7 +470,7 @@ export default async function IndustryPage({
               marginBottom: 56,
             }}
           >
-            What you know after you have a number.
+            {page.knowHeading}
           </h2>
 
           <div className="ind-outcomes-grid" style={{ listStyle: "none" }}>

@@ -7,6 +7,7 @@ export type IndustryPage = {
   proofA: { income: string; desc: string; score: number; band: string };
   proofB: { income: string; desc: string; score: number; band: string };
   outcomes: { title: string; body: string }[];
+  knowHeading: string;
   prep: string[];
   professionalHref: string;
   professionalLabel: string;
@@ -30,6 +31,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how lenders and advisors evaluate your income before you apply.", body: "Self-employed consulting income is the hardest income type to underwrite. Your score gives you a number before anyone else puts one on you." },
       { title: "Progress becomes visible as you build a more resilient structure.", body: "Add a retainer. Reduce concentration. Add a second anchor client. Your score reflects each structural change." },
     ],
+    knowHeading: "What you know about your client concentration after you have a number.",
     prep: [
       "Know what % of your income comes from your single largest client",
       "Know whether your current work is contracted, retainer, or project-by-project",
@@ -55,6 +57,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how mortgage lenders evaluate your income — before you apply.", body: "Self-employed real estate income is among the hardest to underwrite. Your score shows you what they see before you sit across the table." },
       { title: "You track how your structure changes as you close, contract, and build recurring income.", body: "Each structural improvement — signed contracts, a retained client, a new income source — moves your score. Progress is measurable." },
     ],
+    knowHeading: "What you know about your pipeline after you have a number.",
     prep: [
       "Know how many deals are under signed contract vs. verbal pipeline right now",
       "Know roughly what % of last year's income came from your top 1–2 closings",
@@ -80,6 +83,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how lenders view commission income before you apply.", body: "Commission earners are underwritten differently. Your score shows your structural position before any lender evaluates it." },
       { title: "You track your structural stability as your income mix evolves.", body: "As your renewal base grows, your base adjusts, or you add product lines, your score reflects the change." },
     ],
+    knowHeading: "What you know about your commission floor after you have a number.",
     prep: [
       "Know what % of this quarter's earnings will carry forward automatically",
       "Know how many separate commission sources your income comes from",
@@ -105,6 +109,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how lenders and advisors evaluate irregular income.", body: "Freelance income is among the hardest for financial institutions to assess. Your score gives you a number before anyone else defines it for you." },
       { title: "You track progress as you build recurring income into your structure.", body: "Each retainer added, each licensing deal signed, each recurring client acquired moves your score. Change is measurable." },
     ],
+    knowHeading: "What you know about your income floor after you have a number.",
     prep: [
       "Know how many clients are actively paying you right now",
       "Know whether any of your income repeats without you re-selling it",
@@ -130,6 +135,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how lenders evaluate construction and trades income.", body: "Project-based income is difficult to underwrite. Your score gives you a structural picture before any lender forms one." },
       { title: "You track your structural stability as your backlog and client base evolves.", body: "As signed work increases and your repeat client base grows, your score reflects the improvement." },
     ],
+    knowHeading: "What you know about your backlog after you have a number.",
     prep: [
       "Know how many months of signed work you currently have in backlog",
       "Know what % of your jobs come from repeat vs. new customers",
@@ -155,6 +161,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how lenders and advisors evaluate irregular creative income.", body: "Entertainment income is among the least understood income types for financial institutions. Your score gives you a number before they define one." },
       { title: "You track progress as you build income that continues between projects.", body: "Each licensing deal, each recurring client, each residual stream changes your structural score." },
     ],
+    knowHeading: "What you know about the gaps between projects after you have a number.",
     prep: [
       "Know how many months your current projects or contracts run",
       "Know whether you have any income that continues between active engagements",
@@ -180,6 +187,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how advisors and lenders evaluate commission-based insurance income.", body: "Insurance professional income is complex to evaluate from the outside. Your score gives you a clear structural picture first." },
       { title: "You track your book's structural health as renewal retention and new production both change.", body: "Your score reflects the underlying structure — not just the top-line production numbers." },
     ],
+    knowHeading: "What you know about your renewal book after you have a number.",
     prep: [
       "Know what % of your income is renewals vs. new production",
       "Know whether your renewal book is growing, flat, or declining",
@@ -205,6 +213,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how lenders and financial advisors evaluate law firm income.", body: "Legal practice income is among the most complex income structures to evaluate. Your score gives you a clear structural picture first." },
       { title: "You track how your practice's structural stability changes as matters open, close, and evolve.", body: "Your score reflects the current structural state of your practice — updated as your matter mix changes." },
     ],
+    knowHeading: "What you know about your matter concentration after you have a number.",
     prep: [
       "Know how many active matters you currently have",
       "Know what % of your billings come from your top 2–3 matters",
@@ -230,6 +239,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how lenders and advisors evaluate technology compensation.", body: "RSUs, bonuses, and variable tech comp are complex to underwrite. Your score gives you a structural picture before any external evaluation." },
       { title: "You track your structural stability as your equity vests, income sources change, and comp evolves.", body: "Each structural change — vesting, a new income source, a comp restructure — moves your score." },
     ],
+    knowHeading: "What you know about your total compensation structure after you have a number.",
     prep: [
       "Know what % of your total compensation is variable — bonus, equity, or commissions",
       "Know how many income sources you have outside your primary employer",
@@ -255,6 +265,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how your compensation structure is evaluated from the outside.", body: "High-earning finance professionals are often surprised how lenders and advisors view variable-heavy compensation. Your score shows that picture first." },
       { title: "You track structural changes as your base adjusts, variable composition evolves, and income sources diversify.", body: "Each structural improvement — a higher base, more recurring variable income, outside sources — changes your score." },
     ],
+    knowHeading: "What you know about your variable compensation after you have a number.",
     prep: [
       "Know what % of your annual compensation is variable vs. fixed base",
       "Know whether your base salary alone would cover your financial obligations",
@@ -280,6 +291,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how lenders and advisors evaluate healthcare professional income.", body: "High-earning healthcare professionals are often surprised how lenders view single-institution income. Your score shows that picture first." },
       { title: "You track structural changes as your income sources and employment situation evolves.", body: "Each structural change — a new position, a private practice addition, a side income — moves your score." },
     ],
+    knowHeading: "What you know about your institutional exposure after you have a number.",
     prep: [
       "Know whether your income comes from one institution or multiple sources",
       "Know what your income would look like if your primary employer restructured",
@@ -305,6 +317,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how lenders evaluate business income for retail and e-commerce operators.", body: "Revenue is not income, and lenders know it. Your score shows your actual structural position before any external evaluation." },
       { title: "You track structural changes as your product mix, channels, and revenue composition evolve.", body: "Each structural improvement — a new channel, a subscription product, a diversified product line — moves your score." },
     ],
+    knowHeading: "What you know about your revenue structure after you have a number.",
     prep: [
       "Know how much your monthly revenue varies from your best to your slowest month",
       "Know whether you rely on one core product or have multiple lines",
@@ -330,6 +343,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how lenders evaluate hospitality business income.", body: "Variable, seasonal income is among the most difficult to underwrite. Your score gives you a structural picture before any lender forms one." },
       { title: "You track structural changes as you add contracted revenue, new locations, and alternative channels.", body: "Each structural addition — an event contract, a second location, a delivery channel — changes your score." },
     ],
+    knowHeading: "What you know about your demand floor after you have a number.",
     prep: [
       "Know what your income looks like in your slowest month of the year",
       "Know how much of your revenue is tied to foot traffic vs. contracted events",
@@ -355,6 +369,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how lenders evaluate transportation and logistics business income.", body: "Utilization-dependent income is difficult to underwrite. Your score gives you a structural position before any external evaluation." },
       { title: "You track structural changes as your client base, contracts, and route mix evolve.", body: "Each new signed contract, each additional client, each diversified route changes your structural score." },
     ],
+    knowHeading: "What you know about your contracted revenue after you have a number.",
     prep: [
       "Know how many active clients or contracts you currently have",
       "Know what happens to your income if your largest route or client pauses",
@@ -380,6 +395,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how lenders evaluate manufacturing business income.", body: "Buyer concentration and contract duration are the two factors lenders focus on for manufacturing operations. Your score shows both." },
       { title: "You track structural changes as your buyer mix, contract coverage, and revenue diversification evolve.", body: "Each new buyer, each supply agreement signed, each reduction in top-buyer concentration moves your score." },
     ],
+    knowHeading: "What you know about your buyer concentration after you have a number.",
     prep: [
       "Know what % of your output goes to your single largest buyer",
       "Know whether your current contracts are signed agreements or ongoing relationships",
@@ -405,6 +421,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how lenders and advisors evaluate educator income.", body: "Education income is stable but concentrated. Your score shows the structural picture clearly before any external evaluation." },
       { title: "You track how your structure changes as you build income sources outside your primary institution.", body: "Each additional source — a course, an adjunct position, a consulting engagement — changes your structural score." },
     ],
+    knowHeading: "What you know about your income ceiling after you have a number.",
     prep: [
       "Know whether your income comes from one institution or multiple sources",
       "Know what your income would be if your primary position ended today",
@@ -430,6 +447,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how lenders and advisors evaluate nonprofit and public sector income.", body: "Funding-dependent income is often misunderstood by financial institutions. Your score gives you a clear picture first." },
       { title: "You track structural changes as your funding composition and employment situation evolves.", body: "Changes in grant mix, budget allocation, and outside income all move your score." },
     ],
+    knowHeading: "What you know about your funding dependency after you have a number.",
     prep: [
       "Know whether your position is grant-funded, budget-funded, or both",
       "Know when your current funding cycle ends",
@@ -455,6 +473,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how lenders evaluate agricultural income.", body: "Agricultural lending is complex. Your score gives you a structural picture of your income before any lender evaluation." },
       { title: "You track structural changes as your contracts, crop mix, and buyer relationships evolve.", body: "Each forward contract signed, each new buyer added, each revenue channel diversified moves your score." },
     ],
+    knowHeading: "What you know about your market exposure after you have a number.",
     prep: [
       "Know whether you have any contracted sales vs. open market sales",
       "Know how much last year's income varied from a typical year",
@@ -480,6 +499,7 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
       { title: "You understand how lenders evaluate energy and utilities income.", body: "Commodity-exposed income is among the most complex to underwrite. Your score gives you a clear structural picture first." },
       { title: "You track structural changes as your contract coverage, pricing mix, and customer base evolves.", body: "Each new contracted rate, each long-term customer agreement, each reduction in spot-market exposure changes your score." },
     ],
+    knowHeading: "What you know about your price exposure after you have a number.",
     prep: [
       "Know whether your income is tied to commodity prices or contracted rates",
       "Know how much your income varied month-to-month last year",
