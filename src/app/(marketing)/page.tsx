@@ -209,11 +209,14 @@ function HeroSection() {
 
           {/* Left — copy */}
           <div style={{ marginBottom: m ? 48 : 0 }}>
-            {/* Trust badges */}
-            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: m ? 12 : 16, marginBottom: m ? 28 : 36, ...fadeIn(visible) }}>
-              {["$69 — full report", "Private by default", "No credit pull", "2-minute assessment"].map((item, i) => (
-                <span key={i} style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.04em", color: C.teal, padding: "5px 12px", borderRadius: 100, border: `1px solid ${C.teal}25`, backgroundColor: `${C.teal}06` }}>{item}</span>
-              ))}
+            {/* Persona eyebrow */}
+            <div style={{ marginBottom: m ? 20 : 24, ...fadeIn(visible) }}>
+              <span style={{
+                fontSize: 12, fontWeight: 700, letterSpacing: "0.06em",
+                color: C.teal, textTransform: "uppercase" as const,
+              }}>
+                For freelancers, founders, agents, consultants, creators &amp; contractors
+              </span>
             </div>
 
             <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 700, lineHeight: 1.06, letterSpacing: "-0.035em", color: C.navy, marginBottom: m ? 16 : 20, ...fadeIn(visible, 50) }}>
@@ -221,10 +224,15 @@ function HeroSection() {
             </h1>
 
             <p style={{ fontSize: m ? 17 : 22, fontWeight: 500, lineHeight: 1.45, color: C.navy, maxWidth: 480, marginBottom: 16, ...fadeIn(visible, 80) }}>
-              RunPayway™ scores how much of your income is protected, how much is at risk, and what to do about&nbsp;it.
+              RunPayway™ scores how stable your income actually is — what&apos;s protected, what&apos;s at risk, and what to do about&nbsp;it.
             </p>
 
-            <div style={{ marginBottom: m ? 32 : 40, ...fadeIn(visible, 100) }} />
+            {/* Trust badges */}
+            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: m ? 10 : 12, marginBottom: m ? 32 : 40, ...fadeIn(visible, 100) }}>
+              {["$69 — full report", "Private by default", "No credit pull", "2-minute assessment"].map((item, i) => (
+                <span key={i} style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.04em", color: C.teal, padding: "5px 12px", borderRadius: 100, border: `1px solid ${C.teal}25`, backgroundColor: `${C.teal}06` }}>{item}</span>
+              ))}
+            </div>
 
             <div style={{ ...fadeIn(visible, 150) }}>
               <CtaButton m={m} variant="primary" label="Get Your Income Stability Score" />
