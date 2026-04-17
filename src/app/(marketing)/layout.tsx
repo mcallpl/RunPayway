@@ -269,7 +269,6 @@ export default function MarketingLayout({
   const mobile = useMobile();
   const { t } = useLanguage();
   const moreDropdown = useAnimatedDropdown();
-  const dashboardDropdown = useAnimatedDropdown();
 
   // Track page views
   useEffect(() => { trackPageView(); }, []);
@@ -388,126 +387,6 @@ export default function MarketingLayout({
                   </Link>
                 ))}
 
-                {/* Dashboard dropdown */}
-                <div
-                  style={{ position: "relative" }}
-                  onMouseEnter={() => dashboardDropdown.open()}
-                  onMouseLeave={() => dashboardDropdown.close()}
-                >
-                  <button
-                    className="header-nav-link"
-                    aria-label="Dashboard options"
-                    aria-expanded={dashboardDropdown.visible}
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 500,
-                      color: dashboardDropdown.visible ? "#0E1A2B" : "rgba(14,26,43,0.70)",
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 5,
-                      padding: 0,
-                      paddingBottom: 2,
-                      transition: "color 280ms cubic-bezier(0.22, 1, 0.36, 1)",
-                    }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = dashboardDropdown.visible ? "#0E1A2B" : "rgba(14,26,43,0.70)"; }}
-                  >
-                    Dashboard
-                    <svg
-                      width="10" height="6" viewBox="0 0 10 6" fill="none"
-                      style={{
-                        transition: "transform 320ms cubic-bezier(0.22, 1, 0.36, 1)",
-                        transform: dashboardDropdown.visible ? "rotate(180deg)" : "rotate(0deg)",
-                        opacity: 0.5,
-                      }}
-                    >
-                      <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </button>
-
-                  {dashboardDropdown.visible && (
-                    <div style={{ position: "absolute", top: -4, right: -12, paddingTop: 36, paddingLeft: 12, paddingRight: 12 }}>
-                      <div
-                        className="dropdown-panel"
-                        data-state={dashboardDropdown.state}
-                        style={{
-                          background: "#ffffff",
-                          borderRadius: 16,
-                          border: "1px solid rgba(14,26,43,0.08)",
-                          boxShadow: "0 20px 56px rgba(14,26,43,0.13), 0 4px 14px rgba(14,26,43,0.06)",
-                          padding: "6px",
-                          minWidth: 236,
-                          overflow: "hidden",
-                        }}
-                      >
-                        {/* Section label */}
-                        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(14,26,43,0.30)", padding: "8px 12px 4px" }}>
-                          DASHBOARD
-                        </div>
-                        {/* My Report */}
-                        <Link
-                          href="/sign-in"
-                          onClick={() => dashboardDropdown.close()}
-                          style={{
-                            display: "flex", alignItems: "center", gap: 12,
-                            padding: "10px 12px", borderRadius: 10, textDecoration: "none",
-                            transition: "background 180ms ease",
-                          }}
-                          onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(14,26,43,0.04)"; }}
-                          onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
-                        >
-                          <span style={{
-                            width: 32, height: 32, borderRadius: 8, flexShrink: 0,
-                            background: "rgba(31,109,122,0.08)",
-                            display: "flex", alignItems: "center", justifyContent: "center",
-                          }}>
-                            <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-                              <circle cx="8" cy="5.5" r="2.5" stroke="#1F6D7A" strokeWidth="1.4" />
-                              <path d="M2.5 13.5c0-2.485 2.462-4.5 5.5-4.5s5.5 2.015 5.5 4.5" stroke="#1F6D7A" strokeWidth="1.4" strokeLinecap="round" />
-                            </svg>
-                          </span>
-                          <div>
-                            <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", lineHeight: 1.3 }}>My Report</div>
-                            <div style={{ fontSize: 11, color: "rgba(14,26,43,0.45)", fontWeight: 400, marginTop: 1 }}>Your score &amp; dashboard</div>
-                          </div>
-                        </Link>
-                        {/* Divider */}
-                        <div style={{ height: 1, margin: "2px 12px", background: "rgba(14,26,43,0.05)" }} />
-                        {/* Advisor Portal */}
-                        <Link
-                          href="/advisor-portal"
-                          onClick={() => dashboardDropdown.close()}
-                          style={{
-                            display: "flex", alignItems: "center", gap: 12,
-                            padding: "10px 12px", borderRadius: 10, textDecoration: "none",
-                            transition: "background 180ms ease",
-                          }}
-                          onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(14,26,43,0.04)"; }}
-                          onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
-                        >
-                          <span style={{
-                            width: 32, height: 32, borderRadius: 8, flexShrink: 0,
-                            background: "rgba(75,63,174,0.08)",
-                            display: "flex", alignItems: "center", justifyContent: "center",
-                          }}>
-                            <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-                              <rect x="2" y="7" width="12" height="8" rx="1.5" stroke="#4B3FAE" strokeWidth="1.4" />
-                              <path d="M5 7V5a3 3 0 0 1 6 0v2" stroke="#4B3FAE" strokeWidth="1.4" strokeLinecap="round" />
-                            </svg>
-                          </span>
-                          <div>
-                            <div style={{ fontSize: 13, fontWeight: 600, color: "#0E1A2B", lineHeight: 1.3 }}>Advisor Portal</div>
-                            <div style={{ fontSize: 11, color: "rgba(14,26,43,0.45)", fontWeight: 400, marginTop: 1 }}>Client assessments &amp; reports</div>
-                          </div>
-                        </Link>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
                 {/* More dropdown — only rendered when links exist */}
                 {MORE_LINKS.length > 0 && (
                   <div
@@ -596,6 +475,21 @@ export default function MarketingLayout({
 
               <div style={{ display: "flex", alignItems: "center", gap: 20, marginLeft: 28, flexShrink: 0 }}>
                 <LanguageSelector mobile={false} />
+                <Link
+                  href="/sign-in"
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: "rgba(14,26,43,0.55)",
+                    textDecoration: "none",
+                    transition: "color 200ms ease",
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.55)"; }}
+                >
+                  Sign In
+                </Link>
                 <Link
                   href="/begin"
                   className="cta-tick inline-flex items-center justify-center font-semibold whitespace-nowrap"
@@ -747,41 +641,30 @@ export default function MarketingLayout({
                   {link.label}
                 </Link>
               ))}
-              {/* Dashboard group */}
-              <div
-                className="mobile-nav-item"
+            </nav>
+            <div className="mobile-nav-item" style={{ marginTop: 20, animationDelay: `${NAV_LINKS.length * 40}ms` }}>
+              <Link
+                href="/sign-in"
+                onClick={() => setMenuOpen(false)}
                 style={{
-                  borderBottom: "1px solid rgba(14,26,43,0.06)",
-                  animationDelay: `${NAV_LINKS.length * 40}ms`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  height: 48,
+                  borderRadius: 12,
+                  border: "1px solid rgba(14,26,43,0.10)",
+                  background: "transparent",
+                  color: "#0E1A2B",
+                  fontSize: 15,
+                  fontWeight: 600,
+                  textDecoration: "none",
                 }}
               >
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(14,26,43,0.35)", padding: "14px 0 8px" }}>
-                  DASHBOARD
-                </div>
-                {[
-                  { href: "/sign-in", label: "My Report", sub: "Your score & dashboard" },
-                  { href: "/advisor-portal", label: "Advisor Portal", sub: "Client assessments & reports" },
-                ].map(({ href, label, sub }) => (
-                  <Link
-                    key={label}
-                    href={href}
-                    onClick={() => setMenuOpen(false)}
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 2,
-                      padding: "12px 0",
-                      textDecoration: "none",
-                      borderTop: "1px solid rgba(14,26,43,0.04)",
-                    }}
-                  >
-                    <span style={{ fontSize: 15, fontWeight: 600, color: "#0E1A2B" }}>{label}</span>
-                    <span style={{ fontSize: 12, color: "rgba(14,26,43,0.45)" }}>{sub}</span>
-                  </Link>
-                ))}
-              </div>
-            </nav>
-            <div className="mobile-nav-item" style={{ marginTop: 28, animationDelay: "400ms" }}>
+                Sign In
+              </Link>
+            </div>
+            <div className="mobile-nav-item" style={{ marginTop: 10, animationDelay: "400ms" }}>
               <Link
                 href="/begin"
                 onClick={() => setMenuOpen(false)}
