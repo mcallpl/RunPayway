@@ -288,12 +288,12 @@ export default function PlansPage() {
                 WHAT YOU GET
               </div>
               {[
-                "Per-report pricing — no seat fees",
+                "Assessments included in your plan",
                 "Assess clients without their involvement",
                 "Structured income data export",
                 "White-label PDF delivery",
-                "Client dashboard access",
-                "Volume discounts available",
+                "Book-level analytics + client notes",
+                "Starter, Professional, and Enterprise tiers",
               ].map((item) => (
                 <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 9 }}>
                   <span style={{
@@ -320,7 +320,7 @@ export default function PlansPage() {
                 <path d="M5 4V3a3 3 0 0 1 6 0v1" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" />
               </svg>
               <span style={{ fontSize: 13, fontWeight: 600, color: C.teal }}>
-                Per-report billing &middot; No monthly fees
+                Subscription plans &middot; No per-report fees
               </span>
             </div>
 
@@ -485,7 +485,7 @@ export default function PlansPage() {
             },
             {
               q: "How is advisor pricing different from individual pricing?",
-              a: "Individuals purchase a single assessment for themselves. Advisors pay per report they run on behalf of clients, with volume discounts as usage scales. The two are separate products with separate portals.",
+              a: "Individuals purchase a single assessment for themselves. Advisors subscribe to a plan — assessments are included in the plan, with no per-report fees. Tiers range from Starter (15 assessments/quarter) to Professional (50/month) to Enterprise (unlimited, seat-based). The two are separate products with separate portals.",
             },
           ].map(({ q, a }) => (
             <div key={q} style={{ marginBottom: 24, paddingBottom: 24, borderBottom: `1px solid ${C.borderSoft}` }}>
