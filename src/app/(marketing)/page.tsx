@@ -211,7 +211,7 @@ function HeroSection() {
           <div style={{ marginBottom: m ? 48 : 0 }}>
             {/* Trust badges */}
             <div style={{ display: "flex", flexWrap: "wrap" as const, gap: m ? 12 : 16, marginBottom: m ? 28 : 36, ...fadeIn(visible) }}>
-              {["Private by default", "No credit pull", "2-minute assessment"].map((item, i) => (
+              {["$69 — full report", "Private by default", "No credit pull", "2-minute assessment"].map((item, i) => (
                 <span key={i} style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.04em", color: C.teal, padding: "5px 12px", borderRadius: 100, border: `1px solid ${C.teal}25`, backgroundColor: `${C.teal}06` }}>{item}</span>
               ))}
             </div>
@@ -1331,15 +1331,12 @@ export default function LandingPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(PRODUCT_SCHEMA) }} />
       <main id="main-content">
         <HeroSection />
-        <CategoryDeclaration />
         <ProofMoment />
-        <ConsequenceSection />
-        <WhatYourScoreChanges />
-        <WhatChanges />
         <WhatYouReceive />
-        <UseCaseArchitecture />
+        <ConsequenceSection />
+        <WhatChanges />
+        <WhatYourScoreChanges />
         <IndustryProfiles />
-        <BeforeYouBegin />
         <StructuralIncomeBrief />
         <FinalCta />
       </main>
