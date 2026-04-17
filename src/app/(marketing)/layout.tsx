@@ -290,7 +290,7 @@ export default function MarketingLayout({
     { href: "/how-it-works", label: t.nav.howItWorks },
     { href: "/pricing", label: t.nav.pricing },
     { href: "/learn", label: "Learn" },
-    { href: "/sign-in", label: "Sign In" },
+    { href: "/advisors", label: "For Advisors" },
   ];
 
   const MORE_LINKS: { href: string; label: string }[] = [];
@@ -475,6 +475,21 @@ export default function MarketingLayout({
 
               <div style={{ display: "flex", alignItems: "center", gap: 20, marginLeft: 28, flexShrink: 0 }}>
                 <LanguageSelector mobile={false} />
+                <Link
+                  href="/sign-in"
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: "rgba(14,26,43,0.55)",
+                    textDecoration: "none",
+                    transition: "color 200ms ease",
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.55)"; }}
+                >
+                  Sign In
+                </Link>
                 <Link
                   href="/begin"
                   className="cta-tick inline-flex items-center justify-center font-semibold whitespace-nowrap"
