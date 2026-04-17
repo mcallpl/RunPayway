@@ -78,6 +78,104 @@ const YEARS_IN_STRUCTURE = [
   "5+ years",
 ];
 
+const INDUSTRY_PREP: Record<string, string[]> = {
+  "Real Estate": [
+    "Know how many deals are under signed contract vs. verbal pipeline right now",
+    "Know roughly what % of last year\u2019s income came from your top 1\u20132 closings",
+    "Think about whether you have any income that continues between transactions",
+  ],
+  "Finance / Banking": [
+    "Know what % of your annual compensation is variable vs. fixed base",
+    "Know whether your base salary alone would cover your financial obligations",
+    "Think about how tied your income is to market conditions or deal flow",
+  ],
+  "Insurance": [
+    "Know what % of your income is renewals vs. new production",
+    "Know whether your renewal book is growing, flat, or declining",
+    "Think about how much your income would drop if new sales stopped for 90 days",
+  ],
+  "Technology": [
+    "Know what % of your total compensation is variable \u2014 bonus, equity, or commissions",
+    "Know how many income sources you have outside your primary employer",
+    "Think about what your income looks like if your role was eliminated today",
+  ],
+  "Healthcare": [
+    "Know whether your income comes from one institution or multiple sources",
+    "Know what your income would look like if your primary employer restructured",
+    "Think about whether any of your income continues when you\u2019re not actively working",
+  ],
+  "Legal Services": [
+    "Know how many active matters you currently have",
+    "Know what % of your billings come from your top 2\u20133 matters",
+    "Think about whether any of your income is on retainer vs. matter-by-matter",
+  ],
+  "Consulting / Professional Services": [
+    "Know what % of your income comes from your single largest client",
+    "Know whether your current work is contracted, retainer, or project-by-project",
+    "Think about what your income looks like in month 2 if you sign nothing new today",
+  ],
+  "Sales / Brokerage": [
+    "Know what % of this quarter\u2019s earnings will carry forward automatically",
+    "Know how many separate commission sources your income comes from",
+    "Think about what your income is in a month where no deals close",
+  ],
+  "Media / Entertainment": [
+    "Know how many months your current projects or contracts run",
+    "Know whether you have any income that continues between active engagements",
+    "Think about what your income looks like in a month with no active project",
+  ],
+  "Construction / Trades": [
+    "Know how many months of signed work you currently have in backlog",
+    "Know what % of your jobs come from repeat vs. new customers",
+    "Think about whether your income stops completely between projects",
+  ],
+  "Retail / E-Commerce": [
+    "Know how much your monthly revenue varies from your best to your slowest month",
+    "Know whether you rely on one core product or have multiple lines",
+    "Think about what % of your revenue comes from returning vs. new customers",
+  ],
+  "Hospitality / Food Service": [
+    "Know what your income looks like in your slowest month of the year",
+    "Know how much of your revenue is tied to foot traffic vs. contracted events",
+    "Think about how quickly your income would change if demand shifted",
+  ],
+  "Transportation / Logistics": [
+    "Know how many active clients or contracts you currently have",
+    "Know what happens to your income if your largest route or client pauses",
+    "Think about whether your income is consistent or heavily tied to utilization",
+  ],
+  "Manufacturing": [
+    "Know what % of your output goes to your single largest buyer",
+    "Know whether your current contracts are signed agreements or ongoing relationships",
+    "Think about how your fixed costs compare to your income in a slow month",
+  ],
+  "Education": [
+    "Know whether your income comes from one institution or multiple sources",
+    "Know what your income would be if your primary position ended today",
+    "Think about whether you have any income outside your primary teaching or instruction role",
+  ],
+  "Nonprofit / Public Sector": [
+    "Know whether your position is grant-funded, budget-funded, or both",
+    "Know when your current funding cycle ends",
+    "Think about whether your income could continue if the primary funding source changed",
+  ],
+  "Agriculture": [
+    "Know whether you have any contracted sales vs. open market sales",
+    "Know how much last year\u2019s income varied from a typical year",
+    "Think about what % of your income comes from one crop, product, or buyer",
+  ],
+  "Energy / Utilities": [
+    "Know whether your income is tied to commodity prices or contracted rates",
+    "Know how much your income varied month-to-month last year",
+    "Think about whether your customers are under long-term contracts or spot pricing",
+  ],
+  "Other": [
+    "Know roughly how many sources your income comes from",
+    "Know whether any of your income repeats automatically each month",
+    "Think about what your income would be if your largest source stopped today",
+  ],
+};
+
 const INDUSTRY_SECTORS = [
   "Real Estate",
   "Finance / Banking",
@@ -662,6 +760,31 @@ export default function InitializationPage() {
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>
+
+              {/* Industry prep panel — appears on selection */}
+              {form.industry_sector && INDUSTRY_PREP[form.industry_sector] && (
+                <div style={{
+                  marginTop: 12,
+                  padding: "16px 20px",
+                  borderRadius: 12,
+                  backgroundColor: "rgba(31,109,122,0.04)",
+                  border: "1px solid rgba(31,109,122,0.14)",
+                  animation: "prepFadeIn 300ms ease-out",
+                }}>
+                  <style>{`@keyframes prepFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }`}</style>
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", fontFamily: sans, color: C.teal, marginBottom: 10 }}>
+                    HAVE IN MIND
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    {INDUSTRY_PREP[form.industry_sector].map((item, i) => (
+                      <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                        <div style={{ width: 4, height: 4, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 7 }} />
+                        <span style={{ fontSize: 13, fontFamily: sans, color: C.navy, lineHeight: 1.55 }}>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Operating Structure */}
@@ -758,7 +881,7 @@ export default function InitializationPage() {
               }}
             >
               <span className="tick tick-white" />
-              Continue to Questions
+              Continue
             </button>
           ) : (
             <button
