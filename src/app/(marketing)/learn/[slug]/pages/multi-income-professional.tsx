@@ -153,7 +153,7 @@ export default function MultiIncomeProfessional() {
           },
           {
             q: "Is it better to add a fourth source or rebalance the existing three?",
-            a: "In most cases, rebalancing the existing three sources produces a larger score improvement than adding a fourth source at a small percentage. Moving the distribution from 60/25/15 to 45/30/25 by growing the smaller sources adds more structural resilience than adding a fourth source at 5% while the dominant source remains at 57%. The model rewards balance improvements more than source count improvements because the concentration of the dominant source is the primary driver of structural vulnerability.",
+            a: "In most cases, rebalancing the existing three sources produces a larger score improvement than adding a fourth source at a small percentage. Moving the distribution from 60/25/15 to 45/30/25 by growing the smaller sources adds more structural resilience than adding a fourth source at 5% while the dominant source remains at 57%. Reducing the concentration of the dominant source improves the structural profile more than increasing the count of small secondary sources.",
           },
         ]}
       />

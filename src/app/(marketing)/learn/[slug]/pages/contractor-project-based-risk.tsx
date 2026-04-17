@@ -157,7 +157,7 @@ export default function ContractorProjectBasedRisk() {
           },
           {
             q: "What if my projects are seasonal?",
-            a: "Seasonal concentration compounds gap risk. A contractor who generates 80% of revenue in six months faces an extended gap during the off-season. The structural solution is developing off-season revenue sources — interior work during winter months, maintenance services, consulting, or planning and estimation work that generates income during the period when primary project work is not available. Seasonality is a structural characteristic that the scoring model weights as a risk factor.",
+            a: "Seasonal concentration compounds gap risk. A contractor who generates 80% of revenue in six months faces an extended gap during the off-season. The structural solution is developing off-season revenue sources — interior work during winter months, maintenance services, consulting, or planning and estimation work that generates income during the period when primary project work is not available. Seasonality is a structural characteristic that affects the score.",
           },
         ]}
       />

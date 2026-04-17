@@ -61,7 +61,7 @@ export default function HowToMeasureIncomeStability() {
             body: (
               <>
                 <P>
-                  Each dimension is evaluated independently and contributes to a composite stability score on a 0-100 scale. The dimensions are not equally weighted — concentration and forward visibility carry greater weight because they represent the most immediate structural risks. An earner with perfect diversification but zero contractual protection still faces material exposure.
+                  Each dimension is evaluated independently and contributes to a composite stability score on a 0-100 scale. The dimensions are weighted based on the structural risk they represent. An earner with perfect diversification but zero contractual protection still faces material exposure.
                 </P>
                 <P>
                   The composite score reflects the interaction between dimensions, not merely their sum. Strong performance on one dimension can partially offset weakness on another, but severe deficiency in any single dimension caps the overall score. An earner with 95% concentration in one client cannot score above the moderate range regardless of how well they perform on other dimensions — the single-source dependency represents a structural ceiling.

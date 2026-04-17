@@ -81,7 +81,7 @@ export default function IncomeStabilityContractors() {
                   The most impactful structural improvement is maintaining overlapping project timelines. A contractor who finishes one project and then begins sourcing the next creates a guaranteed income gap. A contractor who begins business development for the next project while the current one is at 60-70% completion can reduce or eliminate the zero-income period between engagements. This requires deliberate pipeline management — treating business development as a continuous function rather than an event triggered by project completion.
                 </P>
                 <P>
-                  Maintenance contracts and service agreements create recurring revenue that persists between major projects. A contractor who maintains 10 annual service agreements at $3,000 each generates $30,000 in baseline revenue regardless of project status. This recurring floor does not replace project income, but it prevents the income from reaching zero during transition periods and provides a structural base that the scoring model weights positively.
+                  Maintenance contracts and service agreements create recurring revenue that persists between major projects. A contractor who maintains 10 annual service agreements at $3,000 each generates $30,000 in baseline revenue regardless of project status. This recurring floor does not replace project income, but it prevents the income from reaching zero during transition periods and improves the structural profile of the income.
                 </P>
               </>
             ),
@@ -145,7 +145,7 @@ export default function IncomeStabilityContractors() {
           },
           {
             q: "How do maintenance contracts improve my score?",
-            a: "Maintenance contracts create recurring revenue that persists between major projects. They establish a structural income floor — a baseline that prevents revenue from reaching zero during project transitions. Even modest recurring revenue from service agreements shifts the income structure from purely project-dependent to partially recurring, which the scoring model weights positively.",
+            a: "Maintenance contracts create recurring revenue that persists between major projects. They establish a structural income floor — a baseline that prevents revenue from reaching zero during project transitions. Even modest recurring revenue from service agreements shifts the income structure from purely project-dependent to partially recurring, which improves the structural profile of the income.",
           },
           {
             q: "Should I take smaller projects to maintain continuity?",

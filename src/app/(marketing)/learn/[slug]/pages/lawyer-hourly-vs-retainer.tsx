@@ -78,7 +78,7 @@ export default function LawyerHourlyVsRetainer() {
             body: (
               <>
                 <P>
-                  A retainer agreement converts variable hourly income into contractually committed monthly revenue. A client paying $5,000 per month on a twelve-month retainer has committed $60,000 in revenue with defined terms. The attorney knows on January 1 that this client will generate $5,000 per month for the duration of the agreement, regardless of how many hours are worked in any given month. This forward visibility is the structural characteristic that the scoring model weights most heavily.
+                  A retainer agreement converts variable hourly income into contractually committed monthly revenue. A client paying $5,000 per month on a twelve-month retainer has committed $60,000 in revenue with defined terms. The attorney knows on January 1 that this client will generate $5,000 per month for the duration of the agreement, regardless of how many hours are worked in any given month. This forward visibility is a structural characteristic that improves income stability.
                 </P>
                 <P>
                   The commitment period provides protection against matter conclusion risk. When a retainer client&apos;s individual matter concludes, the retainer continues. The client remains engaged and continues paying the monthly fee because the retainer covers ongoing legal availability, not a specific matter. This structural feature eliminates the income disruption that occurs in hourly billing when matters end. The attorney&apos;s revenue continues even during periods between active matters for a given client.

@@ -144,7 +144,7 @@ export default function IncomeStabilitySmallBusinessOwners() {
           },
           {
             q: "How does client concentration specifically affect my score?",
-            a: "Client concentration is weighted heavily in the scoring model because it determines the severity of a single-client loss event. A business where the top client represents 20% of revenue can absorb that loss while maintaining a reduced but positive owner's draw. A business where the top client represents 55% of revenue may produce a negative cash flow position immediately upon losing that client. The scoring model evaluates the structural damage of losing the largest client, not just the probability of it happening.",
+            a: "Client concentration affects your score because it determines the severity of a single-client loss event. A business where the top client represents 20% of revenue can absorb that loss while maintaining a reduced but positive owner's draw. A business where the top client represents 55% of revenue may produce a negative cash flow position immediately upon losing that client. The model evaluates the structural damage of losing the largest client, not just the probability of it happening.",
           },
           {
             q: "Should I pay myself a fixed salary from the business?",

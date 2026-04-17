@@ -140,7 +140,7 @@ export default function SingleIncomeEarner() {
         items={[
           {
             q: "Why does the model score W-2 employees relatively low despite steady paychecks?",
-            a: "The model measures structural resilience, not historical reliability. A steady paycheck from one employer demonstrates that no disruption has occurred — not that the structure can absorb one. Single-source concentration is the primary scoring factor because it determines the severity of the worst-case scenario. A W-2 employee scores higher than a single-client freelancer due to employment protections, but the 100% concentration still places both in the lower portion of the model's range.",
+            a: "The model measures structural resilience, not historical reliability. A steady paycheck from one employer demonstrates that no disruption has occurred — not that the structure can absorb one. Single-source concentration is evaluated because it determines the severity of the worst-case scenario. A W-2 employee scores higher than a single-client freelancer due to employment protections, but 100% concentration in one source still produces a lower score than a diversified structure.",
           },
           {
             q: "Does a high salary compensate for single-source concentration?",
