@@ -847,10 +847,13 @@ function IndustryProfiles() {
       <div style={{ maxWidth: 960, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 36 : 56, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>
-            Find your industry
+            Earning more doesn&rsquo;t mean earning safely.
           </h2>
-          <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 480, margin: "0 auto" }}>
-            RunPayway™ is calibrated for how each industry actually earns. Select yours.
+          <p style={{ fontSize: m ? 17 : 20, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 580, margin: "0 auto 12px" }}>
+            Most financial advice assumes your income is stable. RunPayway™ measures whether it actually is &mdash; how much would survive if a client left, a deal delayed, or work slowed down.
+          </p>
+          <p style={{ fontSize: m ? 15 : 17, fontWeight: 500, lineHeight: 1.5, color: C.textMuted, maxWidth: 480, margin: "0 auto" }}>
+            Select your industry to see what typically creates the most exposure.
           </p>
         </div>
 
