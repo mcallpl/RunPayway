@@ -439,6 +439,178 @@ function ProofMoment() {
 
 
 /* ================================================================ */
+/* SECTION 4B — CONSEQUENCE                                          */
+/* ================================================================ */
+
+function ConsequenceSection() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const t = useTablet();
+  const fadeIn = useFadeIn();
+
+  const scenarios = [
+    {
+      label: "OVERCOMMITMENT",
+      text: "You take on a mortgage based on income that looks stable on paper. Structurally, it was one deal closing away from a gap.",
+    },
+    {
+      label: "UNDERCONFIDENCE",
+      text: "You pass on an opportunity \u2014 a hire, an investment, a move \u2014 because you weren\u2019t sure your income could support it. It could have. You just didn\u2019t have a number.",
+    },
+    {
+      label: "LATE DISCOVERY",
+      text: "You find out your income is fragile when a client doesn\u2019t renew. You didn\u2019t know that one relationship was carrying 70% of your structure.",
+    },
+  ];
+
+  return (
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t), position: "relative" as const, overflow: "hidden" }}>
+      <div className="navy-grain" />
+      <div style={{ maxWidth: 960, margin: "0 auto", position: "relative", zIndex: 1 }}>
+
+        <div style={{ textAlign: "center", marginBottom: m ? 48 : 72, ...fadeIn(visible) }}>
+          <h2 style={{ fontSize: m ? 28 : 44, fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.03em", color: C.sandText, marginBottom: 20 }}>
+            The problem isn&rsquo;t a fragile income.{m ? " " : <br />}It&rsquo;s not knowing.
+          </h2>
+          <p style={{ fontSize: m ? 17 : 20, fontWeight: 400, lineHeight: 1.6, color: "rgba(244,241,234,0.55)", maxWidth: 560, margin: "0 auto" }}>
+            If your income is exposed, you&rsquo;re making decisions &mdash; what to spend, what to borrow, what risk to take &mdash; based on an assumption you&rsquo;ve never tested.
+          </p>
+        </div>
+
+        <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 20, overflow: "hidden", marginBottom: m ? 48 : 64, ...fadeIn(visible, 100) }}>
+          {scenarios.map((s, i) => (
+            <div key={i} style={{ padding: m ? "28px 24px" : "40px 36px", backgroundColor: C.navy, marginBottom: m && i < 2 ? 1 : 0 }}>
+              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: C.teal, marginBottom: 16 }}>{s.label}</div>
+              <p style={{ fontSize: m ? 15 : 16, color: "rgba(244,241,234,0.70)", lineHeight: 1.65, margin: 0 }}>{s.text}</p>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ textAlign: "center", ...fadeIn(visible, 200) }}>
+          <p style={{ fontSize: m ? 18 : 22, fontWeight: 600, color: C.sandText, marginBottom: 8, letterSpacing: "-0.01em" }}>
+            A score doesn&rsquo;t change your income.
+          </p>
+          <p style={{ fontSize: m ? 16 : 19, fontWeight: 400, color: "rgba(244,241,234,0.55)", marginBottom: 36 }}>
+            It changes what you know about it. And what you know changes every decision after.
+          </p>
+          <CtaButton m={m} variant="light" label="Find Out Where You Stand" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================ */
+/* SECTION 4C — WHAT YOUR SCORE CHANGES                              */
+/* ================================================================ */
+
+function WhatYourScoreChanges() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const t = useTablet();
+  const fadeIn = useFadeIn();
+  const [tab, setTab] = useState<"individual" | "advisor">("individual");
+
+  const INDIVIDUAL_ITEMS = [
+    { title: "You find out if your income would survive a disruption \u2014 before one happens.", body: "One client leaves. A deal delays. Work slows. Your score shows whether your income holds." },
+    { title: "You make financial decisions on structure, not assumption.", body: "Mortgages, leases, investments \u2014 almost everyone makes these based on income amount. Your score shows whether your structure can actually support them." },
+    { title: "You know exactly what to fix first.", body: "Not \u201cdiversify your income.\u201d The specific change with the highest impact on your score \u2014 ranked and explained." },
+    { title: "You see your income the way lenders and advisors see it.", body: "With a number. Not a feeling." },
+    { title: "Progress becomes measurable.", body: "Add a retainer. Sign a longer contract. Reduce concentration. Your score reflects each change. You know it\u2019s working." },
+  ];
+
+  const ADVISOR_ITEMS = [
+    { title: "You put a number on the risk you already see.", body: "You know which clients are exposed. Now you have a score to show them. Data moves conversations that intuition can\u2019t." },
+    { title: "You open planning engagements that wouldn\u2019t exist without it.", body: "\u201cLet\u2019s get you from 42 to 65 by year-end\u201d creates an engagement. \u201cYou should diversify\u201d creates a nod." },
+    { title: "You surface hidden risk before it becomes a crisis.", body: "Clients with fragile income often don\u2019t know it. A score of 31 is harder to dismiss than your concern." },
+    { title: "Every client has a documented income stability record on file.", body: "Standardized inputs. Auditable output. Consistent across your entire book." },
+    { title: "You see which clients need attention before they call you.", body: "Know who\u2019s at Limited Stability before the disruption arrives." },
+  ];
+
+  const items = tab === "individual" ? INDIVIDUAL_ITEMS : ADVISOR_ITEMS;
+
+  return (
+    <section ref={ref} style={{ backgroundColor: C.panelFill, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
+      <div style={{ maxWidth: 720, margin: "0 auto" }}>
+
+        <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>
+            WHAT YOUR SCORE DOES
+          </div>
+          <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 32 }}>
+            What changes when you know.
+          </h2>
+          <div style={{ display: "inline-flex", borderRadius: 12, backgroundColor: "rgba(14,26,43,0.06)", padding: 4, gap: 4 }}>
+            {(["individual", "advisor"] as const).map((key) => (
+              <button key={key} onClick={() => setTab(key)} style={{
+                height: 40, padding: "0 24px", borderRadius: 9, border: "none",
+                fontSize: 14, fontWeight: 600, cursor: "pointer",
+                transition: "all 200ms ease",
+                backgroundColor: tab === key ? C.white : "transparent",
+                color: tab === key ? C.navy : C.textMuted,
+                boxShadow: tab === key ? "0 2px 8px rgba(14,26,43,0.10)" : "none",
+              }}>
+                {key === "individual" ? "For Individuals" : "For Advisors"}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column" as const, ...fadeIn(visible, 100) }}>
+          {items.map((item, i) => (
+            <div key={`${tab}-${i}`} style={{
+              display: "flex", gap: m ? 20 : 28, alignItems: "flex-start",
+              padding: m ? "24px 0" : "32px 0",
+              borderTop: `1px solid rgba(14,26,43,0.06)`,
+              borderBottom: i === items.length - 1 ? `1px solid rgba(14,26,43,0.06)` : "none",
+            }}>
+              <div style={{
+                width: m ? 32 : 40, height: m ? 32 : 40, borderRadius: 10, flexShrink: 0,
+                backgroundColor: tab === "individual" ? C.navy : C.purple,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: m ? 13 : 15, fontWeight: 700, color: C.white, fontFamily: mono,
+              }}>
+                {i + 1}
+              </div>
+              <div>
+                <p style={{ fontSize: m ? 16 : 18, fontWeight: 700, color: C.navy, lineHeight: 1.3, margin: "0 0 6px", letterSpacing: "-0.01em" }}>
+                  {item.title}
+                </p>
+                <p style={{ fontSize: m ? 14 : 15, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>
+                  {item.body}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ textAlign: "center", marginTop: m ? 40 : 56, ...fadeIn(visible, 200) }}>
+          {tab === "individual" ? (
+            <CtaButton m={m} variant="primary" label="Get Your Income Stability Score" />
+          ) : (
+            <Link href="/advisor-portal" style={{
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              height: m ? 56 : 60, padding: "0 32px", borderRadius: 16,
+              backgroundColor: C.purple, color: C.white,
+              fontSize: 16, fontWeight: 600, textDecoration: "none",
+              boxShadow: "0 8px 24px rgba(75,63,174,0.20)",
+              transition: "transform 200ms, box-shadow 200ms",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(75,63,174,0.30)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(75,63,174,0.20)"; }}
+            >
+              See Advisor Plans &rarr;
+            </Link>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ================================================================ */
 /* SECTION 5 — WHAT CHANGES                                          */
 /* ================================================================ */
 
@@ -1148,6 +1320,8 @@ export default function LandingPage() {
         <HeroSection />
         <CategoryDeclaration />
         <ProofMoment />
+        <ConsequenceSection />
+        <WhatYourScoreChanges />
         <WhatChanges />
         <WhatYouReceive />
         <UseCaseArchitecture />
