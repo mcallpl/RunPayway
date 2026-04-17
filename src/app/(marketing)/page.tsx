@@ -1100,8 +1100,8 @@ function IndustryProfiles() {
                 </div>
               </div>
 
-              {/* CTA */}
-              <Link href="/begin" style={{
+              {/* CTA — industry page is primary (education before conversion) */}
+              <Link href={`/industries/${active.slug}`} style={{
                 display: "inline-flex", alignItems: "center", justifyContent: "center",
                 height: 52, padding: "0 32px", borderRadius: 14, width: m ? "100%" : "auto",
                 backgroundColor: C.teal, color: "#fff",
@@ -1112,21 +1112,20 @@ function IndustryProfiles() {
                 onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(31,109,122,0.35)"; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(31,109,122,0.25)"; }}
               >
-                Get your {active.name.toLowerCase().split(" /")[0]} income score
+                See your {active.name.split(" /")[0].toLowerCase()} score profile &rarr;
               </Link>
-              <Link href={`/industries/${active.slug}`} style={{
+              <Link href="/begin" style={{
                 display: "inline-flex", alignItems: "center", justifyContent: "center",
                 height: 40, padding: "0 20px", borderRadius: 10, width: m ? "100%" : "auto",
-                backgroundColor: "transparent", color: "rgba(244,241,234,0.55)",
+                backgroundColor: "transparent", color: "rgba(244,241,234,0.50)",
                 fontSize: 13, fontWeight: 500, textDecoration: "none",
-                border: "1px solid rgba(244,241,234,0.12)",
                 marginTop: 10,
-                transition: "color 180ms, border-color 180ms",
+                transition: "color 180ms",
               }}
-                onMouseEnter={e => { e.currentTarget.style.color = "rgba(244,241,234,0.85)"; e.currentTarget.style.borderColor = "rgba(244,241,234,0.22)"; }}
-                onMouseLeave={e => { e.currentTarget.style.color = "rgba(244,241,234,0.55)"; e.currentTarget.style.borderColor = "rgba(244,241,234,0.12)"; }}
+                onMouseEnter={e => { e.currentTarget.style.color = "rgba(244,241,234,0.80)"; }}
+                onMouseLeave={e => { e.currentTarget.style.color = "rgba(244,241,234,0.50)"; }}
               >
-                See the full {active.name.split(" /")[0].toLowerCase()} score guide &rarr;
+                Or start the assessment now
               </Link>
             </div>
           </div>

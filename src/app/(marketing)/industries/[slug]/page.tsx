@@ -82,8 +82,13 @@ export default async function IndustryPage({
   const scoreColorA = page.proofA.score < 45 ? C.risk : C.teal;
   const scoreColorB = page.proofB.score >= 60 ? C.teal : C.purple;
 
-  // Pick OTHER_COUNT other industries to suggest (exclude current)
-  const others = INDUSTRY_PAGES.filter((p) => p.slug !== slug).slice(0, OTHER_COUNT);
+  // Rotate "other industries" by current page's position so each page shows a different set
+  const currentIndex = INDUSTRY_PAGES.findIndex((p) => p.slug === slug);
+  const rotated = [
+    ...INDUSTRY_PAGES.slice(currentIndex + 1),
+    ...INDUSTRY_PAGES.slice(0, currentIndex),
+  ];
+  const others = rotated.slice(0, OTHER_COUNT);
 
   return (
     <div style={{ minHeight: "100vh", backgroundColor: C.white, fontFamily: sans }}>

@@ -289,6 +289,7 @@ export default function MarketingLayout({
   const NAV_LINKS = [
     { href: "/how-it-works", label: t.nav.howItWorks },
     { href: "/pricing", label: t.nav.pricing },
+    { href: "/industries", label: "Industries" },
     { href: "/learn", label: "Learn" },
     { href: "/advisors", label: "For Advisors" },
   ];
