@@ -220,7 +220,7 @@ function HeroSection() {
             {/* Supporting line + persona strip */}
             <div style={{ marginBottom: m ? 28 : 36, ...fadeIn(visible, 60) }}>
               <p style={{ fontSize: m ? 15 : 16, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 460, margin: "0 0 14px" }}>
-                Guaranteed income has a floor. Variable income now has a score.
+                A salary comes with certainty built in. Independent income comes with RunPayway™.
               </p>
               <span style={{
                 fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
