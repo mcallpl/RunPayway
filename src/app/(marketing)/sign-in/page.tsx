@@ -112,7 +112,7 @@ export default function SignInPage() {
               Monitor Your Income Stability
             </h1>
             <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 560, margin: "0 auto" }}>
-              Sign in to access your RunPayway&#8482; Stability Monitoring Dashboard.
+              Sign in to access your RunPayway™ Stability Monitoring Dashboard.
             </p>
           </div>
         </div>
@@ -127,7 +127,7 @@ export default function SignInPage() {
               /* ─── Email login ─── */
               <>
                 <div style={{ textAlign: "center", marginBottom: 32 }}>
-                  <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 16 }}>RunPayway&#8482; Stability Monitoring</div>
+                  <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 16 }}>RunPayway™ Stability Monitoring</div>
                   <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: 12 }}>
                     Sign in with Your Email &amp; PIN
                   </h2>
@@ -274,7 +274,7 @@ export default function SignInPage() {
                     Welcome back.
                   </h2>
                   <p style={{ ...bodySm(m), color: C.muted }}>
-                    Your RunPayway&#8482; Stability Monitoring plan is active.
+                    Your RunPayway™ Stability Monitoring plan is active.
                   </p>
                 </div>
 

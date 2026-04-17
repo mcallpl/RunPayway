@@ -10,6 +10,13 @@ DirectoryIndex index.html
   RewriteEngine On
   RewriteBase /RunPayway/
 
+  # 301 redirects — consolidated/deleted pages
+  RewriteRule ^how-runpayway-works/?$ /RunPayway/how-it-works/ [R=301,L]
+  RewriteRule ^interpretation-contract/?$ /RunPayway/methodology/ [R=301,L]
+  RewriteRule ^version-governance/?$ /RunPayway/methodology/ [R=301,L]
+  RewriteRule ^badge/?$ /RunPayway/ [R=301,L]
+  RewriteRule ^checkout-placeholder/?$ /RunPayway/pricing/ [R=301,L]
+
   # If the request is not a file or directory, try /path/index.html
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d

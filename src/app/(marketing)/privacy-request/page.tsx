@@ -127,7 +127,7 @@ export default function PrivacyRequestPage() {
           </h1>
 
           <p style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, color: C.navy, marginBottom: 16 }}>
-            RunPayway&#8482; is committed to protecting your privacy.
+            RunPayway™ is committed to protecting your privacy.
           </p>
 
           <p style={{ fontSize: mobile ? 16 : 18, color: C.textSecondary, lineHeight: 1.6, maxWidth: 580, margin: "0 auto" }}>
@@ -453,7 +453,7 @@ export default function PrivacyRequestPage() {
                 Review Our Full Privacy Policy
               </div>
               <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.75, marginBottom: 14 }}>
-                For complete details on how RunPayway&#8482; collects, uses, stores, and protects your information, read our full Privacy Policy.
+                For complete details on how RunPayway™ collects, uses, stores, and protects your information, read our full Privacy Policy.
               </p>
               <Link
                 href="/privacy-policy"
@@ -486,7 +486,7 @@ export default function PrivacyRequestPage() {
       {/* ============================================================ */}
       <div style={{ background: gradient, padding: "16px 0", textAlign: "center" }}>
         <span style={{ fontSize: 12, color: C.sandLight, letterSpacing: "0.02em" }}>
-          Powered by RunPayway&#8482; Structural Stability Model
+          Powered by RunPayway™ Structural Stability Model
         </span>
       </div>
     </div>

@@ -1079,7 +1079,7 @@ function DashboardContent() {
                 }}
                   onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
                   onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}
-                >Unlock Your Full Report + Dashboard</a>
+                >Get Your Full Report</a>
               </div>
             </div>
 
@@ -1154,12 +1154,12 @@ function DashboardContent() {
               }}
                 onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(244,241,234,0.15)"; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}
-              >Unlock Your Full Report + Dashboard</a>
+              >Get Your Full Report</a>
             </div>
 
             {/* Footer */}
             <div style={{ paddingTop: 32, textAlign: "center" }}>
-              <p style={{ fontSize: 14, color: B.taupe, margin: "0 0 4px" }}>RunPayway&#8482; | PeopleStar Enterprises, INC.</p>
+              <p style={{ fontSize: 14, color: B.taupe, margin: "0 0 4px" }}>RunPayway™ | PeopleStar Enterprises, INC.</p>
               <p style={{ fontSize: 12, color: `${B.taupe}80`, margin: 0 }}>Consistent scoring | Private by default</p>
             </div>
           </div>
@@ -1232,7 +1232,7 @@ function DashboardContent() {
                         </div>
                       )}
                       <div style={{ fontSize: 12, fontWeight: 500, color: B.muted, marginTop: 8 }}>
-                        Measured by RunPayway&#8482; &middot; Model RP-2.0
+                        Measured by RunPayway™ &middot; Model RP-2.0
                       </div>
                     </div>
                   </div>

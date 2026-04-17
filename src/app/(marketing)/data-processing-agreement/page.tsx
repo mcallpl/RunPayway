@@ -51,7 +51,7 @@ const sections = [
   ]},
   { title: "2. Scope of Processing", items: [
     "RunPayway\u2122 processes the following categories of Personal Data: assessment inputs (structural income dimensions), email addresses, assessment titles, and industry sector classifications.",
-    "Processing is performed solely for the purpose of generating the Income Stability Score\u2122, diagnostic reports, and Dashboard functionality.",
+    "Processing is performed solely for the purpose of generating the Income Stability Score\u2122, full reports, and Dashboard functionality.",
     "No financial account data, bank credentials, credit data, or transaction history is collected or processed.",
     "All scoring is deterministic under Model RP-2.0. No Personal Data is used for model training, profiling, or automated decision-making beyond the assessment itself.",
   ]},
@@ -132,7 +132,7 @@ export default function DataProcessingAgreementPage() {
             Effective Date: April 2, 2026
           </p>
           <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.6, maxWidth: 640, margin: "0 auto" }}>
-            This Data Processing Agreement (DPA) outlines how RunPayway&#8482; processes Personal Data on behalf of enterprise customers in compliance with applicable data protection laws.
+            This Data Processing Agreement (DPA) outlines how RunPayway™ processes Personal Data on behalf of enterprise customers in compliance with applicable data protection laws.
           </p>
         </div>
       </header>
@@ -169,7 +169,7 @@ export default function DataProcessingAgreementPage() {
               For enterprise inquiries or to execute this agreement, contact us through our contact page.
             </p>
             <p style={{ fontSize: 13, color: light }}>
-              RunPayway&#8482; is a product of PeopleStar Enterprises, INC.. Model RP-2.0. This document is provided for informational purposes and does not constitute legal advice.
+              RunPayway™ is a product of PeopleStar Enterprises, INC.. Model RP-2.0. This document is provided for informational purposes and does not constitute legal advice.
             </p>
           </div>
         </div>
@@ -182,7 +182,7 @@ export default function DataProcessingAgreementPage() {
             Contact Us for Data Protection Inquiries
           </h2>
           <p style={{ fontSize: m ? 16 : 18, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 32, maxWidth: 560, marginLeft: "auto", marginRight: "auto" }}>
-            For any data protection requests or concerns, please reach out through the RunPayway&#8482; contact form or by email at privacy@peoplestar.com.
+            For any data protection requests or concerns, please reach out through the RunPayway™ contact form or by email at privacy@peoplestar.com.
           </p>
           <Link href="/contact" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
@@ -199,7 +199,7 @@ export default function DataProcessingAgreementPage() {
             Contact Us
           </Link>
           <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 24, letterSpacing: "0.04em" }}>
-            Income Stability Score&#8482; &middot; Powered by Structural Stability Model RP-2.0
+            Income Stability Score™ &middot; Powered by Structural Stability Model RP-2.0
           </p>
         </div>
       </section>

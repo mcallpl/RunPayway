@@ -64,7 +64,7 @@ export default function UnlockPage() {
         </div>
 
         <div style={{ fontSize: 24, fontWeight: 600, fontFamily: sans, color: C.sandText, marginBottom: 12 }}>
-          Income Stability Score&#8482;
+          Income Stability Score™
         </div>
 
         <div style={{ fontSize: 14, color: C.sandMuted, lineHeight: 1.6 }}>

@@ -91,7 +91,7 @@ function HeroSection() {
           Evaluate and Mitigate Client{m ? " " : <br />}Income Risk Before It Becomes{m ? " " : <br />}a Problem
         </h1>
         <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: narrowW, margin: "0 auto 24px", ...fadeIn(visible, 100) }}>
-          Your clients tell you what they earn. Not how it&rsquo;s built. RunPayway&#8482; gives you a standardized way to assess income structure&mdash;and act on it before problems surface.
+          Your clients tell you what they earn. Not how it&rsquo;s built. RunPayway™ gives you a standardized way to assess income structure&mdash;and act on it before problems surface.
         </p>
         <div style={{ display: "flex", justifyContent: "center", gap: m ? 12 : 24, flexWrap: "wrap" as const, marginBottom: 32, ...fadeIn(visible, 150) }}>
           {["Standardized methodology", "Fixed rules", "Private by default"].map((badge, i) => (
@@ -252,7 +252,7 @@ function UseCases() {
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: 48, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy }}>
-            Where Advisors Apply RunPayway&#8482;
+            Where Advisors Apply RunPayway™
           </h2>
         </div>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, ...fadeIn(visible, 100) }}>
@@ -279,7 +279,7 @@ function WhatYouGet() {
   const fadeIn = useFadeIn();
 
   const items = [
-    { title: "Full 4-Page Diagnostic Report", desc: "Actionable insights tailored to each client\u2019s unique income structure." },
+    { title: "Full 4-Page Report", desc: "Actionable insights tailored to each client\u2019s unique income structure." },
     { title: "Complete Dashboard", desc: "Score breakdowns, stress testing, and real-time performance insights per client." },
     { title: "Client-Ready PDF Output", desc: "Download and share a polished report directly with your client." },
     { title: "Standardized Methodology", desc: "Run consistent assessments with fixed, transparent rules across your entire book." },
@@ -334,7 +334,7 @@ function SystemIntegrity() {
             Same System. Same Rules. Every Client.
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted, maxWidth: 640, margin: "0 auto" }}>
-            Every assessment uses the same fixed model. No AI. No subjective judgment. Same inputs always produce the same result&nbsp;&mdash; regardless of who runs the assessment.
+            Every assessment uses the same fixed model. No AI in scoring. No subjective judgment. Same inputs always produce the same result&nbsp;&mdash; regardless of who runs the assessment.
           </p>
         </div>
         <div style={{ display: m ? "grid" : "grid", gridTemplateColumns: m ? "1fr 1fr" : "1fr 1fr 1fr 1fr", gap: 16, ...fadeIn(visible, 100) }}>
@@ -494,7 +494,7 @@ function RequestAccessForm() {
               </div>
 
               <div style={{ marginBottom: 24 }}>
-                <label style={labelStyle}>How would you use RunPayway&#8482;?</label>
+                <label style={labelStyle}>How would you use RunPayway™?</label>
                 <textarea
                   value={message} onChange={e => setMessage(e.target.value)}
                   placeholder="Tell us about your use case..."

@@ -133,7 +133,7 @@ export default function IncomeStabilityRealEstateAgents() {
           { href: "/learn/what-is-income-stability", label: "What Is Income Stability" },
           { href: "/learn/150k-freelancer-one-client", label: "Scenario: $150K Freelancer, One Client" },
           { href: "/learn/income-stability-commission-sales", label: "Income Stability for Commission Sales" },
-          { href: "/learn/income-diversification", label: "What Is Income Diversification" },
+          { href: "/learn/income-concentration-risk", label: "What Is Income Concentration Risk" },
         ]}
       />
 

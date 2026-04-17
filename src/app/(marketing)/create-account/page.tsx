@@ -525,7 +525,7 @@ export default function CreateAccountPage() {
               {[
                 ["3 Income Stability Assessments", "Take at any time within 12 months"],
                 ["Monitoring Portal Access", "View your timeline and historical scores"],
-                ["Full Diagnostic Reports", "Score, classification, and improvement path"],
+                ["Full Reports", "Score, classification, and improvement path"],
                 ["Score Verification", "Each assessment receives a unique verification ID"],
               ].map(([title, desc], i) => (
                 <div
@@ -593,7 +593,7 @@ export default function CreateAccountPage() {
         }}
       >
         <span style={{ fontSize: 12, color: C.sandLight, letterSpacing: "0.02em" }}>
-          Powered by RunPayway&#8482; Structural Stability Model
+          Powered by RunPayway™ Structural Stability Model
         </span>
       </div>
     </div>

@@ -102,7 +102,7 @@ function Shipped() {
       items: [
         "Consistent scoring with fixed, versioned rules",
         "Six key dimensions with cross-dimension interaction analysis",
-        "4-page diagnostic report with PressureMap\u2122 intelligence",
+        "4-page full report with PressureMap\u2122 intelligence",
         "Integrity verification on every assessment record",
         "Consolidated scoring architecture — one model, one source of truth",
       ],
@@ -318,7 +318,7 @@ function FinalCta() {
           The Platform Is Live.{m ? " " : <br />}Your assessment is waiting.
         </h2>
         <p style={{ fontSize: m ? 16 : 18, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 32, ...fadeIn(visible, 60) }}>
-          Start with your free score. The full diagnostic is there when you&rsquo;re ready.
+          Start with your free score. The full report is there when you&rsquo;re ready.
         </p>
         <div style={{ ...fadeIn(visible, 120) }}>
           <Link href="/begin" style={{

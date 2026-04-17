@@ -119,88 +119,55 @@ export default function AssessmentRegistryPage() {
           {/* 1. What Gets Registered */}
           <div ref={s1.ref}>
             <Section number="1." title="What Gets Registered" mobile={mobile} visible={s1.visible}>
-              <P>Every assessment produces a record containing the following fields:</P>
-              <Bullet items={[
-                "assessment_id \u2014 a UUID uniquely identifying this assessment",
-                "authorization_code \u2014 the first 16 characters of the SHA-256 record hash",
-                "model_version \u2014 the scoring model version used to produce the result",
-                "assessment_date \u2014 the timestamp when the assessment was completed",
-                "final_score \u2014 the numeric score (0\u2013100) assigned by the engine",
-                "stability_band \u2014 the categorical band (Volatile, Exposed, Stable, Resilient)",
-                "registry_status \u2014 either Active (current) or Superseded (replaced by a newer assessment)",
-              ]} />
-              <P style={{ marginBottom: 0 }}>These fields form the canonical record. Every other piece of assessment data is derived from or linked to this record.</P>
+              <P>Every assessment produces a permanent record containing your score, stability band, model version, and assessment date. Each record has a unique identifier and an authorization code for verification.</P>
+              <P style={{ marginBottom: 0 }}>These fields form the canonical record. The record is immutable once issued \u2014 it cannot be changed after the fact.</P>
             </Section>
           </div>
 
           {/* 2. Integrity Verification */}
           <div ref={s2.ref}>
             <Section number="2." title="Integrity Verification" mobile={mobile} visible={s2.visible}>
-              <P>Four SHA-256 hashes protect each assessment record:</P>
-              <Bullet items={[
-                "input_hash \u2014 computed from the canonical inputs provided by the user",
-                "output_hash \u2014 computed from the scores produced by the engine",
-                "manifest_hash \u2014 computed from the model versions active at assessment time",
-                "record_hash \u2014 computed from the combination of all three hashes above",
-              ]} />
-              <P>The authorization_code is derived from the record_hash. It serves as a compact, shareable proof of authenticity.</P>
-              <P style={{ marginBottom: 0 }}>Changing any input, score, or model version would produce a different hash \u2014 making tampering detectable. If a record has been altered after issuance, the hashes will not match and verification will fail.</P>
+              <P>Every assessment record is cryptographically signed at the time of issuance. If any part of the record were changed after the fact \u2014 the inputs, the score, or the model version \u2014 the signature would not match and verification would fail.</P>
+              <P style={{ marginBottom: 0 }}>This makes tampering detectable. The record you receive is the record that was issued.</P>
             </Section>
           </div>
 
           {/* 3. Public Verification */}
           <div ref={s3.ref}>
             <Section number="3." title="Public Verification" mobile={mobile} visible={s3.visible}>
-              <P>Any record can be verified at <Code>/verify</Code> using the record_id and authorization_code. No login is required.</P>
-              <P>The verification endpoint confirms:</P>
-              <Bullet items={[
-                "The score is authentic and has not been modified since issuance",
-                "The model version used to generate the assessment",
-                "The date the assessment was completed",
-                "The stability band assigned to the result",
-              ]} />
-              <P style={{ marginBottom: 0 }}>Verification is available to employers, lenders, partners, or anyone the user shares their code with. The user controls who sees their results by choosing who to share the code with.</P>
+              <P>Any record can be verified at <Code>/verify</Code> using the record ID and authorization code. No login is required.</P>
+              <P>Verification confirms that the score is authentic, shows when the assessment was completed, and confirms the model version used.</P>
+              <P style={{ marginBottom: 0 }}>Verification is available to anyone the user shares their code with \u2014 employers, lenders, partners, or advisors. The user controls who sees their results.</P>
             </Section>
           </div>
 
           {/* 4. Record Lifecycle */}
           <div ref={s4.ref}>
             <Section number="4." title="Record Lifecycle" mobile={mobile} visible={s4.visible}>
-              <P><strong>Active</strong> \u2014 the most recent assessment for this profile. Only one assessment per profile can be Active at any time.</P>
-              <P><strong>Superseded</strong> \u2014 a prior assessment that has been replaced by a newer one under the same profile. When a new assessment is completed, the previous Active record transitions to Superseded.</P>
-              <P style={{ marginBottom: 0 }}>Superseded records remain fully verifiable but are marked as historical. The verification endpoint will indicate that the record is no longer the most recent assessment for that profile.</P>
+              <P><strong>Active</strong> \u2014 the most recent assessment. Only one assessment per profile can be Active at any time.</P>
+              <P><strong>Superseded</strong> \u2014 a prior assessment that has been replaced by a newer one. Superseded records remain fully verifiable but are marked as historical.</P>
+              <P style={{ marginBottom: 0 }}>When you take a new assessment, your previous record transitions to Superseded automatically.</P>
             </Section>
           </div>
 
-          {/* 5. Storage Architecture */}
+          {/* 5. Data Storage */}
           <div ref={s5.ref}>
-            <Section number="5." title="Storage Architecture" mobile={mobile} visible={s5.visible}>
-              <P>Records are persisted in Cloudflare D1, the production database. D1 serves as the authoritative source of truth for all assessment records.</P>
-              <P>A secondary copy is stored in the user&apos;s browser via localStorage for offline access. This allows users to view their most recent assessment without an internet connection.</P>
-              <P style={{ marginBottom: 0 }}>The server record is authoritative. If the browser copy and server copy disagree, the server copy is correct. The browser copy exists purely for convenience and is overwritten on the next sync.</P>
+            <Section number="5." title="Data Storage" mobile={mobile} visible={s5.visible}>
+              <P>Records are stored on secure production infrastructure. A local copy is available in your browser for offline access.</P>
+              <P style={{ marginBottom: 0 }}>The server record is authoritative. If the local copy and server copy disagree, the server copy is correct.</P>
             </Section>
           </div>
 
           {/* 6. Access Codes */}
           <div ref={s6.ref}>
             <Section number="6." title="Access Codes" mobile={mobile} visible={s6.visible}>
-              <P>Each assessment generates a deterministic access code. The access code is a Base64-encoded JSON payload containing the core metrics from the assessment.</P>
-              <P>Access codes can be shared with others, pasted into the dashboard, and used to reconstruct the full assessment view. They provide a portable, self-contained snapshot of the assessment results.</P>
+              <P>Each assessment generates an access code you can share with others. Access codes provide a portable, self-contained snapshot of your assessment results.</P>
               <Bullet items={[
-                "Access codes do not expire \u2014 a shared code works indefinitely",
-                "Access codes do not grant write access \u2014 only read access to the assessment results",
-                "Access codes are deterministic \u2014 the same assessment always produces the same code",
+                "Access codes do not expire",
+                "Access codes provide read-only access to the assessment results",
+                "The same assessment always produces the same code",
               ]} />
-              <P style={{ marginBottom: 0 }}>This design means users can share their results via any channel \u2014 email, text, printed QR code \u2014 without worrying about expiration or permissions.</P>
-            </Section>
-          </div>
-
-          {/* 7. Badge Verification */}
-          <div ref={s7.ref}>
-            <Section number="7." title="Badge Verification" mobile={mobile} visible={s7.visible}>
-              <P>Assessments can be displayed as embeddable badges via the <Code>/api/badge/[code]</Code> endpoint. Badges render as SVG images showing the score, band, and a verification link.</P>
-              <P>The embed variant at <Code>/api/badge/[code]/embed</Code> returns HTML suitable for embedding on external websites. This allows users to display a verified RunPayway badge on their personal site, portfolio, or LinkedIn profile.</P>
-              <P style={{ marginBottom: 0 }}>Badges are generated on demand from the access code \u2014 they are not stored as static assets. This ensures the badge always reflects the data encoded in the access code.</P>
+              <P style={{ marginBottom: 0 }}>You can share your results via any channel \u2014 email, text, or printed \u2014 without worrying about expiration.</P>
             </Section>
           </div>
 

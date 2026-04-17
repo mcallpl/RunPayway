@@ -131,7 +131,7 @@ function SuccessInner() {
             </div>
 
             <h1 style={{ fontSize: mobile ? 24 : 28, fontWeight: 700, color: C.navy, margin: "0 0 8px" }}>
-              Welcome to RunPayway&#8482; Advisor
+              Welcome to RunPayway™ Advisor
             </h1>
             <p style={{ fontSize: 16, color: C.textSecondary, margin: "0 0 32px" }}>
               Your {planInfo?.label || "Advisor"} account is ready.

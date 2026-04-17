@@ -94,7 +94,7 @@ function HeroSection() {
           Start with the score.{m ? " " : <br />}Understand what defines it.
         </h1>
         <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.45, color: C.textSecondary, maxWidth: 680, margin: "0 auto 8px", ...fadeIn(visible, 100) }}>
-          RunPayway&#8482; reveals how your income is built&mdash;and whether it holds under pressure.
+          RunPayway™ reveals how your income is built&mdash;and whether it holds under pressure.
         </p>
         <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 620, margin: "0 auto 24px", ...fadeIn(visible, 120) }}>
           The score is a fixed result. The diagnostic reveals what defines it.
@@ -129,7 +129,7 @@ function Declaration() {
           Same rules. Every time.
         </p>
         <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 28, ...fadeIn(visible, 100) }}>
-          RunPayway&#8482; measures your income under fixed rules applied consistently every time. What changes is how deeply you can see:
+          RunPayway™ measures your income under fixed rules applied consistently every time. What changes is how deeply you can see:
         </p>
         <div style={{ display: m ? "flex" : "grid", flexDirection: m ? "column" as const : undefined, gridTemplateColumns: m ? undefined : "1fr 1fr 1fr", gap: 12, maxWidth: m ? 420 : 680, margin: "0 auto", ...fadeIn(visible, 160) }}>
           {[
@@ -169,7 +169,7 @@ function PricingCards() {
   const freeCard = (order?: number) => (
     <div style={{ backgroundColor: C.white, borderRadius: 18, padding: m ? 28 : 32, border: `1px solid rgba(14,26,43,0.06)`, display: "flex", flexDirection: "column" as const, order: m ? order : undefined }}>
       <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
-        Income Stability Score&#8482;
+        Income Stability Score™
       </div>
       <div style={{ marginBottom: 4 }}>
         <span style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$0</span>
@@ -215,7 +215,7 @@ function PricingCards() {
       </div>
 
       <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.navy, marginBottom: 20 }}>
-        RunPayway&#8482; Dashboard
+        RunPayway™ Dashboard
       </div>
       <div style={{ marginBottom: 4 }}>
         <span style={{ fontSize: 36, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$69</span>
@@ -261,7 +261,7 @@ function PricingCards() {
       }}
         onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
         onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = ctaShadow; }}>
-        Unlock Dashboard &mdash; $69
+        Get Your Full Report &mdash; $69
       </a>
       <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, textAlign: "center", marginTop: 14, marginBottom: 0 }}>
         One payment. Lifetime access.
@@ -275,7 +275,7 @@ function PricingCards() {
   const monitoringCard = (order?: number) => (
     <div style={{ backgroundColor: C.white, borderRadius: 18, padding: m ? 28 : 32, border: `1px solid rgba(14,26,43,0.06)`, display: "flex", flexDirection: "column" as const, order: m ? order : undefined }}>
       <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.navy, marginBottom: 20 }}>
-        RunPayway&#8482; Monitoring
+        RunPayway™ Monitoring
       </div>
       <div style={{ marginBottom: 4 }}>
         <span style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$149</span>
@@ -382,7 +382,7 @@ function PositioningStrip() {
             This is not a subscription to software.
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted, margin: 0 }}>
-            RunPayway&#8482; is a measurement system &mdash; fixed rules. Consistent results. Every time.
+            RunPayway™ is a measurement system &mdash; fixed rules. Consistent results. Every time.
           </p>
         </div>
       </div>
@@ -470,7 +470,7 @@ function FaqSection() {
     { q: "How are roadmap milestones personalized?", a: "They are generated directly from your inputs — not templates or assumptions." },
     { q: "What does Monitoring include?", a: "Multiple assessments, change tracking, and visibility over time." },
     { q: "How is the score calculated?", a: "Using fixed rules applied consistently to your answers." },
-    { q: "Do you access my bank or credit?", a: "No. RunPayway&#8482; does not connect to financial accounts." },
+    { q: "Do you access my bank or credit?", a: "No. RunPayway™ does not connect to financial accounts." },
     { q: "What if it doesn\u2019t reveal anything new?", a: "You receive a full refund." },
   ];
 

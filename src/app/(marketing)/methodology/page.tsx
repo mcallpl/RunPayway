@@ -78,7 +78,7 @@ function HeroSection() {
           Fixed rules. Versioned logic. Reproducible results.
         </p>
         <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.6, maxWidth: 580, margin: "0 auto 24px", ...fadeIn(visible, 120) }}>
-          RunPayway&#8482; produces the Income Stability Score&#8482; using fixed rules&mdash;no AI, no subjective judgment. Same inputs always produce the same result. Period.
+          RunPayway™ produces the Income Stability Score™ using fixed rules&mdash;no AI in scoring, no subjective judgment. Same inputs always produce the same result. Period.
         </p>
         <div style={{ display: "flex", flexWrap: "wrap" as const, justifyContent: "center", gap: m ? 12 : 24, ...fadeIn(visible, 160) }}>
           {["No machine learning", "No interpretation", "No variation"].map((item, i) => (
@@ -106,7 +106,7 @@ function WhatMakesItDifferent() {
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 64, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>What makes this different from other assessments?</h2>
           <p style={{ fontSize: m ? 16 : 18, color: muted, lineHeight: 1.6, maxWidth: 600, margin: "0 auto" }}>
-            Most financial tools measure what happened. RunPayway&#8482; measures how your income is built&mdash;and whether it holds up when things change.
+            Financial tools measure what happened. RunPayway™ measures whether your income would survive if something changed.
           </p>
         </div>
 
@@ -154,17 +154,15 @@ function WhatMakesItDifferent() {
           {/* Classification */}
           <div style={{ backgroundColor: C.white, borderRadius: 16, padding: m ? 24 : 28, boxShadow: "0 1px 3px rgba(14,26,43,0.04), 0 4px 16px rgba(14,26,43,0.03)", position: "relative" as const, overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #9B2C2C, #92640A, #2B5EA7, ${C.teal})` }} />
-            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 20 }}>FOUR BANDS &bull; FIXED THRESHOLDS</div>
+            <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 20 }}>FOUR STABILITY BANDS</div>
             {[
-              { range: "0–29", label: "Limited Stability", desc: "One disruption could seriously impact your income.", color: "#9B2C2C" },
-              { range: "30–49", label: "Developing Stability", desc: "Your income isn't protected yet.", color: "#92640A" },
-              { range: "50–74", label: "Established Stability", desc: "Can handle most common disruptions.", color: "#2B5EA7" },
-              { range: "75–100", label: "High Stability", desc: "Holds up even under sustained pressure.", color: C.teal },
+              { label: "Limited Stability", desc: "One disruption could seriously impact your income.", color: "#9B2C2C" },
+              { label: "Developing Stability", desc: "Your income isn't protected yet.", color: "#92640A" },
+              { label: "Established Stability", desc: "Can handle most common disruptions.", color: "#2B5EA7" },
+              { label: "High Stability", desc: "Holds up even under sustained pressure.", color: C.teal },
             ].map((b, i) => (
               <div key={i} style={{ display: "flex", gap: m ? 10 : 14, alignItems: "flex-start", padding: m ? "10px 12px" : "12px 14px", borderRadius: 10, backgroundColor: `${b.color}04`, marginBottom: i < 3 ? 8 : 0 }}>
-                <div style={{ width: 40, height: 24, borderRadius: 6, backgroundColor: `${b.color}12`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <span style={{ fontSize: 11, fontFamily: mono, fontWeight: 700, color: b.color }}>{b.range}</span>
-                </div>
+                <div style={{ width: 10, height: 10, borderRadius: 5, backgroundColor: b.color, flexShrink: 0, marginTop: 5 }} />
                 <div>
                   <span style={{ fontSize: 14, fontWeight: 600, color: b.color }}>{b.label}</span>
                   <span style={{ fontSize: 14, color: muted }}> — {b.desc}</span>
@@ -247,7 +245,7 @@ function Integrity() {
         {/* Boundary statement */}
         <div style={{ padding: m ? "18px 20px" : "18px 24px", borderRadius: 10, borderLeft: `3px solid ${C.teal}`, backgroundColor: "rgba(255,255,255,0.02)", ...fadeIn(visible, 200) }}>
           <p style={{ fontSize: 18, fontWeight: 600, color: C.sand, margin: 0, lineHeight: 1.5 }}>
-            RunPayway&#8482; is a measurement system &mdash; not a financial product.
+            RunPayway™ is a measurement system &mdash; not a financial product.
           </p>
           <p style={{ fontSize: 16, fontWeight: 400, color: "rgba(244,241,234,0.55)", margin: "8px 0 0", lineHeight: 1.5 }}>
             It defines how income stability is measured, not how decisions are made.
@@ -286,11 +284,11 @@ function Transparency() {
             },
             {
               title: "Industry baselines are structural estimates",
-              body: "When we compare your score to an industry baseline, that baseline is derived from structural income modeling across each sector \u2014 not from a census of individual users. These baselines are versioned (B-2.0) and are continuously refined as real assessment data accumulates. We believe in showing you this context while being clear about its source.",
+              body: "When we compare your score to an industry baseline, that baseline is derived from structural income modeling across each sector \u2014 not from a census of individual users. Baselines are versioned separately from the scoring model. When enough new data warrants an update, a new version is published. Your score is always calculated against the baseline in effect at the time of your assessment.",
             },
             {
-              title: "Scoring weights are designed, not yet empirically validated",
-              body: "The point allocations across the six structural dimensions reflect our best judgment of how income stability factors relate to real-world resilience. As we collect outcome data over time, we will calibrate these weights against actual disruption events and publish updates transparently.",
+              title: "Scoring weights are calibrated against structural income patterns",
+              body: "The weighting across dimensions reflects how income stability factors relate to real-world resilience. As we collect outcome data over time, we refine these weights and publish updates transparently.",
             },
             {
               title: "Your score reflects structure, not prediction",

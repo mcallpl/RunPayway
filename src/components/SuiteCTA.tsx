@@ -21,7 +21,7 @@ const ANGLES: Record<string, { label: string; headline: string; body: string; ct
   pressuremap: {
     label: "YOUR INCOME IS EXPOSED",
     headline: "You Just Saw the Risks. Now Fix Them.",
-    body: "The red zones on your PressureMap™ are not hypothetical — they are the exact scenarios most likely to disrupt your income. Your personalized report gives you the specific actions to move each zone from red to green.",
+    body: "Your PressureMap™ shows where your income is most exposed. Your report tells you exactly what to do about each one.",
     cta: "Get Your Personalized Report — From $69",
   },
   simulator: {
@@ -33,7 +33,7 @@ const ANGLES: Record<string, { label: string; headline: string; body: string; ct
   dashboard: {
     label: "PROGRESS REQUIRES A STARTING POINT",
     headline: "You Cannot Track What You Have Not Measured.",
-    body: "The Command Center is built to show your improvement over time — but it starts with your first assessment. Get your report to establish your baseline score, unlock your action plan, and begin tracking real progress.",
+    body: "Your dashboard tracks how your score changes over time. It starts when you take the assessment.",
     cta: "Establish Your Baseline — From $69",
   },
 };

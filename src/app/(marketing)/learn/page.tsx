@@ -105,7 +105,7 @@ const steps = [
   {
     number: "03",
     title: "One consistent result",
-    body: "Same inputs always produce the same score. No AI. No interpretation.",
+    body: "Same inputs always produce the same score. No AI in scoring. No interpretation.",
   },
 ];
 
@@ -143,7 +143,7 @@ export default function LearnHub() {
             justifyContent: "center",
           }}
         >
-          {["Model RP-2.0", "Consistent Rules", "No AI Interpretation", "Version-Locked"].map(
+          {["Model RP-2.0", "Consistent Rules", "No AI in Scoring", "Version-Locked"].map(
             (item, i) => (
               <span
                 key={i}
@@ -272,7 +272,7 @@ export default function LearnHub() {
               Measure before it matters.
             </h2>
             <p style={{ fontSize: m ? 16 : 18, lineHeight: 1.6, color: L.textSecondary, maxWidth: 560, margin: "0 auto" }}>
-              Most people discover income risk after a disruption. RunPayway&#8482; measures it before.
+              Most people discover income risk after a disruption. RunPayway™ measures it before.
             </p>
           </div>
 
@@ -307,7 +307,7 @@ export default function LearnHub() {
           </div>
 
           <p style={{ fontSize: 16, fontWeight: 600, color: L.navy, textAlign: "center", maxWidth: 600, margin: "0 auto" }}>
-            RunPayway&#8482; doesn&rsquo;t predict disruption. It measures whether your income is ready for&nbsp;it.
+            RunPayway™ doesn&rsquo;t predict disruption. It measures whether your income is ready for&nbsp;it.
           </p>
         </div>
       </section>
@@ -317,7 +317,7 @@ export default function LearnHub() {
         <div style={{ maxWidth: 720, margin: "0 auto" }}>
           <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", color: L.teal, marginBottom: 16 }}>STRATEGIC APPLICATIONS</div>
           <h2 style={{ fontSize: m ? 24 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 32 }}>
-            How RunPayway&#8482; creates strategic advantage.
+            How RunPayway™ creates strategic advantage.
           </h2>
           <div style={{ display: "flex", flexDirection: "column" as const, gap: 0 }}>
             {[
@@ -444,7 +444,7 @@ function IndustryScenarios({ m }: { m: boolean }) {
 
         <div style={{ textAlign: "center", marginTop: 32 }}>
           <p style={{ fontSize: 15, fontWeight: 500, color: L.textSecondary }}>
-            RunPayway&#8482; is calibrated for <strong style={{ color: L.navy }}>19 industries</strong>. Each scenario uses the Income Stability Score&#8482; to measure how income structure holds under real-world&nbsp;conditions.
+            RunPayway™ is calibrated for <strong style={{ color: L.navy }}>19 industries</strong>. Each scenario uses the Income Stability Score™ to measure how income structure holds under real-world&nbsp;conditions.
           </p>
         </div>
       </div>

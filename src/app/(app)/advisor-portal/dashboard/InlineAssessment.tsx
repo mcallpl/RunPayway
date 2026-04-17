@@ -309,7 +309,7 @@ export default function InlineAssessment({
           {cancelBtn}
         </div>
         <p style={{ fontSize: 13, color: C.textSecondary, margin: "0 0 16px" }}>
-          All fields complete. Confirm to generate the Income Stability Score&#8482;.
+          All fields complete. Confirm to generate the Income Stability Score™.
         </p>
 
         {intakeState.ambiguityFlags.length > 0 && (

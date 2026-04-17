@@ -550,7 +550,7 @@ function Article4() {
 
       <H2>Closing the Gap</H2>
       <P>
-        RunPayway&#8482; was built to fill this gap. The Income Stability Score&#8482; measures the <Link href="/learn/how-to-measure-income-stability" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>six key dimensions</Link> of how income is constructed&mdash;not the amount. It evaluates source diversity, income persistence, forward visibility, concentration risk, labor dependence, and earnings consistency.
+        RunPayway™ was built to fill this gap. The Income Stability Score™ measures the <Link href="/learn/how-to-measure-income-stability" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>six key dimensions</Link> of how income is constructed&mdash;not the amount. It evaluates source diversity, income persistence, forward visibility, concentration risk, labor dependence, and earnings consistency.
       </P>
       <P>
         The result is a score from 0 to 100 that tells you what no accountant, advisor, or bank currently can: how much of your income is protected, how much is at risk, and what specific actions would strengthen it.
@@ -564,7 +564,7 @@ function Article4() {
         If you earn variable income&mdash;through consulting, freelancing, commissions, business ownership, or any arrangement where next quarter isn&rsquo;t guaranteed&mdash;the stability gap applies to you. The question isn&rsquo;t whether your income is good. It&rsquo;s whether your income is built to last.
       </P>
       <P style={{ fontWeight: 600, color: "#0E1A2B" }}>
-        RunPayway&#8482; measures that in under two minutes. No financial accounts required. No documents. Just what you already know about how your income works.
+        RunPayway™ measures that in under two minutes. No financial accounts required. No documents. Just what you already know about how your income works.
       </P>
     </>
   );
@@ -643,7 +643,7 @@ function ArticleCta() {
           Your income has a structure. See&nbsp;yours.
         </h2>
         <p style={{ fontSize: 17, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted, marginBottom: 32, ...fadeIn(visible, 100) }}>
-          RunPayway&#8482; scores how much of your income is protected, how much is at risk, and what to do about it. Under 2 minutes. Consistent results. Private by&nbsp;default.
+          RunPayway™ scores how much of your income is protected, how much is at risk, and what to do about it. Under 2 minutes. Consistent results. Private by&nbsp;default.
         </p>
         <div style={{ ...fadeIn(visible, 150), display: "flex", flexDirection: "column" as const, alignItems: "center" }}>
           <Link href="/begin" style={{

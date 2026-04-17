@@ -116,7 +116,7 @@ function S(t: string): string {
     .replace(/\u2014/g, " - ").replace(/\u2013/g, "-")
     .replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"')
     .replace(/\u2122/g, "(TM)").replace(/\u00B7/g, " - ")
-    .replace(/\u2022/g, "-").replace(/&#8482;/g, "(TM)")
+    .replace(/\u2022/g, "-").replace(/™/g, "(TM)")
     .replace(/&amp;/g, "&").replace(/&middot;/g, " - ");
 }
 
@@ -677,7 +677,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
     sf(doc, "InterB"); doc.setFontSize(10); doc.setTextColor("#1C1635");
     doc.text("Why This Report Delivers Real Value", ML, y);
     y += 12;
-    const valueText = "This report provides actionable steps, personalized recommendations, and the RunPayway(TM) Dashboard to future-proof your income. Clear guidance, interactive tools, and an ongoing plan to create lasting financial stability.";
+    const valueText = "This report shows what limits your score, what to do about it, and how to track your progress over time.";
     y = dt(doc, valueText, ML, y, CW, 9, { color: "#535D6B", maxLines: 3 });
     y += 8;
   }

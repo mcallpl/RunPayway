@@ -813,7 +813,7 @@ export default function AdvisorDashboardPage() {
             </Link>
           </div>
           <p style={{ fontSize: 13, color: C.textMuted, margin: 0, fontFamily: mono }}>
-            RunPayway&#8482; Advisor Portal &middot; Model RP-2.0
+            RunPayway™ Advisor Portal &middot; Model RP-2.0
           </p>
         </footer>
       </div>

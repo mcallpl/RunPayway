@@ -44,7 +44,7 @@ export default function NotFound() {
         </Link>
       </div>
       <p style={{ fontSize: 13, color: "rgba(14,26,43,0.40)", marginTop: 48 }}>
-        RunPayway&#8482; &middot; Model RP-2.0
+        RunPayway™ &middot; Model RP-2.0
       </p>
     </div>
   );

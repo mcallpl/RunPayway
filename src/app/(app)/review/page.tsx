@@ -275,10 +275,10 @@ const PDF = {
 function ReportHeader() {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: R.headerMb, paddingBottom: 16, borderBottom: "1px solid rgba(14,26,43,0.06)" }}>
-      <Image src={logoBlue} alt="RunPayway&#8482;" width={110} height={13} style={{ height: "auto", opacity: 0.85 }} />
+      <Image src={logoBlue} alt="RunPayway™" width={110} height={13} style={{ height: "auto", opacity: 0.85 }} />
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
         <div style={{ width: 4, height: 4, borderRadius: 1, backgroundColor: "rgba(14,26,43,0.15)" }} />
-        <div style={{ fontSize: 11, fontWeight: 500, color: "rgba(14,26,43,0.30)", letterSpacing: "0.06em" }}>Income Stability Score&#8482; &middot; RP-2.0</div>
+        <div style={{ fontSize: 11, fontWeight: 500, color: "rgba(14,26,43,0.30)", letterSpacing: "0.06em" }}>Income Stability Score™ &middot; RP-2.0</div>
       </div>
     </div>
   );
@@ -1075,7 +1075,7 @@ export default function ReviewPage() {
         {/* Header bar */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: mobile ? "16px 24px" : "18px 40px", borderBottom: "1px solid rgba(14,26,43,0.06)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <Image src={logoBlue} alt="RunPayway&#8482;" width={110} height={13} style={{ height: "auto", opacity: 0.85 }} />
+            <Image src={logoBlue} alt="RunPayway™" width={110} height={13} style={{ height: "auto", opacity: 0.85 }} />
             <span style={{ fontSize: 11, fontWeight: 600, color: B.teal }}>Income Stability Report</span>
             {industrySector && (
               <span style={{ fontSize: 10, fontWeight: 600, fontFamily: mono, color: B.teal, padding: "2px 8px", borderRadius: 4, backgroundColor: "rgba(31,109,122,0.06)", marginLeft: 8 }}>
@@ -1416,7 +1416,7 @@ export default function ReviewPage() {
           {/* PressureMap intelligence */}
           {Array.isArray(olSelectedScenarios) && olSelectedScenarios.length > 0 && (
             <div style={{ marginBottom: 20 }}>
-              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 12 }}>PRESSUREMAP&#8482; INTELLIGENCE</div>
+              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 12 }}>PRESSUREMAP™ INTELLIGENCE</div>
               {olSelectedScenarios.slice(0, 3).map((sc, idx) => (
                 <div key={idx} style={{ marginBottom: idx < Math.min(olSelectedScenarios.length, 3) - 1 ? 12 : 0 }}>
                   <div style={{ fontSize: 13, fontWeight: 600, color: B.navy, marginBottom: 2 }}>{sc.label}</div>
@@ -1615,7 +1615,7 @@ export default function ReviewPage() {
         {/* Tool links + Download PDF */}
         {!mobile && (
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <Link href="/dashboard" style={{ fontSize: 12, color: "#4B3FAE", textDecoration: "none", fontWeight: 600, padding: "6px 10px" }}>RunPayway&#8482; Command Center</Link>
+            <Link href="/dashboard" style={{ fontSize: 12, color: "#4B3FAE", textDecoration: "none", fontWeight: 600, padding: "6px 10px" }}>RunPayway™ Dashboard</Link>
             <div style={{ width: 1, height: 16, backgroundColor: "rgba(14,26,43,0.10)" }} />
             <button
               onClick={handleDownload}

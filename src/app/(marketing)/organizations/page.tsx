@@ -93,7 +93,7 @@ function HeroSection() {
           Standardize and Scale Income{m ? " " : <br />}Structure Assessment with{m ? " " : <br />}One Fixed Methodology
         </h1>
         <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: narrowW, margin: "0 auto 24px", ...fadeIn(visible, 100) }}>
-          Income evaluation across your organization is subjective. RunPayway\u2122 standardizes it&mdash;with a consistent system that produces the same result every time.
+          Every department evaluates income differently. RunPayway\u2122 gives everyone the same ruler.
         </p>
         <div style={{ display: "flex", justifyContent: "center", gap: m ? 12 : 20, flexWrap: "wrap" as const, ...fadeIn(visible, 150) }}>
           {["API-ready", "Consistent", "Compliant by design"].map((badge, i) => (
@@ -131,7 +131,7 @@ function ProblemSection() {
             The Problem with Subjective{m ? " " : <br />}Income Evaluation
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
-            Every department, every analyst, every advisor evaluates income differently. There is no standard. RunPayway&#8482; provides one.
+            Every department, every analyst, every advisor evaluates income differently. There is no standard. RunPayway™ provides one.
           </p>
         </div>
 
@@ -173,7 +173,7 @@ function SystemSection() {
             One System. Fixed Rules.{m ? " " : <br />}Every Time.
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
-            The Income Stability Score&#8482; is produced by a fixed model. No AI. No subjective judgment. Same inputs always produce the same result.
+            The Income Stability Score™ is produced by a fixed model. No AI in scoring. No subjective judgment. Same inputs always produce the same result.
           </p>
         </div>
 
@@ -214,7 +214,7 @@ function IntegrationSection() {
             Built for Integration
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
-            RunPayway&#8482; is designed to fit into your existing infrastructure.
+            RunPayway™ is designed to fit into your existing infrastructure.
           </p>
         </div>
 
@@ -282,7 +282,7 @@ function ComplianceSection() {
             Enterprise Compliance Readiness
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
-            RunPayway&#8482; is designed to align with the security and privacy frameworks your organization requires.
+            RunPayway™ is designed to align with the security and privacy frameworks your organization requires.
           </p>
         </div>
 
@@ -333,7 +333,7 @@ function UseCasesSection() {
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", maxWidth: narrowW, margin: "0 auto", marginBottom: m ? 40 : 56 }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
-            Where Enterprises Apply RunPayway&#8482;
+            Where Enterprises Apply RunPayway™
           </h2>
         </div>
 
@@ -411,7 +411,7 @@ function RequestAccessSection() {
             Request Your Enterprise Briefing
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
-            Gain access to a customized demo and detailed insights for applying RunPayway&#8482; to your organization. We&#8217;ll follow up within two business days.
+            Gain access to a customized demo and detailed insights for applying RunPayway™ to your organization. We&#8217;ll follow up within two business days.
           </p>
         </div>
 

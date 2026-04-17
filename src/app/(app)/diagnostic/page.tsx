@@ -1043,7 +1043,7 @@ export default function DiagnosticPage() {
 
           {/* Model watermark */}
           <div style={{ position: "absolute", bottom: -80, left: "50%", transform: "translateX(-50%)", fontSize: 11, color: "rgba(14,26,43,0.12)", letterSpacing: "0.10em" }}>
-            RUNPAYWAY&#8482;
+            RUNPAYWAY™
           </div>
         </div>
       </div>
@@ -1134,7 +1134,7 @@ export default function DiagnosticPage() {
       {/* Dark branded header */}
       <div style={{ background: C.navy, padding: mobile ? "14px 24px" : "16px 24px", textAlign: "center" }}>
         <div style={{ fontSize: mobile ? 11 : 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.sandMuted }}>
-          Income Stability Score&#8482; &middot; Model RP-2.0
+          Income Stability Score™ &middot; Model RP-2.0
         </div>
       </div>
       <div style={{ maxWidth: 860, margin: "0 auto", padding: mobile ? "24px 24px 40px" : "32px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
@@ -1279,7 +1279,7 @@ export default function DiagnosticPage() {
     {/* Dark branded header */}
     <div style={{ background: C.navy, padding: mobile ? "14px 24px" : "16px 24px", textAlign: "center" }}>
       <div style={{ fontSize: mobile ? 11 : 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.sandMuted }}>
-        Income Stability Score&#8482;
+        Income Stability Score™
       </div>
     </div>
     <div style={{ maxWidth: 860, margin: "0 auto", padding: mobile ? "20px 24px 40px" : "28px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh", opacity: entered ? 1 : 0, transform: entered ? "translateY(0)" : "translateY(12px)", transition: "opacity 500ms ease-out, transform 500ms ease-out" }}>

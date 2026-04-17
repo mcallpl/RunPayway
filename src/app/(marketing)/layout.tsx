@@ -288,21 +288,12 @@ export default function MarketingLayout({
 
   const NAV_LINKS = [
     { href: "/how-it-works", label: t.nav.howItWorks },
-    { href: "/learn", label: "Learn" },
     { href: "/pricing", label: t.nav.pricing },
-    { href: "/dashboard", label: "Dashboard" },
+    { href: "/learn", label: "Learn" },
+    { href: "/sign-in", label: "Sign In" },
   ];
 
-  const MORE_LINKS = [
-    { href: "/sample-report", label: t.nav.sampleReport },
-    { href: "/advisors", label: "For Advisors" },
-    { href: "/organizations", label: "For Organizations" },
-    { href: "/blog", label: "Blog" },
-    { href: "/about", label: t.nav.about },
-    { href: "/faq", label: t.nav.faq },
-    { href: "/sign-in", label: "Sign In" },
-    { href: "/contact", label: t.nav.contact },
-  ];
+  const MORE_LINKS: { href: string; label: string }[] = [];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -362,7 +353,7 @@ export default function MarketingLayout({
           >
             <Image
               src={logoBlue}
-              alt="RunPayway&#8482;"
+              alt="RunPayway™"
               width={mobile ? 140 : 190}
               height={mobile ? 19 : 21}
               priority
@@ -712,7 +703,7 @@ export default function MarketingLayout({
             <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
               <Image
                 src={logoBlue}
-                alt="RunPayway&#8482;"
+                alt="RunPayway™"
                 width={mobile ? 130 : 160}
                 height={mobile ? 15 : 19}
                 style={{ height: "auto" }}
@@ -787,10 +778,7 @@ export default function MarketingLayout({
                   { href: "/privacy-policy", label: t.footer.privacyPolicy },
                   { href: "/terms-of-use", label: t.footer.termsOfUse },
                   { href: "/accessibility", label: t.footer.accessibility },
-                  { href: "/acceptable-use-policy", label: t.footer.acceptableUsePolicy },
                   { href: "/security-practices", label: t.footer.securityPractices },
-                  { href: "/model-version-policy", label: t.footer.modelVersionPolicy },
-                  { href: "/data-processing-agreement", label: "Data Processing Agreement" },
                 ].map((link) => (
                   <Link key={link.label} href={link.href}
                     style={{ fontSize: 14, color: "rgba(14,26,43,0.55)", lineHeight: 1.4, transition: "color 160ms ease, font-weight 160ms ease" }}

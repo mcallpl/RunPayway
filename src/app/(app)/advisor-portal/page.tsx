@@ -83,7 +83,7 @@ export default function AdvisorPortalPage() {
           Know how your client&rsquo;s income is built{mobile ? " " : <br />}before the next meeting.
         </h1>
         <p style={{ fontSize: mobile ? 17 : 20, lineHeight: 1.5, color: C.textSecondary, maxWidth: 600, margin: "0 auto 36px", fontFamily: sans }}>
-          RunPayway&#8482; gives you a standardized income structure assessment for every client. Score, top risk, and talking points &mdash; in under two minutes.
+          RunPayway™ gives you a standardized income structure assessment for every client. Score, top risk, and talking points &mdash; in under two minutes.
         </p>
         <a href="#pricing" style={{
           display: "inline-flex", alignItems: "center", justifyContent: "center",
@@ -180,7 +180,7 @@ export default function AdvisorPortalPage() {
               interval: "/ quarter",
               reports: "15 assessments per quarter",
               who: "For solo advisors evaluating a focused book.",
-              features: ["Income Stability Score&#8482; per client", "Stability band + top risk", "Meeting prep talking points", "Book-level analytics", "Client notes"],
+              features: ["Income Stability Score™ per client", "Stability band + top risk", "Meeting prep talking points", "Book-level analytics", "Client notes"],
               href: STRIPE_ADVISOR_STARTER,
               highlight: false,
             },
@@ -271,7 +271,7 @@ export default function AdvisorPortalPage() {
       {/* Footer */}
       <footer style={{ textAlign: "center", padding: "16px 20px 48px" }}>
         <p style={{ fontSize: 13, color: C.textMuted, margin: 0, fontFamily: mono }}>
-          RunPayway&#8482; Advisor Portal &middot; Model RP-2.0
+          RunPayway™ Advisor Portal &middot; Model RP-2.0
         </p>
       </footer>
     </div>

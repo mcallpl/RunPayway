@@ -135,7 +135,7 @@ export default function HowToMeasureIncomeStability() {
           },
           {
             q: "Is the measurement subjective?",
-            a: "No. The scoring model uses fixed rules applied to structural inputs. The same inputs always produce the same score. There is no AI interpretation, no subjective weighting, and no human judgment in the calculation. The model is version-locked and deterministic.",
+            a: "No. The scoring model uses fixed rules applied to structural inputs. The same inputs always produce the same score. There is no AI in the score calculation, no subjective weighting, and no human judgment. The model is version-locked and deterministic.",
           },
           {
             q: "How often should income stability be measured?",

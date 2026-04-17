@@ -128,7 +128,7 @@ export default function WhatIsIncomeStability() {
         links={[
           { href: "/learn/income-stability-real-estate-agents", label: "Income Stability for Real Estate Agents" },
           { href: "/learn/150k-freelancer-one-client", label: "Scenario: $150K Freelancer, One Client" },
-          { href: "/learn/income-diversification", label: "What Is Income Diversification" },
+          { href: "/learn/income-concentration-risk", label: "What Is Income Concentration Risk" },
           { href: "/learn/income-stability-vs-credit-score", label: "Income Stability vs. Credit Score" },
         ]}
       />

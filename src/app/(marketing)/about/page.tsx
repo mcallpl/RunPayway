@@ -95,7 +95,7 @@ function HeroSection() {
           The Standard for Measuring{m ? " " : <br />}Income Stability
         </h1>
         <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: narrowW, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
-          RunPayway&#8482; produces the Income Stability Score&#8482;&mdash;a consistent, fixed measurement of how your income is built and how it holds under&nbsp;pressure.
+          RunPayway™ produces the Income Stability Score™&mdash;a consistent, fixed measurement of how your income is built and how it holds under&nbsp;pressure.
         </p>
         <p style={{ fontSize: m ? 18 : 22, fontWeight: 600, color: C.teal, ...fadeIn(visible, 150) }}>
           Not how much you earn. How your income behaves under change.
@@ -144,7 +144,7 @@ function Declaration() {
             But not how income is built.
           </p>
           <p style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 8 }}>
-            RunPayway&#8482; defines that measurement.
+            RunPayway™ defines that measurement.
           </p>
           <p style={{ fontSize: 16, fontWeight: 500, color: C.teal }}>
             This is the standard for income stability.
@@ -176,7 +176,7 @@ function WhatWeMeasure() {
           Credit scores measure borrowing behavior. Advisors manage accumulated assets. But nobody measures how income itself is&nbsp;built.
         </p>
         <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, ...fadeIn(visible, 80) }}>
-          RunPayway&#8482; evaluates six key dimensions of income and produces a score from 0&ndash;100 that shows how it behaves under real-world conditions:
+          RunPayway™ evaluates six key dimensions of income and produces a score from 0&ndash;100 that shows how it behaves under real-world conditions:
         </p>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: m ? 12 : 16, marginBottom: 32, ...fadeIn(visible, 120) }}>
           {[
@@ -223,7 +223,7 @@ function WhoItsFor() {
         </div>
         <div style={{ ...fadeIn(visible, 100) }}>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24 }}>
-            RunPayway&#8482; is designed for individuals whose income is not fixed:
+            RunPayway™ is designed for individuals whose income is not fixed:
           </p>
           <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, marginBottom: 32 }}>
             {[
@@ -269,7 +269,7 @@ function SystemIntegrity() {
             System Integrity: Fixed Rules, No Exceptions
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted }}>
-            RunPayway&#8482; is a fixed-system model&mdash;no machine learning, no advisor judgment, no randomness.
+            RunPayway™ is a fixed-system model&mdash;no machine learning, no advisor judgment, no randomness.
           </p>
         </div>
 
@@ -338,7 +338,7 @@ function Positioning() {
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
-          RunPayway&#8482; is a measurement system &mdash;{m ? " " : <br />}not a financial product.
+          RunPayway™ is a measurement system &mdash;{m ? " " : <br />}not a financial product.
         </h2>
         <p style={{ fontSize: 18, fontWeight: 500, lineHeight: 1.6, color: C.teal, marginBottom: 24, ...fadeIn(visible, 60) }}>
           It defines how income stability is measured.

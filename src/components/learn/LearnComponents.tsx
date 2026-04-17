@@ -92,7 +92,7 @@ export function LearnHero({ label, title, definition, subtitle, description, slu
 
   return (
     <header style={{ backgroundColor: L.sand, paddingTop: m ? 104 : 148, paddingBottom: m ? 56 : 80, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
-      <title>{title} | RunPayway&#8482; Learn</title>
+      <title>{title} | RunPayway™ Learn</title>
       <meta name="description" content={description || definition || subtitle || `${title} — Income stability measurement by RunPayway™`} />
       {slug && <link rel="canonical" href={`https://peoplestar.com/RunPayway/learn/${slug}`} />}
       <meta property="og:title" content={`${title} | RunPayway™`} />
@@ -189,9 +189,9 @@ export function SystemBlock() {
   return (
     <section style={{ backgroundColor: L.navy, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
-        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: L.teal, marginBottom: 16 }}>HOW RUNPAYWAY&#8482; MEASURES THIS</div>
+        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: L.teal, marginBottom: 16 }}>HOW RUNPAYWAY™ MEASURES THIS</div>
         <p style={{ fontSize: m ? 17 : 20, fontWeight: 500, lineHeight: 1.6, color: L.sand, marginBottom: 24 }}>
-          RunPayway&#8482; uses a fixed scoring model to evaluate income stability. No AI. No subjective judgment. Same inputs always produce the same result.
+          RunPayway™ uses a fixed scoring model to evaluate income stability. No AI in scoring. No subjective judgment. Same inputs always produce the same result.
         </p>
         <div style={{ display: "flex", flexWrap: "wrap" as const, gap: m ? 12 : 20 }}>
           {["Consistent scoring", "Fixed rules", "Version-locked", "No interpretation"].map((item, i) => (
@@ -425,10 +425,10 @@ export function AboutMeasurement() {
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: L.textMuted, marginBottom: 16 }}>ABOUT THIS MEASUREMENT</div>
         <p style={{ fontSize: 15, lineHeight: 1.7, color: L.textSecondary, margin: "0 0 12px" }}>
-          The <strong style={{ color: L.navy }}>Income Stability Score&#8482;</strong> is produced by <strong style={{ color: L.navy }}>RunPayway&#8482;</strong> using a consistent, version-locked scoring model. It measures <strong style={{ color: L.navy }}>income stability</strong> and <strong style={{ color: L.navy }}>income structure</strong> &mdash; not income amount.
+          The <strong style={{ color: L.navy }}>Income Stability Score™</strong> is produced by <strong style={{ color: L.navy }}>RunPayway™</strong> using a consistent, version-locked scoring model. It measures <strong style={{ color: L.navy }}>income stability</strong> and <strong style={{ color: L.navy }}>income structure</strong> &mdash; not income amount.
         </p>
         <p style={{ fontSize: 15, lineHeight: 1.7, color: L.textSecondary, margin: 0 }}>
-          The system uses <strong style={{ color: L.navy }}>fixed rules</strong> with no AI and no subjective interpretation. Same inputs always produce the same result. Every assessment is stamped with the model version used.
+          The system uses <strong style={{ color: L.navy }}>fixed rules</strong> with no AI in scoring and no subjective interpretation. Same inputs always produce the same result. Every assessment is stamped with the model version used.
         </p>
       </div>
     </section>
@@ -486,7 +486,7 @@ export function AuthorBlock() {
             <span style={{ fontSize: 12, fontWeight: 700, color: L.white }}>RP</span>
           </div>
           <div>
-            <div style={{ fontSize: 13, fontWeight: 600, color: L.navy }}>RunPayway&#8482; Research</div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: L.navy }}>RunPayway™ Research</div>
             <div style={{ fontSize: 11, color: L.textMuted }}>Income Stability Measurement</div>
           </div>
         </div>

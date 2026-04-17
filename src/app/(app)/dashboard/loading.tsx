@@ -22,7 +22,7 @@ export default function DashboardLoading() {
           color: "rgba(14,26,43,0.38)",
           marginBottom: 32,
         }}>
-          Command Center
+          Dashboard
         </div>
 
         {/* Animated ring */}
@@ -45,7 +45,7 @@ export default function DashboardLoading() {
           marginBottom: 8,
           lineHeight: 1.4,
         }}>
-          Loading Command Center
+          Loading Dashboard
         </div>
 
         <div style={{

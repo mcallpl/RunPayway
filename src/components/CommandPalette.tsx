@@ -13,7 +13,7 @@ const B = {
 };
 
 const COMMANDS = [
-  { id: "dashboard", label: "Command Center", desc: "Your income stability command center", href: "/dashboard", shortcut: "1" },
+  { id: "dashboard", label: "Dashboard", desc: "Your income stability command center", href: "/dashboard", shortcut: "1" },
   { id: "report", label: "View Report", desc: "Your full assessment report", href: "/review", shortcut: "2" },
   { id: "pricing", label: "Pricing", desc: "Get a new assessment", href: "/pricing", shortcut: "3" },
   { id: "home", label: "RunPayway Home", desc: "Main website", href: "/", shortcut: "4" },
@@ -137,7 +137,7 @@ export default function CommandPalette() {
           <kbd style={{ fontSize: 9, color: B.taupe, padding: "1px 4px", borderRadius: 3, border: `1px solid ${B.border}` }}>&uarr;&darr;</kbd>
           <span style={{ fontSize: 10, color: B.taupe }}>Select</span>
           <kbd style={{ fontSize: 9, color: B.taupe, padding: "1px 4px", borderRadius: 3, border: `1px solid ${B.border}` }}>&crarr;</kbd>
-          <span style={{ fontSize: 10, color: B.taupe, marginLeft: "auto" }}>RunPayway&#8482; Command Center</span>
+          <span style={{ fontSize: 10, color: B.taupe, marginLeft: "auto" }}>RunPayway™ Dashboard</span>
         </div>
       </div>
     </>

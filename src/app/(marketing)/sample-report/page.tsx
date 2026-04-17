@@ -97,7 +97,7 @@ function HeroSection() {
           A four-page structural report of your income, generated directly from your answers. No estimates. No interpretation. Just raw data.
         </p>
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 8, alignItems: "center", ...fadeIn(visible, 160) }}>
-          {["No AI. No guesswork.", "Same inputs = same result", "Nothing generalized or adjusted"].map((item, i) => (
+          {["No AI in scoring.", "Same inputs = same result", "Nothing generalized or adjusted"].map((item, i) => (
             <span key={i} style={{ fontSize: 14, fontWeight: 600, color: C.textMuted }}>{item}</span>
           ))}
         </div>
@@ -194,7 +194,7 @@ function Page01() {
           {/* Header bar */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: m ? "16px 24px" : "18px 40px", borderBottom: `1px solid rgba(14,26,43,0.06)` }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ fontSize: 14, fontWeight: 700, color: C.navy }}>RunPayway&#8482;</span>
+              <span style={{ fontSize: 14, fontWeight: 700, color: C.navy }}>RunPayway™</span>
               <span style={{ fontSize: 12, fontWeight: 600, color: C.teal }}>Income Stability Report</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -467,9 +467,9 @@ function Page04() {
           {/* Scenarios */}
           <div style={{ padding: m ? "16px 24px" : "24px 40px" }}>
             {[
-              { scenario: "Largest client lost", severity: "Severe", score: 44, delta: -28, color: C.risk, bg: `${C.risk}06` },
-              { scenario: "Unable to work for 90 days", severity: "Significant", score: 53, delta: -19, color: C.moderate, bg: `${C.moderate}06` },
-              { scenario: "Pipeline delay (3 months)", severity: "Moderate", score: 64, delta: -8, color: C.teal, bg: `${C.teal}06` },
+              { scenario: "Largest source removed", severity: "Severe", color: C.risk, bg: `${C.risk}06` },
+              { scenario: "Unable to work for 90 days", severity: "Significant", color: C.moderate, bg: `${C.moderate}06` },
+              { scenario: "Forward commitments delayed", severity: "Moderate", color: C.teal, bg: `${C.teal}06` },
             ].map((s, i) => (
               <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 20px", margin: "0 -20px", borderRadius: 12, backgroundColor: s.bg, borderBottom: i < 2 ? `1px solid rgba(14,26,43,0.06)` : "none" }}>
                 <div style={{ flex: 1 }}>
@@ -477,10 +477,6 @@ function Page04() {
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: m ? 10 : 16, flexShrink: 0 }}>
                   <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.04em", color: s.color, padding: "3px 10px", borderRadius: 6, backgroundColor: `${s.color}10` }}>{s.severity}</span>
-                  <div style={{ display: "flex", alignItems: "baseline", gap: 4, minWidth: 70, justifyContent: "flex-end" }}>
-                    <span style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: "rgba(14,26,43,0.30)" }}>{s.score}</span>
-                    <span style={{ fontSize: m ? 20 : 24, fontWeight: 700, fontFamily: mono, color: s.color }}>{s.delta}</span>
-                  </div>
                 </div>
               </div>
             ))}

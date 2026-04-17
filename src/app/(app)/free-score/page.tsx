@@ -274,7 +274,7 @@ export default function FreeScorePage() {
           marginBottom: secPad,
         }}>
           <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: light, marginBottom: 24 }}>
-            Your Income Stability Score&#8482;
+            Your Income Stability Score™
           </div>
 
           {/* Score ring */}
@@ -538,7 +538,7 @@ export default function FreeScorePage() {
 
         {/* Footer */}
         <div style={{ textAlign: "center", paddingTop: 24, borderTop: `1px solid ${C.border}`, marginTop: 32 }}>
-          <p style={{ fontSize: 11, color: light, margin: 0 }}>RunPayway&#8482; &middot; Model RP-2.0 &middot; Not financial advice.</p>
+          <p style={{ fontSize: 11, color: light, margin: 0 }}>RunPayway™ &middot; Model RP-2.0 &middot; Not financial advice.</p>
         </div>
       </div>
     </div>

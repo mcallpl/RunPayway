@@ -221,7 +221,7 @@ function HeroSection() {
             </h1>
 
             <p style={{ fontSize: m ? 17 : 22, fontWeight: 500, lineHeight: 1.45, color: C.navy, maxWidth: 480, marginBottom: 16, ...fadeIn(visible, 80) }}>
-              RunPayway&trade; scores how much of your income is protected, how much is at risk, and what to do about&nbsp;it.
+              RunPayway™ scores how much of your income is protected, how much is at risk, and what to do about&nbsp;it.
             </p>
 
             <div style={{ marginBottom: m ? 32 : 40, ...fadeIn(visible, 100) }} />
@@ -335,7 +335,7 @@ function CategoryDeclaration() {
         </p>
 
         <p style={{ fontSize: m ? 17 : 20, fontWeight: 600, lineHeight: 1.5, color: C.sandText, maxWidth: 560, margin: "0 auto", ...fadeIn(visible, 200) }}>
-          RunPayway&trade; measures the layer between earning and&nbsp;keeping.
+          RunPayway™ measures the layer between earning and&nbsp;keeping.
         </p>
       </div>
     </section>
@@ -428,7 +428,7 @@ function ProofMoment() {
 
         {/* Closing + CTA */}
         <div style={{ textAlign: "center", marginTop: m ? 40 : 56, ...fadeIn(visible, 200) }}>
-          <p style={{ fontSize: m ? 20 : 24, fontWeight: 600, color: C.navy, marginBottom: 8 }}>RunPayway&trade; measures the difference.</p>
+          <p style={{ fontSize: m ? 20 : 24, fontWeight: 600, color: C.navy, marginBottom: 8 }}>RunPayway™ measures whether your income holds up when things change.</p>
           <p style={{ fontSize: 16, color: C.textSecondary, marginBottom: 32 }}>See where yours stands.</p>
           <CtaButton m={m} variant="primary" />
         </div>
@@ -850,7 +850,7 @@ function IndustryProfiles() {
             Find your industry
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 480, margin: "0 auto" }}>
-            RunPayway&trade; is calibrated for how each industry actually earns. Select yours.
+            RunPayway™ is calibrated for how each industry actually earns. Select yours.
           </p>
         </div>
 
@@ -1110,7 +1110,7 @@ const PRODUCT_SCHEMA = {
   brand: { "@type": "Brand", name: "RunPayway\u2122" },
   offers: [
     { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Income Stability Score\u2122", description: "Score, band, primary constraint, and one recommended direction." },
-    { "@type": "Offer", price: "69", priceCurrency: "USD", name: "RunPayway\u2122 Diagnostic Report", description: "Full diagnostic with personalized scripts, 12-week roadmap, and income analysis." },
+    { "@type": "Offer", price: "69", priceCurrency: "USD", name: "RunPayway\u2122 Full Report", description: "Your score breakdown, what's at risk, a 12-week plan, and scripts you can use this week." },
   ],
 };
 

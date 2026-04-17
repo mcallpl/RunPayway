@@ -11,7 +11,7 @@ import { WORKER_URL } from "@/lib/config";
 
 const PLAN_INFO: Record<string, { title: string; price: string }> = {
   monitoring: { title: "RunPayway\u2122 Stability Monitoring", price: "$149" },
-  single: { title: "RunPayway\u2122 Diagnostic Report", price: "$69" },
+  single: { title: "RunPayway\u2122 Full Report", price: "$69" },
 };
 
 function StepBreadcrumb({ activeStep, completedSteps = [] as number[] }: { activeStep: number; completedSteps?: number[] }) {

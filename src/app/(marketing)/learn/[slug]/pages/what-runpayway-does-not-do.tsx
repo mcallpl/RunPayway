@@ -33,7 +33,7 @@ export default function WhatRunPaywayDoesNotDo() {
         items={[
           "RunPayway measures income structure — it does not provide financial advice, investment recommendations, or product suggestions",
           "The score reflects your current structural state — it does not predict future income, market conditions, or financial outcomes",
-          "The model applies fixed rules to reported inputs — no human judgment, no AI interpretation, no adaptive learning influences your score",
+          "The model applies fixed rules to reported inputs — no human judgment, no AI in scoring, no adaptive learning influences your score",
         ]}
       />
 
@@ -77,7 +77,7 @@ export default function WhatRunPaywayDoesNotDo() {
             body: (
               <>
                 <P>
-                  RunPayway applies fixed rules to the inputs you provide. There is no human reviewer who adjusts your score based on qualitative factors. There is no AI interpretation layer that considers context, nuance, or extenuating circumstances. There is no adaptive learning system that changes how your inputs are weighted based on aggregate user data. The model is deterministic: the same inputs under the same version always produce the same score.
+                  RunPayway applies fixed rules to the inputs you provide. There is no human reviewer who adjusts your score based on qualitative factors. There is no AI in the scoring calculation. There is no adaptive learning system that changes how your inputs are weighted based on aggregate user data. The model is deterministic: the same inputs under the same version always produce the same score.
                 </P>
                 <P>
                   This objectivity is a design choice, not a limitation. Subjective assessment introduces variability — two reviewers might evaluate the same income structure differently. Adaptive learning introduces instability — the same inputs might produce different scores as the model &ldquo;learns&rdquo; from new data. RunPayway eliminates both sources of variability by using fixed, version-locked rules applied identically to every assessment.
@@ -139,7 +139,7 @@ export default function WhatRunPaywayDoesNotDo() {
           },
           {
             q: "Does RunPayway use AI to interpret my answers?",
-            a: "No. The model applies fixed, deterministic rules to your reported inputs. There is no AI interpretation, no natural language processing of qualitative responses, and no machine learning that adapts based on previous assessments. The same inputs under the same version always produce the same score.",
+            a: "Your score is calculated using fixed, deterministic rules. No AI, no machine learning, and no adaptive weighting. The same inputs under the same version always produce the same score. AI is used only in clearly labeled narrative sections of the report (PressureMap, Plain English, Action Plan) — never in the score itself.",
           },
           {
             q: "Should I make financial decisions based on my score?",

@@ -75,10 +75,10 @@ function AccessCodeContent() {
           <div style={{ textAlign: "center", marginBottom: 40 }}>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", color: B.purple, marginBottom: 16 }}>ACCESS CODE</div>
             <h1 style={{ fontSize: mobile ? 22 : 28, fontWeight: 300, color: B.navy, margin: "0 0 12px", lineHeight: 1.25, letterSpacing: "-0.02em" }}>
-              Open your action plan.
+              See your full report.
             </h1>
             <p style={{ fontSize: 15, color: B.muted, margin: 0, lineHeight: 1.65 }}>
-              Paste the access code from your RunPayway&#8482; report to unlock your personalized plan, scripts, and progress&nbsp;tracking.
+              Paste the access code from your RunPayway™ report to unlock your personalized plan, scripts, and progress&nbsp;tracking.
             </p>
           </div>
 

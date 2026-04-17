@@ -377,7 +377,7 @@ function SystemIntegrity() {
             <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.06em", color: C.navy }}>CONSISTENCY</span>
           </div>
           <p style={{ fontSize: 18, fontWeight: 500, color: C.navy, margin: 0, lineHeight: 1.5 }}>
-            RunPayway&trade; produces fixed outputs, applying fixed rules.
+            RunPayway™ produces fixed outputs, applying fixed rules.
           </p>
         </div>
 

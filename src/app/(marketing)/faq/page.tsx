@@ -195,7 +195,7 @@ function HeroSection({ searchValue, onSearch, inputRef }: { searchValue: string;
           Frequently Asked Questions
         </h1>
         <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: 620, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
-          Clear answers about the Income Stability Score&#8482;, how it&rsquo;s generated, and how it&rsquo;s used.
+          Clear answers about the Income Stability Score™, how it&rsquo;s generated, and how it&rsquo;s used.
         </p>
         <p style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: C.navy, marginBottom: 0, ...fadeIn(visible, 140) }}>
           All answers reflect the system as it is defined&mdash;not interpreted.
@@ -443,7 +443,7 @@ function FooterStrip() {
   return (
     <div style={{ backgroundColor: C.sand, padding: m ? "40px 20px" : "48px 48px", textAlign: "center" }}>
       <p style={{ fontSize: 13, fontWeight: 400, color: C.textMuted, margin: 0, letterSpacing: "0.02em" }}>
-        Income Stability Score&#8482; &bull; Powered by fixed scoring system RP-2.0
+        Income Stability Score™ &bull; Powered by fixed scoring system RP-2.0
       </p>
     </div>
   );

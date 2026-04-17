@@ -134,7 +134,7 @@ export default function FreelancerOneClient() {
           { href: "/learn/what-is-income-stability", label: "What Is Income Stability" },
           { href: "/learn/income-stability-real-estate-agents", label: "Income Stability for Real Estate Agents" },
           { href: "/learn/client-concentration-risk", label: "What Is Client Concentration Risk" },
-          { href: "/learn/income-diversification", label: "What Is Income Diversification" },
+          { href: "/learn/income-concentration-risk", label: "What Is Income Concentration Risk" },
         ]}
       />
 
