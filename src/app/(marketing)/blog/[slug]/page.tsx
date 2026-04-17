@@ -658,7 +658,7 @@ function ArticleCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get My Stability Class — Free
+            Get My Score — Free
           </Link>
           <Link href="/learn" style={{ display: "inline-block", marginTop: 16, fontSize: 14, fontWeight: 600, color: "rgba(244,241,234,0.50)", textDecoration: "none" }}>
             Explore the Learn Center →

@@ -159,103 +159,97 @@ function PricingCards() {
   const fadeIn = useFadeIn();
 
   const check = (text: string, color = C.teal) => (
-    <div style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 14 }}>
-      <span style={{ color, fontSize: 14, flexShrink: 0, marginTop: 2 }}>&#10003;</span>
-      <span style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.55, color: "inherit" }}>{text}</span>
+    <div style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 12 }}>
+      <span style={{ color, fontSize: 13, flexShrink: 0, marginTop: 2 }}>&#10003;</span>
+      <span style={{ fontSize: 14, fontWeight: 400, lineHeight: 1.5, color: "inherit" }}>{text}</span>
     </div>
   );
 
-  /* Card renderers */
+  const cardBase: React.CSSProperties = {
+    backgroundColor: C.white,
+    borderRadius: 18,
+    padding: m ? 28 : 28,
+    border: `1px solid rgba(14,26,43,0.07)`,
+    display: "flex",
+    flexDirection: "column",
+  };
+
+  /* ── Tier 1: Free ── */
   const freeCard = (order?: number) => (
-    <div style={{ backgroundColor: C.white, borderRadius: 18, padding: m ? 28 : 32, border: `1px solid rgba(14,26,43,0.06)`, display: "flex", flexDirection: "column" as const, order: m ? order : undefined }}>
-      <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 20 }}>
-        Income Stability Score™
+    <div style={{ ...cardBase, order: m ? order : undefined }}>
+      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>
+        Free
       </div>
-      <div style={{ marginBottom: 4 }}>
-        <span style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$0</span>
+      <div style={{ marginBottom: 2 }}>
+        <span style={{ fontSize: 30, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$0</span>
       </div>
-      <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 20 }}>Always available</div>
-      <p style={{ fontSize: 15, fontWeight: 400, color: C.navy, lineHeight: 1.5, marginBottom: 24 }}>
-        Your baseline measurement. No cost. No commitment.
-      </p>
-      <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: C.textMuted, marginBottom: 14 }}>WHAT YOU GET FOR FREE</div>
-      <div style={{ marginBottom: 28, flex: 1, color: C.textSecondary }}>
+      <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 16 }}>Always available</div>
+      <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 16, marginBottom: 16, flex: 1, color: C.textSecondary }}>
         {check("Income Stability Score (0\u2013100)")}
-        {check("Stability classification")}
-        {check("Primary structural risk")}
-        {check("Distance to next level")}
-        {check("Industry-relative position")}
+        {check("Stability class")}
+        {check("Constraint breakdown")}
+        {check("12-week action plan")}
+        {check("Industry comparison")}
+        {check("Dashboard access")}
       </div>
       <Link href="/begin" style={{
         display: "flex", alignItems: "center", justifyContent: "center",
-        height: 60, borderRadius: 16,
+        height: 52, borderRadius: 14,
         backgroundColor: C.white, color: C.navy,
         border: `1.5px solid ${C.teal}`,
-        fontSize: 16, fontWeight: 600, textDecoration: "none",
-        transition: "background-color 200ms, border-color 200ms",
+        fontSize: 15, fontWeight: 600, textDecoration: "none",
+        transition: "background-color 200ms",
       }}
-        onMouseEnter={e => { e.currentTarget.style.backgroundColor = `${C.teal}08`; e.currentTarget.style.borderColor = C.teal; }}
-        onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.borderColor = C.teal; }}>
-        Get Your Free Stability Class
+        onMouseEnter={e => { e.currentTarget.style.backgroundColor = `${C.teal}08`; }}
+        onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; }}>
+        Get My Score — Free
       </Link>
-      <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
-        Free &bull; No account required
+      <p style={{ fontSize: 12, color: C.textMuted, textAlign: "center", marginTop: 10, marginBottom: 0 }}>
+        No account required
       </p>
     </div>
   );
 
+  /* ── Tier 2: Full Report $69 (featured) ── */
   const diagnosticCard = (order?: number) => (
-    <div style={{ backgroundColor: C.white, borderRadius: 18, padding: m ? 36 : 36, display: "flex", flexDirection: "column" as const, position: "relative" as const, overflow: "hidden", boxShadow: "0 20px 48px rgba(14,26,43,0.12)", border: `1.5px solid rgba(14,26,43,0.18)`, order: m ? order : undefined }}>
+    <div style={{
+      ...cardBase,
+      padding: m ? 28 : 32,
+      boxShadow: "0 20px 48px rgba(14,26,43,0.12)",
+      border: `1.5px solid rgba(14,26,43,0.16)`,
+      position: "relative" as const, overflow: "hidden",
+      order: m ? order : undefined,
+    }}>
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.teal }} />
 
-      {/* Most popular badge */}
-      <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 16, backgroundColor: "rgba(31,109,122,0.08)", padding: "6px 14px", borderRadius: 20 }}>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2.5" strokeLinecap="round"><path d="M20 6 9 17l-5-5"/></svg>
-        <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: C.teal, textTransform: "uppercase" as const }}>Most Popular</span>
+      <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 14, backgroundColor: "rgba(31,109,122,0.08)", padding: "5px 12px", borderRadius: 20, alignSelf: "flex-start" as const }}>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2.5" strokeLinecap="round"><path d="M20 6 9 17l-5-5"/></svg>
+        <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: C.teal, textTransform: "uppercase" as const }}>Most Popular</span>
       </div>
 
-      <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.navy, marginBottom: 20 }}>
-        RunPayway™ Dashboard
+      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.navy, marginBottom: 16 }}>
+        Full Report + Dashboard
       </div>
-      <div style={{ marginBottom: 4 }}>
-        <span style={{ fontSize: 36, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$69</span>
+      <div style={{ marginBottom: 2 }}>
+        <span style={{ fontSize: 34, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$69</span>
       </div>
-      <div style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, marginBottom: 20 }}>One-time access</div>
-      <p style={{ fontSize: 16, fontWeight: 500, color: C.teal, marginBottom: 20 }}>
-        This is where the system becomes actionable.
-      </p>
+      <div style={{ fontSize: 13, fontWeight: 500, color: C.textMuted, marginBottom: 16 }}>One-time · Lifetime access</div>
 
-      <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 20, marginBottom: 20 }} />
-
-      <div style={{ marginBottom: 20, flex: 1, color: C.textSecondary }}>
-        {check("Identify where your income holds \u2014 and where it\u2019s exposed")}
-        {check("See what actually limits your stability")}
-        {check("Know the single move that creates the biggest impact")}
-        {check("Test changes before you make them")}
-      </div>
-
-      {/* What changes after unlock */}
-      <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 20, marginBottom: 24 }}>
-        <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: C.navy, marginBottom: 12 }}>WHAT CHANGES AFTER YOU UNLOCK THIS</div>
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
-          {[
-            "You stop guessing what matters",
-            "You act before problems appear",
-            "You improve your income with intent",
-          ].map((line, i) => (
-            <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-              <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 7 }} />
-              <span style={{ fontSize: 14, fontWeight: 400, color: C.textSecondary, lineHeight: 1.45 }}>{line}</span>
-            </div>
-          ))}
-        </div>
+      <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 16, marginBottom: 16, flex: 1, color: C.textSecondary }}>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: C.textMuted, marginBottom: 10 }}>EVERYTHING FREE, PLUS</div>
+        {check("Lifetime dashboard access")}
+        {check("Email report delivery")}
+        {check("PressureMap\u2122 narrative")}
+        {check("Action scripts for income conversations")}
+        {check("Scenario simulator — test changes before making them")}
+        {check("Shareable score card")}
       </div>
 
       <a href={STRIPE} onClick={() => trackPurchaseClick("diagnostic_69")} style={{
         display: "flex", alignItems: "center", justifyContent: "center",
-        height: 60, borderRadius: 16, width: "100%",
+        height: 52, borderRadius: 14, width: "100%",
         backgroundColor: C.navy, color: C.white,
-        fontSize: 16, fontWeight: 600, textDecoration: "none",
+        fontSize: 15, fontWeight: 600, textDecoration: "none",
         boxShadow: ctaShadow,
         transition: "transform 200ms, box-shadow 200ms",
       }}
@@ -263,63 +257,84 @@ function PricingCards() {
         onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = ctaShadow; }}>
         Get Your Full Report &mdash; $69
       </a>
-      <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, textAlign: "center", marginTop: 14, marginBottom: 0 }}>
-        One payment. Lifetime access.
-      </p>
-      <p style={{ fontSize: 14, fontWeight: 600, color: C.teal, textAlign: "center", marginTop: 8, marginBottom: 0 }}>
-        If it doesn&rsquo;t reveal something new, you don&rsquo;t pay.
-      </p>
-      <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 16, marginBottom: 0 }}>
-        Already have an account?{" "}
-        <Link href="/sign-in" style={{ fontWeight: 600, color: C.navy, textDecoration: "none" }}>
-          Sign in to your dashboard
-        </Link>
+      <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, textAlign: "center", marginTop: 10, marginBottom: 0 }}>
+        If it doesn&rsquo;t reveal something new, full refund.
       </p>
     </div>
   );
 
+  /* ── Tier 3: Annual Monitoring $149 ── */
   const monitoringCard = (order?: number) => (
-    <div style={{ backgroundColor: C.white, borderRadius: 18, padding: m ? 28 : 32, border: `1px solid rgba(14,26,43,0.06)`, display: "flex", flexDirection: "column" as const, order: m ? order : undefined }}>
-      <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.navy, marginBottom: 20 }}>
-        RunPayway™ Monitoring
+    <div style={{ ...cardBase, order: m ? order : undefined }}>
+      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.navy, marginBottom: 16 }}>
+        Annual Monitoring
       </div>
-      <div style={{ marginBottom: 4 }}>
-        <span style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$149</span>
-        <span style={{ fontSize: 14, color: C.textMuted, marginLeft: 8 }}>/ year</span>
+      <div style={{ marginBottom: 2 }}>
+        <span style={{ fontSize: 30, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$149</span>
+        <span style={{ fontSize: 13, color: C.textMuted, marginLeft: 6 }}>/ year</span>
       </div>
-      <div style={{ fontSize: 14, color: C.textMuted, marginBottom: 20 }}>Reassess your score three times a year</div>
-      <div style={{ marginBottom: 20, flex: 1, color: C.textSecondary }}>
-        {check("Track your score across the year")}
-        {check("Track how your score moves")}
-        {check("See what improved\u2014and what didn\u2019t")}
-        {check("Track your progress over time")}
-        {check("Maintain continuous visibility")}
-      </div>
+      <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 16 }}>3 assessments per year</div>
 
-      {/* Best for */}
-      <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 20, marginBottom: 24 }}>
-        <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.06em", color: C.textMuted, marginBottom: 12 }}>BEST FOR</div>
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 6 }}>
-          {["Self-employed professionals", "Variable income earners", "Anyone actively improving their income stability"].map((line, i) => (
-            <span key={i} style={{ fontSize: 14, fontWeight: 400, color: C.textSecondary, lineHeight: 1.45 }}>{line}</span>
-          ))}
-        </div>
+      <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 16, marginBottom: 16, flex: 1, color: C.textSecondary }}>
+        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: C.textMuted, marginBottom: 10 }}>EVERYTHING IN $69, PLUS</div>
+        {check("3 annual reassessments")}
+        {check("Track how your score moves over time")}
+        {check("See what improved — and what didn\u2019t")}
+        {check("Reassessment reminders")}
       </div>
 
       <a href={STRIPE_ANNUAL} onClick={() => trackPurchaseClick("monitoring_149")} style={{
         display: "flex", alignItems: "center", justifyContent: "center",
-        height: 60, borderRadius: 16,
+        height: 52, borderRadius: 14,
         backgroundColor: C.navy, color: C.white,
-        fontSize: 16, fontWeight: 600, textDecoration: "none",
+        fontSize: 15, fontWeight: 600, textDecoration: "none",
         boxShadow: ctaShadow,
         transition: "transform 200ms, box-shadow 200ms",
       }}
         onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
         onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = ctaShadow; }}>
-        Start Monitoring &mdash; $149/year
+        Start Monitoring &mdash; $149/yr
       </a>
-      <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
-        Includes full Dashboard access.
+      <p style={{ fontSize: 12, color: C.textMuted, textAlign: "center", marginTop: 10, marginBottom: 0 }}>
+        Best for variable income earners
+      </p>
+    </div>
+  );
+
+  /* ── Tier 4: For Advisors ── */
+  const advisorCard = (order?: number) => (
+    <div style={{ ...cardBase, backgroundColor: "rgba(14,26,43,0.02)", border: `1px solid rgba(14,26,43,0.08)`, order: m ? order : undefined }}>
+      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.purple, marginBottom: 16 }}>
+        For Advisors
+      </div>
+      <div style={{ marginBottom: 2 }}>
+        <span style={{ fontSize: 30, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$15</span>
+        <span style={{ fontSize: 13, color: C.textMuted, marginLeft: 6 }}>/ report</span>
+      </div>
+      <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 16 }}>Volume pricing available</div>
+
+      <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 16, marginBottom: 16, flex: 1, color: C.textSecondary }}>
+        {check("Run assessments for clients", C.purple)}
+        {check("Advisor portal dashboard", C.purple)}
+        {check("Client management tools", C.purple)}
+        {check("Branded client-facing reports", C.purple)}
+        {check("Tiered volume pricing", C.purple)}
+      </div>
+
+      <Link href="/advisors" style={{
+        display: "flex", alignItems: "center", justifyContent: "center",
+        height: 52, borderRadius: 14,
+        backgroundColor: C.white, color: C.navy,
+        border: `1.5px solid ${C.purple}`,
+        fontSize: 15, fontWeight: 600, textDecoration: "none",
+        transition: "background-color 200ms",
+      }}
+        onMouseEnter={e => { e.currentTarget.style.backgroundColor = `rgba(75,63,174,0.04)`; }}
+        onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; }}>
+        Learn About Advisor Access
+      </Link>
+      <p style={{ fontSize: 12, color: C.textMuted, textAlign: "center", marginTop: 10, marginBottom: 0 }}>
+        Manual pilot pricing — contact us to start
       </p>
     </div>
   );
@@ -330,8 +345,8 @@ function PricingCards() {
         <div style={{
           display: m ? "flex" : "grid",
           flexDirection: m ? "column" as const : undefined,
-          gridTemplateColumns: m ? undefined : "1fr 1.2fr 1fr",
-          gap: 24,
+          gridTemplateColumns: m ? undefined : "1fr 1.15fr 1fr 1fr",
+          gap: 20,
           alignItems: "stretch",
           ...fadeIn(visible),
         }}>
@@ -340,24 +355,20 @@ function PricingCards() {
               {diagnosticCard(1)}
               {freeCard(2)}
               {monitoringCard(3)}
+              {advisorCard(4)}
             </>
           ) : (
             <>
               {freeCard()}
               {diagnosticCard()}
               {monitoringCard()}
+              {advisorCard()}
             </>
           )}
         </div>
 
-        {/* Cross-card strip */}
         <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, textAlign: "center", marginTop: m ? 32 : 44, lineHeight: 1.6 }}>
-          Every user is evaluated using the same fixed system.{m ? " " : <br />}Only your level of visibility changes.
-        </p>
-
-        {/* Decoy reinforcement — nudge toward $69 tier */}
-        <p style={{ textAlign: "center", fontSize: 14, color: C.textMuted, marginTop: 32, lineHeight: 1.6 }}>
-          Most people start with the full report. Your stability class tells you where you stand — the report tells you exactly why, and what to do about it.
+          Every assessment uses the same fixed scoring system.{m ? " " : <br />}Only your level of access changes.
         </p>
       </div>
     </section>
@@ -557,7 +568,7 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get My Stability Class — Free
+            Get My Score — Free
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 16 }}>
             Under 2 minutes | Instant result | Private by default

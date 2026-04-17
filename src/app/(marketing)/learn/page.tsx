@@ -119,7 +119,7 @@ export default function LearnHub() {
         label="LEARN"
         title="Income Stability & Structure"
         definition="Income Stability is the degree to which income continues under disruption, based on its structure — not its amount."
-        cta={{ label: "Get My Stability Class \u2014 Free", href: "/begin" }}
+        cta={{ label: "Get My Score \u2014 Free", href: "/begin" }}
       />
 
       {/* TRUST STRIP */}
@@ -338,7 +338,7 @@ export default function LearnHub() {
 
       {/* FINAL CTA */}
       <LearnCTA
-        heading="See Your Income Stability Class"
+        heading="See Your Score"
         sub="Know where your income holds — and where it's exposed."
       />
 

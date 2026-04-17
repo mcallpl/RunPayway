@@ -110,8 +110,8 @@ const FAQ_DATA: FaqItem[] = [
   { id: "privacy-shared", category: "privacy", categoryLabel: "Privacy and Data", question: "Is my information shared?", answer: "No. RunPayway\u2122 does not sell or share your data.", keywords: ["shared", "sold", "third party", "sell data"] },
 
   // --- Pricing ---
-  { id: "pricing-diff", category: "pricing", categoryLabel: "Pricing", question: "What is the difference between the free stability class and the full report?", answer: "Your stability class tells you where you stand — Limited, Developing, Established, or High Stability. Your full report tells you exactly why, what's limiting your score, and what to fix first.", keywords: ["free vs paid", "difference", "what do I get", "pricing", "cost", "stability class"] },
-  { id: "pricing-account", category: "pricing", categoryLabel: "Pricing", question: "Do I need an account?", answer: "Not for the free stability class or the $69 full report\u2014those work without an account. The $149/year Monitoring plan requires a sign-in so your three annual assessments can be tracked and compared over time.", keywords: ["account", "sign up", "registration", "login", "sign in", "monitoring"] },
+  { id: "pricing-diff", category: "pricing", categoryLabel: "Pricing", question: "What is the difference between the free assessment and the $69 full report?", answer: "The free assessment gives you your score, stability class, constraint breakdown, 12-week plan, industry comparison, and dashboard access. The $69 full report adds lifetime dashboard access, email delivery, PressureMap\u2122 narrative, action scripts, and the scenario simulator.", keywords: ["free vs paid", "difference", "what do I get", "pricing", "cost", "stability class"] },
+  { id: "pricing-account", category: "pricing", categoryLabel: "Pricing", question: "Do I need an account?", answer: "Not for the free assessment or the $69 full report\u2014those work without an account. The $149/year Monitoring plan requires a sign-in so your three annual assessments can be tracked and compared over time.", keywords: ["account", "sign up", "registration", "login", "sign in", "monitoring"] },
 
   // --- Enterprise ---
   { id: "ent-multiple", category: "enterprise", categoryLabel: "Enterprise", question: "Can RunPayway\u2122 assess multiple income profiles?", answer: "Yes. The system can evaluate multiple individuals using the same model.", keywords: ["multiple", "team", "bulk", "organization"] },
@@ -478,7 +478,7 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get My Stability Class — Free
+            Get My Score — Free
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 16 }}>
             Under 2 minutes | Instant result | Private by default

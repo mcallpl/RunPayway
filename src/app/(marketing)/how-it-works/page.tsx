@@ -110,7 +110,7 @@ function HeroSection() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = ctaShadow; }}>
-            Get My Stability Class — Free
+            Get My Score — Free
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, marginTop: 16 }}>
             Under 2 minutes | Instant result | Private by default
@@ -501,7 +501,7 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get My Stability Class — Free
+            Get My Score — Free
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 16 }}>
             Under 2 minutes | Instant result | Private by default
@@ -547,7 +547,7 @@ function StickyCta() {
         borderRadius: 12, backgroundColor: C.white, color: C.navy,
         fontSize: 16, fontWeight: 600, textDecoration: "none",
       }}>
-        Get My Stability Class — Free
+        Get My Score — Free
       </Link>
     </div>
   );

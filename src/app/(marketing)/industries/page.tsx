@@ -350,7 +350,7 @@ export default function IndustriesIndexPage() {
               boxShadow: "0 8px 32px rgba(31,109,122,0.35)",
             }}
           >
-            Get My Stability Class — Free &rarr;
+            Get My Score — Free &rarr;
           </Link>
           <div
             style={{

@@ -318,7 +318,7 @@ function FinalCta() {
           The Platform Is Live.{m ? " " : <br />}Your assessment is waiting.
         </h2>
         <p style={{ fontSize: m ? 16 : 18, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 32, ...fadeIn(visible, 60) }}>
-          See your stability class free. The full report is there when you&rsquo;re ready.
+          Get your score free. Lifetime access to the full report for $69.
         </p>
         <div style={{ ...fadeIn(visible, 120) }}>
           <Link href="/begin" style={{
@@ -333,7 +333,7 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(244,241,234,0.15)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get My Stability Class — Free
+            Get My Score — Free
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.40)", marginTop: 16 }}>
             Free &middot; Full report available for $69

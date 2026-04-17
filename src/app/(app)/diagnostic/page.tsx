@@ -580,12 +580,7 @@ export default function DiagnosticPage() {
       setTimeout(() => {
         setLoadingStep(PROCESSING_STEPS.length);
         setTimeout(() => {
-          if (planKey === "free") {
-            // Free users: go straight to free-score
-            router.push("/free-score");
-            return;
-          }
-          // Paid users: go straight to score reveal
+          // All users: show score reveal
           setRevealScore((adapted.final_score as number) || 0);
           setRevealBand((adapted.stability_band as string) || "");
           setShowLoading(false);
