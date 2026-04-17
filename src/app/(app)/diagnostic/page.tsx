@@ -44,7 +44,7 @@ const PROCESSING_STEPS = [
 
 const LOADING_QUOTES = [
   { text: "Analyzing your income across six structural dimensions." },
-  { text: "Running twenty diagnostic engines against your profile." },
+  { text: "Mapping your income structure across six dimensions." },
   { text: "Building your personalized assessment." },
 ];
 
@@ -989,7 +989,7 @@ export default function DiagnosticPage() {
               </p>
             )}
             <p style={{ fontSize: 14, color: "rgba(14,26,43,0.35)", margin: 0 }}>
-              Your full diagnosis and action plan are ready.
+              Your full report and action plan are ready.
             </p>
           </div>
 
@@ -1083,7 +1083,7 @@ export default function DiagnosticPage() {
 
           {/* Subtle status */}
           <div style={{ fontSize: 11, color: "rgba(14,26,43,0.25)", letterSpacing: "0.06em" }}>
-            {assessmentTitle ? `Generating diagnosis for ${assessmentTitle}` : "Generating your diagnosis"}
+            {assessmentTitle ? `Building your report for ${assessmentTitle}` : "Building your report"}
           </div>
 
           {/* Social proof */}

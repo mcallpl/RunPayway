@@ -501,7 +501,7 @@ export default function InitializationPage() {
             }}
           >
             <span className="tick tick-white" />
-            Begin Profile Setup
+            Continue
           </button>
 
           {/* Trust signals */}
@@ -537,7 +537,7 @@ export default function InitializationPage() {
 
   const stepDescriptions = [
     "",
-    "Tell us about how your income is structured. This calibrates your diagnostic report.",
+    "Tell us how your income is structured. This calibrates your assessment.",
   ];
 
   return (
@@ -576,7 +576,7 @@ export default function InitializationPage() {
         <div style={{ display: "flex", alignItems: "center", gap: mobile ? 8 : 12 }}>
           <div style={{ width: 8, height: 8, borderRadius: "50%", background: C.teal, flexShrink: 0 }} />
           <span style={{ fontSize: mobile ? 10 : 11, fontWeight: 700, fontFamily: sans, color: C.sandMuted, letterSpacing: "0.12em", textTransform: "uppercase" }}>
-            Income Stability Diagnostic
+            Income Stability Assessment
           </span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
