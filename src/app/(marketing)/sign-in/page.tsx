@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getSessionByEmail, isExpired, getRemaining, verifyPin, resetPinAndSend, type MonitoringSession } from "@/lib/monitoring";
-import { WORKER_URL } from "@/lib/config";
 import {
   C, T, mono, sans, sp, maxW, secPad, px,
   h1, h2Style, h3Style, body, bodySm, cardStyle, ctaButtonLight,
@@ -14,7 +13,6 @@ import {
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
-type Step = "email" | "pin" | "send-link" | "link-sent";
 
 /* ------------------------------------------------------------------ */
 /*  Hooks                                                              */
@@ -53,7 +51,6 @@ export default function SignInPage() {
   const router = useRouter();
   const m = useMobile();
 
-  const [step, setStep] = useState<Step>("email");
   const [email, setEmail] = useState("");
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
@@ -68,30 +65,12 @@ export default function SignInPage() {
   const formAnim = useInView();
   const infoAnim = useInView();
 
-  /* ── Step 1: check email → branch to correct step ── */
-  const handleEmailContinue = () => {
-    const trimmed = email.trim();
-    if (!trimmed || !trimmed.includes("@")) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-    setError("");
-    const found = getSessionByEmail(trimmed);
-    if (found && !isExpired(found)) {
-      // Monitoring customer on this device — go to PIN step
-      setStep("pin");
-    } else {
-      // Unknown on this device — could be monitoring on new device or $69 customer
-      setStep("send-link");
-    }
-  };
-
-  /* ── Step 2a: verify PIN for monitoring customers ── */
+  /* ── Verify PIN ── */
   const handlePinSignIn = async () => {
     const trimmed = email.trim();
     if (!pin || pin.length !== 4) { setError("Please enter your 4-digit PIN."); return; }
     const found = getSessionByEmail(trimmed);
-    if (!found) { setError("Session not found. Try sending your access link instead."); return; }
+    if (!found) { setError("No active monitoring plan found for this email."); return; }
     const pinValid = await verifyPin(trimmed, pin);
     if (!pinValid) { setError("Incorrect PIN. Try again or use Forgot PIN below."); return; }
     if (isExpired(found)) { setError("This monitoring plan has expired. Purchase a new plan to continue."); return; }
@@ -99,41 +78,15 @@ export default function SignInPage() {
     setSession(found);
   };
 
-  /* ── Step 2a: forgot PIN (sub-flow of pin step) ── */
+  /* ── Forgot PIN ── */
   const handleForgotPin = async () => {
     const trimmed = email.trim();
+    if (!trimmed || !trimmed.includes("@")) { setError("Enter your email address first."); return; }
     setSending(true);
     const sent = await resetPinAndSend(trimmed);
     setSending(false);
-    if (sent) {
-      setPinSent(true);
-      setError("");
-    } else {
-      // Not in localStorage — fall through to send-link step
-      setStep("send-link");
-    }
-  };
-
-  /* ── Step 2b: send access link (covers $69 + monitoring on new device) ── */
-  const handleSendAccessLink = async () => {
-    const trimmed = email.trim();
-    setSending(true);
-    try {
-      await fetch(`${WORKER_URL}/contact`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: "Access Request",
-          email: trimmed,
-          subject: "resend_access",
-          message: `Customer requested their access link be resent to: ${trimmed}`,
-        }),
-      });
-    } catch {
-      // Network error — still show confirmation so user knows to check email
-    }
-    setSending(false);
-    setStep("link-sent");
+    if (sent) { setPinSent(true); setError(""); }
+    else { setError("No active monitoring plan found for this email."); }
   };
 
   /* ── Monitoring dashboard actions ── */
@@ -177,10 +130,10 @@ export default function SignInPage() {
         <div style={{ maxWidth: 860, margin: "0 auto", textAlign: "center" }}>
           <div style={{ ...fadeIn(heroAnim.visible) }}>
             <h1 style={{ fontSize: m ? 28 : 40, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: C.navy, marginBottom: 16 }}>
-              Access Your Report
+              Stability Monitoring Sign In
             </h1>
-            <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 480, margin: "0 auto" }}>
-              Enter the email address you used at checkout. Works for all RunPayway™ customers.
+            <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 520, margin: "0 auto" }}>
+              For RunPayway™ Annual Monitoring customers. Sign in with your email and PIN to access your monitoring dashboard.
             </p>
           </div>
         </div>
@@ -192,20 +145,21 @@ export default function SignInPage() {
           <div style={{ ...cardStyle, borderRadius: 16, padding: m ? "32px 16px" : "48px 44px", boxShadow: "0 8px 32px rgba(14,26,43,0.05)" }}>
 
             {!session ? (
+              /* ─── Email + PIN sign-in (monitoring customers only) ─── */
               <>
-                {/* ─── Step: Email ─── */}
-                {step === "email" && (
-                  <>
-                    <div style={{ textAlign: "center", marginBottom: 32 }}>
-                      <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 16 }}>RunPayway™</div>
-                      <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: 12 }}>
-                        Sign In
-                      </h2>
-                      <p style={{ ...bodySm(m), color: C.muted, maxWidth: 360, margin: "0 auto" }}>
-                        Enter the email you used at checkout.
-                      </p>
-                    </div>
+                <div style={{ textAlign: "center", marginBottom: 32 }}>
+                  <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 16 }}>RunPayway™ Annual Monitoring</div>
+                  <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: 12 }}>
+                    Sign in with Your Email &amp; PIN
+                  </h2>
+                  <p style={{ ...bodySm(m), color: C.muted, maxWidth: 360, margin: "0 auto" }}>
+                    Enter the email and 4-digit PIN from your monitoring account.
+                  </p>
+                </div>
 
+                {forgotMode ? (
+                  /* ─── Forgot PIN ─── */
+                  <>
                     <div style={{ marginBottom: 24 }}>
                       <label style={{ ...T.label, fontSize: 13, color: C.navy, display: "block", marginBottom: 10 }}>
                         Email Address
@@ -216,206 +170,100 @@ export default function SignInPage() {
                         style={inputStyle}
                         onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
                         onBlur={(e) => { e.currentTarget.style.borderColor = C.softBorder; e.currentTarget.style.boxShadow = "none"; }}
-                        onKeyDown={(e) => { if (e.key === "Enter") handleEmailContinue(); }}
-                        autoFocus
+                        onKeyDown={(e) => { if (e.key === "Enter") handleForgotPin(); }}
+                      />
+                    </div>
+
+                    {error && <p style={{ fontSize: 14, color: C.bandLimited, marginBottom: 16, lineHeight: 1.5 }}>{error}</p>}
+
+                    {pinSent ? (
+                      <div style={{ padding: "16px 20px", borderRadius: 12, backgroundColor: "rgba(31,109,122,0.06)", border: `1px solid rgba(31,109,122,0.15)`, textAlign: "center", marginBottom: 16 }}>
+                        <div style={{ fontSize: 14, fontWeight: 600, color: C.teal, marginBottom: 4 }}>PIN sent to your email.</div>
+                        <p style={{ ...T.meta, color: C.muted, margin: 0 }}>Check your inbox, then return here to sign in.</p>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={handleForgotPin}
+                        disabled={sending}
+                        style={{ ...primaryBtn, opacity: sending ? 0.6 : 1, cursor: sending ? "wait" : "pointer" }}
+                      >
+                        {sending ? "Sending..." : "Send My PIN"}
+                      </button>
+                    )}
+
+                    <div style={{ textAlign: "center", marginTop: 16 }}>
+                      <button onClick={() => { setForgotMode(false); setPinSent(false); setError(""); }} style={{ background: "none", border: "none", fontSize: 13, fontWeight: 500, color: C.purple, cursor: "pointer", padding: 0, fontFamily: sans }}>
+                        &larr; Back to sign in
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  /* ─── Normal sign-in ─── */
+                  <>
+                    <div style={{ marginBottom: 24 }}>
+                      <label style={{ ...T.label, fontSize: 13, color: C.navy, display: "block", marginBottom: 4 }}>
+                        Email Address
+                      </label>
+                      <p style={{ fontSize: 12, color: C.muted, margin: "0 0 10px" }}>The email you used at checkout</p>
+                      <input
+                        type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+                        placeholder="you@example.com"
+                        style={inputStyle}
+                        onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
+                        onBlur={(e) => { e.currentTarget.style.borderColor = C.softBorder; e.currentTarget.style.boxShadow = "none"; }}
+                      />
+                    </div>
+
+                    <div style={{ marginBottom: 24 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                        <label style={{ ...T.label, fontSize: 13, color: C.navy }}>4-Digit PIN</label>
+                        <button onClick={() => { setForgotMode(true); setError(""); }} style={{ background: "none", border: "none", fontSize: 12, fontWeight: 500, color: C.purple, cursor: "pointer", padding: 0, fontFamily: sans }}>
+                          Forgot PIN?
+                        </button>
+                      </div>
+                      <input
+                        type="text" inputMode="numeric" maxLength={4} value={pin}
+                        onChange={(e) => { const v = e.target.value.replace(/\D/g, "").slice(0, 4); setPin(v); }}
+                        placeholder="&#8226;&#8226;&#8226;&#8226;"
+                        style={{ ...inputStyle, fontSize: 24, fontFamily: mono, color: C.navy, letterSpacing: "0.3em", textAlign: "center" }}
+                        onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
+                        onBlur={(e) => { e.currentTarget.style.borderColor = C.softBorder; e.currentTarget.style.boxShadow = "none"; }}
+                        onKeyDown={(e) => { if (e.key === "Enter" && pin.length === 4) handlePinSignIn(); }}
                       />
                     </div>
 
                     {error && <p style={{ fontSize: 14, color: C.bandLimited, marginBottom: 16, lineHeight: 1.5 }}>{error}</p>}
 
                     <button
-                      onClick={handleEmailContinue}
+                      onClick={handlePinSignIn}
                       onMouseEnter={() => canHover() && setBtnHovered(true)}
                       onMouseLeave={() => setBtnHovered(false)}
                       style={primaryBtn}
                     >
-                      Continue →
+                      Access Monitoring Dashboard
                     </button>
 
-                    <div style={{ height: 1, background: C.softBorder, margin: "28px 0 20px" }} />
-                    <div style={{ textAlign: "center" }}>
-                      <p style={{ ...T.micro, color: C.light, margin: "0 0 12px" }}>
-                        Don&apos;t have an account?
-                      </p>
-                      <Link
-                        href="/begin"
-                        style={{ fontSize: 13, fontWeight: 600, color: C.teal, textDecoration: "none" }}
-                      >
-                        Get My Score →
-                      </Link>
-                    </div>
-                  </>
-                )}
-
-                {/* ─── Step: PIN (monitoring customer on this device) ─── */}
-                {step === "pin" && (
-                  <>
-                    <div style={{ textAlign: "center", marginBottom: 32 }}>
-                      <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 16 }}>Stability Monitoring</div>
-                      <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: 12 }}>
-                        Enter Your PIN
-                      </h2>
-                      <p style={{ ...bodySm(m), color: C.muted, maxWidth: 360, margin: "0 auto" }}>
-                        Signing in as <strong style={{ color: C.navy }}>{email}</strong>
-                      </p>
-                    </div>
-
-                    {!forgotMode ? (
-                      <>
-                        <div style={{ marginBottom: 24 }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                            <label style={{ ...T.label, fontSize: 13, color: C.navy }}>4-Digit PIN</label>
-                            <button onClick={() => { setForgotMode(true); setError(""); }} style={{ background: "none", border: "none", fontSize: 12, fontWeight: 500, color: C.purple, cursor: "pointer", padding: 0, fontFamily: sans }}>
-                              Forgot PIN?
-                            </button>
-                          </div>
-                          <input
-                            type="text" inputMode="numeric" maxLength={4} value={pin}
-                            onChange={(e) => { const v = e.target.value.replace(/\D/g, "").slice(0, 4); setPin(v); }}
-                            placeholder="••••"
-                            style={{ ...inputStyle, fontSize: 24, fontFamily: mono, color: C.navy, letterSpacing: "0.3em", textAlign: "center" }}
-                            onFocus={(e) => { e.currentTarget.style.borderColor = C.purple; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(75,63,174,0.08)"; }}
-                            onBlur={(e) => { e.currentTarget.style.borderColor = C.softBorder; e.currentTarget.style.boxShadow = "none"; }}
-                            onKeyDown={(e) => { if (e.key === "Enter" && pin.length === 4) handlePinSignIn(); }}
-                            autoFocus
-                          />
-                        </div>
-
-                        {error && <p style={{ fontSize: 14, color: C.bandLimited, marginBottom: 16, lineHeight: 1.5 }}>{error}</p>}
-
-                        <button
-                          onClick={handlePinSignIn}
-                          onMouseEnter={() => canHover() && setBtnHovered(true)}
-                          onMouseLeave={() => setBtnHovered(false)}
-                          style={primaryBtn}
-                        >
-                          Sign In
-                        </button>
-                      </>
-                    ) : (
-                      /* Forgot PIN sub-flow */
-                      <>
-                        {pinSent ? (
-                          <div style={{ padding: "20px 24px", borderRadius: 12, backgroundColor: "rgba(31,109,122,0.06)", border: `1px solid rgba(31,109,122,0.15)`, textAlign: "center", marginBottom: 16 }}>
-                            <div style={{ fontSize: 14, fontWeight: 600, color: C.teal, marginBottom: 6 }}>New PIN sent.</div>
-                            <p style={{ ...T.meta, color: C.muted, margin: 0 }}>Check your inbox, then return here to sign in.</p>
-                          </div>
-                        ) : (
-                          <>
-                            <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.6, marginBottom: 24 }}>
-                              We&apos;ll send a new PIN to <strong style={{ color: C.navy }}>{email}</strong>.
-                            </p>
-
-                            {error && <p style={{ fontSize: 14, color: C.bandLimited, marginBottom: 16, lineHeight: 1.5 }}>{error}</p>}
-
-                            <button
-                              onClick={handleForgotPin}
-                              disabled={sending}
-                              style={{
-                                ...primaryBtn,
-                                background: C.navy,
-                                opacity: sending ? 0.6 : 1,
-                                cursor: sending ? "wait" : "pointer",
-                                boxShadow: "0 8px 24px rgba(14,26,43,0.15)",
-                                transform: "none",
-                              }}
-                            >
-                              {sending ? "Sending..." : "Send New PIN"}
-                            </button>
-                          </>
-                        )}
-                      </>
-                    )}
-
-                    <div style={{ textAlign: "center", marginTop: 16 }}>
-                      <button
-                        onClick={() => { setStep("email"); setPin(""); setForgotMode(false); setPinSent(false); setError(""); }}
-                        style={{ background: "none", border: "none", fontSize: 13, fontWeight: 500, color: C.light, cursor: "pointer", padding: 0, fontFamily: sans }}
-                      >
-                        ← Use a different email
-                      </button>
-                    </div>
-                  </>
-                )}
-
-                {/* ─── Step: Send Link (new device or $69 customer) ─── */}
-                {step === "send-link" && (
-                  <>
-                    <div style={{ textAlign: "center", marginBottom: 32 }}>
-                      <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 16 }}>Account Access</div>
-                      <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: 12 }}>
-                        We&apos;ll send your link.
-                      </h2>
-                      <p style={{ ...bodySm(m), color: C.muted, maxWidth: 360, margin: "0 auto" }}>
-                        Click below and we&apos;ll send your report or monitoring access link to{" "}
-                        <strong style={{ color: C.navy }}>{email}</strong>.
-                      </p>
-                    </div>
-
-                    <button
-                      onClick={handleSendAccessLink}
-                      disabled={sending}
-                      onMouseEnter={() => canHover() && setBtnHovered(true)}
-                      onMouseLeave={() => setBtnHovered(false)}
-                      style={{
-                        ...primaryBtn,
-                        opacity: sending ? 0.6 : 1,
-                        cursor: sending ? "wait" : "pointer",
-                      }}
-                    >
-                      {sending ? "Sending..." : "Send My Access Link"}
-                    </button>
-
-                    <div style={{ textAlign: "center", marginTop: 20 }}>
-                      <button
-                        onClick={() => { setStep("email"); setError(""); }}
-                        style={{ background: "none", border: "none", fontSize: 13, fontWeight: 500, color: C.light, cursor: "pointer", padding: 0, fontFamily: sans }}
-                      >
-                        ← Use a different email
-                      </button>
-                    </div>
-                  </>
-                )}
-
-                {/* ─── Step: Link Sent ─── */}
-                {step === "link-sent" && (
-                  <>
-                    <div style={{ textAlign: "center", marginBottom: 28 }}>
-                      <div style={{
-                        width: 56, height: 56, borderRadius: "50%",
-                        backgroundColor: "rgba(31,109,122,0.10)",
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                        margin: "0 auto 20px",
-                      }}>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.63A2 2 0 012 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.29 6.29l1.28-1.28a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
-                        </svg>
+                    {/* Other customer types */}
+                    <div style={{ height: 1, background: C.softBorder, margin: "28px 0 24px" }} />
+                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                      <div style={{ padding: "14px 16px", borderRadius: 12, backgroundColor: C.panelFill, border: `1px solid ${C.softBorder}` }}>
+                        <p style={{ fontSize: 13, fontWeight: 600, color: C.navy, margin: "0 0 2px" }}>Have a $69 full report?</p>
+                        <p style={{ fontSize: 12, color: C.muted, margin: 0 }}>Check your purchase confirmation email — it contains your direct dashboard link.</p>
                       </div>
-                      <div style={{ ...T.label, fontSize: 13, color: C.teal, marginBottom: 12 }}>Check Your Inbox</div>
-                      <h2 style={{ ...h2Style(m), color: C.navy, marginBottom: 12 }}>
-                        Access link sent.
-                      </h2>
-                      <p style={{ ...bodySm(m), color: C.muted, maxWidth: 360, margin: "0 auto" }}>
-                        We sent your access link to <strong style={{ color: C.navy }}>{email}</strong>. Check your inbox — it arrives in under a minute.
-                      </p>
+                      <div style={{ padding: "14px 16px", borderRadius: 12, backgroundColor: C.panelFill, border: `1px solid ${C.softBorder}` }}>
+                        <p style={{ fontSize: 13, fontWeight: 600, color: C.navy, margin: "0 0 2px" }}>Advisor account?</p>
+                        <p style={{ fontSize: 12, color: C.muted, margin: "0 0 6px" }}>Use your advisor code to access your dashboard.</p>
+                        <Link href="/advisor-portal/dashboard" style={{ fontSize: 12, fontWeight: 600, color: C.teal, textDecoration: "none" }}>
+                          Go to Advisor Dashboard →
+                        </Link>
+                      </div>
                     </div>
 
-                    <div style={{ padding: "16px 20px", borderRadius: 12, backgroundColor: C.panelFill, border: `1px solid ${C.softBorder}`, marginBottom: 20 }}>
-                      <p style={{ ...T.meta, color: C.muted, margin: 0, lineHeight: 1.6 }}>
-                        Didn&apos;t get it? Check your spam folder, or{" "}
-                        <Link href="/contact" style={{ color: C.teal, fontWeight: 600, textDecoration: "none" }}>
-                          contact support
-                        </Link>.
-                      </p>
-                    </div>
-
+                    <div style={{ height: 1, background: C.softBorder, margin: "20px 0 16px" }} />
                     <div style={{ textAlign: "center" }}>
-                      <button
-                        onClick={() => { setStep("email"); setEmail(""); setError(""); }}
-                        style={{ background: "none", border: "none", fontSize: 13, fontWeight: 500, color: C.light, cursor: "pointer", padding: 0, fontFamily: sans }}
-                      >
-                        ← Try a different email
-                      </button>
+                      <p style={{ ...T.micro, color: C.light, margin: 0 }}>
+                        Consistent &#183; Email + PIN authentication &#183; Encrypted
+                      </p>
                     </div>
                   </>
                 )}
@@ -512,7 +360,7 @@ export default function SignInPage() {
                 )}
 
                 <div style={{ textAlign: "center", marginTop: 16 }}>
-                  <button onClick={() => { setSession(null); setEmail(""); setPin(""); setStep("email"); setError(""); }} style={{ background: "none", border: "none", fontSize: 13, fontWeight: 500, color: C.light, cursor: "pointer", padding: 0, fontFamily: sans }}>
+                  <button onClick={() => { setSession(null); setEmail(""); setPin(""); setError(""); }} style={{ background: "none", border: "none", fontSize: 13, fontWeight: 500, color: C.light, cursor: "pointer", padding: 0, fontFamily: sans }}>
                     Sign in with a different email
                   </button>
                 </div>
