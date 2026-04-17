@@ -227,14 +227,14 @@ function HeroSection() {
               </span>
             </div>
 
-            {/* Subhead — what they get */}
+            {/* Subhead — outcome */}
             <p style={{ fontSize: m ? 17 : 19, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 460, marginBottom: m ? 32 : 40, ...fadeIn(visible, 100) }}>
-              A stability score, your ranked risk factors, and a personalized 12&#8209;week plan — delivered instantly.
+              See exactly what&apos;s protecting your income, what&apos;s at risk, and what to fix first.
             </p>
 
             {/* CTA */}
             <div style={{ ...fadeIn(visible, 150) }}>
-              <CtaButton m={m} variant="primary" label="Get My Score →" />
+              <CtaButton m={m} variant="primary" label="Get My Stability Score →" />
               <p style={{ fontSize: 13, fontWeight: 500, color: C.textMuted, marginTop: 14 }}>
                 $69 &middot; No documents required &middot; Private by default
               </p>
