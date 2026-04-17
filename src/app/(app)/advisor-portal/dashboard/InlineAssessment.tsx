@@ -19,15 +19,49 @@ import {
 } from "@/lib/agents/intake-agent";
 import type { CanonicalAdvisorRecord, InterpretationResult } from "@/lib/engine/v2/schemas/canonical-record";
 
-/* ── Display-name → engine-value mappers ── */
-const structureMap: Record<string, string> = { "Employee (W-2)": "solo_service", "Independent Contractor": "solo_service", "Business Owner / Firm": "small_agency", "Partnership": "small_agency", "Nonprofit Organization": "small_agency" };
-const modelMap: Record<string, string> = { "Employee Salary": "salary", "Commission-Based": "commission", "Contract-Based": "project_fee", "Consulting / Client Services": "retainer", "Agency / Brokerage Income": "commission", "Project-Based Work": "project_fee", "Subscription / Retainer Services": "subscription", "Licensing / Royalty Income": "licensing", "Product Sales": "ecommerce", "Digital Product Sales": "digital_products", "Real Estate Rental Income": "rental", "Real Estate Brokerage Income": "commission", "Hybrid Multiple Income Sources": "mixed_services" };
-const revenueMap: Record<string, string> = { "Mostly One-Time Payments": "active_heavy", "Repeat Clients / Returning Customers": "hybrid", "Monthly Recurring Payments": "recurring_heavy", "Contracted Multi-Month Revenue": "recurring_heavy", "Long-Term Recurring Income": "asset_heavy", "Mixed Revenue Structure": "mixed" };
+/* ── Profile field option maps ── */
+const structureMap: Record<string, string> = {
+  "Employee (W-2)": "solo_service",
+  "Independent Contractor": "solo_service",
+  "Business Owner / Firm": "small_agency",
+  "Partnership": "small_agency",
+  "Nonprofit Organization": "small_agency",
+};
+const modelMap: Record<string, string> = {
+  "Employee Salary": "salary",
+  "Commission-Based": "commission",
+  "Contract-Based": "project_fee",
+  "Consulting / Client Services": "retainer",
+  "Agency / Brokerage Income": "commission",
+  "Project-Based Work": "project_fee",
+  "Subscription / Retainer Services": "subscription",
+  "Licensing / Royalty Income": "licensing",
+  "Product Sales": "ecommerce",
+  "Digital Product Sales": "digital_products",
+  "Real Estate Rental Income": "rental",
+  "Real Estate Brokerage Income": "commission",
+  "Hybrid Multiple Income Sources": "mixed_services",
+};
+const revenueMap: Record<string, string> = {
+  "Mostly One-Time Payments": "active_heavy",
+  "Repeat Clients / Returning Customers": "hybrid",
+  "Monthly Recurring Payments": "recurring_heavy",
+  "Contracted Multi-Month Revenue": "recurring_heavy",
+  "Long-Term Recurring Income": "asset_heavy",
+  "Mixed Revenue Structure": "mixed",
+};
 
-/* ── Display options ── */
-const PROFILE_FIELDS: { step: IntakeStep; label: string; options: { display: string; value: string }[]; mapper: Record<string, string> }[] = [
+const PROFILE_FIELDS: {
+  step: IntakeStep;
+  label: string;
+  description: string;
+  options: { display: string; value: string }[];
+  mapper: Record<string, string>;
+}[] = [
   {
-    step: "operating_structure", label: "Operating structure",
+    step: "operating_structure",
+    label: "Operating structure",
+    description: "How is your client's income legally structured?",
     options: [
       { display: "Employee (W-2)", value: "solo_service" },
       { display: "Independent Contractor", value: "solo_service" },
@@ -38,7 +72,9 @@ const PROFILE_FIELDS: { step: IntakeStep; label: string; options: { display: str
     mapper: structureMap,
   },
   {
-    step: "primary_income_model", label: "Primary income model",
+    step: "primary_income_model",
+    label: "Primary income model",
+    description: "What best describes how your client earns income?",
     options: [
       { display: "Employee Salary", value: "salary" },
       { display: "Commission-Based", value: "commission" },
@@ -57,7 +93,9 @@ const PROFILE_FIELDS: { step: IntakeStep; label: string; options: { display: str
     mapper: modelMap,
   },
   {
-    step: "revenue_structure", label: "Revenue structure",
+    step: "revenue_structure",
+    label: "Revenue structure",
+    description: "How does your client's income repeat or recur?",
     options: [
       { display: "Mostly One-Time Payments", value: "active_heavy" },
       { display: "Repeat Clients / Returning Customers", value: "hybrid" },
@@ -69,18 +107,20 @@ const PROFILE_FIELDS: { step: IntakeStep; label: string; options: { display: str
     mapper: revenueMap,
   },
   {
-    step: "years_in_structure", label: "Years in this structure",
+    step: "years_in_structure",
+    label: "Years in this structure",
+    description: "How long has your client operated under this income structure?",
     options: [
       { display: "Less than 1 year", value: "Less than 1 year" },
-      { display: "1\u20133 years", value: "1\u20133 years" },
-      { display: "3\u20135 years", value: "3\u20135 years" },
+      { display: "1–3 years", value: "1–3 years" },
+      { display: "3–5 years", value: "3–5 years" },
       { display: "5+ years", value: "5+ years" },
     ],
     mapper: {},
   },
 ];
 
-/* ─�� Props ── */
+/* ── Props ── */
 interface InlineAssessmentProps {
   clientId: string;
   clientName: string;
@@ -111,13 +151,9 @@ export default function InlineAssessment({
   const sector = mapIndustryToSector(industry);
   const questions = buildAdvisorQuestions(sector);
 
-  // Intake Agent is the single source of truth for flow state
   const [intakeState, setIntakeState] = useState<IntakeState>(() => createInitialState(sector));
   const [scoring, setScoring] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Track display values for selects (agent stores engine values)
-  const [displayValues, setDisplayValues] = useState<Record<string, string>>({});
 
   const currentStep = intakeState.currentStep;
   const stepIndex = getStepIndex(currentStep);
@@ -125,37 +161,26 @@ export default function InlineAssessment({
   const isQuestionStep = currentStep.startsWith("q") && currentStep.length === 2;
   const qIndex = isQuestionStep ? parseInt(currentStep.slice(1)) - 1 : -1;
 
-  /* ── Styles ── */
-  const selectStyle: React.CSSProperties = {
-    width: "100%", padding: "12px 14px", fontSize: 15, fontFamily: sans,
-    border: `1px solid ${C.borderSoft}`, borderRadius: 10,
-    backgroundColor: C.panelFill, color: C.textPrimary, outline: "none", boxSizing: "border-box",
-    appearance: "none" as const,
-    backgroundImage: `url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%235E6873' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "right 14px center",
-    paddingRight: 36,
-  };
+  const progressPct = (stepIndex / TOTAL_STEPS) * 100;
 
-  /* ── Handle profile field selection ── */
+  /* ── Handle profile button selection (auto-advances) ── */
   const handleProfileSelect = (step: IntakeStep, displayValue: string, engineValue: string) => {
-    setDisplayValues(prev => ({ ...prev, [step]: displayValue }));
     const next = advanceIntake(intakeState, { field: step, value: engineValue });
     setIntakeState(next);
     setError(next.errors.length > 0 ? next.errors[0] : null);
+    // suppress unused displayValue warning
+    void displayValue;
   };
 
-  /* ── Handle question answer ── */
+  /* ── Handle question answer (auto-advances) ── */
   const handleAnswer = (letter: string) => {
     const next = advanceIntake(intakeState, { field: currentStep, value: letter });
     setIntakeState(next);
     setError(next.errors.length > 0 ? next.errors[0] : null);
   };
 
-  /* ── Handle back navigation ── */
+  /* ── Handle back ── */
   const handleBack = () => {
-    // Reconstruct previous step by creating a new state and replaying
-    // For simplicity, rebuild from scratch up to the previous step
     const prevStepIdx = Math.max(0, stepIndex - 1);
     const steps: IntakeStep[] = ["operating_structure", "primary_income_model", "revenue_structure", "years_in_structure", "q1", "q2", "q3", "q4", "q5", "q6"];
     let rebuilt = createInitialState(sector);
@@ -179,30 +204,18 @@ export default function InlineAssessment({
   /* ── Run scoring pipeline ── */
   const runScoring = async () => {
     const extracted = extractInputs(intakeState);
-    if (!extracted) {
-      setError("Incomplete assessment data.");
-      return;
-    }
+    if (!extracted) { setError("Incomplete assessment data."); return; }
 
     setScoring(true);
     setError(null);
 
     try {
-      // 1. Run engine
       const { executeAssessment } = await import("@/lib/engine/v2/index");
-      const assessmentRecord = executeAssessment({
-        rawInputs: extracted.rawInputs,
-        profile: extracted.profile,
-      });
-
-      // 2. Interpretation Agent
+      const assessmentRecord = executeAssessment({ rawInputs: extracted.rawInputs, profile: extracted.profile });
       const interpretation = generateInterpretation(assessmentRecord, clientName, sector);
 
-      // 3. Gatekeeper — validate, stamp, issue canonical record
       const gatekeeperResult = await runGatekeeper({
-        advisorCode,
-        clientId,
-        clientName,
+        advisorCode, clientId, clientName,
         profile: extracted.profile,
         rawInputs: extracted.rawInputs,
         interpretation,
@@ -218,7 +231,6 @@ export default function InlineAssessment({
 
       const canonicalRecord = gatekeeperResult.record;
 
-      // 4. Persist record to server
       try {
         await fetch(`${WORKER_URL}/advisor/save-record`, {
           method: "POST",
@@ -237,79 +249,120 @@ export default function InlineAssessment({
             record_data: JSON.stringify(canonicalRecord),
           }),
         });
-      } catch { /* persistence failure shouldn't block results */ }
+      } catch { /* non-blocking */ }
 
-      // 5. Meter usage
       try {
         await fetch(`${WORKER_URL}/advisor/meter`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            advisor_code: advisorCode,
-            assessment_id: canonicalRecord.record_id,
-            client_name: clientName,
-          }),
+          body: JSON.stringify({ advisor_code: advisorCode, assessment_id: canonicalRecord.record_id, client_name: clientName }),
         });
-      } catch { /* metering failure shouldn't block results */ }
+      } catch { /* non-blocking */ }
 
-      onComplete({
-        score: interpretation.score,
-        band: interpretation.band,
-        topRisk: interpretation.top_risk,
-        assessmentId: canonicalRecord.record_id,
-        canonicalRecord,
-        interpretation,
-      });
+      onComplete({ score: interpretation.score, band: interpretation.band, topRisk: interpretation.top_risk, assessmentId: canonicalRecord.record_id, canonicalRecord, interpretation });
     } catch {
       setError("Assessment failed. Please try again.");
       setScoring(false);
     }
   };
 
-  /* ── Container ── */
-  const container: React.CSSProperties = {
-    marginTop: 12, padding: mobile ? "20px 16px" : "24px 24px", borderRadius: 14,
-    backgroundColor: "rgba(31,109,122,0.03)", border: `1px solid rgba(31,109,122,0.10)`,
-  };
-
-  const cancelBtn = (
-    <button onClick={onCancel} style={{
-      fontSize: 13, color: C.textMuted, background: "none", border: "none", cursor: "pointer",
-      textDecoration: "underline", textUnderlineOffset: "2px", fontFamily: sans,
+  /* ── Shared layout shell ── */
+  const shell = (children: React.ReactNode) => (
+    <div style={{
+      marginTop: 16,
+      borderRadius: 16,
+      border: `1px solid rgba(14,26,43,0.10)`,
+      backgroundColor: C.white,
+      overflow: "hidden",
     }}>
-      Cancel
-    </button>
+      {/* Header strip */}
+      <div style={{
+        padding: mobile ? "14px 16px" : "14px 20px",
+        borderBottom: `1px solid rgba(14,26,43,0.07)`,
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        backgroundColor: "rgba(14,26,43,0.02)",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          {stepIndex > 0 && currentStep !== "review" && (
+            <button
+              onClick={handleBack}
+              style={{
+                background: "none", border: "none", cursor: "pointer",
+                fontSize: 13, fontWeight: 600, color: C.textMuted,
+                padding: 0, fontFamily: sans, lineHeight: 1,
+              }}
+            >
+              ←
+            </button>
+          )}
+          <span style={{ fontSize: 13, fontWeight: 600, color: C.navy, fontFamily: sans }}>
+            {clientName}
+          </span>
+          {currentStep !== "review" && (
+            <span style={{
+              fontSize: 11, fontWeight: 600, color: C.teal,
+              letterSpacing: "0.07em", textTransform: "uppercase",
+              fontFamily: sans,
+            }}>
+              {isProfileStep
+                ? `Setup ${["operating_structure","primary_income_model","revenue_structure","years_in_structure"].indexOf(currentStep as string) + 1} of 4`
+                : isQuestionStep
+                ? `Question ${qIndex + 1} of 6`
+                : ""}
+            </span>
+          )}
+        </div>
+        <button
+          onClick={onCancel}
+          style={{
+            background: "none", border: "none", cursor: "pointer",
+            fontSize: 13, color: C.textMuted, fontFamily: sans, padding: 0,
+          }}
+        >
+          Cancel
+        </button>
+      </div>
+
+      {/* Progress bar */}
+      <div style={{ height: 2, backgroundColor: "rgba(14,26,43,0.05)" }}>
+        <div style={{
+          height: "100%", backgroundColor: C.teal,
+          width: `${progressPct}%`,
+          transition: "width 300ms cubic-bezier(0.22,1,0.36,1)",
+        }} />
+      </div>
+
+      {/* Body */}
+      <div style={{ padding: mobile ? "20px 16px" : "24px 24px" }}>
+        {children}
+      </div>
+    </div>
   );
 
-  /* ── Scoring state ── */
+  /* ── Scoring ── */
   if (scoring) {
-    return (
-      <div style={{ ...container, textAlign: "center", padding: "32px 24px" }}>
+    return shell(
+      <div style={{ textAlign: "center", padding: "20px 0" }}>
         <div style={{
-          width: 36, height: 36, borderRadius: 18, margin: "0 auto 16px",
-          border: `3px solid ${C.border}`, borderTopColor: C.teal,
+          width: 32, height: 32, borderRadius: "50%",
+          border: `2px solid rgba(31,109,122,0.15)`, borderTopColor: C.teal,
+          margin: "0 auto 16px",
           animation: "spin 0.8s linear infinite",
         }} />
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-        <p style={{ fontSize: 15, color: C.textSecondary, margin: 0 }}>
-          Scoring {clientName}&rsquo;s income structure...
+        <p style={{ fontSize: 14, fontWeight: 500, color: C.textSecondary, margin: 0, fontFamily: sans }}>
+          Scoring {clientName}&rsquo;s income structure&hellip;
         </p>
       </div>
     );
   }
 
-  /* ── Review step ── */
+  /* ── Review ── */
   if (currentStep === "review") {
-    return (
-      <div style={container}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-          <p style={{ fontSize: 15, fontWeight: 700, color: C.navy, margin: 0 }}>
-            Review &mdash; {clientName}
-          </p>
-          {cancelBtn}
-        </div>
-        <p style={{ fontSize: 13, color: C.textSecondary, margin: "0 0 16px" }}>
-          All fields complete. Confirm to generate the Income Stability Score™.
+    return shell(
+      <div>
+        <p style={{ fontSize: 14, color: C.textSecondary, margin: "0 0 20px", fontFamily: sans, lineHeight: 1.6 }}>
+          All fields complete. Generate the Income Stability Score™ for {clientName}.
         </p>
 
         {intakeState.ambiguityFlags.length > 0 && (
@@ -317,11 +370,9 @@ export default function InlineAssessment({
             {intakeState.ambiguityFlags.map((flag, i) => (
               <div key={i} style={{
                 padding: "10px 14px", borderRadius: 8, marginBottom: 8,
-                backgroundColor: "rgba(208,162,58,0.08)", border: "1px solid rgba(208,162,58,0.20)",
+                backgroundColor: "rgba(208,162,58,0.06)", border: "1px solid rgba(208,162,58,0.18)",
               }}>
-                <p style={{ fontSize: 13, color: C.moderate, margin: 0, fontWeight: 600 }}>
-                  {flag}
-                </p>
+                <p style={{ fontSize: 13, color: C.moderate, margin: 0, fontWeight: 600, fontFamily: sans }}>{flag}</p>
               </div>
             ))}
           </div>
@@ -331,92 +382,95 @@ export default function InlineAssessment({
           <button onClick={handleBack} style={{
             padding: "10px 20px", fontSize: 14, fontWeight: 600, fontFamily: sans,
             color: C.textMuted, backgroundColor: "transparent",
-            border: `1px solid ${C.borderSoft}`, borderRadius: 10, cursor: "pointer",
+            border: `1px solid rgba(14,26,43,0.14)`, borderRadius: 10, cursor: "pointer",
           }}>
             Back
           </button>
           <button onClick={runScoring} style={{
-            padding: "10px 24px", fontSize: 14, fontWeight: 600, fontFamily: sans,
+            padding: "10px 28px", fontSize: 14, fontWeight: 600, fontFamily: sans,
             color: C.white, backgroundColor: C.teal,
             border: "none", borderRadius: 10, cursor: "pointer",
+            letterSpacing: "0.01em",
           }}>
             Generate Score
           </button>
         </div>
 
-        {error && <p style={{ fontSize: 13, color: C.risk, margin: "12px 0 0" }}>{error}</p>}
+        {error && <p style={{ fontSize: 13, color: C.risk, margin: "12px 0 0", fontFamily: sans }}>{error}</p>}
       </div>
     );
   }
 
-  /* ── Profile steps ── */
+  /* ── Profile steps — button grid (replaces selects) ── */
   if (isProfileStep) {
     const field = PROFILE_FIELDS.find(f => f.step === currentStep);
     if (!field) return null;
 
-    const progressPct = (stepIndex / TOTAL_STEPS) * 100;
+    // Use 2-col grid for larger option sets, 1-col for small
+    const useTwoCol = field.options.length >= 6;
 
-    return (
-      <div style={container}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-          <p style={{ fontSize: 15, fontWeight: 700, color: C.navy, margin: 0 }}>
-            Assess {clientName}
+    return shell(
+      <div>
+        <div style={{ marginBottom: 20 }}>
+          <div style={{
+            fontSize: 11, fontWeight: 700, letterSpacing: "0.10em",
+            textTransform: "uppercase", color: C.teal, marginBottom: 8, fontFamily: sans,
+          }}>
+            {field.label}
+          </div>
+          <p style={{ fontSize: 14, color: C.textSecondary, margin: 0, fontFamily: sans, lineHeight: 1.5 }}>
+            {field.description}
           </p>
-          {cancelBtn}
         </div>
 
-        {/* Progress */}
-        <div style={{ height: 4, borderRadius: 2, backgroundColor: "rgba(31,109,122,0.10)", marginBottom: 16 }}>
-          <div style={{ height: "100%", borderRadius: 2, backgroundColor: C.teal, width: `${progressPct}%`, transition: "width 300ms" }} />
-        </div>
-
-        <p style={{ fontSize: 13, color: C.textSecondary, margin: "0 0 12px" }}>
-          Classify your client&rsquo;s income structure.
-        </p>
-
-        {/* Ambiguity warnings */}
         {intakeState.ambiguityFlags.length > 0 && (
-          <div style={{ marginBottom: 12 }}>
+          <div style={{ marginBottom: 14 }}>
             {intakeState.ambiguityFlags.map((flag, i) => (
               <div key={i} style={{
-                padding: "10px 14px", borderRadius: 8, marginBottom: 8,
-                backgroundColor: "rgba(208,162,58,0.08)", border: "1px solid rgba(208,162,58,0.20)",
+                padding: "8px 12px", borderRadius: 8, marginBottom: 6,
+                backgroundColor: "rgba(208,162,58,0.06)", border: "1px solid rgba(208,162,58,0.18)",
               }}>
-                <p style={{ fontSize: 13, color: C.moderate, margin: 0 }}>
-                  {flag}
-                </p>
+                <p style={{ fontSize: 13, color: C.moderate, margin: 0, fontFamily: sans }}>{flag}</p>
               </div>
             ))}
           </div>
         )}
 
-        <label style={{ fontSize: 13, fontWeight: 600, color: C.textPrimary, fontFamily: sans, marginBottom: 6, display: "block" }}>
-          {field.label}
-        </label>
-        <select
-          value={displayValues[currentStep] || ""}
-          onChange={e => {
-            const display = e.target.value;
-            const engine = field.mapper[display] || display;
-            handleProfileSelect(currentStep, display, engine);
-          }}
-          style={{ ...selectStyle, color: displayValues[currentStep] ? C.textPrimary : C.textMuted, marginBottom: 12 }}
-        >
-          <option value="" disabled>Select</option>
-          {field.options.map(o => <option key={o.display} value={o.display}>{o.display}</option>)}
-        </select>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: useTwoCol && !mobile ? "1fr 1fr" : "1fr",
+          gap: 7,
+        }}>
+          {field.options.map(opt => (
+            <button
+              key={opt.display}
+              onClick={() => handleProfileSelect(currentStep, opt.display, opt.value)}
+              style={{
+                padding: "12px 14px",
+                backgroundColor: C.white,
+                border: `1.5px solid rgba(14,26,43,0.10)`,
+                borderRadius: 10, cursor: "pointer",
+                textAlign: "left", fontFamily: sans,
+                fontSize: 13, fontWeight: 500, color: C.textPrimary,
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                transition: "border-color 130ms, background-color 130ms",
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor = C.teal;
+                e.currentTarget.style.backgroundColor = "rgba(31,109,122,0.03)";
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = "rgba(14,26,43,0.10)";
+                e.currentTarget.style.backgroundColor = C.white;
+              }}
+            >
+              <span style={{ lineHeight: 1.3 }}>{opt.display}</span>
+              <span style={{ color: "rgba(14,26,43,0.22)", fontSize: 12, flexShrink: 0, marginLeft: 10 }}>→</span>
+            </button>
+          ))}
+        </div>
 
-        {stepIndex > 0 && (
-          <button onClick={handleBack} style={{
-            padding: "8px 16px", fontSize: 13, fontWeight: 600, fontFamily: sans,
-            color: C.textMuted, backgroundColor: "transparent",
-            border: `1px solid ${C.borderSoft}`, borderRadius: 8, cursor: "pointer",
-          }}>
-            Back
-          </button>
-        )}
-
-        {error && <p style={{ fontSize: 13, color: C.risk, margin: "8px 0 0" }}>{error}</p>}
+        {error && <p style={{ fontSize: 13, color: C.risk, margin: "12px 0 0", fontFamily: sans }}>{error}</p>}
       </div>
     );
   }
@@ -425,35 +479,27 @@ export default function InlineAssessment({
   if (isQuestionStep && qIndex >= 0 && qIndex < 6) {
     const q = questions[qIndex];
     const selectedAnswer = intakeState.answers[qIndex] || "";
-    const progressPct = (stepIndex / TOTAL_STEPS) * 100;
 
-    return (
-      <div style={container}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-          <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, margin: 0, textTransform: "uppercase", letterSpacing: "0.06em" }}>
-            Question {qIndex + 1} of 6
+    return shell(
+      <div>
+        <div style={{ marginBottom: 18 }}>
+          <div style={{
+            fontSize: 11, fontWeight: 700, letterSpacing: "0.10em",
+            textTransform: "uppercase", color: C.teal, marginBottom: 8, fontFamily: sans,
+          }}>
+            {q.title}
+          </div>
+          <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, margin: "0 0 4px", lineHeight: 1.35, fontFamily: sans }}>
+            {q.prompt}
           </p>
-          {cancelBtn}
+          {q.note && (
+            <p style={{ fontSize: 13, color: C.textSecondary, margin: 0, lineHeight: 1.5, fontFamily: sans }}>
+              {q.note}
+            </p>
+          )}
         </div>
 
-        {/* Progress */}
-        <div style={{ height: 4, borderRadius: 2, backgroundColor: "rgba(31,109,122,0.10)", marginBottom: 16 }}>
-          <div style={{ height: "100%", borderRadius: 2, backgroundColor: C.teal, width: `${progressPct}%`, transition: "width 300ms" }} />
-        </div>
-
-        <p style={{ fontSize: 11, fontWeight: 600, color: C.textMuted, margin: "0 0 4px", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-          {q.title}
-        </p>
-        <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, margin: "0 0 6px", lineHeight: 1.4 }}>
-          {q.prompt}
-        </p>
-        {q.note && (
-          <p style={{ fontSize: 13, color: C.textSecondary, margin: "0 0 14px", lineHeight: 1.4 }}>
-            {q.note}
-          </p>
-        )}
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
           {q.options.map(opt => {
             const isSelected = selectedAnswer === opt.letter;
             return (
@@ -462,38 +508,33 @@ export default function InlineAssessment({
                 onClick={() => handleAnswer(opt.letter)}
                 style={{
                   display: "flex", alignItems: "center", gap: 12,
-                  padding: "12px 16px", borderRadius: 10, cursor: "pointer",
-                  border: isSelected ? `2px solid ${C.teal}` : `1px solid ${C.borderSoft}`,
-                  backgroundColor: isSelected ? "rgba(31,109,122,0.06)" : C.white,
-                  textAlign: "left", fontFamily: sans, fontSize: 14, color: C.textPrimary,
-                  transition: "border-color 150ms, background-color 150ms",
+                  padding: "11px 14px", borderRadius: 10, cursor: "pointer",
+                  border: isSelected ? `1.5px solid ${C.teal}` : `1.5px solid rgba(14,26,43,0.09)`,
+                  backgroundColor: isSelected ? "rgba(31,109,122,0.05)" : C.white,
+                  textAlign: "left", fontFamily: sans, fontSize: 13, color: C.textPrimary,
+                  transition: "border-color 130ms, background-color 130ms",
+                  boxShadow: isSelected ? `0 0 0 2px rgba(31,109,122,0.12)` : "none",
                 }}
               >
                 <span style={{
-                  width: 28, height: 28, borderRadius: 8, flexShrink: 0,
+                  width: 26, height: 26, borderRadius: 7, flexShrink: 0,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 13, fontWeight: 700, fontFamily: mono,
+                  fontSize: 11, fontWeight: 700, fontFamily: mono,
                   color: isSelected ? C.white : C.textMuted,
-                  backgroundColor: isSelected ? C.teal : C.panelFill,
-                  transition: "all 150ms",
+                  backgroundColor: isSelected ? C.teal : "rgba(14,26,43,0.05)",
+                  transition: "all 130ms",
                 }}>
                   {opt.letter}
                 </span>
-                {opt.text}
+                <span style={{ fontWeight: isSelected ? 600 : 400, lineHeight: 1.35 }}>
+                  {opt.text}
+                </span>
               </button>
             );
           })}
         </div>
 
-        <button onClick={handleBack} style={{
-          padding: "10px 20px", fontSize: 14, fontWeight: 600, fontFamily: sans,
-          color: C.textMuted, backgroundColor: "transparent",
-          border: `1px solid ${C.borderSoft}`, borderRadius: 10, cursor: "pointer",
-        }}>
-          Back
-        </button>
-
-        {error && <p style={{ fontSize: 13, color: C.risk, margin: "12px 0 0" }}>{error}</p>}
+        {error && <p style={{ fontSize: 13, color: C.risk, margin: "12px 0 0", fontFamily: sans }}>{error}</p>}
       </div>
     );
   }
