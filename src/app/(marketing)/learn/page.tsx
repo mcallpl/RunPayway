@@ -338,7 +338,7 @@ export default function LearnHub() {
 
       {/* FINAL CTA */}
       <LearnCTA
-        heading="See Your Score"
+        heading="See Your Stability Class"
         sub="Know where your income holds — and where it's exposed."
       />
 

@@ -456,8 +456,9 @@ function DashboardContent() {
       const ps = JSON.parse(sessionStorage.getItem("rp_purchase_session") || localStorage.getItem("rp_purchase_session") || "{}");
       if (ps.plan_key && ps.plan_key !== "free") {
         setIsPaid(true);
-      } else if (ps.plan_key === "free") {
-        setIsPaid(true);
+      } else if (ps.plan_key === "free" && stored) {
+        window.location.replace("/RunPayway/free-score");
+        return;
       }
     } catch { /* */ }
     const hasVisited = localStorage.getItem("rp_cc_visited");

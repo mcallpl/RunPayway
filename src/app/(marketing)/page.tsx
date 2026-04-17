@@ -125,7 +125,7 @@ function PressureBar({ segments, height = 14 }: { segments: { pct: number; color
 
 function CtaButton({ m, variant = "primary", label }: { m: boolean; variant?: "primary" | "light"; label?: string }) {
   const isPrimary = variant === "primary";
-  const text = label || "Get My Score — Free →";
+  const text = label || "Get My Stability Class — Free →";
   return (
     <Link href="/begin" style={{
       display: "inline-flex", alignItems: "center", justifyContent: "center",
@@ -232,7 +232,7 @@ function HeroSection() {
 
             {/* CTA */}
             <div style={{ ...fadeIn(visible, 150) }}>
-              <CtaButton m={m} variant="primary" label="Get My Score — Free →" />
+              <CtaButton m={m} variant="primary" label="Get My Stability Class — Free →" />
               <p style={{ fontSize: 13, fontWeight: 500, color: C.textMuted, marginTop: 14 }}>
                 No documents required &middot; Private by default
               </p>
@@ -559,7 +559,7 @@ function WhatYourScoreChanges() {
 
         <div style={{ textAlign: "center", marginTop: m ? 40 : 56, ...fadeIn(visible, 200) }}>
           {tab === "individual" ? (
-            <CtaButton m={m} variant="primary" label="Get My Score — Free →" />
+            <CtaButton m={m} variant="primary" label="Get My Stability Class — Free →" />
           ) : (
             <Link href="/advisor-portal" style={{
               display: "inline-flex", alignItems: "center", justifyContent: "center",

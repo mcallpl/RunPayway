@@ -27,13 +27,6 @@ const C = {
 const sans = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 const mono = '"SF Mono","Fira Code","IBM Plex Mono","Courier New",monospace';
 
-function bandColor(score: number) {
-  if (score >= 75) return "#1F6D7A";
-  if (score >= 50) return "#4B3FAE";
-  if (score >= 30) return "#B08D57";
-  return "#C0392B";
-}
-
 /* ================================================================ */
 /* DATA                                                              */
 /* ================================================================ */
@@ -84,18 +77,11 @@ const SECTOR_MAP: Record<string, string> = {
 
 const QUESTIONS = buildFreeQuestions();
 
-const BAND_MESSAGES: Record<string, string> = {
-  "Limited Stability": "Your income has significant structural exposure.",
-  "Developing Stability": "Your income structure is building but has key vulnerabilities.",
-  "Established Stability": "Your income structure is solid with room to strengthen.",
-  "High Stability": "Your income holds up well under pressure.",
-};
-
 /* ================================================================ */
 /* MAIN                                                              */
 /* ================================================================ */
 
-type Step = "entrance" | "industry" | "questions" | "calculating" | "reveal";
+type Step = "entrance" | "industry" | "questions" | "calculating";
 
 export default function FreeAssessmentPage() {
   const router = useRouter();
@@ -108,10 +94,6 @@ export default function FreeAssessmentPage() {
   const [fading, setFading] = useState(false);
   const [mobile, setMobile] = useState(false);
   const [calcDot, setCalcDot] = useState(0);
-  const [revealScore, setRevealScore] = useState(0);
-  const [revealBand, setRevealBand] = useState("");
-  const [revealPhase, setRevealPhase] = useState(0);
-  const [displayedScore, setDisplayedScore] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -140,26 +122,6 @@ export default function FreeAssessmentPage() {
     const interval = setInterval(() => setCalcDot(d => (d + 1) % 4), 380);
     return () => clearInterval(interval);
   }, [step]);
-
-  // Reveal animation — count up score, then sequence phases
-  useEffect(() => {
-    if (step !== "reveal") return;
-    const target = revealScore;
-    const duration = 1200;
-    const start = Date.now();
-    const frame = () => {
-      const elapsed = Date.now() - start;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplayedScore(Math.round(eased * target));
-      if (progress < 1) requestAnimationFrame(frame);
-    };
-    requestAnimationFrame(frame);
-    const t1 = setTimeout(() => setRevealPhase(1), 800);
-    const t2 = setTimeout(() => setRevealPhase(2), 1600);
-    const t3 = setTimeout(() => setRevealPhase(3), 2400);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-  }, [step, revealScore]);
 
   // Free session
   useEffect(() => {
@@ -230,11 +192,11 @@ export default function FreeAssessmentPage() {
       const { adaptV2ToV1 } = await loadAdapter();
 
       const rawInputs = {
-        q1_recurring_revenue_base:         finalAnswers[0] as string,
-        q2_income_concentration:           finalAnswers[1] as string,
-        q3_income_source_diversity:        finalAnswers[2] as string,
-        q4_forward_revenue_visibility:     finalAnswers[3] as string,
-        q5_earnings_variability:           finalAnswers[4] as string,
+        q1_recurring_revenue_base:          finalAnswers[0] as string,
+        q2_income_concentration:            finalAnswers[1] as string,
+        q3_income_source_diversity:         finalAnswers[2] as string,
+        q4_forward_revenue_visibility:      finalAnswers[3] as string,
+        q5_earnings_variability:            finalAnswers[4] as string,
         q6_income_continuity_without_labor: finalAnswers[5] as string,
       };
 
@@ -258,21 +220,19 @@ export default function FreeAssessmentPage() {
 
       const stored = JSON.parse(localStorage.getItem("rp_records") || "[]");
       stored.push({
-        record_id:             record.record_id,
-        authorization_code:    record.authorization_code,
-        model_version:         record.model_version ?? "RP-2.0",
-        final_score:           record.final_score,
-        stability_band:        record.stability_band,
-        assessment_date_utc:   record.assessment_date_utc,
-        issued_timestamp_utc:  record.issued_timestamp_utc,
+        record_id:            record.record_id,
+        authorization_code:   record.authorization_code,
+        model_version:        record.model_version ?? "RP-2.0",
+        final_score:          record.final_score,
+        stability_band:       record.stability_band,
+        assessment_date_utc:  record.assessment_date_utc,
+        issued_timestamp_utc: record.issued_timestamp_utc,
       });
       localStorage.setItem("rp_records", JSON.stringify(stored));
 
       trackAssessmentComplete((record.final_score as number) || 0, industry || undefined);
 
-      setRevealScore((record.final_score as number) || 0);
-      setRevealBand((record.stability_band as string) || "");
-      setTimeout(() => setStep("reveal"), 900);
+      setTimeout(() => router.push("/free-score"), 900);
     } catch {
       router.push("/diagnostic-portal");
     }
@@ -300,7 +260,6 @@ export default function FreeAssessmentPage() {
           transform: entranceVisible ? "translateY(0)" : "translateY(12px)",
           transition: "opacity 700ms cubic-bezier(0.22,1,0.36,1), transform 700ms cubic-bezier(0.22,1,0.36,1)",
         }}>
-          {/* Wordmark */}
           <div style={{
             fontSize: 11, fontWeight: 700, letterSpacing: "0.16em",
             textTransform: "uppercase", color: C.teal, marginBottom: 36,
@@ -308,8 +267,6 @@ export default function FreeAssessmentPage() {
           }}>
             RunPayway™
           </div>
-
-          {/* Central ring */}
           <div style={{
             width: 72, height: 72, borderRadius: "50%",
             border: `1.5px solid rgba(31,109,122,0.30)`,
@@ -322,8 +279,6 @@ export default function FreeAssessmentPage() {
               boxShadow: `0 0 16px ${C.teal}60`,
             }} />
           </div>
-
-          {/* Title */}
           <h1 style={{
             fontFamily: sans, fontSize: mobile ? 22 : 28, fontWeight: 300,
             letterSpacing: "-0.025em", color: C.sand,
@@ -337,7 +292,6 @@ export default function FreeAssessmentPage() {
           }}>
             Free &nbsp;&middot;&nbsp; Model RP-2.0 &nbsp;&middot;&nbsp; Deterministic
           </p>
-
           <p style={{ fontFamily: sans, fontSize: 12, color: "rgba(244,241,234,0.25)", margin: 0 }}>
             Click anywhere to begin
           </p>
@@ -361,7 +315,7 @@ export default function FreeAssessmentPage() {
         <div style={{ textAlign: "center" }}>
           <div style={{
             fontSize: 11, fontWeight: 700, letterSpacing: "0.14em",
-            textTransform: "uppercase", color: C.teal, marginBottom: 40, fontFamily: sans,
+            textTransform: "uppercase", color: C.teal, marginBottom: 40,
           }}>
             RunPayway™
           </div>
@@ -374,144 +328,11 @@ export default function FreeAssessmentPage() {
           }} />
           <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
           <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 300, color: C.sand, margin: "0 0 8px", letterSpacing: "-0.02em" }}>
-            Calculating your score{".".repeat(calcDot)}
+            Determining your stability class{".".repeat(calcDot)}
           </p>
           <p style={{ fontSize: 12, color: "rgba(244,241,234,0.30)", margin: 0, fontFamily: mono }}>
             Model RP-2.0 · Deterministic
           </p>
-        </div>
-      </div>
-    );
-  }
-
-  /* ================================================================ */
-  /* SCORE REVEAL                                                      */
-  /* ================================================================ */
-
-  if (step === "reveal") {
-    const rColor = bandColor(revealScore);
-    const nextBand = revealScore < 30 ? "Developing Stability" : revealScore < 50 ? "Established Stability" : revealScore < 75 ? "High Stability" : null;
-    const gap = nextBand ? (revealScore < 30 ? 30 : revealScore < 50 ? 50 : 75) - revealScore : 0;
-    const bandMsg = BAND_MESSAGES[revealBand] || "";
-
-    return (
-      <div style={{
-        position: "fixed", inset: 0, zIndex: 9999,
-        backgroundColor: C.sand,
-        display: "flex", alignItems: mobile ? "flex-start" : "center", justifyContent: "center",
-        paddingTop: mobile ? "18vh" : 0,
-      }}>
-        {/* Ambient glow */}
-        <div style={{
-          position: "absolute", top: "30%", left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: mobile ? 300 : 560, height: mobile ? 300 : 560,
-          borderRadius: "50%",
-          background: `radial-gradient(circle, ${rColor}12 0%, transparent 60%)`,
-          pointerEvents: "none",
-        }} />
-
-        <div style={{
-          textAlign: "center", maxWidth: 460,
-          padding: mobile ? "0 24px" : "0 24px",
-          position: "relative", zIndex: 1, width: "100%",
-        }}>
-
-          {/* Score number — counts up */}
-          <div style={{ marginBottom: 8 }}>
-            <span style={{
-              fontSize: mobile ? 72 : 96, fontWeight: 200, color: C.navy,
-              letterSpacing: "-0.05em", lineHeight: 1, fontFamily: mono,
-            }}>
-              {displayedScore}
-            </span>
-            <span style={{
-              fontSize: mobile ? 22 : 28, fontWeight: 300,
-              color: "rgba(14,26,43,0.20)", marginLeft: 4,
-            }}>
-              /100
-            </span>
-          </div>
-
-          {/* Band badge — fades in */}
-          <div style={{
-            opacity: revealPhase >= 1 ? 1 : 0,
-            transform: revealPhase >= 1 ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 600ms ease, transform 600ms ease",
-            marginBottom: 8,
-          }}>
-            <div style={{
-              display: "inline-flex", alignItems: "center", gap: 10,
-              padding: "8px 20px", borderRadius: 24,
-              border: `1px solid ${rColor}30`,
-              backgroundColor: `${rColor}08`,
-            }}>
-              <div style={{ width: 10, height: 10, borderRadius: 3, backgroundColor: rColor }} />
-              <span style={{ fontSize: 16, fontWeight: 600, color: rColor }}>{revealBand}</span>
-            </div>
-          </div>
-
-          {/* Band message */}
-          {bandMsg && (
-            <div style={{
-              opacity: revealPhase >= 1 ? 1 : 0,
-              transition: "opacity 600ms ease",
-              marginBottom: 24,
-            }}>
-              <p style={{ fontSize: 14, color: "rgba(14,26,43,0.40)", margin: 0 }}>{bandMsg}</p>
-            </div>
-          )}
-
-          {/* Gap message — fades in */}
-          <div style={{
-            opacity: revealPhase >= 2 ? 1 : 0,
-            transform: revealPhase >= 2 ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 600ms ease, transform 600ms ease",
-            marginBottom: 8,
-          }}>
-            {nextBand && (
-              <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(14,26,43,0.45)", margin: "0 0 8px", lineHeight: 1.5 }}>
-                {gap} points from {nextBand}
-              </p>
-            )}
-            <p style={{ fontSize: 14, color: "rgba(14,26,43,0.35)", margin: 0 }}>
-              Your full report and action plan are ready.
-            </p>
-          </div>
-
-          <div style={{ marginBottom: 24 }} />
-
-          {/* CTA — fades in */}
-          <div style={{
-            opacity: revealPhase >= 3 ? 1 : 0,
-            transform: revealPhase >= 3 ? "translateY(0)" : "translateY(12px)",
-            transition: "opacity 600ms ease, transform 600ms ease",
-          }}>
-            <button
-              onClick={() => router.push("/dashboard")}
-              style={{
-                padding: mobile ? "14px 32px" : "16px 40px",
-                borderRadius: 12, backgroundColor: C.navy, border: "none",
-                color: C.sand, fontSize: mobile ? 15 : 17, fontWeight: 600,
-                cursor: "pointer", fontFamily: sans,
-                transition: "background-color 200ms",
-                boxShadow: "0 4px 20px rgba(14,26,43,0.15)",
-              }}
-              onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#1a2540"; }}
-              onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.navy; }}
-            >
-              See Your Full Report &rarr;
-            </button>
-          </div>
-
-          {/* Watermark */}
-          <div style={{
-            position: "absolute", bottom: -80, left: "50%",
-            transform: "translateX(-50%)",
-            fontSize: 11, color: "rgba(14,26,43,0.12)", letterSpacing: "0.10em",
-          }}>
-            RUNPAYWAY™
-          </div>
         </div>
       </div>
     );
@@ -531,8 +352,6 @@ export default function FreeAssessmentPage() {
           maxWidth: 640, margin: "0 auto",
           padding: mobile ? "48px 24px 72px" : "72px 32px 96px",
         }}>
-
-          {/* Header */}
           <div style={{ marginBottom: 40 }}>
             <div style={{
               fontSize: 11, fontWeight: 700, letterSpacing: "0.13em",
@@ -547,11 +366,10 @@ export default function FreeAssessmentPage() {
               What field are you in?
             </h1>
             <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.6, margin: 0, maxWidth: 420 }}>
-              This helps contextualize your results. No other personal information required.
+              This helps contextualize your stability class. No other personal information required.
             </p>
           </div>
 
-          {/* 2-column industry grid */}
           <div style={{
             display: "grid",
             gridTemplateColumns: mobile ? "1fr" : "1fr 1fr",
@@ -631,7 +449,7 @@ export default function FreeAssessmentPage() {
             style={{
               background: "none", border: "none", cursor: "pointer",
               fontSize: 13, fontWeight: 600, color: C.muted,
-              padding: 0, fontFamily: sans, display: "flex", alignItems: "center", gap: 5,
+              padding: 0, fontFamily: sans,
             }}
           >
             ← Back
@@ -676,7 +494,7 @@ export default function FreeAssessmentPage() {
           )}
         </div>
 
-        {/* Options — radio circle style */}
+        {/* Options — radio circle style, no letter badges */}
         <div role="radiogroup" aria-label={q.title} style={{ display: "flex", flexDirection: "column", gap: 9, marginBottom: 36 }}>
           {q.options.map((opt) => {
             const isSelected = selected === opt.letter;
@@ -709,7 +527,6 @@ export default function FreeAssessmentPage() {
                   }
                 }}
               >
-                {/* Radio circle */}
                 <div style={{
                   width: 22, height: 22, borderRadius: "50%", flexShrink: 0,
                   border: `2px solid ${isSelected ? C.purple : "rgba(14,26,43,0.18)"}`,
@@ -743,10 +560,9 @@ export default function FreeAssessmentPage() {
             border: "none", cursor: selected ? "pointer" : "default",
             fontSize: 15, fontWeight: 600, fontFamily: sans,
             transition: "background-color 200ms, color 200ms",
-            letterSpacing: "0.01em",
           }}
         >
-          {currentQ === QUESTIONS.length - 1 ? "See My Score →" : "Continue →"}
+          {currentQ === QUESTIONS.length - 1 ? "See My Stability Class →" : "Continue →"}
         </button>
 
         <p style={{ fontSize: 12, color: C.light, textAlign: "center", marginTop: 16, marginBottom: 0 }}>

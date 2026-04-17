@@ -185,12 +185,10 @@ function PricingCards() {
       </div>
       <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 16 }}>Always available</div>
       <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 16, marginBottom: 16, flex: 1, color: C.textSecondary }}>
-        {check("Income Stability Score (0\u2013100)")}
-        {check("Stability class")}
-        {check("Constraint breakdown")}
-        {check("12-week action plan")}
-        {check("Industry comparison")}
-        {check("Dashboard access")}
+        {check("Stability class (Limited / Developing / Established / High)")}
+        {check("Primary structural risk")}
+        {check("Distance to next class")}
+        {check("Industry context")}
       </div>
       <Link href="/begin" style={{
         display: "flex", alignItems: "center", justifyContent: "center",
@@ -202,7 +200,7 @@ function PricingCards() {
       }}
         onMouseEnter={e => { e.currentTarget.style.backgroundColor = `${C.teal}08`; }}
         onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; }}>
-        Get My Score — Free
+        Get My Stability Class — Free
       </Link>
       <p style={{ fontSize: 12, color: C.textMuted, textAlign: "center", marginTop: 10, marginBottom: 0 }}>
         No account required
@@ -236,13 +234,14 @@ function PricingCards() {
       <div style={{ fontSize: 13, fontWeight: 500, color: C.textMuted, marginBottom: 16 }}>One-time · Lifetime access</div>
 
       <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 16, marginBottom: 16, flex: 1, color: C.textSecondary }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: C.textMuted, marginBottom: 10 }}>EVERYTHING FREE, PLUS</div>
-        {check("Lifetime dashboard access")}
-        {check("Email report delivery")}
+        {check("Income Stability Score (0\u2013100)")}
+        {check("Constraint breakdown — what\u2019s limiting your score")}
+        {check("Stress test — what changes if your largest source disappears")}
+        {check("12-week action plan")}
         {check("PressureMap\u2122 narrative")}
         {check("Action scripts for income conversations")}
-        {check("Scenario simulator — test changes before making them")}
-        {check("Shareable score card")}
+        {check("Scenario simulator")}
+        {check("Lifetime dashboard access + email delivery")}
       </div>
 
       <a href={STRIPE} onClick={() => trackPurchaseClick("diagnostic_69")} style={{
@@ -568,7 +567,7 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get My Score — Free
+            Get My Stability Class — Free
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 16 }}>
             Under 2 minutes | Instant result | Private by default

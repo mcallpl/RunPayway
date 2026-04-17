@@ -244,7 +244,7 @@ export default async function IndustryPage({
               boxShadow: "0 8px 24px rgba(31,109,122,0.30)",
             }}
           >
-            Get My Score — Free &rarr;
+            Get My Stability Class — Free &rarr;
           </Link>
           <div
             style={{
@@ -1212,7 +1212,7 @@ export default async function IndustryPage({
               boxShadow: "0 8px 32px rgba(31,109,122,0.35)",
             }}
           >
-            Get My Score — Free &rarr;
+            Get My Stability Class — Free &rarr;
           </Link>
           <div
             style={{
