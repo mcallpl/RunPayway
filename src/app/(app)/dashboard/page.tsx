@@ -48,9 +48,9 @@ const B = {
 /* ================================================================== */
 const PHASE_NAV = [
   { id: "phase-diagnosis", label: "Your Score", color: B.purple },
+  { id: "phase-explore", label: "Explore", color: B.teal },
   { id: "phase-plan", label: "Your Plan", color: B.navy },
   { id: "phase-progress", label: "Progress", color: B.taupe },
-  { id: "phase-explore", label: "Explore", color: B.teal },
 ] as const;
 
 /* ================================================================== */
@@ -93,86 +93,6 @@ function PhaseSep({ label, color, tint, children, id, mobile }: { label: string;
         <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, ${color}12 0%, transparent 100%)` }} />
       </div>
       {children}
-    </div>
-  );
-}
-
-/* ================================================================== */
-/*  WEEKLY PULSE — lightweight weekly check-in for engagement          */
-/* ================================================================== */
-function WeeklyPulse({ mobile, nextMoveLabel }: { mobile: boolean; nextMoveLabel?: string }) {
-  const [pulseState, setPulseState] = useState<"prompt" | "yes" | "no">("prompt");
-  const [streak, setStreak] = useState(0);
-
-  const getISOWeek = (d: Date): string => {
-    const dt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-    dt.setUTCDate(dt.getUTCDate() + 4 - (dt.getUTCDay() || 7));
-    const yearStart = new Date(Date.UTC(dt.getUTCFullYear(), 0, 1));
-    const weekNo = Math.ceil(((dt.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
-    return `${dt.getUTCFullYear()}-W${weekNo}`;
-  };
-
-  const getLastISOWeek = (): string => {
-    const d = new Date();
-    d.setDate(d.getDate() - 7);
-    return getISOWeek(d);
-  };
-
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem("rp_pulse_streak");
-      if (!raw) return;
-      const data = JSON.parse(raw) as { count: number; lastCheckin: string };
-      const lastWeek = getISOWeek(new Date(data.lastCheckin));
-      const currentWeek = getISOWeek(new Date());
-      const previousWeek = getLastISOWeek();
-      if (lastWeek === currentWeek) { setPulseState("yes"); setStreak(data.count); }
-      else if (lastWeek === previousWeek) { setStreak(data.count); }
-      else { setStreak(0); }
-    } catch { /* ignore corrupt data */ }
-  }, []);
-
-  const handleYes = () => {
-    const currentWeek = getISOWeek(new Date());
-    let raw: { count: number; lastCheckin: string } | null = null;
-    try { raw = JSON.parse(localStorage.getItem("rp_pulse_streak") || "null"); } catch { /* */ }
-    let newCount = 1;
-    if (raw) {
-      const lw = getISOWeek(new Date(raw.lastCheckin));
-      newCount = lw === currentWeek ? raw.count : raw.count + 1;
-    }
-    localStorage.setItem("rp_pulse_streak", JSON.stringify({ count: newCount, lastCheckin: new Date().toISOString() }));
-    setStreak(newCount);
-    setPulseState("yes");
-  };
-
-  const handleNo = () => {
-    localStorage.setItem("rp_pulse_streak", JSON.stringify({ count: 0, lastCheckin: new Date().toISOString() }));
-    setStreak(0);
-    setPulseState("no");
-  };
-
-  return (
-    <div style={{ borderRadius: 20, padding: mobile ? "24px 24px" : "28px 32px", backgroundColor: B.white || "#fff", border: "1px solid rgba(14,26,43,0.06)", boxShadow: "0 2px 12px rgba(14,26,43,0.04)", marginBottom: 36 }}>
-      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 14, textTransform: "uppercase" as const }}>WEEKLY PULSE</div>
-      {pulseState === "prompt" && (<>
-        <p style={{ fontSize: 17, fontWeight: 600, color: B.navy, margin: "0 0 20px", lineHeight: 1.4 }}>Did you take action on your plan this week?</p>
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          <button onClick={handleYes} style={{ flex: 1, minWidth: 160, height: 44, borderRadius: 12, backgroundColor: B.teal, color: "#fff", border: "none", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>Yes, I made progress</button>
-          <button onClick={handleNo} style={{ flex: 1, minWidth: 120, height: 44, borderRadius: 12, backgroundColor: "transparent", color: B.navy, border: "1px solid rgba(14,26,43,0.12)", fontSize: 15, fontWeight: 600, cursor: "pointer" }}>Not yet</button>
-        </div>
-      </>)}
-      {pulseState === "yes" && (<div>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="11" fill={B.teal} /><path d="M6.5 11.5L9.5 14.5L15.5 8" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          <span style={{ fontSize: 17, fontWeight: 600, color: B.navy }}>Nice work. Keep building.</span>
-        </div>
-        {streak > 0 && <span style={{ fontSize: 15, fontFamily: mono, color: B.teal, fontWeight: 500 }}>{"\uD83D\uDD25"} {streak} week{streak !== 1 ? "s" : ""} in a row</span>}
-      </div>)}
-      {pulseState === "no" && (<div>
-        <p style={{ fontSize: 16, fontWeight: 500, color: B.navy, margin: "0 0 8px", lineHeight: 1.4 }}>No pressure. Your plan is here when you&apos;re ready.</p>
-        {nextMoveLabel && <p style={{ fontSize: 14, color: B.taupe, margin: 0 }}>Your next move: <span style={{ fontWeight: 600, color: B.navy }}>{nextMoveLabel}</span></p>}
-      </div>)}
     </div>
   );
 }
@@ -1350,409 +1270,6 @@ function DashboardContent() {
           )}
 
           {/* ════════════════════════════════════════════════════════ */}
-          {/*  WEEKLY PULSE — check-in engagement card                   */}
-          {/* ════════════════════════════════════════════════════════ */}
-          <WeeklyPulse mobile={mobile} nextMoveLabel={roadmap[0]?.action} />
-
-          {/* ════════════════════════════════════════════════════════ */}
-          {/*  YOUR PLAN — "What should I do?" (action-first)          */}
-          {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="Your Plan" color={B.navy} tint="rgba(14,26,43,0.015)" id="phase-plan" mobile={mobile}>
-
-          {/* 12-WEEK ROADMAP — moved first for action-first order */}
-          {roadmap.length > 1 && (
-            <section className="cc-section" style={{ padding: mobile ? "32px 22px" : "44px 48px", borderRadius: 24, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
-              <div style={{ marginBottom: 24 }}>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple, marginBottom: 10 }}>12-WEEK ROADMAP</div>
-                <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 500, color: B.navy, margin: "0 0 6px", lineHeight: 1.35 }}>
-                  {totalLift > 0 ? `${roadmap.length} moves. ${dScore} → ${dScore + totalLift}. Here's the order.` : "Your execution timeline."}
-                </p>
-                {completedSteps.length > 0 && <p style={{ fontSize: 14, color: B.teal, fontWeight: 500, margin: 0 }}>{completedSteps.length} of {roadmap.length} complete</p>}
-              </div>
-
-              {/* Timeline steps */}
-              <div style={{ position: "relative", paddingLeft: mobile ? 28 : 36 }}>
-                {/* Vertical timeline line */}
-                <div style={{ position: "absolute", left: mobile ? 13 : 17, top: 0, bottom: 0, width: 2, backgroundColor: B.stone }} />
-
-                {roadmap.map((step, i) => {
-                  const done = completedSteps.includes(i);
-                  const prevDone = i === 0 || completedSteps.includes(i - 1);
-                  const isFirst = !done && prevDone && !completedSteps.includes(i);
-                  const plainMilestone: Record<string, string> = {
-                    add_client: "No single client carries more than half your income",
-                    convert_retainer: "At least some of your income repeats automatically each month",
-                    build_passive: "You have income that comes in whether you work that day or not",
-                    lock_forward: "Next quarter's revenue is already committed — not hoped for",
-                  };
-                  const timeEstimate: Record<string, string> = {
-                    add_client: "2–4 weeks",
-                    convert_retainer: "1–2 conversations",
-                    build_passive: "4–8 weeks to set up",
-                    lock_forward: "1–3 conversations",
-                  };
-                  const successSignal: Record<string, string> = {
-                    add_client: "You've signed a new client or agreement that generates real revenue",
-                    convert_retainer: "A client has agreed to a recurring arrangement — even a small one",
-                    build_passive: "Revenue came in that didn't require your active work that week",
-                    lock_forward: "You have a signed commitment for income beyond this month",
-                  };
-                  return (
-                    <div key={i} style={{ position: "relative", marginBottom: i < roadmap.length - 1 ? 20 : 0, transition: "opacity 300ms" }}>
-                      {/* Timeline dot */}
-                      <button role="checkbox" aria-checked={done} aria-label={`Mark step ${i + 1} as ${done ? 'incomplete' : 'complete'}`} onClick={() => toggleStep(i)} style={{ position: "absolute", left: mobile ? -28 : -36, top: done ? 6 : isFirst ? 14 : 6, width: 28, height: 28, borderRadius: "50%", backgroundColor: done ? B.teal : isFirst ? B.purple : `${B.teal}08`, border: `2px solid ${done ? B.teal : isFirst ? B.purple : `${B.teal}40`}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 200ms", zIndex: 1 }}>
-                        {done ? <span style={{ color: B.white, fontSize: 12, fontWeight: 700 }}>&#10003;</span> : <span style={{ fontSize: 12, fontWeight: 700, color: isFirst ? B.white : B.teal }}>{i + 1}</span>}
-                      </button>
-
-                      {/* Completed step — compact with celebration */}
-                      {done ? (
-                        <div style={{ padding: "14px 20px", borderRadius: 12, backgroundColor: `${B.teal}04`, border: `1px solid ${B.teal}12` }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
-                            <span style={{ fontSize: 15, fontWeight: 500, color: B.teal, textDecoration: "line-through", opacity: 0.7 }}>{step.action}</span>
-                            <span style={{ fontSize: 12, fontFamily: mono, color: B.teal, flexShrink: 0, whiteSpace: "nowrap" as const }}>+{step.lift} pts</span>
-                          </div>
-                        </div>
-                      ) : isFirst ? (
-                        /* Active step — fully expanded */
-                        <div style={{ padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 16, backgroundColor: `${B.purple}03`, border: `1px solid ${B.purple}15` }}>
-                          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 10 }}>YOUR CURRENT STEP</div>
-
-                          <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 6, lineHeight: 1.3 }}>{step.action}</div>
-                          <p style={{ fontSize: 14, color: B.muted, margin: "0 0 14px", lineHeight: 1.6 }}>{step.desc}</p>
-
-                          <div style={{ display: "flex", gap: mobile ? 8 : 16, marginBottom: 14, flexWrap: "wrap" as const }}>
-                            <span style={{ fontSize: 12, color: B.taupe }}>{step.weeks}</span>
-                            {timeEstimate[step.pid] && <span style={{ fontSize: 12, color: B.taupe }}>Takes {timeEstimate[step.pid]}</span>}
-                            <span style={{ fontSize: 12, color: B.taupe }}>{step.effortLabel}</span>
-                          </div>
-
-                          <div style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: B.white, borderLeft: `3px solid ${B.teal}` }}>
-                            <div style={{ fontSize: 13, fontWeight: 500, color: B.navy, marginBottom: 6 }}>{plainMilestone[step.pid] || step.target}</div>
-                            {successSignal[step.pid] && (
-                              <p style={{ fontSize: 13, color: B.muted, margin: "0 0 6px", lineHeight: 1.5 }}>
-                                <span style={{ fontWeight: 600, color: B.teal }}>Done when:</span> {successSignal[step.pid]}
-                              </p>
-                            )}
-                            <span style={{ fontSize: 12, fontFamily: mono, color: B.taupe }}>Score: {step.cumulativeFrom} → {step.cumulativeTo}</span>
-                          </div>
-                        </div>
-                      ) : (
-                        /* Future step — collapsed, muted but readable */
-                        <div style={{ padding: "14px 20px", borderRadius: 12, backgroundColor: `${B.purple}03`, border: `1px solid rgba(14,26,43,0.08)` }}>
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
-                              <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, padding: "2px 6px", borderRadius: 4, backgroundColor: "rgba(14,26,43,0.04)", flexShrink: 0 }}>UPCOMING</span>
-                              <span style={{ fontSize: 15, fontWeight: 500, color: B.muted }}>{step.action}</span>
-                            </div>
-                            <span style={{ fontSize: 12, color: B.taupe, flexShrink: 0, whiteSpace: "nowrap" as const }}>{step.weeks}</span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
-          )}
-
-          {/* ── NEGOTIATION PLAYBOOK — white, in Your Plan ── */}
-          {(() => {
-            const constraintLabels: Record<string, string> = {
-              high_concentration: "Income Concentration", weak_forward_visibility: "Forward Visibility",
-              high_labor_dependence: "Labor Dependence", low_persistence: "Low Persistence",
-              low_source_diversity: "Source Diversity", high_variability: "Income Variability",
-              weak_durability: "Weak Durability", shallow_continuity: "Shallow Continuity",
-            };
-            const playbookMoves = topMoves.slice(0, 3).map(move => {
-              const sc = scripts.find(s =>
-                (move.id === "convert_retainer" && s.id.includes("retainer")) ||
-                (move.id === "add_client" && (s.id.includes("diversi") || s.id.includes("referral"))) ||
-                (move.id === "build_passive" && s.id.includes("referral")) ||
-                (move.id === "lock_forward" && s.id.includes("retainer"))
-              ) || scripts[0];
-              const personalize = (text: string) => text
-                .replace(/\[Client Name\]/g, custName ? "your client" : "[Client Name]")
-                .replace(/\[Contact Name\]/g, "[Contact Name]").replace(/\[Partner Name\]/g, "[Partner Name]")
-                .replace(/\[Broker Name\]/g, "[Contact Name]")
-                .replace(/\[X\]/g, String(Math.max(2, Math.round(base.source_diversity_count))))
-                .replace(/\[X hours\]/g, "10 hours").replace(/\[X years\]/g, "5+ years")
-                .replace(/\[X properties[^\]]*\]/g, "multiple properties").replace(/\[\$ amount\]/g, "$2,500")
-                .replace(/\[project name\]/g, "recent engagement")
-                .replace(/\[current industry\]/g, indLabel.toLowerCase() || "your industry")
-                .replace(/\[new vertical\]/g, "an adjacent vertical")
-                .replace(/\[their (company|service|clients)\]/g, "their organization")
-                .replace(/\[your (service|expertise area)\]/g, "your area of focus");
-              const whoMap: Record<string, string> = {
-                convert_retainer: "Your largest or most active client — the one you'd most want on a recurring agreement",
-                add_client: "A prospect in an adjacent vertical, or a referral partner who serves your ideal clients",
-                build_passive: "Your existing audience or network — people who already trust your expertise",
-                lock_forward: "Your top 2-3 current clients — the ones most likely to commit to next quarter",
-              };
-              const whenMap: Record<string, string> = {
-                convert_retainer: "After completing a successful project, or before a contract renewal",
-                add_client: "When your pipeline has capacity — don't wait until you need it urgently",
-                build_passive: "When you have proven frameworks or content that others would pay for",
-                lock_forward: "60-90 days before current commitments expire, or at a quarterly review",
-              };
-              const objectionMap: Record<string, string> = {
-                convert_retainer: "\"We prefer project-based.\" → \"I understand. What if we kept the project scope but added a monthly advisory layer for the strategic questions that come up between projects?\"",
-                add_client: "\"We already have someone.\" → \"That makes sense. I'm not looking to replace — I'm exploring whether there's a gap I could fill in [specific area]. Would a quick conversation be worth it?\"",
-                build_passive: "\"Why would I pay for something I could figure out myself?\" → \"You absolutely could. This saves you the 40 hours I spent building and testing it. Most people value the shortcut.\"",
-                lock_forward: "\"We can't commit that far out.\" → \"I get it. What if we locked in the rate and scope, with a 30-day cancellation clause? You get certainty without the risk.\"",
-              };
-              const successMap: Record<string, string> = {
-                convert_retainer: "They ask about pricing, scope, or \"how would this work?\" — that's interest. Send the proposal within 24 hours.",
-                add_client: "They agree to a call or introduction. Any response that isn't \"no\" is forward motion.",
-                build_passive: "Someone asks \"where can I buy this?\" or shares it with their network.",
-                lock_forward: "They sign a commitment or say \"send me the terms.\" Written > verbal.",
-              };
-              const briefingMap: Record<string, string> = {
-                convert_retainer: `Right now, only ${base.income_persistence_pct}% of your income recurs automatically. The rest must be re-earned every month. Converting your largest client to a retainer would move persistence from ${base.income_persistence_pct}% to ~${Math.min(70, base.income_persistence_pct + 20)}% — and your score from ${dScore} to ${move.projected}.`,
-                add_client: `Your top source carries ${base.largest_source_pct}% of your income. If that relationship changes, your score would shift from ${dScore} to ${dScore - stLCDrop}. Adding one meaningful source would reduce that exposure and lift your score by ${move.lift} points.`,
-                build_passive: `${base.labor_dependence_pct}% of your income requires your active daily work. If you can't work for 90 days, your score would shift by ${stNWDrop} points. Building one passive stream creates a floor that protects you.`,
-                lock_forward: `Only ${base.forward_secured_pct}% of your income is committed forward. You're re-selling your time every month. Locking in next quarter's revenue would move visibility from ${base.forward_secured_pct}% to ~${Math.min(50, base.forward_secured_pct + 15)}%.`,
-              };
-              const openingLine = sc ? sc.script.split("\n").find(l => l.trim().length > 20 && !l.includes("[")) || "" : "";
-
-              return {
-                id: move.id, lift: move.lift, projected: move.projected, band: move.resBand,
-                effort: move.effort, speed: move.speed,
-                title: sc?.title || move.label, context: sc?.context || move.description,
-                script: sc ? personalize(sc.script) : "",
-                briefing: briefingMap[move.id] || "",
-                who: whoMap[move.id] || "",
-                when: whenMap[move.id] || "",
-                opening: openingLine.trim(),
-                objection: objectionMap[move.id] || "",
-                success: successMap[move.id] || "",
-              };
-            });
-            if (playbookMoves.length === 0) return null;
-            const copyPB = (text: string, id: string) => { navigator.clipboard.writeText(text).then(() => { setCopiedPlaybook(id); setTimeout(() => setCopiedPlaybook(null), 2500); }); };
-
-            return (
-              <section className="cc-section" style={{ marginBottom: 24, padding: mobile ? "32px 22px" : "44px 48px", borderRadius: 24, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
-                <div style={{ marginBottom: 28 }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.teal, marginBottom: 10 }}>NEGOTIATION PLAYBOOK{indLabel ? ` — ${indLabel.toUpperCase()}` : ""}</div>
-                  <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 500, color: B.navy, margin: "0 0 10px", lineHeight: 1.35 }}>
-                    {playbookMoves.length} conversations that would move your score. Here's exactly what to say.
-                  </p>
-                  <p style={{ fontSize: 15, color: B.muted, lineHeight: 1.6, margin: 0 }}>
-                    Each script uses your actual numbers and is written for {indLabel.toLowerCase() || "your industry"}.
-                  </p>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
-                  {playbookMoves.map((play, i) => {
-                    const isExp = expandedPlaybook === play.id;
-                    return (
-                      <div key={play.id} style={{ borderRadius: 14, backgroundColor: `${B.purple}03`, border: `1px solid ${B.stone}`, overflow: "hidden" }}>
-                        <button onClick={() => setExpandedPlaybook(isExp ? null : play.id)}
-                          style={{ width: "100%", padding: mobile ? "18px 20px" : "20px 24px", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, background: "none", border: "none", cursor: "pointer", textAlign: "left" as const, minHeight: 44, boxSizing: "border-box" as const }}>
-                          <div style={{ flex: 1 }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4, flexWrap: "wrap" as const }}>
-                              <div style={{ width: 24, height: 24, borderRadius: 6, backgroundColor: `${B.teal}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                <span style={{ fontSize: 12, fontWeight: 700, color: B.teal }}>{i + 1}</span>
-                              </div>
-                              <span style={{ fontSize: mobile ? 14 : 16, fontWeight: 600, color: B.navy }}>{play.title}</span>
-                            </div>
-                            <p style={{ fontSize: 14, color: B.muted, margin: "0 0 6px", lineHeight: 1.5 }}>{play.context}</p>
-                            {play.who && !isExp && <p style={{ fontSize: 13, color: B.teal, margin: 0, fontWeight: 500 }}>Talk to: {play.who.length > 80 ? play.who.substring(0, 80) + "..." : play.who}</p>}
-                          </div>
-                          <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0, marginTop: 4 }}>
-                            <span style={{ fontSize: 16, fontWeight: 600, fontFamily: mono, color: B.teal, whiteSpace: "nowrap" as const }}>+{play.lift}</span>
-                            <span style={{ fontSize: 14, color: B.taupe, transition: "transform 200ms", transform: isExp ? "rotate(180deg)" : "rotate(0deg)" }}>&#9660;</span>
-                          </div>
-                        </button>
-                        {isExp && (
-                          <div style={{ padding: mobile ? "0 24px 20px" : "0 24px 24px" }}>
-                            {/* Why this matters for YOU */}
-                            {play.briefing && (
-                              <div style={{ padding: "14px 16px", borderRadius: 10, borderLeft: `3px solid ${B.teal}`, backgroundColor: `${B.teal}04`, marginBottom: 16 }}>
-                                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: B.teal, marginBottom: 4 }}>WHY THIS MATTERS FOR YOU</div>
-                                <p style={{ fontSize: 14, color: B.navy, margin: 0, lineHeight: 1.55 }}>{play.briefing}</p>
-                              </div>
-                            )}
-
-                            {/* Who / When / Effort */}
-                            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 10, marginBottom: 16 }}>
-                              {play.who && (
-                                <div style={{ padding: "10px 14px", borderRadius: 8, backgroundColor: B.white, border: `1px solid ${B.stone}` }}>
-                                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: B.purple, marginBottom: 3 }}>WHO TO TALK TO</div>
-                                  <div style={{ fontSize: 13, color: B.navy, lineHeight: 1.45 }}>{play.who}</div>
-                                </div>
-                              )}
-                              {play.when && (
-                                <div style={{ padding: "10px 14px", borderRadius: 8, backgroundColor: B.white, border: `1px solid ${B.stone}` }}>
-                                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: B.purple, marginBottom: 3 }}>WHEN TO USE</div>
-                                  <div style={{ fontSize: 13, color: B.navy, lineHeight: 1.45 }}>{play.when}</div>
-                                </div>
-                              )}
-                            </div>
-
-                            {/* The script */}
-                            {play.script && (
-                              <div style={{ position: "relative", marginBottom: 16 }}>
-                                <pre style={{ fontSize: mobile ? 12 : 14, color: B.navy, lineHeight: 1.65, whiteSpace: "pre-wrap" as const, wordBreak: "break-word" as const, overflowX: "auto" as const, margin: 0, padding: mobile ? "16px 20px" : "20px 24px", backgroundColor: B.white, borderRadius: 10, border: `1px solid ${B.stone}`, fontFamily: sans }}>{play.script}</pre>
-                                <button aria-label="Copy playbook script to clipboard" onClick={() => copyPB(play.script, play.id)}
-                                  style={{ position: "absolute", top: 10, right: 10, fontSize: 13, fontWeight: 600, color: copiedPlaybook === play.id ? B.teal : B.muted, backgroundColor: copiedPlaybook === play.id ? `${B.teal}08` : "#FAFAFA", border: `1px solid ${B.stone}`, borderRadius: 8, padding: "8px 14px", cursor: "pointer", minHeight: 36, transition: "all 200ms" }}>
-                                  {copiedPlaybook === play.id ? "Copied!" : "Copy"}
-                                </button>
-                              </div>
-                            )}
-
-                            {/* Objection handler + Success signal */}
-                            <div style={{ display: "grid", gridTemplateColumns: mobile ? "1fr" : "1fr 1fr", gap: 10 }}>
-                              {play.objection && (
-                                <div style={{ padding: "10px 14px", borderRadius: 8, backgroundColor: B.white, border: `1px solid ${B.stone}` }}>
-                                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: B.red, marginBottom: 3 }}>IF THEY PUSH BACK</div>
-                                  <div style={{ fontSize: 13, color: B.navy, lineHeight: 1.5 }}>{play.objection}</div>
-                                </div>
-                              )}
-                              {play.success && (
-                                <div style={{ padding: "10px 14px", borderRadius: 8, backgroundColor: B.white, border: `1px solid ${B.stone}` }}>
-                                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: B.teal, marginBottom: 3 }}>SUCCESS SIGNAL</div>
-                                  <div style={{ fontSize: 13, color: B.navy, lineHeight: 1.5 }}>{play.success}</div>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-                <div style={{ marginTop: 16, paddingTop: 14, borderTop: `1px solid ${B.stone}`, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" as const, gap: 8 }}>
-                  <span style={{ fontSize: 13, color: B.taupe }}>Scripts are starting points. Adapt tone and details to your voice.</span>
-                  <span style={{ fontSize: 12, color: B.taupe, fontFamily: mono }}>Model RP-2.0 | {indLabel}</span>
-                </div>
-              </section>
-            );
-          })()}
-
-          </PhaseSep>
-
-          {/* ════════════════════════════════════════════════════════ */}
-          {/*  PROGRESS — Score history (multi-assessment only)         */}
-          {/* ════════════════════════════════════════════════════════ */}
-          <PhaseSep label="Progress" color={B.taupe} tint="rgba(14,26,43,0.01)" id="phase-progress" mobile={mobile}>
-
-          {/* ──── Score History + Factor Deltas + Benchmark Evolution ──── */}
-          {assessments.length >= 2 && (
-            <section className="cc-section" style={{ marginBottom: 20, padding: mobile ? "28px 24px" : "36px 40px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
-              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 10 }}>STABILITY MONITORING</div>
-              <div style={{ fontSize: 16, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Score History</div>
-              <p style={{ fontSize: 14, color: B.muted, margin: "0 0 20px" }}>{assessments.length} assessments tracked. {serverEntitlements ? (serverEntitlements.remaining > 0 ? `${serverEntitlements.remaining} remaining on your plan.` : "All assessments completed.") : (assessments.length < 3 ? `${3 - assessments.length} remaining on your plan.` : "All assessments completed.")}</p>
-
-              {/* Score timeline visual */}
-              <div style={{ display: "flex", alignItems: "flex-end", gap: mobile ? 12 : 24, marginBottom: 24, padding: "20px 0" }}>
-                {assessments.slice().reverse().map((a, i) => {
-                  const isLatest = i === assessments.slice().reverse().length - 1;
-                  const aColor = bandColor(a.final_score);
-                  const barH = Math.max(40, (a.final_score / 100) * 140);
-                  return (
-                    <div key={i} style={{ flex: 1, textAlign: "center" as const }}>
-                      <div style={{ fontSize: 11, color: B.taupe, marginBottom: 6 }}>
-                        {new Date(a.assessment_date_utc || a.issued_timestamp_utc).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
-                      </div>
-                      <div style={{ height: barH, backgroundColor: isLatest ? aColor : `${aColor}40`, borderRadius: 6, margin: "0 auto", width: mobile ? "100%" : 56, display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: 8, transition: "height 600ms ease" }}>
-                        <span style={{ fontFamily: mono, fontSize: isLatest ? 20 : 16, fontWeight: isLatest ? 700 : 400, color: isLatest ? "#FFF" : aColor }}>{a.final_score}</span>
-                      </div>
-                      <div style={{ fontSize: 10, color: isLatest ? aColor : B.taupe, fontWeight: isLatest ? 600 : 400, marginTop: 4 }}>
-                        {i === 0 ? "First" : isLatest ? "Latest" : `#${i + 1}`}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Score delta summary */}
-              {(() => {
-                const first = assessments[assessments.length - 1];
-                const latest = assessments[0];
-                const totalDelta = latest.final_score - first.final_score;
-                return (
-                  <div style={{ display: "flex", gap: 12, marginBottom: 20, flexWrap: "wrap" as const }}>
-                    <div style={{ flex: 1, minWidth: 120, padding: "14px 16px", borderRadius: 10, backgroundColor: `${B.stone}`, textAlign: "center" as const }}>
-                      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, marginBottom: 4 }}>FIRST SCORE</div>
-                      <div style={{ fontFamily: mono, fontSize: 24, fontWeight: 300, color: B.taupe }}>{first.final_score}</div>
-                    </div>
-                    <div style={{ flex: 1, minWidth: 120, padding: "14px 16px", borderRadius: 10, backgroundColor: `${B.stone}`, textAlign: "center" as const }}>
-                      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, marginBottom: 4 }}>LATEST SCORE</div>
-                      <div style={{ fontFamily: mono, fontSize: 24, fontWeight: 300, color: B.navy }}>{latest.final_score}</div>
-                    </div>
-                    <div style={{ flex: 1, minWidth: 120, padding: "14px 16px", borderRadius: 10, backgroundColor: totalDelta > 0 ? `${B.teal}06` : totalDelta < 0 ? "rgba(155,44,44,0.04)" : `${B.stone}`, border: `1px solid ${totalDelta > 0 ? `${B.teal}18` : totalDelta < 0 ? "rgba(155,44,44,0.10)" : B.stone}`, textAlign: "center" as const }}>
-                      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", color: totalDelta > 0 ? B.teal : totalDelta < 0 ? B.red : B.taupe, marginBottom: 4 }}>TOTAL CHANGE</div>
-                      <div style={{ fontFamily: mono, fontSize: 24, fontWeight: 600, color: totalDelta > 0 ? B.teal : totalDelta < 0 ? B.red : B.taupe }}>{totalDelta > 0 ? "+" : ""}{totalDelta}</div>
-                    </div>
-                  </div>
-                );
-              })()}
-
-              {/* Factor-level deltas */}
-              {(() => {
-                const first = assessments[assessments.length - 1];
-                const latest = assessments[0];
-                const fNi = first._v2?.normalized_inputs as Record<string, number> | undefined;
-                const lNi = latest._v2?.normalized_inputs as Record<string, number> | undefined;
-                if (!fNi || !lNi) return null;
-                const factors = [
-                  { key: "income_persistence_pct", label: "Income That Repeats" },
-                  { key: "largest_source_pct", label: "Reliance on Top Source", invert: true },
-                  { key: "source_diversity_count", label: "Number of Sources" },
-                  { key: "forward_secured_pct", label: "Income Locked In Ahead" },
-                  { key: "labor_dependence_pct", label: "Income Without You Working", invert: true },
-                ];
-                return (
-                  <div style={{ marginBottom: 20 }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.navy, marginBottom: 12 }}>WHAT CHANGED IN EACH AREA</div>
-                    {factors.map(f => {
-                      const fVal = (fNi[f.key] as number) ?? 0;
-                      const lVal = (lNi[f.key] as number) ?? 0;
-                      const rawDelta = lVal - fVal;
-                      const delta = f.invert ? -rawDelta : rawDelta;
-                      const direction = delta > 0 ? "improved" : delta < 0 ? "declined" : "unchanged";
-                      return (
-                        <div key={f.key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
-                          <span style={{ fontSize: 14, fontWeight: 500, color: B.navy }}>{f.label}</span>
-                          <span style={{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: direction === "improved" ? B.teal : direction === "declined" ? B.red : B.taupe }}>
-                            {direction === "improved" ? "\u2191" : direction === "declined" ? "\u2193" : "\u2013"} {Math.abs(rawDelta) > 0 ? `${f.invert ? (rawDelta > 0 ? "\u2212" : "+") : (rawDelta > 0 ? "+" : "\u2212")}${Math.abs(Math.round(rawDelta))}` : "No change"}
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              })()}
-
-              {/* Benchmark evolution */}
-              {(() => {
-                const first = assessments[assessments.length - 1];
-                const latest = assessments[0];
-                const fBm = first._v2?.benchmarks as { peer_percentile?: number } | undefined;
-                const lBm = latest._v2?.benchmarks as { peer_percentile?: number } | undefined;
-                if (!fBm?.peer_percentile || !lBm?.peer_percentile) return null;
-                const pDelta = Math.round(lBm.peer_percentile - fBm.peer_percentile);
-                return (
-                  <div style={{ padding: "16px 20px", borderRadius: 10, backgroundColor: pDelta > 0 ? `${B.teal}05` : `${B.stone}`, border: `1px solid ${pDelta > 0 ? `${B.teal}15` : B.stone}` }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 8 }}>BASELINE COMPARISON</div>
-                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <span style={{ fontFamily: mono, fontSize: 18, color: B.taupe }}>{Math.round(fBm.peer_percentile)}th</span>
-                      <span style={{ color: B.taupe }}>→</span>
-                      <span style={{ fontFamily: mono, fontSize: 18, fontWeight: 600, color: B.navy }}>{Math.round(lBm.peer_percentile)}th</span>
-                      <span style={{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: pDelta > 0 ? B.teal : pDelta < 0 ? B.red : B.taupe }}>{pDelta > 0 ? "+" : ""}{pDelta} percentile</span>
-                    </div>
-                    <p style={{ fontSize: 13, color: B.muted, marginTop: 8, marginBottom: 0 }}>
-                      {pDelta > 0 ? "Your position relative to the industry baseline has improved." : pDelta < 0 ? "Your position relative to the industry baseline has shifted." : "Your baseline position is stable."}
-                    </p>
-                  </div>
-                );
-              })()}
-            </section>
-          )}
-
-          </PhaseSep>
-
-          {/* ════════════════════════════════════════════════════════ */}
           {/*  EXPLORE — PressureMap + What-If (context & exploration)  */}
           {/* ════════════════════════════════════════════════════════ */}
           <PhaseSep label="Explore" color={B.teal} tint="rgba(14,26,43,0.015)" id="phase-explore" mobile={mobile}>
@@ -1912,252 +1429,269 @@ function DashboardContent() {
 
           </PhaseSep>
 
-          {/* ── YOUR INCOME WHEN YOU WERE ASSESSED ── */}
-          <section className="cc-section" style={{ marginTop: 24, padding: mobile ? "28px 20px" : "36px 40px", borderRadius: 20, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-              <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${B.purple}08`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={B.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg>
+          {/* ════════════════════════════════════════════════════════ */}
+          {/*  YOUR PLAN — "What should I do?" (action-first)          */}
+          {/* ════════════════════════════════════════════════════════ */}
+          <PhaseSep label="Your Plan" color={B.navy} tint="rgba(14,26,43,0.015)" id="phase-plan" mobile={mobile}>
+
+          {/* 12-WEEK ROADMAP — moved first for action-first order */}
+          {roadmap.length > 1 && (
+            <section className="cc-section" style={{ padding: mobile ? "32px 22px" : "44px 48px", borderRadius: 24, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+              <div style={{ marginBottom: 24 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple, marginBottom: 10 }}>12-WEEK ROADMAP</div>
+                <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 500, color: B.navy, margin: "0 0 6px", lineHeight: 1.35 }}>
+                  {totalLift > 0 ? `${roadmap.length} moves. ${dScore} → ${dScore + totalLift}. Here's the order.` : "Your execution timeline."}
+                </p>
+                {completedSteps.length > 0 && <p style={{ fontSize: 14, color: B.teal, fontWeight: 500, margin: 0 }}>{completedSteps.length} of {roadmap.length} complete</p>}
               </div>
-              <div>
-                <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: B.purple }}>YOUR INCOME WHEN YOU WERE ASSESSED</div>
-                {assessedDate && <div style={{ fontSize: 13, color: B.taupe }}>{assessedDate}</div>}
-              </div>
-            </div>
-            <p style={{ fontSize: 14, color: B.muted, margin: "0 0 20px", lineHeight: 1.5 }}>Tap any area below to see what may have changed since your assessment.</p>
 
-            <div style={{ display: "flex", flexDirection: "column" as const, gap: 0 }}>
-              {(() => {
-                const ind = indLabel.toLowerCase() || "your industry";
-                const pct = base.income_persistence_pct;
-                const conc = base.largest_source_pct;
-                const srcs = base.source_diversity_count;
-                const fwd = base.forward_secured_pct;
-                const varLvl = base.income_variability_level;
-                const labr = base.labor_dependence_pct;
+              {/* Timeline steps */}
+              <div style={{ position: "relative", paddingLeft: mobile ? 28 : 36 }}>
+                {/* Vertical timeline line */}
+                <div style={{ position: "absolute", left: mobile ? 13 : 17, top: 0, bottom: 0, width: 2, backgroundColor: B.stone }} />
 
-                const tipsByIndustry: Record<string, Record<string, string>> = {
-                  default: {
-                    recurrence: `You reported ${pct}% recurring. If you have signed even one new retainer, subscription, or recurring agreement since then, this number has moved. ${pct < 30 ? "At your level, a single recurring contract could shift this 10+ points." : "Even a modest increase compounds over time."}`,
-                    concentration: `Your top source was carrying ${conc}% of your income. ${conc > 60 ? "That is dangerously high — if you have added any new source above 10%, your concentration has improved." : "If your largest client has grown or shrunk since then, this has shifted."}`,
-                    diversification: `You had ${srcs} income source${srcs === 1 ? "" : "s"}. Count them now. ${srcs <= 2 ? "Adding even one meaningful source would change your diversification score significantly." : "If any source has gone away or a new one has emerged, this dimension has moved."}`,
-                    forward: `Only ${fwd}% of your income was secured forward. ${fwd < 20 ? "That means you were re-earning almost everything month to month. Any new signed commitment changes this." : "If you have locked in any new contracts or extended existing ones, your visibility has improved."}`,
-                    variability: `Your variability was ${varLvl}. ${varLvl === "high" || varLvl === "very_high" ? "If your month-to-month income has become more consistent — through retainers, contracts, or diversification — this has changed." : "If your income has become more or less predictable since then, this dimension has shifted."}`,
-                    labor: `${labr}% of your income required your active daily work. ${labr > 70 ? "That is high. If you have created any revenue that continues without your involvement — even a small stream — this number has dropped." : "If you have automated, delegated, or built passive income since then, this has improved."}`,
-                  },
-                  consulting_professional_services: {
-                    recurrence: `At ${pct}%, ${pct < 40 ? "most of your consulting income resets every month. If you have converted even one project client to a monthly retainer since then, this has changed." : "you have some recurring base. If you have added or lost a retainer, this number has moved."}`,
-                    concentration: `Your top client carried ${conc}% of your billings. ${conc > 50 ? "In consulting, that means one client decision could cut your income in half. Have you landed any new engagements that reduce that dependency?" : "Has your client mix shifted? A new engagement or a completed project changes this."}`,
-                    diversification: `You had ${srcs} consulting client${srcs === 1 ? "" : "s"} contributing meaningfully. ${srcs <= 2 ? "Opening a conversation with one prospect in a new vertical would change this. Have you done that?" : "Has any client relationship ended or a new one begun?"}`,
-                    forward: `Only ${fwd}% was committed forward. ${fwd < 25 ? "In consulting, that means you were selling your time month to month. Have you secured any prepaid retainers or signed SOWs for next quarter?" : "Have your forward commitments changed? In consulting, visibility resets every 90 days."}`,
-                    variability: `Your billing variability was ${varLvl}. ${varLvl === "high" || varLvl === "very_high" ? "Converting to retainers is the fastest fix in consulting. Have you done that?" : "Has your monthly billing pattern become more or less consistent since your assessment?"}`,
-                    labor: `${labr}% of your income required your active delivery. ${labr > 70 ? "That is typical in consulting — but it means you cannot step away. Have you packaged any methodology into a course, template, or licensed framework?" : "Has your delivery model changed? Delegating work or licensing IP reduces this."}`,
-                  },
-                  real_estate: {
-                    recurrence: `At ${pct}% recurring, ${pct < 30 ? "almost all your real estate income resets between transactions. A single property management retainer at $2-3K/month would move this meaningfully." : "you have some recurring base. Has any management contract or advisory retainer started or ended since then?"}`,
-                    concentration: `${conc}% from your top source. ${conc > 60 ? "In real estate, that could be one buyer relationship or one development project. If that deal closed or a new listing relationship opened, this has shifted." : "Has your mix of residential, commercial, or referral income changed?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. ${srcs <= 2 ? "Have you opened a referral relationship with a mortgage broker, attorney, or builder? That is a new source." : "Has any referral partnership or income channel started or ended?"}`,
-                    forward: `${fwd}% secured forward. ${fwd < 20 ? "Your pipeline was almost entirely speculative. Have you pre-signed any listing agreements or locked in any management contracts for next quarter?" : "How does your current pipeline of signed listings and contracts compare?"}`,
-                    variability: `Variability was ${varLvl}. ${varLvl === "high" || varLvl === "very_high" ? "Real estate income is inherently lumpy between closings. Have you added any monthly management fees or advisory retainers to smooth the gaps?" : "Has your closing cadence become more or less regular since your assessment?"}`,
-                    labor: `${labr}% required your personal involvement. ${labr > 70 ? "Every showing, negotiation, and closing depended on you. Have you hired a showing assistant, built a referral fee structure, or started any investment income?" : "Has your delegation or passive income changed?"}`,
-                  },
-                  technology: {
-                    recurrence: `${pct}% recurring. ${pct < 40 ? "If your income is primarily salary + variable, the variable portion is what resets. Have you added any SaaS revenue, support contracts, or recurring consulting alongside your role?" : "Has your comp structure shifted? A new equity vesting schedule or contract renewal changes this."}`,
-                    concentration: `${conc}% from one source. ${conc > 70 ? "In tech, that usually means one employer. If you are still at the same company with the same comp structure, this has not changed. A side project, freelance client, or advisory role would move it." : "Has your employment changed, or have you added any independent income?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. ${srcs === 1 ? "You are entirely dependent on one paycheck. Have you started any freelance work, launched a side product, or taken an advisory role? Even one additional source changes this." : "Has any income source started or ended?"}`,
-                    forward: `${fwd}% locked forward. ${fwd < 30 ? "If you are on at-will employment, your forward visibility is technically zero. A multi-year contract, retention bonus, or prepaid consulting agreement would change this." : "Has your contract term or guaranteed period changed?"}`,
-                    variability: `Variability was ${varLvl}. In tech, this is driven by bonus timing, equity vesting, and project-based compensation. ${varLvl === "moderate" || varLvl === "high" ? "Has your variable comp become more or less predictable?" : "Has your compensation structure shifted since your assessment?"}`,
-                    labor: `${labr}% required your active work. ${labr > 80 ? "Your entire income depends on you showing up. Have you built any tools, open-source contributions with sponsorship, courses, or IP that earns while you sleep?" : "Has your passive or semi-passive income changed?"}`,
-                  },
-                  sales_brokerage: {
-                    recurrence: `${pct}% recurring. ${pct < 25 ? "Almost everything you earn resets at the start of each quarter. Have you moved any accounts to managed services, retainers, or recurring billing since your assessment?" : "Has your mix of recurring vs. transactional revenue shifted?"}`,
-                    concentration: `${conc}% from your top account. ${conc > 50 ? "One account decision could cut your earnings in half. Have you closed any new accounts at 10%+ of revenue?" : "Has your account distribution changed?"}`,
-                    diversification: `${srcs} revenue source${srcs === 1 ? "" : "s"}. ${srcs <= 3 ? "Have you opened any new territories, product lines, or cross-sell relationships? In sales, diversification is about pipeline breadth." : "Has any territory or product line been added or removed?"}`,
-                    forward: `${fwd}% committed forward. ${fwd < 20 ? "Your pipeline was mostly in negotiation, not closed. How many deals have you signed since then? Signed > verbal." : "Has your signed-deal backlog grown or shrunk?"}`,
-                    variability: `Variability was ${varLvl}. ${varLvl === "high" || varLvl === "very_high" ? "Commission-heavy comp is inherently volatile. Have you negotiated a higher base, or built enough recurring accounts to smooth the cycles?" : "Has your quarterly performance become more or less consistent?"}`,
-                    labor: `${labr}% from active selling. ${labr > 75 ? "If you stop selling, income stops. Have you built any trailing commissions, renewal residuals, or managed account fees that pay without new deals?" : "Has your residual income stream changed?"}`,
-                  },
-                  finance_banking: {
-                    recurrence: `${pct}% recurring. ${pct > 50 ? "Your salary provides a decent floor. Has your base-to-bonus ratio changed, or have you added any recurring advisory fees?" : "The variable component — bonus, production credits — is what resets. Has your compensation structure been adjusted?"}`,
-                    concentration: `${conc}% from one source. ${conc > 80 ? "That is almost certainly one employer. In finance, the only way to reduce this is a side practice, advisory role, or investment income. Have you added anything?" : "Has your income become more or less dependent on your primary institution?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. ${srcs === 1 ? "Your entire financial career flows through one institution. An advisory board seat, consulting engagement, or investment income would create a second source." : "Has your mix of income streams changed?"}`,
-                    forward: `${fwd}% secured forward. In finance, this is usually your contract term. ${fwd < 30 ? "If you are on annual review cycles, your visibility resets every 12 months. Has your contract or guaranteed period changed?" : "Has your employment agreement been renewed or extended?"}`,
-                    variability: `Variability was ${varLvl}. ${varLvl === "high" ? "Your bonus or production credit swings are significant. Has the market environment, your desk performance, or your comp plan changed?" : "Has your variable compensation become more or less predictable?"}`,
-                    labor: `${labr}% required your active presence. ${labr > 70 ? "If you stepped away for 90 days, what would continue? Have you built any fee-based advisory book, investment income, or royalty streams?" : "Has your passive income changed?"}`,
-                  },
-                  insurance: {
-                    recurrence: `${pct}% recurring. ${pct > 40 ? "Your renewal book is your structural advantage. Has your retention rate changed? Even a 5% shift in retention significantly moves this number." : "Your book is heavily dependent on new production. Have renewals increased, or have you acquired any existing book of business?"}`,
-                    concentration: `${conc}% from your top source. ${conc > 50 ? "One large commercial policy or one key personal lines relationship could be carrying this. Has that account renewed, grown, or left?" : "Has your policy distribution shifted?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. Have you added any new lines of coverage — commercial, group benefits, or specialty? ${srcs <= 2 ? "In insurance, adding one new line can create an entirely independent revenue stream." : "Has any line of business grown or been discontinued?"}`,
-                    forward: `${fwd}% secured. ${fwd < 30 ? "Your forward visibility depends on renewal probability. How many policies are up in the next 90 days with high retention likelihood?" : "Has your renewal pipeline changed?"}`,
-                    variability: `Variability was ${varLvl}. ${varLvl === "high" || varLvl === "very_high" ? "New business production swings are masking your renewal base. Has your new-to-renewal ratio shifted?" : "Has your monthly income become more or less consistent?"}`,
-                    labor: `${labr}% from active work. ${labr > 60 ? "Your book generates renewals, but you are still personally servicing and producing. Have you hired a service team or built any passive income from trailing commissions?" : "Has your servicing model changed?"}`,
-                  },
-                  legal_services: {
-                    recurrence: `${pct}% recurring. ${pct < 30 ? "Almost all your income is matter-based — it ends when the matter ends. Have you signed any retainer agreements or ongoing advisory arrangements?" : "Has any retainer started or concluded since your assessment?"}`,
-                    concentration: `Your top source was ${conc}% of billings. ${conc > 50 ? "That means your top 1-2 matters are carrying the practice. Have any of those matters concluded, or have you opened significant new engagements?" : "Has your matter distribution changed?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. ${srcs <= 3 ? "In legal, adding a referral relationship with an accountant, financial advisor, or complementary firm creates a new pipeline." : "Has your client referral network expanded or contracted?"}`,
-                    forward: `${fwd}% committed. ${fwd < 20 ? "You were essentially billing on current matters with no forward pipeline locked. Have you signed any retainers or pre-committed engagements for next quarter?" : "Has your committed engagement calendar changed?"}`,
-                    variability: `Variability was ${varLvl}. ${varLvl === "high" ? "Matter-based billing is inherently uneven. Have you added any flat-fee arrangements or retainers that create monthly consistency?" : "Has your utilization pattern changed?"}`,
-                    labor: `${labr}% from your personal billable hours. ${labr > 80 ? "If you cannot bill, you do not earn. Have you created any of-counsel arrangements, legal templates for licensing, or training content?" : "Has your revenue model shifted away from personal hours?"}`,
-                  },
-                  healthcare: {
-                    recurrence: `${pct}% recurring. ${pct > 60 ? "Your salary provides stability. Has your contract been renewed or modified? Any shift from employed to independent or vice versa changes this." : "Has your employment arrangement changed? Locum vs. employed vs. private practice creates very different recurrence profiles."}`,
-                    concentration: `${conc}% from one source. ${conc > 80 ? "Almost certainly one health system or employer. The only structural change is adding a second income source — telemedicine, consulting, expert witness work, or a side practice." : "Has your income source mix changed?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. ${srcs === 1 ? "Your entire income flows through one institution. Have you started any telemedicine work, consulting, teaching, speaking, or advisory board positions?" : "Has any secondary income source started or ended?"}`,
-                    forward: `${fwd}% secured. ${fwd < 30 ? "If you are on a short-term contract or per diem arrangement, your forward visibility is minimal. Has your contract term been extended?" : "Has your employment agreement changed in length or terms?"}`,
-                    variability: `Variability was ${varLvl}. ${varLvl === "high" ? "Your compensation swings with productivity — RVUs, patient volume, or shift availability. Has your compensation model been restructured?" : "Has your income stability shifted?"}`,
-                    labor: `${labr}% from your clinical work. ${labr > 85 ? "You stop seeing patients, income stops. Have you created any courses, content, advisory relationships, or intellectual property that earns independently?" : "Has your non-clinical income changed?"}`,
-                  },
-                  construction_trades: {
-                    recurrence: `${pct}% recurring. ${pct < 20 ? "Your income is entirely project-to-project. Have you signed any maintenance contracts, recurring service agreements, or property management deals?" : "Has any recurring maintenance or service contract started or ended?"}`,
-                    concentration: `${conc}% from your top client. ${conc > 60 ? "In construction, that is usually one GC or one developer relationship. If that relationship has changed — or a new one has started — this number has moved." : "Has your GC or builder relationship mix shifted?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. ${srcs <= 2 ? "Have you bid on a new type of project, added a subcontracting relationship, or expanded into a new geographic area?" : "Has your project mix or trade partner network changed?"}`,
-                    forward: `${fwd}% committed. ${fwd < 15 ? "Your next job was essentially a handshake. Have you signed any new contracts or been awarded any bids since your assessment?" : "How does your signed backlog compare to when you were assessed?"}`,
-                    variability: `Variability was ${varLvl}. ${varLvl === "high" || varLvl === "very_high" ? "Seasonal swings and bid timing create gaps. Have you added any off-season work, maintenance contracts, or indoor trade services?" : "Has your project flow become more or less consistent?"}`,
-                    labor: `${labr}% required you on site. ${labr > 80 ? "If you cannot physically work, income stops immediately. Have you hired any crew that can run jobs without your presence, or started any equipment rental or subcontracting income?" : "Has your crew or delegation model changed?"}`,
-                  },
-                  creative_media: {
-                    recurrence: `${pct}% recurring. ${pct < 20 ? "Between projects, your income is zero. Have you signed any retainer clients, content subscriptions, or recurring production agreements?" : "Has any recurring creative engagement started or ended?"}`,
-                    concentration: `${conc}% from your top client. ${conc > 50 ? "One production house, agency, or brand is carrying half your income. Have you added any new client relationships?" : "Has your client portfolio shifted?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. ${srcs <= 2 ? "Have you started licensing existing content, selling templates, or offering a new service like consulting or training alongside production?" : "Has any creative income stream started or ended?"}`,
-                    forward: `${fwd}% committed. ${fwd < 15 ? "You had almost nothing signed for next quarter. Have you booked any new projects, locked in any production calendars, or signed any retainers?" : "How does your booked calendar compare?"}`,
-                    variability: `Variability was ${varLvl}. ${varLvl === "high" || varLvl === "very_high" ? "Feast-or-famine is the creative industry norm. Have retainer clients or recurring content deals smoothed your monthly income?" : "Has your project consistency changed?"}`,
-                    labor: `${labr}% from your personal creative work. ${labr > 80 ? "No production, no income. Have you created any digital products, templates, courses, stock content, or licensed IP that earns between projects?" : "Has your passive creative income changed?"}`,
-                  },
-                  education_training: {
-                    recurrence: `${pct}% recurring. ${pct > 60 ? "Your institutional salary is stable. Has your contract been renewed, or have you added any recurring income like course royalties or tutoring subscriptions?" : "Has your employment arrangement changed — contract renewal, course load, or additional income sources?"}`,
-                    concentration: `${conc}% from one source. ${conc > 80 ? "One school or institution. Have you added any speaking, consulting, online course, or publishing income outside that institution?" : "Has your institutional dependency changed?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. ${srcs === 1 ? "Your paycheck comes from one place. Have you created any online courses, published any materials, or started any tutoring or consulting work?" : "Has any secondary income source started or ended?"}`,
-                    forward: `${fwd}% secured. ${fwd < 40 ? "If you are on annual contracts or adjunct status, your visibility resets regularly. Has your contract been extended to a multi-year term?" : "Has your contract duration changed?"}`,
-                    variability: `Variability was ${varLvl}. ${varLvl === "high" ? "Adjunct, hourly, or course-load-dependent pay creates variability. Has your compensation model become more stable?" : "Has your pay structure changed?"}`,
-                    labor: `${labr}% from your teaching hours. ${labr > 80 ? "If you do not teach, you do not earn. Have you created any curriculum for licensing, books, digital courses, or frameworks that generate revenue independently?" : "Has your non-teaching income changed?"}`,
-                  },
-                  retail_ecommerce: {
-                    recurrence: `${pct}% recurring. ${pct < 25 ? "Almost all revenue depends on new transactions. Have you launched any subscription boxes, membership programs, or auto-ship options?" : "Has your subscription or recurring revenue program grown or shrunk?"}`,
-                    concentration: `${conc}% from your top channel. ${conc > 60 ? "You are heavily dependent on one platform or storefront. Have you added any marketplace, wholesale, or direct channel?" : "Has your channel mix shifted?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. ${srcs <= 2 ? "Have you added a new marketplace (Amazon, Etsy, wholesale), a retail location, or a B2B channel?" : "Has any sales channel been added or removed?"}`,
-                    forward: `${fwd}% committed. ${fwd < 15 ? "Almost no revenue was pre-sold. Have you secured any wholesale commitments, subscription pre-pays, or pre-order campaigns?" : "Has your pre-committed revenue changed?"}`,
-                    variability: `Variability was ${varLvl}. ${varLvl === "high" || varLvl === "very_high" ? "Retail is seasonal and traffic-dependent. Have subscriptions, corporate accounts, or diversified channels smoothed your monthly revenue?" : "Has your revenue consistency changed?"}`,
-                    labor: `${labr}% from your daily operations. ${labr > 70 ? "You are the business. Have you hired staff, automated fulfillment, or outsourced any operations that previously required your daily involvement?" : "Has your operational delegation changed?"}`,
-                  },
-                  hospitality: {
-                    recurrence: `${pct}% recurring. ${pct < 15 ? "Your revenue is almost entirely traffic-dependent. Have you signed any catering contracts, corporate accounts, or event retainers?" : "Has your recurring contract or account revenue changed?"}`,
-                    concentration: `${conc}% from your top source. ${conc > 50 ? "You are heavily dependent on one type of revenue — likely walk-in or one major platform. Have you diversified into delivery, catering, or events?" : "Has your revenue channel mix shifted?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. ${srcs <= 2 ? "Have you added events, delivery partnerships, packaged products, or branded merchandise?" : "Has any revenue stream been added or lost?"}`,
-                    forward: `${fwd}% committed. ${fwd < 10 ? "You had almost no pre-booked revenue. Have you secured any event bookings, corporate catering commitments, or seasonal reservations?" : "Has your forward booking calendar changed?"}`,
-                    variability: `Variability was ${varLvl}. ${varLvl === "high" || varLvl === "very_high" ? "Daily traffic fluctuations drive your income. Have corporate accounts, pre-booked events, or delivery contracts created any consistency?" : "Has your daily revenue predictability changed?"}`,
-                    labor: `${labr}% required your presence. ${labr > 80 ? "If you are not there, the business does not run. Have you hired a manager, built any revenue streams that operate without you, or expanded to a managed location?" : "Has your operational involvement changed?"}`,
-                  },
-                  transportation: {
-                    recurrence: `${pct}% recurring. ${pct < 25 ? "Most of your loads are spot market. Have you signed any dedicated contracts, long-term freight agreements, or recurring routes?" : "Has your contract vs. spot ratio shifted?"}`,
-                    concentration: `${conc}% from your top shipper. ${conc > 60 ? "One shipper or broker controls most of your revenue. Have you added any new freight relationships or direct shipper contracts?" : "Has your shipper or broker mix changed?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. ${srcs <= 2 ? "Have you added any new lanes, freight types, or broker relationships?" : "Has your freight network expanded or contracted?"}`,
-                    forward: `${fwd}% contracted. ${fwd < 20 ? "Almost all revenue was day-to-day. Have you locked in any dedicated routes or contracted freight for the next quarter?" : "Has your contracted backlog changed?"}`,
-                    variability: `Variability was ${varLvl}. ${varLvl === "high" || varLvl === "very_high" ? "Spot market rates swing daily. Have dedicated contracts reduced your exposure to rate volatility?" : "Has your load consistency improved?"}`,
-                    labor: `${labr}% from your personal driving. ${labr > 85 ? "No driving, no income. Have you added any trucks, hired any drivers, or built any brokerage income that earns without you behind the wheel?" : "Has your fleet or brokerage model changed?"}`,
-                  },
-                  agriculture: {
-                    recurrence: `${pct}% recurring. ${pct < 20 ? "Your income is seasonal and harvest-dependent. Have you added any CSA subscriptions, forward contracts, or recurring supply agreements?" : "Has your contracted or subscription revenue changed?"}`,
-                    concentration: `${conc}% from your top buyer. ${conc > 60 ? "You are heavily dependent on one market or buyer. Have you added farmers market sales, a CSA program, or a wholesale channel?" : "Has your buyer distribution shifted?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. ${srcs <= 2 ? "Have you added value-added products, agritourism, equipment rental, or a new crop/livestock category?" : "Has any revenue stream been added or discontinued?"}`,
-                    forward: `${fwd}% contracted. ${fwd < 20 ? "Almost all revenue depended on harvest timing and spot pricing. Have you pre-sold any production through forward contracts or CSA commitments?" : "Has your pre-sold production percentage changed?"}`,
-                    variability: `Variability was ${varLvl}. ${varLvl === "high" || varLvl === "very_high" ? "Weather, pricing, and yields create enormous swings. Have diversified crops, storage capacity, or forward contracts reduced your exposure?" : "Has your revenue stability shifted?"}`,
-                    labor: `${labr}% from your daily field work. ${labr > 80 ? "If you cannot physically work the land, income stops. Have you added any leasing income, hired seasonal crews, or created value-added products that sell year-round?" : "Has your operational model changed?"}`,
-                  },
-                  energy: {
-                    recurrence: `${pct}% recurring. ${pct > 50 ? "Your employment provides a stable base. Has your contract been renewed, or have you added any consulting or advisory income?" : "Has your contract structure changed? Longer-term agreements increase recurrence in energy."}`,
-                    concentration: `${conc}% from one source. ${conc > 80 ? "One employer or one project site. In energy, the only diversification is adding consulting, training, or advisory work alongside your primary role." : "Has your employer or project dependency changed?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. ${srcs === 1 ? "Have you added any consulting, expert witness, training, or advisory board positions in the energy sector?" : "Has any secondary income source changed?"}`,
-                    forward: `${fwd}% secured. ${fwd < 30 ? "Project-based energy work has limited forward visibility. Has your contract been extended or renewed?" : "Has your contract term or project commitment changed?"}`,
-                    variability: `Variability was ${varLvl}. In energy, this ties to commodity cycles, project milestones, and regulatory shifts. ${varLvl === "high" ? "Has your compensation become less tied to production volumes or commodity prices?" : "Has your compensation structure changed?"}`,
-                    labor: `${labr}% from your active on-site work. ${labr > 75 ? "Have you built any income from patents, licensing, advisory roles, or training programs that continue without your on-site presence?" : "Has your passive or advisory income changed?"}`,
-                  },
-                  manufacturing: {
-                    recurrence: `${pct}% recurring. ${pct < 30 ? "Revenue depends on new orders. Have you signed any long-term supply agreements, recurring purchase orders, or blanket contracts?" : "Has your contracted recurring revenue changed?"}`,
-                    concentration: `${conc}% from your top customer. ${conc > 50 ? "In manufacturing, losing one major account can be devastating. Have you added any new customers at 10%+ of revenue?" : "Has your customer concentration shifted?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. ${srcs <= 3 ? "Have you added new product lines, private label agreements, or distribution channels since your assessment?" : "Has your product or customer mix changed?"}`,
-                    forward: `${fwd}% committed. ${fwd < 25 ? "Your order backlog was thin. How does your current backlog compare? Signed POs and blanket orders are your visibility." : "Has your order backlog grown or shrunk?"}`,
-                    variability: `Variability was ${varLvl}. ${varLvl === "high" || varLvl === "very_high" ? "Demand swings and customer timing create volatility. Have long-term contracts or diversified customers stabilized your production schedule?" : "Has your production consistency improved?"}`,
-                    labor: `${labr}% from your daily management. ${labr > 70 ? "The operation depends on you. Have you automated any processes, hired operational management, or built any licensing or private label income?" : "Has your operational delegation changed?"}`,
-                  },
-                  nonprofit: {
-                    recurrence: `${pct}% recurring. ${pct < 30 ? "Most funding is one-time grants or campaigns. Have you built any monthly donor programs, annual memberships, or multi-year grant commitments?" : "Has your recurring funding base grown or declined?"}`,
-                    concentration: `${conc}% from your top funder. ${conc > 50 ? "One foundation or government grant is carrying the organization. Have you diversified into earned revenue, events, or new grant sources?" : "Has your funding concentration shifted?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. ${srcs <= 2 ? "Have you added fee-for-service programs, social enterprise revenue, events, or new institutional funders?" : "Has your revenue mix changed?"}`,
-                    forward: `${fwd}% committed. ${fwd < 25 ? "Most funding was pending or speculative. Have you secured any multi-year commitments, pledged gifts, or contracted program revenue?" : "Has your committed funding pipeline changed?"}`,
-                    variability: `Variability was ${varLvl}. ${varLvl === "high" || varLvl === "very_high" ? "Grant cycles and campaign timing create unpredictability. Have monthly giving programs or earned revenue created any consistency?" : "Has your funding predictability improved?"}`,
-                    labor: `${labr}% from active fundraising. ${labr > 70 ? "If you stop fundraising, revenue dries up. Have you built any endowment income, earned revenue programs, or self-sustaining program fees?" : "Has your revenue model shifted toward earned income?"}`,
-                  },
-                  fitness_wellness: {
-                    recurrence: `${pct}% recurring. ${pct < 30 ? "Most income comes from individual session bookings. Have you launched any membership packages, monthly subscriptions, or auto-renewing session bundles?" : "Has your membership or subscription revenue grown?"}`,
-                    concentration: `${conc}% from your top source. ${conc > 50 ? "A few high-frequency clients carry most of your revenue. If one of them stops, your income drops immediately. Have you diversified your client base?" : "Has your client concentration changed?"}`,
-                    diversification: `${srcs} source${srcs === 1 ? "" : "s"}. ${srcs <= 2 ? "Have you added group classes, online programs, corporate wellness contracts, or product sales alongside 1-on-1 sessions?" : "Has your service offering expanded or contracted?"}`,
-                    forward: `${fwd}% committed. ${fwd < 20 ? "Clients could cancel tomorrow with no penalty. Have you moved any clients to prepaid packages, 3-month commitments, or annual memberships?" : "Has your committed client base changed?"}`,
-                    variability: `Variability was ${varLvl}. ${varLvl === "high" || varLvl === "very_high" ? "Cancellations and seasonal dips create unpredictable months. Have memberships or prepaid packages created any consistency?" : "Has your session volume become more predictable?"}`,
-                    labor: `${labr}% from your personal training hours. ${labr > 85 ? "No sessions, no income. Have you created any digital programs, online courses, workout plans, or content that earns while you are not training?" : "Has your digital or passive income changed?"}`,
-                  },
-                };
-                const tips = tipsByIndustry[sectorKey] || tipsByIndustry.default;
+                {roadmap.map((step, i) => {
+                  const done = completedSteps.includes(i);
+                  const prevDone = i === 0 || completedSteps.includes(i - 1);
+                  const isFirst = !done && prevDone && !completedSteps.includes(i);
+                  const plainMilestone: Record<string, string> = {
+                    add_client: "No single client carries more than half your income",
+                    convert_retainer: "At least some of your income repeats automatically each month",
+                    build_passive: "You have income that comes in whether you work that day or not",
+                    lock_forward: "Next quarter's revenue is already committed — not hoped for",
+                  };
+                  const timeEstimate: Record<string, string> = {
+                    add_client: "2–4 weeks",
+                    convert_retainer: "1–2 conversations",
+                    build_passive: "4–8 weeks to set up",
+                    lock_forward: "1–3 conversations",
+                  };
+                  const successSignal: Record<string, string> = {
+                    add_client: "You've signed a new client or agreement that generates real revenue",
+                    convert_retainer: "A client has agreed to a recurring arrangement — even a small one",
+                    build_passive: "Revenue came in that didn't require your active work that week",
+                    lock_forward: "You have a signed commitment for income beyond this month",
+                  };
+                  return (
+                    <div key={i} style={{ position: "relative", marginBottom: i < roadmap.length - 1 ? 20 : 0, transition: "opacity 300ms" }}>
+                      {/* Timeline dot */}
+                      <button role="checkbox" aria-checked={done} aria-label={`Mark step ${i + 1} as ${done ? 'incomplete' : 'complete'}`} onClick={() => toggleStep(i)} style={{ position: "absolute", left: mobile ? -28 : -36, top: done ? 6 : isFirst ? 14 : 6, width: 28, height: 28, borderRadius: "50%", backgroundColor: done ? B.teal : isFirst ? B.purple : `${B.teal}08`, border: `2px solid ${done ? B.teal : isFirst ? B.purple : `${B.teal}40`}`, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 200ms", zIndex: 1 }}>
+                        {done ? <span style={{ color: B.white, fontSize: 12, fontWeight: 700 }}>&#10003;</span> : <span style={{ fontSize: 12, fontWeight: 700, color: isFirst ? B.white : B.teal }}>{i + 1}</span>}
+                      </button>
 
-                return [
-                  { label: "Recurrence", value: `${base.income_persistence_pct}% of your income recurs automatically`, key: "recurrence", tip: tips.recurrence },
-                  { label: "Concentration", value: `Your largest source carries ${base.largest_source_pct}% of income`, key: "concentration", tip: tips.concentration },
-                  { label: "Diversification", value: `You have ${base.source_diversity_count} income source${base.source_diversity_count === 1 ? "" : "s"}`, key: "diversification", tip: tips.diversification },
-                  { label: "Forward Visibility", value: `${base.forward_secured_pct}% of your income is secured forward`, key: "forward", tip: tips.forward },
-                  { label: "Variability", value: `Your income variability is ${base.income_variability_level}`, key: "variability", tip: tips.variability },
-                  { label: "Labor Dependence", value: `${base.labor_dependence_pct}% requires your active work`, key: "labor", tip: tips.labor },
-                ].map((item, i, arr) => (
-                  <div key={i}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 0", borderBottom: snapshotTip === item.key ? "none" : (i < arr.length - 1 ? `1px solid ${B.stone}` : "none"), cursor: "pointer" }}
-                      onClick={() => setSnapshotTip(snapshotTip === item.key ? null : item.key)}>
-                      <div>
-                        <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 2 }}>{item.label.toUpperCase()}</div>
-                        <div style={{ fontSize: 15, color: B.navy }}>{item.value}</div>
-                      </div>
-                      <span style={{ fontSize: 13, color: snapshotTip === item.key ? B.purple : B.taupe, fontStyle: "italic", flexShrink: 0, marginLeft: 16, transition: "color 150ms" }}>
-                        {snapshotTip === item.key ? "Close" : "Is this still true?"}
-                      </span>
+                      {/* Completed step — compact with celebration */}
+                      {done ? (
+                        <div style={{ padding: "14px 20px", borderRadius: 12, backgroundColor: `${B.teal}04`, border: `1px solid ${B.teal}12` }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                            <span style={{ fontSize: 15, fontWeight: 500, color: B.teal, textDecoration: "line-through", opacity: 0.7 }}>{step.action}</span>
+                            <span style={{ fontSize: 12, fontFamily: mono, color: B.teal, flexShrink: 0, whiteSpace: "nowrap" as const }}>+{step.lift} pts</span>
+                          </div>
+                        </div>
+                      ) : isFirst ? (
+                        /* Active step — fully expanded */
+                        <div style={{ padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 16, backgroundColor: `${B.purple}03`, border: `1px solid ${B.purple}15` }}>
+                          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 10 }}>YOUR CURRENT STEP</div>
+
+                          <div style={{ fontSize: 17, fontWeight: 600, color: B.navy, marginBottom: 6, lineHeight: 1.3 }}>{step.action}</div>
+                          <p style={{ fontSize: 14, color: B.muted, margin: "0 0 14px", lineHeight: 1.6 }}>{step.desc}</p>
+
+                          <div style={{ display: "flex", gap: mobile ? 8 : 16, marginBottom: 14, flexWrap: "wrap" as const }}>
+                            <span style={{ fontSize: 12, color: B.taupe }}>{step.weeks}</span>
+                            {timeEstimate[step.pid] && <span style={{ fontSize: 12, color: B.taupe }}>Takes {timeEstimate[step.pid]}</span>}
+                            <span style={{ fontSize: 12, color: B.taupe }}>{step.effortLabel}</span>
+                          </div>
+
+                          <div style={{ padding: "14px 16px", borderRadius: 10, backgroundColor: B.white, borderLeft: `3px solid ${B.teal}` }}>
+                            <div style={{ fontSize: 13, fontWeight: 500, color: B.navy, marginBottom: 6 }}>{plainMilestone[step.pid] || step.target}</div>
+                            {successSignal[step.pid] && (
+                              <p style={{ fontSize: 13, color: B.muted, margin: "0 0 6px", lineHeight: 1.5 }}>
+                                <span style={{ fontWeight: 600, color: B.teal }}>Done when:</span> {successSignal[step.pid]}
+                              </p>
+                            )}
+                            <span style={{ fontSize: 12, fontFamily: mono, color: B.taupe }}>Score: {step.cumulativeFrom} → {step.cumulativeTo}</span>
+                          </div>
+                          {(() => {
+                            const sc = scriptFor(step.pid);
+                            const personalize = (text: string) => text
+                              .replace(/\[Client Name\]/g, "your client")
+                              .replace(/\[Contact Name\]/g, "[Contact Name]")
+                              .replace(/\[Partner Name\]/g, "[Partner Name]")
+                              .replace(/\[Broker Name\]/g, "[Contact Name]")
+                              .replace(/\[X\]/g, String(Math.max(2, Math.round(base.source_diversity_count))))
+                              .replace(/\[X hours\]/g, "10 hours")
+                              .replace(/\[X years\]/g, "5+ years")
+                              .replace(/\[X properties[^\]]*\]/g, "multiple properties")
+                              .replace(/\[\$ amount\]/g, "$2,500")
+                              .replace(/\[project name\]/g, "recent engagement")
+                              .replace(/\[current industry\]/g, indLabel.toLowerCase() || "your industry")
+                              .replace(/\[new vertical\]/g, "an adjacent vertical")
+                              .replace(/\[their (company|service|clients)\]/g, "their organization")
+                              .replace(/\[your (service|expertise area)\]/g, "your area of focus");
+                            if (!sc) return null;
+                            const scriptText = personalize(sc.script);
+                            const isScriptOpen = expandedPlaybook === step.pid;
+                            return (
+                              <div style={{ marginTop: 14 }}>
+                                <button onClick={() => setExpandedPlaybook(isScriptOpen ? null : step.pid)}
+                                  style={{ fontSize: 13, fontWeight: 600, color: B.teal, background: "none", border: "none", cursor: "pointer", padding: 0, minHeight: 36 }}>
+                                  {isScriptOpen ? "Hide script ↑" : "What to say →"}
+                                </button>
+                                {isScriptOpen && (
+                                  <div style={{ marginTop: 10, position: "relative" }}>
+                                    <pre style={{ fontSize: mobile ? 12 : 13, color: B.navy, lineHeight: 1.65, whiteSpace: "pre-wrap" as const, wordBreak: "break-word" as const, margin: 0, padding: mobile ? "14px 16px" : "16px 20px", backgroundColor: B.white, borderRadius: 10, border: `1px solid ${B.stone}`, fontFamily: sans }}>
+                                      {scriptText}
+                                    </pre>
+                                    <button aria-label="Copy script" onClick={() => { navigator.clipboard.writeText(scriptText).then(() => { setCopiedPlaybook(step.pid); setTimeout(() => setCopiedPlaybook(null), 2000); }); }}
+                                      style={{ position: "absolute", top: 8, right: 8, fontSize: 12, fontWeight: 600, color: copiedPlaybook === step.pid ? B.teal : B.muted, backgroundColor: copiedPlaybook === step.pid ? `${B.teal}08` : "#FAFAFA", border: `1px solid ${B.stone}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer", minHeight: 32, transition: "all 200ms" }}>
+                                      {copiedPlaybook === step.pid ? "Copied!" : "Copy"}
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })()}
+                        </div>
+                      ) : (
+                        /* Future step — collapsed, muted but readable */
+                        <div style={{ padding: "14px 20px", borderRadius: 12, backgroundColor: `${B.purple}03`, border: `1px solid rgba(14,26,43,0.08)` }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+                              <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, padding: "2px 6px", borderRadius: 4, backgroundColor: "rgba(14,26,43,0.04)", flexShrink: 0 }}>UPCOMING</span>
+                              <span style={{ fontSize: 15, fontWeight: 500, color: B.muted }}>{step.action}</span>
+                            </div>
+                            <span style={{ fontSize: 12, color: B.taupe, flexShrink: 0, whiteSpace: "nowrap" as const }}>{step.weeks}</span>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    {snapshotTip === item.key && (() => {
-                      const sentences = item.tip.split(". ");
-                      const firstSentence = sentences[0] + (sentences.length > 1 ? "." : "");
-                      const hasMore = sentences.length > 1;
-                      const isFullyExpanded = expandedTipText[item.key];
-                      return (
-                      <div style={{ padding: mobile ? "14px 16px" : "14px 18px", marginBottom: 10, borderRadius: 10, backgroundColor: `${B.purple}04`, borderLeft: `3px solid ${B.purple}20`, animation: "fadeSlideIn 200ms ease-out" }}>
-                        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: B.purple, marginBottom: 4 }}>TIP FOR {ind.toUpperCase()}</div>
-                        <p style={{ fontSize: 14, color: B.navy, margin: 0, lineHeight: 1.55 }}>{isFullyExpanded ? item.tip : firstSentence}</p>
-                        {hasMore && (
-                          <button onClick={(e) => { e.stopPropagation(); setExpandedTipText(prev => ({ ...prev, [item.key]: !prev[item.key] })); }}
-                            style={{ fontSize: 13, fontWeight: 500, color: B.teal, cursor: "pointer", border: "none", background: "none", padding: "6px 0 0", display: "inline-block" }}>
-                            {isFullyExpanded ? "Show less" : "Read more"}
-                          </button>
-                        )}
-                      </div>
-                      );
-                    })()}
-                  </div>
-                ));
-              })()}
-            </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
 
-            <div style={{ marginTop: 24, padding: mobile ? "18px 20px" : "20px 24px", borderRadius: 12, backgroundColor: "rgba(14,26,43,0.015)", textAlign: "center" }}>
-              <p style={{ fontSize: 15, color: B.navy, margin: "0 0 16px", lineHeight: 1.55 }}>
-                If your structure has changed, your score may not reflect where you are today.
-              </p>
-              <Link href="/pricing" style={{
-                display: "inline-flex", alignItems: "center", justifyContent: "center",
-                height: 48, padding: "0 28px", borderRadius: 10,
-                backgroundColor: B.navy, color: B.white,
-                fontSize: 15, fontWeight: 600, textDecoration: "none",
-                transition: "background 150ms",
-              }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "#2a2248"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = B.navy; }}>
-                Take a New Assessment &mdash; $69
-              </Link>
-            </div>
-          </section>
+          </PhaseSep>
+
+          {/* ════════════════════════════════════════════════════════ */}
+          {/*  PROGRESS — Score history (multi-assessment only)         */}
+          {/* ════════════════════════════════════════════════════════ */}
+          <PhaseSep label="Progress" color={B.taupe} tint="rgba(14,26,43,0.01)" id="phase-progress" mobile={mobile}>
+
+          {/* ──── Score History + Factor Deltas + Benchmark Evolution ──── */}
+          {assessments.length >= 2 && (
+            <section className="cc-section" style={{ marginBottom: 20, padding: mobile ? "28px 24px" : "36px 40px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 10 }}>STABILITY MONITORING</div>
+              <div style={{ fontSize: 16, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Score History</div>
+              <p style={{ fontSize: 14, color: B.muted, margin: "0 0 20px" }}>{assessments.length} assessments tracked. {serverEntitlements ? (serverEntitlements.remaining > 0 ? `${serverEntitlements.remaining} remaining on your plan.` : "All assessments completed.") : (assessments.length < 3 ? `${3 - assessments.length} remaining on your plan.` : "All assessments completed.")}</p>
+
+              {/* Score timeline visual */}
+              <div style={{ display: "flex", alignItems: "flex-end", gap: mobile ? 12 : 24, marginBottom: 24, padding: "20px 0" }}>
+                {assessments.slice().reverse().map((a, i) => {
+                  const isLatest = i === assessments.slice().reverse().length - 1;
+                  const aColor = bandColor(a.final_score);
+                  const barH = Math.max(40, (a.final_score / 100) * 140);
+                  return (
+                    <div key={i} style={{ flex: 1, textAlign: "center" as const }}>
+                      <div style={{ fontSize: 11, color: B.taupe, marginBottom: 6 }}>
+                        {new Date(a.assessment_date_utc || a.issued_timestamp_utc).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+                      </div>
+                      <div style={{ height: barH, backgroundColor: isLatest ? aColor : `${aColor}40`, borderRadius: 6, margin: "0 auto", width: mobile ? "100%" : 56, display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: 8, transition: "height 600ms ease" }}>
+                        <span style={{ fontFamily: mono, fontSize: isLatest ? 20 : 16, fontWeight: isLatest ? 700 : 400, color: isLatest ? "#FFF" : aColor }}>{a.final_score}</span>
+                      </div>
+                      <div style={{ fontSize: 10, color: isLatest ? aColor : B.taupe, fontWeight: isLatest ? 600 : 400, marginTop: 4 }}>
+                        {i === 0 ? "First" : isLatest ? "Latest" : `#${i + 1}`}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Score delta summary */}
+              {(() => {
+                const first = assessments[assessments.length - 1];
+                const latest = assessments[0];
+                const totalDelta = latest.final_score - first.final_score;
+                return (
+                  <div style={{ display: "flex", gap: 12, marginBottom: 20, flexWrap: "wrap" as const }}>
+                    <div style={{ flex: 1, minWidth: 120, padding: "14px 16px", borderRadius: 10, backgroundColor: `${B.stone}`, textAlign: "center" as const }}>
+                      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, marginBottom: 4 }}>FIRST SCORE</div>
+                      <div style={{ fontFamily: mono, fontSize: 24, fontWeight: 300, color: B.taupe }}>{first.final_score}</div>
+                    </div>
+                    <div style={{ flex: 1, minWidth: 120, padding: "14px 16px", borderRadius: 10, backgroundColor: `${B.stone}`, textAlign: "center" as const }}>
+                      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", color: B.taupe, marginBottom: 4 }}>LATEST SCORE</div>
+                      <div style={{ fontFamily: mono, fontSize: 24, fontWeight: 300, color: B.navy }}>{latest.final_score}</div>
+                    </div>
+                    <div style={{ flex: 1, minWidth: 120, padding: "14px 16px", borderRadius: 10, backgroundColor: totalDelta > 0 ? `${B.teal}06` : totalDelta < 0 ? "rgba(155,44,44,0.04)" : `${B.stone}`, border: `1px solid ${totalDelta > 0 ? `${B.teal}18` : totalDelta < 0 ? "rgba(155,44,44,0.10)" : B.stone}`, textAlign: "center" as const }}>
+                      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.08em", color: totalDelta > 0 ? B.teal : totalDelta < 0 ? B.red : B.taupe, marginBottom: 4 }}>TOTAL CHANGE</div>
+                      <div style={{ fontFamily: mono, fontSize: 24, fontWeight: 600, color: totalDelta > 0 ? B.teal : totalDelta < 0 ? B.red : B.taupe }}>{totalDelta > 0 ? "+" : ""}{totalDelta}</div>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Factor-level deltas */}
+              {(() => {
+                const first = assessments[assessments.length - 1];
+                const latest = assessments[0];
+                const fNi = first._v2?.normalized_inputs as Record<string, number> | undefined;
+                const lNi = latest._v2?.normalized_inputs as Record<string, number> | undefined;
+                if (!fNi || !lNi) return null;
+                const factors = [
+                  { key: "income_persistence_pct", label: "Income That Repeats" },
+                  { key: "largest_source_pct", label: "Reliance on Top Source", invert: true },
+                  { key: "source_diversity_count", label: "Number of Sources" },
+                  { key: "forward_secured_pct", label: "Income Locked In Ahead" },
+                  { key: "labor_dependence_pct", label: "Income Without You Working", invert: true },
+                ];
+                return (
+                  <div style={{ marginBottom: 20 }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.navy, marginBottom: 12 }}>WHAT CHANGED IN EACH AREA</div>
+                    {factors.map(f => {
+                      const fVal = (fNi[f.key] as number) ?? 0;
+                      const lVal = (lNi[f.key] as number) ?? 0;
+                      const rawDelta = lVal - fVal;
+                      const delta = f.invert ? -rawDelta : rawDelta;
+                      const direction = delta > 0 ? "improved" : delta < 0 ? "declined" : "unchanged";
+                      return (
+                        <div key={f.key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: `1px solid ${B.stone}` }}>
+                          <span style={{ fontSize: 14, fontWeight: 500, color: B.navy }}>{f.label}</span>
+                          <span style={{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: direction === "improved" ? B.teal : direction === "declined" ? B.red : B.taupe }}>
+                            {direction === "improved" ? "\u2191" : direction === "declined" ? "\u2193" : "\u2013"} {Math.abs(rawDelta) > 0 ? `${f.invert ? (rawDelta > 0 ? "\u2212" : "+") : (rawDelta > 0 ? "+" : "\u2212")}${Math.abs(Math.round(rawDelta))}` : "No change"}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
+
+              {/* Benchmark evolution */}
+              {(() => {
+                const first = assessments[assessments.length - 1];
+                const latest = assessments[0];
+                const fBm = first._v2?.benchmarks as { peer_percentile?: number } | undefined;
+                const lBm = latest._v2?.benchmarks as { peer_percentile?: number } | undefined;
+                if (!fBm?.peer_percentile || !lBm?.peer_percentile) return null;
+                const pDelta = Math.round(lBm.peer_percentile - fBm.peer_percentile);
+                return (
+                  <div style={{ padding: "16px 20px", borderRadius: 10, backgroundColor: pDelta > 0 ? `${B.teal}05` : `${B.stone}`, border: `1px solid ${pDelta > 0 ? `${B.teal}15` : B.stone}` }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.taupe, marginBottom: 8 }}>BASELINE COMPARISON</div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <span style={{ fontFamily: mono, fontSize: 18, color: B.taupe }}>{Math.round(fBm.peer_percentile)}th</span>
+                      <span style={{ color: B.taupe }}>→</span>
+                      <span style={{ fontFamily: mono, fontSize: 18, fontWeight: 600, color: B.navy }}>{Math.round(lBm.peer_percentile)}th</span>
+                      <span style={{ fontFamily: mono, fontSize: 14, fontWeight: 600, color: pDelta > 0 ? B.teal : pDelta < 0 ? B.red : B.taupe }}>{pDelta > 0 ? "+" : ""}{pDelta} percentile</span>
+                    </div>
+                    <p style={{ fontSize: 13, color: B.muted, marginTop: 8, marginBottom: 0 }}>
+                      {pDelta > 0 ? "Your position relative to the industry baseline has improved." : pDelta < 0 ? "Your position relative to the industry baseline has shifted." : "Your baseline position is stable."}
+                    </p>
+                  </div>
+                );
+              })()}
+            </section>
+          )}
+
+          </PhaseSep>
 
           {/* ── RECORD CARD ── */}
           {(() => {
