@@ -5,14 +5,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getSessionByEmail, isExpired, getRemaining, verifyPin, resetPinAndSend, type MonitoringSession } from "@/lib/monitoring";
 import {
-  C, T, mono, sans, sp, maxW, secPad, px,
-  h1, h2Style, h3Style, body, bodySm, cardStyle, ctaButtonLight,
+  C, T, mono, sans, secPad, px,
+  h2Style, bodySm, cardStyle,
   canHover,
 } from "@/lib/design-tokens";
-
-/* ------------------------------------------------------------------ */
-/*  Types                                                              */
-/* ------------------------------------------------------------------ */
 
 /* ------------------------------------------------------------------ */
 /*  Hooks                                                              */
@@ -63,7 +59,6 @@ export default function SignInPage() {
 
   const heroAnim = useInView();
   const formAnim = useInView();
-  const infoAnim = useInView();
 
   /* ── Verify PIN ── */
   const handlePinSignIn = async () => {
@@ -377,62 +372,6 @@ export default function SignInPage() {
         </div>
       </section>
 
-      {/* ══ INFO CARDS ══ */}
-      <section style={{ backgroundColor: C.white, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-        <div ref={infoAnim.ref} style={{ maxWidth: 800, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, ...fadeIn(infoAnim.visible) }}>
-            <h2 style={{ ...h2Style(m), color: C.navy, letterSpacing: "-0.02em", marginBottom: 12 }}>
-              What your report includes.
-            </h2>
-            <p style={{ ...body(m), color: C.muted, maxWidth: 480, margin: "0 auto" }}>
-              Every assessment covers six structural dimensions of how your income is built.
-            </p>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr 1fr", gap: m ? 16 : 24 }}>
-            {[
-              { num: "01", title: "Your Stability Score", desc: "A single number — 300 to 850 — that reflects how structurally resilient your income is right now.", color: C.teal, accent: C.teal },
-              { num: "02", title: "Your Top Risks", desc: "The specific structural factors limiting your score, ranked by impact. Not generic advice — your actual constraints.", color: C.teal, accent: C.purple },
-              { num: "03", title: "A 12-Week Action Plan", desc: "Step-by-step moves for your income type, ordered by what will move your score the most first.", color: C.teal, accent: C.navy },
-            ].map((card, i) => (
-              <div key={card.num} style={{
-                ...cardStyle, borderRadius: 16, padding: m ? "28px 24px" : "32px 28px",
-                borderLeft: `4px solid ${card.accent}`,
-                ...fadeIn(infoAnim.visible, 100 + i * 80),
-              }}>
-                <div style={{ fontSize: 28, fontWeight: 700, fontFamily: mono, color: card.color, marginBottom: 16 }}>
-                  {card.num}
-                </div>
-                <div style={{ fontSize: m ? 16 : 18, fontWeight: 600, color: C.navy, marginBottom: 8 }}>{card.title}</div>
-                <p style={{ ...bodySm(m), color: C.muted, margin: 0 }}>{card.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══ CTA ══ */}
-      <section style={{ backgroundColor: C.navy, paddingTop: secPad(m), paddingBottom: secPad(m), paddingLeft: px(m), paddingRight: px(m) }}>
-        <div style={{ maxWidth: maxW, margin: "0 auto", textAlign: "center" }}>
-          <div style={{ ...fadeIn(true) }}>
-            <h2 style={{ ...h2Style(m), color: C.sandText, letterSpacing: "-0.02em", marginBottom: 12 }}>
-              Don&apos;t have a report yet?
-            </h2>
-            <p style={{ ...body(m), color: C.sandMuted, maxWidth: 480, margin: "0 auto 40px" }}>
-              The assessment takes under two minutes. Your score, risk breakdown, and 12-week plan are ready instantly.
-            </p>
-            <Link href="/begin" style={{
-              ...ctaButtonLight, height: m ? 56 : 60, paddingLeft: 32, paddingRight: 32, borderRadius: 16,
-              backgroundColor: C.white, color: C.navy, display: "inline-flex", alignItems: "center", justifyContent: "center",
-            }}>
-              Get My Score →
-            </Link>
-            <div style={{ marginTop: 20, fontSize: 14, fontWeight: 500, color: C.sandLight }}>
-              $69 &#183; Score, breakdown, action plan — delivered instantly
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
