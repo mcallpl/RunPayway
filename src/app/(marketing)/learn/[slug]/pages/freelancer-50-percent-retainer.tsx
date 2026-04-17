@@ -162,7 +162,7 @@ export default function Freelancer50PercentRetainer() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Freelance Structure", href: "/begin" },
+          { text: "Assess Your Freelance Structure", href: "/begin" },
         ]}
       />
 

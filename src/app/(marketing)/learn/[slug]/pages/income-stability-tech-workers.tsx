@@ -165,7 +165,7 @@ export default function IncomeStabilityTechWorkers() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Tech Compensation", href: "/begin" },
+          { text: "Assess Your Tech Compensation", href: "/begin" },
         ]}
       />
 

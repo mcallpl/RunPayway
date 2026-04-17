@@ -164,7 +164,7 @@ export default function IncomeStabilityConsultants() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Consulting Practice", href: "/begin" },
+          { text: "Assess Your Consulting Practice", href: "/begin" },
         ]}
       />
 

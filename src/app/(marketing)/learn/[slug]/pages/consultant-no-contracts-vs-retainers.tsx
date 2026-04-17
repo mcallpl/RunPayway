@@ -166,7 +166,7 @@ export default function ConsultantNoContractsVsRetainers() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Consulting Structure", href: "/begin" },
+          { text: "Assess Your Consulting Structure", href: "/begin" },
         ]}
       />
 

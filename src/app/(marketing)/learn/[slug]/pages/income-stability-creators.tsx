@@ -161,7 +161,7 @@ export default function IncomeStabilityCreators() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Creator Income", href: "/begin" },
+          { text: "Assess Your Creator Income", href: "/begin" },
         ]}
       />
 

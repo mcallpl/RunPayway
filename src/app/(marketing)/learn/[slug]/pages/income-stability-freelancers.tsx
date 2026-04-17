@@ -165,7 +165,7 @@ export default function IncomeStabilityFreelancers() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Freelance Setup", href: "/begin" },
+          { text: "Assess Your Freelance Setup", href: "/begin" },
         ]}
       />
 

@@ -165,7 +165,7 @@ export default function IncomeStabilityMortgageBrokers() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Pipeline", href: "/begin" },
+          { text: "Assess Your Pipeline", href: "/begin" },
         ]}
       />
 

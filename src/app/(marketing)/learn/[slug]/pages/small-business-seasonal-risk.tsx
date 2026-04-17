@@ -162,7 +162,7 @@ export default function SmallBusinessSeasonalRisk() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Business Income", href: "/begin" },
+          { text: "Assess Your Business Income", href: "/begin" },
         ]}
       />
 

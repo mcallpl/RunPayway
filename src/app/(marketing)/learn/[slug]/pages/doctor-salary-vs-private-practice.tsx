@@ -162,7 +162,7 @@ export default function DoctorSalaryVsPrivatePractice() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Physician Income", href: "/begin" },
+          { text: "Assess Your Physician Income", href: "/begin" },
         ]}
       />
 

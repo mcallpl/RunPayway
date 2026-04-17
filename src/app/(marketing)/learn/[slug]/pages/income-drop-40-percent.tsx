@@ -166,7 +166,7 @@ export default function IncomeDrop40Percent() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Income Structure", href: "/begin" },
+          { text: "Assess Your Income Structure", href: "/begin" },
         ]}
       />
 

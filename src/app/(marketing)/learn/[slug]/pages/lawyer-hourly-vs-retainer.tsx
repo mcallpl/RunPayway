@@ -165,7 +165,7 @@ export default function LawyerHourlyVsRetainer() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Legal Practice", href: "/begin" },
+          { text: "Assess Your Legal Practice", href: "/begin" },
         ]}
       />
 

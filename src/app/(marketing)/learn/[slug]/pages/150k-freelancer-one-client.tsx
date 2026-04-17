@@ -164,7 +164,7 @@ export default function FreelancerOneClient() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Setup", href: "/begin" },
+          { text: "Assess Your Setup", href: "/begin" },
         ]}
       />
 

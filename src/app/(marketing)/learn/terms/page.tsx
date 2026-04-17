@@ -157,7 +157,7 @@ export default function TermsGlossary() {
 
       {/* CTA */}
       <LearnCTA
-        heading="Get Your Income Stability Score"
+        heading="See Your Income Stability Class"
         sub="Know where your income holds — and where it's exposed."
       />
 

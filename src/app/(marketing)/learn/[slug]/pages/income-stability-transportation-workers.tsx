@@ -164,7 +164,7 @@ export default function IncomeStabilityTransportationWorkers() {
       {/* 11. Micro Conversion */}
       <MicroConversion
         items={[
-          { text: "Score Your Freight Book", href: "/begin" },
+          { text: "Assess Your Freight Book", href: "/begin" },
           { text: "See a Sample Report", href: "/sample-report" },
         ]}
       />

@@ -161,7 +161,7 @@ export default function IncomeStabilityDoctors() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Structure", href: "/begin" },
+          { text: "Assess Your Structure", href: "/begin" },
         ]}
       />
 

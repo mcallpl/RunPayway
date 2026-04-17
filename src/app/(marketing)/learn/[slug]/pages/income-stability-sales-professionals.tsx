@@ -160,7 +160,7 @@ export default function IncomeStabilitySalesProfessionals() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Sales Compensation", href: "/begin" },
+          { text: "Assess Your Sales Compensation", href: "/begin" },
         ]}
       />
 

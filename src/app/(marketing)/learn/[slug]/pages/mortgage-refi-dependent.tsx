@@ -166,7 +166,7 @@ export default function MortgageRefiDependent() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Mortgage Income", href: "/begin" },
+          { text: "Assess Your Mortgage Income", href: "/begin" },
         ]}
       />
 

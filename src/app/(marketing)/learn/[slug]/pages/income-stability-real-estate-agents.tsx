@@ -163,7 +163,7 @@ export default function IncomeStabilityRealEstateAgents() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Get Your Agent Score", href: "/begin" },
+          { text: "Assess Your Agent Setup", href: "/begin" },
         ]}
       />
 

@@ -166,7 +166,7 @@ export default function SalesRepBasePlusCommission() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Comp Plan", href: "/begin" },
+          { text: "Assess Your Comp Plan", href: "/begin" },
         ]}
       />
 

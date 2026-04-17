@@ -162,7 +162,7 @@ export default function RealEstateBoomVsSlowMarket() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Real Estate Income", href: "/begin" },
+          { text: "Assess Your Real Estate Income", href: "/begin" },
         ]}
       />
 

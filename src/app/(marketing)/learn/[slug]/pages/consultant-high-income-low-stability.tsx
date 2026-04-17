@@ -162,7 +162,7 @@ export default function ConsultantHighIncomeLowStability() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Consulting Income", href: "/begin" },
+          { text: "Assess Your Consulting Income", href: "/begin" },
         ]}
       />
 

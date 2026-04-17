@@ -165,7 +165,7 @@ export default function SalesHighPerformerRisk() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Sales Income", href: "/begin" },
+          { text: "Assess Your Sales Income", href: "/begin" },
         ]}
       />
 

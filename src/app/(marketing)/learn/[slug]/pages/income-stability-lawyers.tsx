@@ -165,7 +165,7 @@ export default function IncomeStabilityLawyers() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Practice", href: "/begin" },
+          { text: "Assess Your Practice", href: "/begin" },
         ]}
       />
 

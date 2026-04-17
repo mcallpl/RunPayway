@@ -162,7 +162,7 @@ export default function IncomeStabilityContractors() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Contracting Business", href: "/begin" },
+          { text: "Assess Your Contracting Business", href: "/begin" },
         ]}
       />
 

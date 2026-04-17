@@ -166,7 +166,7 @@ export default function FreelancerNoRecurringIncome() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Freelance Income", href: "/begin" },
+          { text: "Assess Your Freelance Income", href: "/begin" },
         ]}
       />
 

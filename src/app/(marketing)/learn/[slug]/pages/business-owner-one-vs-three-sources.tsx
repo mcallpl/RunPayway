@@ -165,7 +165,7 @@ export default function BusinessOwnerOneVsThreeSources() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Score Your Business Structure", href: "/begin" },
+          { text: "Assess Your Business Structure", href: "/begin" },
         ]}
       />
 
