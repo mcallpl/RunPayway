@@ -220,7 +220,7 @@ function HeroSection() {
             {/* Supporting line + persona strip */}
             <div style={{ marginBottom: m ? 28 : 36, ...fadeIn(visible, 60) }}>
               <p style={{ fontSize: m ? 15 : 16, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 460, margin: "0 0 14px" }}>
-                Salary earners have stability built in. Now everyone else does too.
+                Guaranteed income has stability built in. Variable income now has a score.
               </p>
               <span style={{
                 fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
