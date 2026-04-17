@@ -331,11 +331,11 @@ function CategoryDeclaration() {
         </h2>
 
         <p style={{ fontSize: m ? 17 : 20, fontWeight: 400, lineHeight: 1.65, color: "rgba(244,241,234,0.60)", maxWidth: 600, margin: "0 auto 48px", ...fadeIn(visible, 80) }}>
-          Whether it depends on one client, one employer, or one deal closing on time. Whether it continues if you stop. Whether it holds when conditions change.
+          Whether it depends on one client, one employer, or one deal closing on time. Whether it continues if you stop.
         </p>
 
         <p style={{ fontSize: m ? 17 : 20, fontWeight: 600, lineHeight: 1.5, color: C.sandText, maxWidth: 560, margin: "0 auto", ...fadeIn(visible, 200) }}>
-          RunPayway™ measures the layer between earning and&nbsp;keeping.
+          RunPayway™ puts a score on that.
         </p>
       </div>
     </section>
