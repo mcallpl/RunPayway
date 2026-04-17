@@ -234,7 +234,7 @@ function HeroSection() {
             <div style={{ ...fadeIn(visible, 150) }}>
               <CtaButton m={m} variant="primary" label="Get My Stability Score →" />
               <p style={{ fontSize: 13, fontWeight: 500, color: C.textMuted, marginTop: 14 }}>
-                $69 &middot; No documents required &middot; Private by default
+                Free &middot; No documents required &middot; Private by default
               </p>
             </div>
 
