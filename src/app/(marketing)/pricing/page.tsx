@@ -269,6 +269,12 @@ function PricingCards() {
       <p style={{ fontSize: 14, fontWeight: 600, color: C.teal, textAlign: "center", marginTop: 8, marginBottom: 0 }}>
         If it doesn&rsquo;t reveal something new, you don&rsquo;t pay.
       </p>
+      <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 16, marginBottom: 0 }}>
+        Already have an account?{" "}
+        <Link href="/sign-in" style={{ fontWeight: 600, color: C.navy, textDecoration: "none" }}>
+          Sign in to your dashboard
+        </Link>
+      </p>
     </div>
   );
 

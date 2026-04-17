@@ -254,6 +254,13 @@ export default function PlansPage() {
             }}>
               Get My Score &rarr;
             </Link>
+
+            <p style={{ textAlign: "center", fontSize: 13, color: C.textMuted, margin: "14px 0 0" }}>
+              Already have an account?{" "}
+              <Link href="/sign-in" style={{ fontWeight: 600, color: C.navy, textDecoration: "none" }}>
+                Sign in to your dashboard
+              </Link>
+            </p>
           </div>
 
           {/* ── Advisors ── */}
