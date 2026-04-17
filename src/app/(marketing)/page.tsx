@@ -215,7 +215,7 @@ function HeroSection() {
                 fontSize: 12, fontWeight: 700, letterSpacing: "0.06em",
                 color: C.teal, textTransform: "uppercase" as const,
               }}>
-                Freelancer &middot; Founder &middot; Agent &middot; Consultant &middot; Creator &middot; Contractor
+                Freelancer &middot; Founder &middot; Consultant &middot; Contractor &middot; Broker
               </span>
             </div>
 
