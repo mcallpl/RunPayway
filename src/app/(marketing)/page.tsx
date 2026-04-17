@@ -209,30 +209,34 @@ function HeroSection() {
 
           {/* Left — copy */}
           <div style={{ marginBottom: m ? 48 : 0 }}>
-            {/* Persona eyebrow */}
-            <div style={{ marginBottom: m ? 20 : 28, ...fadeIn(visible) }}>
+
+            {/* H1 — setup + tension */}
+            <h1 style={{ fontSize: m ? 38 : 58, fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.035em", color: C.navy, marginBottom: m ? 16 : 20, ...fadeIn(visible) }}>
+              Your income has{" "}
+              {m ? null : <br />}a structure.{" "}
+              {m ? null : <br />}Does it&nbsp;hold?
+            </h1>
+
+            {/* Supporting line + persona strip */}
+            <div style={{ marginBottom: m ? 28 : 36, ...fadeIn(visible, 60) }}>
+              <p style={{ fontSize: m ? 15 : 16, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 460, margin: "0 0 14px" }}>
+                For anyone whose income isn&apos;t a guaranteed salary — RunPayway™ measures how structurally stable it actually is.
+              </p>
               <span style={{
-                fontSize: 12, fontWeight: 700, letterSpacing: "0.08em",
+                fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
                 color: C.teal, textTransform: "uppercase" as const,
               }}>
                 Freelancer &middot; Founder &middot; Consultant &middot; Contractor &middot; Broker
               </span>
             </div>
 
-            {/* H1 — setup + tension */}
-            <h1 style={{ fontSize: m ? 38 : 58, fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.035em", color: C.navy, marginBottom: m ? 20 : 24, ...fadeIn(visible, 50) }}>
-              Your income has{" "}
-              {m ? null : <br />}a structure.{" "}
-              {m ? null : <br />}Does it&nbsp;hold?
-            </h1>
-
             {/* Subhead — what they get */}
-            <p style={{ fontSize: m ? 17 : 19, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 460, marginBottom: m ? 32 : 40, ...fadeIn(visible, 90) }}>
+            <p style={{ fontSize: m ? 17 : 19, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 460, marginBottom: m ? 32 : 40, ...fadeIn(visible, 100) }}>
               Six questions. A stability score, your top risks, and a 12&#8209;week plan to fix them — delivered in under two minutes.
             </p>
 
             {/* CTA */}
-            <div style={{ ...fadeIn(visible, 140) }}>
+            <div style={{ ...fadeIn(visible, 150) }}>
               <CtaButton m={m} variant="primary" label="Get My Score →" />
               <p style={{ fontSize: 13, fontWeight: 500, color: C.textMuted, marginTop: 14 }}>
                 $69 &middot; No documents required &middot; Private by default
