@@ -19,8 +19,8 @@ export default function BeginPage() {
     // Mark as free plan for upgrade detection
     localStorage.setItem("rp_previous_plan", "free");
 
-    // Go straight to the diagnostic portal
-    router.replace("/diagnostic-portal");
+    // Go straight to the free assessment (simplified questions)
+    router.replace("/free-assessment");
   }, [router]);
 
   return null;

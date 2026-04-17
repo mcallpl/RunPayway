@@ -970,7 +970,7 @@ function DashboardContent() {
                 Unlock your personalized action plan.
               </h1>
               <p style={{ fontSize: 17, color: B.navy, opacity: 0.6, margin: "0 0 28px", lineHeight: 1.65, maxWidth: 520, marginLeft: "auto", marginRight: "auto" }}>
-                Your free score showed you where you stand. Your full report + dashboard shows you exactly what to do about it.
+                Your stability class showed you where you stand. Your full report + dashboard shows you exactly what to do about it.
               </p>
               <div style={{ display: "flex", flexDirection: "column" as const, gap: 14, maxWidth: 440, margin: "0 auto 24px", textAlign: "left" as const }}>
                 {[

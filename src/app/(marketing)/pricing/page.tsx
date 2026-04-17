@@ -196,10 +196,10 @@ function PricingCards() {
       }}
         onMouseEnter={e => { e.currentTarget.style.backgroundColor = `${C.teal}08`; e.currentTarget.style.borderColor = C.teal; }}
         onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.borderColor = C.teal; }}>
-        Get Your Free Score
+        Get Your Free Stability Class
       </Link>
       <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 12, marginBottom: 0 }}>
-        Under 2 minutes &bull; No account required
+        Free &bull; No account required
       </p>
     </div>
   );
@@ -357,7 +357,7 @@ function PricingCards() {
 
         {/* Decoy reinforcement — nudge toward $69 tier */}
         <p style={{ textAlign: "center", fontSize: 14, color: C.textMuted, marginTop: 32, lineHeight: 1.6 }}>
-          Most people start with the full report. It includes everything in the free score, plus your action plan, scripts, and lifetime dashboard&nbsp;access.
+          Most people start with the full report. Your stability class tells you where you stand — the report tells you exactly why, and what to do about it.
         </p>
       </div>
     </section>
