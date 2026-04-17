@@ -215,7 +215,7 @@ function HeroSection() {
                 fontSize: 12, fontWeight: 700, letterSpacing: "0.06em",
                 color: C.teal, textTransform: "uppercase" as const,
               }}>
-                For freelancers, founders, agents, consultants, creators &amp; contractors
+                Freelancer &middot; Founder &middot; Agent &middot; Consultant &middot; Creator &middot; Contractor
               </span>
             </div>
 
