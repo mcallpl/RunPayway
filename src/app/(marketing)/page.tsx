@@ -210,17 +210,17 @@ function HeroSection() {
           {/* Left — copy */}
           <div style={{ marginBottom: m ? 48 : 0 }}>
 
-            {/* H1 — setup + tension */}
+            {/* H1 */}
             <h1 style={{ fontSize: m ? 38 : 58, fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.035em", color: C.navy, marginBottom: m ? 16 : 20, ...fadeIn(visible) }}>
-              Your income has{" "}
-              {m ? null : <br />}a structure.{" "}
-              {m ? null : <br />}Does it&nbsp;hold?
+              Know exactly how{" "}
+              {m ? null : <br />}stable your{" "}
+              {m ? null : <br />}income&nbsp;is.
             </h1>
 
             {/* Supporting line + persona strip */}
             <div style={{ marginBottom: m ? 28 : 36, ...fadeIn(visible, 60) }}>
               <p style={{ fontSize: m ? 15 : 16, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 460, margin: "0 0 14px" }}>
-                Guaranteed income has stability built in. Variable income now has a score.
+                Guaranteed income has a floor. Variable income now has a score.
               </p>
               <span style={{
                 fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
@@ -232,7 +232,7 @@ function HeroSection() {
 
             {/* Subhead — what they get */}
             <p style={{ fontSize: m ? 17 : 19, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 460, marginBottom: m ? 32 : 40, ...fadeIn(visible, 100) }}>
-              Six questions. A stability score, your top risks, and a 12&#8209;week plan to fix them — delivered in under two minutes.
+              A stability score, your ranked risk factors, and a personalized 12&#8209;week plan — delivered instantly.
             </p>
 
             {/* CTA */}
