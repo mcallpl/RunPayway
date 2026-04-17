@@ -27,6 +27,13 @@ const C = {
 const sans = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 const mono = '"SF Mono","Fira Code","IBM Plex Mono","Courier New",monospace';
 
+function bandColor(score: number) {
+  if (score >= 75) return "#1F6D7A";
+  if (score >= 50) return "#4B3FAE";
+  if (score >= 30) return "#B08D57";
+  return "#C0392B";
+}
+
 /* ================================================================ */
 /* DATA                                                              */
 /* ================================================================ */
@@ -77,11 +84,18 @@ const SECTOR_MAP: Record<string, string> = {
 
 const QUESTIONS = buildFreeQuestions();
 
+const BAND_MESSAGES: Record<string, string> = {
+  "Limited Stability": "Your income has significant structural exposure.",
+  "Developing Stability": "Your income structure is building but has key vulnerabilities.",
+  "Established Stability": "Your income structure is solid with room to strengthen.",
+  "High Stability": "Your income holds up well under pressure.",
+};
+
 /* ================================================================ */
 /* MAIN                                                              */
 /* ================================================================ */
 
-type Step = "entrance" | "industry" | "questions" | "calculating";
+type Step = "entrance" | "industry" | "questions" | "calculating" | "reveal";
 
 export default function FreeAssessmentPage() {
   const router = useRouter();
@@ -94,6 +108,10 @@ export default function FreeAssessmentPage() {
   const [fading, setFading] = useState(false);
   const [mobile, setMobile] = useState(false);
   const [calcDot, setCalcDot] = useState(0);
+  const [revealScore, setRevealScore] = useState(0);
+  const [revealBand, setRevealBand] = useState("");
+  const [revealPhase, setRevealPhase] = useState(0);
+  const [displayedScore, setDisplayedScore] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -122,6 +140,26 @@ export default function FreeAssessmentPage() {
     const interval = setInterval(() => setCalcDot(d => (d + 1) % 4), 380);
     return () => clearInterval(interval);
   }, [step]);
+
+  // Reveal animation — count up score, then sequence phases
+  useEffect(() => {
+    if (step !== "reveal") return;
+    const target = revealScore;
+    const duration = 1200;
+    const start = Date.now();
+    const frame = () => {
+      const elapsed = Date.now() - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplayedScore(Math.round(eased * target));
+      if (progress < 1) requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+    const t1 = setTimeout(() => setRevealPhase(1), 800);
+    const t2 = setTimeout(() => setRevealPhase(2), 1600);
+    const t3 = setTimeout(() => setRevealPhase(3), 2400);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, [step, revealScore]);
 
   // Free session
   useEffect(() => {
@@ -232,7 +270,9 @@ export default function FreeAssessmentPage() {
 
       trackAssessmentComplete((record.final_score as number) || 0, industry || undefined);
 
-      setTimeout(() => router.push("/free-score"), 900);
+      setRevealScore((record.final_score as number) || 0);
+      setRevealBand((record.stability_band as string) || "");
+      setTimeout(() => setStep("reveal"), 900);
     } catch {
       router.push("/diagnostic-portal");
     }
@@ -334,11 +374,144 @@ export default function FreeAssessmentPage() {
           }} />
           <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
           <p style={{ fontSize: mobile ? 18 : 22, fontWeight: 300, color: C.sand, margin: "0 0 8px", letterSpacing: "-0.02em" }}>
-            Calculating your stability class{".".repeat(calcDot)}
+            Calculating your score{".".repeat(calcDot)}
           </p>
           <p style={{ fontSize: 12, color: "rgba(244,241,234,0.30)", margin: 0, fontFamily: mono }}>
             Model RP-2.0 · Deterministic
           </p>
+        </div>
+      </div>
+    );
+  }
+
+  /* ================================================================ */
+  /* SCORE REVEAL                                                      */
+  /* ================================================================ */
+
+  if (step === "reveal") {
+    const rColor = bandColor(revealScore);
+    const nextBand = revealScore < 30 ? "Developing Stability" : revealScore < 50 ? "Established Stability" : revealScore < 75 ? "High Stability" : null;
+    const gap = nextBand ? (revealScore < 30 ? 30 : revealScore < 50 ? 50 : 75) - revealScore : 0;
+    const bandMsg = BAND_MESSAGES[revealBand] || "";
+
+    return (
+      <div style={{
+        position: "fixed", inset: 0, zIndex: 9999,
+        backgroundColor: C.sand,
+        display: "flex", alignItems: mobile ? "flex-start" : "center", justifyContent: "center",
+        paddingTop: mobile ? "18vh" : 0,
+      }}>
+        {/* Ambient glow */}
+        <div style={{
+          position: "absolute", top: "30%", left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: mobile ? 300 : 560, height: mobile ? 300 : 560,
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${rColor}12 0%, transparent 60%)`,
+          pointerEvents: "none",
+        }} />
+
+        <div style={{
+          textAlign: "center", maxWidth: 460,
+          padding: mobile ? "0 24px" : "0 24px",
+          position: "relative", zIndex: 1, width: "100%",
+        }}>
+
+          {/* Score number — counts up */}
+          <div style={{ marginBottom: 8 }}>
+            <span style={{
+              fontSize: mobile ? 72 : 96, fontWeight: 200, color: C.navy,
+              letterSpacing: "-0.05em", lineHeight: 1, fontFamily: mono,
+            }}>
+              {displayedScore}
+            </span>
+            <span style={{
+              fontSize: mobile ? 22 : 28, fontWeight: 300,
+              color: "rgba(14,26,43,0.20)", marginLeft: 4,
+            }}>
+              /100
+            </span>
+          </div>
+
+          {/* Band badge — fades in */}
+          <div style={{
+            opacity: revealPhase >= 1 ? 1 : 0,
+            transform: revealPhase >= 1 ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity 600ms ease, transform 600ms ease",
+            marginBottom: 8,
+          }}>
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: 10,
+              padding: "8px 20px", borderRadius: 24,
+              border: `1px solid ${rColor}30`,
+              backgroundColor: `${rColor}08`,
+            }}>
+              <div style={{ width: 10, height: 10, borderRadius: 3, backgroundColor: rColor }} />
+              <span style={{ fontSize: 16, fontWeight: 600, color: rColor }}>{revealBand}</span>
+            </div>
+          </div>
+
+          {/* Band message */}
+          {bandMsg && (
+            <div style={{
+              opacity: revealPhase >= 1 ? 1 : 0,
+              transition: "opacity 600ms ease",
+              marginBottom: 24,
+            }}>
+              <p style={{ fontSize: 14, color: "rgba(14,26,43,0.40)", margin: 0 }}>{bandMsg}</p>
+            </div>
+          )}
+
+          {/* Gap message — fades in */}
+          <div style={{
+            opacity: revealPhase >= 2 ? 1 : 0,
+            transform: revealPhase >= 2 ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity 600ms ease, transform 600ms ease",
+            marginBottom: 8,
+          }}>
+            {nextBand && (
+              <p style={{ fontSize: mobile ? 15 : 17, color: "rgba(14,26,43,0.45)", margin: "0 0 8px", lineHeight: 1.5 }}>
+                {gap} points from {nextBand}
+              </p>
+            )}
+            <p style={{ fontSize: 14, color: "rgba(14,26,43,0.35)", margin: 0 }}>
+              Your full report and action plan are ready.
+            </p>
+          </div>
+
+          <div style={{ marginBottom: 24 }} />
+
+          {/* CTA — fades in */}
+          <div style={{
+            opacity: revealPhase >= 3 ? 1 : 0,
+            transform: revealPhase >= 3 ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity 600ms ease, transform 600ms ease",
+          }}>
+            <button
+              onClick={() => router.push("/dashboard")}
+              style={{
+                padding: mobile ? "14px 32px" : "16px 40px",
+                borderRadius: 12, backgroundColor: C.navy, border: "none",
+                color: C.sand, fontSize: mobile ? 15 : 17, fontWeight: 600,
+                cursor: "pointer", fontFamily: sans,
+                transition: "background-color 200ms",
+                boxShadow: "0 4px 20px rgba(14,26,43,0.15)",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = "#1a2540"; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.navy; }}
+            >
+              See Your Full Report &rarr;
+            </button>
+          </div>
+
+          {/* Watermark */}
+          <div style={{
+            position: "absolute", bottom: -80, left: "50%",
+            transform: "translateX(-50%)",
+            fontSize: 11, color: "rgba(14,26,43,0.12)", letterSpacing: "0.10em",
+          }}>
+            RUNPAYWAY™
+          </div>
         </div>
       </div>
     );
@@ -374,7 +547,7 @@ export default function FreeAssessmentPage() {
               What field are you in?
             </h1>
             <p style={{ fontSize: 15, color: C.muted, lineHeight: 1.6, margin: 0, maxWidth: 420 }}>
-              This helps contextualize your stability class. No other personal information required.
+              This helps contextualize your results. No other personal information required.
             </p>
           </div>
 
@@ -503,17 +676,19 @@ export default function FreeAssessmentPage() {
           )}
         </div>
 
-        {/* Options */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 9, marginBottom: 36 }}>
+        {/* Options — radio circle style */}
+        <div role="radiogroup" aria-label={q.title} style={{ display: "flex", flexDirection: "column", gap: 9, marginBottom: 36 }}>
           {q.options.map((opt) => {
             const isSelected = selected === opt.letter;
             return (
               <button
                 key={opt.letter}
+                role="radio"
+                aria-checked={isSelected}
                 onClick={() => handleSelect(opt.letter)}
                 style={{
                   width: "100%", padding: "15px 18px",
-                  backgroundColor: isSelected ? "rgba(75,63,174,0.06)" : C.white,
+                  backgroundColor: isSelected ? "rgba(75,63,174,0.04)" : C.white,
                   border: `1.5px solid ${isSelected ? C.purple : C.border}`,
                   borderRadius: 12, cursor: "pointer",
                   display: "flex", alignItems: "center", gap: 14,
@@ -534,18 +709,16 @@ export default function FreeAssessmentPage() {
                   }
                 }}
               >
+                {/* Radio circle */}
                 <div style={{
-                  width: 30, height: 30, borderRadius: 8, flexShrink: 0,
-                  backgroundColor: isSelected ? C.purple : "rgba(14,26,43,0.05)",
+                  width: 22, height: 22, borderRadius: "50%", flexShrink: 0,
+                  border: `2px solid ${isSelected ? C.purple : "rgba(14,26,43,0.18)"}`,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  transition: "background-color 140ms",
+                  transition: "border-color 140ms",
                 }}>
-                  <span style={{
-                    fontFamily: mono, fontSize: 11, fontWeight: 700,
-                    color: isSelected ? C.white : C.muted,
-                  }}>
-                    {opt.letter}
-                  </span>
+                  {isSelected && (
+                    <div style={{ width: 10, height: 10, borderRadius: "50%", backgroundColor: C.purple }} />
+                  )}
                 </div>
                 <span style={{
                   fontSize: 15, lineHeight: 1.4,
@@ -573,7 +746,7 @@ export default function FreeAssessmentPage() {
             letterSpacing: "0.01em",
           }}
         >
-          {currentQ === QUESTIONS.length - 1 ? "See My Stability Class" : "Continue →"}
+          {currentQ === QUESTIONS.length - 1 ? "See My Score →" : "Continue →"}
         </button>
 
         <p style={{ fontSize: 12, color: C.light, textAlign: "center", marginTop: 16, marginBottom: 0 }}>

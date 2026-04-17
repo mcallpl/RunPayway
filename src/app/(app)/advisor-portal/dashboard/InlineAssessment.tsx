@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { C, mono, sans } from "@/lib/design-tokens";
+import { C, sans } from "@/lib/design-tokens";
 import { buildAdvisorQuestions } from "@/lib/advisor-questions";
 import { mapIndustryToSector } from "@/lib/industry-map";
 import { WORKER_URL } from "@/lib/config";
@@ -516,16 +516,17 @@ export default function InlineAssessment({
                   boxShadow: isSelected ? `0 0 0 2px rgba(31,109,122,0.12)` : "none",
                 }}
               >
-                <span style={{
-                  width: 26, height: 26, borderRadius: 7, flexShrink: 0,
+                {/* Radio circle */}
+                <div style={{
+                  width: 20, height: 20, borderRadius: "50%", flexShrink: 0,
+                  border: `2px solid ${isSelected ? C.teal : "rgba(14,26,43,0.18)"}`,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 11, fontWeight: 700, fontFamily: mono,
-                  color: isSelected ? C.white : C.textMuted,
-                  backgroundColor: isSelected ? C.teal : "rgba(14,26,43,0.05)",
-                  transition: "all 130ms",
+                  transition: "border-color 130ms",
                 }}>
-                  {opt.letter}
-                </span>
+                  {isSelected && (
+                    <div style={{ width: 9, height: 9, borderRadius: "50%", backgroundColor: C.teal }} />
+                  )}
+                </div>
                 <span style={{ fontWeight: isSelected ? 600 : 400, lineHeight: 1.35 }}>
                   {opt.text}
                 </span>
