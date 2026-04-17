@@ -1,59 +1,51 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { INDUSTRY_PAGES } from "@/lib/industry-pages";
+import { C, sans, mono } from "@/lib/design-tokens";
 
 export const metadata: Metadata = {
-  title: "Income Stability Scores by Industry — RunPayway™",
+  title: "Income Stability by Industry — RunPayway™",
   description:
-    "Every industry has a different income risk profile. Find yours — see the structural constraints, proof comparisons, and what your score changes for your specific income type.",
+    "Income is built differently depending on how you earn. Find your industry to see the structural patterns, score range, and what RunPayway™ measures for your specific income type.",
 };
-
-const C = {
-  navy: "#0E1A2B",
-  purple: "#4B3FAE",
-  teal: "#1F6D7A",
-  sand: "#F4F1EA",
-  white: "#FFFFFF",
-  panelFill: "#F8F6F1",
-  textPrimary: "#131A22",
-  textSecondary: "#5E6873",
-  textMuted: "#7B848E",
-  borderSoft: "#D9D6CF",
-  sandText: "#F4F1EA",
-  sandMuted: "rgba(244,241,234,0.55)",
-};
-
-const sans = '"Inter", system-ui, -apple-system, sans-serif';
 
 export default function IndustriesIndexPage() {
   return (
     <div style={{ minHeight: "100vh", backgroundColor: C.white, fontFamily: sans }}>
       <style>{`
-        .ind-index-pad { padding-left: 48px; padding-right: 48px; }
-        .ind-index-grid {
+        .ind-pad { padding-left: 48px; padding-right: 48px; }
+        .ind-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 20px;
         }
+        .ind-card {
+          transition: box-shadow 220ms ease, transform 220ms ease, border-color 220ms ease;
+        }
         .ind-card:hover {
           box-shadow: 0 8px 32px rgba(14,26,43,0.10);
           transform: translateY(-2px);
-          border-color: rgba(31,109,122,0.20) !important;
+          border-color: rgba(31,109,122,0.22) !important;
         }
-        .ind-card { transition: box-shadow 220ms ease, transform 220ms ease, border-color 220ms ease; }
-        .ind-card:hover .ind-card-arrow { opacity: 1; transform: translateX(3px); }
-        @media (max-width: 900px) {
-          .ind-index-grid { grid-template-columns: repeat(2, 1fr); }
+        .ind-card:hover .ind-card-arrow {
+          opacity: 1;
+          transform: translateX(4px);
+        }
+        .ind-scroll-cta:hover {
+          color: rgba(244,241,234,0.85) !important;
+        }
+        @media (max-width: 960px) {
+          .ind-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 600px) {
-          .ind-index-pad { padding-left: 24px; padding-right: 24px; }
-          .ind-index-grid { grid-template-columns: 1fr; }
+          .ind-pad { padding-left: 24px; padding-right: 24px; }
+          .ind-grid { grid-template-columns: 1fr; }
         }
       `}</style>
 
-      {/* Hero */}
+      {/* ── Hero ── */}
       <section
-        className="ind-index-pad"
+        className="ind-pad"
         style={{
           backgroundColor: C.navy,
           paddingTop: 96,
@@ -72,7 +64,9 @@ export default function IndustriesIndexPage() {
             background: `linear-gradient(90deg, ${C.teal}, ${C.purple})`,
           }}
         />
-        <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ maxWidth: 680, margin: "0 auto", textAlign: "center" }}>
+
+          {/* Eyebrow */}
           <div
             style={{
               display: "inline-flex",
@@ -88,13 +82,15 @@ export default function IndustriesIndexPage() {
               style={{
                 fontSize: 12,
                 fontWeight: 700,
-                letterSpacing: "0.06em",
+                letterSpacing: "0.08em",
                 color: C.teal,
               }}
             >
               INCOME STABILITY BY INDUSTRY
             </span>
           </div>
+
+          {/* H1 — specificity, not risk */}
           <h1
             style={{
               fontSize: "clamp(28px, 5vw, 48px)",
@@ -105,47 +101,62 @@ export default function IndustriesIndexPage() {
               marginBottom: 20,
             }}
           >
-            Every industry has a different income risk profile.
+            Income is built differently in every industry. Find yours.
           </h1>
+
+          {/* Sub — clarity framing */}
           <p
             style={{
-              fontSize: "clamp(16px, 2.5vw, 20px)",
+              fontSize: "clamp(16px, 2.2vw, 19px)",
               fontWeight: 400,
-              lineHeight: 1.55,
+              lineHeight: 1.6,
               color: C.sandMuted,
-              maxWidth: 560,
+              maxWidth: 540,
               margin: "0 auto 36px",
             }}
           >
-            The same income amount can be highly stable or structurally fragile
-            depending on how it&rsquo;s built. Find your industry to see what
-            your specific risk profile looks like.
+            How your income is structured depends entirely on how you earn.
+            Select your industry to see the specific patterns, what the score
+            range looks like, and what structural changes move the needle for
+            someone who earns the way you do.
           </p>
-          <Link
-            href="/begin"
+
+          {/* Scroll CTA — discovery, not conversion */}
+          <a
+            href="#industries-grid"
+            className="ind-scroll-cta"
             style={{
               display: "inline-flex",
               alignItems: "center",
-              justifyContent: "center",
-              height: 52,
-              padding: "0 36px",
-              borderRadius: 12,
-              backgroundColor: C.teal,
-              color: C.white,
+              gap: 8,
               fontSize: 15,
               fontWeight: 600,
+              color: C.sandMuted,
               textDecoration: "none",
-              boxShadow: "0 8px 24px rgba(31,109,122,0.30)",
+              transition: "color 180ms ease",
             }}
           >
-            Get My Score &rarr;
-          </Link>
+            Explore all industries
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M12 5v14M5 12l7 7 7-7" />
+            </svg>
+          </a>
         </div>
       </section>
 
-      {/* Industry grid */}
+      {/* ── Industry grid ── */}
       <section
-        className="ind-index-pad"
+        id="industries-grid"
+        className="ind-pad"
         style={{
           backgroundColor: C.white,
           paddingTop: 80,
@@ -153,7 +164,7 @@ export default function IndustriesIndexPage() {
         }}
       >
         <div style={{ maxWidth: 1080, margin: "0 auto" }}>
-          <div className="ind-index-grid">
+          <div className="ind-grid">
             {INDUSTRY_PAGES.map((industry) => (
               <Link
                 key={industry.slug}
@@ -163,78 +174,61 @@ export default function IndustriesIndexPage() {
                   display: "block",
                   backgroundColor: C.panelFill,
                   borderRadius: 16,
-                  padding: "28px 28px 24px",
-                  border: "1px solid rgba(14,26,43,0.06)",
+                  padding: "28px 28px 22px",
+                  border: `1px solid ${C.borderSoft}`,
                   textDecoration: "none",
                   position: "relative",
                 }}
               >
-                {/* Badge */}
+                {/* Eyebrow */}
                 <div
                   style={{
                     fontSize: 10,
                     fontWeight: 700,
                     letterSpacing: "0.10em",
                     color: C.teal,
-                    marginBottom: 12,
+                    marginBottom: 10,
                   }}
                 >
                   {industry.badge}
                 </div>
 
-                {/* Name */}
+                {/* Industry name */}
                 <div
                   style={{
                     fontSize: 18,
                     fontWeight: 700,
                     color: C.textPrimary,
                     lineHeight: 1.2,
-                    marginBottom: 8,
+                    marginBottom: 20,
                   }}
                 >
                   {industry.name}
                 </div>
 
-                {/* Constraint */}
-                <div
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 500,
-                    color: C.textMuted,
-                    lineHeight: 1.5,
-                    marginBottom: 20,
-                  }}
-                >
-                  {industry.constraint}
-                </div>
-
-                {/* Proof score range */}
+                {/* Score range — the proof, no words needed */}
                 <div
                   style={{
                     display: "flex",
                     gap: 8,
                     alignItems: "center",
-                    marginBottom: 20,
+                    marginBottom: 22,
                   }}
                 >
                   <div
                     style={{
                       fontSize: 12,
                       fontWeight: 700,
-                      color: "#C74634",
+                      color: C.risk,
                       backgroundColor: "rgba(199,70,52,0.07)",
-                      padding: "3px 10px",
+                      padding: "4px 10px",
                       borderRadius: 6,
+                      fontFamily: mono,
                     }}
                   >
-                    Score: {industry.proofA.score}
+                    {industry.proofA.score}
                   </div>
-                  <div
-                    style={{
-                      fontSize: 11,
-                      color: C.textMuted,
-                    }}
-                  >
+                  <div style={{ fontSize: 11, color: C.textMuted, fontWeight: 500 }}>
                     vs
                   </div>
                   <div
@@ -243,29 +237,26 @@ export default function IndustriesIndexPage() {
                       fontWeight: 700,
                       color: C.teal,
                       backgroundColor: "rgba(31,109,122,0.07)",
-                      padding: "3px 10px",
+                      padding: "4px 10px",
                       borderRadius: 6,
+                      fontFamily: mono,
                     }}
                   >
-                    Score: {industry.proofB.score}
+                    {industry.proofB.score}
                   </div>
-                  <div
-                    style={{
-                      fontSize: 11,
-                      color: C.textMuted,
-                      marginLeft: 2,
-                    }}
-                  >
+                  <div style={{ fontSize: 11, color: C.textMuted, fontWeight: 500 }}>
                     same income
                   </div>
                 </div>
 
-                {/* Footer row */}
+                {/* Footer */}
                 <div
                   style={{
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
+                    borderTop: `1px solid ${C.borderSoft}`,
+                    paddingTop: 14,
                   }}
                 >
                   <span
@@ -296,14 +287,15 @@ export default function IndustriesIndexPage() {
         </div>
       </section>
 
-      {/* Bottom CTA */}
+      {/* ── Bottom CTA ── */}
       <section
-        className="ind-index-pad"
+        className="ind-pad"
         style={{
           backgroundColor: C.navy,
           paddingTop: 80,
           paddingBottom: 80,
           position: "relative",
+          overflow: "hidden",
         }}
       >
         <div
@@ -316,30 +308,30 @@ export default function IndustriesIndexPage() {
             background: `linear-gradient(90deg, ${C.teal}, ${C.purple})`,
           }}
         />
-        <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ maxWidth: 520, margin: "0 auto", textAlign: "center" }}>
           <h2
             style={{
-              fontSize: "clamp(24px, 4vw, 34px)",
+              fontSize: "clamp(22px, 4vw, 32px)",
               fontWeight: 700,
               lineHeight: 1.1,
               letterSpacing: "-0.025em",
               color: C.sandText,
-              marginBottom: 16,
+              marginBottom: 14,
             }}
           >
-            Don&rsquo;t know your industry?
+            Ready to see your score?
           </h2>
           <p
             style={{
               fontSize: 17,
               color: C.sandMuted,
-              lineHeight: 1.55,
+              lineHeight: 1.6,
               marginBottom: 36,
             }}
           >
-            The assessment evaluates six structural factors about how your
-            income is built. You&rsquo;ll get your score, stability band,
-            and full report in under two minutes.
+            The assessment evaluates six structural factors about how your income
+            is built. Your score, stability band, and full report — delivered
+            in under two minutes.
           </p>
           <Link
             href="/begin"
@@ -360,6 +352,15 @@ export default function IndustriesIndexPage() {
           >
             Get My Score &rarr;
           </Link>
+          <div
+            style={{
+              marginTop: 16,
+              fontSize: 13,
+              color: "rgba(244,241,234,0.35)",
+            }}
+          >
+            $69 &middot; No documents required &middot; Results instantly
+          </div>
         </div>
       </section>
     </div>

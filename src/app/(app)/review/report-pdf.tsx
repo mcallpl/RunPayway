@@ -1,7 +1,7 @@
 /* ================================================================== */
 /*  report-pdf.tsx — Fixed 4-page print document                      */
 /*  jsPDF absolute coordinates, measured text, hard overflow failure   */
-/*  RunPayway(TM) Dashboard · Income Stability Report · RP-2.0      */
+/*  RunPayway™ Dashboard · Income Stability Report · RP-2.0         */
 /* ================================================================== */
 
 export interface ReportPDFData {
@@ -115,8 +115,8 @@ function S(t: string): string {
     .replace(/\u2191/g, " up").replace(/\u2193/g, " down")
     .replace(/\u2014/g, " - ").replace(/\u2013/g, "-")
     .replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"')
-    .replace(/\u2122/g, "(TM)").replace(/\u00B7/g, " - ")
-    .replace(/\u2022/g, "-").replace(/™/g, "(TM)")
+    .replace(/\u00B7/g, " - ")
+    .replace(/\u2022/g, "-")
     .replace(/&amp;/g, "&").replace(/&middot;/g, " - ");
 }
 
@@ -293,7 +293,7 @@ function footer(doc: jsPDF, section: string, page: number) {
 /** Draw interior page header — score badge top right */
 function header(doc: jsPDF, score?: number, band?: string, bandColor?: string) {
   sf(doc, "InterB"); doc.setFontSize(8); doc.setTextColor("#1C1635");
-  doc.text("RUNPAYWAY(TM)", ML, 40);
+  doc.text("RUNPAYWAY™", ML, 40);
 
   // Score badge top right
   if (score !== undefined) {
@@ -343,9 +343,9 @@ async function page1(doc: jsPDF, d: ReportPDFData) {
   // ── LEFT-ALIGNED HEADER BLOCK ──
   let y = 56;
   sf(doc, "InterB"); doc.setFontSize(8); doc.setTextColor("#1C1635");
-  doc.text("RUNPAYWAY(TM)", ML, y, { charSpace: 1.5 });
+  doc.text("RUNPAYWAY™", ML, y, { charSpace: 1.5 });
   sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#6B6155");
-  doc.text("Income Stability Score(TM)  -  Model RP-2.0", ML + CW, y, { align: "right" });
+  doc.text("Income Stability Score™  -  Model RP-2.0", ML + CW, y, { align: "right" });
 
   // Thin line
   y += 12;
@@ -418,7 +418,7 @@ async function page1(doc: jsPDF, d: ReportPDFData) {
   // ── SIMULATOR ACCESS ──
   y += 28;
   sf(doc, "InterB"); doc.setFontSize(8); doc.setTextColor("#1C1635");
-  doc.text("RUNPAYWAY(TM) STABILITY SUITE ACCESS", ML, y, { charSpace: 0.5 });
+  doc.text("RUNPAYWAY™ STABILITY SUITE ACCESS", ML, y, { charSpace: 0.5 });
   y += 12;
   sf(doc, "Inter"); doc.setFontSize(8.5); doc.setTextColor("#535D6B");
   doc.text("Use this code at runpayway.com/dashboard to access your Dashboard tools.", ML, y);
@@ -491,7 +491,7 @@ function page2(doc: jsPDF, d: ReportPDFData) {
   // Dark gradient card
   doc.setFillColor("#1C1635");
   doc.roundedRect(ML, y, CW, 44, 3, 3, "F");
-  label(doc, "RUNPAYWAY(TM) STABILITY SUITE", ML + 10, y + 12, "#1F6D7A");
+  label(doc, "RUNPAYWAY™ STABILITY SUITE", ML + 10, y + 12, "#1F6D7A");
   sf(doc, "InterSB"); doc.setFontSize(10); doc.setTextColor("#F4F1EA");
   doc.text("See exactly where your income is vulnerable", ML + 10, y + 24);
   sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#8A8278");
@@ -600,7 +600,7 @@ function page3(doc: jsPDF, d: ReportPDFData) {
     }
   }
 
-  footer(doc, "RunPayway(TM) Stability Plan", 3);
+  footer(doc, "RunPayway™ Stability Plan", 3);
 }
 
 /* ================================================================== */
@@ -711,7 +711,7 @@ function page4(doc: jsPDF, d: ReportPDFData) {
 
   // Fine print
   if (y + 20 <= YL) {
-    const fp = "RunPayway(TM) - a proprietary income diagnostic developed by PeopleStar Enterprises, INC. Model RP-2.0. Not financial advice. Same answers always produce the same score.";
+    const fp = "RunPayway™ - a proprietary income diagnostic developed by PeopleStar Enterprises, INC. Model RP-2.0. Not financial advice. Same answers always produce the same score.";
     dt(doc, fp, ML, y, CW, 7.5, { color: "#6B6155", lh: 1.3 });
   }
 
