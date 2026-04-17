@@ -212,9 +212,7 @@ function HeroSection() {
 
             {/* H1 */}
             <h1 style={{ fontSize: m ? 38 : 58, fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.035em", color: C.navy, marginBottom: m ? 16 : 20, ...fadeIn(visible) }}>
-              The income stability{" "}
-              {m ? null : <br />}score — for{" "}
-              {m ? null : <br />}independent&nbsp;earners.
+              The income stability score™
             </h1>
 
             {/* Persona strip */}
