@@ -187,7 +187,7 @@ export default function PlansPage() {
               color: C.white, backgroundColor: C.teal,
               padding: "3px 10px", borderRadius: 100,
             }}>
-              MOST COMMON
+              MOST POPULAR
             </div>
 
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>
@@ -245,7 +245,7 @@ export default function PlansPage() {
               </span>
             </div>
 
-            <Link href="/pricing" className="plans-card-cta" style={{
+            <Link href="/begin" className="plans-card-cta" style={{
               display: "flex", alignItems: "center", justifyContent: "center",
               height: 50, borderRadius: 12,
               backgroundColor: C.teal, color: C.white,
@@ -434,20 +434,27 @@ export default function PlansPage() {
           gap: 8, flexWrap: "wrap",
         }}>
           {[
-            { icon: "🔒", text: "No documents required" },
-            { icon: "⚡", text: "Results in under 2 minutes" },
-            { icon: "📄", text: "No AI in scoring" },
-            { icon: "💬", text: "Questions? Contact us" },
-          ].map(({ icon, text }, i, arr) => (
-            <span key={text} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <span style={{ fontSize: 13, color: C.textMuted, fontWeight: 500 }}>
-                {icon} {text}
-              </span>
+            "No documents required",
+            "Results in under 2 minutes",
+            "No AI in scoring",
+          ].map((text, i, arr) => (
+            <span key={text} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none" style={{ flexShrink: 0 }}>
+                <circle cx="7" cy="7" r="6" fill="rgba(31,109,122,0.10)" />
+                <path d="M4.5 7.2L6.2 9L9.5 5.5" stroke={C.teal} strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span style={{ fontSize: 13, color: C.textMuted, fontWeight: 500 }}>{text}</span>
               {i < arr.length - 1 && (
-                <span style={{ color: C.borderSoft, marginLeft: 8, marginRight: 2, fontSize: 13 }}>&middot;</span>
+                <span style={{ color: C.borderSoft, marginLeft: 4, marginRight: 4, fontSize: 13 }}>&middot;</span>
               )}
             </span>
           ))}
+          <span style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: 4 }}>
+            <span style={{ color: C.borderSoft, fontSize: 13 }}>&middot;</span>
+            <Link href="/contact" style={{ fontSize: 13, color: C.textMuted, fontWeight: 500, textDecoration: "none", borderBottom: `1px solid ${C.borderSoft}` }}>
+              Questions? Contact us
+            </Link>
+          </span>
         </div>
       </section>
 
