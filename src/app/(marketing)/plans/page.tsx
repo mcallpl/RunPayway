@@ -213,7 +213,8 @@ export default function PlansPage() {
                 "Ranked constraints — what to fix first",
                 "12-week action plan for your industry",
                 "Advisor & lender scripts",
-                "Full PDF report + dashboard",
+                "Full PDF report",
+                "Dashboard access",
               ].map((item) => (
                 <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 9 }}>
                   <span style={{
