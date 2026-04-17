@@ -128,10 +128,10 @@ function ProblemSection() {
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", maxWidth: narrowW, margin: "0 auto", marginBottom: m ? 40 : 56 }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
-            The Problem with Subjective{m ? " " : <br />}Income Evaluation
+            The Problem: Everyone Evaluates{m ? " " : <br />}Income Differently
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
-            Every department, every analyst, every advisor evaluates income differently. There is no standard. RunPayway™ provides one.
+            Different teams, different people, different conclusions — on the same applicant. RunPayway™ gives everyone the same ruler.
           </p>
         </div>
 
@@ -170,10 +170,10 @@ function SystemSection() {
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{ textAlign: "center", maxWidth: narrowW, margin: "0 auto", marginBottom: m ? 40 : 56 }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
-            One System. Fixed Rules.{m ? " " : <br />}Every Time.
+            One System. One Answer.{m ? " " : <br />}Every Time.
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
-            The Income Stability Score™ is produced by a fixed model. No AI in scoring. No subjective judgment. Same inputs always produce the same result.
+            The Income Stability Score™ uses the same fixed rules for every assessment — no machine learning, no judgment. The same inputs always produce the same score.
           </p>
         </div>
 

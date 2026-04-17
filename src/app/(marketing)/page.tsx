@@ -430,7 +430,7 @@ function ProofMoment() {
         <div style={{ textAlign: "center", marginTop: m ? 40 : 56, ...fadeIn(visible, 200) }}>
           <p style={{ fontSize: m ? 20 : 24, fontWeight: 600, color: C.navy, marginBottom: 8 }}>RunPayway™ measures whether your income holds up when things change.</p>
           <p style={{ fontSize: 16, color: C.textSecondary, marginBottom: 32 }}>See where yours stands.</p>
-          <CtaButton m={m} variant="primary" />
+          <CtaButton m={m} variant="primary" label="See Where You Stand" />
         </div>
       </div>
     </section>
@@ -631,7 +631,7 @@ function WhatYouReceive() {
           <p style={{ fontSize: 14, color: C.textMuted, marginBottom: 24 }}>
             Less than one hour of billable time. Protects every hour after&nbsp;it.
           </p>
-          <CtaButton m={m} variant="primary" />
+          <CtaButton m={m} variant="primary" label="Get Your Full Report — $69" />
         </div>
       </div>
     </section>

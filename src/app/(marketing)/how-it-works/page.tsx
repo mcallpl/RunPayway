@@ -135,7 +135,7 @@ function Declaration() {
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto", textAlign: "center" }}>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 12, ...fadeIn(visible) }}>
-          No interpretation. No exceptions.
+          Same rules. No exceptions.
         </h2>
         <p style={{ fontSize: m ? 20 : 24, fontWeight: 600, lineHeight: 1.3, color: C.teal, marginBottom: 32, ...fadeIn(visible, 60) }}>
           Same rules. Every time.
@@ -177,7 +177,7 @@ function ProcessOverview() {
             Three steps. One standardized result.
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: explanatoryW, margin: "0 auto" }}>
-            No judgment. No subjectivity. No adjustments.{m ? " " : <br />}Step-by-step clarity, every time.
+            No judgment, no adjustments — consistent clarity, every time.
           </p>
         </div>
 

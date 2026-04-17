@@ -91,7 +91,7 @@ function HeroSection() {
           Evaluate and Mitigate Client{m ? " " : <br />}Income Risk Before It Becomes{m ? " " : <br />}a Problem
         </h1>
         <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: narrowW, margin: "0 auto 24px", ...fadeIn(visible, 100) }}>
-          Your clients tell you what they earn. Not how it&rsquo;s built. RunPayway™ gives you a standardized way to assess income structure&mdash;and act on it before problems surface.
+          You know how much your clients earn. RunPayway™ shows you how that income is structured — and where it&rsquo;s exposed.
         </p>
         <div style={{ display: "flex", justifyContent: "center", gap: m ? 12 : 24, flexWrap: "wrap" as const, marginBottom: 32, ...fadeIn(visible, 150) }}>
           {["Standardized methodology", "Fixed rules", "Private by default"].map((badge, i) => (
@@ -204,7 +204,7 @@ function HowItWorks() {
 
   const steps = [
     { num: "01", title: "Assess", desc: "Run the assessment on behalf of your client. Under 2 minutes. No financial documents required." },
-    { num: "02", title: "Review", desc: "Receive the score, structural breakdown, stress test, and main vulnerability \u2014 all generated from fixed rules." },
+    { num: "02", title: "Review", desc: "Receive the score, structural breakdown, stress test (what happens if their biggest income source disappears), and main vulnerability \u2014 all generated from fixed rules." },
     { num: "03", title: "Act", desc: "Use the results to inform client conversations, identify risk, and build a plan before problems surface." },
   ];
 

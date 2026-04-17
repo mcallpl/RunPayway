@@ -1322,7 +1322,7 @@ export const en: Translations = {
     s10P2: "Updates will not alter previously issued assessment records.",
     s11Title: "Framework Alignment",
     s11P1: "RunPayway\u2122 is designed to align with recognized security and privacy frameworks. While certification is a formal process that requires independent third-party auditing, our security practices are structured with the following frameworks in mind:",
-    s11Li1: "SOC 2 Type II \u2014 RunPayway\u2122 is building toward SOC 2 Type II readiness. Our controls are designed around the Trust Services Criteria: security, availability, processing integrity, confidentiality, and privacy.",
+    s11Li1: "SOC 2 Type II \u2014 RunPayway\u2122 security controls are designed around the SOC 2 Type II Trust Services Criteria: security, availability, processing integrity, confidentiality, and privacy. Formal certification is on our roadmap.",
     s11Li2: "ISO 27001 \u2014 RunPayway\u2122 security practices are informed by the ISO 27001 Information Security Management System (ISMS) framework, including risk assessment, access control, and continuous improvement.",
     s11Li3: "GDPR \u2014 Data processing practices are designed to satisfy the requirements of the General Data Protection Regulation, including data minimization, purpose limitation, and data subject rights.",
     s11Li4: "CCPA/CPRA \u2014 Privacy practices support California Consumer Privacy Act rights including access, deletion, correction, and opt-out mechanisms.",

@@ -94,10 +94,10 @@ function HeroSection() {
           See exactly what the system reveals&mdash;{m ? " " : <br />}before you access it.
         </h1>
         <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: 600, margin: "0 auto 24px", ...fadeIn(visible, 100) }}>
-          A four-page structural report of your income, generated directly from your answers. No estimates. No interpretation. Just raw data.
+          A four-page breakdown of how your income is built — generated from your answers, consistent every time.
         </p>
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 8, alignItems: "center", ...fadeIn(visible, 160) }}>
-          {["No AI in scoring.", "Same inputs = same result", "Nothing generalized or adjusted"].map((item, i) => (
+          {["No AI in scoring.", "Same inputs = same result", "Built from your answers, not averages"].map((item, i) => (
             <span key={i} style={{ fontSize: 14, fontWeight: 600, color: C.textMuted }}>{item}</span>
           ))}
         </div>

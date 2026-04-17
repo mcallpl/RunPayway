@@ -144,7 +144,7 @@ function Declaration() {
             But not how income is built.
           </p>
           <p style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 8 }}>
-            RunPayway™ defines that measurement.
+            RunPayway™ is the first system built to measure it.
           </p>
           <p style={{ fontSize: 16, fontWeight: 500, color: C.teal }}>
             This is the standard for income stability.
@@ -266,7 +266,7 @@ function SystemIntegrity() {
       <div style={{ maxWidth: 880, margin: "0 auto", position: "relative", zIndex: 1 }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 12 }}>
-            System Integrity: Fixed Rules, No Exceptions
+            System Integrity: Same Rules, Every Time
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted }}>
             RunPayway™ is a fixed-system model&mdash;no machine learning, no advisor judgment, no randomness.
@@ -341,7 +341,7 @@ function Positioning() {
           RunPayway™ is a measurement system &mdash;{m ? " " : <br />}not a financial product.
         </h2>
         <p style={{ fontSize: 18, fontWeight: 500, lineHeight: 1.6, color: C.teal, marginBottom: 24, ...fadeIn(visible, 60) }}>
-          It defines how income stability is measured.
+          It measures what others assume.
         </p>
         <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 16, ...fadeIn(visible, 100) }}>
           It does not:
@@ -359,7 +359,7 @@ function Positioning() {
           ))}
         </div>
         <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, ...fadeIn(visible, 200) }}>
-          The score belongs entirely to the individual.
+          You own your score. You decide what to do with it.
         </p>
       </div>
     </section>
