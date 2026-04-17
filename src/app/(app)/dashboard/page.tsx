@@ -1118,12 +1118,6 @@ function DashboardContent() {
           {(() => {
             const nextStep = roadmap.find((_, i) => !completedSteps.includes(i));
             const nextMove = nextStep ? topMoves.find(m => m.id === nextStep.pid) : topMoves[0];
-            const nextScript = nextMove ? scripts.find(s =>
-              (nextMove.id === "convert_retainer" && s.id.includes("retainer")) ||
-              (nextMove.id === "add_client" && (s.id.includes("diversi") || s.id.includes("referral"))) ||
-              (nextMove.id === "build_passive" && s.id.includes("referral")) ||
-              (nextMove.id === "lock_forward" && s.id.includes("retainer"))
-            ) || scripts[0] : null;
             const stepsTotal = roadmap.length;
             const stepsDone = completedSteps.length;
 
@@ -1208,16 +1202,7 @@ function DashboardContent() {
                               </div>
                             );
                           })()}
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                            {nextScript && (
-                              <button onClick={() => {
-                                const el = document.getElementById("phase-plan");
-                                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-                                setTimeout(() => setExpandedPlaybook(nextMove?.id || null), 500);
-                              }} style={{ fontSize: 14, fontWeight: 600, color: B.teal, background: "none", border: "none", cursor: "pointer", padding: 0, minHeight: 36 }}>
-                                Open the script &rarr;
-                              </button>
-                            )}
+                          <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
                             <span style={{ fontSize: 12, color: B.taupe }}>
                               {stepsDone > 0 && <>{stepsDone}/{stepsTotal} done · </>}{daysSince > 0 ? `Day ${daysSince}` : "Today"}
                             </span>
