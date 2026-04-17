@@ -252,7 +252,7 @@ export default function PlansPage() {
               fontSize: 15, fontWeight: 600, textDecoration: "none",
               boxShadow: "0 4px 16px rgba(31,109,122,0.28)",
             }}>
-              Get My Score &rarr;
+              Get My Stability Class — Free &rarr;
             </Link>
 
             <p style={{ textAlign: "center", fontSize: 13, color: C.textMuted, margin: "14px 0 0" }}>

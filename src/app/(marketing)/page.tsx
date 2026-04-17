@@ -125,7 +125,7 @@ function PressureBar({ segments, height = 14 }: { segments: { pct: number; color
 
 function CtaButton({ m, variant = "primary", label }: { m: boolean; variant?: "primary" | "light"; label?: string }) {
   const isPrimary = variant === "primary";
-  const text = label || "Get Your Income Stability Score";
+  const text = label || "Get My Stability Class — Free →";
   return (
     <Link href="/begin" style={{
       display: "inline-flex", alignItems: "center", justifyContent: "center",
@@ -559,7 +559,7 @@ function WhatYourScoreChanges() {
 
         <div style={{ textAlign: "center", marginTop: m ? 40 : 56, ...fadeIn(visible, 200) }}>
           {tab === "individual" ? (
-            <CtaButton m={m} variant="primary" label="Get Your Income Stability Score" />
+            <CtaButton m={m} variant="primary" label="Get My Stability Class — Free →" />
           ) : (
             <Link href="/advisor-portal" style={{
               display: "inline-flex", alignItems: "center", justifyContent: "center",

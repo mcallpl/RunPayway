@@ -338,7 +338,7 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(244,241,234,0.15)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get Your Income Stability Score
+            Get My Stability Class — Free
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.45)", marginTop: 16 }}>
             $69 &middot; Score, scripts, roadmap, and lifetime access

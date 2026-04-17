@@ -383,7 +383,7 @@ export function MicroConversion({ items }: { items?: { text: string; href: strin
   const m = useMobile();
   const t = useTablet();
   const defaultItems = [
-    { text: "Get your score — takes 2 minutes", href: "/begin" },
+    { text: "Get your stability class — free", href: "/begin" },
     { text: "See a sample report", href: "/sample-report" },
   ];
   const displayItems = items && items.length > 0 ? items : defaultItems;
@@ -449,10 +449,10 @@ export function LearnCTA({ heading, sub }: { heading?: string; sub?: string }) {
     <section style={{ backgroundColor: L.navy, paddingTop: m ? 72 : 96, paddingBottom: m ? 72 : 96, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
         <h2 style={{ fontSize: m ? 24 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: L.sand, marginBottom: 16 }}>
-          {heading || "Get Your Income Stability Score\u2122"}
+          {heading || "See Your Income Stability Class"}
         </h2>
         <p style={{ fontSize: 16, lineHeight: 1.6, color: "rgba(244,241,234,0.50)", marginBottom: 28 }}>
-          {sub || "RunPayway\u2122 measures your income structure using fixed rules. Consistent scoring. Version-locked. No interpretation."}
+          {sub || "RunPayway\u2122 measures your income structure using fixed rules. See your stability class free \u2014 full report available for $69."}
         </p>
         <Link href="/begin" style={{
           display: "inline-flex", alignItems: "center", justifyContent: "center",
@@ -461,10 +461,10 @@ export function LearnCTA({ heading, sub }: { heading?: string; sub?: string }) {
           fontSize: 16, fontWeight: 600, textDecoration: "none",
           transition: "transform 200ms",
         }}>
-          Get Your Income Stability Score
+          Get My Stability Class &mdash; Free
         </Link>
         <p style={{ fontSize: 13, color: "rgba(244,241,234,0.35)", marginTop: 16 }}>
-          $69 &middot; Score, scripts, roadmap, and lifetime access
+          Free &middot; Full report available for $69
         </p>
       </div>
     </section>
