@@ -734,8 +734,7 @@ export default function MarketingLayout({
                   { href: "/pricing", label: t.nav.pricing },
                   { href: "/advisors", label: "For Advisors" },
                   { href: "/organizations", label: "For Organizations" },
-                  { href: "/lenders", label: "For Lenders" },
-                  { href: "/industries/consulting", label: "Industries" },
+                  { href: "/industries", label: "Industries" },
                 ].map((link) => (
                   <Link key={link.label} href={link.href}
                     style={{ fontSize: 14, color: "rgba(14,26,43,0.55)", lineHeight: 1.4, transition: "color 160ms ease, font-weight 160ms ease" }}

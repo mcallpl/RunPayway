@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { INDUSTRY_PAGES, getIndustryBySlug } from "@/lib/industry-pages";
 
+const OTHER_COUNT = 6; // how many "other industries" to show at the bottom
+
 export function generateStaticParams() {
   return INDUSTRY_PAGES.map((p) => ({ slug: p.slug }));
 }
@@ -80,6 +82,9 @@ export default async function IndustryPage({
   const scoreColorA = page.proofA.score < 45 ? C.risk : C.teal;
   const scoreColorB = page.proofB.score >= 60 ? C.teal : C.purple;
 
+  // Pick OTHER_COUNT other industries to suggest (exclude current)
+  const others = INDUSTRY_PAGES.filter((p) => p.slug !== slug).slice(0, OTHER_COUNT);
+
   return (
     <div style={{ minHeight: "100vh", backgroundColor: C.white, fontFamily: sans }}>
       <style>{`
@@ -90,7 +95,10 @@ export default async function IndustryPage({
         .ind-outcomes-grid { display: grid; gap: 0; }
         .ind-steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
         .ind-receive-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .ind-others-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
         .ind-proof-mobile-gap { margin-bottom: 0; }
+        .ind-other-card:hover { border-color: rgba(31,109,122,0.25) !important; background-color: rgba(31,109,122,0.03) !important; }
+        .ind-breadcrumb-link:hover { color: #1F6D7A !important; }
         @media (max-width: 768px) {
           .ind-pad { padding-left: 28px; padding-right: 28px; }
           .ind-h1 { font-size: 30px; }
@@ -99,16 +107,53 @@ export default async function IndustryPage({
           .ind-proof-mobile-gap { margin-bottom: 16px; }
           .ind-steps-grid { display: block; }
           .ind-receive-grid { display: block; }
+          .ind-others-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+          .ind-others-grid { grid-template-columns: 1fr; }
         }
       `}</style>
+
+      {/* ── Breadcrumb ── */}
+      <div
+        className="ind-pad"
+        style={{
+          backgroundColor: C.panelFill,
+          borderBottom: `1px solid ${C.borderSoft}`,
+          padding: "12px 48px",
+        }}
+      >
+        <div style={{ maxWidth: 1080, margin: "0 auto" }}>
+          <Link
+            href="/industries"
+            className="ind-breadcrumb-link"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              fontSize: 13,
+              fontWeight: 500,
+              color: C.textMuted,
+              textDecoration: "none",
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+            All industries
+          </Link>
+          <span style={{ fontSize: 13, color: C.borderSoft, margin: "0 8px" }}>/</span>
+          <span style={{ fontSize: 13, fontWeight: 600, color: C.textPrimary }}>{page.name}</span>
+        </div>
+      </div>
 
       {/* ── Hero ── */}
       <section
         className="ind-pad"
         style={{
           backgroundColor: C.navy,
-          paddingTop: 112,
-          paddingBottom: 96,
+          paddingTop: 96,
+          paddingBottom: 80,
           position: "relative",
           overflow: "hidden",
         }}
@@ -780,6 +825,120 @@ export default async function IndustryPage({
           >
             See RunPayway™ for professionals &rarr;
           </Link>
+        </div>
+      </section>
+
+      {/* ── Other Industries ── */}
+      <section
+        className="ind-pad"
+        style={{
+          backgroundColor: C.white,
+          paddingTop: 72,
+          paddingBottom: 72,
+          borderTop: `1px solid ${C.borderSoft}`,
+        }}
+      >
+        <div style={{ maxWidth: 1080, margin: "0 auto" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginBottom: 28,
+              flexWrap: "wrap" as const,
+              gap: 12,
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  letterSpacing: "0.12em",
+                  color: C.teal,
+                  marginBottom: 6,
+                }}
+              >
+                OTHER INDUSTRIES
+              </div>
+              <h2
+                style={{
+                  fontSize: 20,
+                  fontWeight: 700,
+                  color: C.navy,
+                  letterSpacing: "-0.02em",
+                  lineHeight: 1.2,
+                }}
+              >
+                Every income type has a different risk profile.
+              </h2>
+            </div>
+            <Link
+              href="/industries"
+              style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: C.teal,
+                textDecoration: "none",
+                borderBottom: "1px solid rgba(31,109,122,0.25)",
+                paddingBottom: 2,
+                whiteSpace: "nowrap" as const,
+              }}
+            >
+              See all 19 industries &rarr;
+            </Link>
+          </div>
+
+          <div className="ind-others-grid">
+            {others.map((other) => (
+              <Link
+                key={other.slug}
+                href={`/industries/${other.slug}`}
+                className="ind-other-card"
+                style={{
+                  display: "block",
+                  padding: "18px 20px",
+                  borderRadius: 12,
+                  border: `1px solid ${C.borderSoft}`,
+                  textDecoration: "none",
+                  backgroundColor: C.panelFill,
+                  transition: "border-color 180ms ease, background-color 180ms ease",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 700,
+                    letterSpacing: "0.09em",
+                    color: C.teal,
+                    marginBottom: 6,
+                  }}
+                >
+                  {other.badge}
+                </div>
+                <div
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 700,
+                    color: C.textPrimary,
+                    lineHeight: 1.25,
+                    marginBottom: 4,
+                  }}
+                >
+                  {other.name}
+                </div>
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: C.textMuted,
+                    lineHeight: 1.45,
+                  }}
+                >
+                  {other.constraint}
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
