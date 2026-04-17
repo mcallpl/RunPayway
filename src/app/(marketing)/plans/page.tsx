@@ -41,7 +41,6 @@ export default function PlansPage() {
             width: 100% !important;
             margin-left: auto !important;
             margin-right: auto !important;
-            margin-top: -28px !important;
           }
         }
 
@@ -51,17 +50,17 @@ export default function PlansPage() {
             padding-left: 20px !important;
             padding-right: 20px !important;
             padding-top: 64px !important;
-            padding-bottom: 56px !important;
+            padding-bottom: 40px !important;
           }
           .plans-cards {
             padding-left: 16px !important;
             padding-right: 16px !important;
+            padding-top: 32px !important;
             padding-bottom: 56px !important;
           }
           .plans-grid {
             max-width: 100% !important;
             gap: 14px !important;
-            margin-top: -18px !important;
           }
           .plans-card-body {
             padding: 24px 20px 22px !important;
@@ -80,8 +79,8 @@ export default function PlansPage() {
         className="plans-hero"
         style={{
           backgroundColor: C.navy,
-          paddingTop: 100,
-          paddingBottom: 88,
+          paddingTop: 96,
+          paddingBottom: 52,
           paddingLeft: 48,
           paddingRight: 48,
           position: "relative",
@@ -150,7 +149,7 @@ export default function PlansPage() {
         className="plans-cards"
         style={{
           backgroundColor: C.white,
-          paddingTop: 0,
+          paddingTop: 48,
           paddingBottom: 96,
           paddingLeft: 48,
           paddingRight: 48,
@@ -164,7 +163,6 @@ export default function PlansPage() {
             display: "flex",
             gap: 22,
             alignItems: "stretch",
-            marginTop: -48,
           }}
         >
 
@@ -223,9 +221,22 @@ export default function PlansPage() {
               ))}
             </div>
 
-            <div style={{ marginBottom: 20 }}>
-              <span style={{ fontSize: 36, fontWeight: 700, color: C.textPrimary, letterSpacing: "-0.03em" }}>$69</span>
-              <span style={{ fontSize: 14, color: C.textMuted, marginLeft: 6 }}>one-time &middot; instant</span>
+            <div style={{
+              marginBottom: 20,
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "12px 16px",
+              borderRadius: 10,
+              backgroundColor: "rgba(31,109,122,0.06)",
+            }}>
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+                <circle cx="8" cy="8" r="7" stroke={C.teal} strokeWidth="1.5" />
+                <path d="M8 5v3.5l2 1.5" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+              <span style={{ fontSize: 14, fontWeight: 600, color: C.teal }}>
+                One-time payment &middot; Results delivered instantly
+              </span>
             </div>
 
             <Link href="/pricing" className="plans-card-cta" style={{
@@ -301,9 +312,22 @@ export default function PlansPage() {
               ))}
             </div>
 
-            <div style={{ marginBottom: 20 }}>
-              <span style={{ fontSize: 36, fontWeight: 700, color: C.sandText, letterSpacing: "-0.03em" }}>$15–25</span>
-              <span style={{ fontSize: 14, color: C.sandMuted, marginLeft: 6 }}>per report &middot; volume pricing</span>
+            <div style={{
+              marginBottom: 20,
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "12px 16px",
+              borderRadius: 10,
+              backgroundColor: "rgba(31,109,122,0.12)",
+            }}>
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+                <rect x="2" y="4" width="12" height="9" rx="2" stroke={C.teal} strokeWidth="1.5" />
+                <path d="M5 4V3a3 3 0 0 1 6 0v1" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+              <span style={{ fontSize: 14, fontWeight: 600, color: C.teal }}>
+                Per-report billing &middot; No monthly fees or seat costs
+              </span>
             </div>
 
             <Link href="/advisor-portal" className="plans-card-cta" style={{
@@ -371,9 +395,21 @@ export default function PlansPage() {
               ))}
             </div>
 
-            <div style={{ marginBottom: 20 }}>
-              <span style={{ fontSize: 18, fontWeight: 600, color: C.textMuted, letterSpacing: "-0.01em" }}>
-                Pricing in development
+            <div style={{
+              marginBottom: 20,
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "12px 16px",
+              borderRadius: 10,
+              backgroundColor: "rgba(75,63,174,0.06)",
+            }}>
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
+                <path d="M8 2v4l2.5 2.5" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" />
+                <circle cx="8" cy="8" r="6" stroke={C.purple} strokeWidth="1.5" />
+              </svg>
+              <span style={{ fontSize: 14, fontWeight: 600, color: C.purple }}>
+                Custom pricing &middot; Register now for early access
               </span>
             </div>
 
