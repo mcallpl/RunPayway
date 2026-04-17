@@ -308,7 +308,7 @@ export default function MarketingLayout({
   }, [mobile]);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#FAFAFA" }}>
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#FAFAFA", overflowX: "hidden" }}>
       {/* Skip to main content — WCAG 2.4.1 */}
       <a href="#main-content" style={{ position: "absolute", left: "-9999px", top: "auto", width: 1, height: 1, overflow: "hidden", zIndex: 9999, padding: "12px 24px", backgroundColor: "#0E1A2B", color: "#F4F1EA", fontSize: 14, fontWeight: 600, textDecoration: "none", borderRadius: 8 }}
         onFocus={e => { e.currentTarget.style.position = "fixed"; e.currentTarget.style.left = "16px"; e.currentTarget.style.top = "16px"; e.currentTarget.style.width = "auto"; e.currentTarget.style.height = "auto"; }}
@@ -387,88 +387,90 @@ export default function MarketingLayout({
                   </Link>
                 ))}
 
-                {/* More dropdown */}
-                <div
-                  style={{ position: "relative" }}
-                  onMouseEnter={() => moreDropdown.open()}
-                  onMouseLeave={() => moreDropdown.close()}
-                >
-                  <button
-                    className="header-nav-link"
-                    aria-label="More navigation options"
-                    aria-expanded={moreDropdown.visible}
-                    style={{
-                      fontSize: 15,
-                      fontWeight: 500,
-                      color: moreDropdown.visible ? "#0E1A2B" : "rgba(14,26,43,0.65)",
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 4,
-                      padding: 0,
-                      paddingBottom: 2,
-                      transition: "color 280ms cubic-bezier(0.22, 1, 0.36, 1)",
-                    }}
+                {/* More dropdown — only rendered when links exist */}
+                {MORE_LINKS.length > 0 && (
+                  <div
+                    style={{ position: "relative" }}
+                    onMouseEnter={() => moreDropdown.open()}
+                    onMouseLeave={() => moreDropdown.close()}
                   >
-                    {t.nav.more}
-                    <svg
-                      width="10" height="6" viewBox="0 0 10 6" fill="none"
+                    <button
+                      className="header-nav-link"
+                      aria-label="More navigation options"
+                      aria-expanded={moreDropdown.visible}
                       style={{
-                        transition: "transform 320ms cubic-bezier(0.22, 1, 0.36, 1)",
-                        transform: moreDropdown.visible ? "rotate(180deg)" : "rotate(0deg)",
+                        fontSize: 15,
+                        fontWeight: 500,
+                        color: moreDropdown.visible ? "#0E1A2B" : "rgba(14,26,43,0.65)",
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 4,
+                        padding: 0,
+                        paddingBottom: 2,
+                        transition: "color 280ms cubic-bezier(0.22, 1, 0.36, 1)",
                       }}
                     >
-                      <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </button>
-
-                  {moreDropdown.visible && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: -4,
-                        right: -12,
-                        paddingTop: 36,
-                        paddingLeft: 12,
-                        paddingRight: 12,
-                      }}
-                    >
-                      <div
-                        className="dropdown-panel"
-                        data-state={moreDropdown.state}
+                      {t.nav.more}
+                      <svg
+                        width="10" height="6" viewBox="0 0 10 6" fill="none"
                         style={{
-                          background: "#ffffff",
-                          borderRadius: 14,
-                          border: "1px solid rgba(14,26,43,0.08)",
-                          boxShadow: "0 16px 48px rgba(14,26,43,0.12), 0 4px 12px rgba(14,26,43,0.06)",
-                          padding: "6px 0",
-                          minWidth: 210,
-                          overflow: "hidden",
+                          transition: "transform 320ms cubic-bezier(0.22, 1, 0.36, 1)",
+                          transform: moreDropdown.visible ? "rotate(180deg)" : "rotate(0deg)",
                         }}
                       >
-                        {MORE_LINKS.map((link, i) => (
-                          <Link
-                            key={link.label}
-                            href={link.href}
-                            className="dropdown-item"
-                            onClick={() => moreDropdown.close()}
-                            style={{
-                              display: "block",
-                              padding: "11px 20px",
-                              fontSize: 14,
-                              fontWeight: 500,
-                              color: "rgba(14,26,43,0.70)",
-                            }}
-                          >
-                            {link.label}
-                          </Link>
-                        ))}
+                        <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+
+                    {moreDropdown.visible && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: -4,
+                          right: -12,
+                          paddingTop: 36,
+                          paddingLeft: 12,
+                          paddingRight: 12,
+                        }}
+                      >
+                        <div
+                          className="dropdown-panel"
+                          data-state={moreDropdown.state}
+                          style={{
+                            background: "#ffffff",
+                            borderRadius: 14,
+                            border: "1px solid rgba(14,26,43,0.08)",
+                            boxShadow: "0 16px 48px rgba(14,26,43,0.12), 0 4px 12px rgba(14,26,43,0.06)",
+                            padding: "6px 0",
+                            minWidth: 210,
+                            overflow: "hidden",
+                          }}
+                        >
+                          {MORE_LINKS.map((link) => (
+                            <Link
+                              key={link.label}
+                              href={link.href}
+                              className="dropdown-item"
+                              onClick={() => moreDropdown.close()}
+                              style={{
+                                display: "block",
+                                padding: "11px 20px",
+                                fontSize: 14,
+                                fontWeight: 500,
+                                color: "rgba(14,26,43,0.70)",
+                              }}
+                            >
+                              {link.label}
+                            </Link>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
+                )}
               </nav>
 
               <div style={{ display: "flex", alignItems: "center", gap: 20, marginLeft: 28, flexShrink: 0 }}>
@@ -624,27 +626,6 @@ export default function MarketingLayout({
                   {link.label}
                 </Link>
               ))}
-              <Link
-                key="sign-in"
-                href="/sign-in"
-                className="mobile-nav-item"
-                onClick={() => setMenuOpen(false)}
-                style={{
-                  fontSize: 16,
-                  fontWeight: 600,
-                  color: "#4B3FAE",
-                  padding: "18px 0",
-                  textDecoration: "none",
-                  borderBottom: "1px solid rgba(14,26,43,0.06)",
-                  display: "flex",
-                  alignItems: "center",
-                  transition: "color 200ms ease, padding-left 200ms cubic-bezier(0.22, 1, 0.36, 1)",
-                }}
-                onTouchStart={(e) => { e.currentTarget.style.paddingLeft = "8px"; }}
-                onTouchEnd={(e) => { e.currentTarget.style.paddingLeft = "0px"; }}
-              >
-                Sign In
-              </Link>
             </nav>
             <div className="mobile-nav-item" style={{ marginTop: 28, animationDelay: "400ms" }}>
               <Link
