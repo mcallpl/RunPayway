@@ -158,6 +158,68 @@ export default function PlansPage() {
           }}
         >
 
+          {/* ── Free tier ── */}
+          <div
+            className="plans-card plans-card-body"
+            style={{
+              flex: 1,
+              backgroundColor: C.white,
+              borderRadius: 20,
+              border: `1px solid ${C.borderSoft}`,
+              padding: "36px 32px 32px",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 14 }}>
+              FREE
+            </div>
+
+            <div style={{ fontSize: 22, fontWeight: 700, color: C.textPrimary, lineHeight: 1.2, marginBottom: 10 }}>
+              Your Stability Class
+            </div>
+
+            <p style={{ fontSize: 15, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, flex: 1 }}>
+              Where your income stands — instantly. No documents, no account required.
+            </p>
+
+            <div style={{ borderTop: `1px solid ${C.borderSoft}`, paddingTop: 20, marginBottom: 24 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: C.textMuted, letterSpacing: "0.08em", marginBottom: 12 }}>
+                WHAT YOU GET
+              </div>
+              {[
+                "Stability class (Limited / Developing / Established / High)",
+                "Primary structural risk",
+                "Distance to next class",
+                "Industry context",
+              ].map((item) => (
+                <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 9 }}>
+                  <span style={{
+                    width: 16, height: 16, borderRadius: "50%",
+                    backgroundColor: "rgba(31,109,122,0.10)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    flexShrink: 0, marginTop: 1,
+                  }}>
+                    <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
+                      <path d="M2 5.5L4 7.5L8 3" stroke={C.teal} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span style={{ fontSize: 14, color: C.textSecondary, lineHeight: 1.45 }}>{item}</span>
+                </div>
+              ))}
+            </div>
+
+            <Link href="/begin" className="plans-card-cta" style={{
+              display: "flex", alignItems: "center", justifyContent: "center",
+              height: 50, borderRadius: 12,
+              backgroundColor: "transparent", color: C.teal,
+              fontSize: 15, fontWeight: 600, textDecoration: "none",
+              border: `1.5px solid ${C.teal}`,
+            }}>
+              Get My Stability Class — Free
+            </Link>
+          </div>
+
           {/* ── Individual — featured ── */}
           <div
             className="plans-card plans-card-body"
@@ -194,14 +256,8 @@ export default function PlansPage() {
               FOR INDIVIDUALS
             </div>
 
-            <div style={{ fontSize: 22, fontWeight: 700, color: C.textPrimary, lineHeight: 1.2, marginBottom: 6 }}>
+            <div style={{ fontSize: 22, fontWeight: 700, color: C.textPrimary, lineHeight: 1.2, marginBottom: 10 }}>
               Your Income Stability Score
-            </div>
-
-            {/* Price */}
-            <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 10 }}>
-              <span style={{ fontSize: 34, fontWeight: 700, color: C.navy, lineHeight: 1, fontFamily: "'SF Mono','Fira Code',monospace" }}>$69</span>
-              <span style={{ fontSize: 14, color: C.textMuted }}>one-time &middot; lifetime access</span>
             </div>
 
             <p style={{ fontSize: 15, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, flex: 1 }}>
@@ -246,22 +302,11 @@ export default function PlansPage() {
                 backgroundColor: C.teal, color: C.white,
                 fontSize: 15, fontWeight: 600, textDecoration: "none",
                 boxShadow: "0 4px 16px rgba(31,109,122,0.28)",
-                marginBottom: 12,
+                marginBottom: 14,
               }}
             >
               Get Your Full Report &mdash; $69
             </a>
-
-            <Link href="/begin" style={{
-              display: "flex", alignItems: "center", justifyContent: "center",
-              height: 38, borderRadius: 10,
-              backgroundColor: "transparent", color: C.teal,
-              fontSize: 13, fontWeight: 600, textDecoration: "none",
-              border: `1px solid rgba(31,109,122,0.25)`,
-              marginBottom: 14,
-            }}>
-              Or get your stability class free &rarr;
-            </Link>
 
             <p style={{ textAlign: "center", fontSize: 13, color: C.textMuted, margin: 0 }}>
               Already have an account?{" "}
