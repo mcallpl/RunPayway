@@ -458,6 +458,28 @@ function ExposureSection() {
 }
 
 /* ================================================================ */
+/* DESKTOP — REACTIVE / PROACTIVE BAND                               */
+/* ================================================================ */
+
+function ReactiveProactiveBand() {
+  const { ref, visible } = useInView();
+  const m = useMobile();
+  const fadeIn = useFadeIn();
+  return (
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 52 : 72, paddingBottom: m ? 52 : 72, paddingLeft: 28, paddingRight: 28 }}>
+      <div style={{ maxWidth: narrowW, margin: "0 auto", textAlign: "center", ...fadeIn(visible) }}>
+        <p style={{ fontSize: m ? 19 : 30, fontWeight: 600, lineHeight: 1.3, letterSpacing: "-0.02em", color: "rgba(244,241,234,0.45)", margin: "0 0 6px" }}>
+          Most financial tools measure the damage.
+        </p>
+        <p style={{ fontSize: m ? 19 : 30, fontWeight: 600, lineHeight: 1.3, letterSpacing: "-0.02em", color: C.teal, margin: 0 }}>
+          RunPayway&#x2122; measures the exposure.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================ */
 /* DESKTOP — SECTION 5: DECISION CONTEXT                             */
 /* ================================================================ */
 
@@ -495,8 +517,12 @@ function DecisionContextSection() {
         </div>
 
         <div style={{ textAlign: "center", marginTop: m ? 40 : 56, ...fadeIn(visible, 180) }}>
-          <p style={{ fontSize: m ? 17 : 20, fontWeight: 600, color: C.navy, marginBottom: 28 }}>
-            If income drives the decision, stability determines the outcome.
+          <p style={{ fontSize: m ? 11 : 12, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 12, textTransform: "uppercase" as const }}>BUILT FOR DECISION POINTS</p>
+          <p style={{ fontSize: m ? 17 : 20, fontWeight: 600, color: C.navy, lineHeight: 1.35, marginBottom: 10 }}>
+            Use it when you&rsquo;re borrowing, hiring, expanding, or taking on risk.
+          </p>
+          <p style={{ fontSize: m ? 14 : 16, color: C.textSecondary, lineHeight: 1.65, marginBottom: 32 }}>
+            Not for general review. For when the stakes are real. Come back each time they are.
           </p>
           <CtaButton m={m} variant="primary" label="Get My Stability Class — Free →" />
         </div>
@@ -573,6 +599,9 @@ function FreeVsFull() {
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16 }}>
             Start With Your Stability Class
           </h2>
+          <p style={{ fontSize: m ? 15 : 17, color: C.textSecondary, lineHeight: 1.65, maxWidth: 560, margin: "0 auto" }}>
+            Your credit score measures how you&rsquo;ve borrowed. Your income stability score measures whether your income can support what you&rsquo;re planning next. Most people have one. Almost no one has both.
+          </p>
         </div>
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 24, maxWidth: 760, margin: "0 auto", ...fadeIn(visible, 80) }}>
@@ -611,8 +640,11 @@ function FreeVsFull() {
         </div>
 
         <div style={{ textAlign: "center", marginTop: m ? 36 : 48, ...fadeIn(visible, 200) }}>
-          <p style={{ fontSize: m ? 15 : 17, color: C.textSecondary, lineHeight: 1.65, maxWidth: 560, margin: "0 auto" }}>
+          <p style={{ fontSize: m ? 15 : 17, color: C.textSecondary, lineHeight: 1.65, maxWidth: 560, margin: "0 auto 20px" }}>
             Class shows where you stand.<br />Score shows what moves it.<br />The plan shows how to control it.
+          </p>
+          <p style={{ fontSize: m ? 15 : 17, fontWeight: 600, color: C.navy, maxWidth: 480, margin: "0 auto" }}>
+            Your score doesn&rsquo;t tell you to diversify. It tells you the one thing to change first.
           </p>
         </div>
       </div>
@@ -682,7 +714,7 @@ function WhatYourScoreChanges() {
   const INDIVIDUAL_ITEMS = [
     { title: "You find out if your income would survive a disruption \u2014 before one happens.", body: "One client leaves. A deal delays. Work slows. Your score shows whether your income holds." },
     { title: "You make financial decisions on structure, not assumption.", body: "Mortgages, leases, investments \u2014 almost everyone makes these based on income amount. Your score shows whether your structure can actually support them." },
-    { title: "You know exactly what to fix first.", body: "Not \u201cdiversify your income.\u201d The specific change with the highest impact on your score \u2014 ranked and explained." },
+    { title: "You know exactly what to fix first.", body: "Not a general recommendation. The single highest-impact change for your specific structure \u2014 ranked, explained, and actionable." },
     { title: "You see your income the way lenders and advisors see it.", body: "With a number. Not a feeling." },
     { title: "Progress becomes measurable.", body: "Add a retainer. Sign a longer contract. Reduce concentration. Your score reflects each change. You know it\u2019s working." },
   ];
@@ -1051,10 +1083,13 @@ function BreathingMoment() {
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 80 : 120, paddingBottom: m ? 80 : 120, paddingLeft: 28, paddingRight: 28 }}>
       <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center", ...fadeIn(visible) }}>
-        <h2 style={{ fontSize: m ? 28 : 48, fontWeight: 700, lineHeight: 1.12, letterSpacing: "-0.032em", color: C.navy, margin: 0 }}>
+        <h2 style={{ fontSize: m ? 28 : 48, fontWeight: 700, lineHeight: 1.12, letterSpacing: "-0.032em", color: C.navy, margin: "0 0 20px" }}>
           Your income has a structure.<br />
           <span style={{ color: C.textMuted, fontWeight: 400 }}>Most people never see it.</span>
         </h2>
+        <p style={{ fontSize: m ? 16 : 20, fontWeight: 500, color: C.textSecondary, lineHeight: 1.6, maxWidth: 440, margin: "0 auto" }}>
+          Structure isn&rsquo;t fate. It&rsquo;s a set of decisions.<br />Your score shows which one to change first.
+        </p>
       </div>
     </section>
   );
@@ -1196,8 +1231,11 @@ function MobileInstantBelief() {
 function MobileCoreIdea() {
   return (
     <section style={{ backgroundColor: C.navy, padding: "64px 28px" }}>
-      <p style={{ fontSize: 22, fontWeight: 600, lineHeight: 1.4, letterSpacing: "-0.02em", color: C.sandText, margin: 0, textAlign: "center" }}>
-        RunPayway™ measures how well your income holds up if something changes.
+      <p style={{ fontSize: 22, fontWeight: 600, lineHeight: 1.4, letterSpacing: "-0.02em", color: C.sandText, marginBottom: 16, textAlign: "center" }}>
+        RunPayway&#x2122; measures how well your income holds up if something changes.
+      </p>
+      <p style={{ fontSize: 16, fontWeight: 500, lineHeight: 1.5, color: C.teal, margin: 0, textAlign: "center" }}>
+        Most tools measure the damage. RunPayway&#x2122; measures the exposure.
       </p>
     </section>
   );
@@ -1249,8 +1287,11 @@ function MobileDecisionTrigger() {
         </div>
       ))}
 
-      <p style={{ fontSize: 22, fontWeight: 700, color: C.navy, lineHeight: 1.3, margin: "28px 0 28px" }}>
+      <p style={{ fontSize: 22, fontWeight: 700, color: C.navy, lineHeight: 1.3, margin: "28px 0 12px" }}>
         Ask: Will my income hold up?
+      </p>
+      <p style={{ fontSize: 14, color: C.textMuted, lineHeight: 1.6, marginBottom: 28 }}>
+        Built for decision points. Not for general review. For when the stakes are real.
       </p>
       <MCta label="Get My Stability Class — Free →" />
     </section>
@@ -1295,9 +1336,12 @@ function MobileHowItWorks() {
 function MobileValue() {
   return (
     <section style={{ backgroundColor: C.white, padding: "64px 28px" }}>
-      <h2 style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-0.025em", color: C.navy, marginBottom: 28 }}>
+      <h2 style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-0.025em", color: C.navy, marginBottom: 12 }}>
         Start with your Stability Class
       </h2>
+      <p style={{ fontSize: 14, color: C.textSecondary, lineHeight: 1.6, marginBottom: 24 }}>
+        Your credit score measures how you&rsquo;ve borrowed. Your income stability score measures whether your income can support what you&rsquo;re planning. Most people have one. Almost no one has both.
+      </p>
 
       <div style={{ borderRadius: 16, padding: "20px", backgroundColor: C.panelFill, marginBottom: 16 }}>
         <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 10 }}>FREE</div>
@@ -1316,8 +1360,11 @@ function MobileValue() {
         ))}
       </div>
 
-      <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 24, lineHeight: 1.6 }}>
+      <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 8, lineHeight: 1.6 }}>
         Class shows where you stand.<br />Score shows what moves it.
+      </p>
+      <p style={{ fontSize: 14, color: C.textSecondary, lineHeight: 1.6, marginBottom: 24 }}>
+        Not a list. The one thing to change first.
       </p>
       <MCta label="Get My Stability Class — Free →" />
     </section>
@@ -1368,9 +1415,12 @@ function MobileFinalClose() {
     <section style={{ backgroundColor: C.navy, padding: "80px 28px", position: "relative" as const, overflow: "hidden" }}>
       <div className="navy-grain" />
       <div style={{ position: "relative", zIndex: 1 }}>
-        <h2 style={{ fontSize: 30, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 32 }}>
+        <h2 style={{ fontSize: 30, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 16 }}>
           Know where your income stands before you rely on it.
         </h2>
+        <p style={{ fontSize: 15, color: C.sandMuted, lineHeight: 1.6, marginBottom: 32 }}>
+          Structure isn&rsquo;t fate. It&rsquo;s a set of decisions. Your score shows which one to change first.
+        </p>
         <MCta variant="light" label="Get My Stability Class — Free →" />
         <p style={{ fontSize: 13, color: C.sandLight, textAlign: "center", marginTop: 16 }}>
           Know in 2 minutes what most people never measure.
@@ -1426,6 +1476,7 @@ export default function LandingPage() {
           <ProofMoment />
           <CoreDefinitionBand />
           <ExposureSection />
+          <ReactiveProactiveBand />
           <DecisionContextSection />
           <HowItWorksSection />
           <FreeVsFull />
