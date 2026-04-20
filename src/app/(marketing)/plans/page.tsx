@@ -302,14 +302,108 @@ export default function PlansPage() {
                 backgroundColor: C.teal, color: C.white,
                 fontSize: 15, fontWeight: 600, textDecoration: "none",
                 boxShadow: "0 4px 16px rgba(31,109,122,0.28)",
-                marginBottom: 14,
               }}
             >
               Get Your Full Report &mdash; $69
             </a>
+          </div>
+
+          {/* ── Individual Annual ── */}
+          <div
+            className="plans-card plans-card-body"
+            style={{
+              flex: 1,
+              backgroundColor: C.white,
+              borderRadius: 20,
+              border: `1.5px solid ${C.purple}`,
+              boxShadow: "0 8px 40px rgba(75,63,174,0.10)",
+              padding: "36px 32px 32px",
+              display: "flex",
+              flexDirection: "column",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            <div style={{
+              position: "absolute", top: 0, left: 0, right: 0, height: 3,
+              backgroundColor: C.purple,
+            }} />
+
+            <div style={{
+              position: "absolute", top: 20, right: 20,
+              fontSize: 10, fontWeight: 700, letterSpacing: "0.08em",
+              color: C.white, backgroundColor: C.purple,
+              padding: "3px 10px", borderRadius: 100,
+            }}>
+              BEST VALUE
+            </div>
+
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: C.purple, marginBottom: 14 }}>
+              FOR INDIVIDUALS
+            </div>
+
+            <div style={{ fontSize: 22, fontWeight: 700, color: C.textPrimary, lineHeight: 1.2, marginBottom: 6 }}>
+              Annual Plan
+            </div>
+
+            <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginBottom: 10 }}>
+              <span style={{ fontSize: 28, fontWeight: 700, color: C.textPrimary, letterSpacing: "-0.02em" }}>$149</span>
+              <span style={{ fontSize: 14, color: C.textMuted, fontWeight: 500 }}>/year &middot; 3 reports</span>
+            </div>
+
+            <p style={{ fontSize: 13, lineHeight: 1.5, color: C.teal, fontWeight: 600, marginBottom: 16 }}>
+              Save $58 vs. buying individually
+            </p>
+
+            <p style={{ fontSize: 15, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, flex: 1 }}>
+              Run up to 3 assessments per year. Track how your structure improves at every decision point.
+            </p>
+
+            <div style={{ borderTop: `1px solid ${C.borderSoft}`, paddingTop: 20, marginBottom: 24 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: C.textMuted, letterSpacing: "0.08em", marginBottom: 12 }}>
+                WHAT YOU GET
+              </div>
+              {[
+                "3 full Income Stability Score reports",
+                "Everything in the one-time report",
+                "All 3 reports saved in your dashboard",
+                "Score history — track your progress",
+                "Priority email support",
+              ].map((item) => (
+                <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 9 }}>
+                  <span style={{
+                    width: 16, height: 16, borderRadius: "50%",
+                    backgroundColor: "rgba(75,63,174,0.08)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    flexShrink: 0, marginTop: 1,
+                  }}>
+                    <svg width="9" height="9" viewBox="0 0 10 10" fill="none">
+                      <path d="M2 5.5L4 7.5L8 3" stroke={C.purple} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span style={{ fontSize: 14, color: C.textSecondary, lineHeight: 1.45 }}>{item}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* TODO: replace href with Stripe annual plan checkout URL */}
+            <a
+              href="https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"
+              className="plans-card-cta"
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "center",
+                height: 50, borderRadius: 12,
+                backgroundColor: C.purple, color: C.white,
+                fontSize: 15, fontWeight: 600, textDecoration: "none",
+                boxShadow: "0 4px 16px rgba(75,63,174,0.24)",
+                marginBottom: 14,
+              }}
+            >
+              Get Annual Plan &mdash; $149 / year
+            </a>
 
             <p style={{ textAlign: "center", fontSize: 13, color: C.textMuted, margin: 0 }}>
-              Already have an account?{" "}
+              Already subscribed?{" "}
               <Link href="/sign-in" style={{ fontWeight: 600, color: C.navy, textDecoration: "none" }}>
                 Sign in to your dashboard
               </Link>
@@ -552,8 +646,12 @@ export default function PlansPage() {
               a: "There is no free tier. The score is only meaningful with all six dimensions evaluated — partial scoring would produce a number without the context that makes it actionable.",
             },
             {
+              q: "What's the difference between the one-time report and the annual plan?",
+              a: "The one-time report ($69) gives you the full Income Stability Score once — best for a single decision point. The annual plan ($149/year) gives you 3 reports across the year, all saved in your dashboard with score history. If your income structure changes — new clients, a new role, a financial decision — you can reassess without paying again.",
+            },
+            {
               q: "How is advisor pricing different from individual pricing?",
-              a: "Individuals purchase a single assessment for themselves. Advisors subscribe to a plan — assessments are included in the plan, with no per-report fees. Tiers range from Starter (15 assessments/quarter) to Professional (50/month) to Enterprise (unlimited, seat-based). The two are separate products with separate portals.",
+              a: "Individuals purchase a single assessment or an annual plan for themselves. Advisors subscribe to a plan — assessments are included in the plan, with no per-report fees. Tiers range from Starter (15 assessments/quarter) to Professional (50/month) to Enterprise (unlimited, seat-based). The two are separate products with separate portals.",
             },
           ].map(({ q, a }) => (
             <div key={q} style={{ marginBottom: 24, paddingBottom: 24, borderBottom: `1px solid ${C.borderSoft}` }}>
