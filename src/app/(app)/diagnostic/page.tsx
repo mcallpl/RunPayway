@@ -267,9 +267,17 @@ export default function DiagnosticPage() {
       const parsed = JSON.parse(profile);
       setQuestions(buildQuestions(parsed.industry_sector || ""));
     } catch { /* fallback already set via default buildQuestions("") */ }
-    // Always start fresh — clear any saved progress
-    clearAnswerStorage();
-    localStorage.removeItem("rp_assessment_progress");
+    // Silently restore from crash within session (no resume UI)
+    const saved = loadAnswersFromStorage();
+    if (saved && saved.length === 6 && saved.some((a) => a !== null)) {
+      setAnswers(saved);
+      const firstUnanswered = saved.findIndex((a) => a === null);
+      if (firstUnanswered >= 0) setCurrentQuestion(firstUnanswered);
+      else setCurrentQuestion(5);
+    } else {
+      clearAnswerStorage();
+      localStorage.removeItem("rp_assessment_progress");
+    }
     setTimeout(() => setEntered(true), 100);
   }, [router]);
 
@@ -457,7 +465,11 @@ export default function DiagnosticPage() {
             if (checkData.reason === "expired") {
               setError("Your monitoring plan has expired. Renew to continue.");
             } else if (checkData.reason === "exhausted") {
-              setError("You have used all assessments on this plan.");
+              // Only show exhausted error for plans with multiple assessments (annual_monitoring)
+              // Single assessment plans handle retakes via retake check above
+              if (entPlanKey !== "single_assessment") {
+                setError("You have used all assessments on this plan.");
+              }
             } else if (checkData.reason === "no_entitlement") {
               // Will be handled by auto-create below, don't error here
             } else {
