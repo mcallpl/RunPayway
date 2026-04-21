@@ -79,7 +79,7 @@ const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace'
 const innerW = 1120;
 const narrowW = 720;
 const explanatoryW = 640;
-const sectionPx = (m: boolean, t?: boolean) => m ? 28 : t ? 56 : 48;
+const sectionPx = (m: boolean, t?: boolean) => m ? 24 : t ? 40 : 48;
 const cardShadow = "0 10px 30px rgba(14,26,43,0.06)";
 const ctaShadow = "0 8px 24px rgba(14,26,43,0.12)";
 
@@ -204,7 +204,7 @@ function HeroSection() {
       <style>{`
         @keyframes ringDraw { from { stroke-dashoffset: 745; } to { stroke-dashoffset: 538; } }
       `}</style>
-      <div style={{ maxWidth: innerW, margin: "0 auto", paddingTop: m ? 80 : 112, paddingBottom: m ? 64 : 96, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
+      <div style={{ maxWidth: innerW, margin: "0 auto", paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center", maxWidth: 1080, margin: "0 auto" }}>
 
           {/* Left — copy */}
@@ -396,7 +396,7 @@ function CoreDefinitionBand() {
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 60 : 88, paddingBottom: m ? 60 : 88, paddingLeft: 28, paddingRight: 28 }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 64 : 96, paddingBottom: m ? 64 : 96, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto", textAlign: "center", ...fadeIn(visible) }}>
         <p style={{ fontSize: m ? 22 : 36, fontWeight: 600, lineHeight: 1.35, letterSpacing: "-0.02em", color: C.sandText, margin: 0 }}>
           RunPayway™ measures how well your income holds up if something changes.
@@ -467,7 +467,7 @@ function ReactiveProactiveBand() {
   const m = useMobile();
   const fadeIn = useFadeIn();
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 52 : 72, paddingBottom: m ? 52 : 72, paddingLeft: 28, paddingRight: 28 }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 64 : 80, paddingBottom: m ? 64 : 80, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto", textAlign: "center", ...fadeIn(visible) }}>
         <p style={{ fontSize: m ? 19 : 30, fontWeight: 600, lineHeight: 1.3, letterSpacing: "-0.02em", color: "rgba(244,241,234,0.45)", margin: "0 0 6px" }}>
           Most financial tools measure the damage.
@@ -1049,7 +1049,7 @@ function InternalLinkHub() {
   ];
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 96, paddingBottom: m ? 72 : 96, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
+    <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: 800, margin: "0 auto" }}>
         <div style={{ marginBottom: m ? 32 : 44, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 22 : 28, fontWeight: 600, color: C.navy, letterSpacing: "-0.02em" }}>
@@ -1083,7 +1083,7 @@ function BreathingMoment() {
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 80 : 120, paddingBottom: m ? 80 : 120, paddingLeft: 28, paddingRight: 28 }}>
+    <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center", ...fadeIn(visible) }}>
         <h2 style={{ fontSize: m ? 28 : 48, fontWeight: 700, lineHeight: 1.12, letterSpacing: "-0.032em", color: C.navy, margin: "0 0 20px" }}>
           Your income has a structure.<br />
@@ -1108,7 +1108,7 @@ function FinalCta() {
   const fadeIn = useFadeIn();
 
   return (
-    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t), position: "relative" as const, overflow: "hidden" }}>
+    <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t), position: "relative" as const, overflow: "hidden" }}>
       <div className="navy-grain" />
       <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
         <h2 style={{ fontSize: m ? 28 : 52, fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.035em", color: C.sandText, marginBottom: 20, ...fadeIn(visible) }}>
@@ -1131,7 +1131,7 @@ function FinalCta() {
 
 function MobileHero() {
   return (
-    <header style={{ backgroundColor: C.sand, padding: "80px 28px 64px" }}>
+    <header style={{ backgroundColor: C.sand, padding: "72px 24px 72px" }}>
       <p style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.04em", color: C.teal, marginBottom: 16 }}>
         Income stability isn&rsquo;t measured. Until now.
       </p>
@@ -1186,7 +1186,7 @@ function MobileHero() {
 
 function MobileInstantBelief() {
   return (
-    <section style={{ backgroundColor: C.white, padding: "64px 28px" }}>
+    <section style={{ backgroundColor: C.white, padding: "72px 24px" }}>
       <h2 style={{ fontSize: 26, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.025em", color: C.navy, marginBottom: 28 }}>
         Same income.<br />Different stability.
       </h2>
@@ -1232,7 +1232,7 @@ function MobileInstantBelief() {
 
 function MobileCoreIdea() {
   return (
-    <section style={{ backgroundColor: C.navy, padding: "64px 28px" }}>
+    <section style={{ backgroundColor: C.navy, padding: "72px 24px" }}>
       <p style={{ fontSize: 22, fontWeight: 600, lineHeight: 1.4, letterSpacing: "-0.02em", color: C.sandText, marginBottom: 16, textAlign: "center" }}>
         RunPayway&#x2122; measures how well your income holds up if something changes.
       </p>
@@ -1249,7 +1249,7 @@ function MobileCoreIdea() {
 
 function MobileExposure() {
   return (
-    <section style={{ backgroundColor: C.panelFill, padding: "64px 28px" }}>
+    <section style={{ backgroundColor: C.panelFill, padding: "72px 24px" }}>
       <h2 style={{ fontSize: 26, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.025em", color: C.navy, marginBottom: 24 }}>
         Most income looks stable&mdash;until it&rsquo;s not.
       </h2>
@@ -1280,7 +1280,7 @@ function MobileExposure() {
 
 function MobileDecisionTrigger() {
   return (
-    <section style={{ backgroundColor: C.white, padding: "64px 28px" }}>
+    <section style={{ backgroundColor: C.white, padding: "72px 24px" }}>
       <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", color: C.teal, marginBottom: 20 }}>BEFORE YOU</p>
 
       {["Take on a mortgage", "Scale your business", "Make an investment"].map((item, i) => (
@@ -1306,7 +1306,7 @@ function MobileDecisionTrigger() {
 
 function MobileHowItWorks() {
   return (
-    <section style={{ backgroundColor: C.sand, padding: "64px 28px" }}>
+    <section style={{ backgroundColor: C.sand, padding: "72px 24px" }}>
       <h2 style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-0.025em", color: C.navy, marginBottom: 28 }}>
         How it works
       </h2>
@@ -1337,7 +1337,7 @@ function MobileHowItWorks() {
 
 function MobileValue() {
   return (
-    <section style={{ backgroundColor: C.white, padding: "64px 28px" }}>
+    <section style={{ backgroundColor: C.white, padding: "72px 24px" }}>
       <h2 style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-0.025em", color: C.navy, marginBottom: 12 }}>
         Start with your Stability Class
       </h2>
@@ -1379,7 +1379,7 @@ function MobileValue() {
 
 function MobileTrust() {
   return (
-    <section style={{ backgroundColor: C.panelFill, padding: "64px 28px" }}>
+    <section style={{ backgroundColor: C.panelFill, padding: "72px 24px" }}>
       <h2 style={{ fontSize: 26, fontWeight: 700, letterSpacing: "-0.025em", color: C.navy, marginBottom: 28 }}>
         Why this works
       </h2>
@@ -1414,7 +1414,7 @@ function MobileTrust() {
 
 function MobileFinalClose() {
   return (
-    <section style={{ backgroundColor: C.navy, padding: "80px 28px", position: "relative" as const, overflow: "hidden" }}>
+    <section style={{ backgroundColor: C.navy, padding: "80px 24px", position: "relative" as const, overflow: "hidden" }}>
       <div className="navy-grain" />
       <div style={{ position: "relative", zIndex: 1 }}>
         <h2 style={{ fontSize: 30, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 16 }}>
