@@ -1095,7 +1095,7 @@ export default function DiagnosticPage() {
 
           {/* Social proof */}
           <div style={{ fontSize: 12, color: "rgba(14,26,43,0.20)", marginTop: 32 }}>
-            Deterministic scoring &middot; Version-locked &middot; Model RP-2.0
+            Deterministic scoring &middot; Version-locked
           </div>
         </div>
       </div>
@@ -1141,7 +1141,7 @@ export default function DiagnosticPage() {
       {/* Dark branded header */}
       <div style={{ background: C.navy, padding: mobile ? "14px 24px" : "16px 24px", textAlign: "center" }}>
         <div style={{ fontSize: mobile ? 11 : 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.sandMuted }}>
-          Income Stability Score™ &middot; Model RP-2.0
+          Income Stability Score™
         </div>
       </div>
       <div style={{ maxWidth: 860, margin: "0 auto", padding: mobile ? "24px 24px 40px" : "32px 24px 48px", display: "flex", flexDirection: "column", gap: 0, minHeight: "70vh" }}>
