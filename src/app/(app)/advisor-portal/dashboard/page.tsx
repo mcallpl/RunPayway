@@ -183,6 +183,7 @@ export default function AdvisorDashboardPage() {
   const [reportsUsed, setReportsUsed] = useState(0);
   const [reportsTotal, setReportsTotal] = useState(15);
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [quotaExhausted, setQuotaExhausted] = useState(false);
 
   /* ── Effects ── */
   useEffect(() => {
@@ -304,6 +305,22 @@ export default function AdvisorDashboardPage() {
 
   const removeClient = (id: string) => {
     persistClients(clients.filter(c => c.id !== id));
+  };
+
+  const canRunAssessment = (): boolean => {
+    // Unlimited plan (reportsTotal === -1) can always run assessments
+    if (reportsTotal === -1) return true;
+    // Otherwise check if quota remaining
+    return reportsUsed < reportsTotal;
+  };
+
+  const handleStartAssessment = (clientId: string) => {
+    if (!canRunAssessment()) {
+      setQuotaExhausted(true);
+      return;
+    }
+    setQuotaExhausted(false);
+    setAssessingId(assessingId === clientId ? null : clientId);
   };
 
   /* ── Derived analytics ── */
@@ -623,6 +640,18 @@ export default function AdvisorDashboardPage() {
                       </div>
                     )}
 
+                    {/* Quota exhausted warning */}
+                    {quotaExhausted && (
+                      <div style={{
+                        marginTop: 12, padding: "12px 14px", borderRadius: 10,
+                        backgroundColor: "rgba(155,44,44,0.05)", border: "1px solid rgba(155,44,44,0.12)",
+                      }}>
+                        <p style={{ fontSize: 13, color: "#9B2C2C", margin: 0, fontWeight: 500 }}>
+                          You've used all {reportsTotal} assessments in your plan. Purchase more to continue.
+                        </p>
+                      </div>
+                    )}
+
                     {/* Action row */}
                     <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap", alignItems: "center" }}>
                       {client.score > 0 && (
@@ -630,9 +659,22 @@ export default function AdvisorDashboardPage() {
                           {isExpanded ? "Close" : "Full Meeting Prep"}
                         </button>
                       )}
-                      <button onClick={() => setAssessingId(assessingId === client.id ? null : client.id)} style={btnTeal}>
+                      <button
+                        onClick={() => handleStartAssessment(client.id)}
+                        disabled={quotaExhausted}
+                        style={{...btnTeal, opacity: quotaExhausted ? 0.5 : 1, cursor: quotaExhausted ? "not-allowed" : "pointer"}}
+                      >
                         {assessingId === client.id ? "Cancel" : (client.score > 0 ? "Reassess" : "Run Assessment")}
                       </button>
+                      {quotaExhausted && (
+                        <a href="/plans" style={{
+                          fontSize: 13, fontWeight: 600, color: C.purple, backgroundColor: "rgba(75,63,174,0.06)",
+                          border: "1px solid rgba(75,63,174,0.15)", borderRadius: 8, padding: "8px 16px",
+                          textDecoration: "none", display: "inline-flex", alignItems: "center"
+                        }}>
+                          Buy More Assessments
+                        </a>
+                      )}
                       <button onClick={() => {
                         if (isEditingNotes) { saveNotes(client.id); } else { setEditingNotesId(client.id); setNotesDraft(client.notes); }
                       }} style={{

@@ -342,8 +342,26 @@ export default function InitializationPage() {
     recipient_email: "",
   });
 
-  // Portal entrance animation + clear prior session
+  const [needsRetakePurchase, setNeedsRetakePurchase] = useState(false);
+
+  // Portal entrance animation + check for retake requirement
   useEffect(() => {
+    // Check if user is attempting to retake without purchasing a new report
+    const existingRecord = localStorage.getItem("rp_record");
+    const purchaseSession = sessionStorage.getItem("rp_purchase_session") || localStorage.getItem("rp_purchase_session");
+
+    if (existingRecord && purchaseSession) {
+      try {
+        const ps = JSON.parse(purchaseSession);
+        // If they have a completed assessment and are trying to use free plan without new purchase
+        if (ps.plan_key === "free" || (ps.plan_key === "individual" && ps.status !== "paid")) {
+          setNeedsRetakePurchase(true);
+          setPortalRevealed(true);
+          return;
+        }
+      } catch { /* ignore malformed data */ }
+    }
+
     // Clear prior report so a new assessment starts fresh
     try {
       sessionStorage.removeItem("rp_record");
@@ -431,6 +449,62 @@ export default function InitializationPage() {
   }, [router]);
 
   if (!ready) return null;
+
+  if (needsRetakePurchase) {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: 40, textAlign: "center", backgroundColor: C.panelFill }}>
+        <div style={{ maxWidth: 520 }}>
+          <h1 style={{ fontSize: 32, fontWeight: 700, fontFamily: sans, color: C.navy, marginBottom: 16, lineHeight: 1.2 }}>
+            Retake Requires Purchase
+          </h1>
+          <p style={{ fontSize: 16, fontFamily: sans, color: C.textSecondary, marginBottom: 32, lineHeight: 1.6 }}>
+            You&rsquo;ve already completed an assessment. To retake and get an updated report with your latest income structure, you need to purchase a new report.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 32 }}>
+            <a
+              href="/plans"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "14px 28px",
+                fontSize: 15,
+                fontWeight: 600,
+                fontFamily: sans,
+                color: C.white,
+                backgroundColor: C.purple,
+                textDecoration: "none",
+                borderRadius: 12,
+                boxShadow: "0 8px 24px rgba(75,63,174,0.18)",
+              }}
+            >
+              Purchase New Report — $69
+            </a>
+            <button
+              onClick={() => router.push("/dashboard/login")}
+              style={{
+                padding: "14px 28px",
+                fontSize: 15,
+                fontWeight: 600,
+                fontFamily: sans,
+                color: C.navy,
+                backgroundColor: "transparent",
+                border: `2px solid ${C.navy}`,
+                borderRadius: 12,
+                cursor: "pointer",
+              }}
+            >
+              View Your Current Report
+            </button>
+          </div>
+          <p style={{ fontSize: 13, fontFamily: sans, color: C.textMuted }}>
+            Annual Monitoring subscribers can reassess at any time using their plan quota.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   if (!authorized) {
     return (
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", padding: 40, textAlign: "center" }}>
