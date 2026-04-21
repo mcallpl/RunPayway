@@ -452,10 +452,10 @@ function ReferenceLibrary({ m }: { m: boolean }) {
         >
           <div style={{ textAlign: "left" }}>
             <h2 style={{ fontSize: m ? 18 : 20, fontWeight: 600, color: L.navy, margin: "0 0 4px 0" }}>
-              📚 Reference Library
+              Go deeper
             </h2>
             <p style={{ fontSize: 14, color: L.textSecondary, margin: 0 }}>
-              Browse all {coreSlugs.length} concepts and topics
+              Explore all {coreSlugs.length} concepts
             </p>
           </div>
           <span style={{ fontSize: 24, transition: "transform 200ms", transform: expanded ? "rotate(180deg)" : "none" }}>
