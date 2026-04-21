@@ -63,19 +63,33 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
   const offset = circ - (pct / 100) * circ;
   const color = bandColor(score);
   const bandLabel = score >= 75 ? "High Stability" : score >= 50 ? "Established Stability" : score >= 30 ? "Developing Stability" : "Limited Stability";
-  const glowSize = size * 1.5;
 
   return (
     <div role="img" aria-label={`Income Stability Score™: ${score} out of 100`} style={{ position: "relative", width: size, height: size, flexShrink: 0 }}>
+      <defs>
+        <style>{`
+          @keyframes scoreGlow { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+          .score-ring-glow { animation: scoreGlow 3s ease-in-out infinite; }
+        `}</style>
+      </defs>
       <svg width={size} height={size} style={{ transform: "rotate(-90deg)", position: "relative", zIndex: 1 }}>
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(14,26,43,0.06)" strokeWidth={stroke} />
+        <defs>
+          <filter id={`scoreGlow${score}`} x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+            <feMerge>
+              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(14,26,43,0.04)" strokeWidth={stroke} />
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={stroke}
-          strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round"
+          strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round" filter={`url(#scoreGlow${score})`}
           style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.4s" }} />
       </svg>
       <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 2 }}>
-        <span style={{ fontSize: size * 0.28, fontWeight: 300, fontFamily: mono, color: B.navy, lineHeight: 1, letterSpacing: "-0.04em" }}>{score}</span>
-        <span style={{ fontSize: Math.max(size * 0.08, 9), fontWeight: 600, color, marginTop: 4, letterSpacing: "0.04em" }}>{bandLabel}</span>
+        <span style={{ fontSize: size * 0.32, fontWeight: 200, fontFamily: mono, color: B.navy, lineHeight: 1, letterSpacing: "-0.06em" }}>{score}</span>
+        <span style={{ fontSize: Math.max(size * 0.07, 8), fontWeight: 700, color, marginTop: 6, letterSpacing: "0.06em", opacity: 0.8 }}>{bandLabel}</span>
       </div>
     </div>
   );
@@ -1179,68 +1193,65 @@ function DashboardContent() {
             const stepsDone = completedSteps.length;
 
             return (
-              <div id="phase-diagnosis" style={{ marginBottom: 36, animation: "fadeSlideIn 600ms ease-out" }}>
-                <div style={{ padding: mobile ? "28px 22px" : "40px 44px", borderRadius: mobile ? 16 : 24, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+              <div id="phase-diagnosis" style={{ marginBottom: 48, animation: "fadeSlideIn 600ms ease-out" }}>
+                <div style={{ padding: mobile ? "36px 24px" : "56px 52px", borderRadius: mobile ? 20 : 28, backgroundColor: B.surface, border: `1px solid rgba(14,26,43,0.06)`, boxShadow: "0 2px 8px rgba(14,26,43,0.04)" }}>
 
                   {/* Top row: Score ring + context — generous spacing */}
-                  <div style={{ display: "flex", alignItems: "center", gap: mobile ? 20 : 40, marginBottom: 28 }} className="d-score-hero">
-                    <ScoreRing score={dScore} size={mobile ? 100 : 140} stroke={mobile ? 6 : 7} />
+                  <div style={{ display: "flex", alignItems: "center", gap: mobile ? 24 : 48, marginBottom: 36 }} className="d-score-hero">
+                    <ScoreRing score={dScore} size={mobile ? 110 : 160} stroke={mobile ? 6 : 8} />
                     <div style={{ flex: 1 }}>
-                      <div style={{ marginBottom: 8 }}>
-                        {custName && <span style={{ fontSize: 17, fontWeight: 600, color: B.navy }}>{custName}</span>}
-                        {custName && indLabel && <span style={{ color: B.taupe }}> · </span>}
-                        {indLabel && <span style={{ fontSize: 14, color: B.taupe }}>{indLabel}</span>}
+                      <div style={{ marginBottom: 12 }}>
+                        {custName && <span style={{ fontSize: mobile ? 18 : 20, fontWeight: 500, color: B.navy, letterSpacing: "-0.01em" }}>{custName}</span>}
+                        {custName && indLabel && <span style={{ color: "rgba(14,26,43,0.20)" }}> · </span>}
+                        {indLabel && <span style={{ fontSize: mobile ? 14 : 15, color: B.taupe, fontWeight: 400 }}>{indLabel}</span>}
                       </div>
-                      <div style={{ fontSize: mobile ? 15 : 17, color: B.muted, lineHeight: 1.55, marginBottom: 6 }}>
+                      <div style={{ fontSize: mobile ? 16 : 18, color: B.navy, lineHeight: 1.6, marginBottom: 10, fontWeight: 400 }}>
                         {gap > 0
-                          ? <>{gap} points from <span style={{ fontWeight: 600, color: B.navy }}>{nextB}</span>.</>
+                          ? <>{gap} points to <span style={{ fontWeight: 600, color: B.navy }}>{nextB}</span></>
                           : <span style={{ fontWeight: 600, color: B.teal }}>Highest band achieved.</span>
                         }
                       </div>
                       {bm && indLabel && (
-                        <div style={{ fontSize: 14, color: B.teal, fontWeight: 500 }}>
-                          Industry Position: {bm.peer_percentile > 70 ? "Above industry baseline" : bm.peer_percentile >= 40 ? "At industry baseline" : "Below industry baseline"}
+                        <div style={{ fontSize: mobile ? 13 : 14, color: B.teal, fontWeight: 500, opacity: 0.9 }}>
+                          {bm.peer_percentile > 70 ? "Above industry baseline" : bm.peer_percentile >= 40 ? "At industry baseline" : "Below industry baseline"}
                         </div>
                       )}
-                      <div style={{ fontSize: 12, fontWeight: 500, color: B.muted, marginTop: 8 }}>
-                        Measured by RunPayway™ &middot; Model RP-2.0
-                      </div>
                     </div>
                   </div>
 
-                  {/* Metrics — clean, no tooltips cluttering */}
-                  <div style={{ display: "flex", gap: mobile ? 8 : 12, marginBottom: 28 }} className="d-metrics">
+                  {/* Metrics — refined, minimal design */}
+                  <div style={{ display: "flex", gap: mobile ? 10 : 16, marginBottom: 32 }} className="d-metrics">
                     {[
                       { label: "Income Buffer", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? B.red : B.teal },
                       { label: vocabDash.scenarios.lose_top_client.split(/[.!?]/)[0].slice(0, 40) || "If Top Source Leaves", value: `−${riskDrop} pts`, color: riskDrop > 15 ? B.red : B.amber },
                       { label: "Stability Type", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" || fragLabel === "Supported" ? B.teal : B.amber },
                     ].map((m) => (
-                      <div key={m.label} style={{ flex: 1, padding: mobile ? "16px 12px" : "14px 16px", textAlign: "center" as const, borderRadius: 10, backgroundColor: `${B.teal}03` }}>
-                        <div style={{ fontSize: mobile ? 9 : 10, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 6, wordBreak: "break-word" as const }}>{m.label.toUpperCase()}</div>
-                        <div style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, fontFamily: mono, color: m.color }}>{m.value}</div>
+                      <div key={m.label} style={{ flex: 1, padding: mobile ? "18px 14px" : "20px 18px", textAlign: "center" as const, borderRadius: 12, backgroundColor: "transparent", border: `1px solid rgba(14,26,43,0.08)`, transition: "border-color 200ms, background-color 200ms" }}>
+                        <div style={{ fontSize: mobile ? 9 : 10, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(14,26,43,0.50)", marginBottom: 8, wordBreak: "break-word" as const }}>{m.label.toUpperCase()}</div>
+                        <div style={{ fontSize: mobile ? 17 : 19, fontWeight: 600, fontFamily: mono, color: m.color, lineHeight: 1 }}>{m.value}</div>
                       </div>
                     ))}
                   </div>
 
                   {/* This Week — lead with the sentence, not labels */}
                   {topMoves.length > 0 && (
-                    <div style={{ padding: mobile ? "20px 20px" : "24px 28px", borderRadius: 16, backgroundColor: `${B.teal}03`, borderLeft: `3px solid ${B.teal}` }}>
+                    <div style={{ padding: mobile ? "24px 22px" : "32px 36px", borderRadius: 16, backgroundColor: "transparent", border: `1px solid rgba(14,26,43,0.08)`, borderLeft: `3px solid ${B.teal}` }}>
                       {stepsDone >= stepsTotal ? (
                         <>
-                          <div style={{ fontSize: mobile ? 17 : 19, fontWeight: 500, color: B.navy, lineHeight: 1.4, marginBottom: 6 }}>
-                            You've completed every step. That's real progress.
+                          <div style={{ fontSize: mobile ? 18 : 20, fontWeight: 500, color: B.navy, lineHeight: 1.45, marginBottom: 8 }}>
+                            You've completed every step.
                           </div>
-                          <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.55 }}>
+                          <p style={{ fontSize: mobile ? 14 : 15, color: B.muted, margin: 0, lineHeight: 1.6, fontWeight: 400 }}>
                             Time to reassess and see how your score has changed.
                           </p>
                         </>
                       ) : nextMove ? (
                         <>
-                          <div style={{ fontSize: mobile ? 17 : 19, fontWeight: 500, color: B.navy, lineHeight: 1.4, marginBottom: 8 }}>
-                            Focus on one thing: <strong>{(vocabDash?.actionLabels?.[nextMove.id as keyof typeof vocabDash.actionLabels] || nextMove.label).toLowerCase()}</strong>.
+                          <div style={{ fontSize: mobile ? 18 : 20, fontWeight: 500, color: B.navy, lineHeight: 1.45, marginBottom: 10 }}>
+                            Focus on: <strong style={{ fontWeight: 600, color: B.navy }}>{(vocabDash?.actionLabels?.[nextMove.id as keyof typeof vocabDash.actionLabels] || nextMove.label).toLowerCase()}</strong>
                           </div>
-                          <p style={{ fontSize: 14, color: B.muted, margin: "0 0 12px", lineHeight: 1.55 }}>
-                            You don't need to do everything at once. This is the single move that matters most right now.
+                          <p style={{ fontSize: mobile ? 14 : 15, color: B.muted, margin: "0 0 14px", lineHeight: 1.6, fontWeight: 400 }}>
+                            One move at a time. This is the most impactful thing you can do right now.
                           </p>
                           {/* Micro-actions — the 5-minute version */}
                           {(() => {
