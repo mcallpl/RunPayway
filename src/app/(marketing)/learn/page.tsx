@@ -325,6 +325,8 @@ const industryScenarios = [
 
 function IndustryScenarios({ m }: { m: boolean }) {
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [showAll, setShowAll] = useState(false);
+  const displayedScenarios = showAll ? industryScenarios : industryScenarios.slice(0, 6);
 
   const scenariosSchema = {
     "@context": "https://schema.org",
@@ -349,13 +351,16 @@ function IndustryScenarios({ m }: { m: boolean }) {
           <h2 style={{ fontSize: m ? 24 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: L.navy, marginBottom: 16 }}>
             See your situation (and what happens next)
           </h2>
-          <p style={{ fontSize: m ? 16 : 18, lineHeight: 1.6, color: L.textSecondary, maxWidth: 560, margin: "0 auto" }}>
+          <p style={{ fontSize: m ? 16 : 18, lineHeight: 1.6, color: L.textSecondary, maxWidth: 560, margin: "0 auto", marginBottom: 20 }}>
             Click any industry to see how income stability works in your field, and what risks matter most.
+          </p>
+          <p style={{ fontSize: 14, lineHeight: 1.5, color: L.textMuted, maxWidth: 600, margin: "0 auto" }}>
+            <strong>Score range:</strong> 0–100 scale. Higher scores indicate more stable income structure. Ranges shown are typical for each industry.
           </p>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "1fr 1fr", gap: m ? 12 : 16, maxWidth: 960, margin: "0 auto" }}>
-          {industryScenarios.map((s) => {
+          {displayedScenarios.map((s) => {
             const isOpen = expanded === s.industry;
             return (
               <div key={s.industry}
@@ -368,11 +373,17 @@ function IndustryScenarios({ m }: { m: boolean }) {
                   borderLeftWidth: 4,
                   borderLeftColor: s.color,
                   cursor: "pointer",
-                  transition: "background-color 200ms, border-color 200ms",
+                  transition: "all 200ms ease",
+                  ":hover": {
+                    backgroundColor: L.panelFill,
+                  },
                 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: isOpen ? 12 : 0 }}>
-                  <div style={{ fontSize: 15, fontWeight: 600, color: L.navy }}>{s.industry}</div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: isOpen ? 12 : 0, gap: 12 }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 15, fontWeight: 600, color: L.navy }}>{s.industry}</div>
+                    {!isOpen && <div style={{ fontSize: 12, color: L.textMuted, marginTop: 4, display: "flex", alignItems: "center", gap: 4 }}>View examples <span style={{ fontSize: 11 }}>→</span></div>}
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
                     <span style={{ fontSize: 12, fontWeight: 600, fontFamily: '"SF Mono", monospace', color: s.color }}>{s.score}</span>
                     <span style={{ fontSize: 14, color: L.textMuted, transform: isOpen ? "rotate(180deg)" : "none", transition: "transform 200ms" }}>&darr;</span>
                   </div>
@@ -392,6 +403,35 @@ function IndustryScenarios({ m }: { m: boolean }) {
             );
           })}
         </div>
+
+        {!showAll && (
+          <div style={{ textAlign: "center", marginTop: 32 }}>
+            <button
+              onClick={() => setShowAll(true)}
+              style={{
+                backgroundColor: "transparent",
+                border: `1px solid ${L.divider}`,
+                padding: "12px 24px",
+                borderRadius: 4,
+                fontSize: 14,
+                fontWeight: 600,
+                color: L.navy,
+                cursor: "pointer",
+                transition: "all 200ms",
+              }}
+              onMouseEnter={(e) => {
+                (e.target as HTMLButtonElement).style.backgroundColor = L.panelFill;
+                (e.target as HTMLButtonElement).style.borderColor = L.teal;
+              }}
+              onMouseLeave={(e) => {
+                (e.target as HTMLButtonElement).style.backgroundColor = "transparent";
+                (e.target as HTMLButtonElement).style.borderColor = L.divider;
+              }}
+            >
+              Show all 19 industries
+            </button>
+          </div>
+        )}
 
         <div style={{ textAlign: "center", marginTop: 32 }}>
           <p style={{ fontSize: 15, fontWeight: 500, color: L.textSecondary }}>
