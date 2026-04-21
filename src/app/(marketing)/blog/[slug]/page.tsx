@@ -69,55 +69,54 @@ const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace'
 
 
 /* ================================================================ */
-/* ARTICLE METADATA                                                  */
+/* ARTICLE DATA                                                      */
 /* ================================================================ */
 
-interface ArticleMeta {
-  slug: string;
-  title: string;
-  category: string;
-  readTime: string;
-  date: string;
-  author: string;
-  excerpt: string;
-}
-
-const ARTICLES: ArticleMeta[] = [
+const ARTICLES = [
+  {
+    slug: "post-tax-season-income-review",
+    title: "Post-Tax-Season Income Review: 5 Stability Gaps Most Owners Overlook",
+    excerpt: "Your tax return shows what you made. It doesn't tell you if your income is stable. Here are the 5 gaps keeping you fragile—and what to do about them.",
+    category: "STRATEGY",
+    readTime: "12 min read",
+    date: "April 21, 2026",
+    author: "RunPayway Research",
+  },
   {
     slug: "the-income-stability-gap",
     title: "The Income Stability Gap: What Your Accountant, Advisor, and Bank All Miss",
+    excerpt: "Three professionals look at your money. None of them measure the one thing that determines whether your income survives next quarter.",
     category: "INSIGHT",
     readTime: "8 min read",
     date: "April 12, 2026",
     author: "RunPayway Research",
-    excerpt: "Three professionals look at your money. None of them measure the one thing that determines whether your income survives next quarter.",
   },
   {
     slug: "what-is-income-stability",
-    title: "What Is Income Stability \u2014 And Why Nobody Measures It",
+    title: "What Is Income Stability — And Why Nobody Measures It",
+    excerpt: "Credit scores measure borrowing. Income verification measures amounts. Nobody measures how income is built. That gap has consequences.",
     category: "FUNDAMENTALS",
     readTime: "7 min read",
     date: "April 8, 2026",
     author: "RunPayway Research",
-    excerpt: "Credit scores measure borrowing. Income verification measures amounts. Nobody measures how income is built. That gap has consequences.",
   },
   {
     slug: "hidden-risk-in-commission-income",
     title: "The Hidden Structural Risk in Commission-Based Income",
+    excerpt: "Commission earners often appear successful on paper while operating one of the most fragile income structures in the modern economy.",
     category: "ANALYSIS",
     readTime: "8 min read",
     date: "April 3, 2026",
     author: "RunPayway Research",
-    excerpt: "Commission earners often appear successful on paper while operating one of the most fragile income structures in the modern economy.",
   },
   {
     slug: "recurring-revenue-for-service-businesses",
     title: "Why Recurring Revenue Changes Everything for Service Businesses",
+    excerpt: "The single most impactful structural change a service business can make is converting project-based work to recurring arrangements.",
     category: "STRATEGY",
     readTime: "7 min read",
     date: "April 1, 2026",
     author: "RunPayway Research",
-    excerpt: "The single most impactful structural change a service business can make is converting project-based work to recurring arrangements.",
   },
 ];
 
@@ -182,77 +181,149 @@ function BulletList({ items }: { items: string[] }) {
 
 
 /* ================================================================ */
-/* ARTICLE 1: WHAT IS INCOME STABILITY                               */
+/* ARTICLE 1: POST-TAX-SEASON INCOME REVIEW                         */
 /* ================================================================ */
 
 function Article1() {
   return (
     <>
       <P>
-        There is a measurement gap at the center of personal finance. Credit scores evaluate borrowing behavior. Income verification confirms amounts. Net worth calculations tally accumulated assets. But none of these instruments answer a more fundamental question: how is income actually built?
+        Your tax return just landed. Maybe you're happy with the number. Maybe not. But here's what most owners miss: a good tax return doesn't mean your income is stable.
       </P>
       <P>
-        This is not a theoretical distinction. The structural characteristics of income&mdash;how it arrives, what it depends on, and how it behaves when conditions change&mdash;determine financial resilience more than the dollar figure on a tax return. Understanding your <Link href="/learn/what-is-income-structure" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>income structure</Link> is the first step. Two individuals earning $150,000 per year can have radically different financial positions depending on whether that income is contractually recurring or entirely contingent on new sales each quarter.
+        You can make $200k a year and still be fragile. You can have months that look great on paper but leave you stressed, unable to plan, and one client loss away from scrambling.
+      </P>
+      <P>
+        This post walks through the 5 gaps that kill income stability—and more importantly, the psychology that keeps you trapped in them. By the end, you'll recognize yourself, and you'll know exactly what to do about it.
       </P>
 
-      <H2>The Measurement That Does Not Exist</H2>
+      <H2>Gap #1: Client Concentration Risk</H2>
       <P>
-        <Link href="/learn/income-stability-vs-credit-score" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>Credit scoring</Link>, introduced in the 1950s and standardized by FICO in 1989, addressed a real problem: lenders needed a consistent way to evaluate borrowing risk. The system works. But it measures one dimension of financial life&mdash;how you manage debt&mdash;and says nothing about the income that services it.
+        You've got a big client. They're 40% of your revenue. You know it's risky. You tell yourself you'll diversify. Next quarter, maybe. Next year, definitely.
       </P>
       <P>
-        Income verification, used in mortgage underwriting and employment screening, confirms that income exists and reaches a certain threshold. It answers the question of &ldquo;how much&rdquo; while ignoring the question of &ldquo;how.&rdquo;
+        But you don't.
       </P>
-      <PullQuote>
-        A freelancer earning $200,000 from twelve clients with annual contracts and a commission-only salesperson earning $200,000 from unpredictable closings are not in the same structural position. Existing systems treat them identically.
-      </PullQuote>
+      <P>
+        Instead, you pour energy into keeping that client happy. You answer their emails first. You prioritize their projects. You give them the best rates, the fastest turnaround, everything.
+      </P>
+      <P>
+        Meanwhile, new business sits in your pipeline. You don't have bandwidth for it because you're protecting the one big relationship.
+      </P>
+      <P>
+        Here's what's actually happening: You're experiencing <em>concentration comfort</em>. That one big client feels stable because the revenue is predictable and large. You know what's coming from them. It's real. It's now.
+      </P>
+      <P>
+        A new client? That's uncertain. They might not pay. They might be demanding. They might disappear. So you stick with the known thing, even though it's actually more fragile.
+      </P>
 
-      <H2>What Income Stability Actually Means</H2>
+      <H2>Gap #2: Forward Visibility</H2>
       <P>
-        Income stability is not income predictability. Predictability implies forecasting&mdash;an attempt to estimate future amounts. Stability, as defined structurally, describes the architectural properties of how income is generated right now.
+        You're good at what you do. Clients come to you. When they need something, they call or email, and you deliver.
       </P>
       <P>
-        <Link href="/learn/how-to-measure-income-stability" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>Six dimensions</Link> define it:
+        So you don't push for commitments in advance. You don't ask them to lock in quarterly work. You don't build retainer relationships.
+      </P>
+      <P>
+        Why? Because it feels pushy. It feels like you're asking too much. It feels transactional.
+      </P>
+      <P>
+        So you stay reactive. You wait for them to call. You deliver. You move on to the next project. It works. Revenue is there. But you're constantly nervous about next month.
+      </P>
+      <P>
+        This is <em>fear of rejection</em> mixed with <em>scarcity mindset</em>. Deep down, you believe that if you ask clients for a commitment, they'll say no. Or worse, they'll leave. So you don't ask. You take what they give. You're grateful for the work.
+      </P>
+      <P>
+        But here's the truth: Most clients *want* predictability. They want a trusted partner they can count on. Asking for a commitment often *increases* the relationship, not diminishes it.
+      </P>
+
+      <H2>Gap #3: Pricing Power</H2>
+      <P>
+        A prospect asks what you charge. You give a number. They say "that's a bit high."
+      </P>
+      <P>
+        You feel the pressure. You're nervous they'll say no. So you offer a discount. "How about this price instead?"
+      </P>
+      <P>
+        They say yes. Deal done.
+      </P>
+      <P>
+        The next prospect asks. You do the same thing. By the end of the year, your "standard" rate is actually 20% lower than it should be because you've discounted so much.
+      </P>
+      <P>
+        You know your prices are inconsistent. You know you're leaving money on the table. But the alternative—someone saying no—feels worse than the money loss.
+      </P>
+      <P>
+        This is pure <em>loss aversion</em> combined with <em>fear of conflict</em>. Your brain registers "they might say no" as a loss (rejection). The actual cost of discounting is abstract and spread out over time, so it doesn't trigger the same fear response.
+      </P>
+
+      <H2>Gap #4: Time-to-Income Ratio</H2>
+      <P>
+        You're the expert. You do the best work. When clients hire you, they're hiring <em>you</em>.
+      </P>
+      <P>
+        So you do everything. You handle the client relationship, the strategy, the execution, the quality control. You work 50+ hours a week.
+      </P>
+      <P>
+        Other people could do parts of this work, but it wouldn't be as good. So you do it.
+      </P>
+      <P>
+        You tell yourself you'll delegate someday. When things slow down. When you find the right person. Next year, maybe.
+      </P>
+      <P>
+        But you never do. You're the bottleneck, and you've made peace with it.
+      </P>
+      <P>
+        This is <em>identity fusion</em>. Your sense of self is wrapped up in being the expert, the person who does the best work. If you delegate, you're giving up control. If you automate, you're admitting the work isn't that special. If you raise prices, you're... well, you're saying no to some people.
+      </P>
+      <P>
+        All of that feels like losing something essential about yourself.
+      </P>
+
+      <H2>Gap #5: Revenue Consistency</H2>
+      <P>
+        You notice a pattern. Summer is slow. Q4 is crazy. It's been like this for years.
+      </P>
+      <P>
+        You know what's coming. But you don't plan for it.
+      </P>
+      <P>
+        When summer hits, revenue dips. Suddenly you're worried. You discount hard to bring in quick work. You reduce quality or cut corners to deliver faster. You stress-spend on things you don't need.
+      </P>
+      <P>
+        Then Q4 hits. Revenue explodes. You're making great money, so you feel rich. You spend freely. You relax.
+      </P>
+      <P>
+        Then the cycle repeats.
+      </P>
+      <P>
+        This is <em>present bias</em> mixed with <em>scarcity panic</em>. When times are good, your brain believes they'll stay good. You don't plan for the dip because you can't really imagine it when you're in the good months. When the dip hits, you panic. Scarcity mindset kicks in. You make desperate decisions you wouldn't make if you had time to think.
+      </P>
+
+      <H2>The Pattern</H2>
+      <P>
+        All 5 gaps point to the same root issue: **Your business structure is fragile because your psychology is keeping you trapped in it.**
+      </P>
+      <P>
+        You know what to do. You know you should diversify clients. You know you should ask for commitments. You know you should raise prices. You know you should delegate. You know you should plan for seasonal swings.
+      </P>
+      <P>
+        You're not stuck because you don't know how. You're stuck because the unknown (new clients, asking for commitments, saying no to discounts, delegating, planning for the future) feels scarier than the pain you're already in.
+      </P>
+
+      <H2>Your Next 30 Days</H2>
+      <P>
+        Pick the gap that scares you the most. That's the one costing you the most money.
       </P>
       <BulletList items={[
-        "Source diversification \u2014 how concentrated income is across clients, contracts, or revenue streams",
-        "Revenue type \u2014 whether income is recurring, project-based, commission-driven, or a hybrid",
-        "Contractual protection \u2014 the degree to which income is backed by binding agreements with defined terms",
-        "Client concentration \u2014 dependency on any single source for a disproportionate share of revenue",
-        "Income continuity \u2014 whether income continues when active labor stops, even temporarily",
-        "Forward visibility \u2014 how far ahead committed or contracted income extends",
+        "Client Concentration: List top 5 clients; identify replacement targets (this week)",
+        "Forward Visibility: Audit pipeline; lock in 1 client for quarterly commitment (2 weeks)",
+        "Pricing Power: Define your three rates; test one price increase (2 weeks)",
+        "Time-to-Income: Identify 3 time-wasting tasks; automate or delegate one (1 week)",
+        "Revenue Consistency: Map seasonal patterns; design one counter-seasonal offer (3 weeks)",
       ]} />
       <P>
-        Each dimension captures a different structural property. Together, they produce a composite view of how income is built&mdash;not how much of it exists.
-      </P>
-
-      <H2>Why This Matters for Non-Salaried Earners</H2>
-      <P>
-        Salaried employees benefit from built-in structural advantages: recurring payroll, employment contracts, benefits continuity, and often severance provisions. These properties score well on structural measures without any deliberate effort by the earner.
-      </P>
-      <P>
-        Freelancers, consultants, business owners, and commission-based professionals operate without these defaults. Their income structures are self-built, often by accident, and rarely evaluated. A management consultant who has drifted into a position where 70% of revenue comes from a single client has a structural vulnerability that no income statement will reveal. A freelance designer with eight clients on monthly retainers has built a more resilient structure than many salaried positions, but no system recognizes this.
-      </P>
-
-      <H2>The Case for Deterministic Measurement</H2>
-      <P>
-        One of the persistent problems in financial assessment is subjectivity. Advisory opinions vary. Risk models incorporate probabilistic assumptions that change over time. Two advisors reviewing the same client may reach different conclusions.
-      </P>
-      <P>
-        A deterministic model eliminates this variability. Given identical inputs, it produces identical outputs. The same income structure, evaluated on the same model version, will always yield the same score. This is not a minor technical detail&mdash;it is the difference between a measurement and an opinion.
-      </P>
-      <PullQuote>
-        The goal is not to predict what will happen to your income. The goal is to measure what is structurally true about it right now.
-      </PullQuote>
-
-      <H2>What Changes When You Can See Structure</H2>
-      <P>
-        Measurement creates leverage. When income structure becomes visible, specific improvements become actionable. A score that highlights low contractual protection and high client concentration does not require interpretation&mdash;it points directly at what to address. Convert informal arrangements to contracts. Diversify the client base. Introduce a recurring revenue component.
-      </P>
-      <P>
-        These are not abstract financial goals. They are structural changes with measurable impact on how income behaves when a client leaves, a contract ends, or market conditions shift.
-      </P>
-      <P>
-        The absence of this measurement has persisted not because the concept is complex, but because nobody built the system to deliver it. That gap is now closed.
+        The gap that scares you most? That's the one with the biggest payoff. Start there.
       </P>
     </>
   );
@@ -260,37 +331,212 @@ function Article1() {
 
 
 /* ================================================================ */
-/* ARTICLE 2: HIDDEN RISK IN COMMISSION INCOME                       */
+/* ARTICLE 2: THE INCOME STABILITY GAP                              */
 /* ================================================================ */
 
 function Article2() {
   return (
     <>
       <P>
-        Commission-based income occupies a peculiar position in the financial landscape. On paper, commission earners frequently outperform their salaried counterparts. Top real estate agents, insurance producers, and enterprise sales professionals routinely generate annual income well into six figures. By conventional metrics&mdash;gross income, year-over-year growth, even net worth accumulation&mdash;they appear financially strong.
+        Three professionals look at your money. Your accountant tracks what you earned last year. Your financial advisor manages what you've accumulated. Your bank verifies how much comes in each month.
       </P>
       <P>
-        But income amount is not <Link href="/learn/what-is-income-structure" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>income structure</Link>. And when you evaluate commission income structurally, a different picture emerges&mdash;one defined by concentration, fragility, and dependence on conditions that the earner does not control.
+        Between the three of them, they cover income history, asset growth, and cash flow.
+      </P>
+      <P>
+        None of them measure the one thing that determines whether your income survives next quarter.
+      </P>
+
+      <H2>The Gap Nobody Talks About</H2>
+      <P>
+        Consider a management consultant earning $180,000 a year. On paper, everything looks strong. The accountant files clean returns. The advisor allocates a healthy portfolio. The bank approves the mortgage. Every system says "this person is doing well."
+      </P>
+      <P>
+        But here's what none of them see: 70% of that $180,000 comes from a single client on a handshake agreement. Nothing is contracted beyond the current quarter. There's no recurring revenue, no retainer, no written commitment past 90 days. If that client changes direction, $126,000 vanishes—and there's nothing in the pipeline to replace it.
+      </P>
+      <P>
+        The consultant's income isn't $180,000. It's $180,000 <em>if nothing changes</em>. That distinction is invisible to every tool in the current financial system.
+      </P>
+
+      <H2>What Your Accountant Misses</H2>
+      <P>
+        Accountants are essential. They organize financial records, ensure tax compliance, and identify deductions. But their lens is backward-looking by design. They work with what has already occurred.
+      </P>
+      <P>
+        A tax return shows $180,000 in revenue. It does not show that $126,000 came from one source with no contract. It does not show that income arrived in three large deposits with nothing in the months between. It does not show that the entire earning structure depends on one relationship continuing exactly as it has.
+      </P>
+
+      <H2>What Your Financial Advisor Misses</H2>
+      <P>
+        Financial advisors focus on what you've built: retirement accounts, investment portfolios, insurance coverage, estate plans. Their expertise is in managing accumulated wealth and protecting it over time.
+      </P>
+      <P>
+        But the income funding those accounts? That's treated as a given. The standard planning conversation assumes income continues at roughly the same level. The advisor models what happens to your portfolio over 20 years—but rarely asks what happens if the income feeding it drops 40% in the next six months.
+      </P>
+
+      <H2>What Your Bank Misses</H2>
+      <P>
+        Banks verify income for one purpose: to determine whether you can service a debt. Mortgage underwriting looks at two years of tax returns, recent pay stubs, and bank statements. The question is simple: does enough money come in to cover the payment?
+      </P>
+      <P>
+        What they don't evaluate is how that income is constructed. A salaried employee earning $180,000 from a Fortune 500 company and a freelance consultant earning $180,000 from a single client look identical on a loan application. Both show the same annual income. Both can demonstrate consistent deposits.
+      </P>
+      <P>
+        But the risk profiles are completely different. The employee has contractual protections, severance provisions, and unemployment insurance. The consultant has none of those. The bank's system can't distinguish between the two because it was never designed to.
+      </P>
+
+      <H2>The Layer Between Earning and Keeping</H2>
+      <P>
+        This is the income stability gap. Not a gap in how much you earn—a gap in understanding <em>how</em> you earn it. Specifically:
+      </P>
+      <BulletList items={[
+        "How many sources does your income depend on?",
+        "How much of it is contractually committed beyond this month?",
+        "What percentage is recurring versus one-time?",
+        "What happens to your total income if your largest source disappears?",
+        "How far ahead can you see with reasonable certainty?",
+      ]} />
+      <P>
+        These aren't abstract questions. They determine whether a bad quarter is an inconvenience or a crisis. And until now, no system existed to answer them with a consistent, measurable score.
+      </P>
+
+      <H2>Why This Gap Exists</H2>
+      <P>
+        The financial system evolved around three pillars: credit risk, asset management, and income verification. Each serves a critical function. But each was built for a world where most income was salaried, predictable, and employer-backed.
+      </P>
+      <P>
+        That world is shrinking. Today, over 36% of the U.S. workforce earns through freelance, contract, gig, or commission-based arrangements. For these earners, income is not a fixed input—it's a variable output that depends on client retention, deal flow, market conditions, and personal capacity.
+      </P>
+      <P>
+        The tools that evaluate financial health were not built for this reality. The result is a growing population of earners whose financial picture looks complete on the surface—but has a critical measurement missing underneath.
+      </P>
+
+      <H2>Closing the Gap</H2>
+      <P>
+        RunPayway™ was built to fill this gap. The Income Stability Score™ measures the six key dimensions of how income is constructed—not the amount. It evaluates source diversity, income persistence, forward visibility, concentration risk, labor dependence, and earnings consistency.
+      </P>
+      <P>
+        The result is a score from 0 to 100 that tells you what no accountant, advisor, or bank currently can: how much of your income is protected, how much is at risk, and what specific actions would strengthen it.
+      </P>
+      <P>
+        It doesn't replace any of these professionals. It gives them—and you—the measurement that's been missing. The one that sits between earning money and being able to count on it.
+      </P>
+    </>
+  );
+}
+
+
+/* ================================================================ */
+/* ARTICLE 3: WHAT IS INCOME STABILITY                              */
+/* ================================================================ */
+
+function Article3() {
+  return (
+    <>
+      <P>
+        Your bank knows how much money you make. Your accountant knows how much you earned last year. Your credit card company knows how you spend it.
+      </P>
+      <P>
+        Nobody knows whether you'll still be making it next quarter.
+      </P>
+
+      <H2>The Question Nobody Asks</H2>
+      <P>
+        Imagine two people. Both make $150,000 a year. On paper, they're identical—same income, same tax return, same borrowing power.
+      </P>
+      <P>
+        Person A gets paid every month by their employer. The contract is solid. They've been there 5 years. If they lose the job, they get unemployment and severance.
+      </P>
+      <P>
+        Person B is a consultant. One client pays them $150,000 a year. No contract. They've been working together for 2 years, but nothing's written down. The client could leave tomorrow.
+      </P>
+      <P>
+        Every financial system in existence treats them the same way. Same income = same risk. But you know they're not the same. The question is: why doesn't anyone measure the difference?
+      </P>
+
+      <H2>Why Your Credit Score Doesn't Help</H2>
+      <P>
+        Credit scores are brilliant for one thing: predicting whether you'll pay back debt. They look at your history of borrowing and paying. Perfect tool for that job.
+      </P>
+      <P>
+        But your credit score doesn't care how stable your income is. You could have an 800 credit score and work for a failing company. You could have perfect credit and be one client away from financial crisis.
+      </P>
+      <P>
+        That's not because credit scores are bad—they do exactly what they were designed to do. It's because they measure borrowing behavior, not income structure. Two different things.
+      </P>
+
+      <H2>The Six Things That Actually Matter</H2>
+      <P>
+        Income stability isn't about how much you make. It's about how your income is built. Six dimensions matter:
+      </P>
+      <BulletList items={[
+        "Diversification: Do you have 3 clients or 30? Is your income spread out or concentrated?",
+        "Revenue type: Is it recurring (monthly retainer) or one-off (project-based, commission)?",
+        "Contracts: How much of your income is backed by a written agreement?",
+        "Client concentration: What percentage comes from your single biggest client?",
+        "Income continuity: Does your income stop if you take time off or get sick?",
+        "Forward visibility: How far ahead do you know your revenue—90 days? 30 days? Nothing?",
+      ]} />
+      <P>
+        Each of these tells you something different about whether your income structure can survive disruption. Together, they show you what's really stable and what's fragile.
+      </P>
+
+      <H2>Why This Matters</H2>
+      <P>
+        Here's the truth: Salaried employees get stability by default. They didn't have to build it. The employer did. Recurring payroll, written contracts, benefits—all built in.
+      </P>
+      <P>
+        Freelancers, consultants, business owners, and commission earners build their own income structure—usually by accident, and almost never deliberately. You drift into concentrating revenue in one client. You accept project-based work because that's what's available. You never formalize relationships with contracts.
+      </P>
+      <P>
+        Then one client leaves, or one project ends, or the market shifts. And suddenly your stable-looking income isn't stable at all.
+      </P>
+
+      <H2>The Power of Seeing It Clearly</H2>
+      <P>
+        Once you can <em>see</em> how your income is structured, you can change it. A score that shows "80% of your revenue comes from one client" isn't an opinion or a prediction. It's a measurement. And measurements create clarity.
+      </P>
+      <P>
+        Clear problem = clear solution. Too concentrated? Diversify. No recurring revenue? Build a retainer. Income stops when you stop working? Design a component that doesn't.
+      </P>
+      <P>
+        These aren't theoretical improvements. They're structural changes that make your income harder to break.
+      </P>
+    </>
+  );
+}
+
+
+/* ================================================================ */
+/* ARTICLE 4: HIDDEN RISK IN COMMISSION INCOME                      */
+/* ================================================================ */
+
+function Article4() {
+  return (
+    <>
+      <P>
+        Commission-based income looks great on paper. Top real estate agents, insurance producers, and enterprise sales professionals routinely generate six-figure annual income. By conventional metrics—gross income, year-over-year growth, even net worth accumulation—they appear financially strong.
+      </P>
+      <P>
+        But income amount is not income structure. And when you evaluate commission income structurally, a different picture emerges—one defined by concentration, fragility, and dependence on conditions that the earner does not control.
       </P>
 
       <H2>The Structural Profile of Commission Income</H2>
       <P>
         Commission-based income has several characteristics that score poorly across structural dimensions, regardless of the dollar amount involved.
       </P>
+
       <H3>Zero Forward Visibility</H3>
       <P>
         Commission income, by definition, is earned at the point of transaction. There is no backlog, no contracted future revenue, no pipeline that constitutes a binding obligation. A salesperson who closed $400,000 last quarter may close $80,000 next quarter. There is no structural mechanism that prevents this.
       </P>
       <P>
-        Forward visibility&mdash;the degree to which future income is committed or contracted&mdash;is one of the most heavily weighted dimensions in <Link href="/learn/what-is-income-stability" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>income stability</Link> measurement. Commission structures typically score near zero on this dimension.
+        Forward visibility—the degree to which future income is committed or contracted—is one of the most heavily weighted dimensions in income stability measurement. Commission structures typically score near zero on this dimension.
       </P>
 
       <H3>Full Labor Dependence</H3>
       <P>
-        Commission income stops when active selling stops. Illness, travel, family obligations, or simply a slow month produces an immediate income gap with no contractual cushion. There is no passive component, no residual stream, no mechanism that generates revenue absent the earner&rsquo;s direct effort.
-      </P>
-      <P>
-        This is distinct from, say, a consultant on a six-month retainer who receives payment regardless of whether any specific deliverable ships in a given week.
+        Commission income stops when active selling stops. Illness, travel, family obligations, or simply a slow month produces an immediate income gap with no contractual cushion. There is no passive component, no residual stream, no mechanism that generates revenue absent the earner's direct effort.
       </P>
 
       <H3>Revenue Concentration</H3>
@@ -303,23 +549,20 @@ function Article2() {
         Consider a residential real estate agent earning $180,000 annually. By most standards, this is a strong income. But examine the structure:
       </P>
       <BulletList items={[
-        "Revenue composition: 90% commission-based, 10% from a small property management side arrangement",
-        "Client concentration: 45% of annual income derived from referrals through a single mortgage broker relationship",
-        "Contractual protection: zero binding contracts; every transaction is a new, independent engagement",
-        "Forward visibility: no committed income beyond listings currently under contract (typically 30\u201360 days)",
-        "Income continuity: income drops to near zero within 60 days of ceasing active work",
-        "Source diversification: effectively two income sources\u2014commission sales and a minor management fee",
+        "90% commission-based, 10% from property management arrangements",
+        "45% of annual income comes from referrals through a single mortgage broker relationship",
+        "Zero binding contracts; every transaction is a new, independent engagement",
+        "No committed income beyond listings currently under contract (30–60 days)",
+        "Income drops to near zero within 60 days of ceasing active work",
+        "Effectively two income sources—commission sales and management fee",
       ]} />
       <P>
         Evaluated structurally, this income profile produces a score of approximately 28 out of 100. The gap between the perceived strength ($180,000 annual income) and the structural reality (a score of 28) is not a rounding error. It represents genuine financial fragility that existing instruments fail to surface.
       </P>
-      <PullQuote>
-        An income of $180,000 with a structural score of 28 is not a strong financial position with room for improvement. It is a fragile position that happens to be generating high revenue in the current period.
-      </PullQuote>
 
       <H2>Why This Matters Beyond the Individual</H2>
       <P>
-        The structural risk in commission income extends beyond personal financial planning. Lenders who evaluate commission earners based on two years of tax returns are measuring historical output, not structural durability. A mortgage underwriter approving a $600,000 loan based on $180,000 in commission income is making a bet on structural conditions they have not evaluated.
+        Lenders who evaluate commission earners based on two years of tax returns are measuring historical output, not structural durability. A mortgage underwriter approving a $600,000 loan based on $180,000 in commission income is making a bet on structural conditions they have not evaluated.
       </P>
       <P>
         Financial advisors managing wealth for commission-based clients face a similar blind spot. Asset allocation strategies built on assumed income continuity are structurally unsound when the income itself has no continuity mechanism.
@@ -330,16 +573,13 @@ function Article2() {
         The structural weaknesses of commission income are not permanent. They are architectural, which means they can be redesigned. The highest-impact changes:
       </P>
       <BulletList items={[
-        "Introduce a recurring revenue component\u2014even a small retainer or management fee fundamentally changes the income profile",
+        "Introduce a recurring revenue component—even a small retainer or management fee fundamentally changes the income profile",
         "Diversify referral sources to reduce dependency on any single relationship for more than 20% of revenue",
         "Convert repeat client relationships into formal, contracted arrangements where possible",
         "Build pipeline mechanisms that extend forward visibility beyond the current transaction cycle",
       ]} />
       <P>
-        None of these changes require earning less or working differently in a fundamental sense. They require restructuring how existing economic activity is organized&mdash;converting transactional relationships into structural ones.
-      </P>
-      <P>
-        The first step is measurement. Until the structural properties of income are visible, the specific improvements remain unclear. That is the problem <Link href="/learn/how-to-measure-income-stability" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>structural income scoring</Link> solves.
+        None of these changes require earning less. They require restructuring how existing economic activity is organized—converting transactional relationships into structural ones.
       </P>
     </>
   );
@@ -347,17 +587,17 @@ function Article2() {
 
 
 /* ================================================================ */
-/* ARTICLE 3: RECURRING REVENUE FOR SERVICE BUSINESSES               */
+/* ARTICLE 5: RECURRING REVENUE FOR SERVICE BUSINESSES               */
 /* ================================================================ */
 
-function Article3() {
+function Article5() {
   return (
     <>
       <P>
-        Service businesses&mdash;consulting firms, agencies, professional practices, freelance operations&mdash;share a common structural default: project-based revenue. A client engages for a defined scope, the work is delivered, payment is collected, and the cycle resets. Each new period requires new sales to replace the revenue that expired with the last deliverable.
+        Service businesses—consulting firms, agencies, professional practices, freelance operations—share a common structural default: project-based revenue. A client engages for a defined scope, the work is delivered, payment is collected, and the cycle resets. Each new period requires new sales to replace the revenue that expired with the last deliverable.
       </P>
       <P>
-        This model is functional. Millions of service businesses operate profitably on project-based revenue. But profitability and structural resilience are different measurements, and on the dimension that matters most for long-term <Link href="/learn/what-is-income-stability" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>income stability</Link>&mdash;how income behaves under change&mdash;project-based revenue has significant weaknesses.
+        This model is functional. Millions of service businesses operate profitably on project-based revenue. But profitability and structural resilience are different measurements. And on the dimension that matters most for long-term income stability—how income behaves under change—project-based revenue has significant weaknesses.
       </P>
 
       <H2>The Structural Problem with Project Revenue</H2>
@@ -365,59 +605,47 @@ function Article3() {
         Project-based income suffers from three structural limitations that compound over time.
       </P>
       <P>
-        First, forward visibility resets with each project completion. A consulting firm that delivers a $50,000 strategy engagement has zero committed revenue the day after delivery unless new work has already been contracted. The financial position on December 1st may look nothing like the position on January 15th, based solely on pipeline timing.
+        <strong>Forward visibility resets with each project completion.</strong> A consulting firm that delivers a $50,000 strategy engagement has zero committed revenue the day after delivery unless new work has already been contracted. The financial position on December 1st may look nothing like the position on January 15th, based solely on pipeline timing.
       </P>
       <P>
-        Second, revenue continuity is zero. Income stops when projects stop. There is no residual component, no passive stream, no mechanism that generates revenue between active engagements. This creates a perpetual sales obligation that competes with delivery capacity.
+        <strong>Revenue continuity is zero.</strong> Income stops when projects stop. There is no residual component, no passive stream, no mechanism that generates revenue between active engagements. This creates a perpetual sales obligation that competes with delivery capacity.
       </P>
       <P>
-        Third, client relationships are episodic rather than structural. A client who engages for a single project may or may not return. There is no contractual obligation to continue, no switching cost, and no institutional dependency that creates retention by default.
+        <strong>Client relationships are episodic rather than structural.</strong> A client who engages for a single project may or may not return. There is no contractual obligation to continue, no switching cost, and no institutional dependency that creates retention by default.
       </P>
-      <PullQuote>
-        The most profitable quarter in a project-based business provides no structural guarantee about the next quarter. Revenue must be re-earned continuously, from scratch, with no compounding effect.
-      </PullQuote>
 
       <H2>What Recurring Revenue Changes</H2>
       <P>
-        Recurring revenue&mdash;income that arrives on a contracted, repeating basis&mdash;addresses each of these structural weaknesses directly.
+        Recurring revenue—income that arrives on a contracted, repeating basis—addresses each of these structural weaknesses directly.
       </P>
       <P>
-        Forward visibility extends to the duration of the agreement. A 12-month retainer contracted in January provides visibility through December. A monthly subscription with a 90-day notice period provides at least three months of committed revenue at any point.
+        <strong>Forward visibility extends</strong> to the duration of the agreement. A 12-month retainer contracted in January provides visibility through December. A monthly subscription with a 90-day notice period provides at least three months of committed revenue at any point.
       </P>
       <P>
-        Revenue continuity becomes inherent rather than dependent on active selling. A service business with $30,000 in monthly retainer revenue generates $360,000 annually before any new project is sold. That base exists regardless of pipeline conditions, market shifts, or seasonal slowdowns.
+        <strong>Revenue continuity becomes inherent</strong> rather than dependent on active selling. A service business with $30,000 in monthly retainer revenue generates $360,000 annually before any new project is sold. That base exists regardless of pipeline conditions, market shifts, or seasonal slowdowns.
       </P>
       <P>
-        Client relationships shift from episodic to structural. Recurring arrangements create institutional dependency&mdash;the client&rsquo;s operations integrate with the service provider, creating natural retention through switching costs and relationship depth.
+        <strong>Client relationships shift from episodic to structural.</strong> Recurring arrangements create institutional dependency—the client's operations integrate with the service provider, creating natural retention through switching costs and relationship depth.
       </P>
 
       <H2>Practical Conversion Strategies</H2>
       <P>
-        Converting project-based revenue to recurring revenue is not a theoretical exercise. It requires specific structural changes to how services are packaged, priced, and delivered.
+        Converting project-based revenue to recurring revenue is not theoretical. It requires specific structural changes to how services are packaged, priced, and delivered.
       </P>
 
       <H3>Retainer Conversion</H3>
       <P>
         The most direct path. Identify clients who engage repeatedly for similar work and propose a monthly retainer that covers a defined scope of ongoing service. A marketing consultant who produces quarterly strategy decks for three clients can convert those project engagements into monthly retainers with a broader but more consistent scope. The client gets predictable access; the provider gets predictable revenue.
       </P>
-      <P>
-        Effective retainer structures define hours or deliverables per month, include a minimum commitment period (six months is standard for initial agreements), and price at a modest discount to equivalent project rates to incentivize the switch.
-      </P>
 
       <H3>Subscription Models</H3>
       <P>
         For service businesses that can productize elements of their offering, subscription models create recurring revenue at scale. An accounting firm that offers quarterly advisory calls, monthly financial reviews, and annual tax preparation as a bundled monthly subscription fundamentally changes its revenue structure compared to billing each service as a discrete project.
       </P>
-      <P>
-        Subscription models work best when the underlying service has a natural recurring cadence and when the value compounds over time as the provider accumulates context about the client.
-      </P>
 
       <H3>Maintenance and Support Agreements</H3>
       <P>
         Service businesses that deliver implementation projects have a natural recurring revenue opportunity in ongoing maintenance. A web development agency that builds a platform can offer a monthly maintenance agreement covering hosting management, security updates, performance monitoring, and a defined number of modification hours. This converts a one-time project into a long-term revenue stream.
-      </P>
-      <P>
-        Maintenance agreements typically generate lower per-hour revenue than project work but dramatically improve structural scores through forward visibility and income continuity.
       </P>
 
       <H2>The Compounding Effect</H2>
@@ -425,17 +653,12 @@ function Article3() {
         The structural impact of recurring revenue compounds. Each new retainer or subscription adds to a base that persists independently. A service business that converts three clients to monthly retainers per quarter accumulates a recurring base that grows by twelve clients per year. After two years, the business has a structural foundation of 24 recurring relationships generating predictable monthly revenue.
       </P>
       <P>
-        This compounding effect is visible in structural scoring. A service business that begins with a score driven primarily by project revenue will see <Link href="/learn/how-to-measure-income-stability" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>measurable improvement</Link> with each recurring arrangement added&mdash;not because income increases, but because the <Link href="/learn/what-is-income-structure" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>architecture of that income</Link> changes.
+        This compounding effect is visible in structural scoring. A service business that begins with a score driven primarily by project revenue will see measurable improvement with each recurring arrangement added—not because income increases, but because the architecture of that income changes.
       </P>
+
       <PullQuote>
         The question is not whether recurring revenue is better than project revenue. Structurally, this is settled. The question is how quickly a service business can shift its income architecture toward a recurring base.
       </PullQuote>
-      <P>
-        Measurement accelerates this process. When the structural properties of income are visible, the impact of each conversion is quantifiable. A retainer that moves the score from 42 to 49 is not an abstraction&mdash;it is a specific, measurable improvement in how income behaves under real-world conditions.
-      </P>
-      <P>
-        The structural shift from project-based to recurring revenue is the single highest-leverage change available to most service businesses. It does not require new skills, new markets, or new clients. It requires reorganizing existing relationships around a different revenue architecture&mdash;one that compounds rather than resets.
-      </P>
     </>
   );
 }
@@ -447,133 +670,29 @@ function Article3() {
 
 function getArticleContent(slug: string): React.ReactNode | null {
   switch (slug) {
-    case "the-income-stability-gap": return <Article4 />;
-    case "what-is-income-stability": return <Article1 />;
-    case "hidden-risk-in-commission-income": return <Article2 />;
-    case "recurring-revenue-for-service-businesses": return <Article3 />;
+    case "post-tax-season-income-review": return <Article1 />;
+    case "the-income-stability-gap": return <Article2 />;
+    case "what-is-income-stability": return <Article3 />;
+    case "hidden-risk-in-commission-income": return <Article4 />;
+    case "recurring-revenue-for-service-businesses": return <Article5 />;
     default: return null;
   }
 }
 
 
 /* ================================================================ */
-/* ARTICLE 4: THE INCOME STABILITY GAP                               */
-/* ================================================================ */
-
-function Article4() {
-  return (
-    <>
-      <P>
-        Three professionals look at your money. Your accountant tracks what you earned last year. Your financial advisor manages what you&rsquo;ve accumulated. Your bank verifies how much comes in each month. Between the three of them, they cover income history, asset growth, and cash flow.
-      </P>
-      <P>
-        None of them measure the one thing that determines whether your income survives next quarter.
-      </P>
-
-      <H2>The Gap Nobody Talks About</H2>
-      <P>
-        Consider a management consultant earning $180,000 a year. On paper, everything looks strong. The accountant files clean returns. The advisor allocates a healthy portfolio. The bank approves the mortgage. Every system says &ldquo;this person is doing well.&rdquo;
-      </P>
-      <P>
-        But here&rsquo;s what none of them see: 70% of that $180,000 comes from a single client on a handshake agreement. Nothing is contracted beyond the current quarter. There&rsquo;s no recurring revenue, no retainer, no written commitment past 90 days. If that client changes direction, $126,000 vanishes&mdash;and there&rsquo;s nothing in the pipeline to replace it.
-      </P>
-      <P>
-        The consultant&rsquo;s income isn&rsquo;t $180,000. It&rsquo;s $180,000 <em>if nothing changes</em>. That distinction is invisible to every tool in the current financial system.
-      </P>
-
-      <PullQuote>
-        Your accountant sees what happened. Your advisor manages what accumulated. Your bank verifies what arrived. Nobody measures whether it will continue.
-      </PullQuote>
-
-      <H2>What Your Accountant Misses</H2>
-      <P>
-        Accountants are essential. They organize financial records, ensure tax compliance, and identify deductions. But their lens is backward-looking by design. They work with what has already occurred.
-      </P>
-      <P>
-        A tax return shows $180,000 in revenue. It does not show that $126,000 of it came from one source with no contract. It does not show that income arrived in three large deposits with nothing in the months between. It does not show that the entire earning structure depends on one relationship continuing exactly as it has.
-      </P>
-      <P>
-        The accountant&rsquo;s job is to report accurately on the past. The stability of the income going forward is outside that scope&mdash;not because they don&rsquo;t care, but because no tool exists to measure it.
-      </P>
-
-      <H2>What Your Financial Advisor Misses</H2>
-      <P>
-        Financial advisors focus on what you&rsquo;ve built: retirement accounts, investment portfolios, insurance coverage, estate plans. Their expertise is in managing accumulated wealth and protecting it over time.
-      </P>
-      <P>
-        But the income funding those accounts? That&rsquo;s treated as a given. The standard planning conversation assumes income continues at roughly the same level. The advisor models what happens to your portfolio over 20 years&mdash;but rarely asks what happens if the income feeding it drops 40% in the next six months.
-      </P>
-      <P>
-        This isn&rsquo;t negligence. It&rsquo;s a blind spot built into the advisory model. Financial planning tools don&rsquo;t have an input field for &ldquo;how much of your income is actually protected.&rdquo; The question has never had a measurable answer.
-      </P>
-
-      <H2>What Your Bank Misses</H2>
-      <P>
-        Banks verify income for one purpose: to determine whether you can service a debt. Mortgage underwriting looks at two years of tax returns, recent pay stubs, and bank statements. The question is simple: does enough money come in to cover the payment?
-      </P>
-      <P>
-        What they don&rsquo;t evaluate is how that <Link href="/learn/what-is-income-structure" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>income is constructed</Link>. A W-2 employee earning $180,000 from a Fortune 500 company and a freelance consultant earning $180,000 from a single client look identical on a loan application. Both show the same annual income. Both can demonstrate consistent deposits.
-      </P>
-      <P>
-        But the risk profiles are completely different. The employee has contractual protections, severance provisions, and unemployment insurance. The consultant has none of those. The bank&rsquo;s system can&rsquo;t distinguish between the two because it was never designed to.
-      </P>
-
-      <H2>The Layer Between Earning and Keeping</H2>
-      <P>
-        This is the <Link href="/learn/what-is-income-stability" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>income stability</Link> gap. Not a gap in how much you earn&mdash;a gap in understanding <em>how</em> you earn it. Specifically:
-      </P>
-      <BulletList items={[
-        "How many sources does your income depend on?",
-        "How much of it is contractually committed beyond this month?",
-        "What percentage is recurring versus one-time?",
-        "What happens to your total income if your largest source disappears?",
-        "How far ahead can you see with reasonable certainty?",
-      ]} />
-      <P>
-        These aren&rsquo;t abstract questions. They determine whether a bad quarter is an inconvenience or a crisis. And until now, no system existed to answer them with a consistent, measurable score.
-      </P>
-
-      <H2>Why This Gap Exists</H2>
-      <P>
-        The financial system evolved around three pillars: credit risk, asset management, and income verification. Each serves a critical function. But each was built for a world where most income was salaried, predictable, and employer-backed.
-      </P>
-      <P>
-        That world is shrinking. Today, over 36% of the U.S. workforce earns through freelance, contract, gig, or commission-based arrangements. For these earners, income is not a fixed input&mdash;it&rsquo;s a variable output that depends on client retention, deal flow, market conditions, and personal capacity.
-      </P>
-      <P>
-        The tools that evaluate financial health were not built for this reality. <Link href="/learn/income-stability-vs-credit-score" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>Credit scores</Link> don&rsquo;t account for it. Financial plans assume around it. Bank underwriting ignores it. The result is a growing population of earners whose financial picture looks complete on the surface&mdash;but has a critical measurement missing underneath.
-      </P>
-
-      <PullQuote>
-        The financial system was built for salaried income. The workforce moved on. The measurement tools didn&rsquo;t.
-      </PullQuote>
-
-      <H2>Closing the Gap</H2>
-      <P>
-        RunPayway™ was built to fill this gap. The Income Stability Score™ measures the <Link href="/learn/how-to-measure-income-stability" style={{ color: "#1F6D7A", textDecoration: "none", borderBottom: "1px solid rgba(31,109,122,0.3)" }}>six key dimensions</Link> of how income is constructed&mdash;not the amount. It evaluates source diversity, income persistence, forward visibility, concentration risk, labor dependence, and earnings consistency.
-      </P>
-      <P>
-        The result is a score from 0 to 100 that tells you what no accountant, advisor, or bank currently can: how much of your income is protected, how much is at risk, and what specific actions would strengthen it.
-      </P>
-      <P>
-        It doesn&rsquo;t replace any of these professionals. It gives them&mdash;and you&mdash;the measurement that&rsquo;s been missing. The one that sits between earning money and being able to count on it.
-      </P>
-
-      <H2>What To Do Next</H2>
-      <P>
-        If you earn variable income&mdash;through consulting, freelancing, commissions, business ownership, or any arrangement where next quarter isn&rsquo;t guaranteed&mdash;the stability gap applies to you. The question isn&rsquo;t whether your income is good. It&rsquo;s whether your income is built to last.
-      </P>
-      <P style={{ fontWeight: 600, color: "#0E1A2B" }}>
-        RunPayway™ measures that in under two minutes. No financial accounts required. No documents. Just what you already know about how your income works.
-      </P>
-    </>
-  );
-}
-
-
-/* ================================================================ */
 /* ARTICLE HEADER                                                    */
 /* ================================================================ */
+
+interface ArticleMeta {
+  slug: string;
+  title: string;
+  category: string;
+  readTime: string;
+  date: string;
+  author: string;
+  excerpt: string;
+}
 
 function ArticleHeader({ article }: { article: ArticleMeta }) {
   const { ref, visible } = useInView();

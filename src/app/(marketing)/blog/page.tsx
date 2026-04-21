@@ -73,6 +73,15 @@ const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace'
 
 const ARTICLES = [
   {
+    slug: "post-tax-season-income-review",
+    title: "Post-Tax-Season Income Review: 5 Stability Gaps Most Owners Overlook",
+    excerpt: "Your tax return shows what you made. It doesn't tell you if your income is stable. Here are the 5 gaps keeping you fragile—and what to do about them.",
+    category: "STRATEGY",
+    readTime: "12 min read",
+    date: "April 21, 2026",
+    author: "RunPayway Research",
+  },
+  {
     slug: "the-income-stability-gap",
     title: "The Income Stability Gap: What Your Accountant, Advisor, and Bank All Miss",
     excerpt: "Three professionals look at your money. None of them measure the one thing that determines whether your income survives next quarter.",
