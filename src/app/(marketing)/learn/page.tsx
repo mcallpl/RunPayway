@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { LearnHero, LearnCTA, MetaFooter, RealityCheck, L } from "@/components/learn/LearnComponents";
 import { useState, useEffect } from "react";
 
 function useMobile(bp = 768) {
@@ -286,10 +285,6 @@ export default function LearnHub() {
       <ReferenceLibrary m={m} />
 
       {/* FINAL CTA */}
-      <LearnCTA
-        heading="See Your Stability Class"
-        sub="Know where your income holds — and where it's exposed."
-      />
 
       {/* META FOOTER */}
       <MetaFooter updated="April 2026" />
