@@ -3,6 +3,7 @@
 // Tokens are HMAC-SHA256 signed and expire after 1 hour.
 
 import { createHmac, randomBytes } from "crypto";
+import { isValidPaymentPlanKey } from "./plan-validation";
 
 const TOKEN_EXPIRY_MS = 60 * 60 * 1000; // 1 hour
 
@@ -59,8 +60,8 @@ export function verifyPaymentToken(
     return false;
   }
 
-  // Validate plan_key
-  if (payload.plan_key !== "single_assessment" && payload.plan_key !== "annual_monitoring") {
+  // Validate plan_key against payment-eligible plans
+  if (!isValidPaymentPlanKey(payload.plan_key)) {
     return false;
   }
 

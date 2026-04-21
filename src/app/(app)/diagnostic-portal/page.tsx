@@ -354,7 +354,7 @@ export default function InitializationPage() {
       try {
         const ps = JSON.parse(purchaseSession);
         // If they have a completed assessment and are trying to use free plan without new purchase
-        if (ps.plan_key === "free" || (ps.plan_key === "individual" && ps.status !== "paid")) {
+        if (ps.plan_key === "free" && ps.status !== "paid") {
           setNeedsRetakePurchase(true);
           setPortalRevealed(true);
           return;

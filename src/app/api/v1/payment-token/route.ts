@@ -3,6 +3,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { generatePaymentToken } from "@/lib/payment-token";
+import { isValidPaymentPlanKey } from "@/lib/plan-validation";
 
 export const dynamic = "force-dynamic";
 export async function POST(request: NextRequest) {
@@ -10,7 +11,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const planKey = body.plan_key;
 
-    if (planKey !== "single_assessment" && planKey !== "annual_monitoring") {
+    if (!isValidPaymentPlanKey(planKey)) {
       return NextResponse.json(
         { error: "Invalid plan_key" },
         { status: 400 },
