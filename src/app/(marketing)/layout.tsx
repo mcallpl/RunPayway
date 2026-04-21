@@ -477,13 +477,13 @@ export default function MarketingLayout({
                 <LanguageSelector mobile={false} />
                 <Link
                   href="/sign-in"
+                  className="header-nav-link"
                   style={{
-                    fontSize: 14,
+                    fontSize: 15,
                     fontWeight: 500,
                     color: "rgba(14,26,43,0.60)",
-                    textDecoration: "none",
-                    transition: "color 200ms ease",
-                    whiteSpace: "nowrap",
+                    transition: "color 280ms cubic-bezier(0.22, 1, 0.36, 1)",
+                    paddingBottom: 2,
                   }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.60)"; }}
@@ -492,13 +492,13 @@ export default function MarketingLayout({
                 </Link>
                 <Link
                   href="/dashboard/login"
+                  className="header-nav-link"
                   style={{
-                    fontSize: 14,
+                    fontSize: 15,
                     fontWeight: 500,
                     color: "rgba(14,26,43,0.60)",
-                    textDecoration: "none",
-                    transition: "color 200ms ease",
-                    whiteSpace: "nowrap",
+                    transition: "color 280ms cubic-bezier(0.22, 1, 0.36, 1)",
+                    paddingBottom: 2,
                   }}
                   onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.60)"; }}
