@@ -106,9 +106,9 @@ ${insightHook ? `
 <!-- Personal greeting -->
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 <tr><td>
-<p style="font-size:15px;font-weight:300;color:${navy};margin:0 0 6px;letter-spacing:-0.01em;line-height:1.4;">${name}, here\u2019s what we found.</p>
+<p style="font-size:15px;font-weight:300;color:${navy};margin:0 0 6px;letter-spacing:-0.01em;line-height:1.4;">${name}, here\u2019s your structural measurement.</p>
 <p style="font-size:13px;color:${light};line-height:1.7;margin:8px 0 0;">
-We analyzed your income structure${industry ? ` in <strong style="color:${muted};font-weight:600;">${industry}</strong>` : ""}${structure ? ` as ${structure.match(/^[aeiou]/i) ? "an" : "a"} <strong style="color:${muted};font-weight:600;">${structure}</strong>` : ""}.
+We measured your income across six dimensions${industry ? ` in <strong style="color:${muted};font-weight:600;">${industry}</strong>` : ""}${structure ? ` as ${structure.match(/^[aeiou]/i) ? "an" : "a"} <strong style="color:${muted};font-weight:600;">${structure}</strong>` : ""}.
 </p>
 </td></tr>
 </table>
@@ -145,45 +145,37 @@ We analyzed your income structure${industry ? ` in <strong style="color:${muted}
 </td></tr>
 </table>
 
-<!-- 4. Projected improvement -->
+<!-- 4. Projected improvement (if making the key structural move) -->
 ${projectedScore > 0 ? `
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;">
 <tr><td style="padding:20px 24px;background-color:rgba(31,109,122,0.06);border-radius:10px;border:1px solid rgba(31,109,122,0.10);">
-<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${teal};margin:0 0 10px;">PROJECTED IMPROVEMENT</p>
+<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${teal};margin:0 0 10px;">IF YOU MAKE THIS STRUCTURAL MOVE</p>
 <p style="font-size:28px;font-weight:300;color:${navy};margin:0 0 4px;letter-spacing:-0.02em;font-family:'Georgia',serif;">
 ${score} <span style="color:${teal};">&rarr;</span> ${projectedScore} <span style="font-size:16px;font-weight:600;color:${teal};">(+${projectedLift})</span>
 </p>
-<p style="font-size:13px;color:${muted};line-height:1.6;margin:8px 0 0;">One change unlocks this. Your report shows which one.</p>
+<p style="font-size:13px;color:${muted};line-height:1.6;margin:8px 0 0;">Your income structure measures differently — and holds up better under pressure.</p>
 </td></tr>
 </table>
 ` : ""}
 
-<!-- 5. Action preview -->
-${actionFirst ? `
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;">
-<tr><td style="padding:20px 24px;background-color:#fafaf8;border-radius:10px;border:1px solid rgba(14,26,43,0.04);">
-<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 10px;">YOUR TOP RECOMMENDATION</p>
-<p style="font-size:14px;font-weight:500;color:${navy};line-height:1.6;margin:0;">${actionFirst}${actionBlurred ? `<span style="color:rgba(14,26,43,0.18);filter:blur(0.5px);"> ${actionBlurred}</span>` : ""}</p>
-<p style="margin:12px 0 0;"><a href="${dashboardLink}" style="font-size:12px;font-weight:600;color:${teal};text-decoration:none;letter-spacing:0.02em;">See full action plan &rarr;</a></p>
-</td></tr>
-</table>
-` : ""}
-
-<!-- Constraint context -->
+<!-- 5. What RunPayway measures (constraint context) -->
 ${constraint ? `
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;">
 <tr><td>
-<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 5px;">PRIMARY CONSTRAINT</p>
-<p style="font-size:14px;font-weight:500;color:${navy};margin:0;">${constraint}</p>
+<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${light};margin:0 0 8px;">WHAT RUNPAYWAY MEASURES</p>
+<p style="font-size:14px;font-weight:500;color:${navy};margin:0 0 8px;">${constraint}</p>
+<p style="font-size:13px;color:${muted};line-height:1.65;margin:0;">${interpretation || "This dimension defines how your income structure behaves under pressure. Improving it is the path to a higher score."}</p>
 </td></tr>
 </table>
 ` : ""}
 
-<!-- Interpretation -->
-${interpretation ? `
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:16px;">
-<tr><td>
-<p style="font-size:13px;color:${muted};line-height:1.75;margin:0;">${interpretation}</p>
+<!-- 6. Your structural opportunity -->
+${actionFirst ? `
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+<tr><td style="padding:20px 24px;background-color:rgba(31,109,122,0.06);border-radius:10px;border:1px solid rgba(31,109,122,0.10);">
+<p style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${teal};margin:0 0 10px;">THE MOVE THAT MATTERS</p>
+<p style="font-size:14px;font-weight:500;color:${navy};line-height:1.6;margin:0;">${actionFirst}${actionBlurred ? `<span style="color:rgba(14,26,43,0.18);filter:blur(0.5px);"> ${actionBlurred}</span>` : ""}</p>
+<p style="margin:12px 0 0;"><a href="${dashboardLink}" style="font-size:12px;font-weight:600;color:${teal};text-decoration:none;letter-spacing:0.02em;">See complete details &rarr;</a></p>
 </td></tr>
 </table>
 ` : ""}
