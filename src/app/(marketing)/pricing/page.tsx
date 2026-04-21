@@ -29,6 +29,12 @@ function useMobile(bp = 768) {
   return m;
 }
 
+function useTablet() {
+  const [t, setT] = useState(false);
+  useEffect(() => { const c = () => setT(window.innerWidth > 768 && window.innerWidth <= 1024); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, []);
+  return t;
+}
+
 function useReducedMotion() {
   const [r, setR] = useState(false);
   useEffect(() => { setR(window.matchMedia("(prefers-reduced-motion: reduce)").matches); }, []);
@@ -82,6 +88,7 @@ const STRIPE_ANNUAL = process.env.NEXT_PUBLIC_STRIPE_ANNUAL_URL || "https://buy.
 function HeroSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
@@ -117,6 +124,7 @@ function HeroSection() {
 function Declaration() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
@@ -156,6 +164,7 @@ function Declaration() {
 function PricingCards() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   const check = (text: string, color = C.teal) => (
@@ -175,8 +184,8 @@ function PricingCards() {
   };
 
   /* ── Tier 1: Free ── */
-  const freeCard = (order?: number) => (
-    <div style={{ ...cardBase, order: m ? order : undefined }}>
+  const freeCard = () => (
+    <div style={cardBase}>
       <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>
         Free
       </div>
@@ -209,14 +218,13 @@ function PricingCards() {
   );
 
   /* ── Tier 2: Full Report $69 (featured) ── */
-  const diagnosticCard = (order?: number) => (
+  const diagnosticCard = () => (
     <div style={{
       ...cardBase,
       padding: m ? 28 : 32,
       boxShadow: "0 20px 48px rgba(14,26,43,0.12)",
       border: `1.5px solid rgba(14,26,43,0.16)`,
       position: "relative" as const, overflow: "hidden",
-      order: m ? order : undefined,
     }}>
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.teal }} />
 
@@ -263,8 +271,8 @@ function PricingCards() {
   );
 
   /* ── Tier 3: Annual Monitoring $149 ── */
-  const monitoringCard = (order?: number) => (
-    <div style={{ ...cardBase, order: m ? order : undefined }}>
+  const monitoringCard = () => (
+    <div style={cardBase}>
       <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.navy, marginBottom: 16 }}>
         Annual Monitoring
       </div>
@@ -301,8 +309,8 @@ function PricingCards() {
   );
 
   /* ── Tier 4: For Advisors ── */
-  const advisorCard = (order?: number) => (
-    <div style={{ ...cardBase, backgroundColor: "rgba(14,26,43,0.02)", border: `1px solid rgba(14,26,43,0.08)`, order: m ? order : undefined }}>
+  const advisorCard = () => (
+    <div style={{ ...cardBase, backgroundColor: "rgba(14,26,43,0.02)", border: `1px solid rgba(14,26,43,0.08)` }}>
       <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.purple, marginBottom: 16 }}>
         For Advisors
       </div>
@@ -342,19 +350,25 @@ function PricingCards() {
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 48 : 96, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <div style={{
-          display: m ? "flex" : "grid",
-          flexDirection: m ? "column" as const : undefined,
-          gridTemplateColumns: m ? undefined : "1fr 1.15fr 1fr 1fr",
+          display: "grid",
+          gridTemplateColumns: m ? "1fr" : t ? "1fr 1fr" : "1fr 1.15fr 1fr 1fr",
           gap: 20,
           alignItems: "stretch",
           ...fadeIn(visible),
         }}>
           {m ? (
             <>
-              {diagnosticCard(1)}
-              {freeCard(2)}
-              {monitoringCard(3)}
-              {advisorCard(4)}
+              {diagnosticCard()}
+              {freeCard()}
+              {monitoringCard()}
+              {advisorCard()}
+            </>
+          ) : t ? (
+            <>
+              {diagnosticCard()}
+              {freeCard()}
+              {monitoringCard()}
+              {advisorCard()}
             </>
           ) : (
             <>
@@ -382,6 +396,7 @@ function PricingCards() {
 function PositioningStrip() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   return (
@@ -414,6 +429,7 @@ function PositioningStrip() {
 function OutcomesSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
 
   const outcomeAccents = [C.teal, C.purple, C.navy];
@@ -476,6 +492,7 @@ function OutcomesSection() {
 function FaqSection() {
   const { ref, visible } = useInView();
   const m = useMobile();
+  const t = useTablet();
   const fadeIn = useFadeIn();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
