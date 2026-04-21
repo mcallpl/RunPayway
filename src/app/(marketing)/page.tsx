@@ -787,11 +787,11 @@ function AuthoritySEOSection() {
   const fadeIn = useFadeIn();
 
   const dimensions = [
-    { name: "Recurring", def: "Income that continues without active re-earning. Retainers, subscriptions, renewals, and contracted recurring fees.", link: "/learn/what-is-recurring-income" },
+    { name: "Recurring", def: "Income that continues without active re-earning. Retainers, subscriptions, renewals, and contracted recurring fees.", link: "/learn/recurring-vs-non-recurring-income" },
     { name: "Concentration", def: "Dependence on one source, client, or channel. The higher the concentration, the more fragile the structure regardless of income level.", link: "/learn/income-concentration-risk" },
-    { name: "Visibility", def: "Income that is already secured and contractually committed, not forecasted. Only visible income is structurally protected.", link: "/learn/income-visibility" },
-    { name: "Variability", def: "Consistency of income over time. High variability means your income swings significantly month to month, increasing planning risk.", link: "/learn/income-variability" },
-    { name: "Continuity", def: "Income that continues when you stop working actively. Passive, automated, or contracted income that runs without daily input.", link: "/learn/income-continuity" },
+    { name: "Visibility", def: "Income that is already secured and contractually committed, not forecasted. Only visible income is structurally protected.", link: "/learn/income-structure-explained" },
+    { name: "Variability", def: "Consistency of income over time. High variability means your income swings significantly month to month, increasing planning risk.", link: "/learn/how-income-breaks-under-pressure" },
+    { name: "Continuity", def: "Income that continues when you stop working actively. Passive, automated, or contracted income that runs without daily input.", link: "/learn/income-continuity-explained" },
   ];
 
   return (
