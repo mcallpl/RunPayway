@@ -25,17 +25,6 @@ const ANSWER_MAP: Record<string, number> = {
   A: 0, B: 25, C: 50, D: 75, E: 100,
 };
 
-const STORAGE_KEY = "runpayway_diagnostic_state";
-
-const FIELD_MAP = [
-  "recurring_income_proportion",
-  "income_concentration",
-  "number_of_income_sources",
-  "forward_revenue_visibility",
-  "earnings_variability",
-  "income_continuity_without_active_labor",
-];
-
 const PROCESSING_STEPS = [
   "Analyzing your responses",
   "Running structural calculations",
@@ -47,46 +36,6 @@ const LOADING_QUOTES = [
   { text: "Mapping your income structure across six dimensions." },
   { text: "Building your personalized assessment." },
 ];
-
-/* ------------------------------------------------------------------ */
-/*  Storage                                                            */
-/* ------------------------------------------------------------------ */
-
-const SESSION_TTL_MS = 15 * 60 * 1000; // 15 minutes — restore window for accidental exits
-
-function saveAnswersToStorage(answers: (string | null)[]) {
-  const data = JSON.stringify({ answers, savedAt: Date.now() });
-  sessionStorage.setItem(STORAGE_KEY, data);
-  localStorage.setItem(STORAGE_KEY, data);
-}
-
-function loadAnswersFromStorage(): (string | null)[] | null {
-  try {
-    // Prefer sessionStorage (same tab)
-    let raw = sessionStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      // Fall back to localStorage for crash/accidental-close recovery
-      raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) sessionStorage.setItem(STORAGE_KEY, raw);
-    }
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-    // Expire stale sessions — only restore if within TTL
-    if (parsed.savedAt && Date.now() - parsed.savedAt > SESSION_TTL_MS) {
-      sessionStorage.removeItem(STORAGE_KEY);
-      localStorage.removeItem(STORAGE_KEY);
-      return null;
-    }
-    return parsed.answers;
-  } catch {
-    return null;
-  }
-}
-
-function clearAnswerStorage() {
-  sessionStorage.removeItem(STORAGE_KEY);
-  localStorage.removeItem(STORAGE_KEY);
-}
 
 /* ------------------------------------------------------------------ */
 /*  Viewport lock — prevents horizontal scroll on mobile              */
@@ -267,17 +216,7 @@ export default function DiagnosticPage() {
       const parsed = JSON.parse(profile);
       setQuestions(buildQuestions(parsed.industry_sector || ""));
     } catch { /* fallback already set via default buildQuestions("") */ }
-    // Silently restore from crash within session (no resume UI)
-    const saved = loadAnswersFromStorage();
-    if (saved && saved.length === 6 && saved.some((a) => a !== null)) {
-      setAnswers(saved);
-      const firstUnanswered = saved.findIndex((a) => a === null);
-      if (firstUnanswered >= 0) setCurrentQuestion(firstUnanswered);
-      else setCurrentQuestion(5);
-    } else {
-      clearAnswerStorage();
-      localStorage.removeItem("rp_assessment_progress");
-    }
+    // Start fresh — no saved answers or recovery
     setTimeout(() => setEntered(true), 100);
   }, [router]);
 
@@ -359,14 +298,6 @@ export default function DiagnosticPage() {
     setAnswers((prev) => {
       const next = [...prev];
       next[currentQuestion] = letter;
-      saveAnswersToStorage(next);
-      // Zeigarnik — persist long-lived progress for abandoned-assessment reminder
-      const answeredCount = next.filter((a) => a !== null).length;
-      localStorage.setItem("rp_assessment_progress", JSON.stringify({
-        questionIndex: currentQuestion,
-        timestamp: new Date().toISOString(),
-        answersGiven: answeredCount,
-      }));
       return next;
     });
 
@@ -531,8 +462,6 @@ export default function DiagnosticPage() {
       );
       localStorage.setItem("rp_records", JSON.stringify(stored));
 
-      clearAnswerStorage();
-      localStorage.removeItem("rp_assessment_progress");
       sessionStorage.removeItem("rp_idempotency_key");
 
       // ── Route IMMEDIATELY — score is computed, no need to wait for AI ──
