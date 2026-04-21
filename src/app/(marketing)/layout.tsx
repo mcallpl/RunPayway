@@ -491,6 +491,21 @@ export default function MarketingLayout({
                   Sign In
                 </Link>
                 <Link
+                  href="/dashboard/login"
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: "rgba(14,26,43,0.55)",
+                    textDecoration: "none",
+                    transition: "color 200ms ease",
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.55)"; }}
+                >
+                  Dashboard
+                </Link>
+                <Link
                   href="/begin"
                   className="cta-tick inline-flex items-center justify-center font-semibold whitespace-nowrap"
                   style={{
@@ -644,6 +659,28 @@ export default function MarketingLayout({
             </nav>
             <div className="mobile-nav-item" style={{ marginTop: 20, animationDelay: `${NAV_LINKS.length * 40}ms` }}>
               <Link
+                href="/dashboard/login"
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
+                  height: 48,
+                  borderRadius: 12,
+                  border: "1px solid rgba(14,26,43,0.10)",
+                  background: "transparent",
+                  color: "#0E1A2B",
+                  fontSize: 15,
+                  fontWeight: 600,
+                  textDecoration: "none",
+                }}
+              >
+                Dashboard
+              </Link>
+            </div>
+            <div className="mobile-nav-item" style={{ marginTop: 10, animationDelay: `${(NAV_LINKS.length + 1) * 40}ms` }}>
+              <Link
                 href="/sign-in"
                 onClick={() => setMenuOpen(false)}
                 style={{
@@ -664,7 +701,7 @@ export default function MarketingLayout({
                 Sign In
               </Link>
             </div>
-            <div className="mobile-nav-item" style={{ marginTop: 10, animationDelay: "400ms" }}>
+            <div className="mobile-nav-item" style={{ marginTop: 10, animationDelay: `${(NAV_LINKS.length + 2) * 40}ms` }}>
               <Link
                 href="/begin"
                 onClick={() => setMenuOpen(false)}
