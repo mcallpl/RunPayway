@@ -463,21 +463,12 @@ function OutcomesSection() {
           ))}
         </div>
 
-        {/* Price justification + sample report */}
+        {/* Price justification */}
         <div style={{ textAlign: "center", marginTop: m ? 40 : 56, ...fadeIn(visible, 180) }}>
           <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 8 }}>One decision can cost more than this.</p>
           <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.6, maxWidth: explanatoryW, margin: "0 auto 24px" }}>
             Understanding how your income works before acting prevents mistakes that cost far more than $69.
           </p>
-          <Link href="/sample-report" style={{
-            fontSize: 15, fontWeight: 600, color: C.teal, textDecoration: "none",
-            display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44,
-            transition: "opacity 200ms",
-          }}
-            onMouseEnter={e => { e.currentTarget.style.opacity = "0.7"; }}
-            onMouseLeave={e => { e.currentTarget.style.opacity = "1"; }}>
-            See how the system reads income &rarr;
-          </Link>
         </div>
       </div>
     </section>
@@ -533,18 +524,6 @@ function FaqSection() {
             );
           })}
           <div style={{ borderTop: `1px solid ${C.borderSoft}` }} />
-        </div>
-
-        <div style={{ textAlign: "center", marginTop: m ? 36 : 48 }}>
-          <Link href="/sample-report" style={{
-            fontSize: 15, fontWeight: 600, color: C.teal, textDecoration: "none",
-            display: "inline-flex", alignItems: "center", gap: 6, minHeight: 44,
-            transition: "opacity 200ms",
-          }}
-            onMouseEnter={e => { e.currentTarget.style.opacity = "0.7"; }}
-            onMouseLeave={e => { e.currentTarget.style.opacity = "1"; }}>
-            See How the System Reads Income &rarr;
-          </Link>
         </div>
       </div>
     </section>

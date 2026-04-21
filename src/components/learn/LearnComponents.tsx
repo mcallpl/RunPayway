@@ -379,34 +379,6 @@ export function LearnFAQ({ items }: { items: { q: string; a: string }[] }) {
 /* SECTION 11 — MICRO-CONVERSION BLOCK                               */
 /* ================================================================ */
 
-export function MicroConversion({ items }: { items?: { text: string; href: string }[] }) {
-  const m = useMobile();
-  const t = useTablet();
-  const defaultItems = [
-    { text: "Get your stability class — free", href: "/begin" },
-    { text: "See a sample report", href: "/sample-report" },
-  ];
-  const displayItems = items && items.length > 0 ? items : defaultItems;
-  return (
-    <section style={{ backgroundColor: L.white, paddingTop: m ? 48 : 64, paddingBottom: m ? 48 : 64, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
-      <div style={{ maxWidth: 560, margin: "0 auto", display: m ? "block" : "flex", gap: 16, justifyContent: "center" }}>
-        {displayItems.map((item, i) => (
-          <Link key={i} href={item.href} style={{
-            display: "flex", alignItems: "center", justifyContent: "center",
-            height: 48, padding: "0 24px", borderRadius: 10,
-            border: i === 0 ? "none" : `1.5px solid ${L.teal}30`,
-            backgroundColor: i === 0 ? L.navy : "transparent",
-            fontSize: 14, fontWeight: 600, color: i === 0 ? L.white : L.teal, textDecoration: "none",
-            marginBottom: m ? 12 : 0,
-            transition: "background-color 200ms, border-color 200ms",
-          }}>
-            {item.text}
-          </Link>
-        ))}
-      </div>
-    </section>
-  );
-}
 
 
 /* ================================================================ */

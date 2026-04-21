@@ -239,7 +239,6 @@ export default function ContactPage() {
                 {[
                   { href: "/faq", label: t.nav.faq },
                   { href: "/methodology", label: t.nav.methodology },
-                  { href: "/sample-report", label: "Sample Report" },
                 ].map((link) => (
                   <Link key={link.label} href={link.href} style={{
                     display: "flex", alignItems: "center", justifyContent: "space-between",
