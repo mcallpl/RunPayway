@@ -44,22 +44,22 @@ export default function CookieConsent() {
         left: 0,
         right: 0,
         zIndex: 9999,
-        background: "#1C1635",
-        borderTop: "1px solid rgba(255,255,255,0.08)",
+        background: "#F4F1EA",
+        borderTop: "1px solid rgba(14,26,43,0.08)",
         padding: "20px 24px",
         display: "flex",
         flexWrap: "wrap",
         alignItems: "center",
         justifyContent: "center",
         gap: "16px",
-        boxShadow: "0 -4px 24px rgba(14,26,43,0.25)",
+        boxShadow: "0 -4px 24px rgba(14,26,43,0.08)",
       }}
     >
       <p
         style={{
           margin: 0,
           fontSize: 14,
-          color: "rgba(255,255,255,0.75)",
+          color: "rgba(14,26,43,0.70)",
           lineHeight: 1.6,
           maxWidth: 600,
           textAlign: "center",
@@ -67,10 +67,10 @@ export default function CookieConsent() {
       >
         {t.cookie.mainText}
         {expanded && (
-          <span style={{ display: "block", marginTop: 12, fontSize: 12, color: "rgba(255,255,255,0.55)", lineHeight: 1.7 }}>
-            <strong style={{ color: "rgba(255,255,255,0.70)" }}>{t.cookie.whatWeStore}</strong> {t.cookie.whatWeStoreDetail}
+          <span style={{ display: "block", marginTop: 12, fontSize: 12, color: "rgba(14,26,43,0.55)", lineHeight: 1.7 }}>
+            <strong style={{ color: "rgba(14,26,43,0.80)" }}>{t.cookie.whatWeStore}</strong> {t.cookie.whatWeStoreDetail}
             <br /><br />
-            <strong style={{ color: "rgba(255,255,255,0.70)" }}>{t.cookie.whatWeDontDo}</strong> {t.cookie.whatWeDontDoDetail}
+            <strong style={{ color: "rgba(14,26,43,0.80)" }}>{t.cookie.whatWeDontDo}</strong> {t.cookie.whatWeDontDoDetail}
           </span>
         )}
       </p>
@@ -119,10 +119,10 @@ export default function CookieConsent() {
             paddingRight: 20,
             borderRadius: 8,
             background: "transparent",
-            color: "rgba(255,255,255,0.60)",
+            color: "rgba(14,26,43,0.60)",
             fontSize: 14,
             fontWeight: 500,
-            border: "1px solid rgba(255,255,255,0.15)",
+            border: "1px solid rgba(14,26,43,0.15)",
             cursor: "pointer",
             display: "inline-flex",
             alignItems: "center",
@@ -130,12 +130,12 @@ export default function CookieConsent() {
             transition: "border-color 180ms ease, color 180ms ease",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = "rgba(255,255,255,0.30)";
-            e.currentTarget.style.color = "rgba(255,255,255,0.85)";
+            e.currentTarget.style.borderColor = "rgba(14,26,43,0.30)";
+            e.currentTarget.style.color = "rgba(14,26,43,0.80)";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
-            e.currentTarget.style.color = "rgba(255,255,255,0.60)";
+            e.currentTarget.style.borderColor = "rgba(14,26,43,0.15)";
+            e.currentTarget.style.color = "rgba(14,26,43,0.60)";
           }}
         >
           {expanded ? t.cookie.less : t.cookie.learnMore}
