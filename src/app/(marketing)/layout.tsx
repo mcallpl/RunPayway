@@ -789,7 +789,6 @@ export default function MarketingLayout({
                   { href: "/how-it-works", label: t.nav.howItWorks },
                   { href: "/plans", label: "Plans" },
                   { href: "/learn", label: "Learn" },
-                  { href: "/sample-report", label: t.nav.sampleReport },
                   { href: "/methodology", label: "Methodology" },
                   { href: "/advisors", label: "For Advisors" },
                   { href: "/organizations", label: "For Organizations" },
