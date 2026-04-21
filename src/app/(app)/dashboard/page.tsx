@@ -819,7 +819,16 @@ function DashboardContent() {
     return (
       <>
         <title>Dashboard | RunPayway™</title>
-        <style>{`@keyframes skeletonPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.7; } }`}</style>
+        <style>{`
+          @keyframes skeletonPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.7; }
+          }
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        `}</style>
         <div style={{ minHeight: "100vh", backgroundColor: C.sand, fontFamily: sans }}>
           <SuiteHeader current="dashboard" />
 
@@ -990,9 +999,18 @@ function DashboardContent() {
         <title>Dashboard | RunPayway™</title>
         <style>{`
           @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+          @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+          @keyframes slideInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
           .cc-teaser-card { position: relative; }
           .cc-teaser-card .cc-hover-reveal { opacity: 0; max-height: 0; overflow: hidden; transition: opacity 300ms ease, max-height 400ms ease; }
           .cc-teaser-card:hover .cc-hover-reveal, .cc-teaser-card:focus-within .cc-hover-reveal { opacity: 1; max-height: 200px; }
+
+          .d-phase { animation: slideInUp 600ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+          .d-phase:nth-of-type(2) { animation-delay: 100ms; }
+          .d-phase:nth-of-type(3) { animation-delay: 200ms; }
+          .d-phase:nth-of-type(4) { animation-delay: 300ms; }
+
           @media(max-width:640px){
             .cc-teaser-card .cc-hover-reveal { opacity: 1; max-height: 200px; }
           }
