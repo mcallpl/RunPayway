@@ -828,34 +828,6 @@ export default async function IndustryPage({
         </div>
       </section>
 
-      {/* ── Sample Report Link ── */}
-      <section
-        className="ind-pad"
-        style={{
-          backgroundColor: C.navy,
-          paddingTop: 0,
-          paddingBottom: 32,
-          textAlign: "center",
-        }}
-      >
-        <Link
-          href="/sample-report"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 6,
-            fontSize: 13,
-            fontWeight: 500,
-            color: "rgba(244,241,234,0.45)",
-            textDecoration: "none",
-            borderBottom: "1px solid rgba(244,241,234,0.15)",
-            paddingBottom: 2,
-          }}
-        >
-          Not sure what you&rsquo;re getting? See a sample report &rarr;
-        </Link>
-      </section>
-
       {/* ── FAQ ── */}
       <section
         className="ind-pad"
