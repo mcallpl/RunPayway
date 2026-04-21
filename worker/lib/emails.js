@@ -185,6 +185,17 @@ ${actionFirst ? `
 <tr><td style="height:1px;background-color:rgba(14,26,43,0.06);">&nbsp;</td></tr>
 </table>
 
+<!-- CTA -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:28px;">
+<tr><td style="text-align:center;">
+<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;">
+<tr><td style="background-color:${purple};border-radius:10px;">
+<a href="${dashboardLink}" style="display:inline-block;padding:14px 40px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;letter-spacing:0.02em;">See Your Full Report</a>
+</td></tr>
+</table>
+</td></tr>
+</table>
+
 <!-- 7. Record ID and model version footer -->
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:32px;">
 <tr><td>
