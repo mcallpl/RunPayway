@@ -120,6 +120,9 @@ function PhaseNav({ activePhase, mobile }: { activePhase: string; mobile: boolea
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  // Hide on desktop (action-first design), show on mobile
+  if (!mobile) return null;
+
   if (mobile) {
     // Bottom horizontal nav on mobile — avoids content overlap
     return (
@@ -1185,7 +1188,7 @@ function DashboardContent() {
 
         <div style={{ maxWidth: 960, margin: "0 auto", padding: mobile ? "20px 28px 120px" : "48px 36px 96px", overflow: "hidden" }}>
 
-          {/* ── MERGED: Score + This Week — one unified top section ── */}
+          {/* ── ENTERPRISE RESULT-DRIVEN: Action-First Layout ── */}
           {(() => {
             const nextStep = roadmap.find((_, i) => !completedSteps.includes(i));
             const nextMove = nextStep ? topMoves.find(m => m.id === nextStep.pid) : topMoves[0];
@@ -1194,25 +1197,125 @@ function DashboardContent() {
 
             return (
               <div id="phase-diagnosis" style={{ marginBottom: 48, animation: "fadeSlideIn 600ms ease-out" }}>
-                <div style={{ padding: mobile ? "36px 24px" : "56px 52px", borderRadius: mobile ? 20 : 28, backgroundColor: B.surface, border: `1px solid rgba(14,26,43,0.06)`, boxShadow: "0 2px 8px rgba(14,26,43,0.04)" }}>
+                {/* SECTION 1: YOUR NEXT STEP — Hero (Action-First) */}
+                {topMoves.length > 0 && (
+                  <div style={{ padding: mobile ? "28px 24px" : "40px 44px", borderRadius: mobile ? 20 : 28, backgroundColor: B.surface, border: `1px solid rgba(14,26,43,0.06)`, boxShadow: "0 2px 8px rgba(14,26,43,0.04)", marginBottom: 32 }}>
+                    {stepsDone >= stepsTotal ? (
+                      <>
+                        <div style={{ fontSize: mobile ? 20 : 28, fontWeight: 500, color: B.navy, lineHeight: 1.3, marginBottom: 8, letterSpacing: "-0.01em" }}>
+                          All steps completed.
+                        </div>
+                        <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, margin: "0 0 20px", lineHeight: 1.6, fontWeight: 400 }}>
+                          Reassess to track progress and set new priorities.
+                        </p>
+                      </>
+                    ) : nextMove ? (
+                      <>
+                        <div style={{ fontSize: mobile ? 20 : 28, fontWeight: 500, color: B.navy, lineHeight: 1.3, marginBottom: 12, letterSpacing: "-0.01em" }}>
+                          Next: <strong style={{ fontWeight: 600 }}>{(vocabDash?.actionLabels?.[nextMove.id as keyof typeof vocabDash.actionLabels] || nextMove.label).toLowerCase()}</strong>
+                        </div>
+                        <p style={{ fontSize: mobile ? 15 : 16, color: B.muted, margin: "0 0 20px", lineHeight: 1.6, fontWeight: 400 }}>
+                          This move has the highest impact on your stability. Execute this week.
+                        </p>
+                        {/* Micro-actions — immediate next steps */}
+                        {(() => {
+                          const vocabSteps = vocabDash?.microSteps?.[nextMove.id as keyof typeof vocabDash.microSteps];
+                          const steps = vocabSteps && vocabSteps.length > 0 ? vocabSteps : null;
+                          if (!steps) return null;
+                          return (
+                            <div style={{ marginBottom: 18 }}>
+                              <div style={{ fontSize: mobile ? 12 : 13, fontWeight: 700, letterSpacing: "0.06em", color: B.teal, marginBottom: 10, opacity: 0.9 }}>HOW TO START</div>
+                              {steps.map((s, si) => (
+                                <div key={si} style={{ display: "flex", gap: mobile ? 8 : 12, alignItems: "flex-start", marginBottom: mobile ? 10 : 8 }}>
+                                  <span style={{ fontSize: mobile ? 13 : 14, fontFamily: mono, fontWeight: 600, color: B.teal, flexShrink: 0, marginTop: 1 }}>{si + 1}.</span>
+                                  <span style={{ fontSize: mobile ? 15 : 16, color: B.navy, lineHeight: 1.6 }}>{s}</span>
+                                </div>
+                              ))}
+                            </div>
+                          );
+                        })()}
+                        <div style={{ fontSize: mobile ? 13 : 14, color: B.taupe, fontWeight: 500 }}>
+                          {stepsDone}/{stepsTotal} steps completed · {daysSince > 0 ? `Day ${daysSince}` : "Today"}
+                        </div>
+                      </>
+                    ) : (
+                      <div style={{ fontSize: mobile ? 16 : 18, fontWeight: 500, color: B.navy, lineHeight: 1.5 }}>
+                        View your roadmap below to get started.
+                      </div>
+                    )}
+                  </div>
+                )}
 
-                  {/* Top row: Score ring + context — generous spacing */}
-                  <div style={{ display: "flex", alignItems: "center", gap: mobile ? 24 : 48, marginBottom: 36 }} className="d-score-hero">
-                    <ScoreRing score={dScore} size={mobile ? 110 : 160} stroke={mobile ? 6 : 8} />
+                {/* SECTION 2: Roadmap Progress — Visual Execution Path */}
+                <div style={{ padding: mobile ? "24px 22px" : "32px 36px", borderRadius: mobile ? 20 : 28, backgroundColor: B.surface, border: `1px solid rgba(14,26,43,0.06)`, boxShadow: "0 2px 8px rgba(14,26,43,0.04)", marginBottom: 32 }}>
+                  <div style={{ marginBottom: 20 }}>
+                    <div style={{ fontSize: mobile ? 12 : 13, fontWeight: 700, letterSpacing: "0.06em", color: B.navy, marginBottom: 12, opacity: 0.7 }}>EXECUTION ROADMAP</div>
+                    {/* Progress bar */}
+                    <div style={{ height: 6, borderRadius: 3, backgroundColor: "rgba(14,26,43,0.08)", overflow: "hidden", marginBottom: 12 }}>
+                      <div style={{ height: "100%", backgroundColor: B.teal, width: `${(stepsDone / stepsTotal) * 100}%`, transition: "width 600ms ease" }} />
+                    </div>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span style={{ fontSize: mobile ? 14 : 15, fontWeight: 600, color: B.navy }}>{stepsDone} of {stepsTotal} steps</span>
+                      <span style={{ fontSize: mobile ? 12 : 13, color: B.taupe }}>{Math.round((stepsDone / stepsTotal) * 100)}% complete</span>
+                    </div>
+                  </div>
+                  {/* Step preview cards */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                    {roadmap.slice(0, 3).map((step, idx) => {
+                      const isCompleted = completedSteps.includes(idx);
+                      const isCurrent = !isCompleted && !roadmap.slice(0, idx).some((_, i) => !completedSteps.includes(i));
+                      const move = topMoves.find(m => m.id === step.pid);
+                      return (
+                        <div key={idx} style={{
+                          padding: "12px 14px",
+                          borderRadius: 10,
+                          backgroundColor: isCurrent ? `${B.teal}08` : isCompleted ? "rgba(14,26,43,0.04)" : "transparent",
+                          border: `1px solid ${isCurrent ? B.teal + "30" : "rgba(14,26,43,0.06)"}`,
+                          opacity: isCompleted ? 0.6 : 1
+                        }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                            <div style={{
+                              width: 20,
+                              height: 20,
+                              borderRadius: "50%",
+                              backgroundColor: isCompleted ? B.teal : isCurrent ? B.teal : "rgba(14,26,43,0.10)",
+                              border: `2px solid ${isCompleted || isCurrent ? B.teal : "rgba(14,26,43,0.15)"}`,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              flexShrink: 0
+                            }}>
+                              {isCompleted && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><path d="M20 6L9 17l-5-5"/></svg>}
+                              {isCurrent && !isCompleted && <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: B.teal }} />}
+                            </div>
+                            <span style={{ fontSize: mobile ? 14 : 15, fontWeight: 500, color: B.navy, textDecoration: isCompleted ? "line-through" : "none", opacity: isCompleted ? 0.5 : 1 }}>
+                              Step {idx + 1}: {move ? (vocabDash?.actionLabels?.[move.id as keyof typeof vocabDash.actionLabels] || move.label) : ""}
+                            </span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* SECTION 3: Your Score — Secondary Context */}
+                <div style={{ padding: mobile ? "24px 22px" : "32px 36px", borderRadius: mobile ? 20 : 28, backgroundColor: B.surface, border: `1px solid rgba(14,26,43,0.06)`, boxShadow: "0 2px 8px rgba(14,26,43,0.04)", marginBottom: 32 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: mobile ? 24 : 40, marginBottom: 20 }} className="d-score-hero">
+                    <ScoreRing score={dScore} size={mobile ? 100 : 120} stroke={mobile ? 6 : 7} />
                     <div style={{ flex: 1 }}>
                       <div style={{ marginBottom: 12 }}>
-                        {custName && <span style={{ fontSize: mobile ? 18 : 20, fontWeight: 500, color: B.navy, letterSpacing: "-0.01em" }}>{custName}</span>}
+                        {custName && <span style={{ fontSize: mobile ? 16 : 18, fontWeight: 500, color: B.navy, letterSpacing: "-0.01em" }}>{custName}</span>}
                         {custName && indLabel && <span style={{ color: "rgba(14,26,43,0.20)" }}> · </span>}
-                        {indLabel && <span style={{ fontSize: mobile ? 14 : 15, color: B.taupe, fontWeight: 400 }}>{indLabel}</span>}
+                        {indLabel && <span style={{ fontSize: mobile ? 13 : 14, color: B.taupe, fontWeight: 400 }}>{indLabel}</span>}
                       </div>
-                      <div style={{ fontSize: mobile ? 16 : 18, color: B.navy, lineHeight: 1.6, marginBottom: 10, fontWeight: 400 }}>
+                      <div style={{ fontSize: mobile ? 15 : 16, color: B.navy, lineHeight: 1.6, marginBottom: 8, fontWeight: 400 }}>
                         {gap > 0
-                          ? <>{gap} points to <span style={{ fontWeight: 600, color: B.navy }}>{nextB}</span></>
+                          ? <>{gap} points to <span style={{ fontWeight: 600 }}>{nextB}</span></>
                           : <span style={{ fontWeight: 600, color: B.teal }}>Highest band achieved.</span>
                         }
                       </div>
                       {bm && indLabel && (
-                        <div style={{ fontSize: mobile ? 13 : 14, color: B.teal, fontWeight: 500, opacity: 0.9 }}>
+                        <div style={{ fontSize: mobile ? 12 : 13, color: B.teal, fontWeight: 500, opacity: 0.9 }}>
                           {bm.peer_percentile > 70 ? "Above industry baseline" : bm.peer_percentile >= 40 ? "At industry baseline" : "Below industry baseline"}
                         </div>
                       )}
@@ -1220,72 +1323,21 @@ function DashboardContent() {
                   </div>
 
                   {/* Metrics — refined, minimal design */}
-                  <div style={{ display: "flex", gap: mobile ? 10 : 16, marginBottom: 32 }} className="d-metrics">
+                  <div style={{ display: "flex", gap: mobile ? 10 : 16 }} className="d-metrics">
                     {[
                       { label: "Income Buffer", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? B.red : B.teal },
                       { label: vocabDash.scenarios.lose_top_client.split(/[.!?]/)[0].slice(0, 40) || "If Top Source Leaves", value: `−${riskDrop} pts`, color: riskDrop > 15 ? B.red : B.amber },
                       { label: "Stability Type", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" || fragLabel === "Supported" ? B.teal : B.amber },
                     ].map((m) => (
-                      <div key={m.label} style={{ flex: 1, padding: mobile ? "18px 14px" : "20px 18px", textAlign: "center" as const, borderRadius: 12, backgroundColor: "transparent", border: `1px solid rgba(14,26,43,0.08)`, transition: "border-color 200ms, background-color 200ms" }}>
+                      <div key={m.label} style={{ flex: 1, padding: mobile ? "16px 12px" : "18px 16px", textAlign: "center" as const, borderRadius: 10, backgroundColor: "transparent", border: `1px solid rgba(14,26,43,0.08)` }}>
                         <div style={{ fontSize: mobile ? 9 : 10, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(14,26,43,0.50)", marginBottom: 8, wordBreak: "break-word" as const }}>{m.label.toUpperCase()}</div>
-                        <div style={{ fontSize: mobile ? 17 : 19, fontWeight: 600, fontFamily: mono, color: m.color, lineHeight: 1 }}>{m.value}</div>
+                        <div style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, fontFamily: mono, color: m.color, lineHeight: 1 }}>{m.value}</div>
                       </div>
                     ))}
                   </div>
 
-                  {/* This Week — lead with the sentence, not labels */}
-                  {topMoves.length > 0 && (
-                    <div style={{ padding: mobile ? "24px 22px" : "32px 36px", borderRadius: 16, backgroundColor: "transparent", border: `1px solid rgba(14,26,43,0.08)`, borderLeft: `3px solid ${B.teal}` }}>
-                      {stepsDone >= stepsTotal ? (
-                        <>
-                          <div style={{ fontSize: mobile ? 18 : 20, fontWeight: 500, color: B.navy, lineHeight: 1.45, marginBottom: 8 }}>
-                            You've completed every step.
-                          </div>
-                          <p style={{ fontSize: mobile ? 14 : 15, color: B.muted, margin: 0, lineHeight: 1.6, fontWeight: 400 }}>
-                            Time to reassess and see how your score has changed.
-                          </p>
-                        </>
-                      ) : nextMove ? (
-                        <>
-                          <div style={{ fontSize: mobile ? 18 : 20, fontWeight: 500, color: B.navy, lineHeight: 1.45, marginBottom: 10 }}>
-                            Focus on: <strong style={{ fontWeight: 600, color: B.navy }}>{(vocabDash?.actionLabels?.[nextMove.id as keyof typeof vocabDash.actionLabels] || nextMove.label).toLowerCase()}</strong>
-                          </div>
-                          <p style={{ fontSize: mobile ? 14 : 15, color: B.muted, margin: "0 0 14px", lineHeight: 1.6, fontWeight: 400 }}>
-                            One move at a time. This is the most impactful thing you can do right now.
-                          </p>
-                          {/* Micro-actions — the 5-minute version */}
-                          {(() => {
-                            const vocabSteps = vocabDash?.microSteps?.[nextMove.id as keyof typeof vocabDash.microSteps];
-                            const steps = vocabSteps && vocabSteps.length > 0 ? vocabSteps : null;
-                            if (!steps) return null;
-                            return (
-                              <div style={{ marginBottom: 12 }}>
-                                <div style={{ fontSize: mobile ? 11 : 12, fontWeight: 600, color: B.teal, marginBottom: 8 }}>YOUR NEXT 3 MOVES</div>
-                                {steps.map((s, si) => (
-                                  <div key={si} style={{ display: "flex", gap: mobile ? 8 : 10, alignItems: "flex-start", marginBottom: mobile ? 8 : 6 }}>
-                                    <span style={{ fontSize: mobile ? 12 : 13, fontFamily: mono, fontWeight: 600, color: B.teal, flexShrink: 0, marginTop: 1 }}>{si + 1}.</span>
-                                    <span style={{ fontSize: mobile ? 13 : 14, color: B.navy, lineHeight: 1.5 }}>{s}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            );
-                          })()}
-                          <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-                            <span style={{ fontSize: 12, color: B.taupe }}>
-                              {stepsDone > 0 && <>{stepsDone}/{stepsTotal} done · </>}{daysSince > 0 ? `Day ${daysSince}` : "Today"}
-                            </span>
-                          </div>
-                        </>
-                      ) : (
-                        <div style={{ fontSize: mobile ? 17 : 19, fontWeight: 500, color: B.navy, lineHeight: 1.4 }}>
-                          Start with your first move. Scroll down to see the plan.
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* View Report + Share — actions row */}
-                  <div style={{ marginTop: mobile ? 16 : 20, display: "flex", justifyContent: mobile ? "center" : "flex-end", alignItems: "center", gap: mobile ? 12 : 20, flexWrap: "wrap" }}>
+                  {/* Action buttons */}
+                  <div style={{ marginTop: mobile ? 20 : 24, display: "flex", justifyContent: mobile ? "center" : "flex-end", alignItems: "center", gap: mobile ? 12 : 20, flexWrap: "wrap" }}>
                     <button
                       onClick={() => setShowShareModal(true)}
                       style={{ fontSize: mobile ? 12 : 13, fontWeight: 500, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 8, padding: mobile ? "8px 12px" : "6px 14px", cursor: "pointer", fontFamily: sans, display: "inline-flex", alignItems: "center", gap: 6, transition: "border-color 150ms, color 150ms", minHeight: 32 }}
@@ -1293,12 +1345,12 @@ function DashboardContent() {
                       onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = B.stone; (e.currentTarget as HTMLElement).style.color = B.taupe; }}
                     >
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-                      Share Score
+                      Share
                     </button>
                     <Link href="/review" style={{ fontSize: mobile ? 12 : 13, fontWeight: 500, color: B.taupe, textDecoration: "none", display: "inline-flex", alignItems: "center", minHeight: mobile ? 32 : 36, padding: mobile ? "0 8px" : "0", transition: "color 150ms" }}
                       onMouseEnter={(e) => { e.currentTarget.style.color = B.navy; }}
                       onMouseLeave={(e) => { e.currentTarget.style.color = B.taupe; }}>
-                      View full report &rarr;
+                      Full report &rarr;
                     </Link>
                     <button
                       onClick={() => {
