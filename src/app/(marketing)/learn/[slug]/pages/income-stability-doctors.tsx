@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   IndustryBlock,
 } from "@/components/learn/LearnComponents";
@@ -160,10 +158,6 @@ export default function IncomeStabilityDoctors() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="See Beyond the Salary"
-        sub="Get your income stability score and understand the structural exposure beneath your compensation."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

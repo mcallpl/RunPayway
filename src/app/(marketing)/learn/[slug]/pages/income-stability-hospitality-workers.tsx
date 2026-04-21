@@ -13,8 +13,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -164,10 +162,6 @@ export default function IncomeStabilityHospitalityWorkers() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Understand Your Demand Exposure"
-        sub="Get a structural stability score that reveals where your hospitality income is most vulnerable."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

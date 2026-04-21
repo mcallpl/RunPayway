@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   IndustryBlock,
 } from "@/components/learn/LearnComponents";
@@ -159,10 +157,6 @@ export default function IncomeStabilitySalesProfessionals() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Know What Your Compensation Protects"
-        sub="Get your income stability score and see exactly how much of your sales compensation is structurally at risk."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

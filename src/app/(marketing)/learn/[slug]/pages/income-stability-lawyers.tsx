@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   IndustryBlock,
 } from "@/components/learn/LearnComponents";
@@ -164,10 +162,6 @@ export default function IncomeStabilityLawyers() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Assess Your Practice Structure"
-        sub="Get your income stability score and see where matter concentration creates structural exposure."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

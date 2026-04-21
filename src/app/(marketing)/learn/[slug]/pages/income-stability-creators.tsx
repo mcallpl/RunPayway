@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   IndustryBlock,
 } from "@/components/learn/LearnComponents";
@@ -160,10 +158,6 @@ export default function IncomeStabilityCreators() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Understand Your Structural Position"
-        sub="Get your income stability score and identify which revenue streams are structural and which are volatile."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

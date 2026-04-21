@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   IndustryBlock,
 } from "@/components/learn/LearnComponents";
@@ -160,10 +158,6 @@ export default function IncomeStabilityInsuranceAgents() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure Your Book&apos;s Structural Strength"
-        sub="Get your income stability score and see whether your renewal base supports your production level."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

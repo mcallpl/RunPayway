@@ -13,8 +13,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -164,10 +162,6 @@ export default function IncomeStabilityRetailOwners() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Know Your Margin Risk"
-        sub="Get a structural stability score that measures your actual income — not your revenue."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

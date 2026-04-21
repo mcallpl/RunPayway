@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   IndustryBlock,
 } from "@/components/learn/LearnComponents";
@@ -164,10 +162,6 @@ export default function IncomeStabilityMortgageBrokers() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Understand Your Rate Exposure"
-        sub="Get your income stability score and see how your pipeline holds up when conditions shift."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />
