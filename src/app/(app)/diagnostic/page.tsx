@@ -493,21 +493,23 @@ export default function DiagnosticPage() {
           if (checkData?.entitlement_id) {
             sessionStorage.setItem("rp_entitlement_id", checkData.entitlement_id);
           }
-          // Only block for definitively exhausted or expired — NOT for missing entitlements
-          // (users who paid before the entitlement system was built won't have server records)
           // Allow retakes within 30 days of purchase for single assessments
-          if (checkData?.allowed === false && (checkData.reason === "exhausted" || checkData.reason === "expired")) {
-            if (checkData.reason === "retake_allowed" || checkData.retake === true) {
-              // Retake allowed — user can regenerate their report
-            } else if (checkData.reason === "expired") {
+          if (checkData?.retake === true) {
+            // Retake allowed — user can regenerate their report within 30 days
+            // Continue without error
+          } else if (checkData?.allowed === false) {
+            // Only block if not allowed and not a retake
+            if (checkData.reason === "expired") {
               setError("Your monitoring plan has expired. Renew to continue.");
-              setSubmitting(false);
-              return;
-            } else {
+            } else if (checkData.reason === "exhausted") {
               setError("You have used all assessments on this plan.");
-              setSubmitting(false);
-              return;
+            } else if (checkData.reason === "no_entitlement") {
+              // Will be handled by auto-create below, don't error here
+            } else {
+              setError("Unable to process your assessment. Please try again.");
             }
+            setSubmitting(false);
+            return;
           }
           // For "no_entitlement": auto-create one for this paid user
           if (checkData?.allowed === false && checkData.reason === "no_entitlement") {
