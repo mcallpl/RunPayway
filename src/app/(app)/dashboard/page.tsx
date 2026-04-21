@@ -66,7 +66,7 @@ function ScoreRing({ score, size = 160, stroke = 10 }: { score: number; size?: n
   const glowSize = size * 1.5;
 
   return (
-    <div role="img" aria-label={`Income Stability Score: ${score} out of 100`} style={{ position: "relative", width: size, height: size, flexShrink: 0 }}>
+    <div role="img" aria-label={`Income Stability Score™: ${score} out of 100`} style={{ position: "relative", width: size, height: size, flexShrink: 0 }}>
       <svg width={size} height={size} style={{ transform: "rotate(-90deg)", position: "relative", zIndex: 1 }}>
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(14,26,43,0.06)" strokeWidth={stroke} />
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={stroke}
@@ -858,7 +858,7 @@ function DashboardContent() {
       tint: "rgba(75,63,174,0.02)",
       sections: [
         {
-          title: "Income Stability Score\u2122",
+          title: "Income Stability Score™\u2122",
           icon: "ring",
           desc: "Your score from 0 to 100. Your stability band. Your distance to the next level.",
           hover: "Most people have never seen their income reduced to one honest number. This score strips away the narratives you tell yourself and shows what would actually survive if something changed. Three key metrics — Income Buffer, Top Source Risk, and Stability Type — tell you exactly where you stand.",

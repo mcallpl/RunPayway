@@ -242,7 +242,7 @@ function PricingCards() {
       <div style={{ fontSize: 13, fontWeight: 500, color: C.textMuted, marginBottom: 16 }}>One-time · Lifetime access</div>
 
       <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 16, marginBottom: 16, flex: 1, color: C.textSecondary }}>
-        {check("Income Stability Score (0\u2013100)")}
+        {check("Income Stability Score™™ (0\u2013100)")}
         {check("Constraint breakdown — what\u2019s limiting your score")}
         {check("Stress test — what changes if your largest source disappears")}
         {check("12-week action plan")}

@@ -53,7 +53,7 @@ const HOW_IT_WORKS = [
   {
     num: "2",
     title: "Your score is calculated instantly",
-    desc: "A 0–100 Income Stability Score, your stability band, and your top structural risk — generated the moment you finish.",
+    desc: "A 0–100 Income Stability Score™, your stability band, and your top structural risk — generated the moment you finish.",
   },
   {
     num: "3",
@@ -63,7 +63,7 @@ const HOW_IT_WORKS = [
 ];
 
 const WHAT_YOU_RECEIVE = [
-  "Income Stability Score (0–100)",
+  "Income Stability Score™ (0–100)",
   "Stability band and what it means for your situation",
   "Top structural constraint identified",
   "How you compare to others in your income type",
@@ -345,7 +345,7 @@ export default async function IndustryPage({
                 <div
                   style={{ fontSize: 13, fontWeight: 700, color: scoreColorA }}
                 >
-                  Income Stability Score: {page.proofA.score}
+                  Income Stability Score™: {page.proofA.score}
                 </div>
                 <div
                   style={{
@@ -411,7 +411,7 @@ export default async function IndustryPage({
                 <div
                   style={{ fontSize: 13, fontWeight: 700, color: scoreColorB }}
                 >
-                  Income Stability Score: {page.proofB.score}
+                  Income Stability Score™: {page.proofB.score}
                 </div>
                 <div
                   style={{
@@ -875,7 +875,7 @@ export default async function IndustryPage({
             },
             {
               q: "What does the full report cost?",
-              a: "$69. You receive your Income Stability Score (0–100), your stability band, your top structural constraint, how you compare to others in your income type, a 12-week action plan specific to your structure, and scripts for advisor and lender conversations.",
+              a: "$69. You receive your Income Stability Score™ (0–100), your stability band, your top structural constraint, how you compare to others in your income type, a 12-week action plan specific to your structure, and scripts for advisor and lender conversations.",
             },
             {
               q: "How is this different from a credit score?",
@@ -1192,7 +1192,7 @@ export default async function IndustryPage({
               margin: "0 auto 40px",
             }}
           >
-            Six structural factors. Under two minutes. Your Income Stability Score, top
+            Six structural factors. Under two minutes. Your Income Stability Score™, top
             constraint, and full report — ready instantly.
           </p>
           <Link

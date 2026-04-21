@@ -280,7 +280,7 @@ export default function LearnHub() {
             {[
               {
                 label: "Before a major decision",
-                body: "Taking on a mortgage, hiring an employee, or leaving a job? Your Income Stability Score\u2122 tells you if your income structure can support it.",
+                body: "Taking on a mortgage, hiring an employee, or leaving a job? Your Income Stability Score™\u2122 tells you if your income structure can support it.",
                 color: L.teal,
               },
               {
@@ -444,7 +444,7 @@ function IndustryScenarios({ m }: { m: boolean }) {
 
         <div style={{ textAlign: "center", marginTop: 32 }}>
           <p style={{ fontSize: 15, fontWeight: 500, color: L.textSecondary }}>
-            RunPayway™ is calibrated for <strong style={{ color: L.navy }}>19 industries</strong>. Each scenario uses the Income Stability Score™ to measure how income structure holds under real-world&nbsp;conditions.
+            RunPayway™ is calibrated for <strong style={{ color: L.navy }}>19 industries</strong>. Each scenario uses the Income Stability Score™™ to measure how income structure holds under real-world&nbsp;conditions.
           </p>
         </div>
       </div>

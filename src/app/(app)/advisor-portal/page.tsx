@@ -232,7 +232,7 @@ export default function AdvisorPortalPage() {
         }}>
           {[
             {
-              label: "Income Stability Score",
+              label: "Income Stability Score™",
               desc: "0\u2013100 standardized score based on six structural factors. Same inputs, same result, every time.",
             },
             {
@@ -297,7 +297,7 @@ export default function AdvisorPortalPage() {
               reports: "15 assessments / quarter",
               who: "Solo advisors adding income structure to their client process.",
               features: [
-                "Income Stability Score™ per client",
+                "Income Stability Score™™ per client",
                 "Stability band + top structural risk",
                 "Meeting prep talking points",
                 "Book-level analytics dashboard",

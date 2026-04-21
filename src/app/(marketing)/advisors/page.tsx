@@ -163,7 +163,7 @@ function WhatItReveals() {
   const fadeIn = useFadeIn();
 
   const items = [
-    "Income Stability Score (0\u2013100) \u2014 where they stand",
+    "Income Stability Score™ (0\u2013100) \u2014 where they stand",
     "Stability classification \u2014 Limited, Developing, Established, or High Stability",
     "Biggest income risk \u2014 what limits their stability",
     "Stress test outcomes \u2014 what happens if a source disappears",

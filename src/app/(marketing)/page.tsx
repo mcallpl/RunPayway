@@ -624,7 +624,7 @@ function FreeVsFull() {
           <div style={{ borderRadius: 20, padding: m ? "28px 24px" : "36px 32px", backgroundColor: C.navy, border: "none", position: "relative" as const, overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
             <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: C.teal, marginBottom: 12 }}>FULL REPORT — $69</div>
-            <div style={{ fontSize: 22, fontWeight: 700, color: C.sandText, marginBottom: 20 }}>Income Stability Score</div>
+            <div style={{ fontSize: 22, fontWeight: 700, color: C.sandText, marginBottom: 20 }}>Income Stability Score™</div>
             {["Score (0\u2013100)", "6-dimension structural breakdown", "Ranked constraints \u2014 what to fix first", "12-week action roadmap", "Negotiation scripts for your industry", "Scenario testing"].map((item, i) => (
               <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 12 }}>
                 <div style={{ width: 5, height: 5, borderRadius: "50%", backgroundColor: C.teal, flexShrink: 0, marginTop: 8 }} />
@@ -938,10 +938,10 @@ function FaqSection() {
     { q: "What is income stability?", a: "Income stability measures how reliably your income continues and holds its level when conditions change. It\u2019s determined by your income structure\u2014how many sources you have, what\u2019s contractually secured, how much recurs automatically, and how concentrated your earnings are\u2014not by how much you earn." },
     { q: "How is income stability different from how much I earn?", a: "Two people earning $150K can have completely different stability profiles. One might depend on a single client with no contracts. The other might have five clients, 40% recurring, and three months locked. Income amount describes what you make. Income stability describes how reliable it is." },
     { q: "What is a Stability Class?", a: "A Stability Class is a category that describes the overall structure of your income: Limited, Developing, Established, or High. It\u2019s your free result\u2014immediate context on where you stand relative to structural norms. The full report gives you the numeric score and what specifically drives it." },
-    { q: "What is the Income Stability Score?", a: "The Income Stability Score is a number from 0 to 100 that reflects how well your income would hold up under disruption. It\u2019s calculated across five structural dimensions\u2014recurring income, concentration, visibility, variability, and continuity\u2014and is deterministic: same inputs always produce the same score." },
+    { q: "What is the Income Stability Score™?", a: "The Income Stability Score™ is a number from 0 to 100 that reflects how well your income would hold up under disruption. It\u2019s calculated across five structural dimensions\u2014recurring income, concentration, visibility, variability, and continuity\u2014and is deterministic: same inputs always produce the same score." },
     { q: "Who is RunPayway™ for?", a: "RunPayway™ is built for professionals whose income isn\u2019t fixed\u2014consultants, freelancers, real estate agents, commission earners, business owners, and anyone whose income varies, depends on clients, or isn\u2019t fully secured. It\u2019s also used by financial advisors who want to assess client income structure." },
     { q: "How long does the assessment take?", a: "Under two minutes. You answer simple questions about your income sources, how they\u2019re structured, and what\u2019s contractually secured. No documents required, no financial accounts connected." },
-    { q: "What does the full report include?", a: "Your full report includes your Income Stability Score (0\u2013100), a breakdown across all five dimensions, ranked constraints with the highest-impact change identified, a 12-week action roadmap, negotiation scripts for your industry, and lifetime dashboard access." },
+    { q: "What does the full report include?", a: "Your full report includes your Income Stability Score™ (0\u2013100), a breakdown across all five dimensions, ranked constraints with the highest-impact change identified, a 12-week action roadmap, negotiation scripts for your industry, and lifetime dashboard access." },
     { q: "How is this different from a credit score?", a: "A credit score reflects your borrowing history and repayment behavior. RunPayway\u2122 measures the structural reliability of your income going forward\u2014how it\u2019s built, how concentrated it is, what\u2019s secured vs. assumed. These are different questions. A high credit score doesn\u2019t mean your income is structurally stable." },
     { q: "Is my data private?", a: "Yes. RunPayway™ does not connect to your bank accounts, access your financial records, or share your data with third parties. Your responses are encrypted and used only to generate your score." },
     { q: "What industries does this work for?", a: "RunPayway™ is calibrated for 19 industries including consulting, real estate, sales and brokerage, freelance and creative, legal services, insurance, technology, finance, healthcare, construction, media, retail, and more. The scoring model accounts for structural norms within each industry." },
@@ -1355,7 +1355,7 @@ function MobileValue() {
       <div style={{ borderRadius: 16, padding: "20px", backgroundColor: C.navy, marginBottom: 24, position: "relative" as const, overflow: "hidden" }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
         <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: 10 }}>FULL REPORT — $69</div>
-        <div style={{ fontSize: 16, fontWeight: 700, color: C.sandText, marginBottom: 8 }}>Income Stability Score</div>
+        <div style={{ fontSize: 16, fontWeight: 700, color: C.sandText, marginBottom: 8 }}>Income Stability Score™</div>
         {["Score (0\u2013100)", "6-dimension breakdown", "What to fix first", "12-week plan", "Scripts for your industry"].map((i, k) => (
           <div key={k} style={{ fontSize: 14, color: C.sandMuted, paddingLeft: 12, lineHeight: 1.8 }}>· {i}</div>
         ))}
@@ -1437,12 +1437,12 @@ function MobileFinalClose() {
 
 const PRODUCT_SCHEMA = {
   "@context": "https://schema.org", "@type": "Product",
-  name: "RunPayway\u2122 Income Stability Score\u2122",
+  name: "RunPayway\u2122 Income Stability Score™\u2122",
   description: "A structural income measurement system that evaluates how income is built \u2014 not how much you make.",
   brand: { "@type": "Brand", name: "RunPayway\u2122" },
   offers: [
     { "@type": "Offer", price: "0", priceCurrency: "USD", name: "Stability Class", description: "Stability class, primary structural risk, and distance to next class. Free." },
-    { "@type": "Offer", price: "69", priceCurrency: "USD", name: "RunPayway\u2122 Full Report", description: "Income Stability Score, 6-dimension breakdown, 12-week plan, and negotiation scripts." },
+    { "@type": "Offer", price: "69", priceCurrency: "USD", name: "RunPayway\u2122 Full Report", description: "Income Stability Score™, 6-dimension breakdown, 12-week plan, and negotiation scripts." },
   ],
 };
 

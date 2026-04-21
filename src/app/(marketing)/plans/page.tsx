@@ -257,7 +257,7 @@ export default function PlansPage() {
             </div>
 
             <div style={{ fontSize: 22, fontWeight: 700, color: C.textPrimary, lineHeight: 1.2, marginBottom: 10 }}>
-              Your Income Stability Score
+              Your Income Stability Score™
             </div>
 
             <p style={{ fontSize: 15, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, flex: 1 }}>
@@ -269,7 +269,7 @@ export default function PlansPage() {
                 WHAT YOU GET
               </div>
               {[
-                "Income Stability Score (0–100)",
+                "Income Stability Score™ (0–100)",
                 "6-dimension breakdown with band",
                 "Ranked constraints — what to fix first",
                 "12-week action plan for your industry",
@@ -364,7 +364,7 @@ export default function PlansPage() {
                 WHAT YOU GET
               </div>
               {[
-                "3 full Income Stability Score reports",
+                "3 full Income Stability Score™ reports",
                 "Everything in the one-time report",
                 "All 3 reports saved in your dashboard",
                 "Score history — track your progress",
@@ -647,7 +647,7 @@ export default function PlansPage() {
             },
             {
               q: "What's the difference between the one-time report and the annual plan?",
-              a: "The one-time report ($69) gives you the full Income Stability Score once — best for a single decision point. The annual plan ($149/year) gives you 3 reports across the year, all saved in your dashboard with score history. If your income structure changes — new clients, a new role, a financial decision — you can reassess without paying again.",
+              a: "The one-time report ($69) gives you the full Income Stability Score™ once — best for a single decision point. The annual plan ($149/year) gives you 3 reports across the year, all saved in your dashboard with score history. If your income structure changes — new clients, a new role, a financial decision — you can reassess without paying again.",
             },
             {
               q: "How is advisor pricing different from individual pricing?",

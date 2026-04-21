@@ -83,11 +83,11 @@ interface FaqItem {
 }
 
 const FAQ_DATA: FaqItem[] = [
-  // --- Income Stability Score ---
-  { id: "score-measure", category: "score", categoryLabel: "Income Stability Score\u2122", question: "What does the Income Stability Score\u2122 measure?", answer: "It measures how your income is built\u2014and how it holds under change. The score reflects structure, stability, and continuity. Not income size.", keywords: ["score meaning", "what is score", "income stability", "structure", "rating", "number"] },
-  { id: "score-factors", category: "score", categoryLabel: "Income Stability Score\u2122", question: "What factors influence the score?", answer: "The score is determined by six structural dimensions:\n\n\u2022 Recurring Income\n\u2022 Source Reliance\n\u2022 Number of Sources\n\u2022 Income Locked In\n\u2022 Month-to-Month Steadiness\n\u2022 Income Without You\n\nEach dimension is scored independently, then combined into your final result.", keywords: ["factors", "dimensions", "what affects score", "how calculated", "six areas"] },
-  { id: "score-good", category: "score", categoryLabel: "Income Stability Score\u2122", question: "What does a good score look like?", answer: "A good score reflects a stable income structure\u2014one that can absorb disruptions and adapt.\n\n0\u201329: Limited Stability\u2014one disruption could impact income significantly.\n30\u201349: Developing Stability\u2014income is not yet protected.\n50\u201374: Established Stability\u2014can handle most disruptions.\n75\u2013100: High Stability\u2014holds up even under sustained pressure.", keywords: ["good score", "high score", "best score", "what is good", "range", "bands"] },
-  { id: "score-predict", category: "score", categoryLabel: "Income Stability Score\u2122", question: "Does the score predict future income?", answer: "No. It evaluates how your income is structured\u2014not what will happen.", keywords: ["predict", "future", "forecast", "guarantee"] },
+  // --- Income Stability Score™ ---
+  { id: "score-measure", category: "score", categoryLabel: "Income Stability Score™\u2122", question: "What does the Income Stability Score™\u2122 measure?", answer: "It measures how your income is built\u2014and how it holds under change. The score reflects structure, stability, and continuity. Not income size.", keywords: ["score meaning", "what is score", "income stability", "structure", "rating", "number"] },
+  { id: "score-factors", category: "score", categoryLabel: "Income Stability Score™\u2122", question: "What factors influence the score?", answer: "The score is determined by six structural dimensions:\n\n\u2022 Recurring Income\n\u2022 Source Reliance\n\u2022 Number of Sources\n\u2022 Income Locked In\n\u2022 Month-to-Month Steadiness\n\u2022 Income Without You\n\nEach dimension is scored independently, then combined into your final result.", keywords: ["factors", "dimensions", "what affects score", "how calculated", "six areas"] },
+  { id: "score-good", category: "score", categoryLabel: "Income Stability Score™\u2122", question: "What does a good score look like?", answer: "A good score reflects a stable income structure\u2014one that can absorb disruptions and adapt.\n\n0\u201329: Limited Stability\u2014one disruption could impact income significantly.\n30\u201349: Developing Stability\u2014income is not yet protected.\n50\u201374: Established Stability\u2014can handle most disruptions.\n75\u2013100: High Stability\u2014holds up even under sustained pressure.", keywords: ["good score", "high score", "best score", "what is good", "range", "bands"] },
+  { id: "score-predict", category: "score", categoryLabel: "Income Stability Score™\u2122", question: "Does the score predict future income?", answer: "No. It evaluates how your income is structured\u2014not what will happen.", keywords: ["predict", "future", "forecast", "guarantee"] },
 
   // --- Assessment ---
   { id: "assess-time", category: "assessment", categoryLabel: "Assessment", question: "How long does the assessment take?", answer: "Under 2 minutes.", keywords: ["how long", "time", "duration", "minutes"] },
@@ -135,7 +135,7 @@ const FAQ_DATA: FaqItem[] = [
 ];
 
 const CATEGORIES = [
-  { key: "score", label: "Income Stability Score\u2122" },
+  { key: "score", label: "Income Stability Score™\u2122" },
   { key: "assessment", label: "Assessment" },
   { key: "report", label: "Report" },
   { key: "command-center", label: "Dashboard" },
@@ -195,7 +195,7 @@ function HeroSection({ searchValue, onSearch, inputRef }: { searchValue: string;
           Frequently Asked Questions
         </h1>
         <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: 620, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
-          Clear answers about the Income Stability Score™, how it&rsquo;s generated, and how it&rsquo;s used.
+          Clear answers about the Income Stability Score™™, how it&rsquo;s generated, and how it&rsquo;s used.
         </p>
         <p style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: C.navy, marginBottom: 0, ...fadeIn(visible, 140) }}>
           All answers reflect the system as it is defined&mdash;not interpreted.
@@ -443,7 +443,7 @@ function FooterStrip() {
   return (
     <div style={{ backgroundColor: C.sand, padding: m ? "40px 20px" : "48px 48px", textAlign: "center" }}>
       <p style={{ fontSize: 13, fontWeight: 400, color: C.textMuted, margin: 0, letterSpacing: "0.02em" }}>
-        Income Stability Score™ &bull; Powered by fixed scoring system RP-2.0
+        Income Stability Score™™ &bull; Powered by fixed scoring system RP-2.0
       </p>
     </div>
   );
