@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -151,10 +149,6 @@ export default function HowStableIsYourIncome() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure What Actually Matters"
-        sub="Get a structural stability score based on six dimensions — not years of experience."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -155,10 +153,6 @@ export default function WhatA35ScoreMeans() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Understand Your Score"
-        sub="Get your income stability score and see exactly where your income is vulnerable — and what one structural change could improve."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

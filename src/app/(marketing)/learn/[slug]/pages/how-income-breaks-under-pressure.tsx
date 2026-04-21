@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -148,10 +146,6 @@ export default function HowIncomeBreaksUnderPressure() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="See Where Your Income Would Break"
-        sub="Get a diagnostic score that identifies your structural weak points before disruption reveals them."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

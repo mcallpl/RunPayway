@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -161,10 +159,6 @@ export default function SmallBusinessSeasonalRisk() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure Your Seasonal Income Structure"
-        sub="Get your income stability score and understand how seasonal concentration, weather dependency, and fixed-cost exposure affect your structural position."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

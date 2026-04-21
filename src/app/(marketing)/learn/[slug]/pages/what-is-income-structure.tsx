@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -155,10 +153,6 @@ export default function WhatIsIncomeStructure() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="See How Your Income Is Built"
-        sub="A structural analysis of your income sources, dependencies, and protections."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

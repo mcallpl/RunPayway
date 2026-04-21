@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -155,10 +153,6 @@ export default function WhatA90ScoreMeans() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure Your Structure"
-        sub="Get your income stability score and see exactly how your income is built — including the structural characteristics that define the top tier."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

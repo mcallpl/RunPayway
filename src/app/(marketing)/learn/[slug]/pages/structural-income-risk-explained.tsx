@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -152,10 +150,6 @@ export default function StructuralIncomeRiskExplained() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Identify Your Structural Risk"
-        sub="Get a diagnostic score that separates structural risk from market noise across six measurable dimensions."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -165,10 +163,6 @@ export default function SalesRepBasePlusCommission() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Know Your Protected Floor"
-        sub="Get your income stability score and see how much of your compensation is structurally at risk."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

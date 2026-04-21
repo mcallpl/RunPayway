@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -161,10 +159,6 @@ export default function CreatorBrandDealsVsMixedIncome() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Find Out Where You Stand"
-        sub="Get your income stability score and see how your revenue mix affects your structural resilience."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

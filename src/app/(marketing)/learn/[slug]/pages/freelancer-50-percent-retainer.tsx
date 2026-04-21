@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -161,10 +159,6 @@ export default function Freelancer50PercentRetainer() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="See How Retainers Change Your Score"
-        sub="Get your income stability score and understand exactly how your retainer coverage affects your structural position."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

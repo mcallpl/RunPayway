@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -155,10 +153,6 @@ export default function WhatRunPaywayDoesNotDo() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure Your Income Structure"
-        sub="Get your income stability score — a structural measurement of how your income is built, not a prediction of where it's going."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

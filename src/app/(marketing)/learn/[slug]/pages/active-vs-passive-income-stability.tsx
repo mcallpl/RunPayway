@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -151,10 +149,6 @@ export default function ActiveVsPassiveIncomeStability() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="See How Labor-Dependent Your Income Is"
-        sub="Get a diagnostic score that quantifies your active-to-passive ratio and five other structural dimensions."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

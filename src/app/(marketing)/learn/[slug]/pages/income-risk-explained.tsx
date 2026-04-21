@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -153,10 +151,6 @@ export default function IncomeRiskExplained() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Quantify Your Income Risk"
-        sub="Get your income stability score — structural risk exposure, concentration analysis, and an improvement roadmap."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

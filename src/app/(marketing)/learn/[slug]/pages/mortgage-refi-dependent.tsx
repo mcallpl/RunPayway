@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -165,10 +163,6 @@ export default function MortgageRefiDependent() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure Your Rate Cycle Exposure"
-        sub="Get your income stability score and understand how your refinance dependency affects your structural position across rate environments."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

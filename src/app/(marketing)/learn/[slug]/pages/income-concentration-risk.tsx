@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -152,10 +150,6 @@ export default function IncomeConcentrationRisk() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Know Where Your Income Concentrates"
-        sub="Get a diagnostic score that reveals concentration risk alongside five other structural dimensions."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

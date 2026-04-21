@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -155,10 +153,6 @@ export default function WhatA72ScoreMeans() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="See How Close You Are"
-        sub="Get your income stability score and find out exactly what stands between your current structure and High Stability."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

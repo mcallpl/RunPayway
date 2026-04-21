@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -161,10 +159,6 @@ export default function RealEstateBoomVsSlowMarket() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure Your Market Cycle Exposure"
-        sub="Get your income stability score and understand how your income structure performs across market conditions — not just during a boom."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

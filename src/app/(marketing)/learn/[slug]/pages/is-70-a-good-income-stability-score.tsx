@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -155,10 +153,6 @@ export default function Is70AGoodScore() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Find Out Your Score"
-        sub="Get your income stability score and see exactly where your structure stands — and what it would take to move from good to great."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

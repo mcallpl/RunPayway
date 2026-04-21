@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -164,10 +162,6 @@ export default function SalesHighPerformerRisk() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure Your Sales Income Structure"
-        sub="Get your income stability score and understand exactly how your commission structure, trailing revenue, and comp plan exposure affect your position."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -161,10 +159,6 @@ export default function RealtorCommissionHeavy() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="See What Your Structure Actually Scores"
-        sub="Get your income stability score and find out where your commission income is structurally exposed."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

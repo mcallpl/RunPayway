@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -150,10 +148,6 @@ export default function IncomeContinuityExplained() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure What Keeps Coming When You Stop"
-        sub="Get your income stability score — continuity analysis, structural mapping, and an improvement roadmap."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -155,10 +153,6 @@ export default function IncomeStabilityExplained() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Understand Your Income Structure"
-        sub="Get a diagnostic score across all six dimensions of income stability."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

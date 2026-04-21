@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -165,10 +163,6 @@ export default function CreatorViralIncomeRisk() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure Your Creator Income Structure"
-        sub="Get your income stability score and understand how platform dependency, viral concentration, and contractual protection affect your structural position."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

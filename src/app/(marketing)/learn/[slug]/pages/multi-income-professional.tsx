@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -161,10 +159,6 @@ export default function MultiIncomeProfessional() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure Your Multi-Source Income Structure"
-        sub="Get your income stability score and understand how source balance, contractual protection, and concentration affect your structural position across all income streams."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

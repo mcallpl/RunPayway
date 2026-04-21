@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -150,10 +148,6 @@ export default function IncomeStabilityVsCreditScore() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure the Dimension Credit Scores Miss"
-        sub="Your credit score measures behavior. Your stability score measures structure. Get both sides of the picture."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

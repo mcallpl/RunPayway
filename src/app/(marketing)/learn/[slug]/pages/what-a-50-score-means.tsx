@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -155,10 +153,6 @@ export default function WhatA50ScoreMeans() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="See Where You Stand"
-        sub="Get your income stability score and understand exactly what structural changes will move you from the threshold of Established into its core."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

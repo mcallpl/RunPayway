@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -155,10 +153,6 @@ export default function IncomeStressTestingExplained() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="See What Happens Under Pressure"
-        sub="Get your income stability score and stress-test it against real disruption scenarios."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

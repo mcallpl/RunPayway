@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -165,10 +163,6 @@ export default function FreelancerNoRecurringIncome() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="See What Zero Persistence Scores"
-        sub="Get your income stability score and understand exactly how your freelance structure measures against disruption."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

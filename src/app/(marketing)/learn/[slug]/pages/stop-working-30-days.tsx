@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -165,10 +163,6 @@ export default function StopWorking30Days() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure Your Structural Floor"
-        sub="Get your income stability score and understand how much of your income continues when your labor stops — the clearest measure of how your income is built."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

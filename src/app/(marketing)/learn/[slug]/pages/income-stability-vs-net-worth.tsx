@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -151,10 +149,6 @@ export default function IncomeStabilityVsNetWorth() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure the Durability Behind Your Wealth"
-        sub="Get your income stability score — structure, risk exposure, and a concrete improvement roadmap."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

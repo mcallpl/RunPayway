@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -151,10 +149,6 @@ export default function PredictableVsUnpredictableIncome() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="See How Visible Your Future Income Is"
-        sub="Get a diagnostic score that measures forward visibility alongside five other structural dimensions."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

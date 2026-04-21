@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -155,10 +153,6 @@ export default function ModelGovernance() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="See the Model in Action"
-        sub="Get your income stability score — produced by a fixed, version-locked model with full governance transparency."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

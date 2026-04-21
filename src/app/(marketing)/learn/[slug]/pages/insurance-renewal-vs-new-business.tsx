@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -164,10 +162,6 @@ export default function InsuranceRenewalVsNewBusiness() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure Your Book Structure"
-        sub="Get your income stability score and understand exactly how your renewal-to-new-business ratio affects your structural position."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

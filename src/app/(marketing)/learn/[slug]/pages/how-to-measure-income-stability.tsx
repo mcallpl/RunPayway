@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -151,10 +149,6 @@ export default function HowToMeasureIncomeStability() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Get Your Structural Measurement"
-        sub="A diagnostic score across six dimensions of income stability. Fixed rules. No interpretation."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

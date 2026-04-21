@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -164,10 +162,6 @@ export default function SingleIncomeEarner() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure Your Income Concentration"
-        sub="Get your income stability score and understand how single-source dependency affects your structural position — regardless of income level or employment tenure."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

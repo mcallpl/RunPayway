@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -161,10 +159,6 @@ export default function ConsultantHighIncomeLowStability() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure Your Consulting Structure"
-        sub="Get your income stability score and understand how your client concentration and contract structure affect your position — regardless of income level."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

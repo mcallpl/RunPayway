@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -155,10 +153,6 @@ export default function HowVersioningWorks() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Get Your Versioned Score"
-        sub="Every RunPayway assessment is version-stamped, auditable, and comparable. See exactly how your income is built under the current model."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

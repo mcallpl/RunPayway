@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -165,10 +163,6 @@ export default function FreelancerFiveClients() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="See What Your Structure Scores"
-        sub="Get your income stability score and understand how your client distribution affects your structural resilience."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

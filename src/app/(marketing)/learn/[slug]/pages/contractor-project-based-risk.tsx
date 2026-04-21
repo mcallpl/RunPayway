@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -165,10 +163,6 @@ export default function ContractorProjectBasedRisk() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Find Out Where You Stand"
-        sub="Get your income stability score and identify the specific gap risks in your project-based income."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

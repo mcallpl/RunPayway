@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { LearnHero, LearnCTA, MetaFooter, L } from "@/components/learn/LearnComponents";
 import { useState, useEffect } from "react";
 
 function useMobile(bp = 768) {
@@ -156,10 +155,6 @@ export default function TermsGlossary() {
       </section>
 
       {/* CTA */}
-      <LearnCTA
-        heading="See Your Stability Class"
-        sub="Know where your income holds — and where it's exposed."
-      />
 
       {/* META FOOTER */}
       <MetaFooter updated="April 2026" />

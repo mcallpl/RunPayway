@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -161,10 +159,6 @@ export default function PassiveIncomeIllusion() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure What Your Income Actually Is"
-        sub="Get your income stability score and understand the structural reality behind your income streams — beyond the labels."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

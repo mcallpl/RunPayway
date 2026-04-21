@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -164,10 +162,6 @@ export default function RealtorDiversifiedPipeline() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure Your Diversification"
-        sub="Get your income stability score and see how your income channels compare to a single-source structure."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

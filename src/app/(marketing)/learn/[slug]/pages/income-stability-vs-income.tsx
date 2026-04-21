@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -150,10 +148,6 @@ export default function IncomeStabilityVsIncome() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Measure What Your Income Number Cannot"
-        sub="Get your income stability score — structure, durability, and a roadmap for reducing exposure."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />
