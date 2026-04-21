@@ -6,6 +6,22 @@ import { getVocabulary } from "@/lib/industry-vocabulary";
 
 export const dynamic = "force-dynamic";
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || "";
+const DAILY_LIMIT = 30;
+
+// In-memory rate limiting store: { "record_id|YYYY-MM-DD": count }
+const rateLimitStore = new Map<string, number>();
+
+// Clean up old entries every hour
+setInterval(() => {
+  const now = new Date();
+  const today = now.toISOString().split("T")[0];
+  for (const key of rateLimitStore.keys()) {
+    const [, date] = key.split("|");
+    if (date !== today) {
+      rateLimitStore.delete(key);
+    }
+  }
+}, 60 * 60 * 1000);
 
 interface AdvisorAnalyzeRequest {
   goal: string;
@@ -13,6 +29,7 @@ interface AdvisorAnalyzeRequest {
   score: number;
   band: string;
   dimensions: Record<string, number>;
+  record_id?: string;
   roadmapSteps?: Array<{ action: string; lift: number; desc: string }>;
 }
 
@@ -48,6 +65,16 @@ export async function POST(req: Request) {
         { error: "Missing required fields: goal, industry" },
         { status: 400 },
       );
+    }
+
+    if (body.record_id) {
+      const rateLimitResult = checkRateLimit(body.record_id);
+      if (!rateLimitResult.allowed) {
+        return NextResponse.json(
+          { error: rateLimitResult.message, retry_after: rateLimitResult.retry_after },
+          { status: 429 },
+        );
+      }
     }
 
     if (!ANTHROPIC_API_KEY) {
@@ -135,6 +162,31 @@ Return ONLY this text, no JSON formatting.`;
       { status: 500 },
     );
   }
+}
+
+/** Check rate limit for user (30 calls per day) */
+function checkRateLimit(
+  recordId: string,
+): { allowed: boolean; message: string; retry_after?: string } {
+  const now = new Date();
+  const today = now.toISOString().split("T")[0];
+  const key = `${recordId}|${today}`;
+  const hoursUntilMidnight = Math.ceil((24 * 60 * 60 * 1000 - (now.getTime() % (24 * 60 * 60 * 1000))) / (60 * 60 * 1000));
+
+  const callCount = rateLimitStore.get(key) || 0;
+
+  if (callCount >= DAILY_LIMIT) {
+    return {
+      allowed: false,
+      message: `Daily advisor limit reached (${DAILY_LIMIT} calls). Reset at midnight.`,
+      retry_after: `${hoursUntilMidnight}h`,
+    };
+  }
+
+  // Increment counter
+  rateLimitStore.set(key, callCount + 1);
+
+  return { allowed: true, message: "OK" };
 }
 
 /** Extract action steps from advisor guidance */

@@ -560,6 +560,7 @@ function DashboardContent() {
           industry: sector || "General",
           score: dScore,
           band: band,
+          record_id: (record?.record_id as string) || "",
           dimensions: {
             persistence_pct: i?.income_persistence_pct || 0,
             source_diversity_count: i?.source_diversity_count || 0,
@@ -574,6 +575,9 @@ function DashboardContent() {
       if (res.ok) {
         const data = await res.json();
         setAdvisorResponse(data);
+      } else if (res.status === 429) {
+        const error = await res.json();
+        setAdvisorResponse({ guidance: `Daily limit reached: ${error.message}`, recommended_steps: [], timeline_estimate: error.retry_after });
       }
     } catch { /* API failed, show fallback */ }
     setAdvisorLoading(false);
