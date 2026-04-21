@@ -54,50 +54,50 @@ export default function LearnHub() {
             {[
               {
                 id: "freelancer",
-                title: "Freelancer or Solo Practitioner",
-                description: "Project-based, multiple clients, varying income",
+                title: "Freelancer",
+                description: "Project-based work, multiple clients, varying monthly income",
                 guides: [
-                  { slug: "what-is-income-stability", label: "What is income stability?" },
                   { slug: "recurring-vs-non-recurring-income", label: "Project vs. recurring income" },
                   { slug: "income-concentration-risk", label: "Client concentration risk" },
                   { slug: "how-to-improve-income-stability", label: "How to improve stability" },
-                  { slug: "income-stability-freelancers", label: "Freelancer-specific insights" },
+                  { slug: "predictable-vs-unpredictable-income", label: "Making income predictable" },
+                  { slug: "income-stability-freelancers", label: "Freelancer patterns and solutions" },
                 ],
               },
               {
                 id: "consultant",
-                title: "Consultant or Agency Owner",
-                description: "High income, but dependent on landing new clients",
+                title: "Consultant or Service Provider",
+                description: "Higher rates, longer engagements, landing new clients is critical",
                 guides: [
-                  { slug: "what-is-income-stability", label: "What is income stability?" },
-                  { slug: "forward-visibility-explained", label: "Forward visibility: why it matters" },
-                  { slug: "consultant-no-contracts-vs-retainers", label: "Contracts vs. handshakes" },
+                  { slug: "forward-visibility-explained", label: "Forward visibility and why it matters" },
+                  { slug: "consultant-no-contracts-vs-retainers", label: "Contracts vs. handshake agreements" },
                   { slug: "recurring-revenue-for-service-businesses", label: "Building recurring revenue" },
                   { slug: "income-stability-consultants", label: "Consultant income patterns" },
+                  { slug: "how-to-improve-income-stability", label: "Structural improvements that work" },
                 ],
               },
               {
                 id: "commission",
-                title: "Commission or Sales-Based Income",
-                description: "Variable monthly income, pipeline dependent",
+                title: "Commission or Sales-Based",
+                description: "Variable income, quota resets, pipeline-dependent revenue",
                 guides: [
-                  { slug: "what-is-income-stability", label: "What is income stability?" },
-                  { slug: "hidden-risk-in-commission-income", label: "Hidden commission risks" },
+                  { slug: "hidden-risk-in-commission-income", label: "Why commission income is fragile" },
                   { slug: "how-income-breaks-under-pressure", label: "How income breaks under pressure" },
                   { slug: "income-dependency-explained", label: "Dependency on conditions you don't control" },
-                  { slug: "income-stability-sales-professionals", label: "Sales income patterns" },
+                  { slug: "income-stability-sales-professionals", label: "Sales-based income patterns" },
+                  { slug: "recurring-vs-non-recurring-income", label: "Adding recurring to commission" },
                 ],
               },
               {
                 id: "business",
-                title: "Business Owner or Agency",
-                description: "Multiple revenue streams, operational complexity",
+                title: "Business Owner",
+                description: "Multiple revenue streams, team complexity, growth challenges",
                 guides: [
-                  { slug: "what-is-income-structure", label: "Understanding income structure" },
-                  { slug: "income-concentration-risk", label: "Client concentration" },
+                  { slug: "income-concentration-risk", label: "Client concentration and diversification" },
                   { slug: "recurring-revenue-for-service-businesses", label: "Building recurring revenue" },
-                  { slug: "small-business-seasonal-risk", label: "Seasonal patterns" },
+                  { slug: "small-business-seasonal-risk", label: "Seasonal patterns and cash flow" },
                   { slug: "income-stability-small-business-owners", label: "Business owner scenarios" },
+                  { slug: "how-to-improve-income-stability", label: "Structural improvements for growth" },
                 ],
               },
             ].map((path) => (
@@ -111,13 +111,14 @@ export default function LearnHub() {
                   cursor: "pointer",
                   transition: "all 200ms",
                   backgroundColor: selectedPath === path.id ? "rgba(31,109,122,0.04)" : L.white,
+                  boxShadow: selectedPath === path.id ? "0 4px 12px rgba(31,109,122,0.08)" : "none",
                 }}
               >
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
                   <h3 style={{ fontSize: m ? 17 : 18, fontWeight: 600, color: L.navy, margin: 0 }}>
                     {path.title}
                   </h3>
-                  <span style={{ fontSize: 20, color: L.teal, transition: "transform 200ms", transform: selectedPath === path.id ? "rotate(180deg)" : "none" }}>
+                  <span style={{ fontSize: 18, color: L.teal, transition: "transform 200ms", transform: selectedPath === path.id ? "rotate(180deg)" : "none", flexShrink: 0 }}>
                     ▼
                   </span>
                 </div>
@@ -126,24 +127,29 @@ export default function LearnHub() {
                 </p>
                 {selectedPath === path.id && (
                   <div style={{ marginTop: 20, paddingTop: 20, borderTop: `1px solid ${L.divider}` }}>
-                    <div style={{ fontSize: 12, fontWeight: 600, color: L.teal, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }}>
-                      Recommended for you:
+                    <div style={{ fontSize: 12, fontWeight: 600, color: L.teal, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 16 }}>
+                      Next steps:
                     </div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: m ? 10 : 12 }}>
                       {path.guides.map((guide) => (
                         <Link
                           key={guide.slug}
                           href={`/learn/${guide.slug}`}
                           style={{
                             fontSize: 14,
-                            color: L.teal,
+                            color: L.navy,
                             textDecoration: "none",
                             display: "flex",
-                            alignItems: "center",
-                            gap: 8,
+                            alignItems: "flex-start",
+                            gap: 10,
+                            padding: "8px 0",
+                            transition: "color 200ms",
                           }}
+                          onMouseEnter={(e) => { e.currentTarget.style.color = L.teal; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.color = L.navy; }}
                         >
-                          → {guide.label}
+                          <span style={{ color: L.teal, flexShrink: 0, marginTop: 2 }}>→</span>
+                          <span>{guide.label}</span>
                         </Link>
                       ))}
                     </div>
@@ -452,13 +458,13 @@ function ReferenceLibrary({ m }: { m: boolean }) {
         >
           <div style={{ textAlign: "left" }}>
             <h2 style={{ fontSize: m ? 18 : 20, fontWeight: 600, color: L.navy, margin: "0 0 4px 0" }}>
-              Go deeper
+              🔍 Go deeper
             </h2>
             <p style={{ fontSize: 14, color: L.textSecondary, margin: 0 }}>
               Explore all {coreSlugs.length} concepts
             </p>
           </div>
-          <span style={{ fontSize: 24, transition: "transform 200ms", transform: expanded ? "rotate(180deg)" : "none" }}>
+          <span style={{ fontSize: 24, transition: "transform 200ms", transform: expanded ? "rotate(180deg)" : "none", flexShrink: 0 }}>
             ▼
           </span>
         </button>
