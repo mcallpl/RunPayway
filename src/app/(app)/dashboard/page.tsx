@@ -342,6 +342,9 @@ function DashboardContent() {
   const [workerScripts, setWorkerScripts] = useState<ActionScript[]>([]);
   const [simLoading, setSimLoading] = useState(true);
   const [serverEntitlements, setServerEntitlements] = useState<{ remaining: number; total: number; plan_key: string } | null>(null);
+  const [advisorGoal, setAdvisorGoal] = useState("");
+  const [advisorResponse, setAdvisorResponse] = useState<{ guidance: string; recommended_steps: string[]; timeline_estimate: string } | null>(null);
+  const [advisorLoading, setAdvisorLoading] = useState(false);
 
   /* ── IntersectionObserver for phase nav ── */
   useEffect(() => {
@@ -394,6 +397,7 @@ function DashboardContent() {
 
   /* ── Load data from storage or URL ?code= parameter ── */
   const searchParams = useSearchParams();
+  const router = useRouter();
   useEffect(() => {
     // Check for ?code= in URL (bookmarkable unique link)
     // Check for ?record= in URL (email link — loads from cloud)
@@ -466,7 +470,7 @@ function DashboardContent() {
     if (!hasVisited && hasData) { setShowWelcome(true); }
     localStorage.setItem("rp_cc_visited", "1");
     setDataLoaded(true);
-  }, [searchParams]);
+  }, [searchParams, router]);
 
   // Fetch server-side entitlements for accurate remaining count
   useEffect(() => {
@@ -504,6 +508,13 @@ function DashboardContent() {
     return () => clearTimeout(t);
   }, []);
 
+  // Redirect to login if no record found after data loading
+  useEffect(() => {
+    if (dataLoaded && !record && typeof window !== "undefined") {
+      router.push("/dashboard/login");
+    }
+  }, [dataLoaded, record, router]);
+
   const handleCodeSubmit = () => {
     setCodeError(null); const trimmed = accessCode.trim();
     if (!trimmed) { setCodeError("Paste your Access Code."); return; }
@@ -518,6 +529,37 @@ function DashboardContent() {
       localStorage.setItem("rp_purchase_session", JSON.stringify(codeSession));
       window.location.reload();
     } catch { setCodeError("Invalid code. Copy the full code from your report."); }
+  };
+
+  const handleAdvisorAnalyze = async () => {
+    if (!advisorGoal.trim()) return;
+    setAdvisorLoading(true);
+    try {
+      const res = await fetch("/api/v1/advisor-analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          goal: advisorGoal,
+          industry: sector || "General",
+          score: dScore,
+          band: band,
+          dimensions: {
+            persistence_pct: i?.income_persistence_pct || 0,
+            source_diversity_count: i?.source_diversity_count || 0,
+            forward_secured_pct: i?.forward_secured_pct || 0,
+            largest_source_pct: i?.largest_source_pct || 0,
+            earnings_variability: i?.income_variability_level || "moderate",
+            labor_dependence_pct: i?.labor_dependence_pct || 0,
+          },
+          roadmapSteps: roadmap.map(s => ({ action: s.action, lift: s.lift, desc: s.desc })),
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAdvisorResponse(data);
+      }
+    } catch { /* API failed, show fallback */ }
+    setAdvisorLoading(false);
   };
 
   /* ── Derived ── */
@@ -1214,7 +1256,7 @@ function DashboardContent() {
                   )}
 
                   {/* View Report + Share — actions row */}
-                  <div style={{ marginTop: 20, display: "flex", justifyContent: mobile ? "center" : "flex-end", alignItems: "center", gap: 20 }}>
+                  <div style={{ marginTop: 20, display: "flex", justifyContent: mobile ? "center" : "flex-end", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
                     <button
                       onClick={() => setShowShareModal(true)}
                       style={{ fontSize: 13, fontWeight: 500, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 8, padding: "6px 14px", cursor: "pointer", fontFamily: sans, display: "inline-flex", alignItems: "center", gap: 6, transition: "border-color 150ms, color 150ms" }}
@@ -1229,6 +1271,20 @@ function DashboardContent() {
                       onMouseLeave={(e) => { e.currentTarget.style.color = B.taupe; }}>
                       View full report &rarr;
                     </Link>
+                    <button
+                      onClick={() => {
+                        sessionStorage.removeItem("rp_record");
+                        localStorage.removeItem("rp_record");
+                        sessionStorage.removeItem("rp_purchase_session");
+                        localStorage.removeItem("rp_purchase_session");
+                        router.push("/dashboard/login");
+                      }}
+                      style={{ fontSize: 12, fontWeight: 500, color: "rgba(14,26,43,0.40)", background: "none", border: "none", cursor: "pointer", padding: "6px 0", fontFamily: sans, transition: "color 150ms" }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(14,26,43,0.60)"; }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(14,26,43,0.40)"; }}
+                    >
+                      Sign out
+                    </button>
                   </div>
                 </div>
               </div>
@@ -1250,6 +1306,92 @@ function DashboardContent() {
               </div>
             </div>
           )}
+
+          {/* ════════════════════════════════════════════════════════ */}
+          {/*  AI ADVISOR — personalized guidance                        */}
+          {/* ════════════════════════════════════════════════════════ */}
+          <div style={{ marginBottom: 40 }}>
+            <div style={{ padding: mobile ? "28px 22px" : "40px 44px", borderRadius: 24, backgroundColor: B.surface, border: `1px solid ${B.stone}`, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
+              <div style={{ marginBottom: 20 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: B.purple, marginBottom: 12 }}>WHAT DO YOU WANT TO UNLOCK?</div>
+                <div style={{ fontSize: mobile ? 18 : 22, fontWeight: 500, color: B.navy, margin: "0 0 6px", lineHeight: 1.35 }}>
+                  Get personalized guidance
+                </div>
+                <p style={{ fontSize: 14, color: B.muted, margin: 0, lineHeight: 1.6 }}>
+                  Tell us what matters to you, and we'll show you the exact moves that unlock it for your situation.
+                </p>
+              </div>
+
+              <div style={{ display: "flex", gap: 12, marginBottom: 16, flexDirection: mobile ? "column" : "row" }}>
+                <input
+                  type="text"
+                  placeholder="e.g., 'I want to take 2 weeks off without losing income'"
+                  value={advisorGoal}
+                  onChange={(e) => setAdvisorGoal(e.target.value)}
+                  disabled={advisorLoading}
+                  onKeyDown={(e) => { if (e.key === "Enter") handleAdvisorAnalyze(); }}
+                  style={{
+                    flex: 1,
+                    padding: "12px 16px",
+                    fontSize: 14,
+                    fontFamily: sans,
+                    border: `1px solid ${B.stone}`,
+                    borderRadius: 10,
+                    backgroundColor: B.white,
+                    color: B.navy,
+                    outline: "none",
+                    transition: "border-color 150ms",
+                  }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = `${B.teal}40`; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = B.stone; }}
+                />
+                <button
+                  onClick={handleAdvisorAnalyze}
+                  disabled={advisorLoading || !advisorGoal.trim()}
+                  style={{
+                    height: 44,
+                    padding: "0 24px",
+                    fontSize: 14,
+                    fontWeight: 600,
+                    color: advisorLoading || !advisorGoal.trim() ? "rgba(14,26,43,0.30)" : B.white,
+                    backgroundColor: advisorLoading || !advisorGoal.trim() ? "rgba(31,109,122,0.10)" : B.teal,
+                    border: "none",
+                    borderRadius: 10,
+                    cursor: advisorLoading || !advisorGoal.trim() ? "not-allowed" : "pointer",
+                    transition: "all 150ms",
+                    fontFamily: sans,
+                    whiteSpace: "nowrap",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!advisorLoading && advisorGoal.trim()) {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = "rgba(31,109,122,0.85)";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!advisorLoading && advisorGoal.trim()) {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = B.teal;
+                    }
+                  }}
+                >
+                  {advisorLoading ? "Analyzing..." : "Get Guidance"}
+                </button>
+              </div>
+
+              {advisorResponse && (
+                <div style={{ padding: "20px 24px", borderRadius: 12, backgroundColor: `${B.teal}06`, border: `1px solid ${B.teal}15` }}>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: B.teal, letterSpacing: "0.08em", marginBottom: 12, textTransform: "uppercase" }}>Advisor's Take</div>
+                  <p style={{ fontSize: 14, color: B.navy, margin: "0 0 12px", lineHeight: 1.65, whiteSpace: "pre-wrap" }}>
+                    {advisorResponse.guidance}
+                  </p>
+                  {advisorResponse.timeline_estimate && (
+                    <div style={{ fontSize: 12, color: B.taupe, marginTop: 12, paddingTop: 12, borderTop: `1px solid ${B.teal}20` }}>
+                      <strong>Timeline:</strong> {advisorResponse.timeline_estimate}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
 
           {/* ════════════════════════════════════════════════════════ */}
           {/*  EXPLORE — PressureMap + What-If (context & exploration)  */}
