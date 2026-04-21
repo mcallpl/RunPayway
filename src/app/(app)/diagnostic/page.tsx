@@ -464,12 +464,6 @@ export default function DiagnosticPage() {
             // Only block if not allowed and not a retake
             if (checkData.reason === "expired") {
               setError("Your monitoring plan has expired. Renew to continue.");
-            } else if (checkData.reason === "exhausted") {
-              // Only show exhausted error for plans with multiple assessments (annual_monitoring)
-              // Single assessment plans handle retakes via retake check above
-              if (entPlanKey !== "single_assessment") {
-                setError("You have used all assessments on this plan.");
-              }
             } else if (checkData.reason === "no_entitlement") {
               // Will be handled by auto-create below, don't error here
             } else {
