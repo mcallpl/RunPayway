@@ -155,7 +155,7 @@ export default function IncomeStructureExplained() {
       <MicroConversion
         items={[
           { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Check Your Score", href: "/begin" },
+          { text: "Get My Stability Class", href: "/begin" },
         ]}
       />
 
