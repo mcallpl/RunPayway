@@ -238,23 +238,7 @@ export default function SignInPage() {
                       Access Monitoring Dashboard
                     </button>
 
-                    {/* Other customer types */}
-                    <div style={{ height: 1, background: C.softBorder, margin: "28px 0 24px" }} />
-                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                      <div style={{ padding: "14px 16px", borderRadius: 12, backgroundColor: C.panelFill, border: `1px solid ${C.softBorder}` }}>
-                        <p style={{ fontSize: 13, fontWeight: 600, color: C.navy, margin: "0 0 2px" }}>Have a $69 full report?</p>
-                        <p style={{ fontSize: 12, color: C.muted, margin: 0 }}>Check your purchase confirmation email — it contains your direct dashboard link.</p>
-                      </div>
-                      <div style={{ padding: "14px 16px", borderRadius: 12, backgroundColor: C.panelFill, border: `1px solid ${C.softBorder}` }}>
-                        <p style={{ fontSize: 13, fontWeight: 600, color: C.navy, margin: "0 0 2px" }}>Advisor account?</p>
-                        <p style={{ fontSize: 12, color: C.muted, margin: "0 0 6px" }}>Use your advisor code to access your dashboard.</p>
-                        <Link href="/advisor-portal/dashboard" style={{ fontSize: 12, fontWeight: 600, color: C.teal, textDecoration: "none" }}>
-                          Go to Advisor Dashboard →
-                        </Link>
-                      </div>
-                    </div>
-
-                    <div style={{ height: 1, background: C.softBorder, margin: "20px 0 16px" }} />
+                    <div style={{ height: 1, background: C.softBorder, margin: "28px 0 16px" }} />
                     <div style={{ textAlign: "center" }}>
                       <p style={{ ...T.micro, color: C.light, margin: 0 }}>
                         Consistent &#183; Email + PIN authentication &#183; Encrypted
