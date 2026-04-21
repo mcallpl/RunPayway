@@ -37,9 +37,18 @@ export default function PlansPage() {
           .plans-trust { padding-left: 32px !important; padding-right: 32px !important; }
         }
 
-        /* ── iPad portrait (≤860px): stack + center ── */
+        /* ── Tablet landscape (860-1024px): 2 columns ── */
+        @media (max-width: 1024px) and (min-width: 861px) {
+          .plans-grid {
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+
+        /* ── Tablet portrait (≤860px): single column ── */
         @media (max-width: 860px) {
           .plans-grid {
+            display: flex !important;
             flex-direction: column !important;
             max-width: 520px !important;
             width: 100% !important;
@@ -152,7 +161,8 @@ export default function PlansPage() {
           style={{
             maxWidth: 1020,
             margin: "0 auto",
-            display: "flex",
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
             gap: 22,
             alignItems: "stretch",
           }}
@@ -162,7 +172,6 @@ export default function PlansPage() {
           <div
             className="plans-card plans-card-body"
             style={{
-              flex: 1,
               backgroundColor: C.white,
               borderRadius: 20,
               border: `1px solid ${C.borderSoft}`,
@@ -224,7 +233,6 @@ export default function PlansPage() {
           <div
             className="plans-card plans-card-body"
             style={{
-              flex: 1,
               backgroundColor: C.white,
               borderRadius: 20,
               border: `1.5px solid ${C.teal}`,
@@ -312,7 +320,6 @@ export default function PlansPage() {
           <div
             className="plans-card plans-card-body"
             style={{
-              flex: 1,
               backgroundColor: C.white,
               borderRadius: 20,
               border: `1.5px solid ${C.purple}`,
@@ -414,7 +421,6 @@ export default function PlansPage() {
           <div
             className="plans-card plans-card-body"
             style={{
-              flex: 1,
               backgroundColor: C.navy,
               borderRadius: 20,
               border: "1px solid rgba(255,255,255,0.07)",
@@ -493,7 +499,6 @@ export default function PlansPage() {
           <div
             className="plans-card plans-card-body"
             style={{
-              flex: 1,
               backgroundColor: C.panelFill,
               borderRadius: 20,
               border: `1px solid ${C.borderSoft}`,
