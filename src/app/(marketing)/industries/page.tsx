@@ -333,33 +333,63 @@ export default function IndustriesIndexPage() {
             is built. Your score, stability band, and full report — delivered
             in under two minutes.
           </p>
-          <Link
-            href="/begin"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: 56,
-              padding: "0 44px",
-              borderRadius: 14,
-              backgroundColor: C.teal,
-              color: C.white,
-              fontSize: 16,
-              fontWeight: 600,
-              textDecoration: "none",
-              boxShadow: "0 8px 32px rgba(31,109,122,0.35)",
-            }}
-          >
-            Get My Stability Class — Free &rarr;
-          </Link>
-          <div
-            style={{
-              marginTop: 16,
-              fontSize: 13,
-              color: "rgba(244,241,234,0.35)",
-            }}
-          >
-            $69 &middot; No documents required &middot; Results instantly
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
+            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", justifyContent: "center" }}>
+              <Link
+                href="/begin"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: 56,
+                  padding: "0 44px",
+                  borderRadius: 14,
+                  backgroundColor: C.white,
+                  color: C.navy,
+                  fontSize: 16,
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  boxShadow: "0 8px 24px rgba(14,26,43,0.08)",
+                  border: `1px solid ${C.borderSoft}`,
+                  transition: "transform 200ms, box-shadow 200ms",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}
+              >
+                Get My Stability Class — Free
+              </Link>
+              <a
+                href="https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: 56,
+                  padding: "0 44px",
+                  borderRadius: 14,
+                  backgroundColor: C.navy,
+                  color: C.white,
+                  fontSize: 16,
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  boxShadow: "0 8px 24px rgba(14,26,43,0.12)",
+                  border: `1px solid ${C.navy}`,
+                  transition: "transform 200ms, box-shadow 200ms",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}
+              >
+                Get Your Full Report — $69
+              </a>
+            </div>
+            <div
+              style={{
+                fontSize: 13,
+                color: "rgba(244,241,234,0.35)",
+              }}
+            >
+              Free analysis under 2 minutes | Paid report includes roadmap & scripts
+            </div>
           </div>
         </div>
       </section>

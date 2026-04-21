@@ -325,7 +325,7 @@ function FinalCta() {
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sand, marginBottom: 32, ...fadeIn(visible, 40) }}>
           Now, see how your income measures up.
         </h2>
-        <div style={{ ...fadeIn(visible, 120) }}>
+        <div style={{ display: "flex", flexDirection: m ? "column" : "row", alignItems: "center", gap: m ? 12 : 16, justifyContent: "center", ...fadeIn(visible, 120) }}>
           <Link href="/begin" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: m ? 56 : 60, padding: m ? "0 28px" : "0 32px", width: m ? "100%" : "auto",
@@ -340,10 +340,24 @@ function FinalCta() {
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
             Get My Stability Class — Free
           </Link>
-          <p style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.45)", marginTop: 16 }}>
-            $69 &middot; Score, scripts, roadmap, and lifetime access
-          </p>
+          <a href="https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05" style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            height: m ? 56 : 60, padding: m ? "0 28px" : "0 32px", width: m ? "100%" : "auto",
+            borderRadius: 16,
+            backgroundColor: C.navy, color: C.white,
+            fontSize: 16, fontWeight: 600, textDecoration: "none",
+            boxShadow: "0 8px 24px rgba(14,26,43,0.12)",
+            border: `1px solid ${C.navy}`,
+            transition: "transform 200ms, box-shadow 200ms",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
+            Get Your Full Report — $69
+          </a>
         </div>
+        <p style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.45)", marginTop: 20, textAlign: "center" }}>
+          Free analysis under 2 minutes | Paid report includes roadmap & scripts
+        </p>
       </div>
     </section>
   );

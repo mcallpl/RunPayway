@@ -764,22 +764,38 @@ function ArticleCta() {
         <p style={{ fontSize: 17, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted, marginBottom: 32, ...fadeIn(visible, 100) }}>
           RunPayway™ scores how much of your income is protected, how much is at risk, and what to do about it. Under 2 minutes. Consistent results. Private by&nbsp;default.
         </p>
-        <div style={{ ...fadeIn(visible, 150), display: "flex", flexDirection: "column" as const, alignItems: "center" }}>
-          <Link href="/begin" style={{
-            display: "inline-flex", alignItems: "center", justifyContent: "center",
-            height: m ? 52 : 56, width: m ? "100%" : "auto",
-            padding: m ? "0 24px" : "0 32px",
-            borderRadius: 14, backgroundColor: C.white, color: C.navy,
-            fontSize: 16, fontWeight: 600, textDecoration: "none",
-            boxShadow: "0 8px 24px rgba(14,26,43,0.08)",
-            border: `1px solid ${C.borderSoft}`,
-            transition: "transform 200ms, box-shadow 200ms",
-          }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get My Stability Class — Free
-          </Link>
-          <Link href="/learn" style={{ display: "inline-block", marginTop: 16, fontSize: 14, fontWeight: 600, color: "rgba(244,241,234,0.50)", textDecoration: "none" }}>
+        <div style={{ ...fadeIn(visible, 150), display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 16 }}>
+          <div style={{ display: "flex", flexDirection: m ? "column" : "row", alignItems: "center", gap: m ? 12 : 14, justifyContent: "center", width: "100%" }}>
+            <Link href="/begin" style={{
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              height: m ? 52 : 56, width: m ? "100%" : "auto",
+              padding: m ? "0 24px" : "0 32px",
+              borderRadius: 14, backgroundColor: C.white, color: C.navy,
+              fontSize: 16, fontWeight: 600, textDecoration: "none",
+              boxShadow: "0 8px 24px rgba(14,26,43,0.08)",
+              border: `1px solid ${C.borderSoft}`,
+              transition: "transform 200ms, box-shadow 200ms",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
+              Get My Stability Class — Free
+            </Link>
+            <a href="https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05" style={{
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              height: m ? 52 : 56, width: m ? "100%" : "auto",
+              padding: m ? "0 24px" : "0 32px",
+              borderRadius: 14, backgroundColor: C.navy, color: C.white,
+              fontSize: 16, fontWeight: 600, textDecoration: "none",
+              boxShadow: "0 8px 24px rgba(14,26,43,0.12)",
+              border: `1px solid ${C.navy}`,
+              transition: "transform 200ms, box-shadow 200ms",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
+              Get Your Full Report — $69
+            </a>
+          </div>
+          <Link href="/learn" style={{ display: "inline-block", fontSize: 14, fontWeight: 600, color: "rgba(244,241,234,0.50)", textDecoration: "none" }}>
             Explore the Learn Center →
           </Link>
         </div>

@@ -540,15 +540,28 @@ function StickyCta() {
       backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
       boxShadow: "0 -4px 24px rgba(14,26,43,0.12)",
     }}>
-      <Link href="/begin" style={{
-        display: "flex", alignItems: "center", justifyContent: "center",
-        height: 48, width: m ? "100%" : "auto", minWidth: m ? 0 : 360,
-        padding: m ? 0 : "0 32px",
-        borderRadius: 12, backgroundColor: C.white, color: C.navy,
-        fontSize: 16, fontWeight: 600, textDecoration: "none",
-      }}>
-        Get My Stability Class — Free
-      </Link>
+      <div style={{ display: "flex", gap: m ? 10 : 14, alignItems: "center", justifyContent: "center", width: "100%", flexWrap: "wrap" }}>
+        <Link href="/begin" style={{
+          display: "flex", alignItems: "center", justifyContent: "center",
+          height: 48, width: m ? "calc(50% - 5px)" : "auto", minWidth: m ? 0 : 180,
+          padding: m ? "0 16px" : "0 28px",
+          borderRadius: 12, backgroundColor: C.white, color: C.navy,
+          fontSize: 15, fontWeight: 600, textDecoration: "none",
+          flex: m ? "0 1 auto" : "0 0 auto",
+        }}>
+          Free Assessment
+        </Link>
+        <a href="https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05" style={{
+          display: "flex", alignItems: "center", justifyContent: "center",
+          height: 48, width: m ? "calc(50% - 5px)" : "auto", minWidth: m ? 0 : 180,
+          padding: m ? "0 16px" : "0 28px",
+          borderRadius: 12, backgroundColor: C.navy, color: C.white,
+          fontSize: 15, fontWeight: 600, textDecoration: "none",
+          flex: m ? "0 1 auto" : "0 0 auto",
+        }}>
+          Full Report — $69
+        </a>
+      </div>
     </div>
   );
 }

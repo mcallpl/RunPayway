@@ -227,25 +227,54 @@ export default async function IndustryPage({
             {page.because}
           </p>
 
-          <Link
-            href="/begin"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: 56,
-              padding: "0 40px",
-              borderRadius: 14,
-              backgroundColor: C.teal,
-              color: C.white,
-              fontSize: 16,
-              fontWeight: 600,
-              textDecoration: "none",
-              boxShadow: "0 8px 24px rgba(31,109,122,0.30)",
-            }}
-          >
-            Get My Stability Class — Free &rarr;
-          </Link>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "center" }}>
+            <Link
+              href="/begin"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: 56,
+                padding: "0 40px",
+                borderRadius: 14,
+                backgroundColor: C.white,
+                color: C.navy,
+                fontSize: 16,
+                fontWeight: 600,
+                textDecoration: "none",
+                boxShadow: "0 8px 24px rgba(14,26,43,0.08)",
+                border: `1px solid ${C.borderSoft}`,
+                transition: "transform 200ms, box-shadow 200ms",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}
+            >
+              Get My Stability Class — Free
+            </Link>
+            <a
+              href="https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: 56,
+                padding: "0 40px",
+                borderRadius: 14,
+                backgroundColor: C.navy,
+                color: C.white,
+                fontSize: 16,
+                fontWeight: 600,
+                textDecoration: "none",
+                boxShadow: "0 8px 24px rgba(14,26,43,0.12)",
+                border: `1px solid ${C.navy}`,
+                transition: "transform 200ms, box-shadow 200ms",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}
+            >
+              Get Your Full Report — $69
+            </a>
+          </div>
           <div
             style={{
               marginTop: 16,
@@ -254,7 +283,7 @@ export default async function IndustryPage({
               letterSpacing: "0.01em",
             }}
           >
-            Full report &mdash; $69 &middot; Results in under two minutes &middot; No documents required
+            Free analysis under 2 minutes | Paid report includes roadmap & scripts
           </div>
         </div>
       </section>
@@ -1195,25 +1224,54 @@ export default async function IndustryPage({
             Six structural factors. Under two minutes. Your Income Stability Score™, top
             constraint, and full report — ready instantly.
           </p>
-          <Link
-            href="/begin"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: 60,
-              padding: "0 48px",
-              borderRadius: 14,
-              backgroundColor: C.teal,
-              color: C.white,
-              fontSize: 17,
-              fontWeight: 600,
-              textDecoration: "none",
-              boxShadow: "0 8px 32px rgba(31,109,122,0.35)",
-            }}
-          >
-            Get My Stability Class — Free &rarr;
-          </Link>
+          <div style={{ display: "flex", gap: 14, flexWrap: "wrap", justifyContent: "center" }}>
+            <Link
+              href="/begin"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: 60,
+                padding: "0 48px",
+                borderRadius: 14,
+                backgroundColor: C.white,
+                color: C.navy,
+                fontSize: 17,
+                fontWeight: 600,
+                textDecoration: "none",
+                boxShadow: "0 8px 24px rgba(14,26,43,0.08)",
+                border: `1px solid ${C.borderSoft}`,
+                transition: "transform 200ms, box-shadow 200ms",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}
+            >
+              Get My Stability Class — Free
+            </Link>
+            <a
+              href="https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: 60,
+                padding: "0 48px",
+                borderRadius: 14,
+                backgroundColor: C.navy,
+                color: C.white,
+                fontSize: 17,
+                fontWeight: 600,
+                textDecoration: "none",
+                boxShadow: "0 8px 24px rgba(14,26,43,0.12)",
+                border: `1px solid ${C.navy}`,
+                transition: "transform 200ms, box-shadow 200ms",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}
+            >
+              Get Your Full Report — $69
+            </a>
+          </div>
           <div
             style={{
               marginTop: 20,
@@ -1221,7 +1279,7 @@ export default async function IndustryPage({
               color: C.sandMuted,
             }}
           >
-            No documents. No account required. Results in under two minutes.
+            Free analysis under 2 minutes | Paid report includes roadmap & scripts
           </div>
         </div>
       </section>
