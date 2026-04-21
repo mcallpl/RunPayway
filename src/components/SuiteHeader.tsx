@@ -77,7 +77,7 @@ export default function SuiteHeader({ current }: { current: "suite" | "pressurem
             const isActive = current === link.key;
             return (
               <Link key={link.key} href={link.href} style={{
-                fontSize: mobile ? 12 : 14, fontWeight: isActive ? 600 : 500,
+                fontSize: mobile ? 12 : 14, fontWeight: 500,
                 color: isActive ? C.purple : C.muted,
                 textDecoration: "none",
                 borderBottom: isActive ? `2px solid ${C.purple}` : "2px solid transparent",

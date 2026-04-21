@@ -376,12 +376,12 @@ export default function MarketingLayout({
                     style={{
                       fontSize: 15,
                       fontWeight: 500,
-                      color: "rgba(14,26,43,0.70)",
+                      color: "rgba(14,26,43,0.60)",
                       transition: "color 280ms cubic-bezier(0.22, 1, 0.36, 1)",
                       paddingBottom: 2,
                     }}
                     onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.65)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.60)"; }}
                   >
                     {link.label}
                   </Link>
