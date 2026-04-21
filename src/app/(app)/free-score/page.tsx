@@ -30,20 +30,20 @@ const STRIPE = "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05";
 
 const CLASS_DESCRIPTIONS: Record<string, string> = {
   "Limited Stability":
-    "Your income structure has significant exposure. A disruption in current conditions could have outsized impact before you can respond.",
+    "One disruption could seriously impact your income.",
   "Developing Stability":
-    "Your income structure is building but not yet protected. Key vulnerabilities remain that affect your resilience.",
+    "Your income isn't protected yet.",
   "Established Stability":
-    "Your income structure is solid. Targeted changes could meaningfully strengthen it.",
+    "You're stable — but there's room to strengthen.",
   "High Stability":
-    "Your income structure holds up well under pressure. Your full report shows exactly what's keeping it there.",
+    "Your structure holds up well under pressure.",
 };
 
 const UPGRADE_HEADLINES: Record<string, string> = {
-  "Limited Stability": "Your income is at risk right now.",
-  "Developing Stability": "Your income needs more protection.",
-  "Established Stability": "Your income is stable — small changes could make it stronger.",
-  "High Stability": "Your income holds up well — here's what keeps it there.",
+  "Limited Stability": "See exactly why — before disruption hits.",
+  "Developing Stability": "Find what to fix first.",
+  "Established Stability": "Discover your strongest leverage points.",
+  "High Stability": "Know what's protecting you.",
 };
 
 /* ================================================================== */
@@ -159,20 +159,27 @@ export default function FreeScorePage() {
             fontSize: 15, color: "rgba(244,241,234,0.60)",
             lineHeight: 1.65, marginBottom: 32, maxWidth: 380, margin: "0 auto 32px",
           }}>
-            Your class tells you where you stand. Your report tells you exactly why — and what to do about it.
+            You've got your stability class. Now unlock what's limiting it and what moves it.
           </p>
+
+          <div style={{
+            fontSize: 13, fontWeight: 600, color: C.teal, marginBottom: 20,
+            paddingBottom: 20, borderBottom: "1px solid rgba(31,109,122,0.30)",
+          }}>
+            You'll unlock:
+          </div>
 
           <div style={{
             display: "flex", flexDirection: "column" as const, gap: 12,
             textAlign: "left", maxWidth: 340, margin: "0 auto 36px",
           }}>
             {[
-              "Your exact score (0–100)",
-              "What's limiting your score — ranked",
-              "What changes if your largest source changes",
-              "A 12-week improvement plan",
-              "Scripts for client and income conversations",
-              "Lifetime dashboard access",
+              "Exact score (0–100)",
+              "Your top constraint — ranked by impact",
+              "Stress test: What if your largest source disappeared",
+              "Targeted 12-week action plan",
+              "Ready-to-use scripts for income conversations",
+              "Lifetime dashboard with scenario simulator",
             ].map((item, i) => (
               <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
                 <span style={{
@@ -206,26 +213,26 @@ export default function FreeScorePage() {
           </p>
         </section>
 
-        {/* ── EMAIL CAPTURE ── */}
+        {/* ── EMAIL CAPTURE (secondary CTA) ── */}
         <section style={{
-          backgroundColor: C.white, borderRadius: 16,
+          backgroundColor: "rgba(31,109,122,0.06)", borderRadius: 16,
           padding: mobile ? "28px 24px" : "32px 36px",
-          border: `1px solid ${C.border}`,
+          border: `1px solid ${C.teal}20`,
           marginBottom: secPad, textAlign: "center",
         }}>
           <div style={{
-            fontSize: 11, fontWeight: 700, letterSpacing: "0.10em",
-            textTransform: "uppercase" as const, color: C.teal, marginBottom: 12,
+            fontSize: 12, fontWeight: 600, color: C.navy,
+            marginBottom: 16, lineHeight: 1.3,
           }}>
-            Save Your Results
+            Not ready to upgrade?
           </div>
-          <div style={{
-            fontSize: mobile ? 16 : 18, fontWeight: 600, color: C.navy,
-            marginBottom: 20, lineHeight: 1.3,
+          <p style={{
+            fontSize: 13, color: "rgba(14,26,43,0.60)",
+            lineHeight: 1.5, marginBottom: 20,
           }}>
-            Get your stability class delivered to your inbox
-          </div>
-          <div style={{ padding: mobile ? "20px 16px" : "20px 24px", borderRadius: 12, backgroundColor: C.navy }}>
+            Get income stability insights delivered to your inbox. We'll send you practical tips based on your stability class.
+          </p>
+          <div style={{ padding: mobile ? "16px 0" : "16px 0" }}>
             <EmailCapture variant="inline" source="free_score_page" />
           </div>
         </section>
