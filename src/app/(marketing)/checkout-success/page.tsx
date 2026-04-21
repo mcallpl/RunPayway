@@ -53,7 +53,6 @@ function CheckoutSuccessContent() {
   const customerEmail = searchParams.get("email") || searchParams.get("customer_email") || "";
   const [ready, setReady] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [hasExistingRecord, setHasExistingRecord] = useState(false);
   const [countdown, setCountdown] = useState(5);
 
   const info = PLAN_INFO[plan] || PLAN_INFO.single;
@@ -112,15 +111,9 @@ function CheckoutSuccessContent() {
             }
           }
         } catch { /* Entitlement create failed — non-blocking, localStorage flow still works */ }
-        // Check if customer already has an assessment (free-to-paid upgrade or retake)
-        try {
-          const existingRecord = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record");
-          if (existingRecord) {
-            // Preserve existing record — customer can choose to use it or retake
-            sessionStorage.setItem("rp_record", existingRecord);
-            setHasExistingRecord(true);
-          }
-        } catch { /* ignore */ }
+        // Clear any existing assessment data — users must take fresh assessment
+        sessionStorage.removeItem("rp_record");
+        localStorage.removeItem("rp_record");
         // Store current plan for future upgrade detection
         localStorage.setItem("rp_previous_plan", planKey);
         // Auto-create monitoring session for annual buyers so they can sign in by email
@@ -155,13 +148,9 @@ function CheckoutSuccessContent() {
             }
           }
         } catch { /* Entitlement create failed — non-blocking */ }
-        try {
-          const existingRecord = sessionStorage.getItem("rp_record") || localStorage.getItem("rp_record");
-          if (existingRecord) {
-            sessionStorage.setItem("rp_record", existingRecord);
-            setHasExistingRecord(true);
-          }
-        } catch { /* ignore */ }
+        // Clear any existing assessment data — users must take fresh assessment
+        sessionStorage.removeItem("rp_record");
+        localStorage.removeItem("rp_record");
         localStorage.setItem("rp_previous_plan", planKey);
         if (plan === "monitoring" && customerEmail) {
           if (!getSessionByEmail(customerEmail)) {
@@ -177,23 +166,22 @@ function CheckoutSuccessContent() {
   // Auto-advance countdown for standard flow
   const isMonitoring = plan === "monitoring";
   useEffect(() => {
-    if (!ready || hasExistingRecord || isMonitoring) return;
+    if (!ready || isMonitoring) return;
     if (countdown <= 0) {
+      // Always start fresh assessment — clear any existing answers
+      sessionStorage.removeItem("rp_record");
+      localStorage.removeItem("rp_record");
       router.push("/diagnostic-portal");
       return;
     }
     const timer = setTimeout(() => setCountdown((c) => c - 1), 1000);
     return () => clearTimeout(timer);
-  }, [ready, countdown, hasExistingRecord, isMonitoring, router]);
+  }, [ready, countdown, isMonitoring, router]);
 
   const steps = isMonitoring ? [
     { num: "1", title: "Payment confirmed", desc: `${info.title} — ${info.price}/year`, done: true },
     { num: "2", title: "Account created", desc: `Linked to ${customerEmail || "your email"}. Sign in anytime to take your assessments.`, done: true },
     { num: "3", title: "3 assessments included", desc: "Take them whenever you want over the next 12 months. You decide when.", done: true },
-  ] : hasExistingRecord ? [
-    { num: "1", title: "Payment confirmed", desc: `${info.title} — ${info.price}`, done: true },
-    { num: "2", title: "Your answers are saved", desc: "You can use your existing answers or retake the assessment if you want to change them.", done: true },
-    { num: "3", title: "Full report ready", desc: "Report, simulator, and action plan — unlocked instantly.", done: false },
   ] : [
     { num: "1", title: "Payment confirmed", desc: `${info.title} — ${info.price}`, done: true },
     { num: "2", title: "Set up your profile", desc: "Industry, income model, and operating structure.", done: false },
@@ -251,9 +239,7 @@ function CheckoutSuccessContent() {
         <h1 style={{ fontSize: 28, fontFamily: sans, fontWeight: 600, letterSpacing: "-0.02em", lineHeight: 1.15, color: C.navy, marginBottom: 36 }}>
           {isMonitoring
             ? "Your Stability Monitoring is active."
-            : hasExistingRecord
-              ? "Your full report is ready."
-              : "Your full assessment is ready to begin."}
+            : "Your full assessment is ready to begin."}
         </h1>
 
         {/* Steps */}
@@ -288,56 +274,7 @@ function CheckoutSuccessContent() {
 
         {/* CTA — user clicks when ready */}
         {ready ? (
-          hasExistingRecord && !isMonitoring ? (
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, width: "100%", maxWidth: 360 }}>
-              <Link
-                href="/unlock"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "100%",
-                  height: 52,
-                  borderRadius: 12,
-                  background: `linear-gradient(135deg, ${C.sand} 0%, #EDECEA 100%)`,
-                  color: C.navy,
-                  fontSize: 16,
-                  fontWeight: 600,
-                  textDecoration: "none",
-                  letterSpacing: "-0.01em",
-                  boxShadow: "0 12px 32px rgba(0,0,0,0.25)",
-                  transition: "transform 200ms ease, box-shadow 200ms ease",
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,0.30)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.25)"; }}
-              >
-                Use My Existing Answers
-              </Link>
-              <Link
-                href="/diagnostic-portal"
-                onClick={() => { sessionStorage.removeItem("rp_record"); localStorage.removeItem("rp_record"); }}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "100%",
-                  height: 44,
-                  borderRadius: 10,
-                  background: "transparent",
-                  color: C.muted,
-                  fontSize: 14,
-                  fontWeight: 500,
-                  textDecoration: "none",
-                  border: `1px solid ${C.border}`,
-                  transition: "color 200ms ease, border-color 200ms ease",
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = C.navy; e.currentTarget.style.borderColor = C.light; }}
-                onMouseLeave={(e) => { e.currentTarget.style.color = C.muted; e.currentTarget.style.borderColor = C.border; }}
-              >
-                Retake Assessment
-              </Link>
-            </div>
-          ) : isMonitoring ? (
+          isMonitoring ? (
             <>
             <Link
               href="/sign-in"
