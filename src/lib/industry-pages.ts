@@ -510,6 +510,32 @@ export const INDUSTRY_PAGES: IndustryPage[] = [
     metaTitle: "Income Stability Score for Energy & Utilities Professionals — RunPayway™",
     metaDesc: "Commodity exposure creates hidden structural risk. RunPayway™ scores your energy income structure in under two minutes — contracted vs. spot income, market exposure, and what to lock in first.",
   },
+  {
+    slug: "other",
+    name: "Other",
+    badge: "OTHER INCOME TYPE",
+    constraint: "Income structures vary widely across professions.",
+    because: "If your income doesn't fit a standard industry category, RunPayway™ still measures how stable your structure actually is. The six structural dimensions — persistence, diversification, forward visibility, concentration, variability, and labor dependence — apply to any income type.",
+    proofA: { income: "$120K / year", desc: "Income from multiple sources without clear contracts. Highly variable from month to month. Dependent on direct effort.", score: 34, band: "Developing Stability" },
+    proofB: { income: "$125K / year", desc: "Diversified income streams with documented agreements. Consistent month-to-month with recurring components. Some passive elements.", score: 69, band: "Established Stability" },
+    outcomes: [
+      { title: "You see how your unique income structure compares to structural stability principles.", body: "Your income may not fit a standard category, but the fundamentals of stability — protection, diversification, and consistency — apply universally." },
+      { title: "You understand which structural dimensions are your biggest vulnerabilities.", body: "Whether your income is specialized or unconventional, you'll see exactly what limits your stability." },
+      { title: "You get a clear roadmap for structural improvement specific to your situation.", body: "Your score breaks down across six dimensions, showing you what to strengthen first." },
+      { title: "You have a quantified baseline before making major financial decisions.", body: "Loans, investments, and major commitments should be informed by your actual income stability, not assumptions." },
+      { title: "You track progress as you build a more resilient income structure.", body: "Whatever your income type, improvements in diversification, visibility, and protection increase your score." },
+    ],
+    knowHeading: "What you know about your unique income structure after you have a number.",
+    prep: [
+      "Gather information about your income sources and how much each contributes",
+      "Note what percentage of your income is recurring, contracted, or guaranteed",
+      "Think about how dependent your income is on your direct effort vs. passive factors",
+    ],
+    professionalHref: "/advisors",
+    professionalLabel: "Are you a financial advisor working with professionals in unconventional or specialized income situations?",
+    metaTitle: "Income Stability Score™ for Other Income Types — RunPayway™",
+    metaDesc: "Your income may not fit standard categories, but stability principles apply universally. RunPayway™ measures structural stability in under two minutes — for any income type.",
+  },
 ];
 
 export function getIndustryBySlug(slug: string): IndustryPage | undefined {
