@@ -13,6 +13,7 @@ import {
   RelatedTopics,
   LearnFAQ,
   LearnCTA,
+  StickyLearnCTA,
   MetaFooter,
   ScenarioExtension,
 } from "@/components/learn/LearnComponents";
@@ -171,6 +172,7 @@ export default function SalesRepBasePlusCommission() {
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />
+      <StickyLearnCTA />
     </>
   );
 }

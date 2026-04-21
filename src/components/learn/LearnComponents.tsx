@@ -590,3 +590,62 @@ export function ScenarioExtension({ setup, riskExposure, disruption, scoreRange,
     </section>
   );
 }
+
+
+/* ================================================================ */
+/* STICKY CTA BUTTON — ALWAYS VISIBLE                                */
+/* ================================================================ */
+
+export function StickyLearnCTA() {
+  const m = useMobile();
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setVisible(window.scrollY > 300);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  if (!visible) return null;
+
+  return (
+    <Link
+      href="/begin"
+      style={{
+        position: "fixed",
+        bottom: m ? 24 : "auto",
+        top: m ? "auto" : 24,
+        right: 24,
+        zIndex: 50,
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: 48,
+        padding: "0 20px",
+        borderRadius: 12,
+        backgroundColor: L.teal,
+        color: L.white,
+        fontSize: 14,
+        fontWeight: 600,
+        textDecoration: "none",
+        boxShadow: "0 8px 24px rgba(31,109,122,0.30)",
+        transition: "transform 200ms, box-shadow 200ms, opacity 200ms",
+        opacity: visible ? 1 : 0,
+        transform: visible ? "scale(1)" : "scale(0.8)",
+        whiteSpace: "nowrap",
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.transform = "scale(1.05)";
+        e.currentTarget.style.boxShadow = "0 12px 32px rgba(31,109,122,0.40)";
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.transform = "scale(1)";
+        e.currentTarget.style.boxShadow = "0 8px 24px rgba(31,109,122,0.30)";
+      }}
+    >
+      Get My Stability Class
+    </Link>
+  );
+}

@@ -13,6 +13,7 @@ import {
   RelatedTopics,
   LearnFAQ,
   LearnCTA,
+  StickyLearnCTA,
   MetaFooter,
   IndustryBlock,
 } from "@/components/learn/LearnComponents";
@@ -165,6 +166,7 @@ export default function IncomeStabilitySalesProfessionals() {
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />
+      <StickyLearnCTA />
     </>
   );
 }
