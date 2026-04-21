@@ -17,240 +17,138 @@ function useMobile(bp = 768) {
 
 const px = (m: boolean) => (m ? 28 : 48);
 
-const coreSlugs = [
-  { slug: "what-is-income-stability", label: "What Is Income Stability?" },
-  { slug: "income-stability-explained", label: "Income Stability Explained" },
-  { slug: "how-to-measure-income-stability", label: "How to Measure Income Stability" },
-  { slug: "income-stability-vs-credit-score", label: "Income Stability vs Credit Score" },
-  { slug: "income-stability-vs-income", label: "Income Stability vs Income" },
-  { slug: "income-stability-vs-net-worth", label: "Income Stability vs Net Worth" },
-  { slug: "what-is-income-structure", label: "What Is Income Structure?" },
-  { slug: "income-structure-explained", label: "Income Structure Explained" },
-  { slug: "what-makes-income-stable", label: "What Makes Income Stable?" },
-  { slug: "what-makes-income-unstable", label: "What Makes Income Unstable?" },
-  { slug: "income-risk-explained", label: "Income Risk Explained" },
-  { slug: "income-fragility-explained", label: "Income Fragility Explained" },
-  { slug: "income-continuity-explained", label: "Income Continuity Explained" },
-  { slug: "income-concentration-risk", label: "Income Concentration Risk" },
-  { slug: "active-vs-passive-income-stability", label: "Active vs Passive Income Stability" },
-  { slug: "recurring-vs-non-recurring-income", label: "Recurring vs Non-Recurring Income" },
-  { slug: "predictable-vs-unpredictable-income", label: "Predictable vs Unpredictable Income" },
-  { slug: "how-income-breaks-under-pressure", label: "How Income Breaks Under Pressure" },
-  { slug: "structural-income-risk-explained", label: "Structural Income Risk Explained" },
-  { slug: "income-stability-index", label: "Income Stability Index" },
-  { slug: "income-stress-testing-explained", label: "Income Stress Testing Explained" },
-  { slug: "income-dependency-explained", label: "Income Dependency Explained" },
-  { slug: "how-stable-is-your-income", label: "How Stable Is Your Income?" },
-  { slug: "is-my-income-stable", label: "Is My Income Stable?" },
-  { slug: "how-to-improve-income-stability", label: "How to Improve Income Stability" },
-];
-
-const industrySlugs = [
-  { slug: "income-stability-real-estate-agents", label: "Real Estate Agents" },
-  { slug: "income-stability-freelancers", label: "Freelancers" },
-  { slug: "income-stability-consultants", label: "Consultants" },
-  { slug: "income-stability-sales-professionals", label: "Sales Professionals" },
-  { slug: "income-stability-insurance-agents", label: "Insurance Agents" },
-  { slug: "income-stability-mortgage-brokers", label: "Mortgage Brokers" },
-  { slug: "income-stability-lawyers", label: "Lawyers" },
-  { slug: "income-stability-doctors", label: "Doctors" },
-  { slug: "income-stability-contractors", label: "Contractors" },
-  { slug: "income-stability-creators", label: "Creators" },
-  { slug: "income-stability-tech-workers", label: "Tech Workers" },
-  { slug: "income-stability-small-business-owners", label: "Small Business Owners" },
-  { slug: "income-stability-retail-owners", label: "Retail Owners" },
-  { slug: "income-stability-hospitality-workers", label: "Hospitality Workers" },
-  { slug: "income-stability-transportation-workers", label: "Transportation Workers" },
-];
-
-const scenarioSlugs = [
-  { slug: "150k-freelancer-one-client", label: "$150K Freelancer — One Client" },
-  { slug: "150k-freelancer-five-clients", label: "$150K Freelancer — Five Clients" },
-  { slug: "200k-realtor-commission-heavy", label: "$200K Realtor — Commission Heavy" },
-  { slug: "200k-realtor-diversified-pipeline", label: "$200K Realtor — Diversified Pipeline" },
-  { slug: "consultant-no-contracts-vs-retainers", label: "Consultant — No Contracts vs Retainers" },
-  { slug: "sales-rep-base-plus-commission", label: "Sales Rep — Base + Commission" },
-  { slug: "business-owner-one-vs-three-sources", label: "Business Owner — 1 vs 3 Sources" },
-  { slug: "creator-brand-deals-vs-mixed-income", label: "Creator — Brand Deals vs Mixed Income" },
-  { slug: "contractor-project-based-risk", label: "Contractor — Project-Based Risk" },
-  { slug: "lawyer-hourly-vs-retainer", label: "Lawyer — Hourly vs Retainer" },
-  { slug: "doctor-salary-vs-private-practice", label: "Doctor — Salary vs Private Practice" },
-  { slug: "insurance-renewal-vs-new-business", label: "Insurance — Renewal vs New Business" },
-  { slug: "mortgage-refi-dependent", label: "Mortgage — Refi Dependent" },
-  { slug: "freelancer-no-recurring-income", label: "Freelancer — No Recurring Income" },
-  { slug: "freelancer-50-percent-retainer", label: "Freelancer — 50% Retainer" },
-  { slug: "real-estate-boom-vs-slow-market", label: "Real Estate — Boom vs Slow Market" },
-  { slug: "sales-high-performer-risk", label: "Sales — High Performer Risk" },
-  { slug: "consultant-high-income-low-stability", label: "Consultant — High Income, Low Stability" },
-  { slug: "creator-viral-income-risk", label: "Creator — Viral Income Risk" },
-  { slug: "small-business-seasonal-risk", label: "Small Business — Seasonal Risk" },
-  { slug: "multi-income-professional", label: "Multi-Income Professional" },
-  { slug: "single-income-earner", label: "Single Income Earner" },
-  { slug: "passive-income-illusion", label: "Passive Income Illusion" },
-  { slug: "income-drop-40-percent", label: "Income Drop 40%" },
-  { slug: "stop-working-30-days", label: "Stop Working 30 Days" },
-];
-
-const steps = [
-  {
-    number: "01",
-    title: "Describe your income",
-    body: "Answer a few questions about how your income arrives, what it depends on, and how it repeats.",
-  },
-  {
-    number: "02",
-    title: "Six dimensions scored",
-    body: "The model evaluates persistence, diversification, forward visibility, concentration, variability, and labor dependence.",
-  },
-  {
-    number: "03",
-    title: "One consistent result",
-    body: "Same inputs always produce the same score. No AI in scoring. No interpretation.",
-  },
-];
-
 export default function LearnHub() {
   const m = useMobile();
+  const [selectedPath, setSelectedPath] = useState<string | null>(null);
 
   return (
     <main style={{ backgroundColor: L.white }}>
       {/* HERO */}
-      <LearnHero
-        label="LEARN"
-        title="Income Stability & Structure"
-        definition="Income Stability is the degree to which income continues under disruption, based on its structure — not its amount."
-        cta={{ label: "Get My Score \u2014 Free", href: "/begin" }}
-      />
+      <section style={{ backgroundColor: "#F4F1EA", paddingTop: m ? 80 : 120, paddingBottom: m ? 60 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
+        <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center" }}>
+          <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: L.teal, marginBottom: 16 }}>
+            LEARN
+          </div>
+          <h1 style={{ fontSize: m ? 32 : 56, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: L.navy, marginBottom: 20 }}>
+            See how your income actually works
+          </h1>
+          <p style={{ fontSize: m ? 16 : 18, lineHeight: 1.6, color: L.textSecondary, marginBottom: 0 }}>
+            Income stability isn't about how much you make. It's about how it's built. Understand your structure, spot the gaps, and know what to strengthen.
+          </p>
+        </div>
+      </section>
 
-      {/* TRUST STRIP */}
-      <section
-        style={{
-          backgroundColor: L.white,
-          borderBottom: `1px solid ${L.divider}`,
-          paddingTop: m ? 20 : 24,
-          paddingBottom: m ? 20 : 24,
-          paddingLeft: px(m),
-          paddingRight: px(m),
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 1120,
-            margin: "0 auto",
-            display: "flex",
-            flexWrap: "wrap",
-            gap: m ? 12 : 24,
-            justifyContent: "center",
-          }}
-        >
-          {["Model RP-2.0", "Consistent Rules", "No AI in Scoring", "Version-Locked"].map(
-            (item, i) => (
-              <span
-                key={i}
+      {/* START HERE: GUIDED PATHS */}
+      <section style={{ backgroundColor: L.white, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
+        <div style={{ maxWidth: 1120, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: m ? 40 : 56 }}>
+            <h2 style={{ fontSize: m ? 24 : 36, fontWeight: 600, lineHeight: 1.15, color: L.navy, marginBottom: 16 }}>
+              Start here. Pick your situation.
+            </h2>
+            <p style={{ fontSize: m ? 15 : 16, color: L.textSecondary, maxWidth: 560, margin: "0 auto" }}>
+              We'll show you the most important concepts for your specific income type.
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(2, 1fr)", gap: m ? 16 : 24, maxWidth: 960, margin: "0 auto", marginBottom: m ? 40 : 56 }}>
+            {[
+              {
+                id: "freelancer",
+                title: "Freelancer or Solo Practitioner",
+                description: "Project-based, multiple clients, varying income",
+                guides: [
+                  { slug: "what-is-income-stability", label: "What is income stability?" },
+                  { slug: "recurring-vs-non-recurring-income", label: "Project vs. recurring income" },
+                  { slug: "income-concentration-risk", label: "Client concentration risk" },
+                  { slug: "how-to-improve-income-stability", label: "How to improve stability" },
+                  { slug: "income-stability-freelancers", label: "Freelancer-specific insights" },
+                ],
+              },
+              {
+                id: "consultant",
+                title: "Consultant or Agency Owner",
+                description: "High income, but dependent on landing new clients",
+                guides: [
+                  { slug: "what-is-income-stability", label: "What is income stability?" },
+                  { slug: "forward-visibility-explained", label: "Forward visibility: why it matters" },
+                  { slug: "consultant-no-contracts-vs-retainers", label: "Contracts vs. handshakes" },
+                  { slug: "recurring-revenue-for-service-businesses", label: "Building recurring revenue" },
+                  { slug: "income-stability-consultants", label: "Consultant income patterns" },
+                ],
+              },
+              {
+                id: "commission",
+                title: "Commission or Sales-Based Income",
+                description: "Variable monthly income, pipeline dependent",
+                guides: [
+                  { slug: "what-is-income-stability", label: "What is income stability?" },
+                  { slug: "hidden-risk-in-commission-income", label: "Hidden commission risks" },
+                  { slug: "how-income-breaks-under-pressure", label: "How income breaks under pressure" },
+                  { slug: "income-dependency-explained", label: "Dependency on conditions you don't control" },
+                  { slug: "income-stability-sales-professionals", label: "Sales income patterns" },
+                ],
+              },
+              {
+                id: "business",
+                title: "Business Owner or Agency",
+                description: "Multiple revenue streams, operational complexity",
+                guides: [
+                  { slug: "what-is-income-structure", label: "Understanding income structure" },
+                  { slug: "income-concentration-risk", label: "Client concentration" },
+                  { slug: "recurring-revenue-for-service-businesses", label: "Building recurring revenue" },
+                  { slug: "small-business-seasonal-risk", label: "Seasonal patterns" },
+                  { slug: "income-stability-small-business-owners", label: "Business owner scenarios" },
+                ],
+              },
+            ].map((path) => (
+              <div
+                key={path.id}
+                onClick={() => setSelectedPath(selectedPath === path.id ? null : path.id)}
                 style={{
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: L.textMuted,
-                  letterSpacing: "0.04em",
+                  padding: m ? "24px" : "32px",
+                  border: `1px solid ${selectedPath === path.id ? L.teal : L.divider}`,
+                  borderRadius: 12,
+                  cursor: "pointer",
+                  transition: "all 200ms",
+                  backgroundColor: selectedPath === path.id ? "rgba(31,109,122,0.04)" : L.white,
                 }}
               >
-                {item}
-              </span>
-            )
-          )}
-        </div>
-      </section>
-
-      {/* CATEGORY GRID */}
-      <section
-        style={{
-          backgroundColor: L.white,
-          paddingTop: m ? 56 : 80,
-          paddingBottom: m ? 56 : 80,
-          paddingLeft: px(m),
-          paddingRight: px(m),
-        }}
-      >
-        <div
-          style={{
-            maxWidth: 1120,
-            margin: "0 auto",
-            display: m ? "block" : "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            gap: 48,
-          }}
-        >
-          {/* Core Concepts */}
-          <CategoryColumn title="Core Concepts" items={coreSlugs} m={m} />
-          <CategoryColumn title="Industries" items={industrySlugs} m={m} />
-          <CategoryColumn title="Real-World Scenarios" items={scenarioSlugs} m={m} />
-        </div>
-      </section>
-
-      {/* DIVIDER */}
-      <div style={{ height: 1, backgroundColor: L.divider }} />
-
-      {/* HOW IT WORKS */}
-      <section
-        style={{
-          backgroundColor: L.panelFill,
-          paddingTop: m ? 56 : 80,
-          paddingBottom: m ? 56 : 80,
-          paddingLeft: px(m),
-          paddingRight: px(m),
-        }}
-      >
-        <div style={{ maxWidth: 720, margin: "0 auto" }}>
-          <div
-            style={{
-              fontSize: 11,
-              fontWeight: 700,
-              letterSpacing: "0.12em",
-              color: L.textMuted,
-              marginBottom: 32,
-              textTransform: "uppercase",
-            }}
-          >
-            HOW IT WORKS
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 36 }}>
-            {steps.map((step, i) => (
-              <div key={i} style={{ display: "flex", gap: 20, alignItems: "flex-start" }}>
-                <div
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 700,
-                    color: L.teal,
-                    fontFamily:
-                      '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace',
-                    flexShrink: 0,
-                    marginTop: 2,
-                  }}
-                >
-                  {step.number}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
+                  <h3 style={{ fontSize: m ? 17 : 18, fontWeight: 600, color: L.navy, margin: 0 }}>
+                    {path.title}
+                  </h3>
+                  <span style={{ fontSize: 20, color: L.teal, transition: "transform 200ms", transform: selectedPath === path.id ? "rotate(180deg)" : "none" }}>
+                    ▼
+                  </span>
                 </div>
-                <div>
-                  <div
-                    style={{
-                      fontSize: m ? 18 : 20,
-                      fontWeight: 600,
-                      color: L.navy,
-                      marginBottom: 8,
-                    }}
-                  >
-                    {step.title}
+                <p style={{ fontSize: 14, color: L.textSecondary, margin: "0 0 0 0" }}>
+                  {path.description}
+                </p>
+                {selectedPath === path.id && (
+                  <div style={{ marginTop: 20, paddingTop: 20, borderTop: `1px solid ${L.divider}` }}>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: L.teal, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }}>
+                      Recommended for you:
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      {path.guides.map((guide) => (
+                        <Link
+                          key={guide.slug}
+                          href={`/learn/${guide.slug}`}
+                          style={{
+                            fontSize: 14,
+                            color: L.teal,
+                            textDecoration: "none",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                          }}
+                        >
+                          → {guide.label}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                  <p
-                    style={{
-                      fontSize: 16,
-                      lineHeight: 1.65,
-                      color: L.textSecondary,
-                      margin: 0,
-                    }}
-                  >
-                    {step.body}
-                  </p>
-                </div>
+                )}
               </div>
             ))}
           </div>
@@ -263,34 +161,104 @@ export default function LearnHub() {
       {/* INDUSTRY SCENARIOS */}
       <IndustryScenarios m={m} />
 
+      {/* CORE CONCEPTS - STREAMLINED */}
+      <section style={{ backgroundColor: L.white, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
+        <div style={{ maxWidth: 1120, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: m ? 40 : 56 }}>
+            <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: L.teal, marginBottom: 16 }}>
+              FOUNDATIONAL CONCEPTS
+            </div>
+            <h2 style={{ fontSize: m ? 24 : 36, fontWeight: 600, lineHeight: 1.15, color: L.navy, marginBottom: 16 }}>
+              Build your understanding
+            </h2>
+            <p style={{ fontSize: m ? 15 : 16, color: L.textSecondary, maxWidth: 560, margin: "0 auto" }}>
+              Start with the basics, then explore deeper based on what interests you.
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(3, 1fr)", gap: m ? 16 : 24, maxWidth: 960, margin: "0 auto" }}>
+            {[
+              {
+                title: "What is Income Stability?",
+                description: "The core concept: why structure matters more than amount.",
+                slug: "what-is-income-stability",
+              },
+              {
+                title: "How to Measure It",
+                description: "The six dimensions that determine whether your income survives disruption.",
+                slug: "how-to-measure-income-stability",
+              },
+              {
+                title: "Income Structure vs. Income",
+                description: "Why two people earning the same amount can have radically different stability.",
+                slug: "income-stability-vs-income",
+              },
+            ].map((concept) => (
+              <Link
+                key={concept.slug}
+                href={`/learn/${concept.slug}`}
+                style={{
+                  padding: m ? "24px" : "28px",
+                  border: `1px solid ${L.divider}`,
+                  borderRadius: 12,
+                  backgroundColor: L.white,
+                  textDecoration: "none",
+                  transition: "all 200ms",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 12,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = L.teal;
+                  e.currentTarget.style.boxShadow = "0 4px 16px rgba(31,109,122,0.08)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = L.divider;
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                <h3 style={{ fontSize: 16, fontWeight: 600, color: L.navy, margin: 0 }}>
+                  {concept.title}
+                </h3>
+                <p style={{ fontSize: 14, color: L.textSecondary, margin: 0 }}>
+                  {concept.description}
+                </p>
+                <div style={{ fontSize: 13, fontWeight: 600, color: L.teal, marginTop: "auto" }}>
+                  Read →
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* PREVENTATIVE MEASUREMENT */}
       <section style={{ backgroundColor: L.white, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
         <div style={{ maxWidth: 1120, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: m ? 36 : 48 }}>
-            <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: L.teal, marginBottom: 16 }}>PREVENTATIVE MEASUREMENT</div>
+            <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: L.teal, marginBottom: 16 }}>
+              WHY THIS MATTERS
+            </div>
             <h2 style={{ fontSize: m ? 24 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: L.navy, marginBottom: 16 }}>
-              Measure before it matters.
+              When should you care about income stability?
             </h2>
-            <p style={{ fontSize: m ? 16 : 18, lineHeight: 1.6, color: L.textSecondary, maxWidth: 560, margin: "0 auto" }}>
-              Most people discover income risk after a disruption. RunPayway™ measures it before.
-            </p>
           </div>
 
           <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, maxWidth: 960, margin: "0 auto 40px" }}>
             {[
               {
                 label: "Before a major decision",
-                body: "Taking on a mortgage, hiring an employee, or leaving a job? Your Income Stability Score™\u2122 tells you if your income structure can support it.",
+                body: "Taking on a mortgage, hiring an employee, or leaving a job? Your stability score tells you whether your income structure can support it.",
                 color: L.teal,
               },
               {
-                label: "Before a market shift",
-                body: "Rate changes, client consolidation, seasonal dips \u2014 know how your income holds before conditions change. Structure determines outcome under pressure.",
+                label: "When planning for the future",
+                body: "Growth, time off, or a pivot. Your income structure determines what's possible without scrambling.",
                 color: "#4B3FAE",
               },
               {
-                label: "Before it\u2019s urgent",
-                body: "The best time to strengthen your income structure is when things are going well. That\u2019s when you have leverage to negotiate retainers, diversify, and lock forward commitments.",
+                label: "When times are good",
+                body: "This is when you have leverage to strengthen your structure—lock in retainers, diversify clients, and build forward visibility.",
                 color: L.navy,
               },
             ].map((card, i) => (
@@ -305,36 +273,11 @@ export default function LearnHub() {
               </div>
             ))}
           </div>
-
-          <p style={{ fontSize: 16, fontWeight: 600, color: L.navy, textAlign: "center", maxWidth: 600, margin: "0 auto" }}>
-            RunPayway™ doesn&rsquo;t predict disruption. It measures whether your income is ready for&nbsp;it.
-          </p>
         </div>
       </section>
 
-      {/* STRATEGIC VALUE */}
-      <section style={{ backgroundColor: L.navy, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
-        <div style={{ maxWidth: 720, margin: "0 auto" }}>
-          <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", color: L.teal, marginBottom: 16 }}>STRATEGIC APPLICATIONS</div>
-          <h2 style={{ fontSize: m ? 24 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: "#F4F1EA", marginBottom: 32 }}>
-            How RunPayway™ creates strategic advantage.
-          </h2>
-          <div style={{ display: "flex", flexDirection: "column" as const, gap: 0 }}>
-            {[
-              { title: "Negotiate from data, not instinct", body: "Your stability score gives you a factual basis for retainer conversations, rate negotiations, and contract terms. Clients respond to structured data differently than they respond to requests." },
-              { title: "Identify your weakest income point before it fails", body: "The score pinpoints exactly which dimension is most exposed \u2014 concentration, labor dependence, forward visibility. You fix the right thing first, not the most obvious thing." },
-              { title: "Track structural improvement over time", body: "Each reassessment captures a new snapshot. Over 12 months, you can see whether your income structure is strengthening or eroding \u2014 independent of how much you earned." },
-              { title: "Make career and business decisions with structural clarity", body: "Should you take on a partner? Leave your job? Raise your rates? The stability score tells you whether your income structure can absorb the transition." },
-              { title: "Give advisors and lenders a new data point", body: "Your accountant, financial advisor, and bank see income amount. RunPayway\u2122 gives them income structure. It\u2019s the layer between earning and keeping." },
-            ].map((item, i) => (
-              <div key={i} style={{ padding: "20px 0", borderBottom: i < 4 ? "1px solid rgba(244,241,234,0.08)" : "none" }}>
-                <div style={{ fontSize: 17, fontWeight: 600, color: "#F4F1EA", marginBottom: 8 }}>{item.title}</div>
-                <p style={{ fontSize: 15, lineHeight: 1.65, color: "rgba(244,241,234,0.55)", margin: 0 }}>{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* REFERENCE LIBRARY - COLLAPSED BY DEFAULT */}
+      <ReferenceLibrary m={m} />
 
       {/* FINAL CTA */}
       <LearnCTA
@@ -353,25 +296,25 @@ export default function LearnHub() {
 /* ================================================================ */
 
 const industryScenarios = [
-  { industry: "Real Estate", slug: "income-stability-real-estate-agents", scenario: "Top producer earning $200K through commissions. No recurring revenue, no retainers. Market slows 30%.", score: "25\u201335", risk: "Pipeline dependency", color: "#C74634" },
-  { industry: "Freelance / Creative", slug: "income-stability-freelancers", scenario: "Designer earning $95K from 3 clients. Largest client is 50% of income. They don\u2019t renew.", score: "20\u201335", risk: "Client concentration", color: "#C74634" },
-  { industry: "Consulting", slug: "income-stability-consultants", scenario: "Management consultant earning $200K from 2 project-based clients. No contracts beyond current quarter.", score: "30\u201345", risk: "Labor dependence", color: "#D0A23A" },
-  { industry: "Sales / Brokerage", slug: "income-stability-sales-professionals", scenario: "SaaS rep earning $180K with 60% commission. Quota resets every quarter. Pipeline is 90-day visibility.", score: "25\u201340", risk: "Income persistence", color: "#D0A23A" },
-  { industry: "Insurance", slug: "income-stability-insurance-agents", scenario: "Agent earning $200K. Strong new business production masks declining renewal retention rate of 78%.", score: "35\u201355", risk: "Renewal erosion", color: "#D0A23A" },
-  { industry: "Mortgage", slug: "income-stability-mortgage-brokers", scenario: "Broker earning $180K. 70% of volume is refinance. Rates rise 200 basis points.", score: "15\u201325", risk: "Rate cycle dependency", color: "#C74634" },
-  { industry: "Legal Services", slug: "income-stability-lawyers", scenario: "Litigation partner billing $250K. Top 3 matters carry 65% of revenue. Two conclude simultaneously.", score: "35\u201350", risk: "Matter concentration", color: "#D0A23A" },
-  { industry: "Healthcare", slug: "income-stability-doctors", scenario: "Employed physician earning $350K from one hospital system. System restructures compensation model.", score: "40\u201355", risk: "Single employer dependency", color: "#D0A23A" },
-  { industry: "Construction / Trades", slug: "income-stability-contractors", scenario: "GC finishing a $400K project. Nothing signed for next quarter. 6-week gap between contracts.", score: "28\u201340", risk: "Forward visibility gap", color: "#D0A23A" },
-  { industry: "Media / Entertainment", slug: "income-stability-creators", scenario: "YouTuber earning $120K. 60% from brand deals with no long-term contracts. Algorithm changes.", score: "20\u201335", risk: "Platform dependency", color: "#C74634" },
-  { industry: "Technology", slug: "income-stability-tech-workers", scenario: "Senior engineer earning $250K total comp. 40% is RSUs. Company stock drops 50% in a correction.", score: "40\u201355", risk: "Compensation structure risk", color: "#D0A23A" },
-  { industry: "Small Business", slug: "income-stability-small-business-owners", scenario: "Marketing agency owner. 3 clients, largest is 55% of revenue. They move to an in-house team.", score: "30\u201345", risk: "Revenue concentration", color: "#D0A23A" },
-  { industry: "Retail / E-Commerce", slug: "income-stability-retail-owners", scenario: "Boutique owner earning $140K. 60% of revenue comes from Q4 holiday season. Supply chain delays hit.", score: "30\u201340", risk: "Seasonal concentration", color: "#D0A23A" },
-  { industry: "Hospitality", slug: "income-stability-hospitality-workers", scenario: "Restaurant owner earning $160K. 40% from catering revenue. Corporate clients cut event budgets.", score: "25\u201340", risk: "Demand volatility", color: "#D0A23A" },
-  { industry: "Transportation", slug: "income-stability-transportation-workers", scenario: "Owner-operator running 70% spot freight. Fuel costs spike 25%. Spot rates drop simultaneously.", score: "30\u201340", risk: "Utilization + cost exposure", color: "#D0A23A" },
-  { industry: "Education", slug: "is-my-income-stable", scenario: "Independent trainer earning $90K. Semester-by-semester contracts. One institution doesn\u2019t renew.", score: "28\u201342", risk: "Term-based uncertainty", color: "#D0A23A" },
-  { industry: "Manufacturing", slug: "income-stability-index", scenario: "Shop owner with $500K revenue. Largest buyer is 45% of output. They renegotiate terms downward 20%.", score: "35\u201350", risk: "Buyer concentration", color: "#D0A23A" },
-  { industry: "Nonprofit", slug: "how-to-improve-income-stability", scenario: "Executive director. 60% of funding from one foundation grant. Grant cycle is annual with no guarantee.", score: "30\u201345", risk: "Funding cycle dependency", color: "#D0A23A" },
-  { industry: "Agriculture", slug: "income-dependency-explained", scenario: "Farm operator with $300K revenue. 70% forward-priced through futures. Drought cuts yield 30%.", score: "30\u201345", risk: "Weather + market exposure", color: "#D0A23A" },
+  { industry: "Real Estate", slug: "income-stability-real-estate-agents", scenario: "Top producer earning $200K through commissions. No recurring revenue, no retainers. Market slows 30%.", score: "25–35", risk: "Pipeline dependency", color: "#C74634" },
+  { industry: "Freelance / Creative", slug: "income-stability-freelancers", scenario: "Designer earning $95K from 3 clients. Largest client is 50% of income. They don't renew.", score: "20–35", risk: "Client concentration", color: "#C74634" },
+  { industry: "Consulting", slug: "income-stability-consultants", scenario: "Management consultant earning $200K from 2 project-based clients. No contracts beyond current quarter.", score: "30–45", risk: "Labor dependence", color: "#D0A23A" },
+  { industry: "Sales / Brokerage", slug: "income-stability-sales-professionals", scenario: "SaaS rep earning $180K with 60% commission. Quota resets every quarter. Pipeline is 90-day visibility.", score: "25–40", risk: "Income persistence", color: "#D0A23A" },
+  { industry: "Insurance", slug: "income-stability-insurance-agents", scenario: "Agent earning $200K. Strong new business production masks declining renewal retention rate of 78%.", score: "35–55", risk: "Renewal erosion", color: "#D0A23A" },
+  { industry: "Mortgage", slug: "income-stability-mortgage-brokers", scenario: "Broker earning $180K. 70% of volume is refinance. Rates rise 200 basis points.", score: "15–25", risk: "Rate cycle dependency", color: "#C74634" },
+  { industry: "Legal Services", slug: "income-stability-lawyers", scenario: "Litigation partner billing $250K. Top 3 matters carry 65% of revenue. Two conclude simultaneously.", score: "35–50", risk: "Matter concentration", color: "#D0A23A" },
+  { industry: "Healthcare", slug: "income-stability-doctors", scenario: "Employed physician earning $350K from one hospital system. System restructures compensation model.", score: "40–55", risk: "Single employer dependency", color: "#D0A23A" },
+  { industry: "Construction / Trades", slug: "income-stability-contractors", scenario: "GC finishing a $400K project. Nothing signed for next quarter. 6-week gap between contracts.", score: "28–40", risk: "Forward visibility gap", color: "#D0A23A" },
+  { industry: "Media / Entertainment", slug: "income-stability-creators", scenario: "YouTuber earning $120K. 60% from brand deals with no long-term contracts. Algorithm changes.", score: "20–35", risk: "Platform dependency", color: "#C74634" },
+  { industry: "Technology", slug: "income-stability-tech-workers", scenario: "Senior engineer earning $250K total comp. 40% is RSUs. Company stock drops 50% in a correction.", score: "40–55", risk: "Compensation structure risk", color: "#D0A23A" },
+  { industry: "Small Business", slug: "income-stability-small-business-owners", scenario: "Marketing agency owner. 3 clients, largest is 55% of revenue. They move to an in-house team.", score: "30–45", risk: "Revenue concentration", color: "#D0A23A" },
+  { industry: "Retail / E-Commerce", slug: "income-stability-retail-owners", scenario: "Boutique owner earning $140K. 60% of revenue comes from Q4 holiday season. Supply chain delays hit.", score: "30–40", risk: "Seasonal concentration", color: "#D0A23A" },
+  { industry: "Hospitality", slug: "income-stability-hospitality-workers", scenario: "Restaurant owner earning $160K. 40% from catering revenue. Corporate clients cut event budgets.", score: "25–40", risk: "Demand volatility", color: "#D0A23A" },
+  { industry: "Transportation", slug: "income-stability-transportation-workers", scenario: "Owner-operator running 70% spot freight. Fuel costs spike 25%. Spot rates drop simultaneously.", score: "30–40", risk: "Utilization + cost exposure", color: "#D0A23A" },
+  { industry: "Education", slug: "is-my-income-stable", scenario: "Independent trainer earning $90K. Semester-by-semester contracts. One institution doesn't renew.", score: "28–42", risk: "Term-based uncertainty", color: "#D0A23A" },
+  { industry: "Manufacturing", slug: "income-stability-index", scenario: "Shop owner with $500K revenue. Largest buyer is 45% of output. They renegotiate terms downward 20%.", score: "35–50", risk: "Buyer concentration", color: "#D0A23A" },
+  { industry: "Nonprofit", slug: "how-to-improve-income-stability", scenario: "Executive director. 60% of funding from one foundation grant. Grant cycle is annual with no guarantee.", score: "30–45", risk: "Funding cycle dependency", color: "#D0A23A" },
+  { industry: "Agriculture", slug: "income-dependency-explained", scenario: "Farm operator with $300K revenue. 70% forward-priced through futures. Drought cuts yield 30%.", score: "30–45", risk: "Weather + market exposure", color: "#D0A23A" },
 ];
 
 function IndustryScenarios({ m }: { m: boolean }) {
@@ -394,12 +337,14 @@ function IndustryScenarios({ m }: { m: boolean }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(scenariosSchema) }} />
       <div style={{ maxWidth: 1120, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 36 : 48 }}>
-          <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: L.teal, marginBottom: 16 }}>INCOME RISK BY INDUSTRY</div>
+          <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: L.teal, marginBottom: 16 }}>
+            REAL-WORLD EXAMPLES
+          </div>
           <h2 style={{ fontSize: m ? 24 : 36, fontWeight: 600, lineHeight: 1.15, letterSpacing: "-0.02em", color: L.navy, marginBottom: 16 }}>
-            What income risk looks like in your industry.
+            See your situation (and what happens next)
           </h2>
           <p style={{ fontSize: m ? 16 : 18, lineHeight: 1.6, color: L.textSecondary, maxWidth: 560, margin: "0 auto" }}>
-            Every industry has a different income structure. Each scenario below is calibrated to how income actually works in that field.
+            Click any industry to see how income stability works in your field, and what risks matter most.
           </p>
         </div>
 
@@ -432,7 +377,7 @@ function IndustryScenarios({ m }: { m: boolean }) {
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <span style={{ fontSize: 12, fontWeight: 600, color: s.color }}>Primary risk: {s.risk}</span>
                       <Link href={`/learn/${s.slug}`} onClick={(e) => e.stopPropagation()} style={{ fontSize: 13, fontWeight: 600, color: L.teal, textDecoration: "none" }}>
-                        Read full analysis &rarr;
+                        Read full analysis →
                       </Link>
                     </div>
                   </div>
@@ -444,7 +389,7 @@ function IndustryScenarios({ m }: { m: boolean }) {
 
         <div style={{ textAlign: "center", marginTop: 32 }}>
           <p style={{ fontSize: 15, fontWeight: 500, color: L.textSecondary }}>
-            RunPayway™ is calibrated for <strong style={{ color: L.navy }}>19 industries</strong>. Each scenario uses the Income Stability Score™™ to measure how income structure holds under real-world&nbsp;conditions.
+            RunPayway™ is calibrated for <strong style={{ color: L.navy }}>19 industries</strong>. Each scenario shows income structure in real conditions.
           </p>
         </div>
       </div>
@@ -452,73 +397,109 @@ function IndustryScenarios({ m }: { m: boolean }) {
   );
 }
 
+/* ================================================================ */
+/* REFERENCE LIBRARY                                                */
+/* ================================================================ */
 
-function CategoryColumn({
-  title,
-  items,
-  m,
-}: {
-  title: string;
-  items: { slug: string; label: string }[];
-  m: boolean;
-}) {
+function ReferenceLibrary({ m }: { m: boolean }) {
   const [expanded, setExpanded] = useState(false);
-  const visible = expanded ? items : items.slice(0, 8);
-  const hasMore = items.length > 8;
+
+  const coreSlugs = [
+    { slug: "what-is-income-stability", label: "What Is Income Stability?" },
+    { slug: "income-stability-explained", label: "Income Stability Explained" },
+    { slug: "how-to-measure-income-stability", label: "How to Measure Income Stability" },
+    { slug: "income-stability-vs-credit-score", label: "Income Stability vs Credit Score" },
+    { slug: "income-stability-vs-income", label: "Income Stability vs Income" },
+    { slug: "income-stability-vs-net-worth", label: "Income Stability vs Net Worth" },
+    { slug: "what-is-income-structure", label: "What Is Income Structure?" },
+    { slug: "income-structure-explained", label: "Income Structure Explained" },
+    { slug: "what-makes-income-stable", label: "What Makes Income Stable?" },
+    { slug: "what-makes-income-unstable", label: "What Makes Income Unstable?" },
+    { slug: "income-risk-explained", label: "Income Risk Explained" },
+    { slug: "income-fragility-explained", label: "Income Fragility Explained" },
+    { slug: "income-continuity-explained", label: "Income Continuity Explained" },
+    { slug: "income-concentration-risk", label: "Income Concentration Risk" },
+    { slug: "active-vs-passive-income-stability", label: "Active vs Passive Income Stability" },
+    { slug: "recurring-vs-non-recurring-income", label: "Recurring vs Non-Recurring Income" },
+    { slug: "predictable-vs-unpredictable-income", label: "Predictable vs Unpredictable Income" },
+    { slug: "how-income-breaks-under-pressure", label: "How Income Breaks Under Pressure" },
+    { slug: "structural-income-risk-explained", label: "Structural Income Risk Explained" },
+    { slug: "income-stability-index", label: "Income Stability Index" },
+    { slug: "income-stress-testing-explained", label: "Income Stress Testing Explained" },
+    { slug: "income-dependency-explained", label: "Income Dependency Explained" },
+    { slug: "how-stable-is-your-income", label: "How Stable Is Your Income?" },
+    { slug: "is-my-income-stable", label: "Is My Income Stable?" },
+    { slug: "how-to-improve-income-stability", label: "How to Improve Income Stability" },
+  ];
 
   return (
-    <div style={{ marginBottom: m ? 40 : 0 }}>
-      <div
-        style={{
-          fontSize: 11,
-          fontWeight: 700,
-          letterSpacing: "0.12em",
-          color: L.textMuted,
-          textTransform: "uppercase",
-          marginBottom: 20,
-        }}
-      >
-        {title} ({items.length})
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-        {visible.map((item, i) => (
-          <Link
-            key={i}
-            href={`/learn/${item.slug}`}
-            style={{
-              display: "block",
-              padding: "12px 0",
-              borderBottom: `1px solid ${L.divider}`,
-              fontSize: 15,
-              fontWeight: 500,
-              color: L.navy,
-              textDecoration: "none",
-              transition: "color 200ms",
-            }}
-          >
-            {item.label}
-          </Link>
-        ))}
-      </div>
-      {hasMore && (
+    <section style={{ backgroundColor: L.panelFill, paddingTop: m ? 56 : 80, paddingBottom: m ? 56 : 80, paddingLeft: px(m), paddingRight: px(m) }}>
+      <div style={{ maxWidth: 1120, margin: "0 auto" }}>
         <button
           onClick={() => setExpanded(!expanded)}
           style={{
-            display: "inline-block",
-            marginTop: 16,
-            fontSize: 14,
-            fontWeight: 600,
-            color: L.teal,
-            background: "none",
-            border: "none",
+            width: "100%",
+            padding: m ? "24px" : "32px",
+            backgroundColor: L.white,
+            border: `1px solid ${L.divider}`,
+            borderRadius: 12,
             cursor: "pointer",
-            padding: 0,
-            fontFamily: "inherit",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: expanded ? 24 : 0,
           }}
         >
-          {expanded ? "Show fewer \u2191" : `See all ${items.length} topics \u2192`}
+          <div style={{ textAlign: "left" }}>
+            <h2 style={{ fontSize: m ? 18 : 20, fontWeight: 600, color: L.navy, margin: "0 0 4px 0" }}>
+              📚 Reference Library
+            </h2>
+            <p style={{ fontSize: 14, color: L.textSecondary, margin: 0 }}>
+              Browse all {coreSlugs.length} concepts and topics
+            </p>
+          </div>
+          <span style={{ fontSize: 24, transition: "transform 200ms", transform: expanded ? "rotate(180deg)" : "none" }}>
+            ▼
+          </span>
         </button>
-      )}
-    </div>
+
+        {expanded && (
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: m ? "1fr" : "repeat(2, 1fr)",
+            gap: m ? 16 : 24,
+            marginTop: 24,
+          }}>
+            {coreSlugs.map((item) => (
+              <Link
+                key={item.slug}
+                href={`/learn/${item.slug}`}
+                style={{
+                  padding: "16px 20px",
+                  backgroundColor: L.white,
+                  border: `1px solid ${L.divider}`,
+                  borderRadius: 8,
+                  fontSize: 14,
+                  color: L.navy,
+                  textDecoration: "none",
+                  transition: "all 200ms",
+                  display: "block",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = L.teal;
+                  e.currentTarget.style.color = L.teal;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = L.divider;
+                  e.currentTarget.style.color = L.navy;
+                }}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
