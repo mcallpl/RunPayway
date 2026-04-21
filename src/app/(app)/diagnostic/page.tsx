@@ -187,9 +187,6 @@ export default function DiagnosticPage() {
 
   // Mobile detection
   const [mobile, setMobile] = useState(false);
-  // Resume prompt — ask user before restoring old session
-  const [showResumePrompt, setShowResumePrompt] = useState(false);
-  const savedAnswersCacheRef = useRef<(string | null)[] | null>(null);
   // Final card — shows after API work completes, before report
   const [showFinalCard, setShowFinalCard] = useState(false);
   const [finalCardPhase, setFinalCardPhase] = useState(0);
@@ -198,31 +195,12 @@ export default function DiagnosticPage() {
   // Industry-customized questions
   const [QUESTIONS, setQuestions] = useState<Question[]>(() => buildQuestions(""));
 
-  // Zeigarnik effect — long-lived progress reminder (72h TTL)
-  const [resumeData, setResumeData] = useState<{ questionIndex: number; timestamp: string; answersGiven: number } | null>(null);
-
   // Mobile breakpoint detection
   useEffect(() => {
     const check = () => setMobile(window.innerWidth < 768);
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
-  }, []);
-
-  // Zeigarnik — check for long-lived assessment progress on mount
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("rp_assessment_progress");
-      if (saved) {
-        const progress = JSON.parse(saved);
-        const hoursSince = (Date.now() - new Date(progress.timestamp).getTime()) / (1000 * 60 * 60);
-        if (hoursSince < 72) { // Within 3 days
-          setResumeData(progress);
-        } else {
-          localStorage.removeItem("rp_assessment_progress");
-        }
-      }
-    } catch {}
   }, []);
 
   // Lock user in — prevent back button and tab close
@@ -289,12 +267,9 @@ export default function DiagnosticPage() {
       const parsed = JSON.parse(profile);
       setQuestions(buildQuestions(parsed.industry_sector || ""));
     } catch { /* fallback already set via default buildQuestions("") */ }
-    // Check for saved answers — prompt user instead of silently restoring
-    const saved = loadAnswersFromStorage();
-    if (saved && saved.length === 6 && saved.some((a) => a !== null)) {
-      savedAnswersCacheRef.current = saved;
-      setShowResumePrompt(true);
-    }
+    // Always start fresh — clear any saved progress
+    clearAnswerStorage();
+    localStorage.removeItem("rp_assessment_progress");
     setTimeout(() => setEntered(true), 100);
   }, [router]);
 
@@ -364,26 +339,6 @@ export default function DiagnosticPage() {
     const t2 = setTimeout(() => setFinalCardPhase(2), 600);
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, [showFinalCard]);
-
-  // Resume prompt handlers
-  const handleResumeContinue = useCallback(() => {
-    const saved = savedAnswersCacheRef.current;
-    if (saved) {
-      setAnswers(saved);
-      const firstUnanswered = saved.findIndex((a) => a === null);
-      if (firstUnanswered >= 0) setCurrentQuestion(firstUnanswered);
-      else setCurrentQuestion(5);
-    }
-    setShowResumePrompt(false);
-  }, []);
-
-  const handleResumeStartFresh = useCallback(() => {
-    clearAnswerStorage();
-    savedAnswersCacheRef.current = null;
-    setAnswers(Array(6).fill(null));
-    setCurrentQuestion(0);
-    setShowResumePrompt(false);
-  }, []);
 
   const q = QUESTIONS[currentQuestion];
   const selected = answers[currentQuestion];
@@ -797,151 +752,6 @@ export default function DiagnosticPage() {
     }
   };
 
-  /* ================================================================ */
-  /*  Zeigarnik — abandoned assessment reminder (long-lived, 72h)      */
-  /* ================================================================ */
-  if (resumeData && !showResumePrompt && currentQuestion === 0 && answers.every((a) => a === null)) {
-    return (
-      <div style={{
-        position: "fixed", inset: 0, zIndex: 9999,
-        background: C.sand,
-        display: "flex", alignItems: "center", justifyContent: "center",
-        overflowX: "hidden", width: "100%", maxWidth: "100vw",
-      }}>
-        <style dangerouslySetInnerHTML={{ __html: VIEWPORT_LOCK_CSS }} />
-        <div style={{ maxWidth: 420, padding: "0 24px", textAlign: "center" }}>
-          <div style={{ width: 48, height: 48, borderRadius: 12, background: "rgba(75,63,174,0.08)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path d="M12 8v4l3 3" stroke={C.purple} strokeWidth="2" strokeLinecap="round" />
-              <circle cx="12" cy="12" r="9" stroke={C.purple} strokeWidth="2" />
-            </svg>
-          </div>
-          <h2 style={{ fontSize: 20, fontWeight: 700, color: C.navy, marginBottom: 8, letterSpacing: "-0.02em" }}>
-            You started an assessment
-          </h2>
-          <p style={{ fontSize: 15, color: C.navy, lineHeight: 1.5, marginBottom: 6 }}>
-            Pick up where you left off.
-          </p>
-          <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.6, marginBottom: 28 }}>
-            {resumeData.answersGiven} of 6 factors evaluated
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <button
-              onClick={() => {
-                // Trigger the existing session-based resume if cached answers exist
-                const saved = loadAnswersFromStorage();
-                if (saved && saved.some((a) => a !== null)) {
-                  savedAnswersCacheRef.current = saved;
-                  setResumeData(null);
-                  setShowResumePrompt(true);
-                } else {
-                  // No session data left — start fresh but clear the Zeigarnik prompt
-                  setResumeData(null);
-                  localStorage.removeItem("rp_assessment_progress");
-                }
-              }}
-              style={{
-                height: 48, borderRadius: 12,
-                background: C.purple, color: C.white,
-                fontSize: 15, fontWeight: 600, border: "none",
-                cursor: "pointer", fontFamily: sans,
-                boxShadow: "0 4px 16px rgba(75,63,174,0.25)",
-              }}
-            >
-              Continue
-            </button>
-            <button
-              onClick={() => {
-                setResumeData(null);
-                localStorage.removeItem("rp_assessment_progress");
-                clearAnswerStorage();
-                setAnswers(Array(6).fill(null));
-                setCurrentQuestion(0);
-              }}
-              style={{
-                height: 44, borderRadius: 10,
-                background: "none", color: C.muted,
-                fontSize: 14, fontWeight: 500, border: "1px solid rgba(14,26,43,0.10)",
-                cursor: "pointer", fontFamily: sans,
-              }}
-            >
-              Start over
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  /* ================================================================ */
-  /*  Resume prompt — pick up where you left off                       */
-  /* ================================================================ */
-  if (showResumePrompt) {
-    const answeredCount = savedAnswersCacheRef.current?.filter((a) => a !== null).length || 0;
-    // Show how long ago the session was saved
-    const savedAgo = (() => {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY) || sessionStorage.getItem(STORAGE_KEY);
-        if (!raw) return "";
-        const { savedAt } = JSON.parse(raw);
-        if (!savedAt) return "";
-        const mins = Math.floor((Date.now() - savedAt) / 60000);
-        if (mins < 1) return "just now";
-        if (mins === 1) return "1 minute ago";
-        if (mins < 60) return `${mins} minutes ago`;
-        return `${Math.floor(mins / 60)} hour${Math.floor(mins / 60) > 1 ? "s" : ""} ago`;
-      } catch { return ""; }
-    })();
-    return (
-      <div style={{
-        position: "fixed", inset: 0, zIndex: 9999,
-        background: C.sand,
-        display: "flex", alignItems: "center", justifyContent: "center",
-        overflowX: "hidden", width: "100%", maxWidth: "100vw",
-      }}>
-        <style dangerouslySetInnerHTML={{ __html: VIEWPORT_LOCK_CSS }} />
-        <div style={{ maxWidth: 420, padding: "0 24px", textAlign: "center" }}>
-          <div style={{ width: 48, height: 48, borderRadius: 12, background: "rgba(75,63,174,0.08)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path d="M12 8v4l3 3" stroke={C.purple} strokeWidth="2" strokeLinecap="round" />
-              <circle cx="12" cy="12" r="9" stroke={C.purple} strokeWidth="2" />
-            </svg>
-          </div>
-          <h2 style={{ fontSize: 20, fontWeight: 700, color: C.navy, marginBottom: 8, letterSpacing: "-0.02em" }}>
-            Welcome back
-          </h2>
-          <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.6, marginBottom: 28 }}>
-            You have {answeredCount} of 6 factors evaluated{savedAgo ? ` from ${savedAgo}` : " from a recent session"}. Would you like to pick up where you left off?
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <button
-              onClick={handleResumeContinue}
-              style={{
-                height: 48, borderRadius: 12,
-                background: C.purple, color: C.white,
-                fontSize: 15, fontWeight: 600, border: "none",
-                cursor: "pointer", fontFamily: sans,
-                boxShadow: "0 4px 16px rgba(75,63,174,0.25)",
-              }}
-            >
-              Resume your assessment
-            </button>
-            <button
-              onClick={handleResumeStartFresh}
-              style={{
-                height: 44, borderRadius: 10,
-                background: "none", color: C.muted,
-                fontSize: 14, fontWeight: 500, border: "1px solid rgba(14,26,43,0.10)",
-                cursor: "pointer", fontFamily: sans,
-              }}
-            >
-              Start over with new answers
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   /* ================================================================ */
   /*  Final card — what's included before report                       */
