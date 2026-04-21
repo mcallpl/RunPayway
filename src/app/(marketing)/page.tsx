@@ -787,11 +787,12 @@ function AuthoritySEOSection() {
   const fadeIn = useFadeIn();
 
   const dimensions = [
-    { name: "Recurring", def: "Income that continues without active re-earning. Retainers, subscriptions, renewals, and contracted recurring fees.", link: "/learn/recurring-vs-non-recurring-income" },
-    { name: "Concentration", def: "Dependence on one source, client, or channel. The higher the concentration, the more fragile the structure regardless of income level.", link: "/learn/income-concentration-risk" },
-    { name: "Visibility", def: "Income that is already secured and contractually committed, not forecasted. Only visible income is structurally protected.", link: "/learn/income-structure-explained" },
-    { name: "Variability", def: "Consistency of income over time. High variability means your income swings significantly month to month, increasing planning risk.", link: "/learn/how-income-breaks-under-pressure" },
-    { name: "Continuity", def: "Income that continues when you stop working actively. Passive, automated, or contracted income that runs without daily input.", link: "/learn/income-continuity-explained" },
+    { name: "Persistence", def: "Whether income sources have demonstrated continuity over time. A client relationship that has lasted three years carries different weight than one that began last quarter.", link: "/learn/recurring-vs-non-recurring-income" },
+    { name: "Diversification", def: "The number and independence of income sources. Earnings that depend on many streams carry different risk than earnings concentrated in few.", link: "/learn/how-to-improve-income-stability" },
+    { name: "Forward visibility", def: "How far into the future income is contractually committed. An earner with twelve months of signed contracts has materially different exposure than one whose income depends on next month's pipeline.", link: "/learn/income-structure-explained" },
+    { name: "Concentration", def: "The share of total income attributable to a single source. The higher the concentration, the greater the single-point-of-failure risk.", link: "/learn/income-concentration-risk" },
+    { name: "Variability", def: "The degree to which income fluctuates from period to period. High variability increases exposure when combined with other structural weaknesses.", link: "/learn/how-income-breaks-under-pressure" },
+    { name: "Labor dependence", def: "How tightly income is tied to the earner's direct time. Income that stops when you stop working scores lower than passive or semi-passive income.", link: "/learn/income-continuity-explained" },
   ];
 
   return (
@@ -802,7 +803,7 @@ function AuthoritySEOSection() {
             How Income Stability Is Measured
           </h2>
           <p style={{ fontSize: m ? 16 : 18, color: C.textSecondary, lineHeight: 1.65, maxWidth: 540 }}>
-            RunPayway™ evaluates income structure across five dimensions. Together they produce a single score from 0 to 100.
+            RunPayway™ evaluates income structure across six dimensions. Together they produce a single score from 0 to 100.
           </p>
         </div>
 
