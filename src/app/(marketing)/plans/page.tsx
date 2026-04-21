@@ -189,7 +189,7 @@ export default function PlansPage() {
             </div>
 
             <p style={{ fontSize: 15, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, flex: 1 }}>
-              Where your income stands — instantly. No documents, no account required.
+              See your stability class in 2 minutes. Find out what's holding you back.
             </p>
 
             <div style={{ borderTop: `1px solid ${C.borderSoft}`, paddingTop: 20, marginBottom: 24 }}>
@@ -363,7 +363,7 @@ export default function PlansPage() {
             </p>
 
             <p style={{ fontSize: 15, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, flex: 1 }}>
-              Run up to 3 assessments per year. Track how your structure improves at every decision point.
+              Three checkpoints throughout the year. Watch your stability improve with every decision.
             </p>
 
             <div style={{ borderTop: `1px solid ${C.borderSoft}`, paddingTop: 20, marginBottom: 24 }}>
@@ -439,9 +439,7 @@ export default function PlansPage() {
             </div>
 
             <p style={{ fontSize: 15, lineHeight: 1.6, color: C.sandMuted, marginBottom: 24, flex: 1 }}>
-              Run assessments on behalf of clients, receive structured income
-              data, and access white-label report delivery — all from one
-              advisor portal.
+              Help your clients see their income clearly. Deliver structured insights without the overhead.
             </p>
 
             <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 20, marginBottom: 24 }}>
