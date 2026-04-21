@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -155,10 +153,6 @@ export default function IncomeDependencyExplained() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Identify Your Dependency Profile"
-        sub="Get a structural analysis of where your income is concentrated, labor-dependent, and skill-limited."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -155,10 +153,6 @@ export default function IsMyIncomeStable() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Find Out Where You Actually Stand"
-        sub="Get a structural stability score that measures forward commitment, not current workload."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />

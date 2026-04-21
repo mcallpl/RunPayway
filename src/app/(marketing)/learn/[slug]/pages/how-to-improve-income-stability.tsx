@@ -12,8 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  LearnCTA,
-  StickyLearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
 
@@ -151,10 +149,6 @@ export default function HowToImproveIncomeStability() {
       {/* 11. Micro Conversion */}
 
       {/* 12. CTA */}
-      <LearnCTA
-        heading="Build a Stronger Income Foundation"
-        sub="Identify your weakest structural dimension and get a targeted improvement roadmap."
-      />
 
       {/* 13. Meta Footer */}
       <MetaFooter updated="April 2026" />
