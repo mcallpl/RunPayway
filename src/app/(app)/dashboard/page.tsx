@@ -1791,7 +1791,20 @@ function DashboardContent() {
             <section className="cc-section" style={{ marginBottom: 20, padding: mobile ? "28px 24px" : "36px 40px", border: `1px solid ${B.stone}`, borderRadius: 16, backgroundColor: B.surface, boxShadow: "0 1px 4px rgba(14,26,43,0.03)" }}>
               <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", color: B.purple, marginBottom: 10 }}>STABILITY MONITORING</div>
               <div style={{ fontSize: 16, fontWeight: 600, color: B.navy, marginBottom: 4 }}>Score History</div>
-              <p style={{ fontSize: 14, color: B.muted, margin: "0 0 20px" }}>{assessments.length} assessments tracked. {serverEntitlements ? (serverEntitlements.remaining > 0 ? `${serverEntitlements.remaining} remaining on your plan.` : "All assessments completed.") : (assessments.length < 3 ? `${3 - assessments.length} remaining on your plan.` : "All assessments completed.")}</p>
+              <p style={{ fontSize: 14, color: B.muted, margin: "0 0 20px" }}>
+                {assessments.length} assessments tracked. {serverEntitlements ? (serverEntitlements.remaining > 0 ? `${serverEntitlements.remaining} remaining on your plan.` : "All assessments completed.") : (() => {
+                  try {
+                    const ps = JSON.parse(sessionStorage.getItem("rp_purchase_session") || localStorage.getItem("rp_purchase_session") || "{}");
+                    const planKey = ps.plan_key || "free";
+                    const PLANS = { free: 1, single_assessment: 1, annual_monitoring: 3 } as const;
+                    const total = (PLANS as Record<string, number>)[planKey] || 1;
+                    const remaining = Math.max(0, total - assessments.length);
+                    return remaining > 0 ? `${remaining} remaining on your plan.` : "All assessments completed.";
+                  } catch {
+                    return assessments.length < 3 ? `${3 - assessments.length} remaining on your plan.` : "All assessments completed.";
+                  }
+                })()}
+              </p>
 
               {/* Score timeline visual */}
               <div style={{ display: "flex", alignItems: "flex-end", gap: mobile ? 12 : 24, marginBottom: 24, padding: "20px 0" }}>

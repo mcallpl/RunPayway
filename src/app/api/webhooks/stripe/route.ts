@@ -15,6 +15,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generatePaymentToken } from "@/lib/payment-token";
 import { auditLog, getClientIp } from "@/lib/audit-log";
+import { PLANS } from "@/lib/config";
+import { isValidPaymentPlanKey } from "@/lib/plan-validation";
 
 export const dynamic = "force-dynamic";
 export async function POST(request: NextRequest) {
@@ -57,7 +59,23 @@ export async function POST(request: NextRequest) {
       const session = event.data.object;
       const customerEmail = session.customer_email || session.customer_details?.email || "";
       const amountTotal = session.amount_total || 0;
-      const planKey = amountTotal >= 9900 ? "annual_monitoring" : "single_assessment";
+
+      // Map amount to plan_key using config as source of truth
+      let planKey: "single_assessment" | "annual_monitoring" = "single_assessment";
+      if (amountTotal >= PLANS.annual_monitoring.price_cents) {
+        planKey = "annual_monitoring";
+      } else if (amountTotal >= PLANS.single_assessment.price_cents) {
+        planKey = "single_assessment";
+      } else {
+        // Invalid amount that doesn't match any plan
+        console.error(`[STRIPE WEBHOOK] Amount ${amountTotal} does not match any known plan`);
+        return NextResponse.json({ error: "Amount does not match any plan" }, { status: 400 });
+      }
+
+      if (!isValidPaymentPlanKey(planKey)) {
+        console.error(`[STRIPE WEBHOOK] Invalid plan_key determined: ${planKey}`);
+        return NextResponse.json({ error: "Invalid plan determination" }, { status: 400 });
+      }
 
       // Generate a signed payment token for this verified payment
       const { token, payload } = generatePaymentToken(planKey as "single_assessment" | "annual_monitoring");

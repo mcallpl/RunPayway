@@ -118,7 +118,7 @@ export default function CreateAccountPage() {
       "rp_purchase_session",
       JSON.stringify({
         plan_key: "annual_monitoring",
-        price_cents: 9900,
+        price_cents: 14900,
         currency: "USD",
         intended_assessment_count: 3,
         status: "paid",

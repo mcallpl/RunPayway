@@ -328,7 +328,7 @@ export default function AdvisorPortalPage() {
             },
             {
               name: "Enterprise",
-              price: "$249",
+              price: "$149",
               interval: "/ seat/mo",
               billing: "billed monthly per seat",
               reports: "Unlimited assessments",
