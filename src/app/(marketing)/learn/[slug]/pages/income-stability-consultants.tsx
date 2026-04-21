@@ -12,7 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
   IndustryBlock,
@@ -161,12 +160,6 @@ export default function IncomeStabilityConsultants() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Assess Your Consulting Practice", href: "/begin" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA

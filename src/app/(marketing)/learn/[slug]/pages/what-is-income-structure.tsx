@@ -12,7 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
@@ -153,12 +152,6 @@ export default function WhatIsIncomeStructure() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "Map Your Income Structure", href: "/begin" },
-          { text: "See a Structural Breakdown", href: "/begin" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA

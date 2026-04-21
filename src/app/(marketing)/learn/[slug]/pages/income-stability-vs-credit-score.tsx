@@ -12,7 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
@@ -148,12 +147,6 @@ export default function IncomeStabilityVsCreditScore() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "See What Credit Scores Miss", href: "/begin" },
-          { text: "Measure Your Income Structure", href: "/begin" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA

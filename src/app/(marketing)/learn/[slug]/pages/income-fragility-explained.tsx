@@ -12,7 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
@@ -145,12 +144,6 @@ export default function IncomeFragilityExplained() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Get My Stability Class", href: "/begin" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA

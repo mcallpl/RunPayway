@@ -12,7 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
   IndustryBlock,
@@ -162,12 +161,6 @@ export default function IncomeStabilityTechWorkers() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Assess Your Tech Compensation", href: "/begin" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA

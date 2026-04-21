@@ -12,7 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
   ScenarioExtension,
@@ -163,12 +162,6 @@ export default function IncomeDrop40Percent() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Assess Your Income Structure", href: "/begin" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA

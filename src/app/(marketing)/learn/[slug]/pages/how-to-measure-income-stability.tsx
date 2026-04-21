@@ -12,7 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
@@ -149,12 +148,6 @@ export default function HowToMeasureIncomeStability() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "Measure Your Six Dimensions", href: "/begin" },
-          { text: "See How the Score Works", href: "/begin" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA

@@ -12,7 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
   ScenarioExtension,
@@ -163,12 +162,6 @@ export default function ConsultantNoContractsVsRetainers() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Assess Your Consulting Structure", href: "/begin" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA

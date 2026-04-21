@@ -12,7 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
@@ -150,12 +149,6 @@ export default function IncomeConcentrationRisk() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "Measure Your Concentration Risk", href: "/begin" },
-          { text: "See Your Full Stability Profile", href: "/begin" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA

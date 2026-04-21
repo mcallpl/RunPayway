@@ -13,7 +13,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
@@ -162,12 +161,6 @@ export default function IncomeStabilityRetailOwners() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "Measure Your Retail Income Structure", href: "/begin" },
-          { text: "See a Sample Report", href: "/sample-report" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA

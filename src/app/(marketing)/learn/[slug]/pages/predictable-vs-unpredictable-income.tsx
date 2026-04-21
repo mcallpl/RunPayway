@@ -12,7 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
@@ -149,12 +148,6 @@ export default function PredictableVsUnpredictableIncome() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "Measure Your Forward Visibility", href: "/begin" },
-          { text: "See Your Predictability Score", href: "/begin" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA

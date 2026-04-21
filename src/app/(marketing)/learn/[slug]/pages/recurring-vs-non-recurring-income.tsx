@@ -12,7 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
@@ -149,12 +148,6 @@ export default function RecurringVsNonRecurringIncome() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "Measure Your Revenue Structure", href: "/begin" },
-          { text: "See Your Recurring Revenue Score", href: "/begin" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA

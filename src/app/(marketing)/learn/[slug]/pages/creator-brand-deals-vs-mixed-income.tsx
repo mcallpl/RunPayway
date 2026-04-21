@@ -12,7 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
   ScenarioExtension,
@@ -159,12 +158,6 @@ export default function CreatorBrandDealsVsMixedIncome() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "See a Sample Report", href: "/sample-report" },
-          { text: "Assess Your Creator Income", href: "/begin" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA

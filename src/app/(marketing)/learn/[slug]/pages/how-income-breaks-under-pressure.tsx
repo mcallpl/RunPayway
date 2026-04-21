@@ -12,7 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
@@ -146,12 +145,6 @@ export default function HowIncomeBreaksUnderPressure() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "Find Your Structural Weak Points", href: "/begin" },
-          { text: "Get Your Stability Diagnostic", href: "/begin" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA

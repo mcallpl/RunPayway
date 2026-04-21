@@ -12,7 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
@@ -153,12 +152,6 @@ export default function IsMyIncomeStable() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "Check Your Income Structure", href: "/begin" },
-          { text: "See a Sample Report", href: "/sample-report" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA

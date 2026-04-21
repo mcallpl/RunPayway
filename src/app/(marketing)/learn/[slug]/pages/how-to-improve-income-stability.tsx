@@ -12,7 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
@@ -149,12 +148,6 @@ export default function HowToImproveIncomeStability() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "Find Your Weakest Dimension", href: "/begin" },
-          { text: "Get Your Improvement Roadmap", href: "/begin" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA

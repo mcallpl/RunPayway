@@ -12,7 +12,6 @@ import {
   RealityCheck,
   RelatedTopics,
   LearnFAQ,
-  MicroConversion,
   LearnCTA,
   MetaFooter,
 } from "@/components/learn/LearnComponents";
@@ -149,12 +148,6 @@ export default function ActiveVsPassiveIncomeStability() {
       />
 
       {/* 11. Micro Conversion */}
-      <MicroConversion
-        items={[
-          { text: "Measure Your Labor Dependence", href: "/begin" },
-          { text: "Get Your Stability Score", href: "/begin" },
-        ]}
-      />
 
       {/* 12. CTA */}
       <LearnCTA
