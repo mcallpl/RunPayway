@@ -386,12 +386,7 @@ function IndustryScenarios({ m }: { m: boolean }) {
                 {isOpen && (
                   <div>
                     <p style={{ fontSize: 14, lineHeight: 1.6, color: L.textSecondary, margin: "0 0 10px" }}>{s.scenario}</p>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span style={{ fontSize: 12, fontWeight: 600, color: s.color }}>Primary risk: {s.risk}</span>
-                      <Link href={`/learn/${s.slug}`} onClick={(e) => e.stopPropagation()} style={{ fontSize: 13, fontWeight: 600, color: L.teal, textDecoration: "none" }}>
-                        Read full analysis →
-                      </Link>
-                    </div>
+                    <span style={{ fontSize: 12, fontWeight: 600, color: s.color }}>Primary risk: {s.risk}</span>
                   </div>
                 )}
               </div>
