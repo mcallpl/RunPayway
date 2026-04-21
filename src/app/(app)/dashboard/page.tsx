@@ -1209,15 +1209,15 @@ function DashboardContent() {
                   </div>
 
                   {/* Metrics — clean, no tooltips cluttering */}
-                  <div style={{ display: "flex", gap: 12, marginBottom: 28 }} className="d-metrics">
+                  <div style={{ display: "flex", gap: mobile ? 8 : 12, marginBottom: 28 }} className="d-metrics">
                     {[
                       { label: "Income Buffer", value: contMo < 1 ? "< 1 mo" : `${contMo.toFixed(1)} mo`, color: contMo < 3 ? B.red : B.teal },
                       { label: vocabDash.scenarios.lose_top_client.split(/[.!?]/)[0].slice(0, 40) || "If Top Source Leaves", value: `−${riskDrop} pts`, color: riskDrop > 15 ? B.red : B.amber },
                       { label: "Stability Type", value: fragLabel, color: fragLabel === "Brittle" || fragLabel === "Fragile" ? B.red : fragLabel === "Resilient" || fragLabel === "Supported" ? B.teal : B.amber },
                     ].map((m) => (
-                      <div key={m.label} style={{ flex: 1, padding: mobile ? "12px 14px" : "14px 16px", textAlign: "center" as const, borderRadius: 10, backgroundColor: `${B.teal}03` }}>
-                        <div style={{ fontSize: 10, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 4 }}>{m.label.toUpperCase()}</div>
-                        <div style={{ fontSize: 18, fontWeight: 600, fontFamily: mono, color: m.color }}>{m.value}</div>
+                      <div key={m.label} style={{ flex: 1, padding: mobile ? "16px 12px" : "14px 16px", textAlign: "center" as const, borderRadius: 10, backgroundColor: `${B.teal}03` }}>
+                        <div style={{ fontSize: mobile ? 9 : 10, fontWeight: 600, letterSpacing: "0.06em", color: B.taupe, marginBottom: 6, wordBreak: "break-word" as const }}>{m.label.toUpperCase()}</div>
+                        <div style={{ fontSize: mobile ? 16 : 18, fontWeight: 600, fontFamily: mono, color: m.color }}>{m.value}</div>
                       </div>
                     ))}
                   </div>
@@ -1249,11 +1249,11 @@ function DashboardContent() {
                             if (!steps) return null;
                             return (
                               <div style={{ marginBottom: 12 }}>
-                                <div style={{ fontSize: 12, fontWeight: 600, color: B.teal, marginBottom: 8 }}>YOUR NEXT 3 MOVES</div>
+                                <div style={{ fontSize: mobile ? 11 : 12, fontWeight: 600, color: B.teal, marginBottom: 8 }}>YOUR NEXT 3 MOVES</div>
                                 {steps.map((s, si) => (
-                                  <div key={si} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 6 }}>
-                                    <span style={{ fontSize: 13, fontFamily: mono, fontWeight: 600, color: B.teal, flexShrink: 0, marginTop: 1 }}>{si + 1}.</span>
-                                    <span style={{ fontSize: 14, color: B.navy, lineHeight: 1.5 }}>{s}</span>
+                                  <div key={si} style={{ display: "flex", gap: mobile ? 8 : 10, alignItems: "flex-start", marginBottom: mobile ? 8 : 6 }}>
+                                    <span style={{ fontSize: mobile ? 12 : 13, fontFamily: mono, fontWeight: 600, color: B.teal, flexShrink: 0, marginTop: 1 }}>{si + 1}.</span>
+                                    <span style={{ fontSize: mobile ? 13 : 14, color: B.navy, lineHeight: 1.5 }}>{s}</span>
                                   </div>
                                 ))}
                               </div>
@@ -1274,17 +1274,17 @@ function DashboardContent() {
                   )}
 
                   {/* View Report + Share — actions row */}
-                  <div style={{ marginTop: 20, display: "flex", justifyContent: mobile ? "center" : "flex-end", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
+                  <div style={{ marginTop: mobile ? 16 : 20, display: "flex", justifyContent: mobile ? "center" : "flex-end", alignItems: "center", gap: mobile ? 12 : 20, flexWrap: "wrap" }}>
                     <button
                       onClick={() => setShowShareModal(true)}
-                      style={{ fontSize: 13, fontWeight: 500, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 8, padding: "6px 14px", cursor: "pointer", fontFamily: sans, display: "inline-flex", alignItems: "center", gap: 6, transition: "border-color 150ms, color 150ms" }}
+                      style={{ fontSize: mobile ? 12 : 13, fontWeight: 500, color: B.taupe, background: "none", border: `1px solid ${B.stone}`, borderRadius: 8, padding: mobile ? "8px 12px" : "6px 14px", cursor: "pointer", fontFamily: sans, display: "inline-flex", alignItems: "center", gap: 6, transition: "border-color 150ms, color 150ms", minHeight: 32 }}
                       onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = B.purple; (e.currentTarget as HTMLElement).style.color = B.purple; }}
                       onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = B.stone; (e.currentTarget as HTMLElement).style.color = B.taupe; }}
                     >
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                       Share Score
                     </button>
-                    <Link href="/review" style={{ fontSize: 13, fontWeight: 500, color: B.taupe, textDecoration: "none", display: "inline-flex", alignItems: "center", minHeight: 36, transition: "color 150ms" }}
+                    <Link href="/review" style={{ fontSize: mobile ? 12 : 13, fontWeight: 500, color: B.taupe, textDecoration: "none", display: "inline-flex", alignItems: "center", minHeight: mobile ? 32 : 36, padding: mobile ? "0 8px" : "0", transition: "color 150ms" }}
                       onMouseEnter={(e) => { e.currentTarget.style.color = B.navy; }}
                       onMouseLeave={(e) => { e.currentTarget.style.color = B.taupe; }}>
                       View full report &rarr;
