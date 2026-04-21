@@ -1148,6 +1148,59 @@ export default function ReviewPage() {
           </div>
         </div>
 
+        {/* Access Code Section */}
+        <div style={{ padding: mobile ? "24px 24px" : "32px 40px", backgroundColor: "rgba(31,109,122,0.04)", borderBottom: "1px solid rgba(31,109,122,0.10)" }}>
+          <div style={{ marginBottom: 12 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 8, textTransform: "uppercase" }}>Your Access Code</div>
+            <p style={{ fontSize: 13, color: B.muted, margin: "0 0 16px", lineHeight: 1.6 }}>
+              Save this code to access your dashboard anytime. You'll need it to log back in after you close this browser.
+            </p>
+          </div>
+          <div style={{ display: "flex", gap: 12, flexDirection: mobile ? "column" : "row", alignItems: mobile ? "stretch" : "center" }}>
+            <div style={{
+              flex: 1,
+              padding: "12px 16px",
+              backgroundColor: "#fff",
+              border: `1px solid ${B.teal}30`,
+              borderRadius: 10,
+              fontFamily: mono,
+              fontSize: 13,
+              fontWeight: 600,
+              color: B.navy,
+              wordBreak: "break-all",
+              minHeight: 44,
+              display: "flex",
+              alignItems: "center",
+              userSelect: "all",
+            }}>
+              {accessCodePayload}
+            </div>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(accessCodePayload);
+                alert("Access code copied to clipboard!");
+              }}
+              style={{
+                padding: "12px 24px",
+                height: 44,
+                backgroundColor: B.teal,
+                color: "#fff",
+                border: "none",
+                borderRadius: 10,
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: "pointer",
+                flexShrink: 0,
+                transition: "opacity 150ms",
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = "0.85"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = "1"; }}
+            >
+              Copy Code
+            </button>
+          </div>
+        </div>
+
         {/* Executive Summary */}
         <div style={{ padding: mobile ? "20px 24px" : "24px 40px", borderBottom: "1px solid rgba(14,26,43,0.06)" }}>
           <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 8 }}>EXECUTIVE SUMMARY</div>
