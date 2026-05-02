@@ -227,10 +227,10 @@ function MobileDecisionFlow() {
             <button onClick={() => setSection("decision")} style={{ width: "100%", height: 56, backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
-              Start Verification →
+              Verify Income Stability
             </button>
             <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 14 }}>
-              Answer 6 structural inputs. Verification occurs immediately.
+              Verification is based on 6 structural inputs. Result is permanent.
             </p>
           </div>
         </section>
@@ -488,27 +488,27 @@ function DesktopInstitutionalLanding() {
             <div style={{ padding: "24px", backgroundColor: C.navy, borderRadius: 12, marginBottom: 40 }}>
               <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 12 }}>STANDARD DEFINITION</p>
               <ul style={{ fontSize: 14, color: C.sandText, lineHeight: 1.8, margin: 0, paddingLeft: 0, listStyle: "none" }}>
-                <li>Fixed structural methodology</li>
-                <li>Reproducible results (same inputs → same classification)</li>
-                <li>Deterministic model (no discretion, no adjustment)</li>
-                <li>Applied uniformly to all evaluated income structures</li>
+                <li>Fixed rules applied to 6 structural inputs</li>
+                <li>Same inputs produce same classification always</li>
+                <li>No discretion applied to output</li>
+                <li>Classification applies uniformly to all income structures</li>
               </ul>
             </div>
             <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 40 }}>
-              Verification occurs based on 6 structural inputs. Classification is immediate and permanent.
+              Verification classifies income based on structural inputs. Result is permanent for that income structure.
             </p>
             <button style={{ padding: "16px 32px", backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
-              Proceed to Verification
+              Verify Income Stability
             </button>
             <p style={{ fontSize: 12, color: C.textMuted, marginTop: 16, letterSpacing: "0.05em" }}>
-              Free classification · Immediate result · Private
+              Free classification · Timestamped result · Private
             </p>
           </div>
           <div style={{ backgroundColor: C.navy, borderRadius: 20, padding: "40px 32px", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
-            <div style={{ fontSize: 11, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 20 }}>EXAMPLE CLASSIFICATION</div>
+            <div style={{ fontSize: 11, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 20 }}>EXAMPLE RESULT</div>
             <div style={{ fontSize: 64, fontWeight: 700, fontFamily: mono, color: C.sandText, lineHeight: 1, marginBottom: 8 }}>72</div>
             <div style={{ fontSize: 14, fontWeight: 600, color: C.sandText, marginBottom: 24 }}>/100</div>
             <div style={{ fontSize: 14, fontWeight: 600, color: C.established, display: "inline-block", padding: "8px 16px", backgroundColor: `${C.established}15`, borderRadius: 10, marginBottom: 24 }}>
@@ -526,165 +526,189 @@ function DesktopInstitutionalLanding() {
             </div>
             <div style={{ marginTop: 20, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.10)" }}>
               <p style={{ fontSize: 12, color: C.sandLight, margin: 0, lineHeight: 1.5 }}>
-                Model RP-2.0 · Timestamp & Record ID included with result
+                Model RP-2.0. Record ID and timestamp included with all results.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* STRUCTURAL FAILURE CONDITIONS */}
+      {/* THE 6 STRUCTURAL INPUTS */}
       <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
-            Structural failure conditions
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 16, letterSpacing: "-0.02em" }}>
+            Six structural inputs
           </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, marginBottom: 40 }}>
-            <div>
-              <h3 style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Single-source income</h3>
-              <p style={{ fontSize: 14, lineHeight: 1.6, color: C.textSecondary, margin: 0 }}>
-                Income dependent on one client or source fails under disruption. Loss of primary source eliminates income continuity.
-              </p>
+          <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 40 }}>
+            Income classification is determined by these 6 factors. All financial commitments evaluated against these inputs.
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 32, marginBottom: 40 }}>
+            <div style={{ padding: "24px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}>1. Concentration</p>
+              <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>Number of primary income sources. 1 source = concentration. 2–3 sources = moderate. 4+ sources = diversified.</p>
             </div>
-            <div>
-              <h3 style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Concentrated sources</h3>
-              <p style={{ fontSize: 14, lineHeight: 1.6, color: C.textSecondary, margin: 0 }}>
-                Income concentrated in 2-3 sources creates visibility risk. Income variability increases under market pressure.
-              </p>
+            <div style={{ padding: "24px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}>2. Number of Income Sources</p>
+              <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>Distinct revenue channels contributing to income. Examples: client, employer, investment, business line.</p>
             </div>
-            <div>
-              <h3 style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Low forward visibility</h3>
-              <p style={{ fontSize: 14, lineHeight: 1.6, color: C.textSecondary, margin: 0 }}>
-                Income projectable less than 6 months creates structural weakness. Future commitment predictability fails.
-              </p>
+            <div style={{ padding: "24px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}>3. Forward Visibility</p>
+              <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>Months of income projectable with certainty based on current structure. Measured: 0–24 months.</p>
             </div>
-            <div>
-              <h3 style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Activity-dependent income</h3>
-              <p style={{ fontSize: 14, lineHeight: 1.6, color: C.textSecondary, margin: 0 }}>
-                Income requiring ongoing active effort has no passive continuity. Disruption to activity eliminates income.
-              </p>
+            <div style={{ padding: "24px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}>4. Income Variability</p>
+              <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>Consistency of income over time. Low = stable monthly. High = fluctuates significantly month-to-month.</p>
+            </div>
+            <div style={{ padding: "24px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}>5. Continuity Without Active Labor</p>
+              <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>Percentage of income that continues if active work stops. Recurring/passive = continues. Active-only = stops.</p>
+            </div>
+            <div style={{ padding: "24px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}>6. Dependency on Activity</p>
+              <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>Degree to which income requires ongoing active effort. High dependency = income stops if activity stops.</p>
             </div>
           </div>
           <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "24px" }}>
             <p style={{ fontSize: 14, color: C.sandText, margin: 0, lineHeight: 1.6 }}>
-              Mortgage commitments, hiring decisions, and major investments require income that is protected against these structural failures.
+              These 6 inputs determine classification. The model applies fixed rules to each input. Output is deterministic: same inputs always produce the same classification.
             </p>
           </div>
         </div>
       </section>
 
-      {/* PROOF: SAME INCOME, DIFFERENT STABILITY */}
+      {/* STRUCTURAL MAPPING EXAMPLE */}
       <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
             Same income, different structure
           </h2>
+          <p style={{ fontSize: 15, color: C.navy, marginBottom: 40, fontWeight: 600 }}>
+            Both examples: $150K annual income. Structures differ. Classifications differ.
+          </p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40 }}>
             <div style={{ backgroundColor: C.panelFill, borderRadius: 16, padding: "32px", border: `1px solid ${C.borderSoft}` }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: C.textMuted, letterSpacing: "0.05em", marginBottom: 8 }}>FREELANCER: ONE CLIENT</div>
-              <div style={{ fontSize: 36, fontWeight: 700, fontFamily: mono, color: C.risk, marginBottom: 8, lineHeight: 1 }}>31</div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: C.risk, marginBottom: 24 }}>Limited Stability</div>
-              <p style={{ fontSize: 13, lineHeight: 1.6, color: C.textSecondary, marginBottom: 0 }}>
-                $150K annual income from one client. Loss of client eliminates income. No continuity under disruption. Mortgage application fails.
+              <div style={{ fontSize: 12, fontWeight: 600, color: C.textMuted, letterSpacing: "0.05em", marginBottom: 16 }}>STRUCTURE A: ONE PRIMARY CLIENT</div>
+              <div style={{ fontSize: 48, fontWeight: 700, fontFamily: mono, color: C.risk, marginBottom: 16, lineHeight: 1 }}>31</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: C.risk, marginBottom: 24 }}>Limited Stability</div>
+              <div style={{ fontSize: 13, color: C.navy, fontWeight: 600, marginBottom: 8 }}>Structural inputs:</div>
+              <ul style={{ fontSize: 13, lineHeight: 1.8, color: C.textSecondary, margin: "0 0 0 20px", paddingLeft: 0 }}>
+                <li><strong>Concentration:</strong> 1 source (concentrated)</li>
+                <li><strong>Number of sources:</strong> 1</li>
+                <li><strong>Forward visibility:</strong> 3 months (low)</li>
+                <li><strong>Variability:</strong> High</li>
+                <li><strong>Continuity without active labor:</strong> 0%</li>
+                <li><strong>Activity dependency:</strong> 100%</li>
+              </ul>
+              <p style={{ fontSize: 12, color: C.textSecondary, marginTop: 16, margin: 0 }}>
+                Loss of one client = loss of 100% of income. Structure fails if client terminates.
               </p>
             </div>
-            <div style={{ backgroundColor: C.panelFill, borderRadius: 16, padding: "32px", border: `1px solid ${C.protected}33` }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: C.textMuted, letterSpacing: "0.05em", marginBottom: 8 }}>FREELANCER: FIVE CLIENTS</div>
-              <div style={{ fontSize: 36, fontWeight: 700, fontFamily: mono, color: C.protected, marginBottom: 8, lineHeight: 1 }}>74</div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: C.protected, marginBottom: 24 }}>Established Stability</div>
-              <p style={{ fontSize: 13, lineHeight: 1.6, color: C.textSecondary, marginBottom: 0 }}>
-                $150K income across five clients. Loss of one client reduces income, not eliminates. Continuity protected. Mortgage aligns with structure.
+            <div style={{ backgroundColor: C.panelFill, borderRadius: 16, padding: "32px", border: `1px solid ${C.borderSoft}` }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: C.textMuted, letterSpacing: "0.05em", marginBottom: 16 }}>STRUCTURE B: FIVE CLIENTS</div>
+              <div style={{ fontSize: 48, fontWeight: 700, fontFamily: mono, color: C.protected, marginBottom: 16, lineHeight: 1 }}>74</div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: C.protected, marginBottom: 24 }}>Established Stability</div>
+              <div style={{ fontSize: 13, color: C.navy, fontWeight: 600, marginBottom: 8 }}>Structural inputs:</div>
+              <ul style={{ fontSize: 13, lineHeight: 1.8, color: C.textSecondary, margin: "0 0 0 20px", paddingLeft: 0 }}>
+                <li><strong>Concentration:</strong> 5 sources (diversified)</li>
+                <li><strong>Number of sources:</strong> 5</li>
+                <li><strong>Forward visibility:</strong> 18 months</li>
+                <li><strong>Variability:</strong> Low–Moderate</li>
+                <li><strong>Continuity without active labor:</strong> 40% recurring</li>
+                <li><strong>Activity dependency:</strong> 60%</li>
+              </ul>
+              <p style={{ fontSize: 12, color: C.textSecondary, marginTop: 16, margin: 0 }}>
+                Loss of one client = 20% income loss. Structure sustains income if client terminates.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* VERIFICATION MODEL: INPUT → MODEL → OUTPUT */}
+      {/* PROCESSING LOGIC */}
       <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
-            Verification model
+            Processing logic
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 32, marginBottom: 40 }}>
             <div style={{ backgroundColor: C.white, borderRadius: 12, padding: "32px", border: `1px solid ${C.borderSoft}` }}>
               <div style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 16 }}>INPUT</div>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 12 }}>6 structural inputs</p>
-              <ul style={{ fontSize: 13, lineHeight: 1.8, color: C.textSecondary, margin: 0, paddingLeft: "20px" }}>
-                <li>Income concentration</li>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>6 structural inputs</p>
+              <ol style={{ fontSize: 13, lineHeight: 1.8, color: C.textSecondary, margin: 0, paddingLeft: "20px" }}>
+                <li>Concentration</li>
                 <li>Number of sources</li>
                 <li>Forward visibility</li>
-                <li>Variability pattern</li>
-                <li>Continuity type</li>
-                <li>Income dependence</li>
-              </ul>
+                <li>Income variability</li>
+                <li>Continuity without active labor</li>
+                <li>Dependency on activity</li>
+              </ol>
             </div>
             <div style={{ backgroundColor: C.white, borderRadius: 12, padding: "32px", border: `1px solid ${C.borderSoft}` }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 16 }}>MODEL</div>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 12 }}>Fixed structural factors</p>
+              <div style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 16 }}>RULES</div>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Fixed transformation rules</p>
               <ul style={{ fontSize: 13, lineHeight: 1.8, color: C.textSecondary, margin: 0, paddingLeft: "20px" }}>
                 <li>No discretion applied</li>
-                <li>Rules-based processing</li>
-                <li>Reproducible methodology</li>
-                <li>Version-locked (RP-2.0)</li>
-                <li>Deterministic outcomes</li>
+                <li>No judgment calls</li>
+                <li>Identical for all inputs</li>
+                <li>Model RP-2.0 locked</li>
+                <li>All outputs traceable to rules</li>
               </ul>
             </div>
             <div style={{ backgroundColor: C.white, borderRadius: 12, padding: "32px", border: `1px solid ${C.borderSoft}` }}>
               <div style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 16 }}>OUTPUT</div>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 12 }}>Classification</p>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Classification result</p>
               <ul style={{ fontSize: 13, lineHeight: 1.8, color: C.textSecondary, margin: 0, paddingLeft: "20px" }}>
                 <li>Stability score (0–100)</li>
                 <li>Stability band</li>
                 <li>Primary constraint</li>
-                <li>Decision alignment</li>
-                <li>Record ID + timestamp</li>
+                <li>Record ID</li>
+                <li>Timestamp</li>
               </ul>
             </div>
           </div>
           <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "24px" }}>
             <p style={{ fontSize: 14, color: C.sandText, margin: 0, lineHeight: 1.6 }}>
-              Output is derived exclusively from submitted structural inputs. Same inputs always produce the same classification.
+              The same 6 inputs always produce the same output. Different inputs produce different outputs. All outputs are permanent for the evaluated income structure.
             </p>
           </div>
         </div>
       </section>
 
-      {/* PRICING: Free + Paid */}
+      {/* OFFERING */}
       <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
-            Offering
+            Verification offering
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, marginBottom: 40 }}>
             <div style={{ padding: "40px", backgroundColor: C.panelFill, border: `1px solid ${C.borderSoft}`, borderRadius: 12 }}>
               <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 16 }}>FREE</p>
-              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Stability Classification</p>
-              <ul style={{ fontSize: 14, color: C.textSecondary, lineHeight: 1.8, margin: 0, paddingLeft: "20px" }}>
+              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 20 }}>Classification</p>
+              <ul style={{ fontSize: 14, color: C.textSecondary, lineHeight: 2, margin: 0, paddingLeft: "20px" }}>
                 <li>Stability score (0–100)</li>
                 <li>Stability band</li>
-                <li>Primary constraint</li>
+                <li>Primary structural constraint</li>
               </ul>
             </div>
             <div style={{ padding: "40px", backgroundColor: C.panelFill, borderRadius: 12, borderLeft: `4px solid ${C.teal}` }}>
               <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 16 }}>$69</p>
-              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Full Structural Report</p>
-              <ul style={{ fontSize: 14, color: C.textSecondary, lineHeight: 1.8, margin: 0, paddingLeft: "20px" }}>
-                <li>Complete structural analysis</li>
-                <li>Decision alignment matrix</li>
-                <li>Auditable record (timestamp, model)</li>
+              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 20 }}>Full Verification Report</p>
+              <ul style={{ fontSize: 14, color: C.textSecondary, lineHeight: 2, margin: 0, paddingLeft: "20px" }}>
+                <li>Complete structural breakdown</li>
+                <li>All 6 inputs analyzed</li>
+                <li>Decision-specific alignment assessment</li>
               </ul>
             </div>
           </div>
           <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "24px" }}>
             <p style={{ fontSize: 14, color: C.sandText, margin: 0, lineHeight: 1.6 }}>
-              Classification is permanent for this income structure. Reassessment required if income structure changes. Prior classifications remain archived.
+              Classification is permanent for the submitted income structure. If any of the 6 structural inputs change, structural change has occurred and reassessment is required. Prior classifications remain in permanent archive.
             </p>
           </div>
         </div>
       </section>
 
-      {/* SYSTEM DEFINITION: Methodology & Auditability */}
+      {/* STANDARD DEFINITION: Methodology & Permanence */}
       <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
@@ -694,63 +718,66 @@ function DesktopInstitutionalLanding() {
             <div>
               <h3 style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Methodology</h3>
               <ul style={{ fontSize: 14, color: C.textPrimary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
-                <li>Fixed structural factors only</li>
-                <li>No discretion applied</li>
-                <li>Input determines output exclusively</li>
-                <li>Model version RP-2.0 locked</li>
+                <li>Fixed rules applied to 6 inputs only</li>
+                <li>No discretion: rules are identical for all users</li>
+                <li>Same inputs always produce same output</li>
+                <li>Model RP-2.0 fixed; version locked to all results</li>
               </ul>
             </div>
             <div>
-              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Auditability</h3>
+              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Permanence & Auditability</h3>
               <ul style={{ fontSize: 14, color: C.textPrimary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
-                <li>Every result timestamped</li>
-                <li>Record ID for retrieval</li>
-                <li>Permanent archive maintained</li>
-                <li>Reproducible at any point</li>
+                <li>Every result timestamped to second</li>
+                <li>Record ID assigned for permanent retrieval</li>
+                <li>Prior results never modified or deleted</li>
+                <li>Full audit trail maintained indefinitely</li>
               </ul>
             </div>
           </div>
-          <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 16 }}>
-            This is not an estimate or forecast. Results are derived exclusively from structural inputs, not from income level, credit history, or market conditions.
+          <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 24 }}>
+            Classification is derived exclusively from the 6 structural inputs. Income level, credit history, employment duration, and market conditions do not affect the classification.
           </p>
-          <p style={{ fontSize: 14, color: C.textSecondary }}>
-            Classification remains permanent until income structure changes. Structural change triggers reassessment; prior result moves to archive.
+          <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 24, fontWeight: 600, color: C.navy }}>
+            Definition: Structural change
+          </p>
+          <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 0 }}>
+            Structural change occurs when any of the 6 inputs change: gain or loss of income source, change in income type (contract to salary, salary to commission), change in concentration, change in forward visibility, change in continuity, or change in activity dependency. When structural change occurs, prior classification remains in archive and reassessment is required.
           </p>
         </div>
       </section>
 
-      {/* WORKFLOW IMPLEMENTATION: Mortgage Example */}
+      {/* WORKFLOW: Mortgage Underwriting Example */}
       <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
             Workflow: Mortgage underwriting
           </h2>
           <ol style={{ fontSize: 15, color: C.textPrimary, lineHeight: 2, margin: "0 0 40px", paddingLeft: "24px" }}>
-            <li>Borrower submits income structure (6 inputs: concentration, sources, visibility, variability, continuity, dependence)</li>
-            <li>Verification model processes inputs against fixed structural factors</li>
-            <li>Classification returned (stability score + primary constraint)</li>
-            <li>Result timestamped with Record ID and Model version (RP-2.0)</li>
-            <li>Classification determines mortgage alignment</li>
-            <li>Result locked to file; remains permanent unless income structure changes</li>
+            <li>Borrower submits income documentation. Lender evaluates 6 structural inputs from documentation.</li>
+            <li>Fixed rules applied to each input. Model RP-2.0 processes the 6 inputs.</li>
+            <li>Output: Stability score (0–100) + stability band + primary constraint identified.</li>
+            <li>Record ID and timestamp assigned. Result locked with model version.</li>
+            <li>Classification determines whether income structure supports mortgage commitment.</li>
+            <li>Result remains permanent. Reassessment required only if income structure changes per definition.</li>
           </ol>
           <div style={{ backgroundColor: C.panelFill, borderRadius: 12, padding: "24px" }}>
-            <p style={{ fontSize: 14, color: C.navy, margin: 0, lineHeight: 1.6 }}>
-              Classification is the verification basis for pre-approval decision. If income structure changes, reassess immediately; if income is stable, no reassessment required.
+            <p style={{ fontSize: 14, color: C.navy, margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
+              Stability score ≥ 60 indicates income structure supports the decision. Score &lt; 60 indicates structural inadequacy for the commitment.
             </p>
           </div>
         </div>
       </section>
 
-      {/* FINAL CLOSE: One-Line Requirement + CTA */}
+      {/* FINAL CLOSE */}
       <section style={{ padding: "100px 40px", backgroundColor: C.navy }}>
         <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
-          <h2 style={{ fontSize: 40, fontWeight: 600, color: C.sandText, marginBottom: 40, lineHeight: 1.2, letterSpacing: "-0.02em" }}>
+          <h2 style={{ fontSize: 44, fontWeight: 600, color: C.sandText, marginBottom: 48, lineHeight: 1.2, letterSpacing: "-0.02em" }}>
             Verification precedes commitment.
           </h2>
           <button style={{ padding: "16px 48px", backgroundColor: C.teal, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(31,109,122,0.30)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(31,109,122,0.20)"; }}>
-            Proceed to Verification
+            Verify Income Stability
           </button>
         </div>
       </section>
