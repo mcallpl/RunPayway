@@ -1262,7 +1262,9 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
               <div key={idx} style={{ backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, overflow: "hidden", boxShadow: landingLayout.shadows.card }}>
                 <button
                   onClick={() => setExpandedFaq(expandedFaq === idx.toString() ? null : idx.toString())}
-                  style={{ width: "100%", padding: spacing.md, textAlign: "left", backgroundColor: expandedFaq === idx.toString() ? COLORS.panelFill : COLORS.white, border: "none", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: `all ${landingLayout.transitions.fast}` }}>
+                  aria-expanded={expandedFaq === idx.toString()}
+                  aria-label={`Toggle question: ${item.q}`}
+                  style={{ width: "100%", padding: spacing.md, textAlign: "left", backgroundColor: expandedFaq === idx.toString() ? COLORS.panelFill : COLORS.white, border: "none", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: `all ${landingLayout.transitions.fast}`, minHeight: 48 }}>
                   <span style={{ fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, color: COLORS.navy }}>{item.q}</span>
                   <span style={{ fontSize: 20, color: colorRules.ctaSecondary, fontWeight: 600, transition: `transform ${landingLayout.transitions.fast}`, transform: expandedFaq === idx.toString() ? "rotate(180deg)" : "rotate(0deg)" }}>▼</span>
                 </button>
