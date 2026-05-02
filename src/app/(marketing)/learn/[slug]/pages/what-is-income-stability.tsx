@@ -13,6 +13,7 @@ import {
   RelatedTopics,
   LearnFAQ,
   MetaFooter,
+  StickyLearnCTA,
 } from "@/components/learn/LearnComponents";
 
 export default function WhatIsIncomeStability() {
