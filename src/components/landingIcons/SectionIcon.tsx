@@ -53,7 +53,7 @@ export default function SectionIcon({
         <svg {...commonProps} style={{ opacity }}>
           <circle cx="24" cy="16" r="3" fill={fillColor} />
           <circle cx="14" cy="28" r="3" fill={fillColor} />
-          <circle cx="34" cy="28" r="fill={fillColor} />
+          <circle cx="34" cy="28" r="3" fill={fillColor} />
           <circle cx="24" cy="40" r="3" fill={fillColor} />
           <line x1="24" y1="19" x2="14" y2="25" stroke={strokeColor} strokeWidth={strokeWidth} />
           <line x1="24" y1="19" x2="34" y2="25" stroke={strokeColor} strokeWidth={strokeWidth} />

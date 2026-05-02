@@ -1,6 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { landingTokens, T, COLORS, colorRules, spacing, layout } from "./landingTokens";
+import { landingLayout } from "./landingLayout";
+import StructuralInputIcon from "@/components/landingIcons/StructuralInputIcon";
+import SectionIcon from "@/components/landingIcons/SectionIcon";
 
 /* ================================================================ */
 /* HOOKS                                                              */
@@ -545,15 +549,16 @@ function AudienceSelector({ audience, setAudience }: { audience: Audience; setAu
 
   return (
     <div style={{
-      backgroundColor: C.white,
-      borderBottom: `1px solid ${C.divider}`,
+      backgroundColor: COLORS.white,
+      borderBottom: `1px solid ${COLORS.divider}`,
       position: "sticky",
       top: 0,
-      zIndex: 1000,
-      padding: "16px 40px"
+      zIndex: landingLayout.zIndex.sticky,
+      padding: spacing.sm + " " + layout.paddingDesktop + "px",
+      boxShadow: landingLayout.shadows.card
     }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", alignItems: "center", gap: 16 }}>
-        <span style={{ fontSize: 14, fontWeight: 600, color: C.navy, whiteSpace: "nowrap" }}>I'm a...</span>
+      <div style={{ maxWidth: layout.maxWidth, margin: "0 auto", display: "flex", alignItems: "center", gap: 16 }}>
+        <span style={{ fontSize: T.body.fontSize, fontWeight: 600, color: COLORS.navy, whiteSpace: "nowrap" }}>I'm a...</span>
         <div style={{ display: "flex", gap: 12, flex: 1 }}>
           {options.map(opt => (
             <button
@@ -561,34 +566,37 @@ function AudienceSelector({ audience, setAudience }: { audience: Audience; setAu
               onClick={() => setAudience(opt.value)}
               style={{
                 flex: 1,
-                padding: "12px 16px",
-                backgroundColor: audience === opt.value ? C.navy : C.sand,
-                color: audience === opt.value ? C.white : C.navy,
-                border: "none",
-                borderRadius: 8,
-                fontSize: 13,
+                padding: spacing.sm + " " + spacing.sm,
+                backgroundColor: audience === opt.value ? COLORS.navy : COLORS.sand,
+                color: audience === opt.value ? COLORS.white : COLORS.navy,
+                border: audience === opt.value ? `2px solid ${COLORS.navy}` : `2px solid transparent`,
+                borderRadius: layout.borderRadius.sm,
+                fontSize: T.small.fontSize,
                 fontWeight: 600,
                 cursor: "pointer",
-                transition: "all 200ms",
+                transition: `all ${landingLayout.transitions.fast}`,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 gap: 4,
-                minHeight: 60
+                minHeight: 60,
+                boxShadow: audience === opt.value ? landingLayout.shadows.button : "none"
               }}
               onMouseEnter={e => {
                 if (audience !== opt.value) {
-                  e.currentTarget.style.backgroundColor = C.panelFill;
+                  e.currentTarget.style.backgroundColor = COLORS.panelFill;
+                  e.currentTarget.style.boxShadow = landingLayout.shadows.card;
                 }
               }}
               onMouseLeave={e => {
                 if (audience !== opt.value) {
-                  e.currentTarget.style.backgroundColor = C.sand;
+                  e.currentTarget.style.backgroundColor = COLORS.sand;
+                  e.currentTarget.style.boxShadow = "none";
                 }
               }}
             >
               <span>{opt.label}</span>
-              <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.7, lineHeight: 1.3, textAlign: "center" }}>
+              <span style={{ fontSize: T.micro.fontSize, fontWeight: 400, opacity: 0.7, lineHeight: 1.3, textAlign: "center" }}>
                 {opt.tagline}
               </span>
             </button>
@@ -605,66 +613,66 @@ function AudienceSelector({ audience, setAudience }: { audience: Audience; setAu
 
 function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
   return (
-    <div style={{ backgroundColor: C.white, color: C.navy }}>
+    <div style={{ backgroundColor: COLORS.white, color: COLORS.navy }}>
       {/* HERO: Audience-Specific */}
-      <section style={{ padding: "100px 40px", backgroundColor: C.white }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }}>
+      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.white }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }}>
           <div>
-            <h1 style={{ fontSize: 52, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.03em", color: C.navy, marginBottom: 40 }}>
+            <h1 style={{ fontSize: T.heroDisplay.fontSize, fontWeight: T.heroDisplay.fontWeight, lineHeight: T.heroDisplay.lineHeight, letterSpacing: T.heroDisplay.letterSpacing, color: COLORS.navy, marginBottom: 40 }}>
               {audience === "individual" && "Verify your income stability before major decisions"}
               {audience === "institution" && "Income verification standard for financial institutions"}
               {audience === "advisor" && "Income verification solution for your clients"}
             </h1>
-            <div style={{ padding: "24px", backgroundColor: C.navy, borderRadius: 12, marginBottom: 40 }}>
-              <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 12 }}>STANDARD DEFINITION</p>
-              <ul style={{ fontSize: 14, color: C.sandText, lineHeight: 1.8, margin: 0, paddingLeft: 0, listStyle: "none" }}>
+            <div style={{ padding: "24px", backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, marginBottom: 40 }}>
+              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 12 }}>STANDARD DEFINITION</p>
+              <ul style={{ fontSize: 14, color: COLORS.sandText, lineHeight: 1.8, margin: 0, paddingLeft: 0, listStyle: "none" }}>
                 <li>Fixed rules applied to 6 structural inputs</li>
                 <li>Same inputs produce same classification always</li>
                 <li>No discretion applied to output</li>
                 <li>Classification applies uniformly to all income structures</li>
               </ul>
             </div>
-            <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 40 }}>
+            <p style={{ fontSize: T.body.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 40 }}>
               {audience === "individual" && "See your score, understand your structure, download your proof."}
               {audience === "institution" && "Integrate deterministic income verification into your underwriting."}
               {audience === "advisor" && "Recommend to clients or white-label as your own service."}
             </p>
-            <button style={{ padding: "16px 32px", backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
+            <button style={{ padding: "16px 32px", backgroundColor: audience === "institution" ? COLORS.navy : colorRules.ctaSecondary, color: COLORS.white, border: "none", borderRadius: layout.borderRadius.sm, fontSize: T.body.fontSize, fontWeight: 600, cursor: "pointer", transition: `all ${landingLayout.transitions.fast}`, boxShadow: landingLayout.shadows.button }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = landingLayout.shadows.hover; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = landingLayout.shadows.button; }}>
               {audience === "individual" && "Verify Now"}
               {audience === "institution" && "View API Integration"}
               {audience === "advisor" && "View Advisor Options"}
             </button>
-            <p style={{ fontSize: 12, color: C.textMuted, marginTop: 16, letterSpacing: "0.05em" }}>
+            <p style={{ fontSize: T.small.fontSize, color: COLORS.textMuted, marginTop: 16, letterSpacing: "0.05em" }}>
               {audience === "individual" && "Free classification · Timestamped result · Private"}
               {audience === "institution" && "REST API · Webhook support · Bulk processing"}
               {audience === "advisor" && "Free recommendations OR $15-25 per report licensing"}
             </p>
-            <p style={{ fontSize: 11, color: C.teal, marginTop: 24, fontWeight: 600 }}>
+            <p style={{ fontSize: T.micro.fontSize, color: colorRules.ctaSecondary, marginTop: 24, fontWeight: 600 }}>
               Model RP-2.0. Validated methodology. Used by 500+ financial institutions.
             </p>
           </div>
-          <div style={{ backgroundColor: C.navy, borderRadius: 20, padding: "40px 32px", position: "relative", overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
-            <div style={{ fontSize: 11, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 20 }}>EXAMPLE RESULT</div>
-            <div style={{ fontSize: 64, fontWeight: 700, fontFamily: mono, color: C.sandText, lineHeight: 1, marginBottom: 8 }}>72</div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: C.sandText, marginBottom: 24 }}>/100</div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: C.established, display: "inline-block", padding: "8px 16px", backgroundColor: `${C.established}15`, borderRadius: 10, marginBottom: 24 }}>
+          <div style={{ backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.lg, padding: "40px 32px", position: "relative", overflow: "hidden", boxShadow: landingLayout.shadows.elevated }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${COLORS.teal}, ${COLORS.purple})` }} />
+            <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 20 }}>EXAMPLE RESULT</div>
+            <div style={{ fontSize: 64, fontWeight: 700, fontFamily: mono, color: COLORS.sandText, lineHeight: 1, marginBottom: 8 }}>72</div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: COLORS.sandText, marginBottom: 24 }}>/100</div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: COLORS.established, display: "inline-block", padding: "8px 16px", backgroundColor: `${COLORS.established}15`, borderRadius: 10, marginBottom: 24 }}>
               Established Stability
             </div>
             <div style={{ display: "flex", height: 10, borderRadius: 999, overflow: "hidden", marginBottom: 12 }}>
-              <div style={{ width: "28%", backgroundColor: C.established }} />
-              <div style={{ width: "40%", backgroundColor: C.moderate }} />
-              <div style={{ width: "32%", backgroundColor: C.risk }} />
+              <div style={{ width: "28%", backgroundColor: COLORS.established }} />
+              <div style={{ width: "40%", backgroundColor: COLORS.moderate }} />
+              <div style={{ width: "32%", backgroundColor: COLORS.risk }} />
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}>
-              <span style={{ fontSize: 11, fontWeight: 600, color: C.established }}>Protected</span>
-              <span style={{ fontSize: 11, fontWeight: 600, color: C.moderate }}>Recurring</span>
-              <span style={{ fontSize: 11, fontWeight: 600, color: C.risk }}>At Risk</span>
+              <span style={{ fontSize: T.meta.fontSize, fontWeight: 600, color: COLORS.established }}>Protected</span>
+              <span style={{ fontSize: T.meta.fontSize, fontWeight: 600, color: COLORS.moderate }}>Recurring</span>
+              <span style={{ fontSize: T.meta.fontSize, fontWeight: 600, color: COLORS.risk }}>At Risk</span>
             </div>
             <div style={{ marginTop: 20, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.10)" }}>
-              <p style={{ fontSize: 12, color: C.sandLight, margin: 0, lineHeight: 1.5 }}>
+              <p style={{ fontSize: T.small.fontSize, color: COLORS.sandLight, margin: 0, lineHeight: 1.5 }}>
                 Model RP-2.0. Record ID and timestamp included with all results.
               </p>
             </div>
@@ -674,26 +682,35 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 
       {/* INSTITUTIONAL FOUNDATION (Institution + Advisor paths) */}
       {(audience === "institution" || audience === "advisor") && (
-      <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 48 }}>
+      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.white }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: layout.gap.section }}>
           <div>
-            <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 12 }}>METHODOLOGY</p>
-            <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 8 }}>Audited & Validated</p>
-            <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+              <SectionIcon iconId="credibility" size={32} />
+              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, margin: 0 }}>METHODOLOGY</p>
+            </div>
+            <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 8 }}>Audited & Validated</p>
+            <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>
               Model developed by financial engineers with 15+ years structural analysis experience. Methodology validated by independent audit.
             </p>
           </div>
           <div>
-            <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 12 }}>ADOPTION</p>
-            <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 8 }}>500+ Institutions</p>
-            <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+              <SectionIcon iconId="adoption" size={32} />
+              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, margin: 0 }}>ADOPTION</p>
+            </div>
+            <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 8 }}>500+ Institutions</p>
+            <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>
               Used by mortgage lenders, credit unions, investment firms, and underwriting platforms for income structure evaluation.
             </p>
           </div>
           <div>
-            <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 12 }}>COMPLIANCE</p>
-            <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 8 }}>Regulatory Aligned</p>
-            <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+              <SectionIcon iconId="compliance" size={32} />
+              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, margin: 0 }}>COMPLIANCE</p>
+            </div>
+            <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 8 }}>Regulatory Aligned</p>
+            <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>
               Compliant with FCRA standards for financial decision support. All results auditable and archival.
             </p>
           </div>
@@ -703,42 +720,72 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 
       {/* THE 6 STRUCTURAL INPUTS (Individual + Advisor paths) */}
       {(audience === "individual" || audience === "advisor") && (
-      <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 16, letterSpacing: "-0.02em" }}>
+      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.panelFill }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
+          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 16, letterSpacing: T.h2.letterSpacing }}>
             Six structural inputs
           </h2>
-          <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 40 }}>
+          <p style={{ fontSize: T.body.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 40 }}>
             Income classification is determined by these 6 factors. All financial commitments evaluated against these inputs.
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 32, marginBottom: 40 }}>
-            <div style={{ padding: "24px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}>1. Concentration</p>
-              <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>Number of primary income sources. 1 source = concentration. 2–3 sources = moderate. 4+ sources = diversified.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: layout.gap.loose, marginBottom: 40 }}>
+            <div style={{ padding: spacing.md, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card, transition: `all ${landingLayout.transitions.normal}` }}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.hover; e.currentTarget.style.transform = "translateY(-4px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.card; e.currentTarget.style.transform = "translateY(0)"; }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 12 }}>
+                <StructuralInputIcon iconId="concentration" size={32} />
+                <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 0 }}>1. Concentration</p>
+              </div>
+              <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>Number of primary income sources. 1 source = concentration. 2–3 sources = moderate. 4+ sources = diversified.</p>
             </div>
-            <div style={{ padding: "24px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}>2. Number of Income Sources</p>
-              <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>Distinct revenue channels contributing to income. Examples: client, employer, investment, business line.</p>
+            <div style={{ padding: spacing.md, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card, transition: `all ${landingLayout.transitions.normal}` }}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.hover; e.currentTarget.style.transform = "translateY(-4px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.card; e.currentTarget.style.transform = "translateY(0)"; }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 12 }}>
+                <StructuralInputIcon iconId="sources" size={32} />
+                <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 0 }}>2. Number of Sources</p>
+              </div>
+              <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>Distinct revenue channels contributing to income. Examples: client, employer, investment, business line.</p>
             </div>
-            <div style={{ padding: "24px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}>3. Forward Visibility</p>
-              <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>Months of income projectable with certainty based on current structure. Measured: 0–24 months.</p>
+            <div style={{ padding: spacing.md, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card, transition: `all ${landingLayout.transitions.normal}` }}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.hover; e.currentTarget.style.transform = "translateY(-4px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.card; e.currentTarget.style.transform = "translateY(0)"; }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 12 }}>
+                <StructuralInputIcon iconId="visibility" size={32} />
+                <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 0 }}>3. Forward Visibility</p>
+              </div>
+              <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>Months of income projectable with certainty based on current structure. Measured: 0–24 months.</p>
             </div>
-            <div style={{ padding: "24px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}>4. Income Variability</p>
-              <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>Consistency of income over time. Low = stable monthly. High = fluctuates significantly month-to-month.</p>
+            <div style={{ padding: spacing.md, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card, transition: `all ${landingLayout.transitions.normal}` }}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.hover; e.currentTarget.style.transform = "translateY(-4px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.card; e.currentTarget.style.transform = "translateY(0)"; }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 12 }}>
+                <StructuralInputIcon iconId="variability" size={32} />
+                <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 0 }}>4. Income Variability</p>
+              </div>
+              <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>Consistency of income over time. Low = stable monthly. High = fluctuates significantly month-to-month.</p>
             </div>
-            <div style={{ padding: "24px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}>5. Continuity Without Active Labor</p>
-              <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>Percentage of income that continues if active work stops. Recurring/passive = continues. Active-only = stops.</p>
+            <div style={{ padding: spacing.md, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card, transition: `all ${landingLayout.transitions.normal}` }}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.hover; e.currentTarget.style.transform = "translateY(-4px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.card; e.currentTarget.style.transform = "translateY(0)"; }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 12 }}>
+                <StructuralInputIcon iconId="continuity" size={32} />
+                <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 0 }}>5. Continuity Without Labor</p>
+              </div>
+              <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>Percentage of income that continues if active work stops. Recurring/passive = continues. Active-only = stops.</p>
             </div>
-            <div style={{ padding: "24px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}>6. Dependency on Activity</p>
-              <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>Degree to which income requires ongoing active effort. High dependency = income stops if activity stops.</p>
+            <div style={{ padding: spacing.md, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card, transition: `all ${landingLayout.transitions.normal}` }}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.hover; e.currentTarget.style.transform = "translateY(-4px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.card; e.currentTarget.style.transform = "translateY(0)"; }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 12 }}>
+                <StructuralInputIcon iconId="dependency" size={32} />
+                <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 0 }}>6. Activity Dependency</p>
+              </div>
+              <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>Degree to which income requires ongoing active effort. High dependency = income stops if activity stops.</p>
             </div>
           </div>
-          <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "24px" }}>
-            <p style={{ fontSize: 14, color: C.sandText, margin: 0, lineHeight: 1.6 }}>
+          <div style={{ backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, padding: spacing.md }}>
+            <p style={{ fontSize: T.small.fontSize, color: COLORS.sandText, margin: 0, lineHeight: 1.6 }}>
               These 6 inputs determine classification. The model applies fixed rules to each input. Output is deterministic: same inputs always produce the same classification.
             </p>
           </div>
@@ -748,21 +795,21 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 
       {/* STRUCTURAL MAPPING EXAMPLE (Individual + Advisor paths) */}
       {(audience === "individual" || audience === "advisor") && (
-      <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
+      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.white }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
+          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
             Same income, different structure
           </h2>
-          <p style={{ fontSize: 15, color: C.navy, marginBottom: 40, fontWeight: 600 }}>
+          <p style={{ fontSize: T.body.fontSize, color: COLORS.navy, marginBottom: 40, fontWeight: 600 }}>
             Both examples: $150K annual income. Structures differ. Classifications differ.
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40 }}>
-            <div style={{ backgroundColor: C.panelFill, borderRadius: 16, padding: "32px", border: `1px solid ${C.borderSoft}` }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: C.textMuted, letterSpacing: "0.05em", marginBottom: 16 }}>STRUCTURE A: ONE PRIMARY CLIENT</div>
-              <div style={{ fontSize: 48, fontWeight: 700, fontFamily: mono, color: C.risk, marginBottom: 16, lineHeight: 1 }}>31</div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: C.risk, marginBottom: 24 }}>Limited Stability</div>
-              <div style={{ fontSize: 13, color: C.navy, fontWeight: 600, marginBottom: 8 }}>Structural inputs:</div>
-              <ul style={{ fontSize: 13, lineHeight: 1.8, color: C.textSecondary, margin: "0 0 0 20px", paddingLeft: 0 }}>
+            <div style={{ backgroundColor: COLORS.panelFill, borderRadius: layout.borderRadius.lg, padding: spacing.xl, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.elevated }}>
+              <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: COLORS.textMuted, letterSpacing: T.meta.letterSpacing, marginBottom: 16 }}>STRUCTURE A: ONE PRIMARY CLIENT</div>
+              <div style={{ fontSize: 48, fontWeight: 700, fontFamily: mono, color: COLORS.risk, marginBottom: 16, lineHeight: 1 }}>31</div>
+              <div style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.risk, marginBottom: 24 }}>Limited Stability</div>
+              <div style={{ fontSize: T.h3.fontSize, color: COLORS.navy, fontWeight: 600, marginBottom: 8 }}>Structural inputs:</div>
+              <ul style={{ fontSize: T.small.fontSize, lineHeight: 1.8, color: COLORS.textSecondary, margin: "0 0 0 20px", paddingLeft: 0 }}>
                 <li><strong>Concentration:</strong> 1 source (concentrated)</li>
                 <li><strong>Number of sources:</strong> 1</li>
                 <li><strong>Forward visibility:</strong> 3 months (low)</li>
@@ -770,16 +817,16 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
                 <li><strong>Continuity without active labor:</strong> 0%</li>
                 <li><strong>Activity dependency:</strong> 100%</li>
               </ul>
-              <p style={{ fontSize: 12, color: C.textSecondary, marginTop: 16, margin: 0 }}>
+              <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, marginTop: 16, marginBottom: 0 }}>
                 Loss of one client = loss of 100% of income. Structure fails if client terminates.
               </p>
             </div>
-            <div style={{ backgroundColor: C.panelFill, borderRadius: 16, padding: "32px", border: `1px solid ${C.borderSoft}` }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: C.textMuted, letterSpacing: "0.05em", marginBottom: 16 }}>STRUCTURE B: FIVE CLIENTS</div>
-              <div style={{ fontSize: 48, fontWeight: 700, fontFamily: mono, color: C.protected, marginBottom: 16, lineHeight: 1 }}>74</div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: C.protected, marginBottom: 24 }}>Established Stability</div>
-              <div style={{ fontSize: 13, color: C.navy, fontWeight: 600, marginBottom: 8 }}>Structural inputs:</div>
-              <ul style={{ fontSize: 13, lineHeight: 1.8, color: C.textSecondary, margin: "0 0 0 20px", paddingLeft: 0 }}>
+            <div style={{ backgroundColor: COLORS.panelFill, borderRadius: layout.borderRadius.lg, padding: spacing.xl, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.elevated }}>
+              <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: COLORS.textMuted, letterSpacing: T.meta.letterSpacing, marginBottom: 16 }}>STRUCTURE B: FIVE CLIENTS</div>
+              <div style={{ fontSize: 48, fontWeight: 700, fontFamily: mono, color: COLORS.protected, marginBottom: 16, lineHeight: 1 }}>74</div>
+              <div style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.protected, marginBottom: 24 }}>Established Stability</div>
+              <div style={{ fontSize: T.h3.fontSize, color: COLORS.navy, fontWeight: 600, marginBottom: 8 }}>Structural inputs:</div>
+              <ul style={{ fontSize: T.small.fontSize, lineHeight: 1.8, color: COLORS.textSecondary, margin: "0 0 0 20px", paddingLeft: 0 }}>
                 <li><strong>Concentration:</strong> 5 sources (diversified)</li>
                 <li><strong>Number of sources:</strong> 5</li>
                 <li><strong>Forward visibility:</strong> 18 months</li>
@@ -787,7 +834,7 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
                 <li><strong>Continuity without active labor:</strong> 40% recurring</li>
                 <li><strong>Activity dependency:</strong> 60%</li>
               </ul>
-              <p style={{ fontSize: 12, color: C.textSecondary, marginTop: 16, margin: 0 }}>
+              <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, marginTop: 16, marginBottom: 0 }}>
                 Loss of one client = 20% income loss. Structure sustains income if client terminates.
               </p>
             </div>
@@ -798,16 +845,16 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 
       {/* PROCESSING LOGIC (Institution path only) */}
       {audience === "institution" && (
-      <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
+      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.panelFill }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
+          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
             Processing logic
           </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 32, marginBottom: 40 }}>
-            <div style={{ backgroundColor: C.white, borderRadius: 12, padding: "32px", border: `1px solid ${C.borderSoft}` }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 16 }}>INPUT</div>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>6 structural inputs</p>
-              <ol style={{ fontSize: 13, lineHeight: 1.8, color: C.textSecondary, margin: 0, paddingLeft: "20px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: layout.gap.loose, marginBottom: 40 }}>
+            <div style={{ backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, padding: spacing.xl, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
+              <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 16 }}>INPUT</div>
+              <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 16 }}>6 structural inputs</p>
+              <ol style={{ fontSize: T.small.fontSize, lineHeight: 1.8, color: COLORS.textSecondary, margin: 0, paddingLeft: "20px" }}>
                 <li>Concentration</li>
                 <li>Number of sources</li>
                 <li>Forward visibility</li>
@@ -816,10 +863,10 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
                 <li>Dependency on activity</li>
               </ol>
             </div>
-            <div style={{ backgroundColor: C.white, borderRadius: 12, padding: "32px", border: `1px solid ${C.borderSoft}` }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 16 }}>RULES</div>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Fixed transformation rules</p>
-              <ul style={{ fontSize: 13, lineHeight: 1.8, color: C.textSecondary, margin: 0, paddingLeft: "20px" }}>
+            <div style={{ backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, padding: spacing.xl, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
+              <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 16 }}>RULES</div>
+              <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 16 }}>Fixed transformation rules</p>
+              <ul style={{ fontSize: T.small.fontSize, lineHeight: 1.8, color: COLORS.textSecondary, margin: 0, paddingLeft: "20px" }}>
                 <li>No discretion applied</li>
                 <li>No judgment calls</li>
                 <li>Identical for all inputs</li>
@@ -827,10 +874,10 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
                 <li>All outputs traceable to rules</li>
               </ul>
             </div>
-            <div style={{ backgroundColor: C.white, borderRadius: 12, padding: "32px", border: `1px solid ${C.borderSoft}` }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 16 }}>OUTPUT</div>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Classification result</p>
-              <ul style={{ fontSize: 13, lineHeight: 1.8, color: C.textSecondary, margin: 0, paddingLeft: "20px" }}>
+            <div style={{ backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, padding: spacing.xl, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
+              <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 16 }}>OUTPUT</div>
+              <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 16 }}>Classification result</p>
+              <ul style={{ fontSize: T.small.fontSize, lineHeight: 1.8, color: COLORS.textSecondary, margin: 0, paddingLeft: "20px" }}>
                 <li>Stability score (0–100)</li>
                 <li>Stability band</li>
                 <li>Primary constraint</li>
@@ -839,8 +886,8 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
               </ul>
             </div>
           </div>
-          <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "24px" }}>
-            <p style={{ fontSize: 14, color: C.sandText, margin: 0, lineHeight: 1.6 }}>
+          <div style={{ backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, padding: spacing.md }}>
+            <p style={{ fontSize: T.small.fontSize, color: COLORS.sandText, margin: 0, lineHeight: 1.6 }}>
               The same 6 inputs always produce the same output. Different inputs produce different outputs. All outputs are permanent for the evaluated income structure.
             </p>
           </div>
@@ -850,27 +897,27 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 
       {/* OFFERING (Individual path only) */}
       {audience === "individual" && (
-      <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
+      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.white }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
+          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
             Verification offering
           </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, marginBottom: 40 }}>
-            <div style={{ padding: "40px", backgroundColor: C.panelFill, border: `1px solid ${C.borderSoft}`, borderRadius: 12 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 16 }}>FREE</p>
-              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 20 }}>Your Position</p>
-              <ul style={{ fontSize: 14, color: C.textSecondary, lineHeight: 2, margin: 0, paddingLeft: "20px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: layout.gap.loose, marginBottom: 40 }}>
+            <div style={{ padding: spacing.xl, backgroundColor: COLORS.panelFill, border: `1px solid ${COLORS.borderSoft}`, borderRadius: layout.borderRadius.md, boxShadow: landingLayout.shadows.card }}>
+              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 16 }}>FREE</p>
+              <p style={{ fontSize: T.body.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 20 }}>Your Position</p>
+              <ul style={{ fontSize: T.body.fontSize, color: COLORS.textSecondary, lineHeight: 2, margin: 0, paddingLeft: "20px" }}>
                 <li>Stability class (band)</li>
                 <li>Decision sufficiency</li>
               </ul>
-              <p style={{ fontSize: 12, color: C.textMuted, marginTop: 20, fontStyle: "italic" }}>
+              <p style={{ fontSize: T.small.fontSize, color: COLORS.textMuted, marginTop: 20, fontStyle: "italic" }}>
                 Know if you're ready for your decision.
               </p>
             </div>
-            <div style={{ padding: "40px", backgroundColor: C.white, borderRadius: 12, borderLeft: `4px solid ${C.teal}`, boxShadow: `0 4px 16px rgba(31,109,122,0.12)` }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 16 }}>$69</p>
-              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 20 }}>Full Structural Dashboard</p>
-              <ul style={{ fontSize: 14, color: C.textSecondary, lineHeight: 2, margin: 0, paddingLeft: "20px" }}>
+            <div style={{ padding: spacing.xl, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, borderLeft: `4px solid ${colorRules.ctaSecondary}`, boxShadow: landingLayout.shadows.elevated }}>
+              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 16 }}>$69</p>
+              <p style={{ fontSize: T.body.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 20 }}>Full Structural Dashboard</p>
+              <ul style={{ fontSize: T.body.fontSize, color: COLORS.textSecondary, lineHeight: 2, margin: 0, paddingLeft: "20px" }}>
                 <li>Why you're there (primary constraint)</li>
                 <li>Structural consequence if unchanged</li>
                 <li>Position to next stability level</li>
@@ -882,13 +929,13 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
                 <li>Action plan + full 12-section analysis</li>
                 <li>Downloadable PDF + Record ID</li>
               </ul>
-              <p style={{ fontSize: 12, color: C.teal, marginTop: 20, fontWeight: 600 }}>
+              <p style={{ fontSize: T.small.fontSize, color: colorRules.ctaSecondary, marginTop: 20, fontWeight: 600 }}>
                 Understand your structure. Model your path. Track improvement.
               </p>
             </div>
           </div>
-          <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "24px" }}>
-            <p style={{ fontSize: 14, color: C.sandText, margin: 0, lineHeight: 1.6 }}>
+          <div style={{ backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, padding: spacing.md }}>
+            <p style={{ fontSize: T.small.fontSize, color: COLORS.sandText, margin: 0, lineHeight: 1.6 }}>
               Classification is permanent for the submitted income structure. If any of the 6 structural inputs change, structural change has occurred and reassessment is required. Prior classifications remain in permanent archive.
             </p>
           </div>
@@ -897,15 +944,15 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       )}
 
       {/* STANDARD DEFINITION (All paths) */}
-      <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
+      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.panelFill }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
+          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
             Standard definition
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, marginBottom: 40 }}>
             <div>
-              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Methodology</h3>
-              <ul style={{ fontSize: 14, color: C.textPrimary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
+              <h3 style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 16 }}>Methodology</h3>
+              <ul style={{ fontSize: T.small.fontSize, color: COLORS.textPrimary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
                 <li>Fixed rules applied to 6 inputs only</li>
                 <li>No discretion: rules are identical for all users</li>
                 <li>Same inputs always produce same output</li>
@@ -913,8 +960,8 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
               </ul>
             </div>
             <div>
-              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Permanence & Auditability</h3>
-              <ul style={{ fontSize: 14, color: C.textPrimary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
+              <h3 style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 16 }}>Permanence & Auditability</h3>
+              <ul style={{ fontSize: T.small.fontSize, color: COLORS.textPrimary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
                 <li>Every result timestamped to second</li>
                 <li>Record ID assigned for permanent retrieval</li>
                 <li>Prior results never modified or deleted</li>
@@ -922,13 +969,13 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
               </ul>
             </div>
           </div>
-          <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 24 }}>
+          <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, marginBottom: 24 }}>
             Classification is derived exclusively from the 6 structural inputs. Income level, credit history, employment duration, and market conditions do not affect the classification.
           </p>
-          <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 24, fontWeight: 600, color: C.navy }}>
+          <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, marginBottom: 24, fontWeight: 600, color: COLORS.navy }}>
             Definition: Structural change
           </p>
-          <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 0 }}>
+          <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, marginBottom: 0 }}>
             Structural change occurs when any of the 6 inputs change: gain or loss of income source, change in income type (contract to salary, salary to commission), change in concentration, change in forward visibility, change in continuity, or change in activity dependency. When structural change occurs, prior classification remains in archive and reassessment is required.
           </p>
         </div>
@@ -936,12 +983,12 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 
       {/* WORKFLOW: Mortgage Underwriting Example (Institution path only) */}
       {audience === "institution" && (
-      <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
+      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.white }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
+          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
             Workflow: Mortgage underwriting
           </h2>
-          <ol style={{ fontSize: 15, color: C.textPrimary, lineHeight: 2, margin: "0 0 40px", paddingLeft: "24px" }}>
+          <ol style={{ fontSize: T.body.fontSize, color: COLORS.textPrimary, lineHeight: 2, margin: "0 0 40px", paddingLeft: "24px" }}>
             <li>Borrower submits income documentation. Lender evaluates 6 structural inputs from documentation.</li>
             <li>Fixed rules applied to each input. Model RP-2.0 processes the 6 inputs.</li>
             <li>Output: Stability score (0–100) + stability band + primary constraint identified.</li>
@@ -949,8 +996,8 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
             <li>Classification determines whether income structure supports mortgage commitment.</li>
             <li>Result remains permanent. Reassessment required only if income structure changes per definition.</li>
           </ol>
-          <div style={{ backgroundColor: C.panelFill, borderRadius: 12, padding: "24px" }}>
-            <p style={{ fontSize: 14, color: C.navy, margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
+          <div style={{ backgroundColor: COLORS.panelFill, borderRadius: layout.borderRadius.md, padding: spacing.md }}>
+            <p style={{ fontSize: T.small.fontSize, color: COLORS.navy, margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
               Stability score ≥ 60 indicates income structure supports the decision. Score &lt; 60 indicates structural inadequacy for the commitment.
             </p>
           </div>
@@ -960,19 +1007,23 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 
       {/* IMPLEMENTATION PATHWAYS (All paths, content varies) */}
       {audience === "individual" && (
-      <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
+      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.white }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
+          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
             Next steps
           </h2>
-          <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "40px", textAlign: "center" }}>
-            <p style={{ fontSize: 18, fontWeight: 600, color: C.white, marginBottom: 24 }}>
+          <div style={{ backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, padding: spacing.xl, textAlign: "center" }}>
+            <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.white, marginBottom: 24 }}>
               Your income verification is ready to share
             </p>
-            <button style={{ padding: "16px 32px", backgroundColor: C.teal, color: C.white, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer", marginRight: 12 }}>
+            <button style={{ padding: spacing.sm + " " + spacing.lg, backgroundColor: colorRules.ctaSecondary, color: COLORS.white, border: "none", borderRadius: layout.borderRadius.sm, fontSize: T.body.fontSize, fontWeight: 600, cursor: "pointer", marginRight: 12, transition: `all ${landingLayout.transitions.fast}`, boxShadow: landingLayout.shadows.button }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = landingLayout.shadows.hover; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = landingLayout.shadows.button; }}>
               Download PDF
             </button>
-            <button style={{ padding: "16px 32px", backgroundColor: "transparent", color: C.white, border: `2px solid ${C.white}`, borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
+            <button style={{ padding: spacing.sm + " " + spacing.lg, backgroundColor: "transparent", color: COLORS.white, border: `2px solid ${COLORS.white}`, borderRadius: layout.borderRadius.sm, fontSize: T.body.fontSize, fontWeight: 600, cursor: "pointer", transition: `all ${landingLayout.transitions.fast}` }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.10)"; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; }}>
               Share with Lender
             </button>
           </div>
@@ -981,15 +1032,15 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       )}
 
       {audience === "institution" && (
-      <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
+      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.panelFill }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
+          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
             How to implement
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, marginBottom: 40 }}>
-            <div style={{ padding: "32px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>For Financial Institutions</p>
-              <ul style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
+            <div style={{ padding: spacing.xl, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
+              <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 16 }}>For Financial Institutions</p>
+              <ul style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
                 <li>API integration available. Webhook-based processing.</li>
                 <li>Submit: 6 structural inputs. Receive: JSON classification result.</li>
                 <li>Result stored in your system. Auditable query history maintained.</li>
@@ -997,9 +1048,9 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
                 <li>Technical documentation and sandbox environment provided.</li>
               </ul>
             </div>
-            <div style={{ padding: "32px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>For Individuals & Advisors</p>
-              <ul style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
+            <div style={{ padding: spacing.xl, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
+              <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 16 }}>For Individuals & Advisors</p>
+              <ul style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
                 <li>Web form: Submit 6 structural inputs directly.</li>
                 <li>Instant free classification. Optional paid full report ($69).</li>
                 <li>PDF report downloadable immediately. Shareable with lenders/advisors.</li>
@@ -1008,8 +1059,8 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
               </ul>
             </div>
           </div>
-          <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "24px" }}>
-            <p style={{ fontSize: 14, color: C.sandText, margin: 0, lineHeight: 1.6 }}>
+          <div style={{ backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, padding: spacing.md }}>
+            <p style={{ fontSize: T.small.fontSize, color: COLORS.sandText, margin: 0, lineHeight: 1.6 }}>
               All implementations use identical fixed methodology. Same 6 inputs produce same classification regardless of implementation channel (API, web form, dashboard integration).
             </p>
           </div>
@@ -1018,24 +1069,24 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       )}
 
       {audience === "advisor" && (
-      <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
+      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.panelFill }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
+          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
             Advisor options
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, marginBottom: 40 }}>
-            <div style={{ padding: "32px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Recommend to Clients</p>
-              <ul style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
+            <div style={{ padding: spacing.xl, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
+              <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 16 }}>Recommend to Clients</p>
+              <ul style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
                 <li>Direct client to web form at no cost to you</li>
                 <li>Clients receive instant classification + optional $69 report</li>
                 <li>Share results with clients as part of advisory process</li>
                 <li>Build trust through third-party verification</li>
               </ul>
             </div>
-            <div style={{ padding: "32px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>White-Label Resale</p>
-              <ul style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
+            <div style={{ padding: spacing.xl, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
+              <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 16 }}>White-Label Resale</p>
+              <ul style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
                 <li>Branded advisor portal with your logo</li>
                 <li>$15–25 per report licensing fee</li>
                 <li>Bulk processing for multiple clients</li>
@@ -1043,7 +1094,9 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
               </ul>
             </div>
           </div>
-          <button style={{ padding: "16px 32px", backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer", display: "block", margin: "0 auto" }}>
+          <button style={{ padding: spacing.sm + " " + spacing.lg, backgroundColor: COLORS.navy, color: COLORS.white, border: "none", borderRadius: layout.borderRadius.sm, fontSize: T.body.fontSize, fontWeight: 600, cursor: "pointer", display: "block", margin: "0 auto", transition: `all ${landingLayout.transitions.fast}`, boxShadow: landingLayout.shadows.button }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = landingLayout.shadows.hover; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = landingLayout.shadows.button; }}>
             Request Advisor Portal
           </button>
         </div>
@@ -1052,15 +1105,15 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 
       {/* DATA & PRIVACY (Institution path only) */}
       {audience === "institution" && (
-      <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
+      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.white }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
+          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
             Data handling & privacy
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40 }}>
             <div>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Encryption & Storage</p>
-              <ul style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.8, margin: 0, paddingLeft: "20px" }}>
+              <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 16 }}>Encryption & Storage</p>
+              <ul style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.8, margin: 0, paddingLeft: "20px" }}>
                 <li>All data encrypted in transit (TLS 1.3)</li>
                 <li>All data encrypted at rest (AES-256)</li>
                 <li>No third-party data sharing</li>
@@ -1068,8 +1121,8 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
               </ul>
             </div>
             <div>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Compliance & Audit</p>
-              <ul style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.8, margin: 0, paddingLeft: "20px" }}>
+              <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 16 }}>Compliance & Audit</p>
+              <ul style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.8, margin: 0, paddingLeft: "20px" }}>
                 <li>FCRA compliant for financial decision support</li>
                 <li>GDPR/CCPA data subject rights supported</li>
                 <li>Full audit trail maintained (immutable log)</li>
@@ -1082,16 +1135,16 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       )}
 
       {/* FINAL CLOSE (All paths) */}
-      <section style={{ padding: "100px 40px", backgroundColor: C.navy }}>
+      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.navy }}>
         <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
-          <h2 style={{ fontSize: 44, fontWeight: 600, color: C.sandText, marginBottom: 48, lineHeight: 1.2, letterSpacing: "-0.02em" }}>
+          <h2 style={{ fontSize: T.heroDisplay.fontSize, fontWeight: T.heroDisplay.fontWeight, color: COLORS.sandText, marginBottom: 48, lineHeight: T.heroDisplay.lineHeight, letterSpacing: T.heroDisplay.letterSpacing }}>
             {audience === "individual" && "Verification precedes commitment"}
             {audience === "institution" && "Income verification at scale"}
             {audience === "advisor" && "Partner with us"}
           </h2>
-          <button style={{ padding: "16px 48px", backgroundColor: C.teal, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(31,109,122,0.30)"; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(31,109,122,0.20)"; }}>
+          <button style={{ padding: spacing.sm + " " + spacing.xl, backgroundColor: audience === "institution" ? COLORS.navy : colorRules.ctaSecondary, color: COLORS.white, border: "none", borderRadius: layout.borderRadius.md, fontSize: T.body.fontSize, fontWeight: 600, cursor: "pointer", transition: `all ${landingLayout.transitions.fast}`, boxShadow: landingLayout.shadows.button }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = landingLayout.shadows.hover; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = landingLayout.shadows.button; }}>
             {audience === "individual" && "Verify Your Income Now"}
             {audience === "institution" && "Schedule Integration Demo"}
             {audience === "advisor" && "Request Advisor Access"}
@@ -1100,23 +1153,23 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       </section>
 
       {/* Footer (All paths) */}
-      <footer style={{ backgroundColor: C.navy, borderTop: `1px solid rgba(255,255,255,0.10)`, padding: "40px" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 32, marginBottom: 32, paddingBottom: 32, borderBottom: "1px solid rgba(255,255,255,0.10)" }}>
+      <footer style={{ backgroundColor: COLORS.navy, borderTop: `1px solid rgba(255,255,255,0.10)`, padding: spacing.xl }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: layout.gap.loose, marginBottom: 32, paddingBottom: 32, borderBottom: "1px solid rgba(255,255,255,0.10)" }}>
             <div>
-              <p style={{ fontSize: 11, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", margin: "0 0 8px" }}>METHODOLOGY</p>
-              <p style={{ fontSize: 12, color: C.sandLight, lineHeight: 1.6, margin: 0 }}>Structural Stability Model RP-2.0. Fixed methodology. Version-locked. Auditable results.</p>
+              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, margin: "0 0 8px" }}>METHODOLOGY</p>
+              <p style={{ fontSize: T.micro.fontSize, color: COLORS.sandLight, lineHeight: 1.6, margin: 0 }}>Structural Stability Model RP-2.0. Fixed methodology. Version-locked. Auditable results.</p>
             </div>
             <div>
-              <p style={{ fontSize: 11, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", margin: "0 0 8px" }}>DEVELOPER</p>
-              <p style={{ fontSize: 12, color: C.sandLight, lineHeight: 1.6, margin: 0 }}>PeopleStar Enterprises, LLC. Orange County, California. Financial systems engineering.</p>
+              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, margin: "0 0 8px" }}>DEVELOPER</p>
+              <p style={{ fontSize: T.micro.fontSize, color: COLORS.sandLight, lineHeight: 1.6, margin: 0 }}>PeopleStar Enterprises, LLC. Orange County, California. Financial systems engineering.</p>
             </div>
             <div>
-              <p style={{ fontSize: 11, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", margin: "0 0 8px" }}>COMPLIANCE</p>
-              <p style={{ fontSize: 12, color: C.sandLight, lineHeight: 1.6, margin: 0 }}>FCRA compliant. GDPR/CCPA compatible. Annual security audit.</p>
+              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, margin: "0 0 8px" }}>COMPLIANCE</p>
+              <p style={{ fontSize: T.micro.fontSize, color: COLORS.sandLight, lineHeight: 1.6, margin: 0 }}>FCRA compliant. GDPR/CCPA compatible. Annual security audit.</p>
             </div>
           </div>
-          <p style={{ fontSize: 11, color: C.sandLight, lineHeight: 1.8, margin: 0, textAlign: "center" }}>
+          <p style={{ fontSize: T.micro.fontSize, color: COLORS.sandLight, lineHeight: 1.8, margin: 0, textAlign: "center" }}>
             © 2026 RunPayway™. All rights reserved. RunPayway™ is a product of PeopleStar Enterprises, LLC. Structural Stability Standard RP-2.0.
           </p>
         </div>
