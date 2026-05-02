@@ -858,21 +858,33 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, marginBottom: 40 }}>
             <div style={{ padding: "40px", backgroundColor: C.panelFill, border: `1px solid ${C.borderSoft}`, borderRadius: 12 }}>
               <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 16 }}>FREE</p>
-              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 20 }}>Classification</p>
+              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 20 }}>Your Position</p>
               <ul style={{ fontSize: 14, color: C.textSecondary, lineHeight: 2, margin: 0, paddingLeft: "20px" }}>
-                <li>Stability score (0–100)</li>
-                <li>Stability band</li>
-                <li>Primary structural constraint</li>
+                <li>Stability class (band)</li>
+                <li>Decision sufficiency</li>
               </ul>
+              <p style={{ fontSize: 12, color: C.textMuted, marginTop: 20, fontStyle: "italic" }}>
+                Know if you're ready for your decision.
+              </p>
             </div>
-            <div style={{ padding: "40px", backgroundColor: C.panelFill, borderRadius: 12, borderLeft: `4px solid ${C.teal}` }}>
+            <div style={{ padding: "40px", backgroundColor: C.white, borderRadius: 12, borderLeft: `4px solid ${C.teal}`, boxShadow: `0 4px 16px rgba(31,109,122,0.12)` }}>
               <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 16 }}>$69</p>
-              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 20 }}>Full Verification Report</p>
+              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 20 }}>Full Structural Dashboard</p>
               <ul style={{ fontSize: 14, color: C.textSecondary, lineHeight: 2, margin: 0, paddingLeft: "20px" }}>
-                <li>Complete structural breakdown</li>
-                <li>All 6 inputs analyzed</li>
-                <li>Decision-specific alignment assessment</li>
+                <li>Why you're there (primary constraint)</li>
+                <li>Structural consequence if unchanged</li>
+                <li>Position to next stability level</li>
+                <li>What needs to change (specific moves)</li>
+                <li>Time exposure under current structure</li>
+                <li>Interactive scenario modeling</li>
+                <li>Progress tracking over time</li>
+                <li>Peer benchmarking</li>
+                <li>Action plan + full 12-section analysis</li>
+                <li>Downloadable PDF + Record ID</li>
               </ul>
+              <p style={{ fontSize: 12, color: C.teal, marginTop: 20, fontWeight: 600 }}>
+                Understand your structure. Model your path. Track improvement.
+              </p>
             </div>
           </div>
           <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "24px" }}>
