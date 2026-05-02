@@ -556,22 +556,81 @@ function DesktopInstitutionalLanding() {
         </div>
       </section>
 
-      {/* Reality */}
+      {/* What You Receive - Decision Output Preview */}
       <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 32, letterSpacing: "-0.02em" }}>
+            What you receive
+          </h2>
+          <div style={{ maxWidth: 600, margin: "0 auto", backgroundColor: C.panelFill, borderRadius: 12, padding: "40px", marginBottom: 32 }}>
+            <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 24 }}>Example: Mortgage commitment</p>
+            <div style={{ padding: "20px", backgroundColor: C.white, borderRadius: 10, marginBottom: 20, borderLeft: `4px solid ${C.risk}` }}>
+              <p style={{ fontSize: 12, fontWeight: 600, color: C.textMuted, margin: "0 0 8px", letterSpacing: "0.05em" }}>STRUCTURAL STATUS</p>
+              <p style={{ fontSize: 15, fontWeight: 600, color: C.risk, margin: 0 }}>Not structurally aligned</p>
+            </div>
+            <div style={{ padding: "20px", backgroundColor: C.white, borderRadius: 10, marginBottom: 20 }}>
+              <p style={{ fontSize: 12, fontWeight: 600, color: C.textMuted, margin: "0 0 8px", letterSpacing: "0.05em" }}>PRIMARY CONSTRAINT</p>
+              <p style={{ fontSize: 15, color: C.textPrimary, margin: 0 }}>Income dependency reduces continuity under disruption</p>
+            </div>
+            <div style={{ padding: "20px", backgroundColor: C.white, borderRadius: 10 }}>
+              <p style={{ fontSize: 12, fontWeight: 600, color: C.textMuted, margin: "0 0 8px", letterSpacing: "0.05em" }}>IMPLICATION</p>
+              <p style={{ fontSize: 15, color: C.textPrimary, margin: 0 }}>Continuity is not established under current structure</p>
+            </div>
+          </div>
+          <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 8, textAlign: "center" }}>
+            Classification determines decision alignment.
+          </p>
+          <p style={{ fontSize: 14, color: C.textSecondary, textAlign: "center" }}>
+            Full report shows structural factors and verification criteria.
+          </p>
+        </div>
+      </section>
+
+      {/* Interactive Verification */}
+      <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 12, letterSpacing: "-0.02em", textAlign: "center" }}>
+            Try your verification
+          </h2>
+          <p style={{ fontSize: 15, color: C.textSecondary, marginBottom: 40, lineHeight: 1.7, textAlign: "center" }}>
+            Answer 6 structural questions. See your classification immediately.
+          </p>
+          <div className="verification-flow" style={{ backgroundColor: C.white, borderRadius: 12, overflow: "hidden", boxShadow: "0 4px 16px rgba(14,26,43,0.08)" }}>
+            <div style={{ backgroundColor: C.navy, padding: "20px", textAlign: "center" }}>
+              <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", margin: 0 }}>INTERACTIVE VERIFICATION</p>
+            </div>
+            <div style={{ padding: "40px", minHeight: 300, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div style={{ textAlign: "center" }}>
+                <p style={{ fontSize: 15, color: C.textSecondary, marginBottom: 24 }}>
+                  Start your verification in 2 minutes. No documents required.
+                </p>
+                <button style={{ padding: "16px 40px", backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
+                  Start Verification →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Reality */}
+      <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 24, letterSpacing: "-0.02em" }}>
-            When income changes, decisions become unsustainable
+            When structure changes, commitments break
           </h2>
           <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.7, marginBottom: 20 }}>
-            Mortgage obligations, hiring commitments, and investment decisions depend on income stability.
+            A consultant losing one client. A contractor with no retainer agreements. A sales professional hitting a slow market. Income doesn't disappear—structure fails.
           </p>
           <ul style={{ fontSize: 15, color: C.textPrimary, lineHeight: 1.8, margin: "0 0 24px", paddingLeft: 0, listStyle: "none" }}>
-            <li>• Obligations cannot be sustained</li>
-            <li>• Expansion must be reversed</li>
-            <li>• Capital is exposed</li>
+            <li>• Mortgage becomes unsustainable</li>
+            <li>• Hiring commitments reverse</li>
+            <li>• Investment capital is at risk</li>
           </ul>
           <p style={{ fontSize: 14, color: C.textSecondary }}>
-            These outcomes are structural.
+            This is not volatility. This is structural failure.
           </p>
         </div>
       </section>
@@ -583,33 +642,37 @@ function DesktopInstitutionalLanding() {
             Same income. Different stability.
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, marginBottom: 32 }}>
-            <div style={{ padding: "32px", backgroundColor: C.panelFill, border: `1px solid ${C.borderSoft}`, borderRadius: 12, position: "relative", overflow: "hidden" }}>
+            <div style={{ padding: "32px", backgroundColor: C.white, border: `1px solid ${C.borderSoft}`, borderRadius: 12, position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.risk }} />
-              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 20 }}>$150K income<br />1 client · no contracts</p>
+              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 8 }}>Freelancer</p>
+              <p style={{ fontSize: 13, color: C.textSecondary, marginBottom: 20 }}>$150K / 1 client<br />No contracts</p>
               <div style={{ display: "flex", height: 8, borderRadius: 999, overflow: "hidden", marginBottom: 20 }}>
                 <div style={{ width: "80%", backgroundColor: C.risk }} />
                 <div style={{ width: "20%", backgroundColor: C.moderate }} />
               </div>
-              <p style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.risk, margin: 0 }}>31</p>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.risk }}>Limited Stability</p>
+              <p style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.risk, margin: "0 0 8px" }}>31</p>
+              <p style={{ fontSize: 13, fontWeight: 600, color: C.risk }}>At Risk</p>
+              <p style={{ fontSize: 12, color: C.textMuted, marginTop: 16 }}>Loss of one client = 100% income loss</p>
             </div>
-            <div style={{ padding: "32px", backgroundColor: C.panelFill, border: `1px solid ${C.borderSoft}`, borderRadius: 12, position: "relative", overflow: "hidden" }}>
+            <div style={{ padding: "32px", backgroundColor: C.white, border: `1px solid ${C.borderSoft}`, borderRadius: 12, position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.established }} />
-              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 20 }}>$150K income<br />5 clients · 40% recurring</p>
+              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 8 }}>Diversified</p>
+              <p style={{ fontSize: 13, color: C.textSecondary, marginBottom: 20 }}>$150K / 5 clients<br />40% recurring</p>
               <div style={{ display: "flex", height: 8, borderRadius: 999, overflow: "hidden", marginBottom: 20 }}>
                 <div style={{ width: "40%", backgroundColor: C.established }} />
                 <div style={{ width: "35%", backgroundColor: C.moderate }} />
                 <div style={{ width: "25%", backgroundColor: C.risk }} />
               </div>
-              <p style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.established, margin: 0 }}>74</p>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.established }}>Established Stability</p>
+              <p style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.established, margin: "0 0 8px" }}>74</p>
+              <p style={{ fontSize: 13, fontWeight: 600, color: C.established }}>Established</p>
+              <p style={{ fontSize: 12, color: C.textMuted, marginTop: 16 }}>Loss of one client = 20% income impact</p>
             </div>
           </div>
           <p style={{ fontSize: 15, color: C.textSecondary, marginBottom: 12 }}>
-            Income level does not determine whether income holds. Structure does.
+            Same income. Different structural vulnerability.
           </p>
           <p style={{ fontSize: 14, color: C.textSecondary }}>
-            These structures produce materially different stability under disruption.
+            The 31 score is not "bad income." The 74 score is not "good income." The difference is structural resilience under disruption.
           </p>
         </div>
       </section>
@@ -673,35 +736,6 @@ function DesktopInstitutionalLanding() {
         </div>
       </section>
 
-      {/* Decision Output Preview */}
-      <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 32, letterSpacing: "-0.02em" }}>
-            Decision verification output
-          </h2>
-          <div style={{ maxWidth: 600, margin: "0 auto", backgroundColor: C.white, borderRadius: 12, padding: "40px", marginBottom: 32 }}>
-            <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 24 }}>Example: Mortgage commitment</p>
-            <div style={{ padding: "20px", backgroundColor: C.panelFill, borderRadius: 10, marginBottom: 20, borderLeft: `4px solid ${C.risk}` }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: C.textMuted, margin: "0 0 8px", letterSpacing: "0.05em" }}>STRUCTURAL STATUS</p>
-              <p style={{ fontSize: 15, fontWeight: 600, color: C.risk, margin: 0 }}>Not structurally aligned</p>
-            </div>
-            <div style={{ padding: "20px", backgroundColor: C.panelFill, borderRadius: 10, marginBottom: 20 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: C.textMuted, margin: "0 0 8px", letterSpacing: "0.05em" }}>CONSTRAINT</p>
-              <p style={{ fontSize: 15, color: C.textPrimary, margin: 0 }}>Income dependency reduces continuity under disruption</p>
-            </div>
-            <div style={{ padding: "20px", backgroundColor: C.panelFill, borderRadius: 10 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: C.textMuted, margin: "0 0 8px", letterSpacing: "0.05em" }}>CONDITION</p>
-              <p style={{ fontSize: 15, color: C.textPrimary, margin: 0 }}>Continuity is not established under current structure</p>
-            </div>
-          </div>
-          <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 8, textAlign: "center" }}>
-            This output defines whether this decision holds.
-          </p>
-          <p style={{ fontSize: 14, color: C.textSecondary, textAlign: "center" }}>
-            This output is derived from your score.
-          </p>
-        </div>
-      </section>
 
       {/* How It Works */}
       <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
@@ -786,23 +820,36 @@ function DesktopInstitutionalLanding() {
       </section>
 
       {/* System Integrity */}
-      <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
+      <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 32, letterSpacing: "-0.02em" }}>
             System integrity
           </h2>
-          <ul style={{ fontSize: 15, color: C.textPrimary, lineHeight: 2, margin: "0 0 32px", paddingLeft: 0, listStyle: "none" }}>
-            <li>• Deterministic model</li>
-            <li>• No subjective input</li>
-            <li>• Version-locked methodology</li>
-            <li>• Repeatable results</li>
-            <li>• Applied consistently across evaluated income structures</li>
-          </ul>
-          <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 24 }}>
-            This is a standardized measurement system. Not an estimate. Not a forecast.
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, marginBottom: 32 }}>
+            <div>
+              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Methodology</h3>
+              <ul style={{ fontSize: 14, color: C.textPrimary, lineHeight: 1.9, margin: 0, paddingLeft: 0, listStyle: "none" }}>
+                <li>• Fixed structural factors</li>
+                <li>• No subjective input</li>
+                <li>• Inputs determine output exclusively</li>
+                <li>• Model version stamped on every result</li>
+              </ul>
+            </div>
+            <div>
+              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Verification</h3>
+              <ul style={{ fontSize: 14, color: C.textPrimary, lineHeight: 1.9, margin: 0, paddingLeft: 0, listStyle: "none" }}>
+                <li>• Same inputs = same result</li>
+                <li>• Applied consistently across all profiles</li>
+                <li>• Deterministic, not probabilistic</li>
+                <li>• Repeatable at any time</li>
+              </ul>
+            </div>
+          </div>
+          <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 8 }}>
+            This is a standardized measurement system. Not an estimate. Not a forecast. Results are derived exclusively from structure, not from income level or credit history.
           </p>
-          <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 24 }}>
-            Used where income reliability must be verified before decisions are made.
+          <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 32 }}>
+            Used where income stability must be verified before financial commitment.
           </p>
           <div style={{ display: "flex", gap: 24, justifyContent: "flex-start" }}>
             <button style={{ padding: "12px 28px", backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
@@ -868,10 +915,12 @@ export default function Page() {
 
         @media (max-width: 768px) {
           .desktop-only { display: none !important; }
+          .verification-flow { max-width: 100%; }
         }
 
         @media (min-width: 769px) {
-          .mobile-only { display: none !important; }
+          .mobile-landing { display: none !important; }
+          .verification-flow { max-width: 600px; margin: 0 auto; }
         }
       `}</style>
 
