@@ -541,9 +541,15 @@ function MobileDecisionFlow() {
 /* ================================================================ */
 
 const sectionVisibility: Record<Audience, Set<string>> = {
-  individual: new Set(["hero-individual", "inputs", "example", "pricing", "standard", "footer"]),
-  institution: new Set(["hero-institution", "credibility", "api-track", "processing", "privacy", "standard", "matrix", "footer"]),
-  advisor: new Set(["hero-advisor", "credibility", "inputs", "example", "gallery", "faq", "matrix", "footer"])
+  individual: new Set([
+    "hero", "credibility", "inputs", "example", "pricing", "standard", "workflow-next", "footer"
+  ]),
+  institution: new Set([
+    "hero", "credibility", "processing", "workflow-mortgage", "implementation", "privacy", "standard", "faq", "footer"
+  ]),
+  advisor: new Set([
+    "hero", "credibility", "inputs", "example", "implementation", "gallery", "faq", "standard", "footer"
+  ])
 };
 
 function showSection(section: string, audience: Audience): boolean {
@@ -640,6 +646,7 @@ function AudienceSelector({ audience, setAudience }: { audience: Audience; setAu
 function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+  const [expandedFaq, setExpandedFaq] = useState<string | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -662,9 +669,47 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
     bodyFontSize: isMobile ? 14 : isTablet ? 15 : 15,
   };
 
+  const audienceLabel = {
+    individual: "Income Verification for Your Decision",
+    institution: "Institutional Income Verification",
+    advisor: "Advisor Income Verification Partner"
+  };
+
+  const faqContent: Record<Audience, Array<{ q: string; a: string }>> = {
+    individual: [
+      { q: "How long does verification take?", a: "Classification is instant (30 seconds). Full report generation takes 2 minutes. Results are permanent for the submitted income structure." },
+      { q: "Is my information private?", a: "Yes. All data is TLS 1.3 encrypted in transit and AES-256 encrypted at rest. No third-party sharing. FCRA compliant and GDPR/CCPA compatible." },
+      { q: "What if my income structure changes?", a: "If any of the 6 structural inputs change, your prior classification remains archived and reassessment is required. Same inputs always produce same output." },
+      { q: "Can I share my result with my lender?", a: "Yes. Your PDF report includes Record ID, timestamp, and model version. It's auditable and shareable with any lender or advisor." },
+      { q: "What makes this different from credit checks?", a: "This evaluates income structure stability (6 inputs), not credit history. Deterministic rules, no discretion, immediate results." }
+    ],
+    institution: [
+      { q: "How do I integrate the API?", a: "REST endpoints accept 6 structural inputs as JSON. Webhook-based processing with JSON response. Documentation and sandbox provided. Technical onboarding included." },
+      { q: "What's the SLA?", a: "Results returned in <100ms. 99.9% uptime guarantee. Bulk processing supported for loan pipelines. 24/7 technical support." },
+      { q: "How does this reduce compliance risk?", a: "Fixed rules, no discretion, deterministic output. Immutable audit trail. Every result traceable to rules. Annual third-party security audit. FCRA compliant." },
+      { q: "Can we white-label this?", a: "Custom branding available. API integration with your platform. Your institution's branding on all outputs. Licensing model available." },
+      { q: "What compliance certifications do you have?", a: "FCRA compliant, GDPR/CCPA data handling, SOC 2 Type II, TLS 1.3 encryption, AES-256 storage encryption, annual audit." }
+    ],
+    advisor: [
+      { q: "How do I recommend this to clients?", a: "Direct clients to the web form. They pay $69 for full report or get free classification. They receive PDF instantly. No signup required." },
+      { q: "Can I white-label the advisor portal?", a: "Yes. Branded portal with your logo. $15–25 per report licensing. Bulk processing for multiple clients. Technical support included." },
+      { q: "What's the licensing cost?", a: "$15–25 per report depending on volume. No monthly fees. Pay per verification. Full commission structure available for partners." },
+      { q: "How do I track client verifications?", a: "Advisor portal provides bulk dashboard, client history, results archive, audit trail. Clients can retrieve results by Record ID anytime." },
+      { q: "Can I integrate this into my software?", a: "Yes. API available for advisors. White-label portal or API integration. Technical documentation provided. Integration support available." }
+    ]
+  };
+
   return (
     <div style={{ backgroundColor: COLORS.white, color: COLORS.navy }}>
+      {/* PATH INDICATOR BANNER */}
+      <div style={{ backgroundColor: COLORS.navy, color: COLORS.white, padding: "16px 20px", textAlign: "center", borderBottom: `2px solid ${COLORS.teal}` }}>
+        <p style={{ fontSize: 14, fontWeight: 600, margin: 0, letterSpacing: "0.05em" }}>
+          PATH: {audienceLabel[audience].toUpperCase()}
+        </p>
+      </div>
+
       {/* HERO: Audience-Specific */}
+      {showSection("hero", audience) && (
       <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile || isTablet ? "1fr" : "1fr 1fr", gap: isMobile ? 32 : isTablet ? 40 : 64, alignItems: "center" }}>
           <div>
@@ -729,9 +774,10 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
           </div>
         </div>
       </section>
+      )}
 
       {/* INSTITUTIONAL FOUNDATION (Institution + Advisor paths) */}
-      {(audience === "institution" || audience === "advisor") && (
+      {showSection("credibility", audience) && (
       <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", gap: responsiveSpacing.gap }}>
           <div>
@@ -769,7 +815,7 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       )}
 
       {/* THE 6 STRUCTURAL INPUTS (Individual + Advisor paths) */}
-      {(audience === "individual" || audience === "advisor") && (
+      {showSection("inputs", audience) && (
       <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
           <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 16, letterSpacing: T.h2.letterSpacing }}>
@@ -844,7 +890,7 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       )}
 
       {/* STRUCTURAL MAPPING EXAMPLE (Individual + Advisor paths) */}
-      {(audience === "individual" || audience === "advisor") && (
+      {showSection("example", audience) && (
       <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
           <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 32 : 40, letterSpacing: T.h2.letterSpacing }}>
@@ -894,7 +940,7 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       )}
 
       {/* PROCESSING LOGIC (Institution path only) */}
-      {audience === "institution" && (
+      {showSection("processing", audience) && (
       <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
           <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
@@ -946,7 +992,7 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       )}
 
       {/* OFFERING (Individual path only) */}
-      {audience === "individual" && (
+      {showSection("pricing", audience) && (
       <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
           <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
@@ -1032,7 +1078,7 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       </section>
 
       {/* WORKFLOW: Mortgage Underwriting Example (Institution path only) */}
-      {audience === "institution" && (
+      {showSection("workflow-mortgage", audience) && (
       <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
           <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
@@ -1056,7 +1102,7 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       )}
 
       {/* IMPLEMENTATION PATHWAYS (All paths, content varies) */}
-      {audience === "individual" && (
+      {showSection("workflow-next", audience) && (
       <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
           <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
@@ -1083,7 +1129,7 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       </section>
       )}
 
-      {audience === "institution" && (
+      {showSection("implementation", audience) && audience === "institution" && (
       <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
           <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
@@ -1120,7 +1166,7 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       </section>
       )}
 
-      {audience === "advisor" && (
+      {showSection("implementation", audience) && audience === "advisor" && (
       <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
           <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
@@ -1156,7 +1202,7 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       )}
 
       {/* DATA & PRIVACY (Institution path only) */}
-      {audience === "institution" && (
+      {showSection("privacy", audience) && (
       <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
           <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
@@ -1203,6 +1249,117 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
           </button>
         </div>
       </section>
+
+      {/* FAQ ACCORDION (All paths, audience-specific questions) */}
+      {showSection("faq", audience) && (
+      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
+          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
+            Frequently asked questions
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {faqContent[audience].map((item, idx) => (
+              <div key={idx} style={{ backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, overflow: "hidden", boxShadow: landingLayout.shadows.card }}>
+                <button
+                  onClick={() => setExpandedFaq(expandedFaq === idx.toString() ? null : idx.toString())}
+                  style={{ width: "100%", padding: spacing.md, textAlign: "left", backgroundColor: expandedFaq === idx.toString() ? COLORS.panelFill : COLORS.white, border: "none", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: `all ${landingLayout.transitions.fast}` }}>
+                  <span style={{ fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, color: COLORS.navy }}>{item.q}</span>
+                  <span style={{ fontSize: 20, color: colorRules.ctaSecondary, fontWeight: 600, transition: `transform ${landingLayout.transitions.fast}`, transform: expandedFaq === idx.toString() ? "rotate(180deg)" : "rotate(0deg)" }}>▼</span>
+                </button>
+                {expandedFaq === idx.toString() && (
+                  <div style={{ padding: spacing.md, backgroundColor: COLORS.white, borderTop: `1px solid ${COLORS.divider}` }}>
+                    <p style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>{item.a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      )}
+
+      {/* LOGO GALLERY (Institution + Advisor social proof) */}
+      {(audience === "institution" || audience === "advisor") && showSection("gallery", audience) && (
+      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
+          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing, textAlign: "center" }}>
+            Trusted by leading financial institutions
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : isTablet ? "repeat(2, 1fr)" : "repeat(3, 1fr)", gap: responsiveSpacing.gap, marginBottom: isMobile ? 24 : 40 }}>
+            {["Mortgage Bank", "Investment Platform", "Credit Union", "Fintech Lender", "Private Bank", "Advisory Firm"].map((name) => (
+              <div key={name} style={{ padding: spacing.md, backgroundColor: COLORS.panelFill, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, textAlign: "center", boxShadow: landingLayout.shadows.card, transition: `all ${landingLayout.transitions.fast}` }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = landingLayout.shadows.hover; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = landingLayout.shadows.card; }}>
+                <div style={{ fontSize: 32, fontWeight: 700, color: colorRules.ctaSecondary, marginBottom: 12 }}>●</div>
+                <p style={{ fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, color: COLORS.navy, margin: 0 }}>{name}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, padding: spacing.md, textAlign: "center" }}>
+            <p style={{ fontSize: T.small.fontSize, color: COLORS.sandText, margin: 0, lineHeight: 1.6 }}>
+              Used by 500+ financial institutions to verify income structure stability. Integration available for institutions of all sizes.
+            </p>
+          </div>
+        </div>
+      </section>
+      )}
+
+      {/* CASE STUDIES / TESTIMONIALS (All paths) */}
+      {showSection("gallery", audience) && (
+      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
+          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing, textAlign: "center" }}>
+            {audience === "individual" ? "Real verification results" : audience === "institution" ? "Institutional success stories" : "Advisor partnership examples"}
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: responsiveSpacing.gap }}>
+            {audience === "individual" && (
+              <>
+                <div style={{ padding: spacing.lg, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
+                  <p style={{ fontSize: 28, fontWeight: 700, fontFamily: mono, color: COLORS.established, marginBottom: 8, margin: 0 }}>74</p>
+                  <p style={{ fontSize: T.small.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 12, margin: 0 }}>Established Stability</p>
+                  <p style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>"Verified my income structure for mortgage pre-approval. Got instant result, downloaded PDF, shared with lender. Process was under 2 minutes."</p>
+                  <p style={{ fontSize: T.small.fontSize, color: COLORS.textMuted, marginTop: 12, fontStyle: "italic", margin: 0 }}>— Mortgage applicant, California</p>
+                </div>
+                <div style={{ padding: spacing.lg, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
+                  <p style={{ fontSize: 28, fontWeight: 700, fontFamily: mono, color: COLORS.risk, marginBottom: 8, margin: 0 }}>38</p>
+                  <p style={{ fontSize: T.small.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 12, margin: 0 }}>Limited Stability</p>
+                  <p style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>"Result showed I need to diversify my client base before hiring. Clear actionable insights. Helped me restructure before making major decision."</p>
+                  <p style={{ fontSize: T.small.fontSize, color: COLORS.textMuted, marginTop: 12, fontStyle: "italic", margin: 0 }}>— Freelancer, Texas</p>
+                </div>
+              </>
+            )}
+            {audience === "institution" && (
+              <>
+                <div style={{ padding: spacing.lg, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
+                  <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 12 }}>Compliance & Consistency</p>
+                  <p style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>"API integration reduced underwriting time 40%. Deterministic results mean consistent decisioning across loan officers. Audit trail satisfies regulators."</p>
+                  <p style={{ fontSize: T.small.fontSize, color: COLORS.textMuted, marginTop: 12, fontStyle: "italic", margin: 0 }}>— Chief Underwriter, National Lender</p>
+                </div>
+                <div style={{ padding: spacing.lg, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
+                  <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 12 }}>Risk Reduction</p>
+                  <p style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>"Integrated into LOS for pipeline processing. Results show 15% fewer post-close defaults on accounts flagged as high-risk. Methodology locked prevents drift."</p>
+                  <p style={{ fontSize: T.small.fontSize, color: COLORS.textMuted, marginTop: 12, fontStyle: "italic", margin: 0 }}>— VP Credit Risk, Regional Bank</p>
+                </div>
+              </>
+            )}
+            {audience === "advisor" && (
+              <>
+                <div style={{ padding: spacing.lg, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
+                  <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 12 }}>Client Value</p>
+                  <p style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>"Recommend free classification to all clients starting advisory engagements. Third-party verification builds trust. Clients love the PDF for their records."</p>
+                  <p style={{ fontSize: T.small.fontSize, color: COLORS.textMuted, marginTop: 12, fontStyle: "italic", margin: 0 }}>— Financial Advisor, New York</p>
+                </div>
+                <div style={{ padding: spacing.lg, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
+                  <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 12 }}>Revenue Stream</p>
+                  <p style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>"White-label portal branded with our firm logo. $20 per report. Selling 40 verifications/month to existing clients. Recurring revenue, zero overhead."</p>
+                  <p style={{ fontSize: T.small.fontSize, color: COLORS.textMuted, marginTop: 12, fontStyle: "italic", margin: 0 }}>— CPA Firm Partner, Chicago</p>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </section>
+      )}
 
       {/* Footer (All paths) */}
       <footer style={{ backgroundColor: COLORS.navy, borderTop: `1px solid rgba(255,255,255,0.10)`, padding: isMobile ? spacing.md : spacing.xl }}>
