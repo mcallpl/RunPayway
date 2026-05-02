@@ -1394,17 +1394,20 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 /* ================================================================ */
 
 export default function Page() {
-  const [audience, setAudience] = useState<Audience>("individual");
+  const [audience, setAudience] = useState<Audience | null>(null);
+  const [audienceSelected, setAudienceSelected] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("runpayway_audience") as Audience | null;
     if (saved && ["individual", "institution", "advisor"].includes(saved)) {
       setAudience(saved);
+      setAudienceSelected(true);
     }
   }, []);
 
   const handleAudienceChange = (newAudience: Audience) => {
     setAudience(newAudience);
+    setAudienceSelected(true);
     localStorage.setItem("runpayway_audience", newAudience);
   };
 
@@ -1431,8 +1434,50 @@ export default function Page() {
       </div>
 
       <div className="desktop-only">
-        <AudienceSelector audience={audience} setAudience={handleAudienceChange} />
-        <DesktopInstitutionalLanding audience={audience} />
+        {!audienceSelected ? (
+          // ONBOARDING MODAL: Force audience selection
+          <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10000 }}>
+            <div style={{ backgroundColor: COLORS.white, borderRadius: 20, padding: "60px 40px", maxWidth: 600, textAlign: "center", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
+              <h1 style={{ fontSize: 40, fontWeight: 700, color: COLORS.navy, marginBottom: 16, lineHeight: 1.2 }}>
+                What brings you here?
+              </h1>
+              <p style={{ fontSize: 16, color: COLORS.textSecondary, marginBottom: 48, lineHeight: 1.6 }}>
+                Select your role to get started. You'll see content tailored to your needs.
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                <button
+                  onClick={() => handleAudienceChange("individual")}
+                  style={{ padding: "20px 24px", backgroundColor: COLORS.white, color: COLORS.navy, border: `3px solid ${COLORS.navy}`, borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms", textAlign: "left" }}
+                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = COLORS.navy; e.currentTarget.style.color = COLORS.white; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = COLORS.white; e.currentTarget.style.color = COLORS.navy; e.currentTarget.style.transform = "translateY(0)"; }}>
+                  <div style={{ fontWeight: 700, marginBottom: 4 }}>I'm an Individual</div>
+                  <div style={{ fontSize: 13, opacity: 0.7 }}>Verify my income for a major decision (mortgage, loan, hiring)</div>
+                </button>
+                <button
+                  onClick={() => handleAudienceChange("institution")}
+                  style={{ padding: "20px 24px", backgroundColor: COLORS.white, color: COLORS.navy, border: `3px solid ${COLORS.navy}`, borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms", textAlign: "left" }}
+                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = COLORS.navy; e.currentTarget.style.color = COLORS.white; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = COLORS.white; e.currentTarget.style.color = COLORS.navy; e.currentTarget.style.transform = "translateY(0)"; }}>
+                  <div style={{ fontWeight: 700, marginBottom: 4 }}>I'm an Institution</div>
+                  <div style={{ fontSize: 13, opacity: 0.7 }}>Integrate income verification into our platform (API)</div>
+                </button>
+                <button
+                  onClick={() => handleAudienceChange("advisor")}
+                  style={{ padding: "20px 24px", backgroundColor: COLORS.white, color: COLORS.navy, border: `3px solid ${COLORS.navy}`, borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms", textAlign: "left" }}
+                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = COLORS.navy; e.currentTarget.style.color = COLORS.white; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = COLORS.white; e.currentTarget.style.color = COLORS.navy; e.currentTarget.style.transform = "translateY(0)"; }}>
+                  <div style={{ fontWeight: 700, marginBottom: 4 }}>I'm an Advisor</div>
+                  <div style={{ fontSize: 13, opacity: 0.7 }}>Recommend to clients or resell with white-label</div>
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            <AudienceSelector audience={audience!} setAudience={handleAudienceChange} />
+            <DesktopInstitutionalLanding audience={audience!} />
+          </>
+        )}
       </div>
     </div>
   );
