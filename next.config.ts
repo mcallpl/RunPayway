@@ -47,9 +47,6 @@ const nextConfig: NextConfig = {
   ...(isStaticExport ? {
     output: "export" as const,
     basePath: "/RunPayway",
-    experimental: {
-      staticGenerationRetryCount: 0,
-    }
   } : {}),
   trailingSlash: true,
   images: { unoptimized: true },
