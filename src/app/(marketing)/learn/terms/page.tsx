@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-
+import { L } from "@/components/learn/LearnComponents";
 function useMobile(bp = 768) {
   const [m, setM] = useState(false);
   useEffect(() => {
