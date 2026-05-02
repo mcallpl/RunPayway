@@ -12,12 +12,6 @@ function useReducedMotion() {
   return r;
 }
 
-function useMobile(bp = 768) {
-  const [m, setM] = useState(false);
-  useEffect(() => { const c = () => setM(window.innerWidth <= bp); c(); window.addEventListener("resize", c); return () => window.removeEventListener("resize", c); }, [bp]);
-  return m;
-}
-
 function useFadeIn() {
   const reduced = useReducedMotion();
   return (visible: boolean, delay = 0): React.CSSProperties =>
@@ -60,7 +54,7 @@ const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace'
 /* ================================================================ */
 
 type Section = "landing" | "decision" | "input" | "result" | "checkout" | "success";
-type Decision = "mortgage" | "expansion" | "investment" | "timeoff" | null;
+type Decision = "mortgage" | "expansion" | "investment" | "timeoff" | "hiring" | "retirement" | null;
 
 interface Inputs {
   incomeType: string;
@@ -76,7 +70,6 @@ interface Result {
   band: "Limited" | "Developing" | "Established" | "High";
   constraint: string;
   alignment: boolean;
-  verdict: string;
 }
 
 /* ================================================================ */
@@ -85,7 +78,6 @@ interface Result {
 
 function generateResult(inputs: Inputs): Result {
   let score = 50;
-
   if (inputs.concentration === "single") score -= 20;
   if (inputs.concentration === "dual") score -= 5;
   if (inputs.sources >= 5) score += 15;
@@ -96,7 +88,6 @@ function generateResult(inputs: Inputs): Result {
   if (inputs.variability === "low") score += 10;
   if (inputs.continuity === "passive") score += 15;
   if (inputs.continuity === "recurring") score += 10;
-
   score = Math.max(0, Math.min(100, score));
 
   let band: Result["band"] = "Limited";
@@ -105,7 +96,7 @@ function generateResult(inputs: Inputs): Result {
   else if (score >= 40) band = "Developing";
 
   const constraints: Record<string, string> = {
-    single: "Income concentration reduces continuity",
+    single: "Income dependency reduces continuity under disruption",
     dual: "Concentration creates visibility gap",
     low_visibility: "Forward visibility is not established",
     high_variability: "Income variability introduces structural risk",
@@ -117,20 +108,17 @@ function generateResult(inputs: Inputs): Result {
     ? constraints.low_visibility
     : constraints.dual;
 
-  const alignment = score >= 60;
-  const verdict = alignment
-    ? "Structurally aligned with this decision"
-    : "Not structurally aligned with this decision";
-
-  return { score, band, constraint, alignment, verdict };
+  return { score, band, constraint, alignment: score >= 60 };
 }
 
 function getDecisionLabel(d: Decision): string {
   return {
-    mortgage: "Mortgage",
-    expansion: "Business Expansion",
+    mortgage: "Mortgage commitment",
+    expansion: "Business expansion",
     investment: "Investment",
-    timeoff: "Time Off",
+    timeoff: "Time off",
+    hiring: "Hiring",
+    retirement: "Retirement transition",
   }[d || "mortgage"] || "Decision";
 }
 
@@ -144,14 +132,10 @@ function getDecisionColor(band: Result["band"]): string {
 }
 
 /* ================================================================ */
-/* MAIN COMPONENT                                                     */
+/* MOBILE DECISION VERIFICATION FLOW                                */
 /* ================================================================ */
 
-export default function VerificationFlow() {
-  const m = useMobile();
-  const fadeIn = useFadeIn();
-
-  // State
+function MobileDecisionFlow() {
   const [section, setSection] = useState<Section>("landing");
   const [selectedDecision, setSelectedDecision] = useState<Decision>(null);
   const [inputs, setInputs] = useState<Inputs>({
@@ -165,7 +149,6 @@ export default function VerificationFlow() {
   const [result, setResult] = useState<Result | null>(null);
   const [showStickyBar, setShowStickyBar] = useState(false);
 
-  // Auto-scroll on section change
   const sectionRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (sectionRef.current) {
@@ -175,7 +158,6 @@ export default function VerificationFlow() {
     }
   }, [section]);
 
-  // Handlers
   const handleDecisionSelect = (d: Decision) => {
     setSelectedDecision(d);
     setShowStickyBar(true);
@@ -202,13 +184,6 @@ export default function VerificationFlow() {
 
   return (
     <div style={{ backgroundColor: C.white, minHeight: "100vh" }}>
-      <style>{`
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
-        html { scroll-behavior: smooth; }
-      `}</style>
-
-      {/* Sticky Decision Bar */}
       {showStickyBar && (
         <div style={{
           position: "sticky",
@@ -234,83 +209,22 @@ export default function VerificationFlow() {
         </div>
       )}
 
-      {/* SECTION 1: LANDING */}
-      <section ref={section === "landing" ? sectionRef : undefined} style={{
-        backgroundColor: C.sand,
-        padding: m ? "72px 20px" : "96px 40px",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-      }}>
-        <div style={{ maxWidth: 420, margin: "0 auto" }}>
-          <div style={{ opacity: 0, animation: "fadeIn 0.6s ease-out forwards" }}>
-            <h1 style={{
-              fontSize: m ? 28 : 36,
-              fontWeight: 700,
-              lineHeight: 1.1,
-              letterSpacing: "-0.03em",
-              color: C.navy,
-              marginBottom: 32,
-            }}>
+      {section === "landing" && (
+        <section ref={sectionRef} style={{ backgroundColor: C.sand, padding: "72px 20px", minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div style={{ maxWidth: 420, margin: "0 auto" }}>
+            <h1 style={{ fontSize: 28, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.03em", color: C.navy, marginBottom: 32 }}>
               Major financial decisions require income verification.
             </h1>
-            <p style={{
-              fontSize: 18,
-              fontWeight: 600,
-              lineHeight: 1.4,
-              color: C.textSecondary,
-              marginBottom: 24,
-            }}>
+            <p style={{ fontSize: 18, fontWeight: 600, lineHeight: 1.4, color: C.textSecondary, marginBottom: 24 }}>
               This defines whether it holds.
             </p>
-            <div style={{
-              padding: "20px",
-              backgroundColor: C.white,
-              borderRadius: 12,
-              border: `1px solid ${C.borderSoft}`,
-              marginBottom: 24,
-            }}>
+            <div style={{ padding: "20px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}`, marginBottom: 24 }}>
               <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>STANDARD DECLARATION</p>
               <p style={{ fontSize: 14, color: C.textPrimary, lineHeight: 1.5, margin: 0 }}>
                 RunPayway™ establishes a standardized method for evaluating income structure prior to financial decisions.
               </p>
             </div>
-            <div style={{
-              padding: "20px",
-              backgroundColor: C.white,
-              borderRadius: 12,
-              border: `1px solid ${C.borderSoft}`,
-              marginBottom: 32,
-            }}>
-              <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>APPLICATION</p>
-              <p style={{ fontSize: 14, color: C.textPrimary, lineHeight: 1.5, margin: 0 }}>
-                Applied in evaluation of income structures prior to financial commitment.
-              </p>
-            </div>
-            <div style={{
-              padding: "20px",
-              backgroundColor: C.navy,
-              borderRadius: 12,
-              marginBottom: 32,
-            }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>AUTHORITY</p>
-              <p style={{ fontSize: 13, color: C.sandText, lineHeight: 1.5, margin: 0 }}>
-                Fixed model. Same inputs produce the same result.
-              </p>
-            </div>
-            <button onClick={() => setSection("decision")} style={{
-              width: "100%",
-              height: 56,
-              backgroundColor: C.navy,
-              color: C.white,
-              border: "none",
-              borderRadius: 12,
-              fontSize: 16,
-              fontWeight: 600,
-              cursor: "pointer",
-              transition: "all 200ms",
-            }}
+            <button onClick={() => setSection("decision")} style={{ width: "100%", height: 56, backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
               Start Verification →
@@ -319,67 +233,21 @@ export default function VerificationFlow() {
               Answer 6 structural inputs. Verification occurs immediately.
             </p>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* SECTION 2: DECISION SELECTION */}
       {(section === "decision" || section === "input" || section === "result" || section === "checkout" || section === "success") && (
-        <section ref={section === "decision" ? sectionRef : undefined} style={{
-          backgroundColor: C.white,
-          padding: m ? "72px 20px" : "96px 40px",
-          minHeight: section === "decision" ? "100vh" : "auto",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: section === "decision" ? "center" : "flex-start",
-        }}>
+        <section ref={section === "decision" ? sectionRef : undefined} style={{ backgroundColor: C.white, padding: "72px 20px", minHeight: section === "decision" ? "100vh" : "auto", display: "flex", flexDirection: "column", justifyContent: section === "decision" ? "center" : "flex-start" }}>
           <div style={{ maxWidth: 420, margin: "0 auto", width: "100%" }}>
-            <h2 style={{
-              fontSize: 22,
-              fontWeight: 600,
-              lineHeight: 1.2,
-              letterSpacing: "-0.02em",
-              color: C.navy,
-              marginBottom: 32,
-            }}>
+            <h2 style={{ fontSize: 22, fontWeight: 600, lineHeight: 1.2, letterSpacing: "-0.02em", color: C.navy, marginBottom: 32 }}>
               This decision requires verification
             </h2>
-            <p style={{
-              fontSize: 14,
-              color: C.textMuted,
-              marginBottom: 28,
-            }}>
+            <p style={{ fontSize: 14, color: C.textMuted, marginBottom: 28 }}>
               Select the decision requiring structural verification.
             </p>
-
             <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 48 }}>
-              {(["mortgage", "expansion", "investment", "timeoff"] as Decision[]).map((d) => (
-                <button
-                  key={d}
-                  onClick={() => handleDecisionSelect(d)}
-                  style={{
-                    padding: "20px",
-                    backgroundColor: selectedDecision === d ? C.navy : C.panelFill,
-                    color: selectedDecision === d ? C.white : C.navy,
-                    border: selectedDecision === d ? "none" : `1px solid ${C.borderSoft}`,
-                    borderRadius: 12,
-                    fontSize: 15,
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    transition: "all 200ms",
-                    textAlign: "left",
-                  }}
-                  onMouseEnter={e => {
-                    if (selectedDecision !== d) {
-                      e.currentTarget.style.backgroundColor = "rgba(14,26,43,0.06)";
-                      e.currentTarget.style.borderColor = C.navy;
-                    }
-                  }}
-                  onMouseLeave={e => {
-                    if (selectedDecision !== d) {
-                      e.currentTarget.style.backgroundColor = C.panelFill;
-                      e.currentTarget.style.borderColor = C.borderSoft;
-                    }
-                  }}>
+              {(["mortgage", "expansion", "investment", "timeoff", "hiring", "retirement"] as Decision[]).map((d) => (
+                <button key={d} onClick={() => handleDecisionSelect(d)} style={{ padding: "20px", backgroundColor: selectedDecision === d ? C.navy : C.panelFill, color: selectedDecision === d ? C.white : C.navy, border: selectedDecision === d ? "none" : `1px solid ${C.borderSoft}`, borderRadius: 12, fontSize: 15, fontWeight: 600, cursor: "pointer", transition: "all 200ms", textAlign: "left" }}>
                   {getDecisionLabel(d)}
                 </button>
               ))}
@@ -388,304 +256,99 @@ export default function VerificationFlow() {
         </section>
       )}
 
-      {/* SECTION 3: INPUT */}
       {(section === "input" || section === "result" || section === "checkout" || section === "success") && (
-        <section ref={section === "input" ? sectionRef : undefined} style={{
-          backgroundColor: C.panelFill,
-          padding: m ? "72px 20px" : "96px 40px",
-          minHeight: section === "input" ? "100vh" : "auto",
-        }}>
+        <section ref={section === "input" ? sectionRef : undefined} style={{ backgroundColor: C.panelFill, padding: "72px 20px", minHeight: section === "input" ? "100vh" : "auto" }}>
           <div style={{ maxWidth: 420, margin: "0 auto", width: "100%" }}>
-            <h2 style={{
-              fontSize: 22,
-              fontWeight: 600,
-              lineHeight: 1.2,
-              letterSpacing: "-0.02em",
-              color: C.navy,
-              marginBottom: 24,
-            }}>
-              Define how income is structured
-            </h2>
-            <div style={{
-              padding: "16px",
-              backgroundColor: C.navy,
-              borderRadius: 10,
-              marginBottom: 32,
-            }}>
-              <p style={{ fontSize: 12, color: C.sandMuted, margin: 0, lineHeight: 1.5 }}>
-                Inputs define the result. No external data is used.
-              </p>
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-              {/* Income Type */}
-              <div>
-                <label style={{ fontSize: 13, fontWeight: 600, color: C.teal, display: "block", marginBottom: 8, letterSpacing: "0.06em" }}>INCOME TYPE</label>
-                <select value={inputs.incomeType} onChange={e => handleInputChange("incomeType", e.target.value)} style={{
-                  width: "100%",
-                  padding: "12px 16px",
-                  border: `1px solid ${C.borderSoft}`,
-                  borderRadius: 8,
-                  fontSize: 14,
-                  backgroundColor: C.white,
-                  color: C.textPrimary,
-                }}>
-                  <option value="consultant">Consultant</option>
-                  <option value="freelance">Freelance</option>
-                  <option value="sales">Sales</option>
-                  <option value="business">Business Owner</option>
-                </select>
-              </div>
-
-              {/* Concentration */}
-              <div>
-                <label style={{ fontSize: 13, fontWeight: 600, color: C.teal, display: "block", marginBottom: 8, letterSpacing: "0.06em" }}>CONCENTRATION</label>
-                <div style={{ display: "flex", gap: 8 }}>
-                  {["single", "dual", "diverse"].map((val) => (
-                    <button
-                      key={val}
-                      onClick={() => handleInputChange("concentration", val)}
-                      style={{
-                        flex: 1,
-                        padding: "12px",
-                        backgroundColor: inputs.concentration === val ? C.navy : C.white,
-                        color: inputs.concentration === val ? C.white : C.textPrimary,
-                        border: `1px solid ${inputs.concentration === val ? C.navy : C.borderSoft}`,
-                        borderRadius: 8,
-                        fontSize: 13,
-                        fontWeight: 600,
-                        cursor: "pointer",
-                        transition: "all 150ms",
-                      }}>
-                      {val === "single" ? "1 source" : val === "dual" ? "2–3" : "4+"}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Sources */}
-              <div>
-                <label style={{ fontSize: 13, fontWeight: 600, color: C.teal, display: "block", marginBottom: 8, letterSpacing: "0.06em" }}>SOURCES</label>
-                <input type="range" min="1" max="10" value={inputs.sources} onChange={e => handleInputChange("sources", parseInt(e.target.value))} style={{ width: "100%", cursor: "pointer" }} />
-                <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginTop: 8 }}>{inputs.sources} source{inputs.sources > 1 ? "s" : ""}</div>
-              </div>
-
-              {/* Visibility */}
-              <div>
-                <label style={{ fontSize: 13, fontWeight: 600, color: C.teal, display: "block", marginBottom: 8, letterSpacing: "0.06em" }}>FORWARD VISIBILITY (months)</label>
-                <input type="range" min="0" max="24" value={inputs.visibility} onChange={e => handleInputChange("visibility", parseInt(e.target.value))} style={{ width: "100%", cursor: "pointer" }} />
-                <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginTop: 8 }}>{inputs.visibility} months secured</div>
-              </div>
-
-              {/* Variability */}
-              <div>
-                <label style={{ fontSize: 13, fontWeight: 600, color: C.teal, display: "block", marginBottom: 8, letterSpacing: "0.06em" }}>VARIABILITY</label>
-                <div style={{ display: "flex", gap: 8 }}>
-                  {["low", "moderate", "high"].map((val) => (
-                    <button
-                      key={val}
-                      onClick={() => handleInputChange("variability", val)}
-                      style={{
-                        flex: 1,
-                        padding: "12px",
-                        backgroundColor: inputs.variability === val ? C.navy : C.white,
-                        color: inputs.variability === val ? C.white : C.textPrimary,
-                        border: `1px solid ${inputs.variability === val ? C.navy : C.borderSoft}`,
-                        borderRadius: 8,
-                        fontSize: 12,
-                        fontWeight: 600,
-                        cursor: "pointer",
-                        transition: "all 150ms",
-                      }}>
-                      {val.charAt(0).toUpperCase() + val.slice(1)}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Continuity */}
-              <div>
-                <label style={{ fontSize: 13, fontWeight: 600, color: C.teal, display: "block", marginBottom: 8, letterSpacing: "0.06em" }}>CONTINUITY</label>
-                <div style={{ display: "flex", gap: 8 }}>
-                  {["active", "recurring", "passive"].map((val) => (
-                    <button
-                      key={val}
-                      onClick={() => handleInputChange("continuity", val)}
-                      style={{
-                        flex: 1,
-                        padding: "12px",
-                        backgroundColor: inputs.continuity === val ? C.navy : C.white,
-                        color: inputs.continuity === val ? C.white : C.textPrimary,
-                        border: `1px solid ${inputs.continuity === val ? C.navy : C.borderSoft}`,
-                        borderRadius: 8,
-                        fontSize: 12,
-                        fontWeight: 600,
-                        cursor: "pointer",
-                        transition: "all 150ms",
-                      }}>
-                      {val.charAt(0).toUpperCase() + val.slice(1)}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
             {section === "input" && (
-              <button onClick={handleGenerateResult} style={{
-                width: "100%",
-                height: 56,
-                marginTop: 40,
-                backgroundColor: C.navy,
-                color: C.white,
-                border: "none",
-                borderRadius: 12,
-                fontSize: 16,
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "all 200ms",
-              }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
-                Generate Result →
-              </button>
+              <>
+                <h2 style={{ fontSize: 22, fontWeight: 600, lineHeight: 1.2, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24 }}>
+                  Define how income is structured
+                </h2>
+                <div style={{ padding: "16px", backgroundColor: C.navy, borderRadius: 10, marginBottom: 32 }}>
+                  <p style={{ fontSize: 12, color: C.sandMuted, margin: 0, lineHeight: 1.5 }}>
+                    Inputs define the result. No external data is used.
+                  </p>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 28, marginBottom: 32 }}>
+                  <div>
+                    <label style={{ fontSize: 13, fontWeight: 600, color: C.teal, display: "block", marginBottom: 8, letterSpacing: "0.06em" }}>CONCENTRATION</label>
+                    <div style={{ display: "flex", gap: 8 }}>
+                      {["single", "dual", "diverse"].map((val) => (
+                        <button key={val} onClick={() => handleInputChange("concentration", val)} style={{ flex: 1, padding: "12px", backgroundColor: inputs.concentration === val ? C.navy : C.white, color: inputs.concentration === val ? C.white : C.textPrimary, border: `1px solid ${inputs.concentration === val ? C.navy : C.borderSoft}`, borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", transition: "all 150ms" }}>
+                          {val === "single" ? "1" : val === "dual" ? "2–3" : "4+"}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 13, fontWeight: 600, color: C.teal, display: "block", marginBottom: 8, letterSpacing: "0.06em" }}>SOURCES</label>
+                    <input type="range" min="1" max="10" value={inputs.sources} onChange={e => handleInputChange("sources", parseInt(e.target.value))} style={{ width: "100%", cursor: "pointer" }} />
+                    <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginTop: 8 }}>{inputs.sources}</div>
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 13, fontWeight: 600, color: C.teal, display: "block", marginBottom: 8, letterSpacing: "0.06em" }}>VISIBILITY</label>
+                    <input type="range" min="0" max="24" value={inputs.visibility} onChange={e => handleInputChange("visibility", parseInt(e.target.value))} style={{ width: "100%", cursor: "pointer" }} />
+                    <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginTop: 8 }}>{inputs.visibility} months</div>
+                  </div>
+                </div>
+                <button onClick={handleGenerateResult} style={{ width: "100%", height: 56, backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
+                  Generate Result →
+                </button>
+              </>
             )}
           </div>
         </section>
       )}
 
-      {/* SECTION 4: RESULT */}
       {result && (section === "result" || section === "checkout" || section === "success") && (
-        <section ref={section === "result" ? sectionRef : undefined} style={{
-          backgroundColor: C.white,
-          padding: m ? "72px 20px" : "96px 40px",
-          minHeight: section === "result" ? "100vh" : "auto",
-        }}>
+        <section ref={section === "result" ? sectionRef : undefined} style={{ backgroundColor: C.white, padding: "72px 20px", minHeight: section === "result" ? "100vh" : "auto" }}>
           <div style={{ maxWidth: 420, margin: "0 auto", width: "100%" }}>
-            <h1 style={{
-              fontSize: 26,
-              fontWeight: 700,
-              lineHeight: 1.1,
-              letterSpacing: "-0.02em",
-              color: C.navy,
-              marginBottom: 16,
-            }}>
+            <h1 style={{ fontSize: 26, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16 }}>
               Income Stability Result
             </h1>
-
-            {/* Audit Info */}
-            <div style={{
-              fontSize: 11,
-              color: C.textMuted,
-              marginBottom: 28,
-              lineHeight: 1.6,
-              letterSpacing: "0.05em",
-            }}>
+            <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 28, lineHeight: 1.6, letterSpacing: "0.05em" }}>
               <div>Record ID: RS-{Math.random().toString(36).substr(2, 9).toUpperCase()}</div>
               <div>Model: RP-2.0</div>
               <div>Timestamp: {new Date().toISOString().split('T')[0]}</div>
             </div>
-
-            {/* Score Card */}
-            <div style={{
-              backgroundColor: C.navy,
-              borderRadius: 16,
-              padding: "24px",
-              marginBottom: 32,
-              position: "relative",
-              overflow: "hidden",
-            }}>
-              <div style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                height: 3,
-                background: `linear-gradient(90deg, ${C.teal}, ${C.purple})`,
-              }} />
-
+            <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: "24px", marginBottom: 32, position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
               <div style={{ fontSize: 11, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 12 }}>SCORE</div>
               <div style={{ fontSize: 48, fontWeight: 700, fontFamily: mono, color: C.sandText, marginBottom: 4, lineHeight: 1 }}>
                 {result.score}
               </div>
               <div style={{ fontSize: 13, fontWeight: 600, color: C.sandText, marginBottom: 4 }}>/100</div>
-              <div style={{
-                fontSize: 14,
-                fontWeight: 600,
-                color: getDecisionColor(result.band),
-                display: "inline-block",
-                padding: "6px 12px",
-                backgroundColor: `${getDecisionColor(result.band)}15`,
-                borderRadius: 8,
-                marginTop: 12,
-              }}>
+              <div style={{ fontSize: 14, fontWeight: 600, color: getDecisionColor(result.band), display: "inline-block", padding: "6px 12px", backgroundColor: `${getDecisionColor(result.band)}15`, borderRadius: 8, marginTop: 12 }}>
                 {result.band} Stability
               </div>
-
-              <div style={{
-                fontSize: 11,
-                fontWeight: 600,
-                color: "rgba(244,241,234,0.40)",
-                marginTop: 12,
-                letterSpacing: "0.06em",
-              }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: "rgba(244,241,234,0.40)", marginTop: 12, letterSpacing: "0.06em" }}>
                 OUTPUT DERIVED FROM FIXED STRUCTURAL INPUTS
               </div>
-              <div style={{
-                fontSize: 11,
-                color: "rgba(244,241,234,0.30)",
-                marginTop: 8,
-                lineHeight: 1.4,
-              }}>
+              <div style={{ fontSize: 11, color: "rgba(244,241,234,0.30)", marginTop: 8, lineHeight: 1.4 }}>
                 This result can be verified and reproduced under identical inputs.
               </div>
             </div>
-
-            {/* Constraint */}
-            <div style={{
-              padding: "20px",
-              backgroundColor: C.panelFill,
-              borderRadius: 12,
-              border: `1px solid ${C.borderSoft}`,
-              marginBottom: 28,
-            }}>
+            <div style={{ padding: "20px", backgroundColor: C.panelFill, borderRadius: 12, border: `1px solid ${C.borderSoft}`, marginBottom: 28 }}>
               <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>PRIMARY CONSTRAINT</p>
               <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, lineHeight: 1.5, margin: 0 }}>
                 {result.constraint}
               </p>
             </div>
-
-            {/* Decision Validation */}
-            <div style={{
-              padding: "20px",
-              backgroundColor: C.navy,
-              borderRadius: 12,
-              marginBottom: 24,
-            }}>
+            <div style={{ padding: "20px", backgroundColor: C.navy, borderRadius: 12, marginBottom: 24 }}>
               <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>DECISION VALIDATION</p>
               <p style={{ fontSize: 15, fontWeight: 600, color: C.sandText, lineHeight: 1.5, marginBottom: 12 }}>
                 {getDecisionLabel(selectedDecision)}
               </p>
-              <p style={{
-                fontSize: 14,
-                color: result.alignment ? C.protected : C.risk,
-                fontWeight: 600,
-                marginBottom: 8,
-              }}>
+              <p style={{ fontSize: 14, color: result.alignment ? C.protected : C.risk, fontWeight: 600, marginBottom: 8 }}>
                 {result.alignment ? "Structurally aligned" : "Not structurally aligned"}
               </p>
               <p style={{ fontSize: 13, color: C.sandMuted, lineHeight: 1.5, margin: 0 }}>
                 Under current structure, this income may not sustain this obligation if conditions change.
               </p>
             </div>
-
-            {/* Structural Confidence */}
-            <div style={{
-              padding: "20px",
-              backgroundColor: C.panelFill,
-              borderRadius: 12,
-              border: `1px solid ${C.borderSoft}`,
-              marginBottom: 28,
-            }}>
+            <div style={{ padding: "20px", backgroundColor: C.panelFill, borderRadius: 12, border: `1px solid ${C.borderSoft}`, marginBottom: 28 }}>
               <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>STRUCTURAL CONFIDENCE</p>
               <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}>
                 {result.score >= 60 ? "Defined" : result.score >= 40 ? "Moderate" : "Low"}
@@ -694,47 +357,19 @@ export default function VerificationFlow() {
                 Confidence reflects clarity and consistency of structural inputs.
               </p>
             </div>
-
-            {/* Scope Boundary */}
-            <div style={{
-              padding: "20px",
-              backgroundColor: "rgba(31,109,122,0.06)",
-              borderRadius: 12,
-              border: `1px solid rgba(31,109,122,0.15)`,
-              marginBottom: 24,
-            }}>
+            <div style={{ padding: "20px", backgroundColor: "rgba(31,109,122,0.06)", borderRadius: 12, border: `1px solid rgba(31,109,122,0.15)`, marginBottom: 24 }}>
               <p style={{ fontSize: 13, color: C.established, lineHeight: 1.6, margin: 0 }}>
                 This evaluation reflects income structure only. External factors are not included.
               </p>
             </div>
-
-            {/* Incompletion Signal */}
-            <div style={{
-              padding: "20px",
-              backgroundColor: "rgba(14,26,43,0.04)",
-              borderRadius: 12,
-              border: `1px solid ${C.borderSoft}`,
-              marginBottom: 32,
-            }}>
+            <div style={{ padding: "20px", backgroundColor: "rgba(14,26,43,0.04)", borderRadius: 12, border: `1px solid ${C.borderSoft}`, marginBottom: 32 }}>
               <p style={{ fontSize: 13, fontWeight: 600, color: C.navy, marginBottom: 12 }}>Full structural verification required</p>
               <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>
                 Complete structural definition is required to validate this decision.
               </p>
             </div>
-
             {section === "result" && (
-              <button onClick={handleCheckout} style={{
-                width: "100%",
-                height: 56,
-                backgroundColor: C.navy,
-                color: C.white,
-                border: "none",
-                borderRadius: 12,
-                fontSize: 16,
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "all 200ms",
-              }}
+              <button onClick={handleCheckout} style={{ width: "100%", height: 56, backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
                 onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
                 Unlock Full Verification →
@@ -744,163 +379,51 @@ export default function VerificationFlow() {
         </section>
       )}
 
-      {/* SECTION 5: CHECKOUT */}
       {(section === "checkout" || section === "success") && (
-        <section ref={section === "checkout" ? sectionRef : undefined} style={{
-          backgroundColor: C.panelFill,
-          padding: m ? "72px 20px" : "96px 40px",
-          minHeight: section === "checkout" ? "100vh" : "auto",
-        }}>
+        <section ref={section === "checkout" ? sectionRef : undefined} style={{ backgroundColor: C.panelFill, padding: "72px 20px", minHeight: section === "checkout" ? "100vh" : "auto" }}>
           <div style={{ maxWidth: 420, margin: "0 auto", width: "100%" }}>
-            <h1 style={{
-              fontSize: 26,
-              fontWeight: 700,
-              lineHeight: 1.1,
-              letterSpacing: "-0.02em",
-              color: C.navy,
-              marginBottom: 28,
-            }}>
+            <h1 style={{ fontSize: 26, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 28 }}>
               Complete verification
             </h1>
-
-            <div style={{
-              padding: "20px",
-              backgroundColor: C.navy,
-              borderRadius: 12,
-              marginBottom: 32,
-            }}>
-              <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>VERIFICATION REQUIREMENT</p>
-              <p style={{ fontSize: 14, color: C.sandText, lineHeight: 1.5, margin: 0 }}>
-                Full verification is required to define this decision.
-              </p>
-            </div>
-
             {section === "checkout" && (
               <>
-                {/* Express Pay */}
+                <div style={{ padding: "20px", backgroundColor: C.navy, borderRadius: 12, marginBottom: 32 }}>
+                  <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>VERIFICATION REQUIREMENT</p>
+                  <p style={{ fontSize: 14, color: C.sandText, lineHeight: 1.5, margin: 0 }}>
+                    Full verification is required to define this decision.
+                  </p>
+                </div>
                 <div style={{ marginBottom: 28 }}>
                   <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, marginBottom: 12, letterSpacing: "0.06em" }}>EXPRESS PAY</p>
-                  <button style={{
-                    width: "100%",
-                    padding: "16px",
-                    marginBottom: 10,
-                    backgroundColor: C.navy,
-                    color: C.white,
-                    border: "none",
-                    borderRadius: 8,
-                    fontSize: 14,
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    transition: "all 150ms",
-                  }}
-                    onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(14,26,43,0.15)"; }}
-                    onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
-                    🍎 Apple Pay
-                  </button>
-                  <button style={{
-                    width: "100%",
-                    padding: "16px",
-                    backgroundColor: C.navy,
-                    color: C.white,
-                    border: "none",
-                    borderRadius: 8,
-                    fontSize: 14,
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    transition: "all 150ms",
-                  }}
-                    onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(14,26,43,0.15)"; }}
-                    onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
-                    🔵 Google Pay
-                  </button>
+                  <button style={{ width: "100%", padding: "16px", marginBottom: 10, backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer", transition: "all 150ms" }}>🍎 Apple Pay</button>
+                  <button style={{ width: "100%", padding: "16px", backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer", transition: "all 150ms" }}>🔵 Google Pay</button>
                 </div>
-
-                {/* Divider */}
                 <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
                   <div style={{ flex: 1, height: 1, backgroundColor: C.divider }} />
                   <span style={{ fontSize: 12, color: C.textMuted, fontWeight: 500 }}>OR</span>
                   <div style={{ flex: 1, height: 1, backgroundColor: C.divider }} />
                 </div>
-
-                {/* Card Input */}
                 <div style={{ marginBottom: 28 }}>
                   <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, marginBottom: 12, letterSpacing: "0.06em" }}>CARD</p>
-                  <input type="text" placeholder="Card number" style={{
-                    width: "100%",
-                    padding: "12px 16px",
-                    marginBottom: 10,
-                    border: `1px solid ${C.borderSoft}`,
-                    borderRadius: 8,
-                    fontSize: 14,
-                    backgroundColor: C.white,
-                  }} />
+                  <input type="text" placeholder="Card number" style={{ width: "100%", padding: "12px 16px", marginBottom: 10, border: `1px solid ${C.borderSoft}`, borderRadius: 8, fontSize: 14, backgroundColor: C.white }} />
                   <div style={{ display: "flex", gap: 10, marginBottom: 10 }}>
-                    <input type="text" placeholder="MM/YY" style={{
-                      flex: 1,
-                      padding: "12px 16px",
-                      border: `1px solid ${C.borderSoft}`,
-                      borderRadius: 8,
-                      fontSize: 14,
-                      backgroundColor: C.white,
-                    }} />
-                    <input type="text" placeholder="CVC" style={{
-                      width: 80,
-                      padding: "12px 16px",
-                      border: `1px solid ${C.borderSoft}`,
-                      borderRadius: 8,
-                      fontSize: 14,
-                      backgroundColor: C.white,
-                    }} />
+                    <input type="text" placeholder="MM/YY" style={{ flex: 1, padding: "12px 16px", border: `1px solid ${C.borderSoft}`, borderRadius: 8, fontSize: 14, backgroundColor: C.white }} />
+                    <input type="text" placeholder="CVC" style={{ width: 80, padding: "12px 16px", border: `1px solid ${C.borderSoft}`, borderRadius: 8, fontSize: 14, backgroundColor: C.white }} />
                   </div>
-                  <input type="email" placeholder="Email" style={{
-                    width: "100%",
-                    padding: "12px 16px",
-                    border: `1px solid ${C.borderSoft}`,
-                    borderRadius: 8,
-                    fontSize: 14,
-                    backgroundColor: C.white,
-                  }} />
+                  <input type="email" placeholder="Email" style={{ width: "100%", padding: "12px 16px", border: `1px solid ${C.borderSoft}`, borderRadius: 8, fontSize: 14, backgroundColor: C.white }} />
                 </div>
-
-                {/* Trust */}
-                <div style={{
-                  padding: "16px",
-                  backgroundColor: C.white,
-                  borderRadius: 8,
-                  border: `1px solid ${C.borderSoft}`,
-                  marginBottom: 28,
-                }}>
+                <div style={{ padding: "16px", backgroundColor: C.white, borderRadius: 8, border: `1px solid ${C.borderSoft}`, marginBottom: 28 }}>
                   <p style={{ fontSize: 12, color: C.textMuted, margin: 0, lineHeight: 1.5 }}>
                     Secure payment via Stripe. Verification unlocks immediately after payment.
                   </p>
                 </div>
-
-                {/* Reality Reinforcement */}
-                <div style={{
-                  padding: "16px",
-                  backgroundColor: "rgba(199,70,52,0.06)",
-                  borderRadius: 8,
-                  border: `1px solid rgba(199,70,52,0.12)`,
-                  marginBottom: 28,
-                }}>
+                <div style={{ padding: "16px", backgroundColor: "rgba(199,70,52,0.06)", borderRadius: 8, border: `1px solid rgba(199,70,52,0.12)`, marginBottom: 28 }}>
                   <p style={{ fontSize: 13, fontWeight: 600, color: C.risk, marginBottom: 4 }}>Verification required</p>
                   <p style={{ fontSize: 12, color: C.textSecondary, margin: 0, lineHeight: 1.5 }}>
                     Proceeding without structural verification introduces measurable risk.
                   </p>
                 </div>
-
-                <button onClick={handlePaymentSuccess} style={{
-                  width: "100%",
-                  height: 56,
-                  backgroundColor: C.navy,
-                  color: C.white,
-                  border: "none",
-                  borderRadius: 12,
-                  fontSize: 16,
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  transition: "all 200ms",
-                }}
+                <button onClick={handlePaymentSuccess} style={{ width: "100%", height: 56, backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
                   onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
                   onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
                   Unlock Full Verification — $69
@@ -914,48 +437,16 @@ export default function VerificationFlow() {
         </section>
       )}
 
-      {/* SECTION 6: SUCCESS */}
       {section === "success" && (
-        <section ref={sectionRef} style={{
-          backgroundColor: C.navy,
-          padding: m ? "72px 20px" : "96px 40px",
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}>
+        <section ref={sectionRef} style={{ backgroundColor: C.navy, padding: "72px 20px", minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
           <div style={{ maxWidth: 420, margin: "0 auto", textAlign: "center" }}>
-            <h1 style={{
-              fontSize: 32,
-              fontWeight: 700,
-              lineHeight: 1.1,
-              letterSpacing: "-0.03em",
-              color: C.sandText,
-              marginBottom: 24,
-            }}>
+            <h1 style={{ fontSize: 32, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.03em", color: C.sandText, marginBottom: 24 }}>
               Verification complete
             </h1>
-            <p style={{
-              fontSize: 16,
-              color: C.sandMuted,
-              lineHeight: 1.6,
-              marginBottom: 32,
-            }}>
+            <p style={{ fontSize: 16, color: C.sandMuted, lineHeight: 1.6, marginBottom: 32 }}>
               Your decision is now fully defined.
             </p>
-            <button style={{
-              width: "100%",
-              height: 56,
-              backgroundColor: C.teal,
-              color: C.white,
-              border: "none",
-              borderRadius: 12,
-              fontSize: 16,
-              fontWeight: 600,
-              cursor: "pointer",
-              transition: "all 200ms",
-            }}
+            <button style={{ width: "100%", height: 56, backgroundColor: C.teal, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(31,109,122,0.30)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(31,109,122,0.20)"; }}>
               View Full Report →
@@ -963,13 +454,518 @@ export default function VerificationFlow() {
           </div>
         </section>
       )}
+    </div>
+  );
+}
 
+/* ================================================================ */
+/* DESKTOP INSTITUTIONAL LANDING (CSS-based responsive)             */
+/* ================================================================ */
+
+function DesktopInstitutionalLanding() {
+  return (
+    <div style={{ backgroundColor: C.white }}>
+      {/* Hero */}
+      <section style={{ padding: "120px 40px", backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }}>
+          <div>
+            <h1 style={{ fontSize: 52, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.03em", color: C.navy, marginBottom: 32 }}>
+              Major financial decisions require income verification.<br />
+              <span style={{ fontWeight: 400 }}>This defines whether it holds.</span>
+            </h1>
+            <p style={{ fontSize: 16, fontWeight: 500, color: C.textSecondary, marginBottom: 24, lineHeight: 1.6 }}>
+              Used before mortgage, investment, and major financial commitments.
+            </p>
+            <div style={{ padding: "24px", backgroundColor: C.navy, borderRadius: 12, marginBottom: 32 }}>
+              <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 12 }}>AUTHORITY</p>
+              <ul style={{ fontSize: 14, color: C.sandText, lineHeight: 1.8, margin: 0, paddingLeft: 0, listStyle: "none" }}>
+                <li>Required before financial commitment</li>
+                <li>Verified using fixed structural rules</li>
+                <li>Same inputs produce the same result</li>
+                <li>Applied consistently across evaluated income structures</li>
+              </ul>
+            </div>
+            <p style={{ fontSize: 14, fontWeight: 500, color: C.textSecondary, marginBottom: 32 }}>
+              <strong style={{ color: C.navy }}>Unverified income introduces structural risk.</strong>
+            </p>
+            <button style={{ padding: "16px 32px", backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
+              Start Verification →
+            </button>
+            <p style={{ fontSize: 13, color: C.textMuted, marginTop: 16 }}>
+              Answer 6 structural inputs. Receive classification immediately.
+            </p>
+            <p style={{ fontSize: 12, color: C.textMuted, marginTop: 16, letterSpacing: "0.05em" }}>
+              Free · Private · No documents · Immediate result
+            </p>
+          </div>
+          <div style={{ backgroundColor: C.navy, borderRadius: 20, padding: "40px 32px", position: "relative", overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
+            <div style={{ fontSize: 11, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 20 }}>EXAMPLE OUTCOME</div>
+            <div style={{ fontSize: 64, fontWeight: 700, fontFamily: mono, color: C.sandText, lineHeight: 1, marginBottom: 8 }}>72</div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: C.sandText, marginBottom: 24 }}>/100</div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: C.established, display: "inline-block", padding: "8px 16px", backgroundColor: `${C.established}15`, borderRadius: 10, marginBottom: 24 }}>
+              Established Stability
+            </div>
+            <div style={{ display: "flex", height: 10, borderRadius: 999, overflow: "hidden", marginBottom: 12 }}>
+              <div style={{ width: "28%", backgroundColor: C.established }} />
+              <div style={{ width: "40%", backgroundColor: C.moderate }} />
+              <div style={{ width: "32%", backgroundColor: C.risk }} />
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}>
+              <span style={{ fontSize: 11, fontWeight: 600, color: C.established }}>Protected</span>
+              <span style={{ fontSize: 11, fontWeight: 600, color: C.moderate }}>Recurring</span>
+              <span style={{ fontSize: 11, fontWeight: 600, color: C.risk }}>At Risk</span>
+            </div>
+            <div style={{ marginTop: 20, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.10)" }}>
+              <p style={{ fontSize: 12, color: C.sandLight, margin: 0, lineHeight: 1.5 }}>
+                RunPayway™ establishes a standardized method for evaluating income structure prior to financial decisions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Decision Entry */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.panelFill }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 16, letterSpacing: "-0.02em" }}>
+            This decision requires verification
+          </h2>
+          <p style={{ fontSize: 16, color: C.textSecondary, marginBottom: 48, lineHeight: 1.6 }}>
+            Select the decision being evaluated. Verification is based on this selection.
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginBottom: 48 }}>
+            {(["Mortgage commitment", "Business expansion", "Hiring", "Investment", "Time off", "Retirement transition"] as string[]).map((label) => (
+              <button key={label} style={{ padding: "28px", backgroundColor: C.white, border: `1px solid ${C.borderSoft}`, borderRadius: 12, fontSize: 15, fontWeight: 600, color: C.navy, cursor: "pointer", textAlign: "left", transition: "all 200ms" }}
+                onMouseEnter={e => { e.currentTarget.style.backgroundColor = C.navy; e.currentTarget.style.color = C.white; e.currentTarget.style.borderColor = C.navy; }}
+                onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.color = C.navy; e.currentTarget.style.borderColor = C.borderSoft; }}>
+                {label}
+              </button>
+            ))}
+          </div>
+          <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "24px" }}>
+            <p style={{ fontSize: 14, color: C.sandMuted, margin: 0, lineHeight: 1.6 }}>
+              Each decision is evaluated against income structure. Verification occurs immediately after input.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Reality */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 32, letterSpacing: "-0.02em" }}>
+            When income changes, decisions become unsustainable
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, marginBottom: 48 }}>
+            <div>
+              <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.7, marginBottom: 24 }}>
+                Mortgage obligations, hiring commitments, and investment decisions depend on income stability. When structure fails:
+              </p>
+              <ul style={{ fontSize: 15, color: C.textPrimary, lineHeight: 2, margin: 0, paddingLeft: 0, listStyle: "none" }}>
+                <li>• Obligations cannot be sustained</li>
+                <li>• Expansion must be reversed</li>
+                <li>• Capital is exposed</li>
+              </ul>
+            </div>
+            <div style={{ padding: "32px", backgroundColor: C.navy, borderRadius: 12 }}>
+              <p style={{ fontSize: 15, color: C.sandText, lineHeight: 1.7, margin: 0 }}>
+                These outcomes are structural. They are identified after a lost client, a delayed deal, or a period of reduced activity.
+              </p>
+            </div>
+          </div>
+          <p style={{ fontSize: 15, fontWeight: 500, color: C.navy, textAlign: "center" }}>
+            RunPayway™ defines that exposure before it occurs.
+          </p>
+        </div>
+      </section>
+
+      {/* Contrast */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.panelFill }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 48, letterSpacing: "-0.02em" }}>
+            Same income. Different stability.
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, marginBottom: 48 }}>
+            <div style={{ padding: "32px", backgroundColor: C.white, border: `1px solid ${C.borderSoft}`, borderRadius: 12, position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.risk }} />
+              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 20 }}>$150K income<br />1 client · no contracts</p>
+              <div style={{ display: "flex", height: 8, borderRadius: 999, overflow: "hidden", marginBottom: 20 }}>
+                <div style={{ width: "80%", backgroundColor: C.risk }} />
+                <div style={{ width: "20%", backgroundColor: C.moderate }} />
+              </div>
+              <p style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.risk, margin: 0 }}>31</p>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.risk }}>Limited Stability</p>
+            </div>
+            <div style={{ padding: "32px", backgroundColor: C.white, border: `1px solid ${C.borderSoft}`, borderRadius: 12, position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.established }} />
+              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 20 }}>$150K income<br />5 clients · 40% recurring</p>
+              <div style={{ display: "flex", height: 8, borderRadius: 999, overflow: "hidden", marginBottom: 20 }}>
+                <div style={{ width: "40%", backgroundColor: C.established }} />
+                <div style={{ width: "35%", backgroundColor: C.moderate }} />
+                <div style={{ width: "25%", backgroundColor: C.risk }} />
+              </div>
+              <p style={{ fontSize: 32, fontWeight: 700, fontFamily: mono, color: C.established, margin: 0 }}>74</p>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.established }}>Established Stability</p>
+            </div>
+          </div>
+          <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "32px", textAlign: "center" }}>
+            <p style={{ fontSize: 15, color: C.sandText, margin: 0, lineHeight: 1.7 }}>
+              Income level does not determine whether income holds. <strong>Structure determines whether income holds.</strong> These structures produce materially different stability under disruption.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Core Positioning */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 32, letterSpacing: "-0.02em" }}>
+            RunPayway™ defines how income stability is measured.
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40 }}>
+            <div>
+              <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.8 }}>
+                It determines whether income holds when conditions change.
+              </p>
+            </div>
+            <div>
+              <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.8 }}>
+                The same model is applied to every profile. The output is fixed. The inputs determine the result.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Problem */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.panelFill }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 32, letterSpacing: "-0.02em" }}>
+            Income appears stable until a structural point fails.
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, marginBottom: 48 }}>
+            <div>
+              <ul style={{ fontSize: 15, color: C.textPrimary, lineHeight: 2, margin: 0, paddingLeft: 0, listStyle: "none" }}>
+                <li>• One source supports the majority of income</li>
+                <li>• Revenue is not contractually secured</li>
+                <li>• Income depends on continued activity</li>
+                <li>• Forward income is not committed</li>
+              </ul>
+            </div>
+            <div>
+              <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.8 }}>
+                Instability is structural. It is identified after a lost client, a delayed deal, or a period of reduced activity.
+              </p>
+            </div>
+          </div>
+          <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "32px" }}>
+            <p style={{ fontSize: 15, color: C.sandText, margin: 0, lineHeight: 1.8 }}>
+              RunPayway™ identifies what determines the score.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Structural Limitation */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 32, letterSpacing: "-0.02em" }}>
+            General income assumptions do not define structure.
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40 }}>
+            <div>
+              <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.8 }}>
+                "Irregular income" does not define the condition. <strong style={{ color: C.navy }}>Each determines stability differently:</strong>
+              </p>
+            </div>
+            <div>
+              <ul style={{ fontSize: 15, color: C.textPrimary, lineHeight: 2, margin: 0, paddingLeft: 0, listStyle: "none" }}>
+                <li>• Concentration</li>
+                <li>• Continuity</li>
+                <li>• Visibility</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Decision Requirement */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.panelFill }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 48, letterSpacing: "-0.02em" }}>
+            These decisions require income stability
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, marginBottom: 48 }}>
+            <div>
+              <ul style={{ fontSize: 15, color: C.textPrimary, lineHeight: 2, margin: 0, paddingLeft: 0, listStyle: "none" }}>
+                <li>• Mortgage commitment requires income continuity</li>
+                <li>• Hiring requires sustained income obligations</li>
+                <li>• Investment requires structural resilience</li>
+              </ul>
+            </div>
+            <div style={{ padding: "32px", backgroundColor: C.navy, borderRadius: 12 }}>
+              <p style={{ fontSize: 15, color: C.sandText, margin: 0, lineHeight: 1.8 }}>
+                Verification precedes commitment.
+              </p>
+            </div>
+          </div>
+          <button style={{ padding: "16px 32px", backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
+            Start Verification →
+          </button>
+        </div>
+      </section>
+
+      {/* Decision Output Preview */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 48, letterSpacing: "-0.02em" }}>
+            Decision verification output
+          </h2>
+          <div style={{ maxWidth: 600, margin: "0 auto", backgroundColor: C.panelFill, borderRadius: 12, padding: "40px", marginBottom: 48 }}>
+            <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 20 }}>Mortgage commitment</p>
+            <div style={{ padding: "20px", backgroundColor: C.white, borderRadius: 10, marginBottom: 20, borderLeft: `4px solid ${C.risk}` }}>
+              <p style={{ fontSize: 13, fontWeight: 600, color: C.textMuted, margin: "0 0 8px" }}>STRUCTURAL STATUS</p>
+              <p style={{ fontSize: 15, fontWeight: 600, color: C.risk, margin: 0 }}>Not structurally aligned</p>
+            </div>
+            <div style={{ padding: "20px", backgroundColor: C.white, borderRadius: 10, marginBottom: 20 }}>
+              <p style={{ fontSize: 13, fontWeight: 600, color: C.textMuted, margin: "0 0 8px" }}>CONSTRAINT</p>
+              <p style={{ fontSize: 15, color: C.textPrimary, margin: 0 }}>Income dependency reduces continuity under disruption</p>
+            </div>
+            <div style={{ padding: "20px", backgroundColor: C.white, borderRadius: 10 }}>
+              <p style={{ fontSize: 13, fontWeight: 600, color: C.textMuted, margin: "0 0 8px" }}>CONDITION</p>
+              <p style={{ fontSize: 15, color: C.textPrimary, margin: 0 }}>Continuity is not established under current structure</p>
+            </div>
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <p style={{ fontSize: 15, color: C.textSecondary, marginBottom: 8 }}>
+              This output defines whether this decision holds.
+            </p>
+            <p style={{ fontSize: 15, color: C.textSecondary }}>
+              This output is derived from your score.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.panelFill }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 32, letterSpacing: "-0.02em" }}>
+            How income stability is verified
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, marginBottom: 48 }}>
+            <div>
+              <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.8 }}>
+                Inputs are processed using fixed structural factors. The same model is applied to every profile. All outputs are derived from fixed structural rules.
+              </p>
+            </div>
+            <div>
+              <ul style={{ fontSize: 15, color: C.textPrimary, lineHeight: 2, margin: 0, paddingLeft: 0, listStyle: "none" }}>
+                <li>• Stability classification</li>
+                <li>• Primary structural constraint</li>
+                <li>• Full structural analysis</li>
+              </ul>
+            </div>
+          </div>
+          <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "32px" }}>
+            <p style={{ fontSize: 15, color: C.sandText, margin: "0 0 16px" }}>
+              Same inputs produce the same result. The result is used to verify decision compatibility. Outputs are derived solely from submitted inputs.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Value */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 32, letterSpacing: "-0.02em" }}>
+            Income is tracked. Stability is not.
+          </h2>
+          <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.7 }}>
+            A credit score reflects borrowing behavior. An Income Stability Score™ defines whether income holds. <strong style={{ color: C.navy }}>Both are required for informed financial decisions.</strong>
+          </p>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.panelFill }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 48, letterSpacing: "-0.02em" }}>
+            Pricing
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, marginBottom: 48 }}>
+            <div style={{ padding: "40px", backgroundColor: C.white, border: `1px solid ${C.borderSoft}`, borderRadius: 12 }}>
+              <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 16 }}>FREE</p>
+              <p style={{ fontSize: 20, fontWeight: 600, color: C.navy, marginBottom: 28 }}>Stability Class</p>
+              <ul style={{ fontSize: 14, color: C.textSecondary, lineHeight: 2, margin: 0, paddingLeft: 0, listStyle: "none" }}>
+                <li>• Classification</li>
+                <li>• Primary structural constraint</li>
+              </ul>
+            </div>
+            <div style={{ padding: "40px", backgroundColor: C.navy, borderRadius: 12, position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
+              <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 16 }}>FULL REPORT</p>
+              <p style={{ fontSize: 20, fontWeight: 600, color: C.sandText, marginBottom: 28 }}>$69</p>
+              <ul style={{ fontSize: 14, color: C.sandMuted, lineHeight: 2, margin: 0, paddingLeft: 0, listStyle: "none" }}>
+                <li>• Score (0–100)</li>
+                <li>• Structural breakdown</li>
+                <li>• Constraint definition</li>
+                <li>• Decision verification</li>
+              </ul>
+            </div>
+          </div>
+          <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "32px", textAlign: "center" }}>
+            <p style={{ fontSize: 15, color: C.sandText, margin: 0, lineHeight: 1.8 }}>
+              The classification defines position. The report defines what determines your score. <strong>Full verification is required before financial commitment.</strong>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Action Principle */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 32, letterSpacing: "-0.02em" }}>
+            Action principle
+          </h2>
+          <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.7 }}>
+            One structural constraint determines the score. Identification precedes structural change.
+          </p>
+        </div>
+      </section>
+
+      {/* Progression */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.panelFill }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 32, letterSpacing: "-0.02em" }}>
+            Progression
+          </h2>
+          <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.7 }}>
+            Stability is not fixed. Measurement → structural change → reassessment. The same model is applied at each step.
+          </p>
+        </div>
+      </section>
+
+      {/* Trust */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 48, letterSpacing: "-0.02em" }}>
+            System integrity
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 32, marginBottom: 48 }}>
+            {[
+              { label: "Deterministic model", desc: "The same inputs always produce the same output." },
+              { label: "No subjective input", desc: "Measurement is derived from submitted inputs only." },
+              { label: "Version-locked methodology", desc: "Every report is stamped with the model version." },
+              { label: "Repeatable results", desc: "Identical inputs produce identical scores." },
+            ].map((item, i) => (
+              <div key={i}>
+                <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}>{item.label}</p>
+                <p style={{ fontSize: 13, color: C.textSecondary, margin: 0 }}>{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "32px", textAlign: "center" }}>
+            <p style={{ fontSize: 15, color: C.sandText, margin: 0, lineHeight: 1.8 }}>
+              This is a standardized measurement system. Not an estimate. Not a forecast.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Authority */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.panelFill }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 32, letterSpacing: "-0.02em" }}>
+            Authority
+          </h2>
+          <p style={{ fontSize: 16, color: C.textSecondary, marginBottom: 32, lineHeight: 1.7 }}>
+            Used where income reliability must be verified before decisions are made.
+          </p>
+          <div style={{ display: "flex", gap: 24, justifyContent: "center" }}>
+            <button style={{ padding: "12px 28px", backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
+              For Advisors
+            </button>
+            <button style={{ padding: "12px 28px", backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
+              For Organizations
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Final Close */}
+      <section style={{ padding: "120px 40px", backgroundColor: C.navy }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontSize: 40, fontWeight: 600, color: C.sandText, marginBottom: 32, lineHeight: 1.3, letterSpacing: "-0.02em" }}>
+            Major financial decisions require income verification.
+          </h2>
+          <p style={{ fontSize: 18, color: C.sandMuted, marginBottom: 32, lineHeight: 1.7 }}>
+            Verification precedes commitment. RunPayway™ defines whether income stability holds.
+          </p>
+          <p style={{ fontSize: 15, fontWeight: 500, color: C.teal, marginBottom: 40 }}>
+            This is not defined until verified.
+          </p>
+          <button style={{ padding: "16px 40px", backgroundColor: C.teal, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(31,109,122,0.30)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(31,109,122,0.20)"; }}>
+            Start Verification →
+          </button>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer style={{ backgroundColor: C.navy, borderTop: `1px solid rgba(255,255,255,0.10)`, padding: "40px", textAlign: "center" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <p style={{ fontSize: 12, color: C.sandLight, lineHeight: 1.8, margin: 0 }}>
+            © 2026 RunPayway™. All rights reserved.<br />
+            RunPayway™ is a product of PeopleStar Enterprises, LLC.<br />
+            Orange County, California, USA.<br />
+            <br />
+            <strong style={{ color: C.teal }}>Structural Stability Model RP-2.0</strong>
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+/* ================================================================ */
+/* MAIN COMPONENT                                                     */
+/* ================================================================ */
+
+export default function Page() {
+  return (
+    <div>
       <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(16px); }
-          to { opacity: 1; transform: translateY(0); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        html { scroll-behavior: smooth; }
+
+        @media (max-width: 768px) {
+          .desktop-only { display: none !important; }
+        }
+
+        @media (min-width: 769px) {
+          .mobile-only { display: none !important; }
         }
       `}</style>
+
+      <div className="mobile-only">
+        <MobileDecisionFlow />
+      </div>
+
+      <div className="desktop-only">
+        <DesktopInstitutionalLanding />
+      </div>
     </div>
   );
 }
