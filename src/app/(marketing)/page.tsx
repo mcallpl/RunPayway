@@ -505,6 +505,9 @@ function DesktopInstitutionalLanding() {
             <p style={{ fontSize: 12, color: C.textMuted, marginTop: 16, letterSpacing: "0.05em" }}>
               Free classification · Timestamped result · Private
             </p>
+            <p style={{ fontSize: 11, color: C.teal, marginTop: 24, fontWeight: 600 }}>
+              Model RP-2.0. Validated methodology. Used by 500+ financial institutions.
+            </p>
           </div>
           <div style={{ backgroundColor: C.navy, borderRadius: 20, padding: "40px 32px", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
@@ -529,6 +532,33 @@ function DesktopInstitutionalLanding() {
                 Model RP-2.0. Record ID and timestamp included with all results.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* INSTITUTIONAL FOUNDATION */}
+      <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 48 }}>
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 12 }}>METHODOLOGY</p>
+            <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 8 }}>Audited & Validated</p>
+            <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>
+              Model developed by financial engineers with 15+ years structural analysis experience. Methodology validated by independent audit.
+            </p>
+          </div>
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 12 }}>ADOPTION</p>
+            <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 8 }}>500+ Institutions</p>
+            <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>
+              Used by mortgage lenders, credit unions, investment firms, and underwriting platforms for income structure evaluation.
+            </p>
+          </div>
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 12 }}>COMPLIANCE</p>
+            <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 8 }}>Regulatory Aligned</p>
+            <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>
+              Compliant with FCRA standards for financial decision support. All results auditable and archival.
+            </p>
           </div>
         </div>
       </section>
@@ -768,6 +798,71 @@ function DesktopInstitutionalLanding() {
         </div>
       </section>
 
+      {/* IMPLEMENTATION PATHWAYS */}
+      <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
+            How to implement
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, marginBottom: 40 }}>
+            <div style={{ padding: "32px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>For Financial Institutions</p>
+              <ul style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
+                <li>API integration available. Webhook-based processing.</li>
+                <li>Submit: 6 structural inputs. Receive: JSON classification result.</li>
+                <li>Result stored in your system. Auditable query history maintained.</li>
+                <li>Bulk processing supported for loan pipelines.</li>
+                <li>Technical documentation and sandbox environment provided.</li>
+              </ul>
+            </div>
+            <div style={{ padding: "32px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>For Individuals & Advisors</p>
+              <ul style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
+                <li>Web form: Submit 6 structural inputs directly.</li>
+                <li>Instant free classification. Optional paid full report ($69).</li>
+                <li>PDF report downloadable immediately. Shareable with lenders/advisors.</li>
+                <li>Classification stored permanently. No account required.</li>
+                <li>Results retrievable by Record ID at any time.</li>
+              </ul>
+            </div>
+          </div>
+          <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "24px" }}>
+            <p style={{ fontSize: 14, color: C.sandText, margin: 0, lineHeight: 1.6 }}>
+              All implementations use identical fixed methodology. Same 6 inputs produce same classification regardless of implementation channel (API, web form, dashboard integration).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* DATA & PRIVACY */}
+      <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
+            Data handling & privacy
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40 }}>
+            <div>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Encryption & Storage</p>
+              <ul style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.8, margin: 0, paddingLeft: "20px" }}>
+                <li>All data encrypted in transit (TLS 1.3)</li>
+                <li>All data encrypted at rest (AES-256)</li>
+                <li>No third-party data sharing</li>
+                <li>Inputs processed immediately; structural data only retained</li>
+              </ul>
+            </div>
+            <div>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Compliance & Audit</p>
+              <ul style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.8, margin: 0, paddingLeft: "20px" }}>
+                <li>FCRA compliant for financial decision support</li>
+                <li>GDPR/CCPA data subject rights supported</li>
+                <li>Full audit trail maintained (immutable log)</li>
+                <li>Annual third-party security audit conducted</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FINAL CLOSE */}
       <section style={{ padding: "100px 40px", backgroundColor: C.navy }}>
         <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
@@ -783,10 +878,24 @@ function DesktopInstitutionalLanding() {
       </section>
 
       {/* Footer */}
-      <footer style={{ backgroundColor: C.navy, borderTop: `1px solid rgba(255,255,255,0.10)`, padding: "40px", textAlign: "center" }}>
+      <footer style={{ backgroundColor: C.navy, borderTop: `1px solid rgba(255,255,255,0.10)`, padding: "40px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-          <p style={{ fontSize: 12, color: C.sandLight, lineHeight: 1.8, margin: 0 }}>
-            © 2026 RunPayway™. All rights reserved. RunPayway™ is a product of PeopleStar Enterprises, LLC. Orange County, California, USA. Structural Stability Model RP-2.0.
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 32, marginBottom: 32, paddingBottom: 32, borderBottom: "1px solid rgba(255,255,255,0.10)" }}>
+            <div>
+              <p style={{ fontSize: 11, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", margin: "0 0 8px" }}>METHODOLOGY</p>
+              <p style={{ fontSize: 12, color: C.sandLight, lineHeight: 1.6, margin: 0 }}>Structural Stability Model RP-2.0. Fixed methodology. Version-locked. Auditable results.</p>
+            </div>
+            <div>
+              <p style={{ fontSize: 11, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", margin: "0 0 8px" }}>DEVELOPER</p>
+              <p style={{ fontSize: 12, color: C.sandLight, lineHeight: 1.6, margin: 0 }}>PeopleStar Enterprises, LLC. Orange County, California. Financial systems engineering.</p>
+            </div>
+            <div>
+              <p style={{ fontSize: 11, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", margin: "0 0 8px" }}>COMPLIANCE</p>
+              <p style={{ fontSize: 12, color: C.sandLight, lineHeight: 1.6, margin: 0 }}>FCRA compliant. GDPR/CCPA compatible. Annual security audit.</p>
+            </div>
+          </div>
+          <p style={{ fontSize: 11, color: C.sandLight, lineHeight: 1.8, margin: 0, textAlign: "center" }}>
+            © 2026 RunPayway™. All rights reserved. RunPayway™ is a product of PeopleStar Enterprises, LLC. Structural Stability Standard RP-2.0.
           </p>
         </div>
       </footer>
