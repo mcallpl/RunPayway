@@ -27,6 +27,20 @@ function useFadeIn() {
 }
 
 /* ================================================================ */
+/* RESPONSIVE DESIGN SYSTEM                                           */
+/* ================================================================ */
+
+const getResponsiveFontSize = (mobile: number, desktop: number): number => {
+  if (typeof window === 'undefined') return desktop;
+  return window.innerWidth <= 768 ? mobile : desktop;
+};
+
+const getResponsiveSpacing = (mobile: string, desktop: string): string => {
+  if (typeof window === 'undefined') return desktop;
+  return window.innerWidth <= 768 ? mobile : desktop;
+};
+
+/* ================================================================ */
 /* DESIGN SYSTEM                                                      */
 /* ================================================================ */
 
@@ -541,6 +555,15 @@ function showSection(section: string, audience: Audience): boolean {
 /* ================================================================ */
 
 function AudienceSelector({ audience, setAudience }: { audience: Audience; setAudience: (a: Audience) => void }) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const options: Array<{ value: Audience; label: string; tagline: string }> = [
     { value: "individual", label: "Individual", tagline: "Verify your income for major decisions" },
     { value: "institution", label: "Institution", tagline: "Integrate income verification into your platform" },
@@ -554,51 +577,54 @@ function AudienceSelector({ audience, setAudience }: { audience: Audience; setAu
       position: "sticky",
       top: 0,
       zIndex: landingLayout.zIndex.sticky,
-      padding: spacing.sm + " " + layout.paddingDesktop + "px",
+      padding: isMobile ? `${spacing.xs} ${layout.paddingMobile}px` : `${spacing.sm} ${layout.paddingDesktop}px`,
       boxShadow: landingLayout.shadows.card
     }}>
-      <div style={{ maxWidth: layout.maxWidth, margin: "0 auto", display: "flex", alignItems: "center", gap: 16 }}>
-        <span style={{ fontSize: T.body.fontSize, fontWeight: 600, color: COLORS.navy, whiteSpace: "nowrap" }}>I'm a...</span>
-        <div style={{ display: "flex", gap: 12, flex: 1 }}>
+      <div style={{ maxWidth: layout.maxWidth, margin: "0 auto", display: isMobile ? "flex" : "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "center", gap: isMobile ? 8 : 16 }}>
+        {!isMobile && <span style={{ fontSize: T.body.fontSize, fontWeight: 600, color: COLORS.navy, whiteSpace: "nowrap" }}>I'm a...</span>}
+        <div style={{ display: "flex", gap: isMobile ? 8 : 12, flex: 1, flexDirection: isMobile ? "column" : "row" }}>
           {options.map(opt => (
             <button
               key={opt.value}
               onClick={() => setAudience(opt.value)}
               style={{
                 flex: 1,
-                padding: spacing.sm + " " + spacing.sm,
+                padding: isMobile ? `${spacing.xs} ${spacing.sm}` : `${spacing.sm} ${spacing.sm}`,
                 backgroundColor: audience === opt.value ? COLORS.navy : COLORS.sand,
                 color: audience === opt.value ? COLORS.white : COLORS.navy,
                 border: audience === opt.value ? `2px solid ${COLORS.navy}` : `2px solid transparent`,
                 borderRadius: layout.borderRadius.sm,
-                fontSize: T.small.fontSize,
+                fontSize: isMobile ? 12 : T.small.fontSize,
                 fontWeight: 600,
                 cursor: "pointer",
                 transition: `all ${landingLayout.transitions.fast}`,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                gap: 4,
-                minHeight: 60,
+                justifyContent: "center",
+                gap: 2,
+                minHeight: isMobile ? 48 : 60,
                 boxShadow: audience === opt.value ? landingLayout.shadows.button : "none"
               }}
               onMouseEnter={e => {
-                if (audience !== opt.value) {
+                if (audience !== opt.value && !isMobile) {
                   e.currentTarget.style.backgroundColor = COLORS.panelFill;
                   e.currentTarget.style.boxShadow = landingLayout.shadows.card;
                 }
               }}
               onMouseLeave={e => {
-                if (audience !== opt.value) {
+                if (audience !== opt.value && !isMobile) {
                   e.currentTarget.style.backgroundColor = COLORS.sand;
                   e.currentTarget.style.boxShadow = "none";
                 }
               }}
             >
               <span>{opt.label}</span>
-              <span style={{ fontSize: T.micro.fontSize, fontWeight: 400, opacity: 0.7, lineHeight: 1.3, textAlign: "center" }}>
-                {opt.tagline}
-              </span>
+              {!isMobile && (
+                <span style={{ fontSize: T.micro.fontSize, fontWeight: 400, opacity: 0.7, lineHeight: 1.3, textAlign: "center" }}>
+                  {opt.tagline}
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -612,32 +638,56 @@ function AudienceSelector({ audience, setAudience }: { audience: Audience; setAu
 /* ================================================================ */
 
 function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 480);
+      setIsTablet(window.innerWidth > 480 && window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const responsiveSpacing = {
+    section: isMobile ? "40px" : isTablet ? "56px" : spacing.section,
+    padding: isMobile ? layout.paddingMobile : isTablet ? 24 : layout.paddingDesktop,
+    gap: isMobile ? 24 : isTablet ? 32 : 48,
+    gapSmall: isMobile ? 16 : 24,
+    heroFontSize: isMobile ? 32 : isTablet ? 40 : 56,
+    h2FontSize: isMobile ? 28 : isTablet ? 32 : 40,
+    h3FontSize: isMobile ? 18 : isTablet ? 20 : 20,
+    bodyFontSize: isMobile ? 14 : isTablet ? 15 : 15,
+  };
+
   return (
     <div style={{ backgroundColor: COLORS.white, color: COLORS.navy }}>
       {/* HERO: Audience-Specific */}
-      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.white }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }}>
+      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile || isTablet ? "1fr" : "1fr 1fr", gap: isMobile ? 32 : isTablet ? 40 : 64, alignItems: "center" }}>
           <div>
-            <h1 style={{ fontSize: T.heroDisplay.fontSize, fontWeight: T.heroDisplay.fontWeight, lineHeight: T.heroDisplay.lineHeight, letterSpacing: T.heroDisplay.letterSpacing, color: COLORS.navy, marginBottom: 40 }}>
+            <h1 style={{ fontSize: responsiveSpacing.heroFontSize, fontWeight: T.heroDisplay.fontWeight, lineHeight: T.heroDisplay.lineHeight, letterSpacing: T.heroDisplay.letterSpacing, color: COLORS.navy, marginBottom: isMobile ? 24 : 40 }}>
               {audience === "individual" && "Verify your income stability before major decisions"}
               {audience === "institution" && "Income verification standard for financial institutions"}
               {audience === "advisor" && "Income verification solution for your clients"}
             </h1>
-            <div style={{ padding: "24px", backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, marginBottom: 40 }}>
+            <div style={{ padding: isMobile ? "16px" : "24px", backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, marginBottom: isMobile ? 24 : 40 }}>
               <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 12 }}>STANDARD DEFINITION</p>
-              <ul style={{ fontSize: 14, color: COLORS.sandText, lineHeight: 1.8, margin: 0, paddingLeft: 0, listStyle: "none" }}>
+              <ul style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.sandText, lineHeight: 1.8, margin: 0, paddingLeft: isMobile ? 0 : 0, listStyle: "none" }}>
                 <li>Fixed rules applied to 6 structural inputs</li>
                 <li>Same inputs produce same classification always</li>
                 <li>No discretion applied to output</li>
                 <li>Classification applies uniformly to all income structures</li>
               </ul>
             </div>
-            <p style={{ fontSize: T.body.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 40 }}>
+            <p style={{ fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, lineHeight: 1.6 }}>
               {audience === "individual" && "See your score, understand your structure, download your proof."}
               {audience === "institution" && "Integrate deterministic income verification into your underwriting."}
               {audience === "advisor" && "Recommend to clients or white-label as your own service."}
             </p>
-            <button style={{ padding: "16px 32px", backgroundColor: audience === "institution" ? COLORS.navy : colorRules.ctaSecondary, color: COLORS.white, border: "none", borderRadius: layout.borderRadius.sm, fontSize: T.body.fontSize, fontWeight: 600, cursor: "pointer", transition: `all ${landingLayout.transitions.fast}`, boxShadow: landingLayout.shadows.button }}
+            <button style={{ padding: isMobile ? "14px 24px" : "16px 32px", backgroundColor: audience === "institution" ? COLORS.navy : colorRules.ctaSecondary, color: COLORS.white, border: "none", borderRadius: layout.borderRadius.sm, fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, cursor: "pointer", transition: `all ${landingLayout.transitions.fast}`, boxShadow: landingLayout.shadows.button, minHeight: isMobile ? 48 : "auto", width: isMobile ? "100%" : "auto" }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = landingLayout.shadows.hover; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = landingLayout.shadows.button; }}>
               {audience === "individual" && "Verify Now"}
@@ -682,8 +732,8 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 
       {/* INSTITUTIONAL FOUNDATION (Institution + Advisor paths) */}
       {(audience === "institution" || audience === "advisor") && (
-      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.white }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: layout.gap.section }}>
+      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
+        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", gap: responsiveSpacing.gap }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
               <SectionIcon iconId="credibility" size={32} />
@@ -720,15 +770,15 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 
       {/* THE 6 STRUCTURAL INPUTS (Individual + Advisor paths) */}
       {(audience === "individual" || audience === "advisor") && (
-      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.panelFill }}>
+      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 16, letterSpacing: T.h2.letterSpacing }}>
+          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 16, letterSpacing: T.h2.letterSpacing }}>
             Six structural inputs
           </h2>
-          <p style={{ fontSize: T.body.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 40 }}>
+          <p style={{ fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, lineHeight: 1.6 }}>
             Income classification is determined by these 6 factors. All financial commitments evaluated against these inputs.
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: layout.gap.loose, marginBottom: 40 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: responsiveSpacing.gap, marginBottom: isMobile ? 24 : 40 }}>
             <div style={{ padding: spacing.md, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card, transition: `all ${landingLayout.transitions.normal}` }}
               onMouseEnter={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.hover; e.currentTarget.style.transform = "translateY(-4px)"; }}
               onMouseLeave={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.card; e.currentTarget.style.transform = "translateY(0)"; }}>
@@ -795,19 +845,19 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 
       {/* STRUCTURAL MAPPING EXAMPLE (Individual + Advisor paths) */}
       {(audience === "individual" || audience === "advisor") && (
-      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.white }}>
+      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
+          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 32 : 40, letterSpacing: T.h2.letterSpacing }}>
             Same income, different structure
           </h2>
-          <p style={{ fontSize: T.body.fontSize, color: COLORS.navy, marginBottom: 40, fontWeight: 600 }}>
+          <p style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, fontWeight: 600, lineHeight: 1.6 }}>
             Both examples: $150K annual income. Structures differ. Classifications differ.
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40 }}>
-            <div style={{ backgroundColor: COLORS.panelFill, borderRadius: layout.borderRadius.lg, padding: spacing.xl, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.elevated }}>
-              <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: COLORS.textMuted, letterSpacing: T.meta.letterSpacing, marginBottom: 16 }}>STRUCTURE A: ONE PRIMARY CLIENT</div>
-              <div style={{ fontSize: 48, fontWeight: 700, fontFamily: mono, color: COLORS.risk, marginBottom: 16, lineHeight: 1 }}>31</div>
-              <div style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.risk, marginBottom: 24 }}>Limited Stability</div>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 24 : 40 }}>
+            <div style={{ backgroundColor: COLORS.panelFill, borderRadius: layout.borderRadius.lg, padding: isMobile ? spacing.md : spacing.xl, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.elevated }}>
+              <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: COLORS.textMuted, letterSpacing: T.meta.letterSpacing, marginBottom: 12 }}>STRUCTURE A: ONE PRIMARY CLIENT</div>
+              <div style={{ fontSize: isMobile ? 40 : 48, fontWeight: 700, fontFamily: mono, color: COLORS.risk, marginBottom: 12, lineHeight: 1 }}>31</div>
+              <div style={{ fontSize: responsiveSpacing.h3FontSize, fontWeight: T.h3.fontWeight, color: COLORS.risk, marginBottom: 16 }}>Limited Stability</div>
               <div style={{ fontSize: T.h3.fontSize, color: COLORS.navy, fontWeight: 600, marginBottom: 8 }}>Structural inputs:</div>
               <ul style={{ fontSize: T.small.fontSize, lineHeight: 1.8, color: COLORS.textSecondary, margin: "0 0 0 20px", paddingLeft: 0 }}>
                 <li><strong>Concentration:</strong> 1 source (concentrated)</li>
@@ -821,10 +871,10 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
                 Loss of one client = loss of 100% of income. Structure fails if client terminates.
               </p>
             </div>
-            <div style={{ backgroundColor: COLORS.panelFill, borderRadius: layout.borderRadius.lg, padding: spacing.xl, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.elevated }}>
-              <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: COLORS.textMuted, letterSpacing: T.meta.letterSpacing, marginBottom: 16 }}>STRUCTURE B: FIVE CLIENTS</div>
-              <div style={{ fontSize: 48, fontWeight: 700, fontFamily: mono, color: COLORS.protected, marginBottom: 16, lineHeight: 1 }}>74</div>
-              <div style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.protected, marginBottom: 24 }}>Established Stability</div>
+            <div style={{ backgroundColor: COLORS.panelFill, borderRadius: layout.borderRadius.lg, padding: isMobile ? spacing.md : spacing.xl, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.elevated }}>
+              <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: COLORS.textMuted, letterSpacing: T.meta.letterSpacing, marginBottom: 12 }}>STRUCTURE B: FIVE CLIENTS</div>
+              <div style={{ fontSize: isMobile ? 40 : 48, fontWeight: 700, fontFamily: mono, color: COLORS.protected, marginBottom: 12, lineHeight: 1 }}>74</div>
+              <div style={{ fontSize: responsiveSpacing.h3FontSize, fontWeight: T.h3.fontWeight, color: COLORS.protected, marginBottom: 16 }}>Established Stability</div>
               <div style={{ fontSize: T.h3.fontSize, color: COLORS.navy, fontWeight: 600, marginBottom: 8 }}>Structural inputs:</div>
               <ul style={{ fontSize: T.small.fontSize, lineHeight: 1.8, color: COLORS.textSecondary, margin: "0 0 0 20px", paddingLeft: 0 }}>
                 <li><strong>Concentration:</strong> 5 sources (diversified)</li>
@@ -845,12 +895,12 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 
       {/* PROCESSING LOGIC (Institution path only) */}
       {audience === "institution" && (
-      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.panelFill }}>
+      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
+          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
             Processing logic
           </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: layout.gap.loose, marginBottom: 40 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: responsiveSpacing.gap, marginBottom: isMobile ? 24 : 40 }}>
             <div style={{ backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, padding: spacing.xl, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
               <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 16 }}>INPUT</div>
               <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 16 }}>6 structural inputs</p>
@@ -897,12 +947,12 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 
       {/* OFFERING (Individual path only) */}
       {audience === "individual" && (
-      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.white }}>
+      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
+          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
             Verification offering
           </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: layout.gap.loose, marginBottom: 40 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: responsiveSpacing.gap, marginBottom: isMobile ? 24 : 40 }}>
             <div style={{ padding: spacing.xl, backgroundColor: COLORS.panelFill, border: `1px solid ${COLORS.borderSoft}`, borderRadius: layout.borderRadius.md, boxShadow: landingLayout.shadows.card }}>
               <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 16 }}>FREE</p>
               <p style={{ fontSize: T.body.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 20 }}>Your Position</p>
@@ -944,12 +994,12 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       )}
 
       {/* STANDARD DEFINITION (All paths) */}
-      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.panelFill }}>
+      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
+          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
             Standard definition
           </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, marginBottom: 40 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 24 : 40, marginBottom: isMobile ? 24 : 40 }}>
             <div>
               <h3 style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 16 }}>Methodology</h3>
               <ul style={{ fontSize: T.small.fontSize, color: COLORS.textPrimary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
@@ -983,12 +1033,12 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 
       {/* WORKFLOW: Mortgage Underwriting Example (Institution path only) */}
       {audience === "institution" && (
-      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.white }}>
+      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
+          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
             Workflow: Mortgage underwriting
           </h2>
-          <ol style={{ fontSize: T.body.fontSize, color: COLORS.textPrimary, lineHeight: 2, margin: "0 0 40px", paddingLeft: "24px" }}>
+          <ol style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.textPrimary, lineHeight: 1.8, margin: "0 0 " + (isMobile ? "24px" : "40px"), paddingLeft: "24px" }}>
             <li>Borrower submits income documentation. Lender evaluates 6 structural inputs from documentation.</li>
             <li>Fixed rules applied to each input. Model RP-2.0 processes the 6 inputs.</li>
             <li>Output: Stability score (0–100) + stability band + primary constraint identified.</li>
@@ -1007,37 +1057,39 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 
       {/* IMPLEMENTATION PATHWAYS (All paths, content varies) */}
       {audience === "individual" && (
-      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.white }}>
+      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
+          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
             Next steps
           </h2>
-          <div style={{ backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, padding: spacing.xl, textAlign: "center" }}>
-            <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.white, marginBottom: 24 }}>
+          <div style={{ backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, padding: isMobile ? spacing.md : spacing.xl, textAlign: "center" }}>
+            <p style={{ fontSize: responsiveSpacing.h3FontSize, fontWeight: 600, color: COLORS.white, marginBottom: isMobile ? 16 : 24 }}>
               Your income verification is ready to share
             </p>
-            <button style={{ padding: spacing.sm + " " + spacing.lg, backgroundColor: colorRules.ctaSecondary, color: COLORS.white, border: "none", borderRadius: layout.borderRadius.sm, fontSize: T.body.fontSize, fontWeight: 600, cursor: "pointer", marginRight: 12, transition: `all ${landingLayout.transitions.fast}`, boxShadow: landingLayout.shadows.button }}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = landingLayout.shadows.hover; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = landingLayout.shadows.button; }}>
-              Download PDF
-            </button>
-            <button style={{ padding: spacing.sm + " " + spacing.lg, backgroundColor: "transparent", color: COLORS.white, border: `2px solid ${COLORS.white}`, borderRadius: layout.borderRadius.sm, fontSize: T.body.fontSize, fontWeight: 600, cursor: "pointer", transition: `all ${landingLayout.transitions.fast}` }}
-              onMouseEnter={e => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.10)"; }}
-              onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; }}>
-              Share with Lender
-            </button>
+            <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 12 : 0, justifyContent: "center" }}>
+              <button style={{ padding: isMobile ? spacing.xs + " " + spacing.md : spacing.sm + " " + spacing.lg, backgroundColor: colorRules.ctaSecondary, color: COLORS.white, border: "none", borderRadius: layout.borderRadius.sm, fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, cursor: "pointer", marginRight: isMobile ? 0 : 12, transition: `all ${landingLayout.transitions.fast}`, boxShadow: landingLayout.shadows.button, minHeight: isMobile ? 48 : "auto", flex: isMobile ? 1 : 0 }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = landingLayout.shadows.hover; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = landingLayout.shadows.button; }}>
+                Download PDF
+              </button>
+              <button style={{ padding: isMobile ? spacing.xs + " " + spacing.md : spacing.sm + " " + spacing.lg, backgroundColor: "transparent", color: COLORS.white, border: `2px solid ${COLORS.white}`, borderRadius: layout.borderRadius.sm, fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, cursor: "pointer", transition: `all ${landingLayout.transitions.fast}`, minHeight: isMobile ? 48 : "auto", flex: isMobile ? 1 : 0 }}
+                onMouseEnter={e => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.10)"; }}
+                onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; }}>
+                Share with Lender
+              </button>
+            </div>
           </div>
         </div>
       </section>
       )}
 
       {audience === "institution" && (
-      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.panelFill }}>
+      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
+          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
             How to implement
           </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, marginBottom: 40 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 24 : 40, marginBottom: isMobile ? 24 : 40 }}>
             <div style={{ padding: spacing.xl, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
               <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 16 }}>For Financial Institutions</p>
               <ul style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
@@ -1069,12 +1121,12 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       )}
 
       {audience === "advisor" && (
-      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.panelFill }}>
+      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
+          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
             Advisor options
           </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, marginBottom: 40 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 24 : 40, marginBottom: isMobile ? 24 : 40 }}>
             <div style={{ padding: spacing.xl, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
               <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 16 }}>Recommend to Clients</p>
               <ul style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
@@ -1094,7 +1146,7 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
               </ul>
             </div>
           </div>
-          <button style={{ padding: spacing.sm + " " + spacing.lg, backgroundColor: COLORS.navy, color: COLORS.white, border: "none", borderRadius: layout.borderRadius.sm, fontSize: T.body.fontSize, fontWeight: 600, cursor: "pointer", display: "block", margin: "0 auto", transition: `all ${landingLayout.transitions.fast}`, boxShadow: landingLayout.shadows.button }}
+          <button style={{ padding: isMobile ? spacing.xs + " " + spacing.md : spacing.sm + " " + spacing.lg, backgroundColor: COLORS.navy, color: COLORS.white, border: "none", borderRadius: layout.borderRadius.sm, fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, cursor: "pointer", display: "block", margin: isMobile ? 0 : "0 auto", width: isMobile ? "100%" : "auto", minHeight: isMobile ? 48 : "auto", transition: `all ${landingLayout.transitions.fast}`, boxShadow: landingLayout.shadows.button }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = landingLayout.shadows.hover; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = landingLayout.shadows.button; }}>
             Request Advisor Portal
@@ -1105,12 +1157,12 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
 
       {/* DATA & PRIVACY (Institution path only) */}
       {audience === "institution" && (
-      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.white }}>
+      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: T.h2.fontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 40, letterSpacing: T.h2.letterSpacing }}>
+          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
             Data handling & privacy
           </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 24 : 40 }}>
             <div>
               <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 16 }}>Encryption & Storage</p>
               <ul style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.8, margin: 0, paddingLeft: "20px" }}>
@@ -1135,14 +1187,14 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       )}
 
       {/* FINAL CLOSE (All paths) */}
-      <section style={{ padding: `${spacing.section} ${layout.paddingDesktop}px`, backgroundColor: COLORS.navy }}>
+      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.navy }}>
         <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
-          <h2 style={{ fontSize: T.heroDisplay.fontSize, fontWeight: T.heroDisplay.fontWeight, color: COLORS.sandText, marginBottom: 48, lineHeight: T.heroDisplay.lineHeight, letterSpacing: T.heroDisplay.letterSpacing }}>
+          <h2 style={{ fontSize: responsiveSpacing.heroFontSize, fontWeight: T.heroDisplay.fontWeight, color: COLORS.sandText, marginBottom: isMobile ? 24 : 48, lineHeight: T.heroDisplay.lineHeight, letterSpacing: T.heroDisplay.letterSpacing }}>
             {audience === "individual" && "Verification precedes commitment"}
             {audience === "institution" && "Income verification at scale"}
             {audience === "advisor" && "Partner with us"}
           </h2>
-          <button style={{ padding: spacing.sm + " " + spacing.xl, backgroundColor: audience === "institution" ? COLORS.navy : colorRules.ctaSecondary, color: COLORS.white, border: "none", borderRadius: layout.borderRadius.md, fontSize: T.body.fontSize, fontWeight: 600, cursor: "pointer", transition: `all ${landingLayout.transitions.fast}`, boxShadow: landingLayout.shadows.button }}
+          <button style={{ padding: isMobile ? spacing.xs + " " + spacing.lg : spacing.sm + " " + spacing.xl, backgroundColor: audience === "institution" ? COLORS.navy : colorRules.ctaSecondary, color: COLORS.white, border: "none", borderRadius: layout.borderRadius.md, fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, cursor: "pointer", transition: `all ${landingLayout.transitions.fast}`, boxShadow: landingLayout.shadows.button, minHeight: isMobile ? 48 : "auto", width: isMobile ? "100%" : "auto" }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = landingLayout.shadows.hover; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = landingLayout.shadows.button; }}>
             {audience === "individual" && "Verify Your Income Now"}
@@ -1153,9 +1205,9 @@ function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
       </section>
 
       {/* Footer (All paths) */}
-      <footer style={{ backgroundColor: COLORS.navy, borderTop: `1px solid rgba(255,255,255,0.10)`, padding: spacing.xl }}>
+      <footer style={{ backgroundColor: COLORS.navy, borderTop: `1px solid rgba(255,255,255,0.10)`, padding: isMobile ? spacing.md : spacing.xl }}>
         <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: layout.gap.loose, marginBottom: 32, paddingBottom: 32, borderBottom: "1px solid rgba(255,255,255,0.10)" }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", gap: isMobile ? 24 : layout.gap.loose, marginBottom: isMobile ? 24 : 32, paddingBottom: isMobile ? 24 : 32, borderBottom: "1px solid rgba(255,255,255,0.10)" }}>
             <div>
               <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, margin: "0 0 8px" }}>METHODOLOGY</p>
               <p style={{ fontSize: T.micro.fontSize, color: COLORS.sandLight, lineHeight: 1.6, margin: 0 }}>Structural Stability Model RP-2.0. Fixed methodology. Version-locked. Auditable results.</p>
