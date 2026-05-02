@@ -44,7 +44,13 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  ...(isStaticExport ? { output: "export" as const, basePath: "/RunPayway" } : {}),
+  ...(isStaticExport ? {
+    output: "export" as const,
+    basePath: "/RunPayway",
+    experimental: {
+      staticGenerationRetryCount: 0,
+    }
+  } : {}),
   trailingSlash: true,
   images: { unoptimized: true },
   poweredByHeader: false,
