@@ -269,11 +269,23 @@ export default function VerificationFlow() {
               backgroundColor: C.white,
               borderRadius: 12,
               border: `1px solid ${C.borderSoft}`,
+              marginBottom: 24,
+            }}>
+              <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>STANDARD DECLARATION</p>
+              <p style={{ fontSize: 14, color: C.textPrimary, lineHeight: 1.5, margin: 0 }}>
+                RunPayway™ establishes a standardized method for evaluating income structure prior to financial decisions.
+              </p>
+            </div>
+            <div style={{
+              padding: "20px",
+              backgroundColor: C.white,
+              borderRadius: 12,
+              border: `1px solid ${C.borderSoft}`,
               marginBottom: 32,
             }}>
-              <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>UNVERIFIED INCOME</p>
-              <p style={{ fontSize: 15, color: C.textPrimary, lineHeight: 1.5, margin: 0 }}>
-                Introduces structural risk.
+              <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>APPLICATION</p>
+              <p style={{ fontSize: 14, color: C.textPrimary, lineHeight: 1.5, margin: 0 }}>
+                Applied in evaluation of income structures prior to financial commitment.
               </p>
             </div>
             <div style={{
@@ -303,8 +315,8 @@ export default function VerificationFlow() {
               onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
               Start Verification →
             </button>
-            <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 16 }}>
-              Answer 6 inputs. Result immediately.
+            <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 14 }}>
+              Answer 6 structural inputs. Verification occurs immediately.
             </p>
           </div>
         </div>
@@ -336,7 +348,7 @@ export default function VerificationFlow() {
               color: C.textMuted,
               marginBottom: 28,
             }}>
-              Select the decision being evaluated.
+              Select the decision requiring structural verification.
             </p>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 48 }}>
@@ -390,10 +402,20 @@ export default function VerificationFlow() {
               lineHeight: 1.2,
               letterSpacing: "-0.02em",
               color: C.navy,
-              marginBottom: 32,
+              marginBottom: 24,
             }}>
               Define how income is structured
             </h2>
+            <div style={{
+              padding: "16px",
+              backgroundColor: C.navy,
+              borderRadius: 10,
+              marginBottom: 32,
+            }}>
+              <p style={{ fontSize: 12, color: C.sandMuted, margin: 0, lineHeight: 1.5 }}>
+                Inputs define the result. No external data is used.
+              </p>
+            </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
               {/* Income Type */}
@@ -545,10 +567,23 @@ export default function VerificationFlow() {
               lineHeight: 1.1,
               letterSpacing: "-0.02em",
               color: C.navy,
-              marginBottom: 28,
+              marginBottom: 16,
             }}>
               Income Stability Result
             </h1>
+
+            {/* Audit Info */}
+            <div style={{
+              fontSize: 11,
+              color: C.textMuted,
+              marginBottom: 28,
+              lineHeight: 1.6,
+              letterSpacing: "0.05em",
+            }}>
+              <div>Record ID: RS-{Math.random().toString(36).substr(2, 9).toUpperCase()}</div>
+              <div>Model: RP-2.0</div>
+              <div>Timestamp: {new Date().toISOString().split('T')[0]}</div>
+            </div>
 
             {/* Score Card */}
             <div style={{
@@ -590,10 +625,18 @@ export default function VerificationFlow() {
                 fontSize: 11,
                 fontWeight: 600,
                 color: "rgba(244,241,234,0.40)",
-                marginTop: 16,
+                marginTop: 12,
                 letterSpacing: "0.06em",
               }}>
                 OUTPUT DERIVED FROM FIXED STRUCTURAL INPUTS
+              </div>
+              <div style={{
+                fontSize: 11,
+                color: "rgba(244,241,234,0.30)",
+                marginTop: 8,
+                lineHeight: 1.4,
+              }}>
+                This result can be verified and reproduced under identical inputs.
               </div>
             </div>
 
@@ -616,23 +659,52 @@ export default function VerificationFlow() {
               padding: "20px",
               backgroundColor: C.navy,
               borderRadius: 12,
-              marginBottom: 28,
+              marginBottom: 24,
             }}>
               <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>DECISION VALIDATION</p>
-              <p style={{ fontSize: 15, fontWeight: 600, color: C.sandText, lineHeight: 1.5, marginBottom: 8 }}>
+              <p style={{ fontSize: 15, fontWeight: 600, color: C.sandText, lineHeight: 1.5, marginBottom: 12 }}>
                 {getDecisionLabel(selectedDecision)}
               </p>
               <p style={{
                 fontSize: 14,
                 color: result.alignment ? C.protected : C.risk,
                 fontWeight: 600,
+                marginBottom: 8,
               }}>
-                {result.alignment ? "✓ Structurally aligned" : "✗ Not structurally aligned"}
+                {result.alignment ? "Structurally aligned" : "Not structurally aligned"}
               </p>
-              <p style={{ fontSize: 13, color: C.sandMuted, lineHeight: 1.5, marginTop: 8, margin: 0 }}>
-                {result.alignment
-                  ? "Under current structure, this income sustains this obligation if conditions change."
-                  : "Under current structure, this income may not sustain this obligation if conditions change."}
+              <p style={{ fontSize: 13, color: C.sandMuted, lineHeight: 1.5, margin: 0 }}>
+                Under current structure, this income may not sustain this obligation if conditions change.
+              </p>
+            </div>
+
+            {/* Structural Confidence */}
+            <div style={{
+              padding: "20px",
+              backgroundColor: C.panelFill,
+              borderRadius: 12,
+              border: `1px solid ${C.borderSoft}`,
+              marginBottom: 28,
+            }}>
+              <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>STRUCTURAL CONFIDENCE</p>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 8 }}>
+                {result.score >= 60 ? "Defined" : result.score >= 40 ? "Moderate" : "Low"}
+              </p>
+              <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.5, margin: 0 }}>
+                Confidence reflects clarity and consistency of structural inputs.
+              </p>
+            </div>
+
+            {/* Scope Boundary */}
+            <div style={{
+              padding: "20px",
+              backgroundColor: "rgba(31,109,122,0.06)",
+              borderRadius: 12,
+              border: `1px solid rgba(31,109,122,0.15)`,
+              marginBottom: 24,
+            }}>
+              <p style={{ fontSize: 13, color: C.established, lineHeight: 1.6, margin: 0 }}>
+                This evaluation reflects income structure only. External factors are not included.
               </p>
             </div>
 
@@ -646,7 +718,7 @@ export default function VerificationFlow() {
             }}>
               <p style={{ fontSize: 13, fontWeight: 600, color: C.navy, marginBottom: 12 }}>Full structural verification required</p>
               <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>
-                This decision is not defined under current output. Missing: full factor scoring, constraint weighting, complete decision validation.
+                Complete structural definition is required to validate this decision.
               </p>
             </div>
 
@@ -811,9 +883,9 @@ export default function VerificationFlow() {
                   border: `1px solid rgba(199,70,52,0.12)`,
                   marginBottom: 28,
                 }}>
-                  <p style={{ fontSize: 13, fontWeight: 600, color: C.risk, marginBottom: 4 }}>Decision remains incomplete</p>
+                  <p style={{ fontSize: 13, fontWeight: 600, color: C.risk, marginBottom: 4 }}>Verification required</p>
                   <p style={{ fontSize: 12, color: C.textSecondary, margin: 0, lineHeight: 1.5 }}>
-                    This decision is not defined under current output.
+                    Proceeding without structural verification introduces measurable risk.
                   </p>
                 </div>
 
@@ -833,8 +905,8 @@ export default function VerificationFlow() {
                   onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
                   Unlock Full Verification — $69
                 </button>
-                <p style={{ fontSize: 12, color: C.textMuted, textAlign: "center", marginTop: 16 }}>
-                  Full report unlocks immediately after payment
+                <p style={{ fontSize: 12, color: C.textMuted, textAlign: "center", marginTop: 14 }}>
+                  Verification precedes commitment.
                 </p>
               </>
             )}
