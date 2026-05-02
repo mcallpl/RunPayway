@@ -72,6 +72,8 @@ interface Result {
   alignment: boolean;
 }
 
+type Audience = "individual" | "institution" | "advisor";
+
 /* ================================================================ */
 /* UTILITIES                                                          */
 /* ================================================================ */
@@ -517,18 +519,101 @@ function MobileDecisionFlow() {
 }
 
 /* ================================================================ */
+/* AUDIENCE SECTION VISIBILITY HELPER                                */
+/* ================================================================ */
+
+const sectionVisibility: Record<Audience, Set<string>> = {
+  individual: new Set(["hero-individual", "inputs", "example", "pricing", "standard", "footer"]),
+  institution: new Set(["hero-institution", "credibility", "api-track", "processing", "privacy", "standard", "matrix", "footer"]),
+  advisor: new Set(["hero-advisor", "credibility", "inputs", "example", "gallery", "faq", "matrix", "footer"])
+};
+
+function showSection(section: string, audience: Audience): boolean {
+  return sectionVisibility[audience].has(section);
+}
+
+/* ================================================================ */
+/* AUDIENCE SELECTOR COMPONENT                                       */
+/* ================================================================ */
+
+function AudienceSelector({ audience, setAudience }: { audience: Audience; setAudience: (a: Audience) => void }) {
+  const options: Array<{ value: Audience; label: string; tagline: string }> = [
+    { value: "individual", label: "Individual", tagline: "Verify your income for major decisions" },
+    { value: "institution", label: "Institution", tagline: "Integrate income verification into your platform" },
+    { value: "advisor", label: "Advisor", tagline: "Recommend to clients or offer as service" }
+  ];
+
+  return (
+    <div style={{
+      backgroundColor: C.white,
+      borderBottom: `1px solid ${C.divider}`,
+      position: "sticky",
+      top: 0,
+      zIndex: 1000,
+      padding: "16px 40px"
+    }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", alignItems: "center", gap: 16 }}>
+        <span style={{ fontSize: 14, fontWeight: 600, color: C.navy, whiteSpace: "nowrap" }}>I'm a...</span>
+        <div style={{ display: "flex", gap: 12, flex: 1 }}>
+          {options.map(opt => (
+            <button
+              key={opt.value}
+              onClick={() => setAudience(opt.value)}
+              style={{
+                flex: 1,
+                padding: "12px 16px",
+                backgroundColor: audience === opt.value ? C.navy : C.sand,
+                color: audience === opt.value ? C.white : C.navy,
+                border: "none",
+                borderRadius: 8,
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: "pointer",
+                transition: "all 200ms",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 4,
+                minHeight: 60
+              }}
+              onMouseEnter={e => {
+                if (audience !== opt.value) {
+                  e.currentTarget.style.backgroundColor = C.panelFill;
+                }
+              }}
+              onMouseLeave={e => {
+                if (audience !== opt.value) {
+                  e.currentTarget.style.backgroundColor = C.sand;
+                }
+              }}
+            >
+              <span>{opt.label}</span>
+              <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.7, lineHeight: 1.3, textAlign: "center" }}>
+                {opt.tagline}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ================================================================ */
 /* DESKTOP INSTITUTIONAL LANDING (CSS-based responsive)             */
 /* ================================================================ */
 
-function DesktopInstitutionalLanding() {
+function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
   return (
     <div style={{ backgroundColor: C.white, color: C.navy }}>
-      {/* HERO: Standard Declaration */}
+      {/* HERO: Audience-Specific */}
       <section style={{ padding: "100px 40px", backgroundColor: C.white }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64, alignItems: "center" }}>
           <div>
             <h1 style={{ fontSize: 52, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.03em", color: C.navy, marginBottom: 40 }}>
-              Income verification is required before financial commitment.
+              {audience === "individual" && "Verify your income stability before major decisions"}
+              {audience === "institution" && "Income verification standard for financial institutions"}
+              {audience === "advisor" && "Income verification solution for your clients"}
             </h1>
             <div style={{ padding: "24px", backgroundColor: C.navy, borderRadius: 12, marginBottom: 40 }}>
               <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 12 }}>STANDARD DEFINITION</p>
@@ -540,15 +625,21 @@ function DesktopInstitutionalLanding() {
               </ul>
             </div>
             <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 40 }}>
-              Verification classifies income based on structural inputs. Result is permanent for that income structure.
+              {audience === "individual" && "See your score, understand your structure, download your proof."}
+              {audience === "institution" && "Integrate deterministic income verification into your underwriting."}
+              {audience === "advisor" && "Recommend to clients or white-label as your own service."}
             </p>
             <button style={{ padding: "16px 32px", backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
-              Verify Income Stability
+              {audience === "individual" && "Verify Now"}
+              {audience === "institution" && "View API Integration"}
+              {audience === "advisor" && "View Advisor Options"}
             </button>
             <p style={{ fontSize: 12, color: C.textMuted, marginTop: 16, letterSpacing: "0.05em" }}>
-              Free classification · Timestamped result · Private
+              {audience === "individual" && "Free classification · Timestamped result · Private"}
+              {audience === "institution" && "REST API · Webhook support · Bulk processing"}
+              {audience === "advisor" && "Free recommendations OR $15-25 per report licensing"}
             </p>
             <p style={{ fontSize: 11, color: C.teal, marginTop: 24, fontWeight: 600 }}>
               Model RP-2.0. Validated methodology. Used by 500+ financial institutions.
@@ -581,7 +672,8 @@ function DesktopInstitutionalLanding() {
         </div>
       </section>
 
-      {/* INSTITUTIONAL FOUNDATION */}
+      {/* INSTITUTIONAL FOUNDATION (Institution + Advisor paths) */}
+      {(audience === "institution" || audience === "advisor") && (
       <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 48 }}>
           <div>
@@ -607,8 +699,10 @@ function DesktopInstitutionalLanding() {
           </div>
         </div>
       </section>
+      )}
 
-      {/* THE 6 STRUCTURAL INPUTS */}
+      {/* THE 6 STRUCTURAL INPUTS (Individual + Advisor paths) */}
+      {(audience === "individual" || audience === "advisor") && (
       <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 16, letterSpacing: "-0.02em" }}>
@@ -650,8 +744,10 @@ function DesktopInstitutionalLanding() {
           </div>
         </div>
       </section>
+      )}
 
-      {/* STRUCTURAL MAPPING EXAMPLE */}
+      {/* STRUCTURAL MAPPING EXAMPLE (Individual + Advisor paths) */}
+      {(audience === "individual" || audience === "advisor") && (
       <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
@@ -698,8 +794,10 @@ function DesktopInstitutionalLanding() {
           </div>
         </div>
       </section>
+      )}
 
-      {/* PROCESSING LOGIC */}
+      {/* PROCESSING LOGIC (Institution path only) */}
+      {audience === "institution" && (
       <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
@@ -748,8 +846,10 @@ function DesktopInstitutionalLanding() {
           </div>
         </div>
       </section>
+      )}
 
-      {/* OFFERING */}
+      {/* OFFERING (Individual path only) */}
+      {audience === "individual" && (
       <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
@@ -782,8 +882,9 @@ function DesktopInstitutionalLanding() {
           </div>
         </div>
       </section>
+      )}
 
-      {/* STANDARD DEFINITION: Methodology & Permanence */}
+      {/* STANDARD DEFINITION (All paths) */}
       <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
@@ -821,7 +922,8 @@ function DesktopInstitutionalLanding() {
         </div>
       </section>
 
-      {/* WORKFLOW: Mortgage Underwriting Example */}
+      {/* WORKFLOW: Mortgage Underwriting Example (Institution path only) */}
+      {audience === "institution" && (
       <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
@@ -842,8 +944,31 @@ function DesktopInstitutionalLanding() {
           </div>
         </div>
       </section>
+      )}
 
-      {/* IMPLEMENTATION PATHWAYS */}
+      {/* IMPLEMENTATION PATHWAYS (All paths, content varies) */}
+      {audience === "individual" && (
+      <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
+            Next steps
+          </h2>
+          <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "40px", textAlign: "center" }}>
+            <p style={{ fontSize: 18, fontWeight: 600, color: C.white, marginBottom: 24 }}>
+              Your income verification is ready to share
+            </p>
+            <button style={{ padding: "16px 32px", backgroundColor: C.teal, color: C.white, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer", marginRight: 12 }}>
+              Download PDF
+            </button>
+            <button style={{ padding: "16px 32px", backgroundColor: "transparent", color: C.white, border: `2px solid ${C.white}`, borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
+              Share with Lender
+            </button>
+          </div>
+        </div>
+      </section>
+      )}
+
+      {audience === "institution" && (
       <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
@@ -878,8 +1003,43 @@ function DesktopInstitutionalLanding() {
           </div>
         </div>
       </section>
+      )}
 
-      {/* DATA & PRIVACY */}
+      {audience === "advisor" && (
+      <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
+            Advisor options
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, marginBottom: 40 }}>
+            <div style={{ padding: "32px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Recommend to Clients</p>
+              <ul style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
+                <li>Direct client to web form at no cost to you</li>
+                <li>Clients receive instant classification + optional $69 report</li>
+                <li>Share results with clients as part of advisory process</li>
+                <li>Build trust through third-party verification</li>
+              </ul>
+            </div>
+            <div style={{ padding: "32px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}` }}>
+              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 16 }}>White-Label Resale</p>
+              <ul style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
+                <li>Branded advisor portal with your logo</li>
+                <li>$15–25 per report licensing fee</li>
+                <li>Bulk processing for multiple clients</li>
+                <li>Support for ongoing client relationships</li>
+              </ul>
+            </div>
+          </div>
+          <button style={{ padding: "16px 32px", backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer", display: "block", margin: "0 auto" }}>
+            Request Advisor Portal
+          </button>
+        </div>
+      </section>
+      )}
+
+      {/* DATA & PRIVACY (Institution path only) */}
+      {audience === "institution" && (
       <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 40, letterSpacing: "-0.02em" }}>
@@ -907,22 +1067,27 @@ function DesktopInstitutionalLanding() {
           </div>
         </div>
       </section>
+      )}
 
-      {/* FINAL CLOSE */}
+      {/* FINAL CLOSE (All paths) */}
       <section style={{ padding: "100px 40px", backgroundColor: C.navy }}>
         <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
           <h2 style={{ fontSize: 44, fontWeight: 600, color: C.sandText, marginBottom: 48, lineHeight: 1.2, letterSpacing: "-0.02em" }}>
-            Verification precedes commitment.
+            {audience === "individual" && "Verification precedes commitment"}
+            {audience === "institution" && "Income verification at scale"}
+            {audience === "advisor" && "Partner with us"}
           </h2>
           <button style={{ padding: "16px 48px", backgroundColor: C.teal, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(31,109,122,0.30)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(31,109,122,0.20)"; }}>
-            Verify Income Stability
+            {audience === "individual" && "Verify Your Income Now"}
+            {audience === "institution" && "Schedule Integration Demo"}
+            {audience === "advisor" && "Request Advisor Access"}
           </button>
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Footer (All paths) */}
       <footer style={{ backgroundColor: C.navy, borderTop: `1px solid rgba(255,255,255,0.10)`, padding: "40px" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 32, marginBottom: 32, paddingBottom: 32, borderBottom: "1px solid rgba(255,255,255,0.10)" }}>
@@ -953,6 +1118,20 @@ function DesktopInstitutionalLanding() {
 /* ================================================================ */
 
 export default function Page() {
+  const [audience, setAudience] = useState<Audience>("individual");
+
+  useEffect(() => {
+    const saved = localStorage.getItem("runpayway_audience") as Audience | null;
+    if (saved && ["individual", "institution", "advisor"].includes(saved)) {
+      setAudience(saved);
+    }
+  }, []);
+
+  const handleAudienceChange = (newAudience: Audience) => {
+    setAudience(newAudience);
+    localStorage.setItem("runpayway_audience", newAudience);
+  };
+
   return (
     <div>
       <style>{`
@@ -976,7 +1155,8 @@ export default function Page() {
       </div>
 
       <div className="desktop-only">
-        <DesktopInstitutionalLanding />
+        <AudienceSelector audience={audience} setAudience={handleAudienceChange} />
+        <DesktopInstitutionalLanding audience={audience} />
       </div>
     </div>
   );
