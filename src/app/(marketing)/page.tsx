@@ -557,10 +557,10 @@ function DesktopInstitutionalLanding() {
       </section>
 
       {/* What You Receive - Decision Output Preview */}
-      <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
+      <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 32, letterSpacing: "-0.02em" }}>
-            What you receive
+            Classification output
           </h2>
           <div style={{ maxWidth: 600, margin: "0 auto", backgroundColor: C.panelFill, borderRadius: 12, padding: "40px", marginBottom: 32 }}>
             <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 24 }}>Example: Mortgage commitment</p>
@@ -586,23 +586,23 @@ function DesktopInstitutionalLanding() {
         </div>
       </section>
 
-      {/* Interactive Verification */}
-      <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
+      {/* Evaluation Assessment */}
+      <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 12, letterSpacing: "-0.02em", textAlign: "center" }}>
-            Try your verification
+            Evaluate your income structure
           </h2>
           <p style={{ fontSize: 15, color: C.textSecondary, marginBottom: 40, lineHeight: 1.7, textAlign: "center" }}>
-            Answer 6 structural questions. See your classification immediately.
+            Answer 6 structural questions. Receive your classification in 90 seconds.
           </p>
-          <div className="verification-flow" style={{ backgroundColor: C.white, borderRadius: 12, overflow: "hidden", boxShadow: "0 4px 16px rgba(14,26,43,0.08)" }}>
+          <div className="verification-flow" style={{ backgroundColor: C.panelFill, borderRadius: 12, overflow: "hidden", border: `1px solid ${C.borderSoft}` }}>
             <div style={{ backgroundColor: C.navy, padding: "20px", textAlign: "center" }}>
-              <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", margin: 0 }}>INTERACTIVE VERIFICATION</p>
+              <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", margin: 0 }}>INCOME STRUCTURE EVALUATION</p>
             </div>
             <div style={{ padding: "40px", minHeight: 300, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <div style={{ textAlign: "center" }}>
                 <p style={{ fontSize: 15, color: C.textSecondary, marginBottom: 24 }}>
-                  Start your verification in 2 minutes. No documents required.
+                  Evaluate your income structure. Classification is immediate and permanent.
                 </p>
                 <button style={{ padding: "16px 40px", backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
                   onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
@@ -820,7 +820,7 @@ function DesktopInstitutionalLanding() {
       </section>
 
       {/* System Integrity */}
-      <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
+      <section style={{ padding: "80px 40px", backgroundColor: C.white }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 32, letterSpacing: "-0.02em" }}>
             System integrity
@@ -836,20 +836,23 @@ function DesktopInstitutionalLanding() {
               </ul>
             </div>
             <div>
-              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Verification</h3>
+              <h3 style={{ fontSize: 15, fontWeight: 600, color: C.navy, marginBottom: 16 }}>Auditability</h3>
               <ul style={{ fontSize: 14, color: C.textPrimary, lineHeight: 1.9, margin: 0, paddingLeft: 0, listStyle: "none" }}>
-                <li>• Same inputs = same result</li>
-                <li>• Applied consistently across all profiles</li>
-                <li>• Deterministic, not probabilistic</li>
-                <li>• Repeatable at any time</li>
+                <li>• Every classification timestamped</li>
+                <li>• Version-locked to model release</li>
+                <li>• Permanent record for income snapshot</li>
+                <li>• Reassessment required for structural change</li>
               </ul>
             </div>
           </div>
-          <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 8 }}>
+          <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 16 }}>
             This is a standardized measurement system. Not an estimate. Not a forecast. Results are derived exclusively from structure, not from income level or credit history.
           </p>
+          <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 16 }}>
+            Classifications are permanent for the evaluated income structure. If structure changes, reassessment is required—prior classification remains in archive.
+          </p>
           <p style={{ fontSize: 14, color: C.textSecondary, marginBottom: 32 }}>
-            Used where income stability must be verified before financial commitment.
+            Used where income stability must be evaluated and verified before financial commitment.
           </p>
           <div style={{ display: "flex", gap: 24, justifyContent: "flex-start" }}>
             <button style={{ padding: "12px 28px", backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
@@ -862,6 +865,33 @@ function DesktopInstitutionalLanding() {
               onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}>
               For Organizations
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Workflow Integration */}
+      <section style={{ padding: "80px 40px", backgroundColor: C.panelFill }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <h2 style={{ fontSize: 32, fontWeight: 600, color: C.navy, marginBottom: 32, letterSpacing: "-0.02em" }}>
+            Implementation workflow
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 32 }}>
+            <div>
+              <h3 style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 20 }}>Mortgage Underwriting</h3>
+              <ol style={{ fontSize: 14, color: C.textPrimary, lineHeight: 2, margin: 0, paddingLeft: 20, listStyle: "decimal" }}>
+                <li>Borrower submits income documentation (tax returns, contracts, bank statements)</li>
+                <li>Loan officer evaluates 6 structural factors: concentration, continuity, visibility, contracts, activity dependence, variability</li>
+                <li>Classification returned in 90 seconds (Free: Stability Class; Full: Income Stability Score™ with structural breakdown)</li>
+                <li>Score locked to file with timestamp and model version (RP-2.0)</li>
+                <li>Classification used in pre-approval decision framework</li>
+                <li>Score remains permanent for this income snapshot; reassessment required if income structure changes</li>
+              </ol>
+            </div>
+          </div>
+          <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: "32px", marginTop: 32, textAlign: "center" }}>
+            <p style={{ fontSize: 14, color: C.sandText, margin: 0, lineHeight: 1.8 }}>
+              Classification is permanent and auditable. Prior evaluations remain archival. Reassess quarterly for variable income or immediately upon structural change.
+            </p>
           </div>
         </div>
       </section>
