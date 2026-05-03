@@ -237,7 +237,7 @@ export default function LandingPage() {
       </section>
 
       {/* TRUST STRIP - HORIZONTAL LAYOUT */}
-      <section style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB", padding: "64px 48px 64px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
+      <section style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB", padding: "80px 48px 80px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         {/* Arrow */}
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2.5" style={{ marginLeft: "auto", marginRight: "auto" }}>
@@ -246,41 +246,41 @@ export default function LandingPage() {
         </div>
 
         {/* Headline */}
-        <p style={{ fontSize: "18px", lineHeight: "1.5", fontWeight: "500", color: "#0E1A2B", textAlign: "center", margin: "0 0 56px 0", fontFamily: "Inter" }}>
+        <p style={{ fontSize: "18px", lineHeight: "1.5", fontWeight: "500", color: "#0E1A2B", textAlign: "center", margin: "0 0 64px 0", fontFamily: "Inter" }}>
           Trusted by organizations and professionals for verified income stability.
         </p>
 
         {/* Trust Row - Horizontal Layout */}
         <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "80px" }}>
           {/* Item 1 */}
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
-              <path d="M12 1l8.217 1.318c.51.082.939.51 1.021 1.02l1.318 8.217c.16 1.001.16 2.01 0 3.011l-1.318 8.217c-.082.51-.511.938-1.021 1.02L12 23l-8.217-1.318c-.51-.082-.939-.51-1.021-1.02l-1.318-8.217c-.16-1.001-.16-2.01 0-3.011l1.318-8.217C2.844 2.608 3.273 2.18 3.783 2.098L12 1z" />
-              <polyline points="10 12 12 14 15 10" />
+          <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
+              <path d="M12 2L5 5v7c0 6 7 9 7 9s7-3 7-9V5l-7-3z" />
+              <polyline points="9 12 11 14 15 10" />
             </svg>
-            <p style={{ fontSize: "15px", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
+            <p style={{ fontSize: "15px", fontWeight: "500", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
               Independent verification
             </p>
           </div>
 
           {/* Item 2 */}
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
               <path d="M7 11V7a5 5 0 0110 0v4" />
               <circle cx="12" cy="16" r="1" />
             </svg>
-            <p style={{ fontSize: "15px", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
+            <p style={{ fontSize: "15px", fontWeight: "500", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
               No documents required
             </p>
           </div>
 
           {/* Item 3 */}
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
             </svg>
-            <p style={{ fontSize: "15px", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
+            <p style={{ fontSize: "15px", fontWeight: "500", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
               Instant results
             </p>
           </div>
