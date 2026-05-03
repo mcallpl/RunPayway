@@ -7,7 +7,7 @@ export default function LandingPage() {
         <div className="hidden lg:flex h-full items-center" style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 48px", justifyContent: "space-between" }}>
           {/* Logo */}
           <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: "0", marginRight: "64px" }}>
-            <img src="/runpayway-logo.png" alt="RunPayway™" style={{ height: "28px", width: "auto" }} />
+            <img src="/runpayway-logo-blue.png" alt="RunPayway™" style={{ height: "24px", width: "auto" }} />
           </a>
 
           {/* Center Navigation */}
@@ -40,7 +40,7 @@ export default function LandingPage() {
         {/* Mobile */}
         <div className="lg:hidden flex h-full items-center justify-between" style={{ padding: "0 24px" }}>
           <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-            <img src="/runpayway-logo.png" alt="RunPayway™" style={{ height: "24px", width: "auto" }} />
+            <img src="/runpayway-logo-blue.png" alt="RunPayway™" style={{ height: "20px", width: "auto" }} />
           </a>
           <button style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", gap: "5px", padding: "0" }}>
             <span style={{ display: "block", width: "24px", height: "2px", backgroundColor: "#0E1A2B" }}></span>
