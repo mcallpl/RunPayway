@@ -37,75 +37,237 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* SECTION 1: HERO */}
-      <section className="bg-white" style={{ padding: "80px 40px" }}>
-        <div className="max-w-[1400px] mx-auto">
-          <div className="grid grid-cols-2 gap-16 items-center">
-            <div>
-              <div className="text-[14px] font-semibold text-[#0275D8] mb-4 tracking-wide">STRUCTURAL STABILITY MODEL RP-2.0</div>
-              <h1 className="text-[52px] font-bold leading-tight text-[#0E1A2B] mb-6">Major financial decisions require income verification.</h1>
-              <p className="text-[18px] font-semibold text-[#0E1A2B] mb-4">
-                <span className="text-[#0275D8]">RunPayway™</span> defines whether income stability holds before commitment.
-              </p>
-              <p className="text-[16px] text-[#5E6873] mb-8">Without verification, income risk remains undefined.</p>
-              <button className="bg-[#0E1A2B] text-white px-8 py-3.5 rounded-[8px] text-[16px] font-semibold mb-6 w-full max-w-[340px] flex items-center justify-center gap-2">
-                Start Verification
-                <span>→</span>
-              </button>
-              <p className="text-[13px] text-[#6B7280]">Before financial commitment · Answer 6 inputs · Immediate result</p>
-            </div>
-            <div className="bg-white rounded-[16px] p-10 border border-[#E5E7EB]">
-              <div className="text-[12px] font-semibold text-[#0275D8] mb-6 tracking-widest">INCOME STABILITY SCORE™</div>
-              <div className="text-[88px] font-bold text-[#0E1A2B] mb-1" style={{ fontFamily: "system-ui, -apple-system, sans-serif", lineHeight: "1" }}>72</div>
-              <div className="text-[16px] text-[#6B7280] mb-6">/ 100</div>
-              <div className="text-[16px] font-semibold text-[#0275D8] mb-6">Established Stability</div>
-              <p className="text-[14px] text-[#6B7280] mb-6">Determines whether income holds under disruption.</p>
-              <div className="flex gap-2 mb-3" style={{ height: 12 }}>
-                <div className="flex-[0.4] bg-[#0275D8]" style={{ borderRadius: "999px" }}></div>
-                <div className="flex-[0.3] bg-[#D0A23A]" style={{ borderRadius: "999px" }}></div>
-                <div className="flex-[0.3] bg-[#C62828]" style={{ borderRadius: "999px" }}></div>
+      {/* SECTION 1: HERO - PIXEL LOCKED */}
+      <section className="bg-white" style={{ paddingTop: "96px", paddingBottom: "96px" }}>
+        {/* Desktop */}
+        <div className="hidden lg:block" style={{ paddingLeft: "40px", paddingRight: "40px" }}>
+          <div style={{ maxWidth: "1200px", marginLeft: "auto", marginRight: "auto" }}>
+            {/* 12-column grid, 7/5 split */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: "48px", alignItems: "flex-start" }}>
+              {/* LEFT COLUMN - 7 columns */}
+              <div style={{ gridColumn: "span 7" }}>
+                {/* Label */}
+                <div style={{ fontSize: "13px", fontWeight: "600", letterSpacing: "0.08em", color: "#1F6D7A", marginBottom: "16px" }}>
+                  STRUCTURAL STABILITY MODEL RP-2.0
+                </div>
+
+                {/* Headline */}
+                <h1 style={{ fontSize: "56px", fontWeight: "700", lineHeight: "1.1", color: "#0E1A2B", marginBottom: "20px", maxWidth: "580px" }}>
+                  Major financial decisions require income verification.
+                </h1>
+
+                {/* Body - RunPayway line */}
+                <p style={{ fontSize: "18px", fontWeight: "400", lineHeight: "1.5", color: "#0E1A2B", marginBottom: "12px" }}>
+                  <span style={{ fontWeight: "600", color: "#1F6D7A" }}>RunPayway™</span> defines whether income stability holds before commitment.
+                </p>
+
+                {/* Supporting sentence */}
+                <p style={{ fontSize: "16px", color: "#6B7280", marginBottom: "28px" }}>
+                  Without verification, income risk remains undefined.
+                </p>
+
+                {/* CTA Button */}
+                <button style={{ height: "56px", padding: "0 28px", backgroundColor: "#0E1A2B", color: "#FFFFFF", borderRadius: "8px", fontWeight: "600", fontSize: "16px", border: "none", cursor: "pointer", marginBottom: "16px", display: "inline-flex", alignItems: "center", gap: "8px" }}>
+                  Start Verification
+                  <span>→</span>
+                </button>
+
+                {/* Micro text */}
+                <p style={{ fontSize: "14px", color: "#6B7280", margin: "0" }}>
+                  Before financial commitment · Answer 6 inputs · Immediate result
+                </p>
               </div>
-              <div className="flex justify-between text-[12px] font-semibold text-[#0275D8] mb-6">
+
+              {/* RIGHT COLUMN - 5 columns */}
+              <div style={{ gridColumn: "span 5" }}>
+                {/* Score Card */}
+                <div style={{ width: "100%", maxWidth: "420px", padding: "32px", backgroundColor: "#FFFFFF", border: "1px solid #E6E8EB", borderRadius: "12px", boxShadow: "0px 2px 8px rgba(0,0,0,0.02)" }}>
+                  {/* Score Title */}
+                  <div style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A2B", marginBottom: "12px" }}>
+                    Income Stability Score™
+                  </div>
+
+                  {/* Score Number */}
+                  <div style={{ display: "flex", alignItems: "baseline", gap: "4px", marginBottom: "16px" }}>
+                    <span style={{ fontSize: "72px", fontWeight: "700", lineHeight: "1", color: "#0E1A2B" }}>72</span>
+                    <span style={{ fontSize: "20px", color: "#6B7280" }}>/100</span>
+                  </div>
+
+                  {/* Divider */}
+                  <div style={{ borderTop: "1px solid #E6E8EB", marginBottom: "16px" }}></div>
+
+                  {/* Band Title */}
+                  <div style={{ fontSize: "18px", fontWeight: "600", color: "#1F6D7A", marginBottom: "8px" }}>
+                    Established Stability
+                  </div>
+
+                  {/* Description */}
+                  <p style={{ fontSize: "14px", color: "#6B7280", marginBottom: "20px", margin: "0" }}>
+                    Determines whether income holds under disruption.
+                  </p>
+
+                  {/* Progress Bar */}
+                  <div style={{ display: "flex", gap: "8px", height: "6px", marginBottom: "10px" }}>
+                    <div style={{ flex: "0.4", backgroundColor: "#1F6D7A", borderRadius: "999px" }}></div>
+                    <div style={{ flex: "0.3", backgroundColor: "#E5E7EB", borderRadius: "999px" }}></div>
+                    <div style={{ flex: "0.3", backgroundColor: "#E5E7EB", borderRadius: "999px" }}></div>
+                  </div>
+
+                  {/* Progress Labels */}
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", color: "#6B7280", marginBottom: "20px" }}>
+                    <span>Protected</span>
+                    <span>Recurring</span>
+                    <span>At Risk</span>
+                  </div>
+
+                  {/* Footer Divider */}
+                  <div style={{ borderTop: "1px solid #E6E8EB", paddingTop: "20px" }}>
+                    <p style={{ fontSize: "13px", color: "#6B7280", margin: "0" }}>
+                      Model RP-2.0 · Same inputs produce same result
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile */}
+        <div className="lg:hidden" style={{ paddingLeft: "20px", paddingRight: "20px" }}>
+          <div style={{ maxWidth: "1200px", marginLeft: "auto", marginRight: "auto" }}>
+            {/* Label */}
+            <div style={{ fontSize: "13px", fontWeight: "600", letterSpacing: "0.08em", color: "#1F6D7A", marginBottom: "16px" }}>
+              STRUCTURAL STABILITY MODEL RP-2.0
+            </div>
+
+            {/* Headline */}
+            <h1 style={{ fontSize: "36px", fontWeight: "700", lineHeight: "1.1", color: "#0E1A2B", marginBottom: "20px" }}>
+              Major financial decisions require income verification.
+            </h1>
+
+            {/* Body - RunPayway line */}
+            <p style={{ fontSize: "18px", fontWeight: "400", lineHeight: "1.5", color: "#0E1A2B", marginBottom: "12px" }}>
+              <span style={{ fontWeight: "600", color: "#1F6D7A" }}>RunPayway™</span> defines whether income stability holds before commitment.
+            </p>
+
+            {/* Supporting sentence */}
+            <p style={{ fontSize: "16px", color: "#6B7280", marginBottom: "24px" }}>
+              Without verification, income risk remains undefined.
+            </p>
+
+            {/* CTA Button */}
+            <button style={{ width: "100%", height: "56px", padding: "0 28px", backgroundColor: "#0E1A2B", color: "#FFFFFF", borderRadius: "8px", fontWeight: "600", fontSize: "16px", border: "none", cursor: "pointer", marginBottom: "24px", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+              Start Verification
+              <span>→</span>
+            </button>
+
+            {/* Micro text */}
+            <p style={{ fontSize: "14px", color: "#6B7280", margin: "0 0 24px 0" }}>
+              Before financial commitment · Answer 6 inputs · Immediate result
+            </p>
+
+            {/* Score Card Mobile */}
+            <div style={{ padding: "24px", backgroundColor: "#FFFFFF", border: "1px solid #E6E8EB", borderRadius: "12px", boxShadow: "0px 2px 8px rgba(0,0,0,0.02)" }}>
+              {/* Score Title */}
+              <div style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A2B", marginBottom: "12px" }}>
+                Income Stability Score™
+              </div>
+
+              {/* Score Number */}
+              <div style={{ display: "flex", alignItems: "baseline", gap: "4px", marginBottom: "16px" }}>
+                <span style={{ fontSize: "56px", fontWeight: "700", lineHeight: "1", color: "#0E1A2B" }}>72</span>
+                <span style={{ fontSize: "20px", color: "#6B7280" }}>/100</span>
+              </div>
+
+              {/* Divider */}
+              <div style={{ borderTop: "1px solid #E6E8EB", marginBottom: "16px" }}></div>
+
+              {/* Band Title */}
+              <div style={{ fontSize: "18px", fontWeight: "600", color: "#1F6D7A", marginBottom: "8px" }}>
+                Established Stability
+              </div>
+
+              {/* Description */}
+              <p style={{ fontSize: "14px", color: "#6B7280", marginBottom: "20px", margin: "0" }}>
+                Determines whether income holds under disruption.
+              </p>
+
+              {/* Progress Bar */}
+              <div style={{ display: "flex", gap: "8px", height: "6px", marginBottom: "10px" }}>
+                <div style={{ flex: "0.4", backgroundColor: "#1F6D7A", borderRadius: "999px" }}></div>
+                <div style={{ flex: "0.3", backgroundColor: "#E5E7EB", borderRadius: "999px" }}></div>
+                <div style={{ flex: "0.3", backgroundColor: "#E5E7EB", borderRadius: "999px" }}></div>
+              </div>
+
+              {/* Progress Labels */}
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", color: "#6B7280", marginBottom: "20px" }}>
                 <span>Protected</span>
                 <span>Recurring</span>
                 <span>At Risk</span>
               </div>
-              <div className="border-t border-[#E5E7EB] pt-4">
-                <p className="text-[12px] text-[#6B7280] m-0">Model RP-2.0 · Same inputs produce same result</p>
+
+              {/* Footer Divider */}
+              <div style={{ borderTop: "1px solid #E6E8EB", paddingTop: "20px" }}>
+                <p style={{ fontSize: "13px", color: "#6B7280", margin: "0" }}>
+                  Model RP-2.0 · Same inputs produce same result
+                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* TRUST SECTION */}
-      <section className="bg-white border-t border-[#E5E7EB]" style={{ padding: "64px 40px" }}>
-        <div className="max-w-[1400px] mx-auto">
-          <p className="text-[16px] text-[#6B7280] text-center mb-12">Trusted by organizations and professionals for verified income stability.</p>
-          <div className="grid grid-cols-3 gap-12">
-            <div className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 rounded-full bg-[#E8F4F7] flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-[#0275D8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      {/* TRUST SECTION - PIXEL LOCKED */}
+      <section className="bg-white" style={{ paddingTop: "0", paddingBottom: "96px", paddingLeft: "40px", paddingRight: "40px" }}>
+        <div style={{ maxWidth: "1200px", marginLeft: "auto", marginRight: "auto" }}>
+          {/* Trust headline */}
+          <p style={{ textAlign: "center", fontSize: "16px", color: "#6B7280", marginBottom: "48px", marginTop: "0" }}>
+            Trusted by organizations and professionals for verified income stability.
+          </p>
+
+          {/* Down arrow */}
+          <div style={{ textAlign: "center", marginBottom: "48px" }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" style={{ marginLeft: "auto", marginRight: "auto" }}>
+              <path d="M12 5v14M5 12l7 7 7-7" />
+            </svg>
+          </div>
+
+          {/* Trust icons grid */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "48px" }}>
+            {/* Icon 1 */}
+            <div style={{ textAlign: "center" }}>
+              <div style={{ marginBottom: "12px" }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="#1F6D7A" style={{ marginLeft: "auto", marginRight: "auto" }}>
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#1F6D7A" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
-              <p className="text-[14px] font-semibold text-[#0E1A2B]">Independent verification</p>
+              <p style={{ fontSize: "14px", fontWeight: "600", color: "#0E1A2B", margin: "0" }}>
+                Independent verification
+              </p>
             </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 rounded-full bg-[#E8F4F7] flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-[#0275D8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+
+            {/* Icon 2 */}
+            <div style={{ textAlign: "center" }}>
+              <div style={{ marginBottom: "12px" }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" style={{ marginLeft: "auto", marginRight: "auto" }}>
+                  <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
-              <p className="text-[14px] font-semibold text-[#0E1A2B]">No documents required</p>
+              <p style={{ fontSize: "14px", fontWeight: "600", color: "#0E1A2B", margin: "0" }}>
+                No documents required
+              </p>
             </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 rounded-full bg-[#E8F4F7] flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-[#0275D8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+
+            {/* Icon 3 */}
+            <div style={{ textAlign: "center" }}>
+              <div style={{ marginBottom: "12px" }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" style={{ marginLeft: "auto", marginRight: "auto" }}>
+                  <path d="M13 10V3L4 14h7v7l9-11h-7z" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
-              <p className="text-[14px] font-semibold text-[#0E1A2B]">Instant results</p>
+              <p style={{ fontSize: "14px", fontWeight: "600", color: "#0E1A2B", margin: "0" }}>
+                Instant results
+              </p>
             </div>
           </div>
         </div>
