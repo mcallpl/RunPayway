@@ -6,8 +6,8 @@ export default function LandingPage() {
         {/* Desktop */}
         <div className="hidden lg:flex h-full items-center" style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 48px", justifyContent: "space-between" }}>
           {/* Logo */}
-          <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: "0", marginRight: "64px" }}>
-            <img src="/RunPayway/runpayway-logo-blue.png" alt="RunPayway™" style={{ height: "30px", width: "auto" }} />
+          <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: "0", marginRight: "80px" }}>
+            <img src="/RunPayway/runpayway-logo-blue.png" alt="RunPayway™" style={{ height: "32px", width: "auto" }} />
           </a>
 
           {/* Center Navigation */}
@@ -53,32 +53,32 @@ export default function LandingPage() {
       {/* SECTION 1: HERO - ELITE ENTERPRISE LEVEL */}
       <section style={{ backgroundColor: "#F8FAFC", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         {/* Desktop */}
-        <div className="hidden lg:block" style={{ padding: "80px 48px 72px" }}>
-          <div style={{ maxWidth: "1320px", marginLeft: "auto", marginRight: "auto", display: "grid", gridTemplateColumns: "58% 42%", gap: "80px", alignItems: "flex-start" }}>
+        <div className="hidden lg:block" style={{ padding: "96px 48px 88px" }}>
+          <div style={{ maxWidth: "1320px", marginLeft: "auto", marginRight: "auto", display: "grid", gridTemplateColumns: "58% 42%", gap: "88px", alignItems: "flex-start" }}>
             {/* LEFT COLUMN */}
             <div style={{ maxWidth: "700px" }}>
               {/* Eyebrow */}
-              <div style={{ fontSize: "12px", fontWeight: "700", letterSpacing: "0.1em", color: "#2F6BFF", marginBottom: "40px", fontFamily: "Inter" }}>
+              <div style={{ fontSize: "12px", fontWeight: "700", letterSpacing: "0.1em", color: "#2F6BFF", marginBottom: "44px", fontFamily: "Inter" }}>
                 STRUCTURAL STABILITY MODEL RP-2.0
               </div>
 
               {/* H1 */}
-              <h1 style={{ fontSize: "60px", fontWeight: "700", lineHeight: "1.1", letterSpacing: "-0.035em", color: "#0E1A2B", marginBottom: "32px", maxWidth: "650px", fontFamily: "Inter" }}>
+              <h1 style={{ fontSize: "62px", fontWeight: "700", lineHeight: "1.08", letterSpacing: "-0.035em", color: "#0E1A2B", marginBottom: "36px", maxWidth: "680px", fontFamily: "Inter" }}>
                 Major financial decisions require income verification.
               </h1>
 
               {/* Body */}
-              <p style={{ fontSize: "18px", fontWeight: "400", lineHeight: "1.5", color: "#0E1A2B", marginBottom: "20px", fontFamily: "Inter" }}>
+              <p style={{ fontSize: "18px", fontWeight: "400", lineHeight: "1.55", color: "#0E1A2B", marginBottom: "24px", fontFamily: "Inter" }}>
                 <span style={{ fontWeight: "700", color: "#2F6BFF" }}>RunPayway™</span> defines whether income stability holds before commitment.
               </p>
 
               {/* Support */}
-              <p style={{ fontSize: "16px", lineHeight: "1.6", color: "#6B7280", marginBottom: "48px", fontFamily: "Inter" }}>
+              <p style={{ fontSize: "16px", lineHeight: "1.6", color: "#6B7280", marginBottom: "56px", fontFamily: "Inter" }}>
                 Without verification, income risk remains undefined.
               </p>
 
               {/* CTA */}
-              <button style={{ width: "280px", height: "56px", borderRadius: "8px", backgroundColor: "#0E1A2B", color: "#FFFFFF", fontSize: "16px", fontWeight: "600", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", border: "none", cursor: "pointer", marginBottom: "32px", fontFamily: "Inter" }}>
+              <button style={{ width: "280px", height: "56px", borderRadius: "8px", backgroundColor: "#0E1A2B", color: "#FFFFFF", fontSize: "16px", fontWeight: "600", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", border: "none", cursor: "pointer", marginBottom: "40px", fontFamily: "Inter" }}>
                 Start Verification
                 <span>→</span>
               </button>
