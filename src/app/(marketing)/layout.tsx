@@ -7,7 +7,6 @@ import logoBlue from "../../../public/runpayway-logo-blue.png";
 import CookieConsent from "@/components/CookieConsent";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
 import ScrollToTop from "@/components/ScrollToTop";
-import Footer from "@/components/Footer";
 import { useLanguage } from "@/lib/i18n";
 import { WORKER_URL } from "@/lib/config";
 import type { LangCode } from "@/lib/i18n";
@@ -738,8 +737,7 @@ export default function MarketingLayout({
       {/* Content */}
       <main id="main-content" className="flex-1">{children}</main>
 
-      {/* Footer */}
-      <Footer />
+      {/* Cookie Consent Banner — GDPR compliance */}
       <CookieConsent />
       {/* Accessibility Widget — WCAG 2.1 AA */}
       <AccessibilityWidget />
