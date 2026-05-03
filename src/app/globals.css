@@ -4,14 +4,28 @@
 
 :root {
   --rp-navy: #0E1A2B;
-  --rp-purple: #4B3FAE;
+  --rp-navy-2: #0B2A4A;
   --rp-teal: #1F6D7A;
-  --rp-sand: #F4F1EA;
-  --rp-sand-dark: #EDECEA;
-  --rp-text-primary: #131A22;
-  --rp-text-secondary: #5E6873;
-  --rp-text-muted: #7B848E;
-  --rp-border-soft: #D9D6CF;
+  --rp-blue: #2F6BFF;
+
+  --rp-page: #F8FAFC;
+  --rp-white: #FFFFFF;
+
+  --rp-border: #E6E8EB;
+  --rp-divider: #E5E7EB;
+
+  --rp-text: #111827;
+  --rp-muted: #6B7280;
+  --rp-soft: #9CA3AF;
+
+  --rp-green: #2E7D32;
+  --rp-red: #C62828;
+
+  --rp-shadow-card: 0px 8px 24px rgba(16, 24, 40, 0.04);
+  --rp-shadow-subtle: 0px 2px 8px rgba(0, 0, 0, 0.02);
+
+  --rp-radius-card: 12px;
+  --rp-radius-button: 10px;
 }
 
 /* Mobile viewport safety */
@@ -56,9 +70,9 @@ html, body {
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  color: var(--rp-navy);
-  background: #FAFAFA;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--rp-page);
+  color: var(--rp-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;

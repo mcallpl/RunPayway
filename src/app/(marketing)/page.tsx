@@ -55,7 +55,7 @@ export default function LandingPage() {
       </header>
 
       {/* SECTION 1: HERO - PIXEL LOCKED - CORRECT COLORS */}
-      <section style={{ backgroundColor: "#F4F1EA", paddingTop: "96px", paddingBottom: "96px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
+      <section style={{ backgroundColor: "#F8FAFC", paddingTop: "96px", paddingBottom: "96px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         {/* Desktop */}
         <div className="hidden lg:block" style={{ paddingLeft: "40px", paddingRight: "40px" }}>
           <div style={{ maxWidth: "1200px", marginLeft: "auto", marginRight: "auto" }}>
@@ -98,7 +98,7 @@ export default function LandingPage() {
               {/* RIGHT COLUMN - 5 columns */}
               <div style={{ gridColumn: "span 5" }}>
                 {/* Score Card */}
-                <div style={{ width: "100%", maxWidth: "420px", padding: "32px", backgroundColor: "#FFFFFF", border: "1px solid #E6E8EB", borderRadius: "12px", boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.02)" }}>
+                <div style={{ width: "100%", maxWidth: "420px", padding: "32px", backgroundColor: "#FFFFFF", border: "1px solid #E6E8EB", borderRadius: "12px", boxShadow: "0px 8px 24px rgba(16, 24, 40, 0.04)" }}>
                   {/* Score Title */}
                   <div style={{ fontSize: "16px", fontWeight: "600", color: "#111827", marginBottom: "12px", fontFamily: "Inter" }}>
                     Income Stability Score™
@@ -185,7 +185,7 @@ export default function LandingPage() {
             </p>
 
             {/* Score Card Mobile */}
-            <div style={{ padding: "24px", backgroundColor: "#FFFFFF", border: "1px solid #E6E8EB", borderRadius: "12px", boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.02)" }}>
+            <div style={{ padding: "24px", backgroundColor: "#FFFFFF", border: "1px solid #E6E8EB", borderRadius: "12px", boxShadow: "0px 8px 24px rgba(16, 24, 40, 0.04)" }}>
               {/* Score Title */}
               <div style={{ fontSize: "16px", fontWeight: "600", color: "#111827", marginBottom: "12px", fontFamily: "Inter" }}>
                 Income Stability Score™
@@ -237,7 +237,7 @@ export default function LandingPage() {
       </section>
 
       {/* TRUST SECTION - PIXEL LOCKED - CORRECT COLORS */}
-      <section style={{ backgroundColor: "#F4F1EA", paddingTop: "0", paddingBottom: "96px", paddingLeft: "40px", paddingRight: "40px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
+      <section style={{ backgroundColor: "#F8FAFC", paddingTop: "0", paddingBottom: "96px", paddingLeft: "40px", paddingRight: "40px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         <div style={{ maxWidth: "1200px", marginLeft: "auto", marginRight: "auto" }}>
           {/* Trust headline */}
           <p style={{ textAlign: "center", fontSize: "18px", fontWeight: "500", color: "#111827", marginBottom: "48px", marginTop: "0", fontFamily: "Inter" }}>
