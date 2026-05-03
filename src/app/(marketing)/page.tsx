@@ -1,1440 +1,821 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { landingTokens, T, COLORS, colorRules, spacing, layout } from "./landingTokens";
-import { landingLayout } from "./landingLayout";
-import StructuralInputIcon from "@/components/landingIcons/StructuralInputIcon";
-import SectionIcon from "@/components/landingIcons/SectionIcon";
-
-/* ================================================================ */
-/* HOOKS                                                              */
-/* ================================================================ */
-
-function useReducedMotion() {
-  const [r, setR] = useState(false);
-  useEffect(() => { setR(window.matchMedia("(prefers-reduced-motion: reduce)").matches); }, []);
-  return r;
-}
-
-function useFadeIn() {
-  const reduced = useReducedMotion();
-  return (visible: boolean, delay = 0): React.CSSProperties =>
-    reduced ? {} : {
-      opacity: visible ? 1 : 0,
-      transform: visible ? "translateY(0)" : "translateY(16px)",
-      transition: `opacity 600ms cubic-bezier(0.22,1,0.36,1) ${delay}ms, transform 600ms cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
-    };
-}
-
-/* ================================================================ */
-/* RESPONSIVE DESIGN SYSTEM                                           */
-/* ================================================================ */
-
-const getResponsiveFontSize = (mobile: number, desktop: number): number => {
-  if (typeof window === 'undefined') return desktop;
-  return window.innerWidth <= 768 ? mobile : desktop;
-};
-
-const getResponsiveSpacing = (mobile: string, desktop: string): string => {
-  if (typeof window === 'undefined') return desktop;
-  return window.innerWidth <= 768 ? mobile : desktop;
-};
-
-/* ================================================================ */
-/* DESIGN SYSTEM                                                      */
-/* ================================================================ */
+import { useState } from "react";
 
 const C = {
   navy: "#0E1A2B",
-  purple: "#4B3FAE",
   teal: "#1F6D7A",
   sand: "#F4F1EA",
+  green: "#2E7D32",
+  red: "#C62828",
   white: "#FFFFFF",
-  panelFill: "#F8F6F1",
+  divider: "#E6E8EB",
   textPrimary: "#131A22",
   textSecondary: "#5E6873",
   textMuted: "#7B848E",
   borderSoft: "#D9D6CF",
-  divider: "#EAEAEA",
-  risk: "#C74634",
-  moderate: "#D0A23A",
-  established: "#1F6D7A",
-  protected: "#2A6E49",
-  sandText: "#F4F1EA",
-  sandMuted: "rgba(244,241,234,0.55)",
-  sandLight: "rgba(244,241,234,0.40)",
 };
 
 const mono = '"SF Mono", "Fira Code", "IBM Plex Mono", "Courier New", monospace';
 
-/* ================================================================ */
-/* TYPES                                                              */
-/* ================================================================ */
-
-type Section = "landing" | "decision" | "input" | "result" | "checkout" | "success";
-type Decision = "mortgage" | "expansion" | "investment" | "timeoff" | "hiring" | "retirement" | null;
-
-interface Inputs {
-  incomeType: string;
-  concentration: string;
-  sources: number;
-  visibility: number;
-  variability: string;
-  continuity: string;
+interface PreviewState {
+  concentration: "lower" | "moderate" | "strong";
+  sources: "lower" | "moderate" | "strong";
+  visibility: "lower" | "moderate" | "strong";
+  variability: "lower" | "moderate" | "strong";
+  continuity: "lower" | "moderate" | "strong";
+  dependency: "lower" | "moderate" | "strong";
 }
 
-interface Result {
-  score: number;
-  band: "Limited" | "Developing" | "Established" | "High";
-  constraint: string;
-  alignment: boolean;
+function calculatePreviewScore(state: PreviewState): { score: number; class: string; direction: string } {
+  const values = Object.values(state);
+  const strongCount = values.filter(v => v === "strong").length;
+  const moderateCount = values.filter(v => v === "moderate").length;
+
+  const baseScore = 50 + strongCount * 8 - (6 - strongCount - moderateCount) * 12;
+  const score = Math.max(0, Math.min(100, baseScore));
+
+  let classification = "At Risk";
+  if (score >= 70) classification = "Established Stability";
+  else if (score >= 55) classification = "Developing Stability";
+
+  const direction = strongCount >= 4 ? "Improving" : strongCount <= 2 ? "Declining" : "Stable";
+
+  return { score: Math.round(score), class: classification, direction };
 }
 
-type Audience = "individual" | "institution" | "advisor";
-
-/* ================================================================ */
-/* UTILITIES                                                          */
-/* ================================================================ */
-
-function generateResult(inputs: Inputs): Result {
-  let score = 50;
-  if (inputs.concentration === "single") score -= 20;
-  if (inputs.concentration === "dual") score -= 5;
-  if (inputs.sources >= 5) score += 15;
-  if (inputs.sources >= 3) score += 8;
-  if (inputs.visibility >= 12) score += 15;
-  if (inputs.visibility >= 6) score += 8;
-  if (inputs.variability === "high") score -= 15;
-  if (inputs.variability === "low") score += 10;
-  if (inputs.continuity === "passive") score += 15;
-  if (inputs.continuity === "recurring") score += 10;
-  score = Math.max(0, Math.min(100, score));
-
-  let band: Result["band"] = "Limited";
-  if (score >= 70) band = "High";
-  else if (score >= 55) band = "Established";
-  else if (score >= 40) band = "Developing";
-
-  const constraints: Record<string, string> = {
-    single: "Income dependency reduces continuity under disruption",
-    dual: "Concentration creates visibility gap",
-    low_visibility: "Forward visibility is not established",
-    high_variability: "Income variability introduces structural risk",
-  };
-
-  const constraint = inputs.concentration === "single"
-    ? constraints.single
-    : inputs.visibility < 6
-    ? constraints.low_visibility
-    : constraints.dual;
-
-  return { score, band, constraint, alignment: score >= 60 };
-}
-
-function getDecisionLabel(d: Decision): string {
-  return {
-    mortgage: "Mortgage commitment",
-    expansion: "Business expansion",
-    investment: "Investment",
-    timeoff: "Time off",
-    hiring: "Hiring",
-    retirement: "Retirement transition",
-  }[d || "mortgage"] || "Decision";
-}
-
-function getDecisionColor(band: Result["band"]): string {
-  return {
-    High: C.protected,
-    Established: C.established,
-    Developing: C.moderate,
-    Limited: C.risk,
-  }[band];
-}
-
-/* ================================================================ */
-/* MOBILE DECISION VERIFICATION FLOW                                */
-/* ================================================================ */
-
-function MobileDecisionFlow() {
-  const [section, setSection] = useState<Section>("landing");
-  const [selectedDecision, setSelectedDecision] = useState<Decision>(null);
-  const [inputs, setInputs] = useState<Inputs>({
-    incomeType: "consultant",
-    concentration: "dual",
-    sources: 3,
-    visibility: 6,
-    variability: "moderate",
-    continuity: "recurring",
-  });
-  const [result, setResult] = useState<Result | null>(null);
-  const [showStickyBar, setShowStickyBar] = useState(false);
-
-  const sectionRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (sectionRef.current) {
-      setTimeout(() => {
-        sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 100);
-    }
-  }, [section]);
-
-  const handleDecisionSelect = (d: Decision) => {
-    setSelectedDecision(d);
-    setShowStickyBar(true);
-    setSection("input");
-  };
-
-  const handleInputChange = (key: keyof Inputs, value: any) => {
-    setInputs(prev => ({ ...prev, [key]: value }));
-  };
-
-  const handleGenerateResult = () => {
-    const newResult = generateResult(inputs);
-    setResult(newResult);
-    setSection("result");
-  };
-
-  const handleCheckout = () => {
-    setSection("checkout");
-  };
-
-  const handlePaymentSuccess = () => {
-    setSection("success");
-  };
-
+function ControlButton({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  options: string[];
+  onChange: (v: string) => void;
+}) {
   return (
-    <div style={{ backgroundColor: C.white, minHeight: "100vh" }}>
-      {showStickyBar && (
-        <div style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 999,
-          backgroundColor: C.navy,
-          padding: "12px 20px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderBottom: `1px solid rgba(255,255,255,0.10)`,
-        }}>
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 600, color: C.teal, letterSpacing: "0.06em" }}>DECISION</div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: C.sandText }}>{getDecisionLabel(selectedDecision)}</div>
-          </div>
-          <div style={{ textAlign: "right" }}>
-            <div style={{ fontSize: 11, fontWeight: 600, color: "rgba(244,241,234,0.50)", letterSpacing: "0.06em" }}>STATUS</div>
-            <div style={{ fontSize: 13, fontWeight: 600, color: result?.alignment ? C.protected : C.risk }}>
-              {result ? (result.alignment ? "Aligned" : "Not aligned") : "Evaluating"}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {section === "landing" && (
-        <section ref={sectionRef} style={{ backgroundColor: C.sand, padding: "72px 20px", minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-          <div style={{ maxWidth: 420, margin: "0 auto" }}>
-            <h1 style={{ fontSize: 28, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.03em", color: C.navy, marginBottom: 32 }}>
-              Income verification is required before financial commitment.
-            </h1>
-            <p style={{ fontSize: 16, fontWeight: 600, lineHeight: 1.4, color: C.textSecondary, marginBottom: 24 }}>
-              For mortgage applicants, business owners, investors, and financial advisors.
-            </p>
-            <div style={{ padding: "20px", backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}`, marginBottom: 24 }}>
-              <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>STANDARD DEFINITION</p>
-              <p style={{ fontSize: 14, color: C.textPrimary, lineHeight: 1.5, marginBottom: 12, margin: 0 }}>
-                Verification is based on 6 structural inputs. Classification is deterministic and permanent.
-              </p>
-              <p style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.5, margin: 0 }}>
-                Audited methodology. Validated by 500+ financial institutions. FCRA compliant.
-              </p>
-            </div>
-            <button onClick={() => setSection("decision")} style={{ width: "100%", height: 56, backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
-              Verify Income Stability
-            </button>
-            <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 14 }}>
-              Takes 2 minutes. Instant results. Private & encrypted.
-            </p>
-          </div>
-        </section>
-      )}
-
-      {(section === "decision" || section === "input" || section === "result" || section === "checkout" || section === "success") && (
-        <section ref={section === "decision" ? sectionRef : undefined} style={{ backgroundColor: C.white, padding: "72px 20px", minHeight: section === "decision" ? "100vh" : "auto", display: "flex", flexDirection: "column", justifyContent: section === "decision" ? "center" : "flex-start" }}>
-          <div style={{ maxWidth: 420, margin: "0 auto", width: "100%" }}>
-            <h2 style={{ fontSize: 22, fontWeight: 600, lineHeight: 1.2, letterSpacing: "-0.02em", color: C.navy, marginBottom: 32 }}>
-              This decision requires verification
-            </h2>
-            <p style={{ fontSize: 14, color: C.textMuted, marginBottom: 28 }}>
-              Select the decision requiring structural verification.
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 48 }}>
-              {(["mortgage", "expansion", "investment", "timeoff", "hiring", "retirement"] as Decision[]).map((d) => (
-                <button key={d} onClick={() => handleDecisionSelect(d)} style={{ padding: "20px", backgroundColor: selectedDecision === d ? C.navy : C.panelFill, color: selectedDecision === d ? C.white : C.navy, border: selectedDecision === d ? "none" : `1px solid ${C.borderSoft}`, borderRadius: 12, fontSize: 15, fontWeight: 600, cursor: "pointer", transition: "all 200ms", textAlign: "left" }}>
-                  {getDecisionLabel(d)}
-                </button>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {(section === "input" || section === "result" || section === "checkout" || section === "success") && (
-        <section ref={section === "input" ? sectionRef : undefined} style={{ backgroundColor: C.panelFill, padding: "72px 20px", minHeight: section === "input" ? "100vh" : "auto" }}>
-          <div style={{ maxWidth: 420, margin: "0 auto", width: "100%" }}>
-            {section === "input" && (
-              <>
-                <h2 style={{ fontSize: 22, fontWeight: 600, lineHeight: 1.2, letterSpacing: "-0.02em", color: C.navy, marginBottom: 24 }}>
-                  Define how income is structured
-                </h2>
-                <div style={{ padding: "16px", backgroundColor: C.navy, borderRadius: 10, marginBottom: 32 }}>
-                  <p style={{ fontSize: 12, color: C.sandMuted, margin: 0, lineHeight: 1.5 }}>
-                    Inputs define the result. No external data is used.
-                  </p>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 28, marginBottom: 32 }}>
-                  <div>
-                    <label style={{ fontSize: 13, fontWeight: 600, color: C.teal, display: "block", marginBottom: 8, letterSpacing: "0.06em" }}>CONCENTRATION</label>
-                    <p style={{ fontSize: 13, color: C.textSecondary, marginBottom: 12, lineHeight: 1.5 }}>How many clients or primary income sources define your earnings?</p>
-                    <div style={{ display: "flex", gap: 8 }}>
-                      {["single", "dual", "diverse"].map((val) => (
-                        <button key={val} onClick={() => handleInputChange("concentration", val)} style={{ flex: 1, padding: "12px", backgroundColor: inputs.concentration === val ? C.navy : C.white, color: inputs.concentration === val ? C.white : C.textPrimary, border: `1px solid ${inputs.concentration === val ? C.navy : C.borderSoft}`, borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", transition: "all 150ms" }}>
-                          {val === "single" ? "1" : val === "dual" ? "2–3" : "4+"}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <label style={{ fontSize: 13, fontWeight: 600, color: C.teal, display: "block", marginBottom: 8, letterSpacing: "0.06em" }}>SOURCES</label>
-                    <p style={{ fontSize: 13, color: C.textSecondary, marginBottom: 12, lineHeight: 1.5 }}>Number of distinct income streams or revenue channels contributing to income.</p>
-                    <input type="range" min="1" max="10" value={inputs.sources} onChange={e => handleInputChange("sources", parseInt(e.target.value))} style={{ width: "100%", cursor: "pointer" }} />
-                    <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginTop: 8 }}>{inputs.sources} {inputs.sources === 1 ? "source" : "sources"}</div>
-                  </div>
-                  <div>
-                    <label style={{ fontSize: 13, fontWeight: 600, color: C.teal, display: "block", marginBottom: 8, letterSpacing: "0.06em" }}>VISIBILITY</label>
-                    <p style={{ fontSize: 13, color: C.textSecondary, marginBottom: 12, lineHeight: 1.5 }}>How far forward can you reliably project income with confidence?</p>
-                    <input type="range" min="0" max="24" value={inputs.visibility} onChange={e => handleInputChange("visibility", parseInt(e.target.value))} style={{ width: "100%", cursor: "pointer" }} />
-                    <div style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginTop: 8 }}>{inputs.visibility} {inputs.visibility === 1 ? "month" : "months"}</div>
-                  </div>
-                </div>
-                <button onClick={handleGenerateResult} style={{ width: "100%", height: 56, backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
-                  onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
-                  Generate Result →
-                </button>
-              </>
-            )}
-          </div>
-        </section>
-      )}
-
-      {result && (section === "result" || section === "checkout" || section === "success") && (
-        <section ref={section === "result" ? sectionRef : undefined} style={{ backgroundColor: C.white, padding: "72px 20px", minHeight: section === "result" ? "100vh" : "auto" }}>
-          <div style={{ maxWidth: 420, margin: "0 auto", width: "100%" }}>
-            <h1 style={{ fontSize: 26, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 16 }}>
-              Income Stability Result
-            </h1>
-            <div style={{ fontSize: 11, color: C.textMuted, marginBottom: 28, lineHeight: 1.6, letterSpacing: "0.05em" }}>
-              <div>Record ID: RS-{Math.random().toString(36).substr(2, 9).toUpperCase()}</div>
-              <div>Model: RP-2.0</div>
-              <div>Timestamp: {new Date().toISOString().split('T')[0]}</div>
-            </div>
-            <div style={{ backgroundColor: C.navy, borderRadius: 16, padding: "24px", marginBottom: 32, position: "relative", overflow: "hidden" }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${C.teal}, ${C.purple})` }} />
-              <div style={{ fontSize: 11, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 12 }}>SCORE</div>
-              <div style={{ fontSize: 48, fontWeight: 700, fontFamily: mono, color: C.sandText, marginBottom: 4, lineHeight: 1 }}>
-                {result.score}
-              </div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: C.sandText, marginBottom: 4 }}>/100</div>
-              <div style={{ fontSize: 14, fontWeight: 600, color: getDecisionColor(result.band), display: "inline-block", padding: "6px 12px", backgroundColor: `${getDecisionColor(result.band)}15`, borderRadius: 8, marginTop: 12 }}>
-                {result.band} Stability
-              </div>
-              <div style={{ fontSize: 11, fontWeight: 600, color: "rgba(244,241,234,0.40)", marginTop: 12, letterSpacing: "0.06em" }}>
-                OUTPUT DERIVED FROM FIXED STRUCTURAL INPUTS
-              </div>
-              <div style={{ fontSize: 11, color: "rgba(244,241,234,0.30)", marginTop: 8, lineHeight: 1.4 }}>
-                This result can be verified and reproduced under identical inputs.
-              </div>
-            </div>
-            <div style={{ padding: "20px", backgroundColor: C.panelFill, borderRadius: 12, border: `1px solid ${C.borderSoft}`, marginBottom: 28 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>PRIMARY CONSTRAINT</p>
-              <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, lineHeight: 1.5, margin: 0 }}>
-                {result.constraint}
-              </p>
-            </div>
-            <div style={{ padding: "20px", backgroundColor: C.navy, borderRadius: 12, marginBottom: 24 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>DECISION VALIDATION</p>
-              <p style={{ fontSize: 15, fontWeight: 600, color: C.sandText, lineHeight: 1.5, marginBottom: 12 }}>
-                {getDecisionLabel(selectedDecision)}
-              </p>
-              <p style={{ fontSize: 14, color: result.alignment ? C.protected : C.risk, fontWeight: 600, marginBottom: 8 }}>
-                {result.alignment ? "Structurally aligned" : "Not structurally aligned"}
-              </p>
-              <p style={{ fontSize: 13, color: C.sandMuted, lineHeight: 1.5, margin: 0 }}>
-                Under current structure, this income may not sustain this obligation if conditions change.
-              </p>
-            </div>
-            <div style={{ padding: "20px", backgroundColor: C.panelFill, borderRadius: 12, border: `1px solid ${C.borderSoft}`, marginBottom: 28 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>ALIGNMENT STATUS</p>
-              <p style={{ fontSize: 14, fontWeight: 600, color: C.navy, marginBottom: 12 }}>
-                {result.alignment ? "Income structure supports decision" : "Income structure does not support decision"}
-              </p>
-              <p style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.5, margin: 0 }}>
-                {result.alignment
-                  ? "Score ≥60: Current income structure can sustain the financial commitment."
-                  : "Score <60: Income structure requires review before financial commitment."}
-              </p>
-            </div>
-            <div style={{ padding: "20px", backgroundColor: "rgba(14,26,43,0.04)", borderRadius: 12, border: `1px solid ${C.borderSoft}`, marginBottom: 24 }}>
-              <p style={{ fontSize: 13, fontWeight: 600, color: C.navy, marginBottom: 8 }}>Record ID: {Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
-              <p style={{ fontSize: 12, color: C.textSecondary, lineHeight: 1.5, margin: 0 }}>
-                Save this ID to retrieve your verification anytime. Full report available below.
-              </p>
-            </div>
-            <div style={{ padding: "20px", backgroundColor: "rgba(31,109,122,0.06)", borderRadius: 12, border: `1px solid rgba(31,109,122,0.15)`, marginBottom: 32 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: C.established, marginBottom: 8 }}>NEXT STEP FOR {getDecisionLabel(selectedDecision).toUpperCase()}</p>
-              <p style={{ fontSize: 13, color: C.established, lineHeight: 1.6, margin: 0 }}>
-                {result.alignment
-                  ? selectedDecision === "mortgage"
-                    ? "Share this result with your lender in pre-approval process."
-                    : selectedDecision === "hiring"
-                    ? "Income structure verified for hiring commitment."
-                    : selectedDecision === "expansion"
-                    ? "Income structure supports business expansion."
-                    : "Income structure verified for decision."
-                  : "Review structural constraint above. Consider addressing this limitation before proceeding."}
-              </p>
-            </div>
-            {section === "result" && (
-              <button onClick={handleCheckout} style={{ width: "100%", height: 56, backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
-                Unlock Full Verification →
-              </button>
-            )}
-          </div>
-        </section>
-      )}
-
-      {(section === "checkout" || section === "success") && (
-        <section ref={section === "checkout" ? sectionRef : undefined} style={{ backgroundColor: C.panelFill, padding: "72px 20px", minHeight: section === "checkout" ? "100vh" : "auto" }}>
-          <div style={{ maxWidth: 420, margin: "0 auto", width: "100%" }}>
-            <h1 style={{ fontSize: 26, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.02em", color: C.navy, marginBottom: 28 }}>
-              Complete verification
-            </h1>
-            {section === "checkout" && (
-              <>
-                <div style={{ padding: "20px", backgroundColor: C.navy, borderRadius: 12, marginBottom: 32 }}>
-                  <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>FULL STRUCTURAL VERIFICATION — $69</p>
-                  <p style={{ fontSize: 14, color: C.sandText, lineHeight: 1.5, margin: 0 }}>
-                    Complete structural definition unlocks your decision validation and delivers full PDF report.
-                  </p>
-                </div>
-                <div style={{ padding: "16px", backgroundColor: C.panelFill, borderRadius: 12, border: `1px solid ${C.borderSoft}`, marginBottom: 28 }}>
-                  <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>WHAT YOU RECEIVE</p>
-                  <ul style={{ fontSize: 13, color: C.textSecondary, lineHeight: 1.8, margin: 0, paddingLeft: "20px" }}>
-                    <li>Complete structural analysis of all 6 inputs</li>
-                    <li>Decision-specific alignment assessment</li>
-                    <li>Primary constraints identified with explanations</li>
-                    <li>Auditable PDF report (timestamp, Record ID, model version)</li>
-                    <li>Instant download. Shareable with lenders/advisors.</li>
-                  </ul>
-                </div>
-                <div style={{ padding: "16px", backgroundColor: "rgba(31,109,122,0.06)", borderRadius: 12, border: `1px solid rgba(31,109,122,0.15)`, marginBottom: 28 }}>
-                  <p style={{ fontSize: 12, fontWeight: 600, color: C.established, marginBottom: 8 }}>🔒 DATA SECURITY & PRIVACY</p>
-                  <p style={{ fontSize: 12, color: C.established, lineHeight: 1.5, margin: 0 }}>
-                    TLS 1.3 encrypted in transit. AES-256 encrypted at rest. FCRA compliant. GDPR/CCPA compatible. No third-party sharing. Immutable audit trail maintained.
-                  </p>
-                </div>
-                <div style={{ marginBottom: 28 }}>
-                  <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, marginBottom: 12, letterSpacing: "0.06em" }}>EXPRESS PAY</p>
-                  <button style={{ width: "100%", padding: "16px", marginBottom: 10, backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer", transition: "all 150ms" }}>🍎 Apple Pay</button>
-                  <button style={{ width: "100%", padding: "16px", backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer", transition: "all 150ms" }}>🔵 Google Pay</button>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28 }}>
-                  <div style={{ flex: 1, height: 1, backgroundColor: C.divider }} />
-                  <span style={{ fontSize: 12, color: C.textMuted, fontWeight: 500 }}>OR</span>
-                  <div style={{ flex: 1, height: 1, backgroundColor: C.divider }} />
-                </div>
-                <div style={{ marginBottom: 28 }}>
-                  <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, marginBottom: 12, letterSpacing: "0.06em" }}>CARD</p>
-                  <input type="text" placeholder="Card number" style={{ width: "100%", padding: "12px 16px", marginBottom: 10, border: `1px solid ${C.borderSoft}`, borderRadius: 8, fontSize: 14, backgroundColor: C.white }} />
-                  <div style={{ display: "flex", gap: 10, marginBottom: 10 }}>
-                    <input type="text" placeholder="MM/YY" style={{ flex: 1, padding: "12px 16px", border: `1px solid ${C.borderSoft}`, borderRadius: 8, fontSize: 14, backgroundColor: C.white }} />
-                    <input type="text" placeholder="CVC" style={{ width: 80, padding: "12px 16px", border: `1px solid ${C.borderSoft}`, borderRadius: 8, fontSize: 14, backgroundColor: C.white }} />
-                  </div>
-                  <input type="email" placeholder="Email" style={{ width: "100%", padding: "12px 16px", border: `1px solid ${C.borderSoft}`, borderRadius: 8, fontSize: 14, backgroundColor: C.white }} />
-                </div>
-                <div style={{ padding: "12px 16px", backgroundColor: C.white, borderRadius: 8, border: `1px solid ${C.borderSoft}`, marginBottom: 28 }}>
-                  <p style={{ fontSize: 11, color: C.textMuted, margin: 0, lineHeight: 1.5, fontWeight: 500 }}>
-                    🔒 Secure payment processing via Stripe. All data encrypted end-to-end.
-                  </p>
-                </div>
-                <div style={{ padding: "16px", backgroundColor: "rgba(199,70,52,0.06)", borderRadius: 8, border: `1px solid rgba(199,70,52,0.12)`, marginBottom: 28 }}>
-                  <p style={{ fontSize: 13, fontWeight: 600, color: C.risk, marginBottom: 4 }}>Decision validation requires complete definition</p>
-                  <p style={{ fontSize: 12, color: C.textSecondary, margin: 0, lineHeight: 1.5 }}>
-                    Proceeding without structural verification introduces measurable risk to your decision.
-                  </p>
-                </div>
-                <button onClick={handlePaymentSuccess} style={{ width: "100%", height: 56, backgroundColor: C.navy, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
-                  onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.20)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
-                  Unlock Full Verification — $69
-                </button>
-                <p style={{ fontSize: 12, color: C.textMuted, textAlign: "center", marginTop: 14 }}>
-                  Verification precedes commitment.
-                </p>
-              </>
-            )}
-          </div>
-        </section>
-      )}
-
-      {section === "success" && (
-        <section ref={sectionRef} style={{ backgroundColor: C.navy, padding: "72px 20px", minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-          <div style={{ maxWidth: 420, margin: "0 auto", textAlign: "center" }}>
-            <h1 style={{ fontSize: 32, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.03em", color: C.sandText, marginBottom: 32 }}>
-              Verification complete
-            </h1>
-            <div style={{ backgroundColor: "rgba(255,255,255,0.10)", borderRadius: 12, padding: "24px", marginBottom: 32 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.06em", marginBottom: 8 }}>RECORD ID</p>
-              <p style={{ fontSize: 16, fontWeight: 700, fontFamily: mono, color: C.sandText, margin: 0 }}>
-                RS-{Math.random().toString(36).substr(2, 9).toUpperCase()}
-              </p>
-              <p style={{ fontSize: 11, color: C.sandMuted, marginTop: 8, margin: 0 }}>
-                Save this ID to retrieve your verification anytime.
-              </p>
-            </div>
-            <p style={{ fontSize: 14, color: C.sandText, lineHeight: 1.6, marginBottom: 28 }}>
-              Your structural analysis is complete. Full report ready for download and sharing.
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 32 }}>
-              <button style={{ width: "100%", height: 56, backgroundColor: C.teal, color: C.white, border: "none", borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(31,109,122,0.30)"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(31,109,122,0.20)"; }}>
-                Download PDF Report
-              </button>
-              <button style={{ width: "100%", height: 56, backgroundColor: "transparent", color: C.teal, border: `2px solid ${C.teal}`, borderRadius: 12, fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 200ms" }}
-                onMouseEnter={e => { e.currentTarget.style.backgroundColor = `rgba(31,109,122,0.10)`; }}
-                onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; }}>
-                Share with Lender/Advisor
-              </button>
-            </div>
-            <p style={{ fontSize: 12, color: C.sandMuted, lineHeight: 1.6 }}>
-              {selectedDecision === "mortgage"
-                ? "Your verification is ready to submit with your mortgage application."
-                : selectedDecision === "hiring"
-                ? "Your verification confirms income stability for hiring decisions."
-                : selectedDecision === "expansion"
-                ? "Your verification supports your business expansion decision."
-                : "Your verification is ready to use with your financial decision."}
-            </p>
-          </div>
-        </section>
-      )}
-    </div>
-  );
-}
-
-/* ================================================================ */
-/* AUDIENCE SECTION VISIBILITY HELPER                                */
-/* ================================================================ */
-
-const sectionVisibility: Record<Audience, Set<string>> = {
-  individual: new Set([
-    "hero", "credibility", "inputs", "example", "pricing", "standard", "workflow-next", "footer"
-  ]),
-  institution: new Set([
-    "hero", "credibility", "processing", "workflow-mortgage", "implementation", "privacy", "standard", "faq", "footer"
-  ]),
-  advisor: new Set([
-    "hero", "credibility", "inputs", "example", "implementation", "gallery", "faq", "standard", "footer"
-  ])
-};
-
-function showSection(section: string, audience: Audience): boolean {
-  return sectionVisibility[audience].has(section);
-}
-
-/* ================================================================ */
-/* AUDIENCE SELECTOR COMPONENT                                       */
-/* ================================================================ */
-
-function AudienceSelector({ audience, setAudience }: { audience: Audience; setAudience: (a: Audience) => void }) {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const options: Array<{ value: Audience; label: string; tagline: string }> = [
-    { value: "individual", label: "Individual", tagline: "Verify your income for major decisions" },
-    { value: "institution", label: "Institution", tagline: "Integrate income verification into your platform" },
-    { value: "advisor", label: "Advisor", tagline: "Recommend to clients or offer as service" }
-  ];
-
-  return (
-    <div style={{
-      backgroundColor: COLORS.white,
-      borderBottom: `1px solid ${COLORS.divider}`,
-      position: "sticky",
-      top: 0,
-      zIndex: landingLayout.zIndex.sticky,
-      padding: isMobile ? `${spacing.xs} ${layout.paddingMobile}px` : `${spacing.sm} ${layout.paddingDesktop}px`,
-      boxShadow: landingLayout.shadows.card
-    }}>
-      <div style={{ maxWidth: layout.maxWidth, margin: "0 auto", display: isMobile ? "flex" : "flex", flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "stretch" : "center", gap: isMobile ? 8 : 16 }}>
-        {!isMobile && <span style={{ fontSize: T.body.fontSize, fontWeight: 600, color: COLORS.navy, whiteSpace: "nowrap" }}>I'm a...</span>}
-        <div style={{ display: "flex", gap: isMobile ? 8 : 12, flex: 1, flexDirection: isMobile ? "column" : "row" }}>
-          {options.map(opt => (
-            <button
-              key={opt.value}
-              onClick={() => setAudience(opt.value)}
-              style={{
-                flex: 1,
-                padding: isMobile ? `${spacing.xs} ${spacing.sm}` : `${spacing.sm} ${spacing.sm}`,
-                backgroundColor: audience === opt.value ? COLORS.navy : COLORS.sand,
-                color: audience === opt.value ? COLORS.white : COLORS.navy,
-                border: audience === opt.value ? `2px solid ${COLORS.navy}` : `2px solid transparent`,
-                borderRadius: layout.borderRadius.sm,
-                fontSize: isMobile ? 12 : T.small.fontSize,
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: `all ${landingLayout.transitions.fast}`,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 2,
-                minHeight: isMobile ? 48 : 60,
-                boxShadow: audience === opt.value ? landingLayout.shadows.button : "none"
-              }}
-              onMouseEnter={e => {
-                if (audience !== opt.value && !isMobile) {
-                  e.currentTarget.style.backgroundColor = COLORS.panelFill;
-                  e.currentTarget.style.boxShadow = landingLayout.shadows.card;
-                }
-              }}
-              onMouseLeave={e => {
-                if (audience !== opt.value && !isMobile) {
-                  e.currentTarget.style.backgroundColor = COLORS.sand;
-                  e.currentTarget.style.boxShadow = "none";
-                }
-              }}
-            >
-              <span>{opt.label}</span>
-              {!isMobile && (
-                <span style={{ fontSize: T.micro.fontSize, fontWeight: 400, opacity: 0.7, lineHeight: 1.3, textAlign: "center" }}>
-                  {opt.tagline}
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
+    <div style={{ marginBottom: 24 }}>
+      <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 8 }}>
+        {label}
+      </p>
+      <div style={{ display: "flex", gap: 8 }}>
+        {options.map((opt) => (
+          <button
+            key={opt}
+            onClick={() => onChange(opt)}
+            style={{
+              flex: 1,
+              padding: "10px 12px",
+              backgroundColor: value === opt ? C.navy : "#F8F6F1",
+              color: value === opt ? C.white : C.textPrimary,
+              border: `1px solid ${value === opt ? C.navy : C.borderSoft}`,
+              borderRadius: 8,
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: "pointer",
+              transition: "all 150ms",
+            }}
+          >
+            {opt.charAt(0).toUpperCase() + opt.slice(1)}
+          </button>
+        ))}
       </div>
     </div>
   );
 }
 
-/* ================================================================ */
-/* DESKTOP INSTITUTIONAL LANDING (CSS-based responsive)             */
-/* ================================================================ */
-
-function DesktopInstitutionalLanding({ audience }: { audience: Audience }) {
-  const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
-  const [expandedFaq, setExpandedFaq] = useState<string | null>(null);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 480);
-      setIsTablet(window.innerWidth > 480 && window.innerWidth <= 768);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const responsiveSpacing = {
-    section: isMobile ? "40px" : isTablet ? "56px" : spacing.section,
-    padding: isMobile ? layout.paddingMobile : isTablet ? 24 : layout.paddingDesktop,
-    gap: isMobile ? 24 : isTablet ? 32 : 48,
-    gapSmall: isMobile ? 16 : 24,
-    heroFontSize: isMobile ? 32 : isTablet ? 40 : 56,
-    h2FontSize: isMobile ? 28 : isTablet ? 32 : 40,
-    h3FontSize: isMobile ? 18 : isTablet ? 20 : 20,
-    bodyFontSize: isMobile ? 14 : isTablet ? 15 : 15,
-  };
-
-  const audienceLabel = {
-    individual: "Income Verification for Your Decision",
-    institution: "Institutional Income Verification",
-    advisor: "Advisor Income Verification Partner"
-  };
-
-  const faqContent: Record<Audience, Array<{ q: string; a: string }>> = {
-    individual: [
-      { q: "How long does verification take?", a: "Classification is instant (30 seconds). Full report generation takes 2 minutes. Results are permanent for the submitted income structure." },
-      { q: "Is my information private?", a: "Yes. All data is TLS 1.3 encrypted in transit and AES-256 encrypted at rest. No third-party sharing. FCRA compliant and GDPR/CCPA compatible." },
-      { q: "What if my income structure changes?", a: "If any of the 6 structural inputs change, your prior classification remains archived and reassessment is required. Same inputs always produce same output." },
-      { q: "Can I share my result with my lender?", a: "Yes. Your PDF report includes Record ID, timestamp, and model version. It's auditable and shareable with any lender or advisor." },
-      { q: "What makes this different from credit checks?", a: "This evaluates income structure stability (6 inputs), not credit history. Deterministic rules, no discretion, immediate results." }
-    ],
-    institution: [
-      { q: "How do I integrate the API?", a: "REST endpoints accept 6 structural inputs as JSON. Webhook-based processing with JSON response. Documentation and sandbox provided. Technical onboarding included." },
-      { q: "What's the SLA?", a: "Results returned in <100ms. 99.9% uptime guarantee. Bulk processing supported for loan pipelines. 24/7 technical support." },
-      { q: "How does this reduce compliance risk?", a: "Fixed rules, no discretion, deterministic output. Immutable audit trail. Every result traceable to rules. Annual third-party security audit. FCRA compliant." },
-      { q: "Can we white-label this?", a: "Custom branding available. API integration with your platform. Your institution's branding on all outputs. Licensing model available." },
-      { q: "What compliance certifications do you have?", a: "FCRA compliant, GDPR/CCPA data handling, SOC 2 Type II, TLS 1.3 encryption, AES-256 storage encryption, annual audit." }
-    ],
-    advisor: [
-      { q: "How do I recommend this to clients?", a: "Direct clients to the web form. They pay $69 for full report or get free classification. They receive PDF instantly. No signup required." },
-      { q: "Can I white-label the advisor portal?", a: "Yes. Branded portal with your logo. $15–25 per report licensing. Bulk processing for multiple clients. Technical support included." },
-      { q: "What's the licensing cost?", a: "$15–25 per report depending on volume. No monthly fees. Pay per verification. Full commission structure available for partners." },
-      { q: "How do I track client verifications?", a: "Advisor portal provides bulk dashboard, client history, results archive, audit trail. Clients can retrieve results by Record ID anytime." },
-      { q: "Can I integrate this into my software?", a: "Yes. API available for advisors. White-label portal or API integration. Technical documentation provided. Integration support available." }
-    ]
-  };
+function PreviewCard({ state }: { state: PreviewState }) {
+  const { score, class: classification, direction } = calculatePreviewScore(state);
 
   return (
-    <div style={{ backgroundColor: COLORS.white, color: COLORS.navy }}>
-      {/* PATH INDICATOR BANNER */}
-      <div style={{ backgroundColor: COLORS.navy, color: COLORS.white, padding: "16px 20px", textAlign: "center", borderBottom: `2px solid ${COLORS.teal}` }}>
-        <p style={{ fontSize: 14, fontWeight: 600, margin: 0, letterSpacing: "0.05em" }}>
-          PATH: {audienceLabel[audience].toUpperCase()}
+    <div
+      style={{
+        backgroundColor: C.navy,
+        borderRadius: 16,
+        padding: "32px 28px",
+        color: C.sand,
+        boxShadow: "0 12px 32px rgba(14,26,43,0.16)",
+      }}
+    >
+      <div style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 20 }}>
+        PREVIEW RESULT
+      </div>
+
+      <div style={{ fontSize: 56, fontWeight: 700, fontFamily: mono, lineHeight: 1, marginBottom: 12 }}>
+        {score}
+      </div>
+
+      <div style={{ fontSize: 16, fontWeight: 600, color: C.sand, marginBottom: 20 }}>
+        {classification}
+      </div>
+
+      <div
+        style={{
+          fontSize: 12,
+          fontWeight: 600,
+          color: direction === "Improving" ? C.green : direction === "Declining" ? C.red : C.teal,
+          marginBottom: 16,
+        }}
+      >
+        {direction}
+      </div>
+
+      <div
+        style={{
+          fontSize: 12,
+          fontWeight: 600,
+          color: C.teal,
+          marginBottom: 8,
+          letterSpacing: "0.08em",
+        }}
+      >
+        PRIMARY STRUCTURAL CONSTRAINT
+      </div>
+      <div style={{ fontSize: 13, color: "rgba(244,241,234,0.70)", lineHeight: 1.5, marginBottom: 20 }}>
+        {state.concentration === "lower" && "Income concentration limits diversification"}
+        {state.visibility === "lower" && "Forward visibility creates planning gap"}
+        {state.variability === "strong" && "Income consistency supports structure"}
+        {state.dependency === "lower" && "Activity independence supports continuity"}
+      </div>
+
+      <div style={{ borderTop: "1px solid rgba(255,255,255,0.10)", paddingTop: 16 }}>
+        <p style={{ fontSize: 12, color: "rgba(244,241,234,0.40)", margin: 0, lineHeight: 1.5 }}>
+          Preview only. Verified results are calculated inside the locked RunPayway™ model.
         </p>
       </div>
-
-      {/* HERO: Audience-Specific */}
-      {showSection("hero", audience) && (
-      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile || isTablet ? "1fr" : "1fr 1fr", gap: isMobile ? 32 : isTablet ? 40 : 64, alignItems: "center" }}>
-          <div>
-            <h1 style={{ fontSize: responsiveSpacing.heroFontSize, fontWeight: T.heroDisplay.fontWeight, lineHeight: T.heroDisplay.lineHeight, letterSpacing: T.heroDisplay.letterSpacing, color: COLORS.navy, marginBottom: isMobile ? 24 : 40 }}>
-              {audience === "individual" && "Verify your income stability before major decisions"}
-              {audience === "institution" && "Income verification standard for financial institutions"}
-              {audience === "advisor" && "Income verification solution for your clients"}
-            </h1>
-            <div style={{ padding: isMobile ? "16px" : "24px", backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, marginBottom: isMobile ? 24 : 40 }}>
-              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 12 }}>STANDARD DEFINITION</p>
-              <ul style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.sandText, lineHeight: 1.8, margin: 0, paddingLeft: isMobile ? 0 : 0, listStyle: "none" }}>
-                <li>Fixed rules applied to 6 structural inputs</li>
-                <li>Same inputs produce same classification always</li>
-                <li>No discretion applied to output</li>
-                <li>Classification applies uniformly to all income structures</li>
-              </ul>
-            </div>
-            <p style={{ fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, lineHeight: 1.6 }}>
-              {audience === "individual" && "See your score, understand your structure, download your proof."}
-              {audience === "institution" && "Integrate deterministic income verification into your underwriting."}
-              {audience === "advisor" && "Recommend to clients or white-label as your own service."}
-            </p>
-            <button style={{ padding: isMobile ? "14px 24px" : "16px 32px", backgroundColor: audience === "institution" ? COLORS.navy : colorRules.ctaSecondary, color: COLORS.white, border: "none", borderRadius: layout.borderRadius.sm, fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, cursor: "pointer", transition: `all ${landingLayout.transitions.fast}`, boxShadow: landingLayout.shadows.button, minHeight: isMobile ? 48 : "auto", width: isMobile ? "100%" : "auto" }}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = landingLayout.shadows.hover; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = landingLayout.shadows.button; }}>
-              {audience === "individual" && "Verify Now"}
-              {audience === "institution" && "View API Integration"}
-              {audience === "advisor" && "View Advisor Options"}
-            </button>
-            <p style={{ fontSize: T.small.fontSize, color: COLORS.textMuted, marginTop: 16, letterSpacing: "0.05em" }}>
-              {audience === "individual" && "Free classification · Timestamped result · Private"}
-              {audience === "institution" && "REST API · Webhook support · Bulk processing"}
-              {audience === "advisor" && "Free recommendations OR $15-25 per report licensing"}
-            </p>
-            <p style={{ fontSize: T.micro.fontSize, color: colorRules.ctaSecondary, marginTop: 24, fontWeight: 600 }}>
-              Model RP-2.0. Validated methodology. Used by 500+ financial institutions.
-            </p>
-          </div>
-          <div style={{ backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.lg, padding: "40px 32px", position: "relative", overflow: "hidden", boxShadow: landingLayout.shadows.elevated }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${COLORS.teal}, ${COLORS.purple})` }} />
-            <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 20 }}>EXAMPLE RESULT</div>
-            <div style={{ fontSize: 64, fontWeight: 700, fontFamily: mono, color: COLORS.sandText, lineHeight: 1, marginBottom: 8 }}>72</div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: COLORS.sandText, marginBottom: 24 }}>/100</div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: COLORS.established, display: "inline-block", padding: "8px 16px", backgroundColor: `${COLORS.established}15`, borderRadius: 10, marginBottom: 24 }}>
-              Established Stability
-            </div>
-            <div style={{ display: "flex", height: 10, borderRadius: 999, overflow: "hidden", marginBottom: 12 }}>
-              <div style={{ width: "28%", backgroundColor: COLORS.established }} />
-              <div style={{ width: "40%", backgroundColor: COLORS.moderate }} />
-              <div style={{ width: "32%", backgroundColor: COLORS.risk }} />
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}>
-              <span style={{ fontSize: T.meta.fontSize, fontWeight: 600, color: COLORS.established }}>Protected</span>
-              <span style={{ fontSize: T.meta.fontSize, fontWeight: 600, color: COLORS.moderate }}>Recurring</span>
-              <span style={{ fontSize: T.meta.fontSize, fontWeight: 600, color: COLORS.risk }}>At Risk</span>
-            </div>
-            <div style={{ marginTop: 20, paddingTop: 20, borderTop: "1px solid rgba(255,255,255,0.10)" }}>
-              <p style={{ fontSize: T.small.fontSize, color: COLORS.sandLight, margin: 0, lineHeight: 1.5 }}>
-                Model RP-2.0. Record ID and timestamp included with all results.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* INSTITUTIONAL FOUNDATION (Institution + Advisor paths) */}
-      {showSection("credibility", audience) && (
-      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", gap: responsiveSpacing.gap }}>
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-              <SectionIcon iconId="credibility" size={32} />
-              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, margin: 0 }}>METHODOLOGY</p>
-            </div>
-            <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 8 }}>Audited & Validated</p>
-            <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>
-              Model developed by financial engineers with 15+ years structural analysis experience. Methodology validated by independent audit.
-            </p>
-          </div>
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-              <SectionIcon iconId="adoption" size={32} />
-              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, margin: 0 }}>ADOPTION</p>
-            </div>
-            <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 8 }}>500+ Institutions</p>
-            <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>
-              Used by mortgage lenders, credit unions, investment firms, and underwriting platforms for income structure evaluation.
-            </p>
-          </div>
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-              <SectionIcon iconId="compliance" size={32} />
-              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, margin: 0 }}>COMPLIANCE</p>
-            </div>
-            <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 8 }}>Regulatory Aligned</p>
-            <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>
-              Compliant with FCRA standards for financial decision support. All results auditable and archival.
-            </p>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* THE 6 STRUCTURAL INPUTS (Individual + Advisor paths) */}
-      {showSection("inputs", audience) && (
-      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: 16, letterSpacing: T.h2.letterSpacing }}>
-            Six structural inputs
-          </h2>
-          <p style={{ fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, lineHeight: 1.6 }}>
-            Income classification is determined by these 6 factors. All financial commitments evaluated against these inputs.
-          </p>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)", gap: responsiveSpacing.gap, marginBottom: isMobile ? 24 : 40 }}>
-            <div style={{ padding: spacing.md, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card, transition: `all ${landingLayout.transitions.normal}` }}
-              onMouseEnter={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.hover; e.currentTarget.style.transform = "translateY(-4px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.card; e.currentTarget.style.transform = "translateY(0)"; }}>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 12 }}>
-                <StructuralInputIcon iconId="concentration" size={32} />
-                <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 0 }}>1. Concentration</p>
-              </div>
-              <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>Number of primary income sources. 1 source = concentration. 2–3 sources = moderate. 4+ sources = diversified.</p>
-            </div>
-            <div style={{ padding: spacing.md, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card, transition: `all ${landingLayout.transitions.normal}` }}
-              onMouseEnter={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.hover; e.currentTarget.style.transform = "translateY(-4px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.card; e.currentTarget.style.transform = "translateY(0)"; }}>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 12 }}>
-                <StructuralInputIcon iconId="sources" size={32} />
-                <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 0 }}>2. Number of Sources</p>
-              </div>
-              <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>Distinct revenue channels contributing to income. Examples: client, employer, investment, business line.</p>
-            </div>
-            <div style={{ padding: spacing.md, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card, transition: `all ${landingLayout.transitions.normal}` }}
-              onMouseEnter={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.hover; e.currentTarget.style.transform = "translateY(-4px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.card; e.currentTarget.style.transform = "translateY(0)"; }}>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 12 }}>
-                <StructuralInputIcon iconId="visibility" size={32} />
-                <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 0 }}>3. Forward Visibility</p>
-              </div>
-              <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>Months of income projectable with certainty based on current structure. Measured: 0–24 months.</p>
-            </div>
-            <div style={{ padding: spacing.md, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card, transition: `all ${landingLayout.transitions.normal}` }}
-              onMouseEnter={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.hover; e.currentTarget.style.transform = "translateY(-4px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.card; e.currentTarget.style.transform = "translateY(0)"; }}>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 12 }}>
-                <StructuralInputIcon iconId="variability" size={32} />
-                <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 0 }}>4. Income Variability</p>
-              </div>
-              <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>Consistency of income over time. Low = stable monthly. High = fluctuates significantly month-to-month.</p>
-            </div>
-            <div style={{ padding: spacing.md, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card, transition: `all ${landingLayout.transitions.normal}` }}
-              onMouseEnter={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.hover; e.currentTarget.style.transform = "translateY(-4px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.card; e.currentTarget.style.transform = "translateY(0)"; }}>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 12 }}>
-                <StructuralInputIcon iconId="continuity" size={32} />
-                <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 0 }}>5. Continuity Without Labor</p>
-              </div>
-              <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>Percentage of income that continues if active work stops. Recurring/passive = continues. Active-only = stops.</p>
-            </div>
-            <div style={{ padding: spacing.md, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card, transition: `all ${landingLayout.transitions.normal}` }}
-              onMouseEnter={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.hover; e.currentTarget.style.transform = "translateY(-4px)"; }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = landingLayout.shadows.card; e.currentTarget.style.transform = "translateY(0)"; }}>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 12 }}>
-                <StructuralInputIcon iconId="dependency" size={32} />
-                <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 0 }}>6. Activity Dependency</p>
-              </div>
-              <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>Degree to which income requires ongoing active effort. High dependency = income stops if activity stops.</p>
-            </div>
-          </div>
-          <div style={{ backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, padding: spacing.md }}>
-            <p style={{ fontSize: T.small.fontSize, color: COLORS.sandText, margin: 0, lineHeight: 1.6 }}>
-              These 6 inputs determine classification. The model applies fixed rules to each input. Output is deterministic: same inputs always produce the same classification.
-            </p>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* STRUCTURAL MAPPING EXAMPLE (Individual + Advisor paths) */}
-      {showSection("example", audience) && (
-      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 32 : 40, letterSpacing: T.h2.letterSpacing }}>
-            Same income, different structure
-          </h2>
-          <p style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, fontWeight: 600, lineHeight: 1.6 }}>
-            Both examples: $150K annual income. Structures differ. Classifications differ.
-          </p>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 24 : 40 }}>
-            <div style={{ backgroundColor: COLORS.panelFill, borderRadius: layout.borderRadius.lg, padding: isMobile ? spacing.md : spacing.xl, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.elevated }}>
-              <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: COLORS.textMuted, letterSpacing: T.meta.letterSpacing, marginBottom: 12 }}>STRUCTURE A: ONE PRIMARY CLIENT</div>
-              <div style={{ fontSize: isMobile ? 40 : 48, fontWeight: 700, fontFamily: mono, color: COLORS.risk, marginBottom: 12, lineHeight: 1 }}>31</div>
-              <div style={{ fontSize: responsiveSpacing.h3FontSize, fontWeight: T.h3.fontWeight, color: COLORS.risk, marginBottom: 16 }}>Limited Stability</div>
-              <div style={{ fontSize: T.h3.fontSize, color: COLORS.navy, fontWeight: 600, marginBottom: 8 }}>Structural inputs:</div>
-              <ul style={{ fontSize: T.small.fontSize, lineHeight: 1.8, color: COLORS.textSecondary, margin: "0 0 0 20px", paddingLeft: 0 }}>
-                <li><strong>Concentration:</strong> 1 source (concentrated)</li>
-                <li><strong>Number of sources:</strong> 1</li>
-                <li><strong>Forward visibility:</strong> 3 months (low)</li>
-                <li><strong>Variability:</strong> High</li>
-                <li><strong>Continuity without active labor:</strong> 0%</li>
-                <li><strong>Activity dependency:</strong> 100%</li>
-              </ul>
-              <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, marginTop: 16, marginBottom: 0 }}>
-                Loss of one client = loss of 100% of income. Structure fails if client terminates.
-              </p>
-            </div>
-            <div style={{ backgroundColor: COLORS.panelFill, borderRadius: layout.borderRadius.lg, padding: isMobile ? spacing.md : spacing.xl, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.elevated }}>
-              <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: COLORS.textMuted, letterSpacing: T.meta.letterSpacing, marginBottom: 12 }}>STRUCTURE B: FIVE CLIENTS</div>
-              <div style={{ fontSize: isMobile ? 40 : 48, fontWeight: 700, fontFamily: mono, color: COLORS.protected, marginBottom: 12, lineHeight: 1 }}>74</div>
-              <div style={{ fontSize: responsiveSpacing.h3FontSize, fontWeight: T.h3.fontWeight, color: COLORS.protected, marginBottom: 16 }}>Established Stability</div>
-              <div style={{ fontSize: T.h3.fontSize, color: COLORS.navy, fontWeight: 600, marginBottom: 8 }}>Structural inputs:</div>
-              <ul style={{ fontSize: T.small.fontSize, lineHeight: 1.8, color: COLORS.textSecondary, margin: "0 0 0 20px", paddingLeft: 0 }}>
-                <li><strong>Concentration:</strong> 5 sources (diversified)</li>
-                <li><strong>Number of sources:</strong> 5</li>
-                <li><strong>Forward visibility:</strong> 18 months</li>
-                <li><strong>Variability:</strong> Low–Moderate</li>
-                <li><strong>Continuity without active labor:</strong> 40% recurring</li>
-                <li><strong>Activity dependency:</strong> 60%</li>
-              </ul>
-              <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, marginTop: 16, marginBottom: 0 }}>
-                Loss of one client = 20% income loss. Structure sustains income if client terminates.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* PROCESSING LOGIC (Institution path only) */}
-      {showSection("processing", audience) && (
-      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
-            Processing logic
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3, 1fr)", gap: responsiveSpacing.gap, marginBottom: isMobile ? 24 : 40 }}>
-            <div style={{ backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, padding: spacing.xl, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
-              <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 16 }}>INPUT</div>
-              <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 16 }}>6 structural inputs</p>
-              <ol style={{ fontSize: T.small.fontSize, lineHeight: 1.8, color: COLORS.textSecondary, margin: 0, paddingLeft: "20px" }}>
-                <li>Concentration</li>
-                <li>Number of sources</li>
-                <li>Forward visibility</li>
-                <li>Income variability</li>
-                <li>Continuity without active labor</li>
-                <li>Dependency on activity</li>
-              </ol>
-            </div>
-            <div style={{ backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, padding: spacing.xl, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
-              <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 16 }}>RULES</div>
-              <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 16 }}>Fixed transformation rules</p>
-              <ul style={{ fontSize: T.small.fontSize, lineHeight: 1.8, color: COLORS.textSecondary, margin: 0, paddingLeft: "20px" }}>
-                <li>No discretion applied</li>
-                <li>No judgment calls</li>
-                <li>Identical for all inputs</li>
-                <li>Model RP-2.0 locked</li>
-                <li>All outputs traceable to rules</li>
-              </ul>
-            </div>
-            <div style={{ backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, padding: spacing.xl, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
-              <div style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 16 }}>OUTPUT</div>
-              <p style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 16 }}>Classification result</p>
-              <ul style={{ fontSize: T.small.fontSize, lineHeight: 1.8, color: COLORS.textSecondary, margin: 0, paddingLeft: "20px" }}>
-                <li>Stability score (0–100)</li>
-                <li>Stability band</li>
-                <li>Primary constraint</li>
-                <li>Record ID</li>
-                <li>Timestamp</li>
-              </ul>
-            </div>
-          </div>
-          <div style={{ backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, padding: spacing.md }}>
-            <p style={{ fontSize: T.small.fontSize, color: COLORS.sandText, margin: 0, lineHeight: 1.6 }}>
-              The same 6 inputs always produce the same output. Different inputs produce different outputs. All outputs are permanent for the evaluated income structure.
-            </p>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* OFFERING (Individual path only) */}
-      {showSection("pricing", audience) && (
-      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
-            Verification offering
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: responsiveSpacing.gap, marginBottom: isMobile ? 24 : 40 }}>
-            <div style={{ padding: spacing.xl, backgroundColor: COLORS.panelFill, border: `1px solid ${COLORS.borderSoft}`, borderRadius: layout.borderRadius.md, boxShadow: landingLayout.shadows.card }}>
-              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 16 }}>FREE</p>
-              <p style={{ fontSize: T.body.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 20 }}>Your Position</p>
-              <ul style={{ fontSize: T.body.fontSize, color: COLORS.textSecondary, lineHeight: 2, margin: 0, paddingLeft: "20px" }}>
-                <li>Stability class (band)</li>
-                <li>Decision sufficiency</li>
-              </ul>
-              <p style={{ fontSize: T.small.fontSize, color: COLORS.textMuted, marginTop: 20, fontStyle: "italic" }}>
-                Know if you're ready for your decision.
-              </p>
-            </div>
-            <div style={{ padding: spacing.xl, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, borderLeft: `4px solid ${colorRules.ctaSecondary}`, boxShadow: landingLayout.shadows.elevated }}>
-              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, marginBottom: 16 }}>$69</p>
-              <p style={{ fontSize: T.body.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 20 }}>Full Structural Dashboard</p>
-              <ul style={{ fontSize: T.body.fontSize, color: COLORS.textSecondary, lineHeight: 2, margin: 0, paddingLeft: "20px" }}>
-                <li>Why you're there (primary constraint)</li>
-                <li>Structural consequence if unchanged</li>
-                <li>Position to next stability level</li>
-                <li>What needs to change (specific moves)</li>
-                <li>Time exposure under current structure</li>
-                <li>Interactive scenario modeling</li>
-                <li>Progress tracking over time</li>
-                <li>Peer benchmarking</li>
-                <li>Action plan + full 12-section analysis</li>
-                <li>Downloadable PDF + Record ID</li>
-              </ul>
-              <p style={{ fontSize: T.small.fontSize, color: colorRules.ctaSecondary, marginTop: 20, fontWeight: 600 }}>
-                Understand your structure. Model your path. Track improvement.
-              </p>
-            </div>
-          </div>
-          <div style={{ backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, padding: spacing.md }}>
-            <p style={{ fontSize: T.small.fontSize, color: COLORS.sandText, margin: 0, lineHeight: 1.6 }}>
-              Classification is permanent for the submitted income structure. If any of the 6 structural inputs change, structural change has occurred and reassessment is required. Prior classifications remain in permanent archive.
-            </p>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* STANDARD DEFINITION (All paths) */}
-      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
-            Standard definition
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 24 : 40, marginBottom: isMobile ? 24 : 40 }}>
-            <div>
-              <h3 style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 16 }}>Methodology</h3>
-              <ul style={{ fontSize: T.small.fontSize, color: COLORS.textPrimary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
-                <li>Fixed rules applied to 6 inputs only</li>
-                <li>No discretion: rules are identical for all users</li>
-                <li>Same inputs always produce same output</li>
-                <li>Model RP-2.0 fixed; version locked to all results</li>
-              </ul>
-            </div>
-            <div>
-              <h3 style={{ fontSize: T.h3.fontSize, fontWeight: T.h3.fontWeight, color: COLORS.navy, marginBottom: 16 }}>Permanence & Auditability</h3>
-              <ul style={{ fontSize: T.small.fontSize, color: COLORS.textPrimary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
-                <li>Every result timestamped to second</li>
-                <li>Record ID assigned for permanent retrieval</li>
-                <li>Prior results never modified or deleted</li>
-                <li>Full audit trail maintained indefinitely</li>
-              </ul>
-            </div>
-          </div>
-          <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, marginBottom: 24 }}>
-            Classification is derived exclusively from the 6 structural inputs. Income level, credit history, employment duration, and market conditions do not affect the classification.
-          </p>
-          <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, marginBottom: 24, fontWeight: 600, color: COLORS.navy }}>
-            Definition: Structural change
-          </p>
-          <p style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, marginBottom: 0 }}>
-            Structural change occurs when any of the 6 inputs change: gain or loss of income source, change in income type (contract to salary, salary to commission), change in concentration, change in forward visibility, change in continuity, or change in activity dependency. When structural change occurs, prior classification remains in archive and reassessment is required.
-          </p>
-        </div>
-      </section>
-
-      {/* WORKFLOW: Mortgage Underwriting Example (Institution path only) */}
-      {showSection("workflow-mortgage", audience) && (
-      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
-            Workflow: Mortgage underwriting
-          </h2>
-          <ol style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.textPrimary, lineHeight: 1.8, margin: "0 0 " + (isMobile ? "24px" : "40px"), paddingLeft: "24px" }}>
-            <li>Borrower submits income documentation. Lender evaluates 6 structural inputs from documentation.</li>
-            <li>Fixed rules applied to each input. Model RP-2.0 processes the 6 inputs.</li>
-            <li>Output: Stability score (0–100) + stability band + primary constraint identified.</li>
-            <li>Record ID and timestamp assigned. Result locked with model version.</li>
-            <li>Classification determines whether income structure supports mortgage commitment.</li>
-            <li>Result remains permanent. Reassessment required only if income structure changes per definition.</li>
-          </ol>
-          <div style={{ backgroundColor: COLORS.panelFill, borderRadius: layout.borderRadius.md, padding: spacing.md }}>
-            <p style={{ fontSize: T.small.fontSize, color: COLORS.navy, margin: 0, lineHeight: 1.6, fontWeight: 600 }}>
-              Stability score ≥ 60 indicates income structure supports the decision. Score &lt; 60 indicates structural inadequacy for the commitment.
-            </p>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* IMPLEMENTATION PATHWAYS (All paths, content varies) */}
-      {showSection("workflow-next", audience) && (
-      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
-            Next steps
-          </h2>
-          <div style={{ backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, padding: isMobile ? spacing.md : spacing.xl, textAlign: "center" }}>
-            <p style={{ fontSize: responsiveSpacing.h3FontSize, fontWeight: 600, color: COLORS.white, marginBottom: isMobile ? 16 : 24 }}>
-              Your income verification is ready to share
-            </p>
-            <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: isMobile ? 12 : 0, justifyContent: "center" }}>
-              <button style={{ padding: isMobile ? spacing.xs + " " + spacing.md : spacing.sm + " " + spacing.lg, backgroundColor: colorRules.ctaSecondary, color: COLORS.white, border: "none", borderRadius: layout.borderRadius.sm, fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, cursor: "pointer", marginRight: isMobile ? 0 : 12, transition: `all ${landingLayout.transitions.fast}`, boxShadow: landingLayout.shadows.button, minHeight: isMobile ? 48 : "auto", flex: isMobile ? 1 : 0 }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = landingLayout.shadows.hover; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = landingLayout.shadows.button; }}>
-                Download PDF
-              </button>
-              <button style={{ padding: isMobile ? spacing.xs + " " + spacing.md : spacing.sm + " " + spacing.lg, backgroundColor: "transparent", color: COLORS.white, border: `2px solid ${COLORS.white}`, borderRadius: layout.borderRadius.sm, fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, cursor: "pointer", transition: `all ${landingLayout.transitions.fast}`, minHeight: isMobile ? 48 : "auto", flex: isMobile ? 1 : 0 }}
-                onMouseEnter={e => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.10)"; }}
-                onMouseLeave={e => { e.currentTarget.style.backgroundColor = "transparent"; }}>
-                Share with Lender
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {showSection("implementation", audience) && audience === "institution" && (
-      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
-            How to implement
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 24 : 40, marginBottom: isMobile ? 24 : 40 }}>
-            <div style={{ padding: spacing.xl, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
-              <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 16 }}>For Financial Institutions</p>
-              <ul style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
-                <li>API integration available. Webhook-based processing.</li>
-                <li>Submit: 6 structural inputs. Receive: JSON classification result.</li>
-                <li>Result stored in your system. Auditable query history maintained.</li>
-                <li>Bulk processing supported for loan pipelines.</li>
-                <li>Technical documentation and sandbox environment provided.</li>
-              </ul>
-            </div>
-            <div style={{ padding: spacing.xl, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
-              <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 16 }}>For Individuals & Advisors</p>
-              <ul style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
-                <li>Web form: Submit 6 structural inputs directly.</li>
-                <li>Instant free classification. Optional paid full report ($69).</li>
-                <li>PDF report downloadable immediately. Shareable with lenders/advisors.</li>
-                <li>Classification stored permanently. No account required.</li>
-                <li>Results retrievable by Record ID at any time.</li>
-              </ul>
-            </div>
-          </div>
-          <div style={{ backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, padding: spacing.md }}>
-            <p style={{ fontSize: T.small.fontSize, color: COLORS.sandText, margin: 0, lineHeight: 1.6 }}>
-              All implementations use identical fixed methodology. Same 6 inputs produce same classification regardless of implementation channel (API, web form, dashboard integration).
-            </p>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {showSection("implementation", audience) && audience === "advisor" && (
-      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
-            Advisor options
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 24 : 40, marginBottom: isMobile ? 24 : 40 }}>
-            <div style={{ padding: spacing.xl, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
-              <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 16 }}>Recommend to Clients</p>
-              <ul style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
-                <li>Direct client to web form at no cost to you</li>
-                <li>Clients receive instant classification + optional $69 report</li>
-                <li>Share results with clients as part of advisory process</li>
-                <li>Build trust through third-party verification</li>
-              </ul>
-            </div>
-            <div style={{ padding: spacing.xl, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
-              <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 16 }}>White-Label Resale</p>
-              <ul style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.9, margin: 0, paddingLeft: "20px" }}>
-                <li>Branded advisor portal with your logo</li>
-                <li>$15–25 per report licensing fee</li>
-                <li>Bulk processing for multiple clients</li>
-                <li>Support for ongoing client relationships</li>
-              </ul>
-            </div>
-          </div>
-          <button style={{ padding: isMobile ? spacing.xs + " " + spacing.md : spacing.sm + " " + spacing.lg, backgroundColor: COLORS.navy, color: COLORS.white, border: "none", borderRadius: layout.borderRadius.sm, fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, cursor: "pointer", display: "block", margin: isMobile ? 0 : "0 auto", width: isMobile ? "100%" : "auto", minHeight: isMobile ? 48 : "auto", transition: `all ${landingLayout.transitions.fast}`, boxShadow: landingLayout.shadows.button }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = landingLayout.shadows.hover; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = landingLayout.shadows.button; }}>
-            Request Advisor Portal
-          </button>
-        </div>
-      </section>
-      )}
-
-      {/* DATA & PRIVACY (Institution path only) */}
-      {showSection("privacy", audience) && (
-      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
-            Data handling & privacy
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 24 : 40 }}>
-            <div>
-              <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 16 }}>Encryption & Storage</p>
-              <ul style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.8, margin: 0, paddingLeft: "20px" }}>
-                <li>All data encrypted in transit (TLS 1.3)</li>
-                <li>All data encrypted at rest (AES-256)</li>
-                <li>No third-party data sharing</li>
-                <li>Inputs processed immediately; structural data only retained</li>
-              </ul>
-            </div>
-            <div>
-              <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 16 }}>Compliance & Audit</p>
-              <ul style={{ fontSize: T.small.fontSize, color: COLORS.textSecondary, lineHeight: 1.8, margin: 0, paddingLeft: "20px" }}>
-                <li>FCRA compliant for financial decision support</li>
-                <li>GDPR/CCPA data subject rights supported</li>
-                <li>Full audit trail maintained (immutable log)</li>
-                <li>Annual third-party security audit conducted</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* FINAL CLOSE (All paths) */}
-      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.navy }}>
-        <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
-          <h2 style={{ fontSize: responsiveSpacing.heroFontSize, fontWeight: T.heroDisplay.fontWeight, color: COLORS.sandText, marginBottom: isMobile ? 24 : 48, lineHeight: T.heroDisplay.lineHeight, letterSpacing: T.heroDisplay.letterSpacing }}>
-            {audience === "individual" && "Verification precedes commitment"}
-            {audience === "institution" && "Income verification at scale"}
-            {audience === "advisor" && "Partner with us"}
-          </h2>
-          <button style={{ padding: isMobile ? spacing.xs + " " + spacing.lg : spacing.sm + " " + spacing.xl, backgroundColor: audience === "institution" ? COLORS.navy : colorRules.ctaSecondary, color: COLORS.white, border: "none", borderRadius: layout.borderRadius.md, fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, cursor: "pointer", transition: `all ${landingLayout.transitions.fast}`, boxShadow: landingLayout.shadows.button, minHeight: isMobile ? 48 : "auto", width: isMobile ? "100%" : "auto" }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = landingLayout.shadows.hover; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = landingLayout.shadows.button; }}>
-            {audience === "individual" && "Verify Your Income Now"}
-            {audience === "institution" && "Schedule Integration Demo"}
-            {audience === "advisor" && "Request Advisor Access"}
-          </button>
-        </div>
-      </section>
-
-      {/* FAQ ACCORDION (All paths, audience-specific questions) */}
-      {showSection("faq", audience) && (
-      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing }}>
-            Frequently asked questions
-          </h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {faqContent[audience].map((item, idx) => (
-              <div key={idx} style={{ backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, overflow: "hidden", boxShadow: landingLayout.shadows.card }}>
-                <button
-                  onClick={() => setExpandedFaq(expandedFaq === idx.toString() ? null : idx.toString())}
-                  aria-expanded={expandedFaq === idx.toString()}
-                  aria-label={`Toggle question: ${item.q}`}
-                  style={{ width: "100%", padding: spacing.md, textAlign: "left", backgroundColor: expandedFaq === idx.toString() ? COLORS.panelFill : COLORS.white, border: "none", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", transition: `all ${landingLayout.transitions.fast}`, minHeight: 48 }}>
-                  <span style={{ fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, color: COLORS.navy }}>{item.q}</span>
-                  <span style={{ fontSize: 20, color: colorRules.ctaSecondary, fontWeight: 600, transition: `transform ${landingLayout.transitions.fast}`, transform: expandedFaq === idx.toString() ? "rotate(180deg)" : "rotate(0deg)" }}>▼</span>
-                </button>
-                {expandedFaq === idx.toString() && (
-                  <div style={{ padding: spacing.md, backgroundColor: COLORS.white, borderTop: `1px solid ${COLORS.divider}` }}>
-                    <p style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>{item.a}</p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* LOGO GALLERY (Institution + Advisor social proof) */}
-      {(audience === "institution" || audience === "advisor") && showSection("gallery", audience) && (
-      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.white }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing, textAlign: "center" }}>
-            Trusted by leading financial institutions
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : isTablet ? "repeat(2, 1fr)" : "repeat(3, 1fr)", gap: responsiveSpacing.gap, marginBottom: isMobile ? 24 : 40 }}>
-            {["Mortgage Bank", "Investment Platform", "Credit Union", "Fintech Lender", "Private Bank", "Advisory Firm"].map((name) => (
-              <div key={name} style={{ padding: spacing.md, backgroundColor: COLORS.panelFill, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, textAlign: "center", boxShadow: landingLayout.shadows.card, transition: `all ${landingLayout.transitions.fast}` }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = landingLayout.shadows.hover; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = landingLayout.shadows.card; }}>
-                <div style={{ fontSize: 32, fontWeight: 700, color: colorRules.ctaSecondary, marginBottom: 12 }}>●</div>
-                <p style={{ fontSize: responsiveSpacing.bodyFontSize, fontWeight: 600, color: COLORS.navy, margin: 0 }}>{name}</p>
-              </div>
-            ))}
-          </div>
-          <div style={{ backgroundColor: COLORS.navy, borderRadius: layout.borderRadius.md, padding: spacing.md, textAlign: "center" }}>
-            <p style={{ fontSize: T.small.fontSize, color: COLORS.sandText, margin: 0, lineHeight: 1.6 }}>
-              Used by 500+ financial institutions to verify income structure stability. Integration available for institutions of all sizes.
-            </p>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* CASE STUDIES / TESTIMONIALS (All paths) */}
-      {showSection("gallery", audience) && (
-      <section style={{ padding: `${responsiveSpacing.section} ${responsiveSpacing.padding}px`, backgroundColor: COLORS.panelFill }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <h2 style={{ fontSize: responsiveSpacing.h2FontSize, fontWeight: T.h2.fontWeight, color: COLORS.navy, marginBottom: isMobile ? 24 : 40, letterSpacing: T.h2.letterSpacing, textAlign: "center" }}>
-            {audience === "individual" ? "Real verification results" : audience === "institution" ? "Institutional success stories" : "Advisor partnership examples"}
-          </h2>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: responsiveSpacing.gap }}>
-            {audience === "individual" && (
-              <>
-                <div style={{ padding: spacing.lg, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
-                  <p style={{ fontSize: 28, fontWeight: 700, fontFamily: mono, color: COLORS.established, marginBottom: 8, margin: 0 }}>74</p>
-                  <p style={{ fontSize: T.small.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 12, margin: 0 }}>Established Stability</p>
-                  <p style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>"Verified my income structure for mortgage pre-approval. Got instant result, downloaded PDF, shared with lender. Process was under 2 minutes."</p>
-                  <p style={{ fontSize: T.small.fontSize, color: COLORS.textMuted, marginTop: 12, fontStyle: "italic", margin: 0 }}>— Mortgage applicant, California</p>
-                </div>
-                <div style={{ padding: spacing.lg, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
-                  <p style={{ fontSize: 28, fontWeight: 700, fontFamily: mono, color: COLORS.risk, marginBottom: 8, margin: 0 }}>38</p>
-                  <p style={{ fontSize: T.small.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 12, margin: 0 }}>Limited Stability</p>
-                  <p style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>"Result showed I need to diversify my client base before hiring. Clear actionable insights. Helped me restructure before making major decision."</p>
-                  <p style={{ fontSize: T.small.fontSize, color: COLORS.textMuted, marginTop: 12, fontStyle: "italic", margin: 0 }}>— Freelancer, Texas</p>
-                </div>
-              </>
-            )}
-            {audience === "institution" && (
-              <>
-                <div style={{ padding: spacing.lg, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
-                  <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 12 }}>Compliance & Consistency</p>
-                  <p style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>"API integration reduced underwriting time 40%. Deterministic results mean consistent decisioning across loan officers. Audit trail satisfies regulators."</p>
-                  <p style={{ fontSize: T.small.fontSize, color: COLORS.textMuted, marginTop: 12, fontStyle: "italic", margin: 0 }}>— Chief Underwriter, National Lender</p>
-                </div>
-                <div style={{ padding: spacing.lg, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
-                  <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 12 }}>Risk Reduction</p>
-                  <p style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>"Integrated into LOS for pipeline processing. Results show 15% fewer post-close defaults on accounts flagged as high-risk. Methodology locked prevents drift."</p>
-                  <p style={{ fontSize: T.small.fontSize, color: COLORS.textMuted, marginTop: 12, fontStyle: "italic", margin: 0 }}>— VP Credit Risk, Regional Bank</p>
-                </div>
-              </>
-            )}
-            {audience === "advisor" && (
-              <>
-                <div style={{ padding: spacing.lg, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
-                  <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 12 }}>Client Value</p>
-                  <p style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>"Recommend free classification to all clients starting advisory engagements. Third-party verification builds trust. Clients love the PDF for their records."</p>
-                  <p style={{ fontSize: T.small.fontSize, color: COLORS.textMuted, marginTop: 12, fontStyle: "italic", margin: 0 }}>— Financial Advisor, New York</p>
-                </div>
-                <div style={{ padding: spacing.lg, backgroundColor: COLORS.white, borderRadius: layout.borderRadius.md, border: `1px solid ${COLORS.borderSoft}`, boxShadow: landingLayout.shadows.card }}>
-                  <p style={{ fontSize: T.h3.fontSize, fontWeight: 600, color: COLORS.navy, marginBottom: 12 }}>Revenue Stream</p>
-                  <p style={{ fontSize: responsiveSpacing.bodyFontSize, color: COLORS.textSecondary, lineHeight: 1.6, margin: 0 }}>"White-label portal branded with our firm logo. $20 per report. Selling 40 verifications/month to existing clients. Recurring revenue, zero overhead."</p>
-                  <p style={{ fontSize: T.small.fontSize, color: COLORS.textMuted, marginTop: 12, fontStyle: "italic", margin: 0 }}>— CPA Firm Partner, Chicago</p>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* Footer (All paths) */}
-      <footer style={{ backgroundColor: COLORS.navy, borderTop: `1px solid rgba(255,255,255,0.10)`, padding: isMobile ? spacing.md : spacing.xl }}>
-        <div style={{ maxWidth: layout.maxWidth, margin: "0 auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", gap: isMobile ? 24 : layout.gap.loose, marginBottom: isMobile ? 24 : 32, paddingBottom: isMobile ? 24 : 32, borderBottom: "1px solid rgba(255,255,255,0.10)" }}>
-            <div>
-              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, margin: "0 0 8px" }}>METHODOLOGY</p>
-              <p style={{ fontSize: T.micro.fontSize, color: COLORS.sandLight, lineHeight: 1.6, margin: 0 }}>Structural Stability Model RP-2.0. Fixed methodology. Version-locked. Auditable results.</p>
-            </div>
-            <div>
-              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, margin: "0 0 8px" }}>DEVELOPER</p>
-              <p style={{ fontSize: T.micro.fontSize, color: COLORS.sandLight, lineHeight: 1.6, margin: 0 }}>PeopleStar Enterprises, LLC. Orange County, California. Financial systems engineering.</p>
-            </div>
-            <div>
-              <p style={{ fontSize: T.meta.fontSize, fontWeight: T.meta.fontWeight, color: colorRules.ctaSecondary, letterSpacing: T.meta.letterSpacing, margin: "0 0 8px" }}>COMPLIANCE</p>
-              <p style={{ fontSize: T.micro.fontSize, color: COLORS.sandLight, lineHeight: 1.6, margin: 0 }}>FCRA compliant. GDPR/CCPA compatible. Annual security audit.</p>
-            </div>
-          </div>
-          <p style={{ fontSize: T.micro.fontSize, color: COLORS.sandLight, lineHeight: 1.8, margin: 0, textAlign: "center" }}>
-            © 2026 RunPayway™. All rights reserved. RunPayway™ is a product of PeopleStar Enterprises, LLC. Structural Stability Standard RP-2.0.
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }
 
-/* ================================================================ */
-/* MAIN COMPONENT                                                     */
-/* Build timestamp: 2026-05-01T22:45:00Z - Force redeploy            */
-/* ================================================================ */
+export default function LandingPage() {
+  const [previewState, setPreviewState] = useState<PreviewState>({
+    concentration: "moderate",
+    sources: "moderate",
+    visibility: "moderate",
+    variability: "moderate",
+    continuity: "moderate",
+    dependency: "moderate",
+  });
 
-export default function Page() {
-  const [audience, setAudience] = useState<Audience>("individual");
-
-  useEffect(() => {
-    const saved = localStorage.getItem("runpayway_audience") as Audience | null;
-    if (saved && ["individual", "institution", "advisor"].includes(saved)) {
-      setAudience(saved);
-    }
-  }, []);
-
-  const handleAudienceChange = (newAudience: Audience) => {
-    setAudience(newAudience);
-    localStorage.setItem("runpayway_audience", newAudience);
+  const handlePreviewChange = (key: keyof PreviewState, value: string) => {
+    setPreviewState((prev) => ({ ...prev, [key]: value as any }));
   };
 
   return (
-    <div>
-      <style>{`
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", Roboto, "Helvetica Neue", Arial, sans-serif; }
-        html { scroll-behavior: smooth; }
+    <div style={{ backgroundColor: C.white }}>
+      {/* SECTION 1: HERO */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(12, 1fr)", gap: "24px", alignItems: "center" }}>
+            {/* Left column (1-7) */}
+            <div style={{ gridColumn: "span 7" }}>
+              <h1
+                style={{
+                  fontSize: 56,
+                  fontWeight: 600,
+                  lineHeight: 1.1,
+                  letterSpacing: "-0.04em",
+                  color: C.navy,
+                  marginBottom: 40,
+                }}
+              >
+                Income structure determines whether decisions survive.
+              </h1>
 
-        @media (max-width: 768px) {
-          .desktop-only { display: none !important; }
-          .verification-flow { max-width: 100%; }
-        }
+              <p
+                style={{
+                  fontSize: 18,
+                  fontWeight: 600,
+                  color: C.textSecondary,
+                  lineHeight: 1.6,
+                  marginBottom: 24,
+                }}
+              >
+                Applied before financial commitment, where income stability must hold.
+              </p>
 
-        @media (min-width: 769px) {
-          .mobile-landing { display: none !important; }
-          .verification-flow { max-width: 600px; margin: 0 auto; }
-        }
-      `}</style>
+              <p
+                style={{
+                  fontSize: 15,
+                  color: C.textMuted,
+                  lineHeight: 1.6,
+                  marginBottom: 40,
+                }}
+              >
+                If income structure fails, the decision fails.
+              </p>
 
-      <div className="mobile-only">
-        <MobileDecisionFlow />
-      </div>
+              <button
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "16px 32px",
+                  backgroundColor: C.navy,
+                  color: C.white,
+                  border: "none",
+                  borderRadius: 8,
+                  fontSize: 16,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Start Verification
+                <span style={{ fontSize: 14 }}>→</span>
+              </button>
 
-      <div className="desktop-only">
-        <AudienceSelector audience={audience} setAudience={handleAudienceChange} />
-        <DesktopInstitutionalLanding audience={audience} />
-      </div>
+              <p style={{ fontSize: 13, color: C.textMuted, marginTop: 16, letterSpacing: "0.05em" }}>
+                Takes less than a minute · No documents required · Private
+              </p>
+            </div>
+
+            {/* Right column (8-12) - Score Card */}
+            <div style={{ gridColumn: "span 5" }}>
+              <div
+                style={{
+                  backgroundColor: C.navy,
+                  borderRadius: 20,
+                  padding: "40px 32px",
+                  color: C.sand,
+                  boxShadow: "0 12px 32px rgba(14,26,43,0.16)",
+                }}
+              >
+                <div style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 24 }}>
+                  INCOME STABILITY SCORE™
+                </div>
+
+                <div style={{ fontSize: 64, fontWeight: 700, fontFamily: mono, lineHeight: 1, marginBottom: 8 }}>
+                  72
+                </div>
+
+                <div style={{ fontSize: 16, fontWeight: 600, color: C.sand, marginBottom: 24 }}>/ 100</div>
+
+                <div
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    color: C.teal,
+                    display: "inline-block",
+                    padding: "8px 16px",
+                    backgroundColor: "rgba(31,109,122,0.15)",
+                    borderRadius: 10,
+                    marginBottom: 24,
+                  }}
+                >
+                  Established Stability
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 8,
+                    marginBottom: 24,
+                    height: 10,
+                    borderRadius: "999px",
+                    overflow: "hidden",
+                  }}
+                >
+                  <div style={{ flex: "0.40", backgroundColor: C.teal }} />
+                  <div style={{ flex: "0.35", backgroundColor: "#D0A23A" }} />
+                  <div style={{ flex: "0.25", backgroundColor: C.red }} />
+                </div>
+
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 8, marginBottom: 24 }}>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: C.teal }}>Protected</span>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: "#D0A23A" }}>Recurring</span>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: C.red }}>At Risk</span>
+                </div>
+
+                <div style={{ borderTop: "1px solid rgba(255,255,255,0.10)", paddingTop: 16 }}>
+                  <p style={{ fontSize: 13, color: "rgba(244,241,234,0.40)", margin: 0, lineHeight: 1.5 }}>
+                    Model RP-2.0 · Same inputs produce same result
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 2: CONSEQUENCE */}
+      <section style={{ padding: "96px 40px", backgroundColor: "#F8F6F1" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <h2
+            style={{
+              fontSize: 40,
+              fontWeight: 600,
+              color: C.navy,
+              marginBottom: 40,
+              letterSpacing: "-0.03em",
+            }}
+          >
+            Decisions made without structural verification fail under stress.
+          </h2>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 40 }}>
+            {[
+              "You are approved → then denied during final underwriting",
+              "Income appears strong → but fails under disruption",
+              "You commit → then discover instability too late",
+            ].map((text, i) => (
+              <div key={i} style={{ padding: 24, backgroundColor: C.white, borderRadius: 12, border: `1px solid ${C.borderSoft}`, boxShadow: "0 4px 16px rgba(14,26,43,0.08)" }}>
+                <p style={{ fontSize: 15, fontWeight: 600, color: C.navy, lineHeight: 1.6, margin: 0 }}>
+                  {text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3: INPUT DEFINITIONS */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <h2
+            style={{
+              fontSize: 40,
+              fontWeight: 600,
+              color: C.navy,
+              marginBottom: 16,
+              letterSpacing: "-0.03em",
+            }}
+          >
+            Six structural inputs
+          </h2>
+
+          <p
+            style={{
+              fontSize: 16,
+              fontWeight: 600,
+              color: C.navy,
+              marginBottom: 48,
+              lineHeight: 1.6,
+            }}
+          >
+            Income classification is determined by these 6 factors.
+          </p>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 40, marginBottom: 40 }}>
+            {[
+              {
+                num: "1",
+                name: "Concentration",
+                desc: "Reliance on primary income. Diversification reduces risk.",
+              },
+              {
+                num: "2",
+                name: "Source Diversity",
+                desc: "Distribution across sources. Multiple channels improve stability.",
+              },
+              {
+                num: "3",
+                name: "Forward Visibility",
+                desc: "Income already secured. Certainty over planning horizon.",
+              },
+              {
+                num: "4",
+                name: "Stability Pattern",
+                desc: "Consistency over time. Variability introduces structural risk.",
+              },
+              {
+                num: "5",
+                name: "Continuity",
+                desc: "Income without activity. Passive revenue improves structure.",
+              },
+              {
+                num: "6",
+                name: "Dependency",
+                desc: "Reliance on effort. Lower dependency improves resilience.",
+              },
+            ].map((input, i) => (
+              <div
+                key={i}
+                style={{
+                  padding: 24,
+                  backgroundColor: "#F8F6F1",
+                  borderRadius: 12,
+                  border: `1px solid ${C.borderSoft}`,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 12,
+                    fontWeight: 600,
+                    color: C.teal,
+                    letterSpacing: "0.08em",
+                    marginBottom: 12,
+                  }}
+                >
+                  INPUT {input.num}
+                </div>
+                <p
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 600,
+                    color: C.navy,
+                    marginBottom: 12,
+                    margin: 0,
+                  }}
+                >
+                  {input.name}
+                </p>
+                <p style={{ fontSize: 14, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>
+                  {input.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ backgroundColor: C.navy, borderRadius: 12, padding: 24 }}>
+            <p style={{ fontSize: 13, color: C.sand, margin: 0, lineHeight: 1.6 }}>
+              Model RP-2.0 · Fixed rules · Same inputs produce same result
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4: LIVE PREVIEW */}
+      <section style={{ padding: "96px 40px", backgroundColor: "#F8F6F1" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <h2
+            style={{
+              fontSize: 40,
+              fontWeight: 600,
+              color: C.navy,
+              marginBottom: 16,
+              letterSpacing: "-0.03em",
+            }}
+          >
+            See how structure affects stability.
+          </h2>
+
+          <p
+            style={{
+              fontSize: 16,
+              fontWeight: 600,
+              color: C.textSecondary,
+              marginBottom: 48,
+              lineHeight: 1.6,
+            }}
+          >
+            Adjust the profile below. This preview shows directional movement only.
+          </p>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "flex-start" }}>
+            {/* Controls */}
+            <div style={{ backgroundColor: C.white, borderRadius: 12, padding: 32, border: `1px solid ${C.borderSoft}` }}>
+              <ControlButton
+                label="CONCENTRATION"
+                value={previewState.concentration}
+                options={["lower", "moderate", "strong"]}
+                onChange={(v) => handlePreviewChange("concentration", v)}
+              />
+              <ControlButton
+                label="SOURCES"
+                value={previewState.sources}
+                options={["lower", "moderate", "strong"]}
+                onChange={(v) => handlePreviewChange("sources", v)}
+              />
+              <ControlButton
+                label="FORWARD VISIBILITY"
+                value={previewState.visibility}
+                options={["lower", "moderate", "strong"]}
+                onChange={(v) => handlePreviewChange("visibility", v)}
+              />
+              <ControlButton
+                label="STABILITY PATTERN"
+                value={previewState.variability}
+                options={["lower", "moderate", "strong"]}
+                onChange={(v) => handlePreviewChange("variability", v)}
+              />
+              <ControlButton
+                label="CONTINUITY"
+                value={previewState.continuity}
+                options={["lower", "moderate", "strong"]}
+                onChange={(v) => handlePreviewChange("continuity", v)}
+              />
+              <ControlButton
+                label="ACTIVITY DEPENDENCY"
+                value={previewState.dependency}
+                options={["lower", "moderate", "strong"]}
+                onChange={(v) => handlePreviewChange("dependency", v)}
+              />
+            </div>
+
+            {/* Preview Output */}
+            <PreviewCard state={previewState} />
+          </div>
+
+          <div style={{ marginTop: 40, textAlign: "center" }}>
+            <button
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "16px 32px",
+                backgroundColor: C.navy,
+                color: C.white,
+                border: "none",
+                borderRadius: 8,
+                fontSize: 16,
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+            >
+              Generate My Verified Result
+            </button>
+            <p style={{ fontSize: 13, color: C.textMuted, marginTop: 16, letterSpacing: "0.05em" }}>
+              Preview updates instantly. Verified results are timestamped and record-locked.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 5: STRUCTURAL PROOF */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <h2
+            style={{
+              fontSize: 40,
+              fontWeight: 600,
+              color: C.navy,
+              marginBottom: 48,
+              letterSpacing: "-0.03em",
+            }}
+          >
+            Structure determines outcome
+          </h2>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48 }}>
+            <div
+              style={{
+                backgroundColor: "#F8F6F1",
+                borderRadius: 20,
+                padding: "40px 32px",
+                border: `1px solid ${C.borderSoft}`,
+                boxShadow: "0 12px 32px rgba(14,26,43,0.16)",
+                textAlign: "center",
+              }}
+            >
+              <div style={{ fontSize: 64, fontWeight: 700, fontFamily: mono, lineHeight: 1, marginBottom: 12, color: C.red }}>
+                31
+              </div>
+              <div style={{ fontSize: 20, fontWeight: 600, color: C.red, marginBottom: 16 }}>
+                Limited Stability
+              </div>
+              <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>
+                One income source
+              </p>
+            </div>
+
+            <div
+              style={{
+                backgroundColor: "#F8F6F1",
+                borderRadius: 20,
+                padding: "40px 32px",
+                border: `1px solid ${C.borderSoft}`,
+                boxShadow: "0 12px 32px rgba(14,26,43,0.16)",
+                textAlign: "center",
+              }}
+            >
+              <div style={{ fontSize: 64, fontWeight: 700, fontFamily: mono, lineHeight: 1, marginBottom: 12, color: C.green }}>
+                74
+              </div>
+              <div style={{ fontSize: 20, fontWeight: 600, color: C.green, marginBottom: 16 }}>
+                Established Stability
+              </div>
+              <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>
+                Multiple income sources
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 6: TRIGGER STRIP */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.navy, textAlign: "center", color: C.sand }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <p
+            style={{
+              fontSize: 24,
+              fontWeight: 600,
+              lineHeight: 1.5,
+              marginBottom: 16,
+            }}
+          >
+            Most users discover a structural weakness they didn't know existed.
+          </p>
+          <p
+            style={{
+              fontSize: 18,
+              fontWeight: 400,
+              lineHeight: 1.6,
+              color: "rgba(244,241,234,0.70)",
+            }}
+          >
+            Verification reveals the constraint before the decision is made.
+          </p>
+        </div>
+      </section>
+
+      {/* SECTION 7: PRICING */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48 }}>
+            {/* FREE */}
+            <div
+              style={{
+                padding: 40,
+                backgroundColor: "#F8F6F1",
+                borderRadius: 12,
+                border: `1px solid ${C.borderSoft}`,
+              }}
+            >
+              <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 16 }}>
+                FREE
+              </p>
+              <ul style={{ fontSize: 15, color: C.textSecondary, lineHeight: 2, margin: "0 0 24px 20px", padding: 0 }}>
+                <li>Stability classification</li>
+                <li>Primary constraint</li>
+              </ul>
+              <p style={{ fontSize: 13, color: C.textMuted, marginBottom: 0, fontStyle: "italic" }}>
+                Not sufficient for full decision verification
+              </p>
+            </div>
+
+            {/* $69 */}
+            <div
+              style={{
+                padding: 40,
+                backgroundColor: C.white,
+                borderRadius: 12,
+                border: `2px solid ${C.teal}`,
+                boxShadow: "0 12px 32px rgba(14,26,43,0.16)",
+              }}
+            >
+              <p style={{ fontSize: 12, fontWeight: 600, color: C.teal, letterSpacing: "0.08em", marginBottom: 16 }}>
+                $69 — FULL VERIFICATION
+              </p>
+              <ul style={{ fontSize: 15, color: C.textSecondary, lineHeight: 2, margin: "0 0 24px 20px", padding: 0 }}>
+                <li>Income Stability Score™ (exact value)</li>
+                <li>Full structural breakdown</li>
+                <li>Decision alignment (PASS / FAIL)</li>
+                <li>Permanent Record ID</li>
+                <li>Timestamped output</li>
+                <li>Complete report</li>
+              </ul>
+              <button
+                style={{
+                  width: "100%",
+                  padding: "16px 32px",
+                  backgroundColor: C.navy,
+                  color: C.white,
+                  border: "none",
+                  borderRadius: 8,
+                  fontSize: 16,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  marginBottom: 24,
+                }}
+              >
+                Complete Verification
+              </button>
+
+              {/* Proof Panel */}
+              <div
+                style={{
+                  padding: 20,
+                  backgroundColor: "#F8F6F1",
+                  borderRadius: 8,
+                  border: `1px solid ${C.borderSoft}`,
+                }}
+              >
+                <p style={{ fontSize: 12, fontWeight: 600, color: C.navy, marginBottom: 8 }}>
+                  Record ID: RP-2026-004921
+                </p>
+                <p style={{ fontSize: 12, fontWeight: 600, color: C.navy, marginBottom: 8 }}>
+                  Timestamp: 2026-05-03 21:04 UTC
+                </p>
+                <p style={{ fontSize: 12, fontWeight: 600, color: C.green }}>
+                  Decision: Mortgage → Supported
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              backgroundColor: C.navy,
+              borderRadius: 12,
+              padding: 24,
+              marginTop: 48,
+              textAlign: "center",
+              color: C.sand,
+            }}
+          >
+            <p style={{ fontSize: 13, color: C.sand, margin: 0, lineHeight: 1.6 }}>
+              Applied before financial commitment, where income stability must hold.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 8: SYSTEM INTEGRITY */}
+      <section style={{ padding: "96px 40px", backgroundColor: "#F8F6F1" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48 }}>
+            <div>
+              <h3 style={{ fontSize: 20, fontWeight: 600, color: C.navy, marginBottom: 24 }}>
+                Fixed rules applied
+              </h3>
+              <ul style={{ fontSize: 15, color: C.textSecondary, lineHeight: 2, margin: 0, padding: "0 0 0 20px" }}>
+                <li>No discretion</li>
+                <li>Same inputs produce same result</li>
+                <li>Rules apply uniformly</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 style={{ fontSize: 20, fontWeight: 600, color: C.navy, marginBottom: 24 }}>
+                Permanence & Auditability
+              </h3>
+              <ul style={{ fontSize: 15, color: C.textSecondary, lineHeight: 2, margin: 0, padding: "0 0 0 20px" }}>
+                <li>Timestamped result</li>
+                <li>Permanent record ID</li>
+                <li>Results are not modified</li>
+              </ul>
+            </div>
+          </div>
+
+          <div
+            style={{
+              backgroundColor: C.navy,
+              borderRadius: 12,
+              padding: 24,
+              marginTop: 48,
+              textAlign: "center",
+              color: C.sand,
+            }}
+          >
+            <p style={{ fontSize: 13, color: C.sand, margin: 0 }}>
+              Model RP-2.0 · Version locked
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 9: FINAL CTA */}
+      <section style={{ padding: "96px 40px", backgroundColor: C.navy, textAlign: "center" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <h2
+            style={{
+              fontSize: 40,
+              fontWeight: 600,
+              color: C.sand,
+              marginBottom: 24,
+              letterSpacing: "-0.03em",
+            }}
+          >
+            Verify your income structure before you commit.
+          </h2>
+          <p
+            style={{
+              fontSize: 18,
+              fontWeight: 400,
+              color: "rgba(244,241,234,0.70)",
+              lineHeight: 1.6,
+              marginBottom: 40,
+            }}
+          >
+            Once the decision is made, it's too late to fix the structure.
+          </p>
+
+          <button
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "16px 32px",
+              backgroundColor: C.teal,
+              color: C.navy,
+              border: "none",
+              borderRadius: 8,
+              fontSize: 16,
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            Start Verification
+            <span style={{ fontSize: 14 }}>→</span>
+          </button>
+
+          <p style={{ fontSize: 13, color: "rgba(244,241,234,0.60)", marginTop: 16, letterSpacing: "0.05em" }}>
+            Free · Private · Immediate result
+          </p>
+        </div>
+      </section>
     </div>
   );
 }

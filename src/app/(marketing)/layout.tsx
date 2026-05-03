@@ -7,6 +7,7 @@ import logoBlue from "../../../public/runpayway-logo-blue.png";
 import CookieConsent from "@/components/CookieConsent";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
 import ScrollToTop from "@/components/ScrollToTop";
+import Footer from "@/components/Footer";
 import { useLanguage } from "@/lib/i18n";
 import { WORKER_URL } from "@/lib/config";
 import type { LangCode } from "@/lib/i18n";
@@ -738,125 +739,7 @@ export default function MarketingLayout({
       <main id="main-content" className="flex-1">{children}</main>
 
       {/* Footer */}
-      <footer
-        id="footer"
-        style={{
-          background: "#F5F4F1",
-          borderTop: "1px solid rgba(14,26,43,0.06)",
-          scrollMarginTop: 80,
-        }}
-      >
-        <div
-          className="mx-auto"
-          style={{
-            maxWidth: 1200,
-            padding: mobile ? "40px 24px 40px" : "64px 48px 48px",
-          }}
-        >
-          {/* Brand */}
-          <div style={{ marginBottom: mobile ? 36 : 48, textAlign: "center" }}>
-            <Link href="/" style={{ display: "inline-flex", alignItems: "center" }}>
-              <Image
-                src={logoBlue}
-                alt="RunPayway™"
-                width={mobile ? 130 : 160}
-                height={mobile ? 15 : 19}
-                style={{ height: "auto" }}
-              />
-            </Link>
-            <div style={{ fontSize: 14, fontWeight: 500, color: "#1F6D7A", marginTop: 8 }}>
-              {t.footer.incomeStabilityScore}
-            </div>
-          </div>
-
-          {/* 3-column nav grid */}
-          <nav
-            aria-label="Footer navigation"
-            style={{
-              display: "grid",
-              gridTemplateColumns: mobile ? "repeat(2, 1fr)" : "repeat(3, 1fr)",
-              gap: mobile ? "36px 32px" : "0 64px",
-              maxWidth: 720,
-              margin: "0 auto",
-              marginBottom: mobile ? 40 : 52,
-            }}
-          >
-            {/* Product */}
-            <div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.product}</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {[
-                  { href: "/how-it-works", label: t.nav.howItWorks },
-                  { href: "/plans", label: "Plans" },
-                  { href: "/learn", label: "Learn" },
-                  { href: "/methodology", label: "Methodology" },
-                  { href: "/advisors", label: "For Advisors" },
-                  { href: "/organizations", label: "For Organizations" },
-                  { href: "/industries", label: "Industries" },
-                ].map((link) => (
-                  <Link key={link.label} href={link.href}
-                    style={{ fontSize: 14, color: "rgba(14,26,43,0.55)", lineHeight: 1.4, transition: "color 160ms ease, font-weight 160ms ease" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; e.currentTarget.style.fontWeight = "600"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.55)"; e.currentTarget.style.fontWeight = "400"; }}>
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            {/* Company */}
-            <div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>{t.footer.company}</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {[
-                  { href: "/about", label: t.nav.about },
-                  { href: "/blog", label: "Blog" },
-                  { href: "/faq", label: t.nav.faq },
-                  { href: "/coming-soon", label: "What\u2019s New" },
-                  { href: "/contact", label: t.nav.contact },
-                ].map((link) => (
-                  <Link key={link.label} href={link.href}
-                    style={{ fontSize: 14, color: "rgba(14,26,43,0.55)", lineHeight: 1.4, transition: "color 160ms ease, font-weight 160ms ease" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; e.currentTarget.style.fontWeight = "600"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.55)"; e.currentTarget.style.fontWeight = "400"; }}>
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            {/* Legal */}
-            <div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: "#0E1A2B", letterSpacing: "0.02em", marginBottom: 16 }}>Legal</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {[
-                  { href: "/privacy-policy", label: t.footer.privacyPolicy },
-                  { href: "/terms-of-use", label: t.footer.termsOfUse },
-                  { href: "/accessibility", label: t.footer.accessibility },
-                  { href: "/security-practices", label: t.footer.securityPractices },
-                ].map((link) => (
-                  <Link key={link.label} href={link.href}
-                    style={{ fontSize: 14, color: "rgba(14,26,43,0.55)", lineHeight: 1.4, transition: "color 160ms ease, font-weight 160ms ease" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.color = "#0E1A2B"; e.currentTarget.style.fontWeight = "600"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(14,26,43,0.55)"; e.currentTarget.style.fontWeight = "400"; }}>
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </nav>
-
-          {/* Divider */}
-          <div style={{ height: 1, width: "100%", background: "rgba(14,26,43,0.06)", marginBottom: 20 }} />
-
-          {/* Legal strip */}
-          <div style={{ fontSize: 14, color: "rgba(14,26,43,0.45)", lineHeight: 1.8, textAlign: "center" }}>
-            {t.footer.legal}
-          </div>
-        </div>
-      </footer>
-
-      {/* Cookie Consent Banner — GDPR compliance */}
+      <Footer />
       <CookieConsent />
       {/* Accessibility Widget — WCAG 2.1 AA */}
       <AccessibilityWidget />
