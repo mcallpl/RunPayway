@@ -78,7 +78,7 @@ export default function LandingPage() {
               </p>
 
               {/* CTA */}
-              <button style={{ width: "320px", height: "72px", borderRadius: "10px", background: "linear-gradient(135deg, #0E1A2B 0%, #0B2A4A 100%)", color: "#FFFFFF", fontSize: "20px", fontWeight: "600", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", border: "none", cursor: "pointer", marginBottom: "24px", fontFamily: "Inter" }}>
+              <button style={{ width: "320px", height: "72px", borderRadius: "10px", backgroundColor: "#0E1A2B", color: "#FFFFFF", fontSize: "20px", fontWeight: "600", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", border: "none", cursor: "pointer", marginBottom: "24px", fontFamily: "Inter" }}>
                 Start Verification
                 <span>→</span>
               </button>
@@ -173,7 +173,7 @@ export default function LandingPage() {
             </p>
 
             {/* CTA Mobile */}
-            <button style={{ width: "100%", height: "64px", borderRadius: "10px", background: "linear-gradient(135deg, #0E1A2B 0%, #0B2A4A 100%)", color: "#FFFFFF", fontSize: "18px", fontWeight: "600", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", border: "none", cursor: "pointer", marginBottom: "24px" }}>
+            <button style={{ width: "100%", height: "64px", borderRadius: "10px", backgroundColor: "#0E1A2B", color: "#FFFFFF", fontSize: "18px", fontWeight: "600", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", border: "none", cursor: "pointer", marginBottom: "24px" }}>
               Start Verification
               <span>→</span>
             </button>
