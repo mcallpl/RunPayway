@@ -63,7 +63,7 @@ export default function LandingPage() {
               </div>
 
               {/* H1 */}
-              <h1 style={{ fontSize: "62px", fontWeight: "700", lineHeight: "1.08", letterSpacing: "-0.035em", color: "#0E1A2B", marginBottom: "36px", maxWidth: "680px", fontFamily: "Inter" }}>
+              <h1 style={{ fontSize: "76px", fontWeight: "700", lineHeight: "1.0", letterSpacing: "-0.045em", color: "#0E1A2B", marginBottom: "32px", maxWidth: "700px", fontFamily: "Inter" }}>
                 Major financial decisions require income verification.
               </h1>
 
@@ -78,7 +78,7 @@ export default function LandingPage() {
               </p>
 
               {/* CTA */}
-              <button style={{ width: "280px", height: "56px", borderRadius: "8px", backgroundColor: "#0E1A2B", color: "#FFFFFF", fontSize: "16px", fontWeight: "600", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", border: "none", cursor: "pointer", marginBottom: "40px", fontFamily: "Inter" }}>
+              <button style={{ width: "280px", height: "56px", borderRadius: "10px", backgroundColor: "#0E1A2B", color: "#FFFFFF", fontSize: "16px", fontWeight: "600", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", border: "none", cursor: "pointer", marginBottom: "44px", fontFamily: "Inter" }}>
                 Start Verification
                 <span>→</span>
               </button>
@@ -105,21 +105,21 @@ export default function LandingPage() {
                 </div>
 
                 {/* Score Number Row */}
-                <div style={{ display: "flex", alignItems: "baseline", gap: "12px", marginBottom: "0" }}>
-                  <span style={{ fontSize: "108px", fontWeight: "700", lineHeight: "0.9", letterSpacing: "-0.04em", color: "#0E1A2B" }}>72</span>
-                  <span style={{ fontSize: "40px", fontWeight: "400", color: "#9CA3AF", lineHeight: "1" }}>/100</span>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "16px", marginBottom: "0" }}>
+                  <span style={{ fontSize: "130px", fontWeight: "700", lineHeight: "0.85", letterSpacing: "-0.05em", color: "#0E1A2B" }}>72</span>
+                  <span style={{ fontSize: "44px", fontWeight: "400", color: "#9CA3AF", lineHeight: "0.9" }}>/100</span>
                 </div>
 
                 {/* Divider */}
-                <div style={{ height: "1px", backgroundColor: "#E5E7EB", margin: "28px 0 32px 0" }}></div>
+                <div style={{ height: "1px", backgroundColor: "#E5E7EB", margin: "36px 0 36px 0" }}></div>
 
                 {/* Band */}
-                <div style={{ fontSize: "26px", fontWeight: "700", color: "#2F6BFF", marginBottom: "12px" }}>
+                <div style={{ fontSize: "30px", fontWeight: "700", color: "#2F6BFF", marginBottom: "14px" }}>
                   Established Stability
                 </div>
 
                 {/* Description */}
-                <p style={{ fontSize: "15px", lineHeight: "1.6", color: "#6B7280", marginBottom: "40px", margin: "0 0 40px 0" }}>
+                <p style={{ fontSize: "15px", lineHeight: "1.6", color: "#6B7280", margin: "0 0 44px 0" }}>
                   Determines whether income holds under disruption.
                 </p>
 
@@ -132,7 +132,7 @@ export default function LandingPage() {
                 </div>
 
                 {/* Progress Labels */}
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", fontSize: "14px", color: "#6B7280", marginBottom: "40px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", fontSize: "14px", color: "#6B7280", marginBottom: "48px" }}>
                   <span style={{ color: "#2F6BFF", fontWeight: "600" }}>Protected</span>
                   <span style={{ textAlign: "center" }}>Recurring</span>
                   <span style={{ textAlign: "right" }}>At Risk</span>
@@ -158,7 +158,7 @@ export default function LandingPage() {
             </div>
 
             {/* H1 Mobile */}
-            <h1 style={{ fontSize: "36px", fontWeight: "700", lineHeight: "1.12", color: "#0E1A2B", marginBottom: "28px" }}>
+            <h1 style={{ fontSize: "42px", fontWeight: "700", lineHeight: "1.05", letterSpacing: "-0.03em", color: "#0E1A2B", marginBottom: "28px" }}>
               Major financial decisions require income verification.
             </h1>
 
@@ -173,7 +173,7 @@ export default function LandingPage() {
             </p>
 
             {/* CTA Mobile */}
-            <button style={{ width: "100%", height: "64px", borderRadius: "10px", backgroundColor: "#0E1A2B", color: "#FFFFFF", fontSize: "18px", fontWeight: "600", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", border: "none", cursor: "pointer", marginBottom: "24px" }}>
+            <button style={{ width: "100%", height: "64px", borderRadius: "12px", backgroundColor: "#0E1A2B", color: "#FFFFFF", fontSize: "18px", fontWeight: "600", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", border: "none", cursor: "pointer", marginBottom: "28px" }}>
               Start Verification
               <span>→</span>
             </button>
@@ -196,16 +196,16 @@ export default function LandingPage() {
               </div>
 
               {/* Score Number */}
-              <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginBottom: "0" }}>
-                <span style={{ fontSize: "80px", fontWeight: "700", lineHeight: "0.95", letterSpacing: "-0.04em", color: "#0E1A2B" }}>72</span>
-                <span style={{ fontSize: "28px", fontWeight: "400", color: "#6B7280" }}>/100</span>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "12px", marginBottom: "0" }}>
+                <span style={{ fontSize: "100px", fontWeight: "700", lineHeight: "0.85", letterSpacing: "-0.05em", color: "#0E1A2B" }}>72</span>
+                <span style={{ fontSize: "32px", fontWeight: "400", color: "#9CA3AF" }}>/100</span>
               </div>
 
               {/* Divider */}
-              <div style={{ height: "1px", backgroundColor: "#E5E7EB", margin: "20px 0 24px 0" }}></div>
+              <div style={{ height: "1px", backgroundColor: "#E5E7EB", margin: "28px 0 28px 0" }}></div>
 
               {/* Band */}
-              <div style={{ fontSize: "22px", fontWeight: "700", color: "#2F6BFF", marginBottom: "8px" }}>
+              <div style={{ fontSize: "26px", fontWeight: "700", color: "#2F6BFF", marginBottom: "12px" }}>
                 Established Stability
               </div>
 
@@ -237,16 +237,16 @@ export default function LandingPage() {
       </section>
 
       {/* TRUST STRIP - HORIZONTAL LAYOUT */}
-      <section style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB", padding: "48px 48px 48px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
+      <section style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB", padding: "64px 48px 64px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         {/* Arrow */}
-        <div style={{ textAlign: "center", marginBottom: "24px" }}>
+        <div style={{ textAlign: "center", marginBottom: "32px" }}>
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2.5" style={{ marginLeft: "auto", marginRight: "auto" }}>
             <path d="M12 5v14M5 12l7 7 7-7" />
           </svg>
         </div>
 
         {/* Headline */}
-        <p style={{ fontSize: "17px", lineHeight: "1.5", fontWeight: "500", color: "#0E1A2B", textAlign: "center", marginBottom: "48px", margin: "0 0 48px 0", fontFamily: "Inter" }}>
+        <p style={{ fontSize: "18px", lineHeight: "1.5", fontWeight: "500", color: "#0E1A2B", textAlign: "center", margin: "0 0 56px 0", fontFamily: "Inter" }}>
           Trusted by organizations and professionals for verified income stability.
         </p>
 
@@ -254,7 +254,7 @@ export default function LandingPage() {
         <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "80px" }}>
           {/* Item 1 */}
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.8" style={{ flexShrink: "0" }}>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.8" style={{ flexShrink: "0" }}>
               <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <p style={{ fontSize: "15px", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
@@ -264,7 +264,7 @@ export default function LandingPage() {
 
           {/* Item 2 */}
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.8" style={{ flexShrink: "0" }}>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.8" style={{ flexShrink: "0" }}>
               <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <p style={{ fontSize: "15px", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
@@ -274,7 +274,7 @@ export default function LandingPage() {
 
           {/* Item 3 */}
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.8" style={{ flexShrink: "0" }}>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.8" style={{ flexShrink: "0" }}>
               <path d="M13 10V3L4 14h7v7l9-11h-7z" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             <p style={{ fontSize: "15px", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
