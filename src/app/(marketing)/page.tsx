@@ -2,36 +2,45 @@ export default function LandingPage() {
   return (
     <div className="w-full">
       {/* HEADER - EXACT REFERENCE MATCH */}
-      <header style={{ position: "sticky", top: "0", zIndex: "50", backgroundColor: "#FFFFFF", borderBottom: "1px solid #E5E7EB", height: "72px", width: "100%", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
+      <header style={{ position: "sticky", top: "0", zIndex: "50", backgroundColor: "#FFFFFF", borderBottom: "1px solid #E5E7EB", boxShadow: "0px 1px 0px rgba(0,0,0,0.04)", height: "72px", width: "100%", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         {/* Desktop */}
         <div className="hidden lg:flex h-full items-center" style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 48px", justifyContent: "space-between" }}>
           {/* Logo */}
-          <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: "0", marginRight: "80px" }}>
-            <img src="/RunPayway/runpayway-logo-blue.png" alt="RunPayway™" style={{ height: "32px", width: "auto" }} />
+          <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: "0", marginRight: "80px", gap: "8px" }}>
+            <span style={{ fontSize: "20px", fontWeight: "700", letterSpacing: "-0.02em", color: "#0E1A2B", lineHeight: "1" }}>RUNPAYWAY™</span>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style={{ flexShrink: "0" }}>
+              <defs>
+                <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#2F6BFF" />
+                  <stop offset="100%" stopColor="#1D4ED8" />
+                </linearGradient>
+              </defs>
+              <path d="M12 2L5 5v7c0 6 7 9 7 9s7-3 7-9V5l-7-3z" stroke="url(#logoGrad)" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </a>
 
           {/* Center Navigation */}
-          <nav style={{ display: "flex", gap: "24px", alignItems: "center", flex: "1" }}>
-            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap" }}>How It Works</a>
-            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap" }}>Methodology</a>
-            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap" }}>Use Cases</a>
+          <nav style={{ display: "flex", gap: "28px", alignItems: "center", flex: "1" }}>
+            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>How It Works</a>
+            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>Methodology</a>
+            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>Use Cases</a>
 
             <div style={{ position: "relative" }}>
-              <button style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", padding: "0", whiteSpace: "nowrap" }}>
+              <button style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", padding: "8px 4px", transition: "color 150ms ease" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>
                 Solutions
                 <span style={{ fontSize: "11px" }}>▼</span>
               </button>
             </div>
 
-            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#2F6BFF", textDecoration: "none", lineHeight: "1", borderBottom: "2px solid #2F6BFF", paddingBottom: "2px", whiteSpace: "nowrap" }}>Plans</a>
-            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap" }}>Learn</a>
-            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap" }}>About</a>
+            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>Plans</a>
+            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>Learn</a>
+            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>About</a>
           </nav>
 
           {/* Right Side */}
-          <div style={{ display: "flex", gap: "24px", alignItems: "center", marginLeft: "auto" }}>
-            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1" }}>Sign In</a>
-            <button style={{ height: "40px", padding: "0 24px", backgroundColor: "#0E1A2B", color: "#FFFFFF", borderRadius: "6px", fontWeight: "600", fontSize: "14px", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", whiteSpace: "nowrap" }}>
+          <div style={{ display: "flex", gap: "28px", alignItems: "center", marginLeft: "auto" }}>
+            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>Sign In</a>
+            <button style={{ height: "40px", padding: "0 24px", background: "linear-gradient(135deg, #0E1A2B 0%, #0A2540 100%)", color: "#FFFFFF", borderRadius: "6px", fontWeight: "600", fontSize: "14px", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", whiteSpace: "nowrap", boxShadow: "0px 6px 14px rgba(14, 26, 43, 0.18)", transition: "all 150ms ease" }} onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0px 14px 32px rgba(10, 37, 64, 0.32)"; }} onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 6px 14px rgba(14, 26, 43, 0.18)"; }} onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 6px 14px rgba(10, 37, 64, 0.2)"; }}>
               Start Verification
             </button>
           </div>
@@ -51,7 +60,7 @@ export default function LandingPage() {
       </header>
 
       {/* SECTION 1: HERO - ELITE ENTERPRISE LEVEL */}
-      <section style={{ backgroundColor: "#F8FAFC", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
+      <section style={{ background: "linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%)", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         {/* Desktop */}
         <div className="hidden lg:block" style={{ padding: "96px 48px 88px" }}>
           <div style={{ maxWidth: "1320px", marginLeft: "auto", marginRight: "auto", display: "grid", gridTemplateColumns: "58% 42%", gap: "88px", alignItems: "flex-start" }}>
@@ -63,7 +72,7 @@ export default function LandingPage() {
               </div>
 
               {/* H1 */}
-              <h1 style={{ fontSize: "76px", fontWeight: "700", lineHeight: "1.0", letterSpacing: "-0.045em", color: "#0E1A2B", marginBottom: "32px", maxWidth: "700px", fontFamily: "Inter" }}>
+              <h1 style={{ fontSize: "56px", fontWeight: "700", lineHeight: "1.0", letterSpacing: "-0.045em", color: "#0E1A2B", marginBottom: "32px", maxWidth: "680px", fontFamily: "Inter", textRendering: "optimizeLegibility", WebkitFontSmoothing: "antialiased" }}>
                 Major financial decisions require income verification.
               </h1>
 
@@ -78,7 +87,7 @@ export default function LandingPage() {
               </p>
 
               {/* CTA */}
-              <button style={{ width: "280px", height: "56px", borderRadius: "10px", backgroundColor: "#0E1A2B", color: "#FFFFFF", fontSize: "16px", fontWeight: "600", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", border: "none", cursor: "pointer", marginBottom: "44px", fontFamily: "Inter" }}>
+              <button style={{ width: "280px", height: "56px", borderRadius: "10px", background: "linear-gradient(135deg, #0E1A2B 0%, #0A2540 100%)", color: "#FFFFFF", fontSize: "16px", fontWeight: "600", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", border: "none", cursor: "pointer", marginBottom: "44px", fontFamily: "Inter", boxShadow: "0px 10px 24px rgba(10, 37, 64, 0.28)", transition: "all 150ms ease" }} onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0px 14px 32px rgba(10, 37, 64, 0.32)"; }} onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 10px 24px rgba(10, 37, 64, 0.28)"; }} onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 6px 14px rgba(10, 37, 64, 0.2)"; }}>
                 Start Verification
                 <span>→</span>
               </button>
@@ -98,7 +107,7 @@ export default function LandingPage() {
 
             {/* RIGHT COLUMN - Score Card */}
             <div style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
-              <div style={{ width: "520px", minHeight: "520px", backgroundColor: "#FFFFFF", border: "1px solid #E6E8EB", borderRadius: "14px", padding: "48px", boxShadow: "0px 24px 50px rgba(16, 24, 40, 0.08)", fontFamily: "Inter", display: "flex", flexDirection: "column" }}>
+              <div style={{ width: "520px", minHeight: "520px", backgroundColor: "#FFFFFF", border: "1px solid rgba(255,255,255,0.6)", borderRadius: "14px", padding: "48px", boxShadow: "0px 24px 50px rgba(16, 24, 40, 0.08), inset 0px 1px 0px rgba(255,255,255,0.6)", fontFamily: "Inter", display: "flex", flexDirection: "column", transform: "scale(1.02)" }}>
                 {/* Score Title */}
                 <div style={{ fontSize: "18px", fontWeight: "600", color: "#0E1A2B", marginBottom: "28px" }}>
                   Income Stability Score™
@@ -126,7 +135,7 @@ export default function LandingPage() {
                 {/* Progress Track */}
                 <div style={{ position: "relative", width: "100%", height: "8px", backgroundColor: "#D1D5DB", borderRadius: "999px", marginBottom: "24px" }}>
                   {/* Progress Fill */}
-                  <div style={{ position: "absolute", left: "0", top: "0", width: "38%", height: "8px", backgroundColor: "#2F6BFF", borderRadius: "999px" }}></div>
+                  <div style={{ position: "absolute", left: "0", top: "0", width: "38%", height: "8px", background: "linear-gradient(90deg, #2F6BFF 0%, #1D4ED8 100%)", borderRadius: "999px", boxShadow: "0px 0px 8px rgba(47, 107, 255, 0.25)" }}></div>
                   {/* Progress Knob */}
                   <div style={{ position: "absolute", left: "38%", top: "50%", width: "24px", height: "24px", backgroundColor: "#2F6BFF", border: "4px solid #FFFFFF", borderRadius: "999px", transform: "translate(-50%, -50%)" }}></div>
                 </div>
@@ -158,7 +167,7 @@ export default function LandingPage() {
             </div>
 
             {/* H1 Mobile */}
-            <h1 style={{ fontSize: "42px", fontWeight: "700", lineHeight: "1.05", letterSpacing: "-0.03em", color: "#0E1A2B", marginBottom: "28px" }}>
+            <h1 style={{ fontSize: "42px", fontWeight: "700", lineHeight: "1.05", letterSpacing: "-0.03em", color: "#0E1A2B", marginBottom: "28px", textRendering: "optimizeLegibility", WebkitFontSmoothing: "antialiased" }}>
               Major financial decisions require income verification.
             </h1>
 
@@ -173,7 +182,7 @@ export default function LandingPage() {
             </p>
 
             {/* CTA Mobile */}
-            <button style={{ width: "100%", height: "64px", borderRadius: "12px", backgroundColor: "#0E1A2B", color: "#FFFFFF", fontSize: "18px", fontWeight: "600", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", border: "none", cursor: "pointer", marginBottom: "28px" }}>
+            <button style={{ width: "100%", height: "64px", borderRadius: "12px", background: "linear-gradient(135deg, #0E1A2B 0%, #0A2540 100%)", color: "#FFFFFF", fontSize: "18px", fontWeight: "600", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", border: "none", cursor: "pointer", marginBottom: "28px", boxShadow: "0px 10px 24px rgba(10, 37, 64, 0.28)", transition: "all 150ms ease" }} onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0px 14px 32px rgba(10, 37, 64, 0.32)"; }} onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 10px 24px rgba(10, 37, 64, 0.28)"; }} onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 6px 14px rgba(10, 37, 64, 0.2)"; }}>
               Start Verification
               <span>→</span>
             </button>
@@ -189,7 +198,7 @@ export default function LandingPage() {
             </div>
 
             {/* Score Card Mobile */}
-            <div style={{ width: "100%", minHeight: "420px", backgroundColor: "#FFFFFF", border: "1px solid #E6E8EB", borderRadius: "14px", padding: "32px", boxShadow: "0px 24px 50px rgba(16, 24, 40, 0.08)", display: "flex", flexDirection: "column" }}>
+            <div style={{ width: "100%", minHeight: "420px", backgroundColor: "#FFFFFF", border: "1px solid rgba(255,255,255,0.6)", borderRadius: "14px", padding: "32px", boxShadow: "0px 24px 50px rgba(16, 24, 40, 0.08), inset 0px 1px 0px rgba(255,255,255,0.6)", display: "flex", flexDirection: "column", transform: "scale(1.02)" }}>
               {/* Score Title */}
               <div style={{ fontSize: "18px", fontWeight: "600", color: "#0E1A2B", marginBottom: "20px" }}>
                 Income Stability Score™
@@ -238,6 +247,9 @@ export default function LandingPage() {
 
       {/* TRUST STRIP - HORIZONTAL LAYOUT */}
       <section style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB", padding: "80px 48px 80px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
+        {/* Divider Above Arrow */}
+        <div style={{ width: "120px", height: "1px", backgroundColor: "#E5E7EB", margin: "0 auto 16px" }}></div>
+
         {/* Arrow */}
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2.5" style={{ marginLeft: "auto", marginRight: "auto" }}>
@@ -246,7 +258,7 @@ export default function LandingPage() {
         </div>
 
         {/* Headline */}
-        <p style={{ fontSize: "18px", lineHeight: "1.5", fontWeight: "500", color: "#0E1A2B", textAlign: "center", margin: "0 0 64px 0", fontFamily: "Inter" }}>
+        <p style={{ fontSize: "18px", lineHeight: "1.5", fontWeight: "700", color: "#0E1A2B", textAlign: "center", margin: "0 0 64px 0", fontFamily: "Inter", maxWidth: "600px", marginLeft: "auto", marginRight: "auto" }}>
           Trusted by organizations and professionals for verified income stability.
         </p>
 
@@ -254,7 +266,7 @@ export default function LandingPage() {
         <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "80px" }}>
           {/* Item 1 */}
           <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
               <path d="M12 2L5 5v7c0 6 7 9 7 9s7-3 7-9V5l-7-3z" />
               <polyline points="9 12 11 14 15 10" />
             </svg>
@@ -265,7 +277,7 @@ export default function LandingPage() {
 
           {/* Item 2 */}
           <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
               <path d="M7 11V7a5 5 0 0110 0v4" />
               <circle cx="12" cy="16" r="1" />
@@ -277,7 +289,7 @@ export default function LandingPage() {
 
           {/* Item 3 */}
           <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
             </svg>
             <p style={{ fontSize: "15px", fontWeight: "500", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
