@@ -236,48 +236,48 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* TRUST STRIP - EXACT BLUEPRINT */}
-      <section style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB", padding: "24px 48px 44px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
+      {/* TRUST STRIP - HORIZONTAL LAYOUT */}
+      <section style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB", padding: "48px 48px 48px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         {/* Arrow */}
-        <div style={{ textAlign: "center", marginBottom: "18px" }}>
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" style={{ marginLeft: "auto", marginRight: "auto" }}>
+        <div style={{ textAlign: "center", marginBottom: "24px" }}>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2.5" style={{ marginLeft: "auto", marginRight: "auto" }}>
             <path d="M12 5v14M5 12l7 7 7-7" />
           </svg>
         </div>
 
         {/* Headline */}
-        <p style={{ fontSize: "18px", lineHeight: "1.4", fontWeight: "600", color: "#0E1A2B", textAlign: "center", marginBottom: "30px", margin: "0 0 30px 0", fontFamily: "Inter" }}>
+        <p style={{ fontSize: "17px", lineHeight: "1.5", fontWeight: "500", color: "#0E1A2B", textAlign: "center", marginBottom: "48px", margin: "0 0 48px 0", fontFamily: "Inter" }}>
           Trusted by organizations and professionals for verified income stability.
         </p>
 
-        {/* Trust Row */}
-        <div style={{ maxWidth: "860px", marginLeft: "auto", marginRight: "auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "48px" }}>
+        {/* Trust Row - Horizontal Layout */}
+        <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "80px" }}>
           {/* Item 1 */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" style={{ flexShrink: "0" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.8" style={{ flexShrink: "0" }}>
               <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <p style={{ fontSize: "16px", color: "#6B7280", margin: "0", fontFamily: "Inter" }}>
+            <p style={{ fontSize: "15px", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
               Independent verification
             </p>
           </div>
 
           {/* Item 2 */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" style={{ flexShrink: "0" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.8" style={{ flexShrink: "0" }}>
               <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <p style={{ fontSize: "16px", color: "#6B7280", margin: "0", fontFamily: "Inter" }}>
+            <p style={{ fontSize: "15px", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
               No documents required
             </p>
           </div>
 
           {/* Item 3 */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" style={{ flexShrink: "0" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.8" style={{ flexShrink: "0" }}>
               <path d="M13 10V3L4 14h7v7l9-11h-7z" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <p style={{ fontSize: "16px", color: "#6B7280", margin: "0", fontFamily: "Inter" }}>
+            <p style={{ fontSize: "15px", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
               Instant results
             </p>
           </div>
