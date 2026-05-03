@@ -1,39 +1,38 @@
 export default function LandingPage() {
   return (
     <div className="w-full">
-      {/* HEADER - CLEAN SINGLE BAR */}
+      {/* HEADER - EXACT REFERENCE MATCH */}
       <header style={{ position: "sticky", top: "0", zIndex: "50", backgroundColor: "#FFFFFF", borderBottom: "1px solid #E5E7EB", height: "72px", width: "100%", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         {/* Desktop */}
-        <div className="hidden lg:flex h-full items-center" style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 32px", justifyContent: "space-between" }}>
+        <div className="hidden lg:flex h-full items-center" style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 48px", justifyContent: "space-between" }}>
           {/* Logo */}
-          <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: "0" }}>
-            <img src="/runpayway-logo.png" alt="RunPayway™" style={{ height: "32px", width: "auto" }} />
+          <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: "0", marginRight: "64px" }}>
+            <img src="/runpayway-logo.png" alt="RunPayway™" style={{ height: "28px", width: "auto" }} />
           </a>
 
           {/* Center Navigation */}
-          <nav style={{ display: "flex", gap: "32px", alignItems: "center", marginLeft: "80px" }}>
-            <a href="#" style={{ fontSize: "15px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1" }}>How It Works</a>
-            <a href="#" style={{ fontSize: "15px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1" }}>Methodology</a>
-            <a href="#" style={{ fontSize: "15px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1" }}>Use Cases</a>
+          <nav style={{ display: "flex", gap: "24px", alignItems: "center", flex: "1" }}>
+            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap" }}>How It Works</a>
+            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap" }}>Methodology</a>
+            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap" }}>Use Cases</a>
 
             <div style={{ position: "relative" }}>
-              <button style={{ fontSize: "15px", fontWeight: "500", color: "#0E1A2B", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px", padding: "0" }}>
+              <button style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", padding: "0", whiteSpace: "nowrap" }}>
                 Solutions
-                <span style={{ fontSize: "12px" }}>▼</span>
+                <span style={{ fontSize: "11px" }}>▼</span>
               </button>
             </div>
 
-            <a href="#" style={{ fontSize: "15px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", borderBottom: "none" }}>Plans</a>
-            <a href="#" style={{ fontSize: "15px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1" }}>Learn</a>
-            <a href="#" style={{ fontSize: "15px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1" }}>About</a>
+            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#2F6BFF", textDecoration: "none", lineHeight: "1", borderBottom: "2px solid #2F6BFF", paddingBottom: "2px", whiteSpace: "nowrap" }}>Plans</a>
+            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap" }}>Learn</a>
+            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap" }}>About</a>
           </nav>
 
           {/* Right Side */}
-          <div style={{ display: "flex", gap: "20px", alignItems: "center", marginLeft: "auto" }}>
-            <a href="#" style={{ fontSize: "15px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1" }}>Sign In</a>
-            <button style={{ height: "48px", padding: "0 22px", background: "linear-gradient(135deg, #0E1A2B 0%, #0B2A4A 100%)", color: "#FFFFFF", borderRadius: "8px", fontWeight: "600", fontSize: "15px", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "10px" }}>
+          <div style={{ display: "flex", gap: "24px", alignItems: "center", marginLeft: "auto" }}>
+            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1" }}>Sign In</a>
+            <button style={{ height: "40px", padding: "0 24px", backgroundColor: "#0E1A2B", color: "#FFFFFF", borderRadius: "6px", fontWeight: "600", fontSize: "14px", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", whiteSpace: "nowrap" }}>
               Start Verification
-              <span style={{ fontSize: "18px" }}>→</span>
             </button>
           </div>
         </div>
