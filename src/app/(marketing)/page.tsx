@@ -1,39 +1,56 @@
 export default function LandingPage() {
   return (
     <div className="w-full">
-      {/* HEADER */}
-      <header className="sticky top-0 z-50 bg-white border-b border-[#E5E7EB]" style={{ height: 72 }}>
-        <div className="max-w-[1400px] mx-auto px-12 h-full flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-[#0E1A2B] font-bold text-[22px]">RUNPAYWAY</span>
-            <span className="w-4 h-3 bg-[#0275D8]" style={{ clipPath: "polygon(0 0, 100% 0, 80% 100%, 0% 100%)" }}></span>
-          </div>
-          <nav className="flex gap-8 flex-1 ml-20">
-            <a href="#" className="text-[14px] text-[#0E1A2B] font-medium">How It Works</a>
+      {/* HEADER - PIXEL LOCKED */}
+      <header className="sticky top-0 z-50 bg-white border-b border-[#E6E8EB]" style={{ height: "72px" }}>
+        {/* Desktop */}
+        <div className="hidden lg:flex h-full items-center px-10" style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          {/* Logo */}
+          <a href="/" style={{ display: "flex", alignItems: "center", marginRight: "auto", textDecoration: "none" }}>
+            <img src="/runpayway-logo.png" alt="RunPayway™" style={{ height: "32px", width: "auto" }} />
+          </a>
+
+          {/* Navigation */}
+          <nav style={{ display: "flex", gap: "32px", alignItems: "center", flex: "1", marginLeft: "64px" }}>
+            <a href="#" style={{ fontSize: "14px", color: "#0E1A2B", textDecoration: "none", fontWeight: "500" }}>How It Works</a>
+            <a href="#" style={{ fontSize: "14px", color: "#0E1A2B", textDecoration: "none", fontWeight: "500" }}>Methodology</a>
+            <a href="#" style={{ fontSize: "14px", color: "#0E1A2B", textDecoration: "none", fontWeight: "500" }}>Use Cases</a>
+
             <div className="relative group">
-              <button className="text-[14px] text-[#0E1A2B] font-medium flex items-center gap-1">
+              <button style={{ fontSize: "14px", color: "#0E1A2B", fontWeight: "500", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px" }}>
                 Solutions
-                <span className="text-[12px]">▼</span>
+                <span style={{ fontSize: "12px" }}>▼</span>
               </button>
-              <div className="absolute top-full left-0 mt-0 w-[280px] bg-white border border-[#E5E7EB] rounded-[8px] shadow-lg p-4 hidden group-hover:block">
-                <div className="space-y-3">
-                  <a href="#" className="block text-[14px] font-medium text-[#0E1A2B]">For Advisors</a>
-                  <a href="#" className="block text-[14px] font-medium text-[#0E1A2B]">For Organizations</a>
+              <div className="absolute top-full left-0 mt-0 w-80 bg-white border border-[#E6E8EB] rounded-lg shadow-lg p-4 hidden group-hover:block">
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  <a href="#" style={{ fontSize: "14px", color: "#0E1A2B", textDecoration: "none", fontWeight: "500" }}>For Advisors</a>
+                  <a href="#" style={{ fontSize: "14px", color: "#0E1A2B", textDecoration: "none", fontWeight: "500" }}>For Organizations</a>
                 </div>
               </div>
             </div>
-            <div className="relative group">
-              <button className="text-[14px] text-[#0E1A2B] font-medium flex items-center gap-1">
-                Resources
-                <span className="text-[12px]">▼</span>
-              </button>
-            </div>
-            <a href="#" className="text-[14px] text-[#0E1A2B] font-medium">About</a>
+
+            <a href="#" style={{ fontSize: "14px", color: "#1F6D7A", textDecoration: "none", fontWeight: "500", borderBottom: "2px solid #1F6D7A", paddingBottom: "2px" }}>Plans</a>
+            <a href="#" style={{ fontSize: "14px", color: "#0E1A2B", textDecoration: "none", fontWeight: "500" }}>Learn</a>
+            <a href="#" style={{ fontSize: "14px", color: "#0E1A2B", textDecoration: "none", fontWeight: "500" }}>About</a>
           </nav>
-          <div className="flex gap-6 ml-auto items-center">
-            <a href="#" className="text-[14px] text-[#0E1A2B] font-medium">Sign In</a>
-            <button className="bg-[#0E1A2B] text-white px-6 py-2.5 rounded-[8px] text-[14px] font-semibold h-[42px]">Start Verification</button>
+
+          {/* Right side */}
+          <div style={{ display: "flex", gap: "24px", alignItems: "center", marginLeft: "auto" }}>
+            <a href="#" style={{ fontSize: "14px", color: "#0E1A2B", textDecoration: "none", fontWeight: "500" }}>Sign In</a>
+            <button style={{ height: "42px", padding: "0 24px", backgroundColor: "#0E1A2B", color: "#FFFFFF", borderRadius: "8px", fontWeight: "600", fontSize: "14px", border: "none", cursor: "pointer" }}>Start Verification</button>
           </div>
+        </div>
+
+        {/* Mobile */}
+        <div className="lg:hidden flex h-full items-center justify-between px-5">
+          <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+            <img src="/runpayway-logo.png" alt="RunPayway™" style={{ height: "28px", width: "auto" }} />
+          </a>
+          <button style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", gap: "6px" }}>
+            <span style={{ display: "block", width: "24px", height: "2px", backgroundColor: "#0E1A2B" }}></span>
+            <span style={{ display: "block", width: "24px", height: "2px", backgroundColor: "#0E1A2B" }}></span>
+            <span style={{ display: "block", width: "24px", height: "2px", backgroundColor: "#0E1A2B" }}></span>
+          </button>
         </div>
       </header>
 
