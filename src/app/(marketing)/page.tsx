@@ -23,7 +23,7 @@ export default function LandingPage() {
               </button>
             </div>
 
-            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#2F6BFF", textDecoration: "none", lineHeight: "1", borderBottom: "3px solid #2F6BFF", paddingBottom: "4px", whiteSpace: "nowrap" }}>Plans</a>
+            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#2F6BFF", textDecoration: "none", lineHeight: "1", borderBottom: "2px solid #2F6BFF", paddingBottom: "2px", whiteSpace: "nowrap" }}>Plans</a>
             <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap" }}>Learn</a>
             <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap" }}>About</a>
           </nav>
@@ -254,8 +254,9 @@ export default function LandingPage() {
         <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "80px" }}>
           {/* Item 1 */}
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" style={{ flexShrink: "0" }}>
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
+              <path d="M12 1l8.217 1.318c.51.082.939.51 1.021 1.02l1.318 8.217c.16 1.001.16 2.01 0 3.011l-1.318 8.217c-.082.51-.511.938-1.021 1.02L12 23l-8.217-1.318c-.51-.082-.939-.51-1.021-1.02l-1.318-8.217c-.16-1.001-.16-2.01 0-3.011l1.318-8.217C2.844 2.608 3.273 2.18 3.783 2.098L12 1z" />
+              <polyline points="10 12 12 14 15 10" />
             </svg>
             <p style={{ fontSize: "15px", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
               Independent verification
@@ -264,8 +265,10 @@ export default function LandingPage() {
 
           {/* Item 2 */}
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" style={{ flexShrink: "0" }}>
-              <path d="M12 1C6.48 1 2 5.48 2 11v10h2v-10c0-4.41 3.59-8 8-8s8 3.59 8 8v10h2V11c0-5.52-4.48-10-10-10zm-6 11c0 3.31 2.69 6 6 6s6-2.69 6-6h-2c0 2.21-1.79 4-4 4s-4-1.79-4-4h-2z" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0110 0v4" />
+              <circle cx="12" cy="16" r="1" />
             </svg>
             <p style={{ fontSize: "15px", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
               No documents required
@@ -274,8 +277,8 @@ export default function LandingPage() {
 
           {/* Item 3 */}
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" style={{ flexShrink: "0" }}>
-              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
             </svg>
             <p style={{ fontSize: "15px", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
               Instant results
