@@ -16,7 +16,7 @@ export default function MobileSection1() {
         top: 0,
         zIndex: 40,
       }}>
-        <svg width="24" height="24" viewBox="0 0 100 40">
+        <svg width="32" height="32" viewBox="0 0 100 40">
           <text x="0" y="28" fontSize="24" fontWeight="700" fill="#0E1A2B" fontFamily="Inter, sans-serif">RP</text>
           <path d="M 65 10 Q 75 20 65 30" stroke="#2F6BFF" strokeWidth="3" fill="none" strokeLinecap="round" />
         </svg>
