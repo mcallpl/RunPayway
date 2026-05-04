@@ -501,44 +501,44 @@ export default function LandingPage() {
       <section style={{ backgroundColor: "#FFFFFF", padding: "96px 48px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
         <div style={{ maxWidth: "1200px", marginLeft: "auto", marginRight: "auto" }}>
           <div style={{ marginBottom: "64px" }}>
-            <h2 style={{ fontSize: "32px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 16px 0" }}>System integrity</h2>
-            <p style={{ fontSize: "18px", fontWeight: "400", color: "#6B7280", margin: "0" }}>Fixed rules. Consistent results.</p>
+            <h2 style={{ fontSize: "42px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 16px 0", lineHeight: "1.2" }}>System integrity</h2>
+            <p style={{ fontSize: "18px", fontWeight: "600", color: "#1F6D7A", margin: "0" }}>Fixed rules. Consistent results.</p>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", marginBottom: "48px" }}>
             {/* Model Card */}
-            <div style={{ backgroundColor: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "12px", padding: "40px 32px" }}>
-              <h3 style={{ fontSize: "20px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 32px 0", paddingBottom: "24px", borderBottom: "1px solid #E5E7EB" }}>Model</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
-                <div>
-                  <h4 style={{ fontSize: "15px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 8px 0" }}>Fixed rules applied</h4>
+            <div style={{ backgroundColor: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "16px", padding: "40px 32px" }}>
+              <h3 style={{ fontSize: "24px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 24px 0", paddingBottom: "20px", borderBottom: "1px solid #E5E7EB" }}>Model</h3>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ paddingBottom: "24px", borderBottom: "1px solid #E5E7EB" }}>
+                  <h4 style={{ fontSize: "16px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 6px 0" }}>Fixed rules applied</h4>
                   <p style={{ fontSize: "14px", color: "#6B7280", margin: "0" }}>Rules are locked for all results.</p>
                 </div>
-                <div>
-                  <h4 style={{ fontSize: "15px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 8px 0" }}>No discretion</h4>
+                <div style={{ paddingTop: "24px", paddingBottom: "24px", borderBottom: "1px solid #E5E7EB" }}>
+                  <h4 style={{ fontSize: "16px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 6px 0" }}>No discretion</h4>
                   <p style={{ fontSize: "14px", color: "#6B7280", margin: "0" }}>Rules are identical for all users.</p>
                 </div>
-                <div>
-                  <h4 style={{ fontSize: "15px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 8px 0" }}>Same inputs produce same result</h4>
+                <div style={{ paddingTop: "24px" }}>
+                  <h4 style={{ fontSize: "16px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 6px 0" }}>Same inputs produce same result</h4>
                   <p style={{ fontSize: "14px", color: "#6B7280", margin: "0" }}>Consistency is guaranteed.</p>
                 </div>
               </div>
             </div>
 
             {/* Record Card */}
-            <div style={{ backgroundColor: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "12px", padding: "40px 32px" }}>
-              <h3 style={{ fontSize: "20px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 32px 0", paddingBottom: "24px", borderBottom: "1px solid #E5E7EB" }}>Record</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
-                <div>
-                  <h4 style={{ fontSize: "15px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 8px 0" }}>Timestamped result</h4>
+            <div style={{ backgroundColor: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "16px", padding: "40px 32px" }}>
+              <h3 style={{ fontSize: "24px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 24px 0", paddingBottom: "20px", borderBottom: "1px solid #E5E7EB" }}>Record</h3>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ paddingBottom: "24px", borderBottom: "1px solid #E5E7EB" }}>
+                  <h4 style={{ fontSize: "16px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 6px 0" }}>Timestamped result</h4>
                   <p style={{ fontSize: "14px", color: "#6B7280", margin: "0" }}>Every result is timestamped to the second.</p>
                 </div>
-                <div>
-                  <h4 style={{ fontSize: "15px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 8px 0" }}>Permanent record ID</h4>
+                <div style={{ paddingTop: "24px", paddingBottom: "24px", borderBottom: "1px solid #E5E7EB" }}>
+                  <h4 style={{ fontSize: "16px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 6px 0" }}>Permanent record ID</h4>
                   <p style={{ fontSize: "14px", color: "#6B7280", margin: "0" }}>Unique ID assigned for permanent retrieval.</p>
                 </div>
-                <div>
-                  <h4 style={{ fontSize: "15px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 8px 0" }}>Results are not modified</h4>
+                <div style={{ paddingTop: "24px" }}>
+                  <h4 style={{ fontSize: "16px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 6px 0" }}>Results are not modified</h4>
                   <p style={{ fontSize: "14px", color: "#6B7280", margin: "0" }}>Prior results never modified or deleted.</p>
                 </div>
               </div>
@@ -546,17 +546,14 @@ export default function LandingPage() {
           </div>
 
           {/* Footer Bar */}
-          <div style={{ backgroundColor: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: "12px", padding: "28px 32px", display: "flex", alignItems: "center", gap: "16px" }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" style={{ flexShrink: "0" }}>
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            </svg>
-            <p style={{ fontSize: "14px", color: "#6B7280", margin: "0" }}>
-              <span style={{ fontWeight: "700", color: "#0E1A2B" }}>Model RP-2.0</span>
-              <span style={{ color: "#D1D5DB", margin: "0 12px" }}>·</span>
-              <span style={{ fontWeight: "600", color: "#0E1A2B" }}>Version locked</span>
-              <span style={{ color: "#D1D5DB", margin: "0 12px" }}>·</span>
-              <span style={{ fontWeight: "600" }}>Same inputs produce same result</span>
-            </p>
+          <div style={{ backgroundColor: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: "12px", padding: "28px 32px", display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "24px" }}>
+            <span style={{ fontSize: "16px", fontWeight: "700", color: "#1F6D7A" }}>Model RP-2.0</span>
+            <span style={{ color: "#D1D5DB" }}>|</span>
+            <span style={{ fontSize: "14px", color: "#6B7280" }}>Version locked</span>
+            <span style={{ color: "#D1D5DB" }}>|</span>
+            <span style={{ fontSize: "14px", color: "#6B7280" }}>
+              Same inputs produce <span style={{ color: "#1F6D7A", fontWeight: "600" }}>same result</span>
+            </span>
           </div>
         </div>
       </section>
