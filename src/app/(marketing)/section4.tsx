@@ -12,21 +12,22 @@ export default function Section4() {
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           {/* Header */}
           <h2 style={{
-            fontSize: "44px",
+            fontSize: "36px",
             fontWeight: 700,
             lineHeight: 1.2,
-            color: "#0F172A",
+            color: "#0E1A2B",
             textAlign: "center",
-            margin: "0 0 12px 0"
+            margin: "0 0 24px 0"
           }}>
             Your current result is incomplete.
           </h2>
           <p style={{
-            fontSize: "18px",
+            fontSize: "16px",
             color: "#6B7280",
             textAlign: "center",
             margin: "0 0 48px 0",
-            fontWeight: 400
+            fontWeight: 400,
+            lineHeight: 1.5
           }}>
             Full verification defines your income stability.
           </p>
@@ -38,31 +39,25 @@ export default function Section4() {
             gap: "40px",
             alignItems: "stretch",
             position: "relative",
-            marginBottom: "40px"
+            marginBottom: "48px"
           }}>
             {/* LEFT CARD - FREE */}
             <div style={{
-              backgroundColor: "#FAFAFA",
+              backgroundColor: "#F9FAFB",
               border: "1px solid #E5E7EB",
               borderRadius: "16px",
-              padding: "32px",
+              padding: "40px 32px",
               display: "flex",
               flexDirection: "column"
             }}>
-              {/* Label Pill */}
+              {/* Card Label */}
               <div style={{
-                display: "inline-flex",
-                alignItems: "center",
-                padding: "6px 12px",
-                borderRadius: "999px",
-                backgroundColor: "#F3F4F6",
-                color: "#6B7280",
                 fontSize: "12px",
-                fontWeight: 600,
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                color: "#1F6D7A",
                 textTransform: "uppercase",
-                letterSpacing: "0.05em",
-                width: "fit-content",
-                marginBottom: "16px"
+                marginBottom: "20px"
               }}>
                 Initial Output
               </div>
@@ -72,42 +67,24 @@ export default function Section4() {
                 fontSize: "36px",
                 fontWeight: 700,
                 color: "#111827",
-                marginBottom: "24px"
+                marginBottom: "32px"
               }}>
                 FREE
               </div>
 
-              {/* Divider */}
-              <div style={{
-                height: "1px",
-                backgroundColor: "#E5E7EB",
-                marginBottom: "24px"
-              }}></div>
-
               {/* Features */}
-              <div style={{ flex: 1 }}>
+              <div style={{ flex: 1, marginBottom: "32px" }}>
                 {/* Feature Row 1 */}
                 <div style={{
                   display: "flex",
                   gap: "16px",
                   alignItems: "flex-start",
-                  marginBottom: "20px"
+                  marginBottom: "24px"
                 }}>
-                  <div style={{
-                    width: "40px",
-                    height: "40px",
-                    backgroundColor: "#F3F4F6",
-                    borderRadius: "10px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0
-                  }}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="12" y1="5" x2="12" y2="19"></line>
-                      <polyline points="19 12 12 19 5 12"></polyline>
-                    </svg>
-                  </div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" style={{ flexShrink: 0, marginTop: "2px" }}>
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <polyline points="19 12 12 19 5 12"></polyline>
+                  </svg>
                   <div>
                     <div style={{
                       fontSize: "16px",
@@ -119,6 +96,7 @@ export default function Section4() {
                     </div>
                     <div style={{
                       fontSize: "14px",
+                      fontWeight: 400,
                       color: "#6B7280"
                     }}>
                       Your current stability class (band)
@@ -130,25 +108,13 @@ export default function Section4() {
                 <div style={{
                   display: "flex",
                   gap: "16px",
-                  alignItems: "flex-start",
-                  marginBottom: "24px"
+                  alignItems: "flex-start"
                 }}>
-                  <div style={{
-                    width: "40px",
-                    height: "40px",
-                    backgroundColor: "#F3F4F6",
-                    borderRadius: "10px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0
-                  }}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3.05h16.94a2 2 0 0 0 1.71-3.05L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                      <line x1="12" y1="9" x2="12" y2="13"></line>
-                      <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                    </svg>
-                  </div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" style={{ flexShrink: 0, marginTop: "2px" }}>
+                    <path d="M12 2L2 20h20Z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
                   <div>
                     <div style={{
                       fontSize: "16px",
@@ -160,6 +126,7 @@ export default function Section4() {
                     </div>
                     <div style={{
                       fontSize: "14px",
+                      fontWeight: 400,
                       color: "#6B7280"
                     }}>
                       The main factor limiting your stability
@@ -171,17 +138,18 @@ export default function Section4() {
               {/* Lock row */}
               <div style={{
                 display: "flex",
-                gap: "16px",
+                gap: "12px",
                 alignItems: "flex-start",
-                paddingTop: "24px",
+                paddingTop: "20px",
                 borderTop: "1px solid #E5E7EB"
               }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px" }}>
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2" style={{ flexShrink: 0, marginTop: "2px" }}>
+                  <rect x="3" y="11" width="18" height="11" rx="2"></rect>
                   <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                 </svg>
                 <div style={{
                   fontSize: "14px",
+                  fontWeight: 400,
                   color: "#6B7280"
                 }}>
                   Not sufficient for full decision verification.
@@ -192,72 +160,48 @@ export default function Section4() {
             {/* RIGHT CARD - $69 */}
             <div style={{
               backgroundColor: "#FFFFFF",
-              border: "2px solid #0F766E",
+              border: "2px solid #1F6D7A",
               borderRadius: "16px",
-              padding: "32px",
-              boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
+              padding: "40px 32px",
               display: "flex",
               flexDirection: "column"
             }}>
-              {/* Label Pill */}
+              {/* Card Label */}
               <div style={{
-                display: "inline-flex",
-                alignItems: "center",
-                padding: "6px 12px",
-                borderRadius: "999px",
-                backgroundColor: "rgba(15,118,110,0.1)",
-                color: "#0F766E",
                 fontSize: "12px",
-                fontWeight: 600,
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                color: "#1F6D7A",
                 textTransform: "uppercase",
-                letterSpacing: "0.05em",
-                width: "fit-content",
-                marginBottom: "16px"
+                marginBottom: "20px"
               }}>
                 Full Verification
               </div>
 
               {/* Price */}
               <div style={{
-                fontSize: "44px",
+                fontSize: "36px",
                 fontWeight: 700,
-                color: "#0F766E",
-                marginBottom: "24px"
+                color: "#1F6D7A",
+                marginBottom: "32px"
               }}>
                 $69
               </div>
 
-              {/* Divider */}
-              <div style={{
-                height: "1px",
-                backgroundColor: "#E5E7EB",
-                marginBottom: "24px"
-              }}></div>
-
               {/* Features */}
-              <div style={{ flex: 1 }}>
+              <div style={{ flex: 1, marginBottom: "32px" }}>
                 {/* Feature Row 1 */}
                 <div style={{
                   display: "flex",
                   gap: "16px",
                   alignItems: "flex-start",
-                  marginBottom: "20px"
+                  marginBottom: "24px"
                 }}>
-                  <div style={{
-                    width: "40px",
-                    height: "40px",
-                    backgroundColor: "rgba(15,118,110,0.08)",
-                    borderRadius: "10px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0
-                  }}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F766E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <path d="M12 6v6l4 2"></path>
-                    </svg>
-                  </div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" style={{ flexShrink: 0, marginTop: "2px" }}>
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
                   <div>
                     <div style={{
                       fontSize: "16px",
@@ -269,9 +213,10 @@ export default function Section4() {
                     </div>
                     <div style={{
                       fontSize: "14px",
+                      fontWeight: 400,
                       color: "#6B7280"
                     }}>
-                      Your overall stability score on a 0–100 scale
+                      Your overall stability score on a 0-100 scale
                     </div>
                   </div>
                 </div>
@@ -281,23 +226,11 @@ export default function Section4() {
                   display: "flex",
                   gap: "16px",
                   alignItems: "flex-start",
-                  marginBottom: "20px"
+                  marginBottom: "24px"
                 }}>
-                  <div style={{
-                    width: "40px",
-                    height: "40px",
-                    backgroundColor: "rgba(15,118,110,0.08)",
-                    borderRadius: "10px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0
-                  }}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F766E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="1"></circle>
-                      <path d="M12 8a4 4 0 0 1 4 4M12 8a4 4 0 0 0-4 4M12 8V4M8 16a4 4 0 0 0 4 4v0a4 4 0 0 0 4-4"></path>
-                    </svg>
-                  </div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" style={{ flexShrink: 0, marginTop: "2px" }}>
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
+                  </svg>
                   <div>
                     <div style={{
                       fontSize: "16px",
@@ -309,6 +242,7 @@ export default function Section4() {
                     </div>
                     <div style={{
                       fontSize: "14px",
+                      fontWeight: 400,
                       color: "#6B7280"
                     }}>
                       Complete view across all 6 structural inputs
@@ -320,25 +254,13 @@ export default function Section4() {
                 <div style={{
                   display: "flex",
                   gap: "16px",
-                  alignItems: "flex-start",
-                  marginBottom: "20px"
+                  alignItems: "flex-start"
                 }}>
-                  <div style={{
-                    width: "40px",
-                    height: "40px",
-                    backgroundColor: "rgba(15,118,110,0.08)",
-                    borderRadius: "10px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0
-                  }}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F766E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="9"></circle>
-                      <line x1="12" y1="8" x2="12" y2="16"></line>
-                      <line x1="8" y1="12" x2="16" y2="12"></line>
-                    </svg>
-                  </div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" style={{ flexShrink: 0, marginTop: "2px" }}>
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
                   <div>
                     <div style={{
                       fontSize: "16px",
@@ -350,6 +272,7 @@ export default function Section4() {
                     </div>
                     <div style={{
                       fontSize: "14px",
+                      fontWeight: 400,
                       color: "#6B7280"
                     }}>
                       What to change, how it impacts your score
@@ -361,20 +284,22 @@ export default function Section4() {
               {/* Complete output row */}
               <div style={{
                 display: "flex",
-                gap: "12px",
-                alignItems: "flex-start",
+                gap: "8px",
+                alignItems: "center",
                 paddingTop: "20px",
                 borderTop: "1px solid #E5E7EB",
-                marginBottom: "20px"
+                marginBottom: "16px"
               }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F766E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px" }}>
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" style={{ flexShrink: 0 }}>
+                  <rect x="3" y="11" width="18" height="11" rx="2"></rect>
                   <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                 </svg>
                 <div style={{
-                  fontSize: "14px",
-                  color: "#0F766E",
-                  fontWeight: 600
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  letterSpacing: "0.1em",
+                  color: "#1F6D7A",
+                  textTransform: "uppercase"
                 }}>
                   Complete output
                 </div>
@@ -383,13 +308,13 @@ export default function Section4() {
               {/* CTA Button */}
               <button style={{
                 width: "100%",
-                height: "56px",
-                background: "linear-gradient(135deg, #0F172A 0%, #0F766E 100%)",
+                height: "52px",
+                backgroundColor: "#1F6D7A",
                 color: "#FFFFFF",
                 fontSize: "16px",
                 fontWeight: 600,
                 border: "none",
-                borderRadius: "12px",
+                borderRadius: "8px",
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
@@ -398,7 +323,7 @@ export default function Section4() {
                 fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}>
                 Complete Verification
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>
                 </svg>
@@ -409,15 +334,15 @@ export default function Section4() {
             <div style={{
               position: "absolute",
               top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "100%",
+              left: "0",
+              right: "0",
+              transform: "translateY(-50%)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               pointerEvents: "none"
             }}>
-              {/* Dashed Line */}
+              {/* Horizontal Dashed Line */}
               <div style={{
                 position: "absolute",
                 width: "100%",
@@ -425,56 +350,52 @@ export default function Section4() {
                 borderTop: "1px dashed #D1D5DB"
               }}></div>
 
-              {/* Circle Badge */}
+              {/* Center Circle with VS */}
               <div style={{
-                width: "56px",
-                height: "56px",
+                position: "absolute",
+                width: "88px",
+                height: "88px",
                 borderRadius: "999px",
-                backgroundColor: "#0F766E",
+                backgroundColor: "#1F6D7A",
+                border: "1px solid #1F6D7A",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#FFFFFF",
-                fontSize: "16px",
-                fontWeight: 700,
                 zIndex: 10
               }}>
-                VS
+                <p style={{
+                  fontSize: "24px",
+                  fontWeight: 700,
+                  color: "#FFFFFF",
+                  margin: 0,
+                  textAlign: "center"
+                }}>
+                  VS
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Bottom Bar */}
+          {/* Authority Bar */}
           <div style={{
-            backgroundColor: "#F3F4F6",
+            padding: "20px 32px",
+            backgroundColor: "#F9FAFB",
+            border: "1px solid #E5E7EB",
             borderRadius: "12px",
-            padding: "16px 20px",
             display: "flex",
             alignItems: "center",
-            gap: "12px"
+            gap: "16px"
           }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#374151" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" style={{ flexShrink: 0 }}>
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
             </svg>
-            <span style={{
+            <div style={{
               fontSize: "14px",
-              color: "#374151",
-              fontWeight: 600
+              color: "#6B7280",
+              fontWeight: 400
             }}>
-              Model RP-2.0
-            </span>
-            <span style={{
-              fontSize: "14px",
-              color: "#374151"
-            }}>
-              |
-            </span>
-            <span style={{
-              fontSize: "14px",
-              color: "#374151"
-            }}>
-              Same inputs produce same result
-            </span>
+              <span style={{ fontWeight: 600, color: "#111827" }}>Model RP-2.0</span> | Same inputs produce same result
+            </div>
           </div>
         </div>
       </div>
@@ -483,145 +404,115 @@ export default function Section4() {
       <div className="lg:hidden" style={{ padding: "64px 16px" }}>
         {/* Header */}
         <h2 style={{
-          fontSize: "32px",
+          fontSize: "28px",
           fontWeight: 700,
           lineHeight: 1.2,
-          color: "#0F172A",
+          color: "#0E1A2B",
           textAlign: "center",
-          margin: "0 0 12px 0"
+          margin: "0 0 16px 0"
         }}>
           Your current result is incomplete.
         </h2>
         <p style={{
-          fontSize: "16px",
+          fontSize: "14px",
           color: "#6B7280",
           textAlign: "center",
-          margin: "0 0 24px 0",
-          fontWeight: 400
+          margin: "0 0 32px 0",
+          fontWeight: 400,
+          lineHeight: 1.5
         }}>
           Full verification defines your income stability.
         </p>
 
         {/* LEFT CARD - FREE */}
         <div style={{
-          backgroundColor: "#FAFAFA",
+          backgroundColor: "#F9FAFB",
           border: "1px solid #E5E7EB",
-          borderRadius: "14px",
-          padding: "24px",
-          marginBottom: "24px"
+          borderRadius: "12px",
+          padding: "28px",
+          marginBottom: "20px"
         }}>
-          {/* Label Pill */}
+          {/* Card Label */}
           <div style={{
-            display: "inline-flex",
-            alignItems: "center",
-            padding: "6px 12px",
-            borderRadius: "999px",
-            backgroundColor: "#F3F4F6",
-            color: "#6B7280",
             fontSize: "11px",
-            fontWeight: 600,
+            fontWeight: 700,
+            letterSpacing: "0.1em",
+            color: "#1F6D7A",
             textTransform: "uppercase",
-            letterSpacing: "0.05em",
-            marginBottom: "14px"
+            marginBottom: "12px"
           }}>
             Initial Output
           </div>
 
           {/* Price */}
           <div style={{
-            fontSize: "32px",
+            fontSize: "28px",
             fontWeight: 700,
             color: "#111827",
-            marginBottom: "18px"
+            marginBottom: "20px"
           }}>
             FREE
           </div>
 
-          {/* Divider */}
-          <div style={{
-            height: "1px",
-            backgroundColor: "#E5E7EB",
-            marginBottom: "18px"
-          }}></div>
-
           {/* Features */}
-          {/* Feature Row 1 */}
-          <div style={{
-            display: "flex",
-            gap: "12px",
-            alignItems: "flex-start",
-            marginBottom: "16px"
-          }}>
+          <div style={{ marginBottom: "20px" }}>
+            {/* Feature Row 1 */}
             <div style={{
-              width: "36px",
-              height: "36px",
-              backgroundColor: "#F3F4F6",
-              borderRadius: "8px",
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0
+              gap: "12px",
+              alignItems: "flex-start",
+              marginBottom: "16px"
             }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" style={{ flexShrink: 0, marginTop: "2px" }}>
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <polyline points="19 12 12 19 5 12"></polyline>
               </svg>
-            </div>
-            <div>
-              <div style={{
-                fontSize: "15px",
-                fontWeight: 600,
-                color: "#111827",
-                marginBottom: "3px"
-              }}>
-                Stability classification
+              <div>
+                <div style={{
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  color: "#111827",
+                  marginBottom: "2px"
+                }}>
+                  Stability classification
+                </div>
+                <div style={{
+                  fontSize: "12px",
+                  fontWeight: 400,
+                  color: "#6B7280"
+                }}>
+                  Your current stability class (band)
+                </div>
               </div>
-              <div style={{
-                fontSize: "13px",
-                color: "#6B7280"
-              }}>
-                Your current stability class (band)
-              </div>
             </div>
-          </div>
 
-          {/* Feature Row 2 */}
-          <div style={{
-            display: "flex",
-            gap: "12px",
-            alignItems: "flex-start",
-            marginBottom: "18px"
-          }}>
+            {/* Feature Row 2 */}
             <div style={{
-              width: "36px",
-              height: "36px",
-              backgroundColor: "#F3F4F6",
-              borderRadius: "8px",
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0
+              gap: "12px",
+              alignItems: "flex-start"
             }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3.05h16.94a2 2 0 0 0 1.71-3.05L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" style={{ flexShrink: 0, marginTop: "2px" }}>
+                <path d="M12 2L2 20h20Z"></path>
                 <line x1="12" y1="9" x2="12" y2="13"></line>
                 <line x1="12" y1="17" x2="12.01" y2="17"></line>
               </svg>
-            </div>
-            <div>
-              <div style={{
-                fontSize: "15px",
-                fontWeight: 600,
-                color: "#111827",
-                marginBottom: "3px"
-              }}>
-                Primary structural constraint
-              </div>
-              <div style={{
-                fontSize: "13px",
-                color: "#6B7280"
-              }}>
-                The main factor limiting your stability
+              <div>
+                <div style={{
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  color: "#111827",
+                  marginBottom: "2px"
+                }}>
+                  Primary structural constraint
+                </div>
+                <div style={{
+                  fontSize: "12px",
+                  fontWeight: 400,
+                  color: "#6B7280"
+                }}>
+                  The main factor limiting your stability
+                </div>
               </div>
             </div>
           </div>
@@ -629,17 +520,18 @@ export default function Section4() {
           {/* Lock row */}
           <div style={{
             display: "flex",
-            gap: "10px",
+            gap: "8px",
             alignItems: "flex-start",
-            paddingTop: "18px",
+            paddingTop: "16px",
             borderTop: "1px solid #E5E7EB"
           }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px" }}>
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2" style={{ flexShrink: 0, marginTop: "2px" }}>
+              <rect x="3" y="11" width="18" height="11" rx="2"></rect>
               <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
             </svg>
             <div style={{
-              fontSize: "13px",
+              fontSize: "12px",
+              fontWeight: 400,
               color: "#6B7280"
             }}>
               Not sufficient for full decision verification.
@@ -652,9 +544,9 @@ export default function Section4() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          marginBottom: "24px",
+          marginBottom: "20px",
           position: "relative",
-          height: "40px"
+          height: "60px"
         }}>
           <div style={{
             position: "absolute",
@@ -663,15 +555,15 @@ export default function Section4() {
             borderTop: "1px dashed #D1D5DB"
           }}></div>
           <div style={{
-            width: "48px",
-            height: "48px",
+            width: "72px",
+            height: "72px",
             borderRadius: "999px",
-            backgroundColor: "#0F766E",
+            backgroundColor: "#1F6D7A",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             color: "#FFFFFF",
-            fontSize: "14px",
+            fontSize: "18px",
             fontWeight: 700,
             zIndex: 10
           }}>
@@ -682,163 +574,122 @@ export default function Section4() {
         {/* RIGHT CARD - $69 */}
         <div style={{
           backgroundColor: "#FFFFFF",
-          border: "2px solid #0F766E",
-          borderRadius: "14px",
-          padding: "24px",
-          marginBottom: "24px"
+          border: "2px solid #1F6D7A",
+          borderRadius: "12px",
+          padding: "28px",
+          marginBottom: "20px"
         }}>
-          {/* Label Pill */}
+          {/* Card Label */}
           <div style={{
-            display: "inline-flex",
-            alignItems: "center",
-            padding: "6px 12px",
-            borderRadius: "999px",
-            backgroundColor: "rgba(15,118,110,0.1)",
-            color: "#0F766E",
             fontSize: "11px",
-            fontWeight: 600,
+            fontWeight: 700,
+            letterSpacing: "0.1em",
+            color: "#1F6D7A",
             textTransform: "uppercase",
-            letterSpacing: "0.05em",
-            marginBottom: "14px"
+            marginBottom: "12px"
           }}>
             Full Verification
           </div>
 
           {/* Price */}
           <div style={{
-            fontSize: "36px",
+            fontSize: "28px",
             fontWeight: 700,
-            color: "#0F766E",
-            marginBottom: "18px"
+            color: "#1F6D7A",
+            marginBottom: "20px"
           }}>
             $69
           </div>
 
-          {/* Divider */}
-          <div style={{
-            height: "1px",
-            backgroundColor: "#E5E7EB",
-            marginBottom: "18px"
-          }}></div>
-
           {/* Features */}
-          {/* Feature Row 1 */}
-          <div style={{
-            display: "flex",
-            gap: "12px",
-            alignItems: "flex-start",
-            marginBottom: "16px"
-          }}>
+          <div style={{ marginBottom: "20px" }}>
+            {/* Feature Row 1 */}
             <div style={{
-              width: "36px",
-              height: "36px",
-              backgroundColor: "rgba(15,118,110,0.08)",
-              borderRadius: "8px",
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0
+              gap: "12px",
+              alignItems: "flex-start",
+              marginBottom: "16px"
             }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0F766E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" style={{ flexShrink: 0, marginTop: "2px" }}>
                 <circle cx="12" cy="12" r="10"></circle>
-                <path d="M12 6v6l4 2"></path>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
               </svg>
-            </div>
-            <div>
-              <div style={{
-                fontSize: "15px",
-                fontWeight: 600,
-                color: "#111827",
-                marginBottom: "3px"
-              }}>
-                Income Stability Score™
+              <div>
+                <div style={{
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  color: "#111827",
+                  marginBottom: "2px"
+                }}>
+                  Income Stability Score™
+                </div>
+                <div style={{
+                  fontSize: "12px",
+                  fontWeight: 400,
+                  color: "#6B7280"
+                }}>
+                  Your overall stability score on a 0-100 scale
+                </div>
               </div>
-              <div style={{
-                fontSize: "13px",
-                color: "#6B7280"
-              }}>
-                Your overall stability score on a 0–100 scale
-              </div>
             </div>
-          </div>
 
-          {/* Feature Row 2 */}
-          <div style={{
-            display: "flex",
-            gap: "12px",
-            alignItems: "flex-start",
-            marginBottom: "16px"
-          }}>
+            {/* Feature Row 2 */}
             <div style={{
-              width: "36px",
-              height: "36px",
-              backgroundColor: "rgba(15,118,110,0.08)",
-              borderRadius: "8px",
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0
+              gap: "12px",
+              alignItems: "flex-start",
+              marginBottom: "16px"
             }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0F766E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="1"></circle>
-                <path d="M12 8a4 4 0 0 1 4 4M12 8a4 4 0 0 0-4 4M12 8V4M8 16a4 4 0 0 0 4 4v0a4 4 0 0 0 4-4"></path>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" style={{ flexShrink: 0, marginTop: "2px" }}>
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
               </svg>
-            </div>
-            <div>
-              <div style={{
-                fontSize: "15px",
-                fontWeight: 600,
-                color: "#111827",
-                marginBottom: "3px"
-              }}>
-                Full structural breakdown
+              <div>
+                <div style={{
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  color: "#111827",
+                  marginBottom: "2px"
+                }}>
+                  Full structural breakdown
+                </div>
+                <div style={{
+                  fontSize: "12px",
+                  fontWeight: 400,
+                  color: "#6B7280"
+                }}>
+                  Complete view across all 6 structural inputs
+                </div>
               </div>
-              <div style={{
-                fontSize: "13px",
-                color: "#6B7280"
-              }}>
-                Complete view across all 6 structural inputs
-              </div>
             </div>
-          </div>
 
-          {/* Feature Row 3 */}
-          <div style={{
-            display: "flex",
-            gap: "12px",
-            alignItems: "flex-start",
-            marginBottom: "18px"
-          }}>
+            {/* Feature Row 3 */}
             <div style={{
-              width: "36px",
-              height: "36px",
-              backgroundColor: "rgba(15,118,110,0.08)",
-              borderRadius: "8px",
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0
+              gap: "12px",
+              alignItems: "flex-start"
             }}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0F766E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="9"></circle>
-                <line x1="12" y1="8" x2="12" y2="16"></line>
-                <line x1="8" y1="12" x2="16" y2="12"></line>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" style={{ flexShrink: 0, marginTop: "2px" }}>
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
               </svg>
-            </div>
-            <div>
-              <div style={{
-                fontSize: "15px",
-                fontWeight: 600,
-                color: "#111827",
-                marginBottom: "3px"
-              }}>
-                Decision definition
-              </div>
-              <div style={{
-                fontSize: "13px",
-                color: "#6B7280"
-              }}>
-                What to change, how it impacts your score
+              <div>
+                <div style={{
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  color: "#111827",
+                  marginBottom: "2px"
+                }}>
+                  Decision definition
+                </div>
+                <div style={{
+                  fontSize: "12px",
+                  fontWeight: 400,
+                  color: "#6B7280"
+                }}>
+                  What to change, how it impacts your score
+                </div>
               </div>
             </div>
           </div>
@@ -846,20 +697,22 @@ export default function Section4() {
           {/* Complete output row */}
           <div style={{
             display: "flex",
-            gap: "10px",
-            alignItems: "flex-start",
-            paddingTop: "18px",
+            gap: "6px",
+            alignItems: "center",
+            paddingTop: "16px",
             borderTop: "1px solid #E5E7EB",
-            marginBottom: "16px"
+            marginBottom: "12px"
           }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0F766E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px" }}>
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" style={{ flexShrink: 0 }}>
+              <rect x="3" y="11" width="18" height="11" rx="2"></rect>
               <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
             </svg>
             <div style={{
-              fontSize: "13px",
-              color: "#0F766E",
-              fontWeight: 600
+              fontSize: "11px",
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              color: "#1F6D7A",
+              textTransform: "uppercase"
             }}>
               Complete output
             </div>
@@ -868,13 +721,13 @@ export default function Section4() {
           {/* CTA Button */}
           <button style={{
             width: "100%",
-            height: "56px",
-            background: "linear-gradient(135deg, #0F172A 0%, #0F766E 100%)",
+            height: "48px",
+            backgroundColor: "#1F6D7A",
             color: "#FFFFFF",
-            fontSize: "15px",
+            fontSize: "16px",
             fontWeight: 600,
             border: "none",
-            borderRadius: "12px",
+            borderRadius: "8px",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
@@ -883,45 +736,34 @@ export default function Section4() {
             fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
           }}>
             Complete Verification
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
           </button>
         </div>
 
-        {/* Bottom Bar */}
+        {/* Authority Bar */}
         <div style={{
-          backgroundColor: "#F3F4F6",
+          padding: "16px 12px",
+          backgroundColor: "#F9FAFB",
+          border: "1px solid #E5E7EB",
           borderRadius: "12px",
-          padding: "14px 16px",
           display: "flex",
           alignItems: "center",
-          gap: "10px",
-          flexWrap: "wrap"
+          gap: "12px"
         }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#374151" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B7280" strokeWidth="2" style={{ flexShrink: 0 }}>
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
           </svg>
-          <span style={{
+          <div style={{
             fontSize: "12px",
-            color: "#374151",
-            fontWeight: 600
+            color: "#6B7280",
+            fontWeight: 400,
+            lineHeight: 1.4
           }}>
-            Model RP-2.0
-          </span>
-          <span style={{
-            fontSize: "12px",
-            color: "#374151"
-          }}>
-            |
-          </span>
-          <span style={{
-            fontSize: "12px",
-            color: "#374151"
-          }}>
-            Same inputs produce same result
-          </span>
+            <span style={{ fontWeight: 600, color: "#111827" }}>Model RP-2.0</span> | Same inputs produce same result
+          </div>
         </div>
       </div>
     </section>
