@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import logoBlue from "../../../public/runpayway-logo.png";
+import logoBlue from "../../../public/logo.png";
 import ScrollToTop from "@/components/ScrollToTop";
 import AccessibilityWidget from "@/components/AccessibilityWidget";
 

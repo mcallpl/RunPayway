@@ -4,7 +4,7 @@ import { useEffect, useState, useRef, Component, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import logoBlue from "../../../../public/runpayway-logo.png";
+import logoBlue from "../../../../public/logo.png";
 import { useAssessmentServer } from "@/lib/monitoring";
 import { generateTailoredCopy } from "@/lib/industry-tailoring";
 import { getVocabulary } from "@/lib/industry-vocabulary";

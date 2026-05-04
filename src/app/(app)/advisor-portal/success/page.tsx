@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import logoBlue from "../../../../../public/runpayway-logo.png";
+import logoBlue from "../../../../../public/logo.png";
 import { C, mono, sans } from "@/lib/design-tokens";
 import { WORKER_URL, ADVISOR_PLANS } from "@/lib/config";
 
