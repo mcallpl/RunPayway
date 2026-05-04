@@ -18,12 +18,11 @@ export default function Section2() {
       {/* DESKTOP */}
       <div className="hidden lg:block" style={{ padding: "96px 48px" }}>
         <div style={{ maxWidth: "1200px", marginLeft: "auto", marginRight: "auto" }}>
-          {/* Header */}
           <h2 style={{
             fontSize: "32px",
             fontWeight: 700,
             color: "#0E1A2B",
-            margin: "0 0 24px 0",
+            margin: "0 0 16px 0",
             lineHeight: "1.2"
           }}>
             What the model evaluates
@@ -31,18 +30,17 @@ export default function Section2() {
           <p style={{
             fontSize: "18px",
             fontWeight: 400,
-            lineHeight: "1.5",
+            lineHeight: "1.6",
             color: "#6B7280",
-            margin: "0 0 40px 0"
+            margin: "0 0 48px 0"
           }}>
             A fixed set of inputs determines the result.
           </p>
 
-          {/* Grid */}
           <div style={{
             display: "grid",
             gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "16px",
+            gap: "24px",
             rowGap: "48px",
             marginBottom: "48px"
           }}>
@@ -51,7 +49,7 @@ export default function Section2() {
                 padding: "24px",
                 backgroundColor: "#FFFFFF",
                 border: "1px solid #E5E7EB",
-                borderRadius: "12px"
+                borderRadius: "8px"
               }}>
                 <div style={{
                   fontSize: "16px",
@@ -64,7 +62,7 @@ export default function Section2() {
                 <p style={{
                   fontSize: "14px",
                   fontWeight: 400,
-                  lineHeight: "1.5",
+                  lineHeight: "1.6",
                   color: "#6B7280",
                   margin: 0
                 }}>
@@ -74,11 +72,10 @@ export default function Section2() {
             ))}
           </div>
 
-          {/* Footer Text */}
           <div style={{
             fontSize: "12px",
             fontWeight: 400,
-            lineHeight: "1.5",
+            lineHeight: "1.6",
             color: "#6B7280",
             textAlign: "center"
           }}>
@@ -90,9 +87,8 @@ export default function Section2() {
       {/* MOBILE */}
       <div className="lg:hidden" style={{ padding: "64px 24px", backgroundColor: "#FFFFFF" }}>
         <div style={{ maxWidth: "1200px", marginLeft: "auto", marginRight: "auto" }}>
-          {/* Header */}
           <h2 style={{
-            fontSize: "28px",
+            fontSize: "24px",
             fontWeight: 700,
             color: "#0E1A2B",
             margin: "0 0 16px 0",
@@ -103,24 +99,23 @@ export default function Section2() {
           <p style={{
             fontSize: "16px",
             fontWeight: 400,
-            lineHeight: "1.5",
+            lineHeight: "1.6",
             color: "#6B7280",
-            margin: "0 0 28px 0"
+            margin: "0 0 32px 0"
           }}>
             A fixed set of inputs determines the result.
           </p>
 
-          {/* Stacked Cards */}
-          <div style={{ marginBottom: "28px", display: "flex", flexDirection: "column", gap: "12px" }}>
+          <div style={{ marginBottom: "32px", display: "flex", flexDirection: "column", gap: "16px" }}>
             {items.map((item, idx) => (
               <div key={idx} style={{
                 padding: "20px",
                 backgroundColor: "#FFFFFF",
                 border: "1px solid #E5E7EB",
-                borderRadius: "12px"
+                borderRadius: "8px"
               }}>
                 <div style={{
-                  fontSize: "15px",
+                  fontSize: "14px",
                   fontWeight: 600,
                   color: "#0E1A2B",
                   marginBottom: "8px"
@@ -130,7 +125,7 @@ export default function Section2() {
                 <p style={{
                   fontSize: "13px",
                   fontWeight: 400,
-                  lineHeight: "1.5",
+                  lineHeight: "1.6",
                   color: "#6B7280",
                   margin: 0
                 }}>
@@ -140,11 +135,10 @@ export default function Section2() {
             ))}
           </div>
 
-          {/* Footer Text */}
           <div style={{
             fontSize: "12px",
             fontWeight: 400,
-            lineHeight: "1.5",
+            lineHeight: "1.6",
             color: "#6B7280",
             textAlign: "center"
           }}>

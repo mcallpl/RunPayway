@@ -1,5 +1,11 @@
 "use client";
 
+// Design system locked in:
+// Font scale: 48, 32, 24, 18, 16, 14, 12
+// Spacing: 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96
+// Border radius: 8px (except 999px pills)
+// Line height: 1.2 headings, 1.6 body, 1.6 labels
+
 export default function Section4() {
   return (
     <section style={{

@@ -10,7 +10,6 @@ export default function Section3() {
       {/* DESKTOP */}
       <div className="hidden lg:block">
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          {/* Header */}
           <h2 style={{
             fontSize: "32px",
             fontWeight: 700,
@@ -22,19 +21,17 @@ export default function Section3() {
             Same income. Different outcome.
           </h2>
 
-          {/* Subheadline */}
           <p style={{
             fontSize: "18px",
             fontWeight: 400,
-            lineHeight: "1.5",
+            lineHeight: "1.6",
             color: "#6B7280",
             textAlign: "center",
-            margin: "0 0 24px 0"
+            margin: "0 0 48px 0"
           }}>
             Income level does not determine stability—structure does.
           </p>
 
-          {/* Two Column Layout */}
           <div style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
@@ -46,16 +43,15 @@ export default function Section3() {
             <div style={{
               backgroundColor: "#FFFFFF",
               border: "1px solid #E5E7EB",
-              borderRadius: "16px",
+              borderRadius: "8px",
               padding: "40px 32px",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "space-between"
             }}>
-              {/* Label */}
               <div style={{
-                fontSize: "32px",
+                fontSize: "20px",
                 fontWeight: 700,
                 color: "#DC2626",
                 textAlign: "center",
@@ -65,30 +61,28 @@ export default function Section3() {
                 1 INCOME SOURCE
               </div>
 
-              {/* Score */}
               <div style={{
                 fontSize: "72px",
                 fontWeight: 700,
                 lineHeight: "1",
                 color: "#DC2626",
                 textAlign: "center",
-                marginBottom: "12px"
+                marginBottom: "16px"
               }}>
                 31
               </div>
 
-              {/* Stability Label */}
               <div style={{
                 fontSize: "16px",
                 fontWeight: 600,
                 color: "#DC2626",
                 textAlign: "center",
-                marginBottom: "24px"
+                marginBottom: "24px",
+                lineHeight: "1.6"
               }}>
                 Limited Stability
               </div>
 
-              {/* Divider */}
               <div style={{
                 height: "1px",
                 backgroundColor: "#E5E7EB",
@@ -96,13 +90,13 @@ export default function Section3() {
                 marginBottom: "24px"
               }}></div>
 
-              {/* Description */}
               <p style={{
                 fontSize: "16px",
                 fontWeight: 400,
                 color: "#6B7280",
                 margin: "0",
-                textAlign: "center"
+                textAlign: "center",
+                lineHeight: "1.6"
               }}>
                 Income depends on <span style={{ fontWeight: 600 }}>one source.</span>
               </p>
@@ -123,16 +117,15 @@ export default function Section3() {
             <div style={{
               backgroundColor: "#FFFFFF",
               border: "1px solid #E5E7EB",
-              borderRadius: "16px",
+              borderRadius: "8px",
               padding: "40px 32px",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "space-between"
             }}>
-              {/* Label */}
               <div style={{
-                fontSize: "32px",
+                fontSize: "20px",
                 fontWeight: 700,
                 color: "#16A34A",
                 textAlign: "center",
@@ -142,30 +135,28 @@ export default function Section3() {
                 MULTIPLE INCOME SOURCES
               </div>
 
-              {/* Score */}
               <div style={{
                 fontSize: "72px",
                 fontWeight: 700,
                 lineHeight: "1",
                 color: "#16A34A",
                 textAlign: "center",
-                marginBottom: "12px"
+                marginBottom: "16px"
               }}>
                 74
               </div>
 
-              {/* Stability Label */}
               <div style={{
                 fontSize: "16px",
                 fontWeight: 600,
                 color: "#16A34A",
                 textAlign: "center",
-                marginBottom: "24px"
+                marginBottom: "24px",
+                lineHeight: "1.6"
               }}>
                 Established Stability
               </div>
 
-              {/* Divider */}
               <div style={{
                 height: "1px",
                 backgroundColor: "#E5E7EB",
@@ -173,13 +164,13 @@ export default function Section3() {
                 marginBottom: "24px"
               }}></div>
 
-              {/* Description */}
               <p style={{
                 fontSize: "16px",
                 fontWeight: 400,
                 color: "#6B7280",
                 margin: "0",
-                textAlign: "center"
+                textAlign: "center",
+                lineHeight: "1.6"
               }}>
                 Income is <span style={{ fontWeight: 600 }}>distributed.</span>
               </p>
@@ -198,7 +189,6 @@ export default function Section3() {
               pointerEvents: "none",
               zIndex: 10
             }}>
-              {/* Center Circle with VS */}
               <div style={{
                 width: "88px",
                 height: "88px",
@@ -221,7 +211,6 @@ export default function Section3() {
                 </p>
               </div>
 
-              {/* Vertical Line Below Circle */}
               <div style={{
                 width: "1px",
                 height: "60px",
@@ -230,7 +219,6 @@ export default function Section3() {
             </div>
           </div>
 
-          {/* Bottom Text and Arrow */}
           <div style={{
             textAlign: "center",
             display: "flex",
@@ -257,9 +245,8 @@ export default function Section3() {
       {/* MOBILE */}
       <div className="lg:hidden" style={{ padding: "64px 16px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          {/* Header */}
           <h2 style={{
-            fontSize: "28px",
+            fontSize: "24px",
             fontWeight: 700,
             lineHeight: "1.2",
             color: "#0E1A2B",
@@ -269,11 +256,10 @@ export default function Section3() {
             Same income. Different outcome.
           </h2>
 
-          {/* Subheadline */}
           <p style={{
             fontSize: "16px",
             fontWeight: 400,
-            lineHeight: "1.5",
+            lineHeight: "1.6",
             color: "#6B7280",
             textAlign: "center",
             margin: "0 0 32px 0"
@@ -281,20 +267,18 @@ export default function Section3() {
             Income level does not determine stability—structure does.
           </p>
 
-          {/* Stacked Cards */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px", marginBottom: "32px" }}>
-            {/* LEFT CARD */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "32px" }}>
             <div style={{
               backgroundColor: "#FFFFFF",
               border: "1px solid #E5E7EB",
-              borderRadius: "16px",
+              borderRadius: "8px",
               padding: "32px 24px",
               display: "flex",
               flexDirection: "column",
               alignItems: "center"
             }}>
               <div style={{
-                fontSize: "20px",
+                fontSize: "18px",
                 fontWeight: 700,
                 color: "#DC2626",
                 textAlign: "center",
@@ -304,7 +288,7 @@ export default function Section3() {
                 1 INCOME SOURCE
               </div>
               <div style={{
-                fontSize: "56px",
+                fontSize: "48px",
                 fontWeight: 700,
                 color: "#DC2626",
                 textAlign: "center",
@@ -314,11 +298,12 @@ export default function Section3() {
                 31
               </div>
               <div style={{
-                fontSize: "15px",
+                fontSize: "14px",
                 fontWeight: 600,
                 color: "#DC2626",
                 textAlign: "center",
-                marginBottom: "16px"
+                marginBottom: "16px",
+                lineHeight: "1.6"
               }}>
                 Limited Stability
               </div>
@@ -333,24 +318,24 @@ export default function Section3() {
                 fontWeight: 400,
                 color: "#6B7280",
                 margin: "0",
-                textAlign: "center"
+                textAlign: "center",
+                lineHeight: "1.6"
               }}>
                 Income depends on <span style={{ fontWeight: 600 }}>one source.</span>
               </p>
             </div>
 
-            {/* RIGHT CARD */}
             <div style={{
               backgroundColor: "#FFFFFF",
               border: "1px solid #E5E7EB",
-              borderRadius: "16px",
+              borderRadius: "8px",
               padding: "32px 24px",
               display: "flex",
               flexDirection: "column",
               alignItems: "center"
             }}>
               <div style={{
-                fontSize: "20px",
+                fontSize: "18px",
                 fontWeight: 700,
                 color: "#16A34A",
                 textAlign: "center",
@@ -360,7 +345,7 @@ export default function Section3() {
                 MULTIPLE INCOME SOURCES
               </div>
               <div style={{
-                fontSize: "56px",
+                fontSize: "48px",
                 fontWeight: 700,
                 color: "#16A34A",
                 textAlign: "center",
@@ -370,11 +355,12 @@ export default function Section3() {
                 74
               </div>
               <div style={{
-                fontSize: "15px",
+                fontSize: "14px",
                 fontWeight: 600,
                 color: "#16A34A",
                 textAlign: "center",
-                marginBottom: "16px"
+                marginBottom: "16px",
+                lineHeight: "1.6"
               }}>
                 Established Stability
               </div>
@@ -389,14 +375,14 @@ export default function Section3() {
                 fontWeight: 400,
                 color: "#6B7280",
                 margin: "0",
-                textAlign: "center"
+                textAlign: "center",
+                lineHeight: "1.6"
               }}>
                 Income is <span style={{ fontWeight: 600 }}>distributed.</span>
               </p>
             </div>
           </div>
 
-          {/* VS Circle Mobile */}
           <div style={{
             display: "flex",
             flexDirection: "column",
@@ -425,7 +411,6 @@ export default function Section3() {
             </div>
           </div>
 
-          {/* Bottom Text and Arrow */}
           <div style={{
             textAlign: "center",
             display: "flex",
