@@ -24,6 +24,7 @@ export default function Section3() {
           </h2>
           <p style={{
             fontSize: "18px",
+            fontWeight: 400,
             color: "#6B7280",
             textAlign: "center",
             margin: "0 0 24px 0"
@@ -41,11 +42,11 @@ export default function Section3() {
               display: "inline-flex",
               alignItems: "center",
               gap: "8px",
-              padding: "8px 14px",
+              padding: "10px 16px",
               borderRadius: "999px",
               backgroundColor: "#F3F4F6"
             }}>
-              <span style={{ fontSize: "18px", color: "#9CA3AF" }}>$</span>
+              <span style={{ fontSize: "14px", color: "#6B7280" }}>$</span>
               <span style={{
                 fontSize: "14px",
                 color: "#374151"
@@ -71,20 +72,22 @@ export default function Section3() {
               padding: "32px",
               boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
               display: "flex",
-              flexDirection: "column"
+              flexDirection: "column",
+              justifyContent: "space-between",
+              minHeight: "380px"
             }}>
               {/* Icon Circle */}
               <div style={{
                 width: "56px",
                 height: "56px",
                 borderRadius: "999px",
-                backgroundColor: "rgba(239,68,68,0.10)",
+                backgroundColor: "rgba(220,38,38,0.10)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 margin: "0 auto 16px"
               }}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                   <circle cx="12" cy="7" r="4"></circle>
                 </svg>
@@ -136,6 +139,7 @@ export default function Section3() {
               {/* Description */}
               <p style={{
                 fontSize: "16px",
+                fontWeight: 400,
                 color: "#6B7280",
                 margin: 0,
                 textAlign: "center"
@@ -152,14 +156,16 @@ export default function Section3() {
               padding: "32px",
               boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
               display: "flex",
-              flexDirection: "column"
+              flexDirection: "column",
+              justifyContent: "space-between",
+              minHeight: "380px"
             }}>
               {/* Icon Circle */}
               <div style={{
                 width: "56px",
                 height: "56px",
                 borderRadius: "999px",
-                backgroundColor: "rgba(34,197,94,0.10)",
+                backgroundColor: "rgba(22,163,74,0.10)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -219,6 +225,7 @@ export default function Section3() {
               {/* Description */}
               <p style={{
                 fontSize: "16px",
+                fontWeight: 400,
                 color: "#6B7280",
                 margin: 0,
                 textAlign: "center"
@@ -230,10 +237,11 @@ export default function Section3() {
             {/* CENTER CONNECTOR */}
             <div style={{
               position: "absolute",
-              top: "50%",
+              top: "0",
               left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "100%",
+              transform: "translateX(-50%)",
+              width: "1px",
+              height: "100%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -243,12 +251,25 @@ export default function Section3() {
               <div style={{
                 position: "absolute",
                 width: "100%",
+                height: "100%",
+                borderLeft: "1px dashed #D1D5DB"
+              }}></div>
+
+              {/* Horizontal Dashed Line */}
+              <div style={{
+                position: "absolute",
+                top: "50%",
+                left: "-9999px",
+                width: "19998px",
                 height: "1px",
                 borderTop: "1px dashed #D1D5DB"
               }}></div>
 
               {/* Circle Badge */}
               <div style={{
+                position: "absolute",
+                top: "50%",
+                transform: "translateY(-50%)",
                 width: "88px",
                 height: "88px",
                 borderRadius: "999px",
@@ -258,10 +279,12 @@ export default function Section3() {
                 alignItems: "center",
                 justifyContent: "center",
                 padding: "12px",
-                textAlign: "center"
+                textAlign: "center",
+                zIndex: 10
               }}>
                 <p style={{
                   fontSize: "13px",
+                  fontWeight: 400,
                   color: "#6B7280",
                   lineHeight: 1.3,
                   margin: 0
@@ -282,6 +305,7 @@ export default function Section3() {
             </svg>
             <p style={{
               fontSize: "14px",
+              fontWeight: 400,
               color: "#6B7280",
               margin: 0
             }}>
@@ -308,6 +332,7 @@ export default function Section3() {
           </h2>
           <p style={{
             fontSize: "16px",
+            fontWeight: 400,
             color: "#6B7280",
             textAlign: "center",
             margin: "0 0 20px 0"
@@ -325,11 +350,11 @@ export default function Section3() {
               display: "inline-flex",
               alignItems: "center",
               gap: "6px",
-              padding: "6px 12px",
+              padding: "8px 14px",
               borderRadius: "999px",
               backgroundColor: "#F3F4F6"
             }}>
-              <span style={{ fontSize: "16px", color: "#9CA3AF" }}>$</span>
+              <span style={{ fontSize: "14px", color: "#6B7280" }}>$</span>
               <span style={{
                 fontSize: "13px",
                 color: "#374151"
@@ -346,19 +371,23 @@ export default function Section3() {
               backgroundColor: "#FFFFFF",
               border: "1px solid #E5E7EB",
               borderRadius: "16px",
-              padding: "28px"
+              padding: "28px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              minHeight: "320px"
             }}>
               <div style={{
                 width: "48px",
                 height: "48px",
                 borderRadius: "999px",
-                backgroundColor: "rgba(239,68,68,0.10)",
+                backgroundColor: "rgba(220,38,38,0.10)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 margin: "0 auto 12px"
               }}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                   <circle cx="12" cy="7" r="4"></circle>
                 </svg>
@@ -399,6 +428,7 @@ export default function Section3() {
               }}></div>
               <p style={{
                 fontSize: "14px",
+                fontWeight: 400,
                 color: "#6B7280",
                 margin: 0,
                 textAlign: "center"
@@ -412,13 +442,17 @@ export default function Section3() {
               backgroundColor: "#FFFFFF",
               border: "1px solid #E5E7EB",
               borderRadius: "16px",
-              padding: "28px"
+              padding: "28px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              minHeight: "320px"
             }}>
               <div style={{
                 width: "48px",
                 height: "48px",
                 borderRadius: "999px",
-                backgroundColor: "rgba(34,197,94,0.10)",
+                backgroundColor: "rgba(22,163,74,0.10)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -467,6 +501,7 @@ export default function Section3() {
               }}></div>
               <p style={{
                 fontSize: "14px",
+                fontWeight: 400,
                 color: "#6B7280",
                 margin: 0,
                 textAlign: "center"
@@ -485,6 +520,7 @@ export default function Section3() {
             </svg>
             <p style={{
               fontSize: "13px",
+              fontWeight: 400,
               color: "#6B7280",
               margin: 0
             }}>
