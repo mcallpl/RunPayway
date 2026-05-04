@@ -458,24 +458,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION 2: CONSEQUENCE */}
-      <section className="bg-[#F8F6F1]" style={{ padding: "96px 40px" }}>
-        <div className="max-w-[1200px] mx-auto">
-          <h2 className="text-[36px] font-semibold text-[#0E1A2B] mb-10">Decisions made without structural verification fail under stress.</h2>
-          <div className="grid grid-cols-3 gap-12">
-            <div className="bg-white p-6 rounded-[12px] border border-[#D9D6CF]" style={{ boxShadow: "0 4px 16px rgba(14,26,43,0.08)" }}>
-              <p className="text-15 font-semibold text-[#0E1A2B] leading-relaxed m-0">You are approved → then denied during final underwriting</p>
-            </div>
-            <div className="bg-white p-6 rounded-[12px] border border-[#D9D6CF]" style={{ boxShadow: "0 4px 16px rgba(14,26,43,0.08)" }}>
-              <p className="text-15 font-semibold text-[#0E1A2B] leading-relaxed m-0">Income appears strong → but fails under disruption</p>
-            </div>
-            <div className="bg-white p-6 rounded-[12px] border border-[#D9D6CF]" style={{ boxShadow: "0 4px 16px rgba(14,26,43,0.08)" }}>
-              <p className="text-15 font-semibold text-[#0E1A2B] leading-relaxed m-0">You commit → then discover instability too late</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* SECTION 2: WHAT THE MODEL EVALUATES */}
       <section className="bg-white" style={{ padding: "80px 40px" }}>
         <div className="max-w-[1400px] mx-auto">
