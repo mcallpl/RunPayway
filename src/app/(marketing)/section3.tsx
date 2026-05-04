@@ -514,7 +514,7 @@ export default function Section3() {
         <div style={{
           textAlign: "center"
         }}>
-          <svg width: "14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ margin: "0 auto 5px", display: "block" }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ margin: "0 auto 5px", display: "block" }}>
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
           <p style={{

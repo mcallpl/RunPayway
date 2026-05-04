@@ -4,132 +4,188 @@
 
 ```bash
 ./scripts/sync.sh
+npm run dev
 ```
 
 This ensures:
 - ✓ You're on the latest code
 - ✓ All dependencies are installed
-- ✓ You're ready to start working
+- ✓ You can test locally before committing
 
 Takes ~10 seconds.
 
 ---
 
-## The Workflow
+## The Workflow (Safe & Tested)
 
 ### 1. Start Your Session
 ```bash
 ./scripts/sync.sh
+npm run dev
 ```
-Response: "✅ You're ready to work!"
+Response: "✅ Ready to work" + local dev server running on localhost:3000/RunPayway
 
-### 2. Make Changes
-Edit files normally. No special commands.
+### 2. Make Changes & Test Locally
+- Edit files in your editor
+- See changes in `npm run dev` (hot reload)
+- **Verify visually against mockups** before committing
+- This prevents bad code from going to production
 
-### 3. Commit
+### 3. Commit (Pre-Commit Validation)
 ```bash
 git add .
 git commit -m "Your message"
 ```
 
-Two automatic things happen:
-- **Pre-commit hook:** Checks you're on latest code (safety net)
-- **Post-commit hook:** Auto-pushes to GitHub → Triggers DigitalOcean deployment
+What happens:
+- **Pre-commit hook runs:**
+  1. Checks you're on latest code
+  2. Runs `npm run build` to validate code compiles
+  3. If build fails → commit blocked with error details
+  4. If build succeeds → commit allowed
 
-**Result:** Your changes are live on GitHub and the server.
+**Result:** Bad code can't be committed. Period.
 
-### 4. Done
-No push needed. Hooks handle it automatically.
-
----
-
-## What The Hooks Do
-
-### Pre-Commit Hook (Safety Net)
-If you somehow try to commit stale code:
-- ❌ Commit blocked
-- Message: "Your code is behind origin/main by X commits"
-- Fix: `git pull origin main` → try commit again
-
-This prevents accidentally pushing old code.
-
-### Post-Commit Hook (Auto-Deploy)
-After every commit:
-- ✅ Automatically runs: `git push origin main`
-- GitHub Actions triggers
-- DigitalOcean server gets latest code
-- No manual push ever needed
-
----
-
-## Multi-Programmer Scenario
-
-**Programmer A** makes changes and commits → auto-pushed → live
-
-**Programmer B** opens folder (old code on disk):
-```bash
-./scripts/sync.sh
+### 4. Review & Push (You Control Deployment)
+After commit succeeds, you get a reminder:
 ```
-→ Detects they're behind → pulls latest → ready to work
+✅ Commit successful (build validated)
 
-**No conflicts. No surprises. Always in sync.**
+Next step: Push to deploy
+  → Run: git push origin main
+
+This will:
+  1. Upload to GitHub
+  2. Trigger GitHub Actions
+  3. Deploy to peoplestar.com/RunPayway
+```
+
+**You decide when to push.** This creates a review point.
+
+```bash
+git push origin main
+# GitHub Actions deploys within 1-2 minutes
+# Visit peoplestar.com/RunPayway to verify
+```
+
+**Result:** Changes are live after you push.
+
+---
+
+## What The Hooks Do (Now)
+
+### Pre-Commit Hook (Prevents Bad Code)
+Before allowing any commit:
+- ✓ Checks you're on latest code (pulls if needed)
+- ✓ Validates build with `npm run build`
+- ✓ If build fails: blocks commit, shows errors, you fix and try again
+
+**Result:** Only compilable code reaches GitHub/production.
+
+### Post-Commit Hook (Reminds You to Push)
+After successful commit:
+- Prints reminder: "Your code is committed locally"
+- Reminds you to: `git push origin main` when ready
+- No auto-push (you control deployment timing)
+
+---
+
+## The Difference
+
+**Old way:** Commit → Auto-push → Deploy → Discover problems on live site
+
+**New way:** Commit → Local validation → Manual push → Deploy → Verify works
 
 ---
 
 ## Troubleshooting
 
-**Q: Commit is blocked with "behind origin/main" message**
+**Q: Commit blocked with "BUILD FAILED"**
+```bash
+# Review the build errors shown in your terminal
+# Fix the issues in your code
+git add .
+git commit -m "..."  # Try again
+```
+
+**Q: Commit blocked with "behind origin/main"**
 ```bash
 git pull origin main
 git commit -m "..."  # Try again
 ```
 
-**Q: Push failed in post-commit hook**
-- Hook will show error message
-- Network issue or GitHub is down
-- Try manually: `git push origin main`
+**Q: Changes pushed but not showing on live site**
+1. Wait 2 minutes (GitHub Actions needs time)
+2. Hard refresh in browser (Cmd+Shift+R or Ctrl+Shift+R)
+3. If still not there, check GitHub Actions build status (Actions tab)
 
-**Q: Sync script fails**
-- Make sure you're on `main` branch: `git branch`
-- Try: `git fetch origin` first, then `./scripts/sync.sh` again
-
----
-
-## Key Rules (No Exceptions)
-
-1. **Always run `./scripts/sync.sh` at session start**
-   - This is your safety checkpoint
-   - Guarantees you're on latest code
-
-2. **Never skip the hooks**
-   - Pre-commit and post-commit hooks are mandatory
-   - They prevent problems automatically
-   - Don't use `git commit --no-verify`
-
-3. **Every commit is auto-pushed**
-   - No manual `git push` needed
-   - Every change goes live automatically
-   - If push fails, you'll see the error
-
----
-
-## For The Other Programmer
-
-Send them this:
-
-> 1. Every time you open the project, run: `./scripts/sync.sh`
-> 2. Make changes and commit normally: `git commit -m "..."`
-> 3. Changes auto-push. Don't manual push.
-> 4. If anything blocks, the error message tells you exactly what to do.
-
----
-
-## Git Config (Optional)
-
-Add this alias for quick status check (optional, not required):
-
+**Q: I broke production, how do I fix it?**
 ```bash
-git config --global alias.status-sync '!git fetch origin && if [ $(git rev-parse main) = $(git rev-parse origin/main) ]; then echo "✓ In sync"; else echo "✗ Behind by $(git rev-list --count origin/main..main) commits"; fi'
+# Find the bad commit
+git log --oneline
+
+# Revert it
+git revert <bad-commit-hash>
+git push origin main
+
+# This creates a new commit that undoes the bad one
+# GitHub Actions will re-deploy the fixed version
 ```
 
-Then use: `git status-sync` anytime to check sync status.
+---
+
+## Key Rules
+
+1. **Always run `./scripts/sync.sh` at session start**
+   - Guarantees you're on latest code
+
+2. **Always use `npm run dev` to test locally**
+   - See changes before committing
+   - Catch visual errors before production
+
+3. **Never skip the pre-commit hook**
+   - Don't use `git commit --no-verify`
+   - The build validation is your safety net
+
+4. **Push manually when you're confident**
+   - You control when code goes to production
+   - Review the commit before pushing
+   - Creates natural review point
+
+---
+
+## Quick Reference
+
+```bash
+# Session start
+./scripts/sync.sh
+npm run dev
+
+# Work normally
+# (test locally, verify against mockups)
+
+# When ready to commit
+git add .
+git commit -m "description of changes"
+# Pre-commit hook validates build
+
+# When ready to deploy
+git push origin main
+# GitHub Actions deploys to peoplestar.com/RunPayway
+
+# If something breaks
+git revert <commit-hash>
+git push origin main
+```
+
+---
+
+## Summary
+
+- **Local testing:** `npm run dev` before committing
+- **Build validation:** Pre-commit hook checks it compiles
+- **Manual deploy:** You push when ready (not auto)
+- **Safety net:** Bad code can't leave your machine
+- **Rollback:** Easy to undo with `git revert`
+
+This prevents the "changes don't match mockups" and "site is broken" problems.
