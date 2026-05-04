@@ -267,7 +267,8 @@ export default function Section3() {
             Income level does not determine stability—structure does.
           </p>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "32px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0", marginBottom: "48px", position: "relative" }}>
+            {/* LEFT CARD */}
             <div style={{
               backgroundColor: "#FFFFFF",
               border: "1px solid #E5E7EB",
@@ -275,7 +276,8 @@ export default function Section3() {
               padding: "32px 24px",
               display: "flex",
               flexDirection: "column",
-              alignItems: "center"
+              alignItems: "center",
+              marginBottom: "40px"
             }}>
               <div style={{
                 fontSize: "18px",
@@ -325,6 +327,40 @@ export default function Section3() {
               </p>
             </div>
 
+            {/* VS CIRCLE - CENTERED BETWEEN CARDS */}
+            <div style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 10,
+              pointerEvents: "none"
+            }}>
+              <div style={{
+                width: "64px",
+                height: "64px",
+                borderRadius: "999px",
+                backgroundColor: "#FFFFFF",
+                border: "1px solid #E5E7EB",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}>
+                <p style={{
+                  fontSize: "18px",
+                  fontWeight: 700,
+                  color: "#0E1A2B",
+                  margin: "0"
+                }}>
+                  VS
+                </p>
+              </div>
+            </div>
+
+            {/* RIGHT CARD */}
             <div style={{
               backgroundColor: "#FFFFFF",
               border: "1px solid #E5E7EB",
@@ -332,7 +368,8 @@ export default function Section3() {
               padding: "32px 24px",
               display: "flex",
               flexDirection: "column",
-              alignItems: "center"
+              alignItems: "center",
+              marginTop: "40px"
             }}>
               <div style={{
                 fontSize: "18px",
@@ -379,34 +416,6 @@ export default function Section3() {
                 lineHeight: "1.6"
               }}>
                 Income is <span style={{ fontWeight: 600 }}>distributed.</span>
-              </p>
-            </div>
-          </div>
-
-          <div style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "16px",
-            marginBottom: "24px"
-          }}>
-            <div style={{
-              width: "72px",
-              height: "72px",
-              borderRadius: "999px",
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #E5E7EB",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center"
-            }}>
-              <p style={{
-                fontSize: "20px",
-                fontWeight: 700,
-                color: "#0E1A2B",
-                margin: "0"
-              }}>
-                VS
               </p>
             </div>
           </div>
