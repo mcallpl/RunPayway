@@ -58,12 +58,11 @@ export default function Footer() {
         <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
 
           {/* SECTION 1 - CTA BLOCK */}
-          <div style={{ textAlign: "center", marginBottom: "64px" }}>
+          <div style={{ textAlign: "center", marginBottom: "64px", padding: "48px 28px" }}>
             <h2 style={{
-              fontSize: "40px",
+              fontSize: "32px",
               fontWeight: 700,
-              lineHeight: 1.15,
-              letterSpacing: "-0.035em",
+              lineHeight: "1.2",
               color: "#0E1A2B",
               margin: "0 0 16px 0"
             }}>
@@ -72,7 +71,7 @@ export default function Footer() {
             <p style={{
               fontSize: "18px",
               fontWeight: 400,
-              lineHeight: 1.5,
+              lineHeight: "1.5",
               color: "#6B7280",
               margin: "0 0 28px 0"
             }}>
@@ -80,58 +79,35 @@ export default function Footer() {
             </p>
 
             <button style={{
-              height: "56px",
-              padding: "0 32px",
+              padding: "16px 28px",
               background: "linear-gradient(135deg, #0E1A2B 0%, #0A2540 100%)",
               color: "#FFFFFF",
               fontSize: "16px",
               fontWeight: 600,
               border: "none",
-              borderRadius: "10px",
+              borderRadius: "8px",
               cursor: "pointer",
               marginBottom: "16px",
               display: "inline-flex",
               alignItems: "center",
               gap: "8px",
               boxShadow: "0px 10px 24px rgba(10, 37, 64, 0.22)",
-              fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-            }}>
+              fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+              transition: "all 150ms ease",
+              outline: "2px solid transparent",
+              outlineOffset: "4px"
+            }}
+            onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
+            onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
+            onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0px 14px 32px rgba(10, 37, 64, 0.32)"}
+            onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0px 10px 24px rgba(10, 37, 64, 0.22)"}
+            >
               Start Verification
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
             </button>
-
-            {/* Support row */}
-            <div style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "28px",
-              alignItems: "center",
-              flexWrap: "wrap"
-            }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "14px", color: "#6B7280" }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <polyline points="12 6 12 12 16 14"></polyline>
-                </svg>
-                Under 2 minutes
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "14px", color: "#6B7280" }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2">
-                  <path d="M9 12l2 2 4-4"></path>
-                  <circle cx="12" cy="12" r="10"></circle>
-                </svg>
-                No documents
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "14px", color: "#6B7280" }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                </svg>
-                Private
-              </div>
-            </div>
           </div>
 
           {/* SECTION 2 - DIVIDER */}
@@ -244,12 +220,11 @@ export default function Footer() {
         <div style={{ padding: "0 24px" }}>
 
           {/* SECTION 1 - CTA BLOCK */}
-          <div style={{ textAlign: "center", marginBottom: "64px" }}>
+          <div style={{ textAlign: "center", marginBottom: "64px", padding: "32px 16px" }}>
             <h2 style={{
               fontSize: "24px",
               fontWeight: 700,
-              lineHeight: 1.15,
-              letterSpacing: "-0.035em",
+              lineHeight: "1.2",
               color: "#0E1A2B",
               margin: "0 0 12px 0"
             }}>
@@ -258,48 +233,40 @@ export default function Footer() {
             <p style={{
               fontSize: "16px",
               fontWeight: 400,
-              lineHeight: 1.5,
+              lineHeight: "1.5",
               color: "#6B7280",
-              margin: "0 0 20px 0"
+              margin: "0 0 24px 0"
             }}>
               See how your income holds before your next decision.
             </p>
 
             <button style={{
               width: "100%",
-              height: "56px",
+              padding: "16px 28px",
               background: "linear-gradient(135deg, #0E1A2B 0%, #0A2540 100%)",
               color: "#FFFFFF",
               fontSize: "16px",
               fontWeight: 600,
               border: "none",
-              borderRadius: "10px",
+              borderRadius: "8px",
               cursor: "pointer",
-              marginBottom: "12px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               gap: "8px",
               boxShadow: "0px 10px 24px rgba(10, 37, 64, 0.22)",
-              fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-            }}>
+              fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+              transition: "all 150ms ease"
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0px 14px 32px rgba(10, 37, 64, 0.32)"}
+            onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0px 10px 24px rgba(10, 37, 64, 0.22)"}
+            >
               Start Verification
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
             </button>
-
-            {/* Support row */}
-            <div style={{
-              fontSize: "12px",
-              color: "#6B7280",
-              lineHeight: 1.6
-            }}>
-              <div>✓ Under 2 minutes</div>
-              <div>✓ No documents</div>
-              <div>✓ Private</div>
-            </div>
           </div>
 
           {/* SECTION 2 - DIVIDER */}
