@@ -18,7 +18,7 @@ export default function SectionSampleReport() {
               color: "#0E1A2B",
               margin: "0 0 16px 0"
             }}>
-              See Your Sample Income Stability Report
+              This is What You Get for $69
             </h2>
 
             <p style={{
@@ -26,9 +26,19 @@ export default function SectionSampleReport() {
               fontWeight: 400,
               lineHeight: "1.6",
               color: "#6B7280",
+              margin: "0 0 12px 0"
+            }}>
+              A complete, personalized 4-page report analyzing your income stability from every angle.
+            </p>
+
+            <p style={{
+              fontSize: "16px",
+              fontWeight: 600,
+              lineHeight: "1.6",
+              color: "#1F6D7A",
               margin: "0 0 48px 0"
             }}>
-              Get an inside look at your income stability breakdown, risk assessment, and actionable insights to improve your financial decisions.
+              One-time purchase. Yours forever.
             </p>
           </div>
 
@@ -353,17 +363,27 @@ export default function SectionSampleReport() {
               color: "#0E1A2B",
               margin: "0 0 16px 0"
             }}>
-              See Your Sample Income Stability Report
+              This is What You Get for $69
             </h2>
 
             <p style={{
-              fontSize: "16px",
+              fontSize: "15px",
               fontWeight: 400,
               lineHeight: "1.6",
               color: "#6B7280",
+              margin: "0 0 8px 0"
+            }}>
+              A complete, personalized 4-page report analyzing your income stability.
+            </p>
+
+            <p style={{
+              fontSize: "14px",
+              fontWeight: 600,
+              lineHeight: "1.6",
+              color: "#1F6D7A",
               margin: "0 0 32px 0"
             }}>
-              Get an inside look at your income stability breakdown, risk assessment, and actionable insights to improve your financial decisions.
+              One-time purchase. Yours forever.
             </p>
           </div>
 

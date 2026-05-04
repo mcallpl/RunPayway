@@ -66,8 +66,45 @@ export default function SectionFree() {
                 color: "#6B7280",
                 margin: "0 0 32px 0"
               }}>
-                This report provides your classification based on your income structure. See where you stand and what needs to change.
+                This is your free classification. Your actual income stability goes much deeper.
               </p>
+
+              <div style={{
+                backgroundColor: "#FFFFFF",
+                border: "1px solid #1F6D7A",
+                borderRadius: "8px",
+                padding: "24px",
+                marginBottom: "32px"
+              }}>
+                <div style={{
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  color: "#1F6D7A",
+                  marginBottom: "12px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em"
+                }}>
+                  What's in the full report ($69)
+                </div>
+                <ul style={{
+                  margin: "0",
+                  padding: "0 0 0 20px",
+                  listStyle: "disc"
+                }}>
+                  <li style={{ fontSize: "14px", color: "#6B7280", marginBottom: "8px", lineHeight: "1.6" }}>
+                    <strong>Complete stability breakdown</strong> – All 6 factors analyzed in detail
+                  </li>
+                  <li style={{ fontSize: "14px", color: "#6B7280", marginBottom: "8px", lineHeight: "1.6" }}>
+                    <strong>Risk assessment</strong> – Identify structural weaknesses affecting your stability
+                  </li>
+                  <li style={{ fontSize: "14px", color: "#6B7280", marginBottom: "8px", lineHeight: "1.6" }}>
+                    <strong>Actionable plan</strong> – 3 specific decisions with timelines and impact scores
+                  </li>
+                  <li style={{ fontSize: "14px", color: "#6B7280", lineHeight: "1.6" }}>
+                    <strong>Permanent record</strong> – Timestamped result you can share with advisors, lenders
+                  </li>
+                </ul>
+              </div>
 
               <p style={{
                 fontSize: "14px",
@@ -76,7 +113,7 @@ export default function SectionFree() {
                 color: "#6B7280",
                 margin: "0"
               }}>
-                To get a full breakdown of your stability, risk assessment, and personalized steps for improvement, unlock the full report for just $69.
+                One-time purchase. Use your results forever. No subscriptions, no hidden fees.
               </p>
             </div>
 
@@ -100,8 +137,18 @@ export default function SectionFree() {
             onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0px 8px 16px rgba(31, 109, 122, 0.3)"}
             onMouseLeave={(e) => e.currentTarget.style.boxShadow = "none"}
             >
-              Unlock Your Full Report for $69
+              Get Full Report Today — $69
             </button>
+
+            <p style={{
+              fontSize: "13px",
+              fontWeight: 400,
+              color: "#6B7280",
+              margin: "12px 0 0 0",
+              textAlign: "center"
+            }}>
+              ⏱️ Complete your assessment before you make major financial decisions
+            </p>
           </div>
         </div>
       </div>
@@ -161,10 +208,47 @@ export default function SectionFree() {
                 fontWeight: 400,
                 lineHeight: "1.6",
                 color: "#6B7280",
-                margin: "0 0 16px 0"
+                margin: "0 0 20px 0"
               }}>
-                This report provides your classification based on your income structure. See where you stand and what needs to change.
+                This is your free classification. Your actual income stability goes much deeper.
               </p>
+
+              <div style={{
+                backgroundColor: "#FFFFFF",
+                border: "1px solid #1F6D7A",
+                borderRadius: "8px",
+                padding: "16px",
+                marginBottom: "20px"
+              }}>
+                <div style={{
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  color: "#1F6D7A",
+                  marginBottom: "12px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em"
+                }}>
+                  What's in the full report ($69)
+                </div>
+                <ul style={{
+                  margin: "0",
+                  padding: "0 0 0 16px",
+                  listStyle: "disc"
+                }}>
+                  <li style={{ fontSize: "13px", color: "#6B7280", marginBottom: "6px", lineHeight: "1.5" }}>
+                    <strong>Complete breakdown</strong> – All 6 factors analyzed in detail
+                  </li>
+                  <li style={{ fontSize: "13px", color: "#6B7280", marginBottom: "6px", lineHeight: "1.5" }}>
+                    <strong>Risk assessment</strong> – Identify structural weaknesses
+                  </li>
+                  <li style={{ fontSize: "13px", color: "#6B7280", marginBottom: "6px", lineHeight: "1.5" }}>
+                    <strong>Actionable plan</strong> – 3 specific decisions with timelines
+                  </li>
+                  <li style={{ fontSize: "13px", color: "#6B7280", lineHeight: "1.5" }}>
+                    <strong>Permanent record</strong> – Share with advisors, lenders
+                  </li>
+                </ul>
+              </div>
 
               <p style={{
                 fontSize: "13px",
@@ -173,7 +257,7 @@ export default function SectionFree() {
                 color: "#6B7280",
                 margin: "0"
               }}>
-                To get a full breakdown of your stability, risk assessment, and personalized steps for improvement, unlock the full report for just $69.
+                One-time purchase. Use forever. No subscriptions, no hidden fees.
               </p>
             </div>
 
@@ -194,8 +278,18 @@ export default function SectionFree() {
             onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0px 6px 12px rgba(31, 109, 122, 0.25)"}
             onMouseLeave={(e) => e.currentTarget.style.boxShadow = "none"}
             >
-              Unlock Your Full Report for $69
+              Get Full Report Today — $69
             </button>
+
+            <p style={{
+              fontSize: "12px",
+              fontWeight: 400,
+              color: "#6B7280",
+              margin: "12px 0 0 0",
+              textAlign: "center"
+            }}>
+              ⏱️ Complete assessment before major decisions
+            </p>
           </div>
         </div>
       </div>

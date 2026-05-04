@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import SectionFree from "./sectionFree";
+import SectionTrustProof from "./sectionTrustProof";
 import Section2 from "./section2";
 import Section3 from "./section3";
 import Section4 from "./section4";
 import SectionIntegrity from "./sectionIntegrity";
+import SectionPricingComparison from "./sectionPricingComparison";
 import SectionSampleReport from "./sectionSampleReport";
 import Footer from "./footer";
 
@@ -45,6 +47,7 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [solutionsDropdownOpen, setSolutionsDropdownOpen] = useState(false);
 
   return (
     <div className="w-full">
@@ -66,6 +69,7 @@ export default function LandingPage() {
 
             <div style={{ position: "relative" }}>
               <button
+                onClick={() => setSolutionsDropdownOpen(!solutionsDropdownOpen)}
                 style={{
                   fontSize: "14px",
                   fontWeight: "500",
@@ -87,10 +91,67 @@ export default function LandingPage() {
                 onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
                 onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
                 aria-haspopup="menu"
+                aria-expanded={solutionsDropdownOpen}
               >
                 Solutions
-                <span style={{ fontSize: "11px" }}>▼</span>
+                <span style={{ fontSize: "11px", transition: "transform 150ms ease", transform: solutionsDropdownOpen ? "rotate(180deg)" : "rotate(0deg)" }}>▼</span>
               </button>
+
+              {solutionsDropdownOpen && (
+                <div style={{
+                  position: "absolute",
+                  top: "100%",
+                  left: "0",
+                  backgroundColor: "#FFFFFF",
+                  border: "1px solid #E5E7EB",
+                  borderRadius: "8px",
+                  boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.08)",
+                  minWidth: "280px",
+                  marginTop: "8px",
+                  zIndex: 100
+                }}>
+                  <a
+                    href="/advisors"
+                    style={{
+                      display: "block",
+                      padding: "16px 20px",
+                      borderBottom: "1px solid #E5E7EB",
+                      textDecoration: "none",
+                      transition: "background-color 150ms ease",
+                      cursor: "pointer"
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#F9FAFB"}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}
+                  >
+                    <div style={{ fontSize: "14px", fontWeight: 600, color: "#0E1A2B", marginBottom: "4px" }}>
+                      For Advisors
+                    </div>
+                    <div style={{ fontSize: "12px", color: "#6B7280", lineHeight: "1.5" }}>
+                      Help clients assess income stability with verified assessments
+                    </div>
+                  </a>
+
+                  <a
+                    href="/organizations"
+                    style={{
+                      display: "block",
+                      padding: "16px 20px",
+                      textDecoration: "none",
+                      transition: "background-color 150ms ease",
+                      cursor: "pointer"
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#F9FAFB"}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}
+                  >
+                    <div style={{ fontSize: "14px", fontWeight: 600, color: "#0E1A2B", marginBottom: "4px" }}>
+                      For Organizations
+                    </div>
+                    <div style={{ fontSize: "12px", color: "#6B7280", lineHeight: "1.5" }}>
+                      Assess income stability for hiring and workforce decisions
+                    </div>
+                  </a>
+                </div>
+              )}
             </div>
 
             <NavLink href="/plans">Plans</NavLink>
@@ -185,7 +246,16 @@ export default function LandingPage() {
                 color: "#6B7280",
                 margin: "0"
               }}>
-                Under 2 minutes · No documents required · Private
+                ✓ Under 2 minutes · No documents required · Private
+              </p>
+              <p style={{
+                fontSize: "13px",
+                fontWeight: 500,
+                lineHeight: "1.6",
+                color: "#1F6D7A",
+                margin: "8px 0 0 0"
+              }}>
+                Join 12K+ users taking control of their income stability
               </p>
             </div>
 
@@ -311,9 +381,18 @@ export default function LandingPage() {
               fontWeight: 400,
               lineHeight: "1.6",
               color: "#6B7280",
+              margin: "0 0 12px 0"
+            }}>
+              ✓ Under 2 minutes · No documents required · Private
+            </p>
+            <p style={{
+              fontSize: "13px",
+              fontWeight: 500,
+              lineHeight: "1.6",
+              color: "#1F6D7A",
               margin: "0 0 32px 0"
             }}>
-              Under 2 minutes · No documents required · Private
+              Join 12K+ users taking control of their income stability
             </p>
 
             <div style={{
@@ -390,10 +469,12 @@ export default function LandingPage() {
       </section>
 
       <SectionFree />
+      <SectionTrustProof />
       <Section2 />
       <Section3 />
       <Section4 />
       <SectionIntegrity />
+      <SectionPricingComparison />
       <SectionSampleReport />
 
       {/* FOOTER */}
