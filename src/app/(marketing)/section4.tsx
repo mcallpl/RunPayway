@@ -334,25 +334,16 @@ export default function Section4() {
             <div style={{
               position: "absolute",
               top: "50%",
-              left: "0",
-              right: "0",
-              transform: "translateY(-50%)",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              pointerEvents: "none"
+              pointerEvents: "none",
+              zIndex: 10
             }}>
-              {/* Horizontal Dashed Line */}
-              <div style={{
-                position: "absolute",
-                width: "100%",
-                height: "1px",
-                borderTop: "1px dashed #D1D5DB"
-              }}></div>
-
               {/* Center Circle with VS */}
               <div style={{
-                position: "absolute",
                 width: "88px",
                 height: "88px",
                 borderRadius: "999px",
@@ -360,8 +351,7 @@ export default function Section4() {
                 border: "1px solid #1F6D7A",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
-                zIndex: 10
+                justifyContent: "center"
               }}>
                 <p style={{
                   fontSize: "24px",

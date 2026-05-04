@@ -242,27 +242,16 @@ export default function Section3() {
             <div style={{
               position: "absolute",
               top: "50%",
-              left: "0",
-              right: "0",
-              transform: "translateY(-50%)",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              pointerEvents: "none"
+              pointerEvents: "none",
+              zIndex: 10
             }}>
-              {/* Horizontal Dashed Line */}
-              <div style={{
-                position: "absolute",
-                width: "100%",
-                height: "1px",
-                borderTop: "1px dashed #D1D5DB",
-                left: 0,
-                right: 0
-              }}></div>
-
               {/* Center Circle with VS */}
               <div style={{
-                position: "absolute",
                 width: "88px",
                 height: "88px",
                 borderRadius: "999px",
@@ -270,8 +259,7 @@ export default function Section3() {
                 border: "1px solid #E5E7EB",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
-                zIndex: 10
+                justifyContent: "center"
               }}>
                 <p style={{
                   fontSize: "16px",
@@ -284,17 +272,6 @@ export default function Section3() {
                 </p>
               </div>
             </div>
-
-            {/* VERTICAL DASHED LINE FROM CENTER */}
-            <div style={{
-              position: "absolute",
-              left: "50%",
-              top: "50%",
-              transform: "translateX(-50%)",
-              width: "1px",
-              height: "60px",
-              borderLeft: "1px dashed #E5E7EB"
-            }}></div>
           </div>
 
           {/* Bottom Text and Arrow */}
