@@ -316,217 +316,215 @@ export default function Section3() {
       </div>
 
       {/* MOBILE */}
-      <div className="lg:hidden">
-        <div style={{ padding: "0 20px" }}>
-          {/* Header */}
-          <h2 style={{
-            fontSize: "32px",
-            fontWeight: 700,
-            lineHeight: 1.15,
-            letterSpacing: "-0.02em",
-            color: "#0E1A2B",
-            textAlign: "center",
-            margin: "0 0 12px 0"
-          }}>
-            Same income. Different outcome.
-          </h2>
-          <p style={{
-            fontSize: "16px",
-            fontWeight: 400,
-            color: "#6B7280",
-            textAlign: "center",
-            margin: "0 0 20px 0"
-          }}>
-            Income level does not determine stability. Structure does.
-          </p>
+      <div className="lg:hidden" style={{ padding: "64px 16px" }}>
+        {/* Header */}
+        <h2 style={{
+          fontSize: "28px",
+          fontWeight: 700,
+          lineHeight: 1.2,
+          letterSpacing: "-0.02em",
+          color: "#0E1A2B",
+          textAlign: "center",
+          margin: "0 0 10px 0"
+        }}>
+          Same income. Different outcome.
+        </h2>
+        <p style={{
+          fontSize: "15px",
+          fontWeight: 400,
+          color: "#6B7280",
+          textAlign: "center",
+          margin: "0 0 18px 0"
+        }}>
+          Income level does not determine stability. Structure does.
+        </p>
 
-          {/* Info Pill */}
+        {/* Info Pill */}
+        <div style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "28px"
+        }}>
           <div style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            padding: "8px 12px",
+            borderRadius: "999px",
+            backgroundColor: "#F3F4F6"
+          }}>
+            <span style={{ fontSize: "12px", color: "#6B7280" }}>$</span>
+            <span style={{
+              fontSize: "12px",
+              color: "#374151"
+            }}>
+              Both: $150K
+            </span>
+          </div>
+        </div>
+
+        {/* Stacked Cards */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "18px", marginBottom: "28px" }}>
+          {/* LEFT CARD */}
+          <div style={{
+            backgroundColor: "#FFFFFF",
+            border: "1px solid #E5E7EB",
+            borderRadius: "14px",
+            padding: "24px",
             display: "flex",
-            justifyContent: "center",
-            marginBottom: "32px"
+            flexDirection: "column",
+            justifyContent: "space-between"
           }}>
             <div style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "8px 14px",
+              width: "44px",
+              height: "44px",
               borderRadius: "999px",
-              backgroundColor: "#F3F4F6"
-            }}>
-              <span style={{ fontSize: "14px", color: "#6B7280" }}>$</span>
-              <span style={{
-                fontSize: "13px",
-                color: "#374151"
-              }}>
-                Both examples: $150K
-              </span>
-            </div>
-          </div>
-
-          {/* Stacked Cards */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px", marginBottom: "32px" }}>
-            {/* LEFT CARD */}
-            <div style={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #E5E7EB",
-              borderRadius: "16px",
-              padding: "28px",
+              backgroundColor: "rgba(220,38,38,0.10)",
               display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              minHeight: "320px"
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0 auto 12px"
             }}>
-              <div style={{
-                width: "48px",
-                height: "48px",
-                borderRadius: "999px",
-                backgroundColor: "rgba(220,38,38,0.10)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "0 auto 12px"
-              }}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-              <div style={{
-                fontSize: "11px",
-                letterSpacing: "0.1em",
-                fontWeight: 600,
-                color: "#DC2626",
-                textAlign: "center",
-                marginBottom: "10px",
-                textTransform: "uppercase"
-              }}>
-                1 Income Source
-              </div>
-              <div style={{
-                fontSize: "56px",
-                fontWeight: 700,
-                color: "#DC2626",
-                textAlign: "center",
-                marginBottom: "6px"
-              }}>
-                31
-              </div>
-              <div style={{
-                fontSize: "16px",
-                fontWeight: 600,
-                color: "#DC2626",
-                textAlign: "center",
-                marginBottom: "16px"
-              }}>
-                Limited Stability
-              </div>
-              <div style={{
-                height: "1px",
-                backgroundColor: "#E5E7EB",
-                marginBottom: "16px"
-              }}></div>
-              <p style={{
-                fontSize: "14px",
-                fontWeight: 400,
-                color: "#6B7280",
-                margin: 0,
-                textAlign: "center"
-              }}>
-                Income depends on <span style={{ fontWeight: 600 }}>one source.</span>
-              </p>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
             </div>
-
-            {/* RIGHT CARD */}
             <div style={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #E5E7EB",
-              borderRadius: "16px",
-              padding: "28px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              minHeight: "320px"
+              fontSize: "10px",
+              letterSpacing: "0.1em",
+              fontWeight: 600,
+              color: "#DC2626",
+              textAlign: "center",
+              marginBottom: "8px",
+              textTransform: "uppercase"
             }}>
-              <div style={{
-                width: "48px",
-                height: "48px",
-                borderRadius: "999px",
-                backgroundColor: "rgba(22,163,74,0.10)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "0 auto 12px"
-              }}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16A34A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-              </div>
-              <div style={{
-                fontSize: "11px",
-                letterSpacing: "0.1em",
-                fontWeight: 600,
-                color: "#16A34A",
-                textAlign: "center",
-                marginBottom: "10px",
-                textTransform: "uppercase"
-              }}>
-                Multiple Sources
-              </div>
-              <div style={{
-                fontSize: "56px",
-                fontWeight: 700,
-                color: "#16A34A",
-                textAlign: "center",
-                marginBottom: "6px"
-              }}>
-                74
-              </div>
-              <div style={{
-                fontSize: "16px",
-                fontWeight: 600,
-                color: "#16A34A",
-                textAlign: "center",
-                marginBottom: "16px"
-              }}>
-                Established Stability
-              </div>
-              <div style={{
-                height: "1px",
-                backgroundColor: "#E5E7EB",
-                marginBottom: "16px"
-              }}></div>
-              <p style={{
-                fontSize: "14px",
-                fontWeight: 400,
-                color: "#6B7280",
-                margin: 0,
-                textAlign: "center"
-              }}>
-                Income is <span style={{ fontWeight: 600 }}>distributed.</span>
-              </p>
+              1 Income Source
             </div>
-          </div>
-
-          {/* Bottom Indicator */}
-          <div style={{
-            textAlign: "center"
-          }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ margin: "0 auto 6px", display: "block" }}>
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+            <div style={{
+              fontSize: "48px",
+              fontWeight: 700,
+              color: "#DC2626",
+              textAlign: "center",
+              marginBottom: "4px",
+              lineHeight: 1
+            }}>
+              31
+            </div>
+            <div style={{
+              fontSize: "15px",
+              fontWeight: 600,
+              color: "#DC2626",
+              textAlign: "center",
+              marginBottom: "14px"
+            }}>
+              Limited Stability
+            </div>
+            <div style={{
+              height: "1px",
+              backgroundColor: "#E5E7EB",
+              marginBottom: "14px"
+            }}></div>
             <p style={{
               fontSize: "13px",
               fontWeight: 400,
               color: "#6B7280",
-              margin: 0
+              margin: 0,
+              textAlign: "center"
             }}>
-              Structure determines outcome
+              Income depends on <span style={{ fontWeight: 600 }}>one source.</span>
             </p>
           </div>
+
+          {/* RIGHT CARD */}
+          <div style={{
+            backgroundColor: "#FFFFFF",
+            border: "1px solid #E5E7EB",
+            borderRadius: "14px",
+            padding: "24px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between"
+          }}>
+            <div style={{
+              width: "44px",
+              height: "44px",
+              borderRadius: "999px",
+              backgroundColor: "rgba(22,163,74,0.10)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0 auto 12px"
+            }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16A34A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <div style={{
+              fontSize: "10px",
+              letterSpacing: "0.1em",
+              fontWeight: 600,
+              color: "#16A34A",
+              textAlign: "center",
+              marginBottom: "8px",
+              textTransform: "uppercase"
+            }}>
+              Multiple Sources
+            </div>
+            <div style={{
+              fontSize: "48px",
+              fontWeight: 700,
+              color: "#16A34A",
+              textAlign: "center",
+              marginBottom: "4px",
+              lineHeight: 1
+            }}>
+              74
+            </div>
+            <div style={{
+              fontSize: "15px",
+              fontWeight: 600,
+              color: "#16A34A",
+              textAlign: "center",
+              marginBottom: "14px"
+            }}>
+              Established Stability
+            </div>
+            <div style={{
+              height: "1px",
+              backgroundColor: "#E5E7EB",
+              marginBottom: "14px"
+            }}></div>
+            <p style={{
+              fontSize: "13px",
+              fontWeight: 400,
+              color: "#6B7280",
+              margin: 0,
+              textAlign: "center"
+            }}>
+              Income is <span style={{ fontWeight: 600 }}>distributed.</span>
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom Indicator */}
+        <div style={{
+          textAlign: "center"
+        }}>
+          <svg width: "14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ margin: "0 auto 5px", display: "block" }}>
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+          <p style={{
+            fontSize: "12px",
+            fontWeight: 400,
+            color: "#6B7280",
+            margin: 0
+          }}>
+            Structure determines outcome
+          </p>
         </div>
       </div>
     </section>
