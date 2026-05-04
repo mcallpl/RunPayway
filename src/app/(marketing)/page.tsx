@@ -103,7 +103,7 @@ export default function LandingPage() {
               style={{
                 height: "40px",
                 padding: "0 24px",
-                background: "linear-gradient(135deg, #0E1A2B 0%, #0A2540 100%)",
+                background: "#0E1A2B",
                 color: "#FFFFFF",
                 borderRadius: "6px",
                 fontWeight: "600",
@@ -164,128 +164,146 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* SECTION 1: HERO - WCAG 2.1 AA COMPLIANT */}
-      <section style={{ background: "linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%)", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
+      {/* HERO SECTION - PER MASTER SPEC */}
+      <section style={{ backgroundColor: "#FFFFFF", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
         {/* Desktop */}
-        <div className="hidden lg:block" style={{ padding: "96px 48px 88px", maxWidth: "1440px", marginLeft: "auto", marginRight: "auto" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "58% 42%", gap: "88px", alignItems: "flex-start" }}>
-            {/* LEFT COLUMN */}
-            <div style={{ maxWidth: "700px" }}>
-              {/* Eyebrow */}
-              <div style={{ fontSize: "12px", fontWeight: "700", letterSpacing: "0.1em", color: "#2F6BFF", marginBottom: "44px", fontFamily: "Inter" }}>
-                STRUCTURAL STABILITY MODEL RP-2.0
-              </div>
-
-              {/* H1 */}
-              <h1 style={{ fontSize: "56px", fontWeight: "700", lineHeight: "1.0", letterSpacing: "-0.045em", color: "#0E1A2B", marginBottom: "32px", maxWidth: "680px", fontFamily: "Inter", textRendering: "optimizeLegibility", WebkitFontSmoothing: "antialiased" }}>
+        <div className="hidden lg:block">
+          <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "96px 48px", display: "flex", gap: "88px", alignItems: "flex-start" }}>
+            {/* Left Column */}
+            <div style={{ flex: 1 }}>
+              {/* Headline */}
+              <h1 style={{
+                fontSize: "48px",
+                fontWeight: 700,
+                lineHeight: "1.2",
+                color: "#0E1A2B",
+                margin: "0 0 0 0",
+                marginBottom: "16px"
+              }}>
                 Major financial decisions require income verification.
               </h1>
 
-              {/* Body */}
-              <p style={{ fontSize: "18px", fontWeight: "400", lineHeight: "1.55", color: "#0E1A2B", marginBottom: "24px", fontFamily: "Inter" }}>
-                <span style={{ fontWeight: "700", color: "#2F6BFF" }}>RunPayway™</span> defines whether income stability holds before commitment.
+              {/* Subheadline */}
+              <p style={{
+                fontSize: "24px",
+                fontWeight: 400,
+                lineHeight: "1.5",
+                color: "#6B7280",
+                margin: "0 0 16px 0"
+              }}>
+                RunPayway™ defines whether income stability holds before commitment.
               </p>
 
-              {/* Support - WCAG compliant color (#4B5563 has 7.2:1 contrast) */}
-              <p style={{ fontSize: "16px", lineHeight: "1.6", color: "#4B5563", marginBottom: "56px", fontFamily: "Inter" }}>
-                Without verification, income risk remains undefined.
-              </p>
-
-              {/* CTA */}
-              <button
-                style={{
-                  width: "280px",
-                  height: "56px",
-                  borderRadius: "10px",
-                  background: "linear-gradient(135deg, #0E1A2B 0%, #0A2540 100%)",
-                  color: "#FFFFFF",
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  padding: "0 24px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "12px",
-                  border: "none",
-                  cursor: "pointer",
-                  marginBottom: "44px",
-                  fontFamily: "Inter",
-                  boxShadow: "0px 10px 24px rgba(10, 37, 64, 0.28)",
-                  transition: "all 150ms ease",
-                  outline: "2px solid transparent",
-                  outlineOffset: "4px"
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0px 14px 32px rgba(10, 37, 64, 0.32)"; }}
-                onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 10px 24px rgba(10, 37, 64, 0.28)"; }}
-                onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 6px 14px rgba(10, 37, 64, 0.2)"; }}
-                onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
-                onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
-                aria-label="Start income verification"
+              {/* CTA Button */}
+              <button style={{
+                fontSize: "16px",
+                fontWeight: 600,
+                color: "#FFFFFF",
+                backgroundColor: "#0E1A2B",
+                padding: "16px 28px",
+                borderRadius: "8px",
+                border: "none",
+                cursor: "pointer",
+                marginBottom: "16px",
+                transition: "all 150ms ease",
+                outline: "2px solid transparent",
+                outlineOffset: "4px"
+              }}
+              onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
+              onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0px 4px 12px rgba(14, 26, 43, 0.2)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "none"; }}
               >
                 Start Verification
-                <span aria-hidden="true">→</span>
               </button>
 
-              {/* Micro text */}
-              <div style={{ fontFamily: "Inter" }}>
-                <div style={{ fontSize: "15px", fontWeight: "700", color: "#0E1A2B", marginBottom: "10px" }}>
-                  Before financial commitment
-                </div>
-                <div style={{ fontSize: "14px", color: "#4B5563", lineHeight: "1.5" }}>
-                  Answer 6 inputs
-                  <span style={{ color: "#D1D5DB", padding: "0 8px" }}>•</span>
-                  Immediate result
-                </div>
-              </div>
+              {/* Support Text */}
+              <p style={{
+                fontSize: "14px",
+                fontWeight: 400,
+                lineHeight: "1.5",
+                color: "#6B7280",
+                margin: "0"
+              }}>
+                Under 2 minutes · No documents required · Private
+              </p>
             </div>
 
-            {/* RIGHT COLUMN - Score Card */}
-            <div style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
-              <div style={{ width: "520px", minHeight: "520px", backgroundColor: "#FFFFFF", border: "1px solid rgba(255,255,255,0.6)", borderRadius: "14px", padding: "48px", boxShadow: "0px 24px 50px rgba(16, 24, 40, 0.08), inset 0px 1px 0px rgba(255,255,255,0.6)", fontFamily: "Inter", display: "flex", flexDirection: "column", transform: "scale(1.02)" }}>
+            {/* Right Column - Score Card */}
+            <div style={{ flex: 1, maxWidth: "500px" }}>
+              <div style={{
+                backgroundColor: "#FFFFFF",
+                border: "1px solid #E5E7EB",
+                borderRadius: "12px",
+                padding: "40px 32px",
+                display: "flex",
+                flexDirection: "column"
+              }}>
                 {/* Score Title */}
-                <div style={{ fontSize: "18px", fontWeight: "600", color: "#0E1A2B", marginBottom: "28px" }}>
+                <div style={{
+                  fontSize: "24px",
+                  fontWeight: 600,
+                  lineHeight: "1.2",
+                  color: "#0E1A2B",
+                  marginBottom: "28px"
+                }}>
                   Income Stability Score™
                 </div>
 
-                {/* Score Number Row */}
-                <div style={{ display: "flex", alignItems: "baseline", gap: "16px", marginBottom: "0" }}>
-                  <span style={{ fontSize: "130px", fontWeight: "700", lineHeight: "0.85", letterSpacing: "-0.05em", color: "#0E1A2B" }}>72</span>
-                  <span style={{ fontSize: "44px", fontWeight: "400", color: "#6B7280", lineHeight: "0.9" }}>/100</span>
+                {/* Score Number */}
+                <div style={{
+                  fontSize: "72px",
+                  fontWeight: 700,
+                  lineHeight: "1",
+                  color: "#0E1A2B",
+                  marginBottom: "16px"
+                }}>
+                  72
                 </div>
 
-                {/* Divider */}
-                <div style={{ height: "1px", backgroundColor: "#E5E7EB", margin: "36px 0 36px 0" }}></div>
-
-                {/* Band */}
-                <div style={{ fontSize: "30px", fontWeight: "700", color: "#2F6BFF", marginBottom: "14px" }}>
+                {/* Stability Label */}
+                <div style={{
+                  fontSize: "16px",
+                  fontWeight: 600,
+                  lineHeight: "1.5",
+                  color: "#0E1A2B",
+                  marginBottom: "24px"
+                }}>
                   Established Stability
                 </div>
 
-                {/* Description - WCAG compliant color */}
-                <p style={{ fontSize: "15px", lineHeight: "1.6", color: "#4B5563", margin: "0 0 44px 0" }}>
-                  Determines whether income holds under disruption.
-                </p>
-
-                {/* Progress Track */}
-                <div style={{ position: "relative", width: "100%", height: "8px", backgroundColor: "#D1D5DB", borderRadius: "999px", marginBottom: "24px" }}>
-                  {/* Progress Fill */}
-                  <div style={{ position: "absolute", left: "0", top: "0", width: "38%", height: "8px", background: "linear-gradient(90deg, #2F6BFF 0%, #1D4ED8 100%)", borderRadius: "999px", boxShadow: "0px 0px 8px rgba(47, 107, 255, 0.25)" }}></div>
-                  {/* Progress Knob */}
-                  <div style={{ position: "absolute", left: "38%", top: "50%", width: "24px", height: "24px", backgroundColor: "#2F6BFF", border: "4px solid #FFFFFF", borderRadius: "999px", transform: "translate(-50%, -50%)" }}></div>
+                {/* Progress Bar */}
+                <div style={{
+                  width: "100%",
+                  height: "12px",
+                  backgroundColor: "#E5E7EB",
+                  borderRadius: "6px",
+                  marginBottom: "24px",
+                  position: "relative",
+                  overflow: "hidden"
+                }}>
+                  <div style={{
+                    width: "72%",
+                    height: "100%",
+                    backgroundColor: "#2563EB",
+                    borderRadius: "6px",
+                    transition: "width 2s ease"
+                  }}></div>
                 </div>
 
-                {/* Progress Labels - WCAG compliant color */}
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", fontSize: "14px", color: "#4B5563", marginBottom: "48px" }}>
-                  <span style={{ color: "#2F6BFF", fontWeight: "600" }}>Protected</span>
-                  <span style={{ textAlign: "center" }}>Recurring</span>
-                  <span style={{ textAlign: "right" }}>At Risk</span>
-                </div>
-
-                {/* Footer - WCAG compliant color */}
-                <div style={{ borderTop: "1px solid #E5E7EB", paddingTop: "28px", display: "flex", alignItems: "center", gap: "28px", fontSize: "14px", color: "#4B5563", marginTop: "auto" }}>
-                  <span style={{ fontWeight: "500" }}>Model RP-2.0</span>
-                  <div style={{ width: "1px", height: "18px", backgroundColor: "#E5E7EB" }}></div>
-                  <span>Same inputs produce same result</span>
+                {/* Model Footer */}
+                <div style={{
+                  fontSize: "12px",
+                  fontWeight: 400,
+                  lineHeight: "1.5",
+                  color: "#6B7280",
+                  marginTop: "auto",
+                  paddingTop: "20px",
+                  borderTop: "1px solid #E5E7EB"
+                }}>
+                  <span style={{ fontWeight: 600, color: "#0E1A2B" }}>Model RP-2.0</span>
+                  <span style={{ color: "#D1D5DB", margin: "0 8px" }}>·</span>
+                  Same inputs produce same result
                 </div>
               </div>
             </div>
@@ -293,179 +311,202 @@ export default function LandingPage() {
         </div>
 
         {/* Mobile */}
-        <div className="lg:hidden" style={{ padding: "64px 20px" }}>
-          <div style={{ maxWidth: "1320px", marginLeft: "auto", marginRight: "auto", fontFamily: "Inter" }}>
-            {/* Eyebrow */}
-            <div style={{ fontSize: "13px", fontWeight: "700", letterSpacing: "0.08em", color: "#2F6BFF", marginBottom: "32px" }}>
-              STRUCTURAL STABILITY MODEL RP-2.0
-            </div>
-
-            {/* H1 Mobile */}
-            <h1 style={{ fontSize: "42px", fontWeight: "700", lineHeight: "1.05", letterSpacing: "-0.03em", color: "#0E1A2B", marginBottom: "28px", textRendering: "optimizeLegibility", WebkitFontSmoothing: "antialiased" }}>
+        <div className="lg:hidden">
+          <div style={{ padding: "64px 24px", maxWidth: "1200px", margin: "0 auto" }}>
+            {/* Headline */}
+            <h1 style={{
+              fontSize: "36px",
+              fontWeight: 700,
+              lineHeight: "1.2",
+              color: "#0E1A2B",
+              margin: "0 0 16px 0"
+            }}>
               Major financial decisions require income verification.
             </h1>
 
-            {/* Body Mobile */}
-            <p style={{ fontSize: "18px", fontWeight: "400", lineHeight: "1.4", color: "#0E1A2B", marginBottom: "16px" }}>
-              <span style={{ fontWeight: "700", color: "#2F6BFF" }}>RunPayway™</span> defines whether income stability holds before commitment.
+            {/* Subheadline */}
+            <p style={{
+              fontSize: "18px",
+              fontWeight: 400,
+              lineHeight: "1.5",
+              color: "#6B7280",
+              margin: "0 0 16px 0"
+            }}>
+              RunPayway™ defines whether income stability holds before commitment.
             </p>
 
-            {/* Support Mobile - WCAG compliant color */}
-            <p style={{ fontSize: "16px", lineHeight: "1.55", color: "#4B5563", marginBottom: "32px" }}>
-              Without verification, income risk remains undefined.
-            </p>
-
-            {/* CTA Mobile */}
-            <button
-              style={{
-                width: "100%",
-                height: "64px",
-                borderRadius: "12px",
-                background: "linear-gradient(135deg, #0E1A2B 0%, #0A2540 100%)",
-                color: "#FFFFFF",
-                fontSize: "18px",
-                fontWeight: "600",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
-                border: "none",
-                cursor: "pointer",
-                marginBottom: "28px",
-                boxShadow: "0px 10px 24px rgba(10, 37, 64, 0.28)",
-                transition: "all 150ms ease",
-                outline: "2px solid transparent",
-                outlineOffset: "4px"
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0px 14px 32px rgba(10, 37, 64, 0.32)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 10px 24px rgba(10, 37, 64, 0.28)"; }}
-              onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 6px 14px rgba(10, 37, 64, 0.2)"; }}
-              onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
-              onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
-              aria-label="Start income verification"
-            >
+            {/* CTA Button */}
+            <button style={{
+              width: "100%",
+              fontSize: "16px",
+              fontWeight: 600,
+              color: "#FFFFFF",
+              backgroundColor: "#0E1A2B",
+              padding: "16px 28px",
+              borderRadius: "8px",
+              border: "none",
+              cursor: "pointer",
+              marginBottom: "16px",
+              transition: "all 150ms ease"
+            }}>
               Start Verification
-              <span aria-hidden="true">→</span>
             </button>
 
-            {/* Micro Mobile */}
-            <div style={{ marginBottom: "32px" }}>
-              <div style={{ fontSize: "16px", fontWeight: "700", color: "#0E1A2B", marginBottom: "8px" }}>
-                Before financial commitment
-              </div>
-              <div style={{ fontSize: "15px", color: "#4B5563" }}>
-                Answer 6 inputs · Immediate result
-              </div>
-            </div>
+            {/* Support Text */}
+            <p style={{
+              fontSize: "14px",
+              fontWeight: 400,
+              lineHeight: "1.5",
+              color: "#6B7280",
+              margin: "0 0 28px 0"
+            }}>
+              Under 2 minutes · No documents required · Private
+            </p>
 
             {/* Score Card Mobile */}
-            <div style={{ width: "100%", minHeight: "420px", backgroundColor: "#FFFFFF", border: "1px solid rgba(255,255,255,0.6)", borderRadius: "14px", padding: "32px", boxShadow: "0px 24px 50px rgba(16, 24, 40, 0.08), inset 0px 1px 0px rgba(255,255,255,0.6)", display: "flex", flexDirection: "column", transform: "scale(1.02)" }}>
+            <div style={{
+              backgroundColor: "#FFFFFF",
+              border: "1px solid #E5E7EB",
+              borderRadius: "12px",
+              padding: "32px 24px",
+              display: "flex",
+              flexDirection: "column"
+            }}>
               {/* Score Title */}
-              <div style={{ fontSize: "18px", fontWeight: "600", color: "#0E1A2B", marginBottom: "20px" }}>
+              <div style={{
+                fontSize: "18px",
+                fontWeight: 600,
+                lineHeight: "1.2",
+                color: "#0E1A2B",
+                marginBottom: "20px"
+              }}>
                 Income Stability Score™
               </div>
 
               {/* Score Number */}
-              <div style={{ display: "flex", alignItems: "flex-end", gap: "8px", marginBottom: "0" }}>
-                <span style={{ fontSize: "100px", fontWeight: "700", lineHeight: "0.9", letterSpacing: "-0.05em", color: "#0E1A2B", paddingBottom: "4px" }}>72</span>
-                <span style={{ fontSize: "32px", fontWeight: "400", color: "#6B7280", lineHeight: "1", paddingBottom: "6px" }}>/100</span>
+              <div style={{
+                fontSize: "56px",
+                fontWeight: 700,
+                lineHeight: "1",
+                color: "#0E1A2B",
+                marginBottom: "12px"
+              }}>
+                72
               </div>
 
-              {/* Divider */}
-              <div style={{ height: "1px", backgroundColor: "#E5E7EB", margin: "28px 0 28px 0" }}></div>
-
-              {/* Band */}
-              <div style={{ fontSize: "26px", fontWeight: "700", color: "#2F6BFF", marginBottom: "12px" }}>
+              {/* Stability Label */}
+              <div style={{
+                fontSize: "16px",
+                fontWeight: 600,
+                lineHeight: "1.5",
+                color: "#0E1A2B",
+                marginBottom: "20px"
+              }}>
                 Established Stability
               </div>
 
-              {/* Description - WCAG compliant color */}
-              <p style={{ fontSize: "14px", lineHeight: "1.5", color: "#4B5563", marginBottom: "24px", margin: "0 0 24px 0" }}>
-                Determines whether income holds under disruption.
-              </p>
-
-              {/* Progress Track */}
-              <div style={{ position: "relative", width: "100%", height: "8px", backgroundColor: "#D1D5DB", borderRadius: "999px", marginBottom: "20px" }}>
-                <div style={{ position: "absolute", left: "0", top: "0", width: "38%", height: "8px", backgroundColor: "#2F6BFF", borderRadius: "999px" }}></div>
-                <div style={{ position: "absolute", left: "38%", top: "50%", width: "20px", height: "20px", backgroundColor: "#2F6BFF", border: "3px solid #FFFFFF", borderRadius: "999px", transform: "translate(-50%, -50%)" }}></div>
+              {/* Progress Bar */}
+              <div style={{
+                width: "100%",
+                height: "10px",
+                backgroundColor: "#E5E7EB",
+                borderRadius: "5px",
+                marginBottom: "20px",
+                position: "relative",
+                overflow: "hidden"
+              }}>
+                <div style={{
+                  width: "72%",
+                  height: "100%",
+                  backgroundColor: "#2563EB",
+                  borderRadius: "5px"
+                }}></div>
               </div>
 
-              {/* Progress Labels - WCAG compliant color */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", fontSize: "13px", color: "#4B5563", marginBottom: "24px" }}>
-                <span style={{ color: "#2F6BFF", fontWeight: "600" }}>Protected</span>
-                <span style={{ textAlign: "center" }}>Recurring</span>
-                <span style={{ textAlign: "right" }}>At Risk</span>
-              </div>
-
-              {/* Footer - WCAG compliant color */}
-              <div style={{ borderTop: "1px solid #E5E7EB", paddingTop: "20px", fontSize: "13px", color: "#4B5563", marginTop: "auto" }}>
-                <span>Model RP-2.0 · Same inputs produce same result</span>
+              {/* Model Footer */}
+              <div style={{
+                fontSize: "12px",
+                fontWeight: 400,
+                lineHeight: "1.5",
+                color: "#6B7280",
+                marginTop: "auto",
+                paddingTop: "16px",
+                borderTop: "1px solid #E5E7EB"
+              }}>
+                <span style={{ fontWeight: 600, color: "#0E1A2B" }}>Model RP-2.0</span>
+                <span style={{ color: "#D1D5DB", margin: "0 8px" }}>·</span>
+                Same inputs produce same result
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* TRUST STRIP - WCAG 2.1 AA COMPLIANT - CENTERED */}
-      <section style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB", padding: "96px 48px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
+      {/* DIVIDER */}
+      <div style={{
+        height: "1px",
+        backgroundColor: "#E5E7EB",
+        margin: "40px 0"
+      }}></div>
+
+      {/* TRUST STRIP */}
+      <section style={{ backgroundColor: "#FFFFFF", padding: "96px 48px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
         <div style={{ maxWidth: "1200px", marginLeft: "auto", marginRight: "auto" }}>
           {/* Headline */}
-          <p style={{ fontSize: "20px", lineHeight: "1.5", fontWeight: "700", color: "#0E1A2B", textAlign: "center", margin: "0 0 64px 0", fontFamily: "Inter", maxWidth: "700px", marginLeft: "auto", marginRight: "auto" }}>
+          <p style={{ fontSize: "20px", lineHeight: "1.5", fontWeight: "700", color: "#0E1A2B", textAlign: "center", margin: "0 0 64px 0", maxWidth: "700px", marginLeft: "auto", marginRight: "auto" }}>
             Trusted by organizations and professionals for verified income stability.
           </p>
 
-          {/* Trust Row - Horizontal Layout - Centered */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "64px", width: "100%" }}>
-          {/* Item 1 */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
-              <path d="M12 2L5 5v7c0 6 7 9 7 9s7-3 7-9V5l-7-3z" />
-              <polyline points="9 12 11 14 15 10" />
-            </svg>
-            <p style={{ fontSize: "14px", fontWeight: "600", color: "#0E1A2B", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
-              Independent verification
-            </p>
-          </div>
+          {/* Trust Items */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "64px" }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2L5 5v7c0 6 7 9 7 9s7-3 7-9V5l-7-3z" />
+                <polyline points="9 12 11 14 15 10" />
+              </svg>
+              <p style={{ fontSize: "14px", fontWeight: "600", color: "#0E1A2B", margin: "0" }}>
+                Independent verification
+              </p>
+            </div>
 
-          {/* Item 2 */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-              <path d="M7 11V7a5 5 0 0110 0v4" />
-              <circle cx="12" cy="16" r="1" />
-            </svg>
-            <p style={{ fontSize: "14px", fontWeight: "600", color: "#0E1A2B", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
-              No documents required
-            </p>
-          </div>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" />
+                <path d="M7 11V7a5 5 0 0110 0v4" />
+                <circle cx="12" cy="16" r="1" />
+              </svg>
+              <p style={{ fontSize: "14px", fontWeight: "600", color: "#0E1A2B", margin: "0" }}>
+                No documents required
+              </p>
+            </div>
 
-          {/* Item 3 */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-            </svg>
-            <p style={{ fontSize: "14px", fontWeight: "600", color: "#0E1A2B", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
-              Instant results
-            </p>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+              </svg>
+              <p style={{ fontSize: "14px", fontWeight: "600", color: "#0E1A2B", margin: "0" }}>
+                Instant results
+              </p>
+            </div>
           </div>
-        </div>
         </div>
       </section>
 
+      {/* SECTIONS */}
       <Section2 />
-
       <Section3 />
-
       <Section4 />
+
       {/* SYSTEM INTEGRITY */}
-      <section className="bg-white" style={{ padding: "96px 48px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
+      <section style={{ backgroundColor: "#FFFFFF", padding: "96px 48px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
         <div style={{ maxWidth: "1200px", marginLeft: "auto", marginRight: "auto" }}>
           <div style={{ marginBottom: "64px" }}>
-            <h2 style={{ fontSize: "40px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 16px 0" }}>System integrity</h2>
-            <p style={{ fontSize: "16px", fontWeight: "400", color: "#6B7280", margin: "0" }}>Fixed rules. Consistent results.</p>
+            <h2 style={{ fontSize: "32px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 16px 0" }}>System integrity</h2>
+            <p style={{ fontSize: "18px", fontWeight: "400", color: "#6B7280", margin: "0" }}>Fixed rules. Consistent results.</p>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", marginBottom: "48px" }}>
+            {/* Model Card */}
             <div style={{ backgroundColor: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "12px", padding: "40px 32px" }}>
               <h3 style={{ fontSize: "20px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 32px 0", paddingBottom: "24px", borderBottom: "1px solid #E5E7EB" }}>Model</h3>
               <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
@@ -484,6 +525,7 @@ export default function LandingPage() {
               </div>
             </div>
 
+            {/* Record Card */}
             <div style={{ backgroundColor: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "12px", padding: "40px 32px" }}>
               <h3 style={{ fontSize: "20px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 32px 0", paddingBottom: "24px", borderBottom: "1px solid #E5E7EB" }}>Record</h3>
               <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
@@ -503,6 +545,7 @@ export default function LandingPage() {
             </div>
           </div>
 
+          {/* Footer Bar */}
           <div style={{ backgroundColor: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: "12px", padding: "28px 32px", display: "flex", alignItems: "center", gap: "16px" }}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" style={{ flexShrink: "0" }}>
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
@@ -518,6 +561,7 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* FOOTER */}
       <Footer />
     </div>
   );
