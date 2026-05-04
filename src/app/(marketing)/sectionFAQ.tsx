@@ -37,16 +37,16 @@ export default function SectionFAQ() {
       a: "Your data is encrypted and never shared, sold, or used for marketing. Your results belong to you. Your assessment is timestamped and stored securely so you can access it anytime. We don't monetize your data or share it with third parties. See our privacy policy for complete details."
     },
     {
-      q: "Can I retake the assessment multiple times?",
-      a: "Yes, anytime. You can take it once to establish your baseline, then retake it after making changes to see your progress. Each assessment generates a timestamped report, so you have a record over time. This is useful if you're working through the action plan—you can measure improvement."
+      q: "Do advisors and professionals use this with their clients?",
+      a: "Yes. Financial advisors, accountants, and business consultants use RunPayway™ to help their clients understand income stability and identify structural risks. The assessment provides objective, rules-based data that professionals can confidently use in their advisory work. It's designed to be professional-grade while remaining accessible and easy to use."
     },
     {
-      q: "What if I'm employed, not self-employed? Is this for me?",
-      a: "RunPayway™ is designed for people with variable income: freelancers, business owners, contractors, and self-employed professionals. If you're a W-2 employee with a stable salary, your income structure is already stable, so the assessment won't be as relevant. But if you have side income, multiple gigs, or uncertain employment, you're the ideal user."
+      q: "Can this be integrated into our platform or workflow?",
+      a: "RunPayway™ is built for integration. Advisors and organizations can embed the assessment into their client workflows, advisory processes, or platforms. For information about professional licensing, integration, and bulk usage, reach out to our business team."
     },
     {
-      q: "How is the score calculated? Can you show me the formula?",
-      a: "Your score is calculated using fixed rules applied to the 6 factors you provide. The exact formula is proprietary, but the process is deterministic: same income structure always produces the same score. There's no AI or guessing—it's rules-based and transparent. Model RP-2.0 ensures consistency and reliability."
+      q: "Is there a professional or white-label version?",
+      a: "We work with advisors and organizations who want to offer income stability analysis to their clients. White-label, integration, and bulk licensing options are available for advisors, brokers, accountants, and wealth management firms. Contact our team to discuss how RunPayway™ can work for your practice."
     }
   ];
 
