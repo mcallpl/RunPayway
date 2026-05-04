@@ -9,17 +9,8 @@ export default function LandingPage() {
         {/* Desktop */}
         <div className="hidden lg:flex h-full items-center" style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 48px", justifyContent: "space-between" }}>
           {/* Logo */}
-          <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: "0", marginRight: "80px", gap: "10px" }}>
-            <span style={{ fontSize: "32px", fontWeight: "700", letterSpacing: "-0.02em", color: "#0E1A2B", lineHeight: "1" }}>RUNPAYWAY™</span>
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" style={{ flexShrink: "0" }}>
-              <defs>
-                <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#2F6BFF" />
-                  <stop offset="100%" stopColor="#1D4ED8" />
-                </linearGradient>
-              </defs>
-              <path d="M12 2L5 5v7c0 6 7 9 7 9s7-3 7-9V5l-7-3z" stroke="url(#logoGrad)" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+          <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: "0", marginRight: "80px" }}>
+            <img src="/runpayway-logo.png" alt="RunPayway™" style={{ height: "30px", width: "auto" }} />
           </a>
 
           {/* Center Navigation */}
