@@ -6,25 +6,25 @@ export default function SectionWhoUsesThis() {
 
   const AdvisorIcon = () => (
     <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-      <circle cx="18" cy="12" r="5" stroke={TealColor} strokeWidth="2"/>
-      <path d="M10 22C10 18.13 13.13 15 17 15C20.87 15 24 18.13 24 22V28H10V22Z" stroke={TealColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <circle cx="32" cy="16" r="6" stroke={TealColor} strokeWidth="2"/>
-      <path d="M22 28C22 23.58 25.58 20 30 20C34.42 20 38 23.58 38 28V36H22V28Z" stroke={TealColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="18" cy="12" r="5" stroke={TealColor} strokeWidth="2.5"/>
+      <path d="M10 22C10 18.13 13.13 15 17 15C20.87 15 24 18.13 24 22V28H10V22Z" stroke={TealColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="32" cy="16" r="6" stroke={TealColor} strokeWidth="2.5"/>
+      <path d="M22 28C22 23.58 25.58 20 30 20C34.42 20 38 23.58 38 28V36H22V28Z" stroke={TealColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 
   const HomeIcon = () => (
     <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-      <path d="M8 22L24 10L40 22V38C40 39.1 39.1 40 38 40H10C8.9 40 8 39.1 8 38V22Z" stroke={TealColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M20 40V28H28V40" stroke={TealColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <rect x="18" y="22" width="12" height="8" stroke={TealColor} strokeWidth="2" fill="none"/>
+      <path d="M8 22L24 10L40 22V38C40 39.1 39.1 40 38 40H10C8.9 40 8 39.1 8 38V22Z" stroke={TealColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M20 40V28H28V40" stroke={TealColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <rect x="18" y="22" width="12" height="8" stroke={TealColor} strokeWidth="2.5" fill="none"/>
     </svg>
   );
 
   const DocumentIcon = () => (
     <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-      <path d="M14 6H34C35.1 6 36 6.9 36 8V40C36 41.1 35.1 42 34 42H14C12.9 42 12 41.1 12 40V8C12 6.9 12.9 6 14 6Z" stroke={TealColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M18 14H30M18 22H30M18 30H26" stroke={TealColor} strokeWidth="2" strokeLinecap="round"/>
+      <path d="M14 6H34C35.1 6 36 6.9 36 8V40C36 41.1 35.1 42 34 42H14C12.9 42 12 41.1 12 40V8C12 6.9 12.9 6 14 6Z" stroke={TealColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M18 14H30M18 22H30M18 30H26" stroke={TealColor} strokeWidth="2.5" strokeLinecap="round"/>
     </svg>
   );
 
@@ -99,21 +99,11 @@ export default function SectionWhoUsesThis() {
                 e.currentTarget.style.transform = "translateY(0)";
               }}>
                 <div style={{
-                  marginBottom: "28px",
+                  marginBottom: "32px",
                   display: "flex",
                   justifyContent: "center"
                 }}>
                   <item.Icon />
-                </div>
-                <div style={{
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  letterSpacing: "0.12em",
-                  color: TealColor,
-                  textTransform: "uppercase",
-                  marginBottom: "12px"
-                }}>
-                  {item.role.split(" ")[0]}
                 </div>
                 <h3 style={{
                   fontSize: "20px",
@@ -193,23 +183,13 @@ export default function SectionWhoUsesThis() {
                 textAlign: "center"
               }}>
                 <div style={{
-                  marginBottom: "20px",
+                  marginBottom: "24px",
                   display: "flex",
                   justifyContent: "center"
                 }}>
                   <svg width="40" height="40" viewBox="0 0 48 48" fill="none" style={{ transform: "scale(0.83)" }}>
                     <item.Icon />
                   </svg>
-                </div>
-                <div style={{
-                  fontSize: "10px",
-                  fontWeight: 700,
-                  letterSpacing: "0.12em",
-                  color: TealColor,
-                  textTransform: "uppercase",
-                  marginBottom: "10px"
-                }}>
-                  {item.role.split(" ")[0]}
                 </div>
                 <h3 style={{
                   fontSize: "18px",
