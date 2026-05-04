@@ -38,15 +38,15 @@ export default function SectionFAQ() {
     },
     {
       q: "Do advisors and professionals use this with their clients?",
-      a: "Yes. Financial advisors, accountants, and business consultants use RunPayway™ to help their clients understand income stability and identify structural risks. The assessment provides objective, rules-based data that professionals can confidently use in their advisory work. It's designed to be professional-grade while remaining accessible and easy to use."
+      a: "Yes. Financial advisors, accountants, and business consultants use RunPayway™ to help their clients understand income stability and identify structural risks. The assessment provides objective, rules-based data that professionals can confidently use in their advisory work. It's designed to be professional-grade while remaining accessible and easy to use. Learn more about professional use at /advisors."
     },
     {
       q: "Can this be integrated into our platform or workflow?",
-      a: "RunPayway™ is built for integration. Advisors and organizations can embed the assessment into their client workflows, advisory processes, or platforms. For information about professional licensing, integration, and bulk usage, reach out to our business team."
+      a: "RunPayway™ is built for integration. Advisors and organizations can embed the assessment into their client workflows, advisory processes, or platforms. For information about professional licensing, integration, and bulk usage, visit /advisors or /organizations to explore options for your firm."
     },
     {
       q: "Is there a professional or white-label version?",
-      a: "We work with advisors and organizations who want to offer income stability analysis to their clients. White-label, integration, and bulk licensing options are available for advisors, brokers, accountants, and wealth management firms. Contact our team to discuss how RunPayway™ can work for your practice."
+      a: "We work with advisors and organizations who want to offer income stability analysis to their clients. White-label, integration, and bulk licensing options are available for advisors, brokers, accountants, and wealth management firms. Visit /advisors for advisory firm solutions or /organizations for enterprise options."
     }
   ];
 
