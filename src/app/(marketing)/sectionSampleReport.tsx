@@ -21,8 +21,8 @@ export default function SectionSampleReport() {
 
   const pages = [
     {
-      title: "Your Income Stability Score",
-      description: "Your personalized score and classification based on your income structure. This is the foundation of your report—a single number that summarizes your financial position.",
+      title: "Executive Summary: Your Decision Impact",
+      description: "Your score, classification, and the financial implications for your specific situation. This is the bottom line: what your income structure means for your next move.",
       content: (
         <div style={{
           padding: "48px 40px",
@@ -42,35 +42,35 @@ export default function SectionSampleReport() {
               <circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
               <circle cx="70" cy="70" r="60" fill="none" stroke={C.teal} strokeWidth="8"
                 strokeDasharray={2 * Math.PI * 60}
-                strokeDashoffset={2 * Math.PI * 60 * (1 - 0.65)}
+                strokeDashoffset={2 * Math.PI * 60 * (1 - 0.31)}
                 strokeLinecap="round" style={{ filter: `drop-shadow(0 0 6px ${C.teal}40)` }} />
             </svg>
             <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-              <span style={{ fontSize: "44px", fontWeight: 300, fontFamily: mono, color: "#fff", lineHeight: 1, letterSpacing: "-0.04em" }}>XX</span>
+              <span style={{ fontSize: "44px", fontWeight: 300, fontFamily: mono, color: "#fff", lineHeight: 1, letterSpacing: "-0.04em" }}>31</span>
               <span style={{ fontSize: "12px", color: "rgba(244,241,234,0.40)", marginTop: "2px" }}>/100</span>
             </div>
           </div>
 
           <div style={{ flex: 1 }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "4px 14px", borderRadius: "100px", backgroundColor: `${C.teal}18`, marginBottom: "16px" }}>
-              <div style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: C.teal }} />
-              <span style={{ fontSize: "13px", fontWeight: 600, color: C.teal }}>Your Classification</span>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "4px 14px", borderRadius: "100px", backgroundColor: `${C.risk}20`, marginBottom: "16px" }}>
+              <div style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: C.risk }} />
+              <span style={{ fontSize: "13px", fontWeight: 600, color: C.risk }}>Limited Stability</span>
             </div>
 
-            <div style={{ padding: "14px 16px", borderRadius: "0 14px 14px 0", backgroundColor: "rgba(255,255,255,0.07)", borderLeft: `4px solid ${C.teal}`, marginBottom: "20px" }}>
-              <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.45)", marginBottom: "6px" }}>PERSONALIZED TO YOU</div>
-              <div style={{ fontSize: "16px", fontWeight: 700, color: "#fff", lineHeight: 1.4 }}>Based on your unique income structure</div>
-              <p style={{ fontSize: "13px", color: "rgba(244,241,234,0.55)", lineHeight: 1.5, margin: "6px 0 0" }}>Generated from your specific answers and financial situation.</p>
+            <div style={{ padding: "14px 16px", borderRadius: "0 14px 14px 0", backgroundColor: "rgba(255,255,255,0.07)", borderLeft: `4px solid ${C.risk}`, marginBottom: "20px" }}>
+              <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.45)", marginBottom: "6px" }}>MORTGAGE IMPACT</div>
+              <div style={{ fontSize: "16px", fontWeight: 700, color: "#fff", lineHeight: 1.4 }}>Reduces qualification by ~$85K</div>
+              <p style={{ fontSize: "13px", color: "rgba(244,241,234,0.55)", lineHeight: 1.5, margin: "6px 0 0" }}>Your income concentration and forward visibility are the primary constraints lenders identify.</p>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
               {[
-                { label: "MODEL", value: "RP-2.0" },
-                { label: "TYPE", value: "Your Type" }
+                { label: "RISK PROFILE", value: "High Vulnerability" },
+                { label: "PRIMARY ISSUE", value: "80% from 1 client" }
               ].map((item, i) => (
                 <div key={i}>
                   <div style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.30)", marginBottom: "4px" }}>{item.label}</div>
-                  <div style={{ fontSize: "13px", fontWeight: 600, fontFamily: mono, color: "rgba(244,241,234,0.75)" }}>{item.value}</div>
+                  <div style={{ fontSize: "13px", fontWeight: 600, color: "rgba(244,241,234,0.75)" }}>{item.value}</div>
                 </div>
               ))}
             </div>
@@ -79,128 +79,11 @@ export default function SectionSampleReport() {
       )
     },
     {
-      title: "Key Structural Findings",
-      description: "A breakdown of how your income is distributed and what factors are strongest/weakest. This page answers: What's working? What's the main constraint?",
+      title: "What's Holding You Back (Financial Impact)",
+      description: "The 5 specific risks in your income structure—and exactly how much each one could cost you in rates, qualification limits, or lost opportunity.",
       content: (
         <div style={{
-          backgroundColor: C.navy,
-          borderRadius: "16px",
-          overflow: "hidden"
-        }}>
-          <div style={{
-            backgroundColor: C.navy,
-            padding: "28px 40px",
-            position: "relative"
-          }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: `linear-gradient(90deg, ${C.teal}, #4B3FAE)` }} />
-            <div style={{ fontSize: "20px", fontWeight: 600, color: "#fff", marginBottom: "12px" }}>How Your Income Breaks Down</div>
-            <div style={{ borderLeft: `3px solid ${C.teal}`, padding: "12px 16px", borderRadius: "0 10px 10px 0", backgroundColor: "rgba(255,255,255,0.04)" }}>
-              <p style={{ fontSize: "15px", fontWeight: 500, color: "rgba(244,241,234,0.80)", margin: 0, lineHeight: 1.5 }}>
-                Your income is analyzed across three categories: what stops if you stop working, what continues temporarily, and what's protected.
-              </p>
-            </div>
-          </div>
-
-          <div style={{ padding: "28px 40px", backgroundColor: "#FFFFFF" }}>
-            <div style={{ marginBottom: "24px" }}>
-              <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.10em", color: C.textMuted, marginBottom: "12px" }}>INCOME DISTRIBUTION</div>
-              <div style={{ display: "flex", height: "12px", borderRadius: "999px", overflow: "hidden", marginBottom: "12px" }}>
-                <div style={{ width: "45%", backgroundColor: C.risk }} />
-                <div style={{ width: "25%", backgroundColor: C.moderate }} />
-                <div style={{ width: "30%", backgroundColor: C.teal }} />
-              </div>
-              <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-                {[
-                  { label: "Active Income", value: "45%", color: C.risk },
-                  { label: "Conditional Income", value: "25%", color: C.moderate },
-                  { label: "Recurring Income", value: "30%", color: C.teal }
-                ].map((s, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                    <div style={{ width: "6px", height: "6px", borderRadius: "2px", backgroundColor: s.color }} />
-                    <span style={{ fontSize: "12px", color: C.textSecondary }}>{s.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-              {[
-                { label: "YOUR STRENGTH", text: "Income remains steady month to month", color: C.teal },
-                { label: "YOUR CONSTRAINT", text: "Reliance on a small number of sources", color: C.risk }
-              ].map((item, i) => (
-                <div key={i} style={{ padding: "16px 20px", borderRadius: "12px", backgroundColor: C.sand, border: `1px solid ${item.color}15` }}>
-                  <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.10em", color: item.color, marginBottom: "6px" }}>{item.label}</div>
-                  <p style={{ fontSize: "14px", fontWeight: 600, color: C.navy, margin: 0, lineHeight: 1.5 }}>{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Personalized Action Plan",
-      description: "Three specific, prioritized actions to improve your stability score. Each action shows the estimated impact on your score and timeline.",
-      content: (
-        <div style={{
-          backgroundColor: C.navy,
-          borderRadius: "16px",
-          overflow: "hidden"
-        }}>
-          <div style={{
-            backgroundColor: C.navy,
-            padding: "28px 40px",
-            position: "relative"
-          }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: `linear-gradient(90deg, #4B3FAE, ${C.teal})` }} />
-            <div style={{ fontSize: "20px", fontWeight: 600, color: "#fff", marginBottom: "6px" }}>How to Improve Your Score</div>
-            <p style={{ fontSize: "13px", color: "rgba(244,241,234,0.50)", margin: 0 }}>Prioritized actions tailored to your income structure.</p>
-          </div>
-
-          <div style={{ padding: "20px 40px", backgroundColor: "#FFFFFF" }}>
-            {[
-              { num: "01", action: "Spread Income Sources", desc: "Reduce concentration risk", impact: "+11 pts", difficulty: "High" },
-              { num: "02", action: "Extend Forward Visibility", desc: "Secure longer-term commitments", impact: "+8 pts", difficulty: "Medium" },
-              { num: "03", action: "Build Recurring Revenue", desc: "Convert project work to retainers", impact: "+5 pts", difficulty: "Medium" }
-            ].map((a, i) => (
-              <div key={i} style={{ display: "flex", gap: "16px", alignItems: "flex-start", padding: "16px 0", borderBottom: i < 2 ? "1px solid #E5E7EB" : "none" }}>
-                <div style={{ width: "32px", height: "32px", borderRadius: "8px", backgroundColor: C.navy, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", fontWeight: 700, fontFamily: mono, color: "#fff", flexShrink: 0 }}>{a.num}</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "4px", gap: "12px" }}>
-                    <span style={{ fontSize: "15px", fontWeight: 600, color: C.navy }}>{a.action}</span>
-                    <span style={{ fontSize: "13px", fontWeight: 700, fontFamily: mono, color: C.teal, flexShrink: 0 }}>{a.impact}</span>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <span style={{ fontSize: "13px", color: C.textSecondary }}>{a.desc}</span>
-                    <span style={{ fontSize: "11px", fontWeight: 600, color: C.textMuted, padding: "2px 8px", borderRadius: "4px", backgroundColor: "#F0F0F0", flexShrink: 0 }}>{a.difficulty}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{
-            backgroundColor: C.navy,
-            padding: "24px 40px",
-            textAlign: "center"
-          }}>
-            <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.35)", marginBottom: "12px" }}>POTENTIAL OUTCOME</div>
-            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: "12px" }}>
-              <span style={{ fontSize: "24px", fontFamily: mono, color: "rgba(244,241,234,0.40)" }}>72</span>
-              <span style={{ fontSize: "14px", color: "rgba(244,241,234,0.25)" }}>→</span>
-              <span style={{ fontSize: "36px", fontWeight: 700, fontFamily: mono, color: C.teal }}>93</span>
-            </div>
-            <p style={{ fontSize: "12px", color: "rgba(244,241,234,0.30)", marginTop: "8px", marginBottom: 0 }}>Your potential score if all three actions are implemented</p>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Stress Test Results",
-      description: "How your income structure responds under real-world challenges. This page shows your financial resilience and identifies key vulnerabilities.",
-      content: (
-        <div style={{
-          backgroundColor: C.navy,
+          backgroundColor: C.white,
           borderRadius: "16px",
           overflow: "hidden"
         }}>
@@ -210,19 +93,113 @@ export default function SectionSampleReport() {
             position: "relative"
           }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: `linear-gradient(90deg, ${C.risk}, ${C.moderate})` }} />
-            <div style={{ fontSize: "20px", fontWeight: 600, color: "#fff", marginBottom: "6px" }}>How You Handle Real Challenges</div>
-            <p style={{ fontSize: "13px", color: "rgba(244,241,234,0.50)", margin: 0 }}>Three scenarios that test your income stability.</p>
+            <div style={{ fontSize: "20px", fontWeight: 600, color: "#fff", marginBottom: "6px" }}>Your 5 Critical Risks</div>
+            <p style={{ fontSize: "13px", color: "rgba(244,241,234,0.50)", margin: 0 }}>Each quantified with direct financial impact.</p>
           </div>
 
-          <div style={{ padding: "16px 40px", backgroundColor: "#FFFFFF" }}>
+          <div style={{ padding: "24px 40px" }}>
             {[
-              { scenario: "Largest income source lost", severity: "Critical", color: C.risk },
-              { scenario: "90 days unable to work", severity: "Significant", color: C.moderate },
-              { scenario: "Planned income delayed", severity: "Moderate", color: C.teal }
-            ].map((s, i) => (
-              <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 16px", margin: "0 -16px", borderRadius: "8px", backgroundColor: `${s.color}06`, borderBottom: i < 2 ? `1px solid #E5E7EB` : "none" }}>
-                <span style={{ fontSize: "15px", fontWeight: 500, color: C.navy }}>{s.scenario}</span>
-                <span style={{ fontSize: "11px", fontWeight: 700, color: s.color, padding: "3px 10px", borderRadius: "6px", backgroundColor: `${s.color}10`, flexShrink: 0 }}>{s.severity}</span>
+              { rank: "1", risk: "Income Concentration", severity: "CRITICAL", impact: "$85K mortgage reduction", detail: "80% from one client. If lost, you lose ability to qualify." },
+              { rank: "2", risk: "No Forward Visibility", severity: "HIGH", impact: "~1.5% higher rate", detail: "Lenders prefer 12+ months locked. You have 60 days." },
+              { rank: "3", risk: "Minimal Passive Income", severity: "HIGH", impact: "$120K+ qualification gap", detail: "0% recurring income = all earnings are active-dependent." },
+              { rank: "4", risk: "Income Volatility", severity: "MODERATE", impact: "Longer approval process", detail: "Month-to-month variance = lender scrutiny + delay." },
+              { rank: "5", risk: "No Financial Buffer", severity: "MODERATE", impact: "Vulnerability to disruption", detail: "Single income drop = immediate cash flow crisis." }
+            ].map((r, i) => (
+              <div key={i} style={{ marginBottom: i < 4 ? "20px" : 0, paddingBottom: i < 4 ? "20px" : 0, borderBottom: i < 4 ? "1px solid #E5E7EB" : "none" }}>
+                <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
+                  <div style={{ width: "28px", height: "28px", borderRadius: "6px", backgroundColor: r.severity === "CRITICAL" ? C.risk : r.severity === "HIGH" ? C.moderate : C.teal, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", fontWeight: 700, color: "#fff", flexShrink: 0 }}>
+                    {r.rank}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "4px", gap: "12px" }}>
+                      <span style={{ fontSize: "15px", fontWeight: 600, color: C.navy }}>{r.risk}</span>
+                      <span style={{ fontSize: "11px", fontWeight: 700, color: r.severity === "CRITICAL" ? C.risk : r.severity === "HIGH" ? C.moderate : C.teal, padding: "2px 8px", borderRadius: "4px", backgroundColor: r.severity === "CRITICAL" ? "rgba(199, 70, 52, 0.1)" : r.severity === "HIGH" ? "rgba(208, 162, 58, 0.1)" : "rgba(31, 109, 122, 0.1)", flexShrink: 0 }}>{r.severity}</span>
+                    </div>
+                    <p style={{ fontSize: "13px", fontWeight: 500, color: C.risk, margin: "0 0 4px 0" }}>{r.impact}</p>
+                    <p style={{ fontSize: "13px", color: C.textSecondary, margin: 0, lineHeight: 1.5 }}>{r.detail}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{
+            backgroundColor: C.sand,
+            padding: "20px 40px",
+            borderTop: "1px solid #DDD5CB"
+          }}>
+            <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.10em", color: C.navy, marginBottom: "6px" }}>TOTAL FINANCIAL IMPACT IF UNADDRESSED</div>
+            <div style={{ fontSize: "16px", fontWeight: 700, color: C.risk }}>~$205K+ in lost qualification capacity + 1-3% rate penalty</div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Your 12-Month Implementation Roadmap",
+      description: "Specific actions, timelines, and the exact financial benefit of each. Know what to do this week, month, and quarter—with quantified impact.",
+      content: (
+        <div style={{
+          backgroundColor: C.white,
+          borderRadius: "16px",
+          overflow: "hidden"
+        }}>
+          <div style={{
+            backgroundColor: C.navy,
+            padding: "28px 40px",
+            position: "relative"
+          }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: `linear-gradient(90deg, #4B3FAE, ${C.teal})` }} />
+            <div style={{ fontSize: "20px", fontWeight: 600, color: "#fff", marginBottom: "6px" }}>Your Path to Stability</div>
+            <p style={{ fontSize: "13px", color: "rgba(244,241,234,0.50)", margin: 0 }}>Prioritized by impact and timeline.</p>
+          </div>
+
+          <div style={{ padding: "28px 40px" }}>
+            {[
+              {
+                phase: "WEEKS 1-4 (Immediate)",
+                actions: [
+                  { task: "Document all income sources", impact: "Prepare for lender review", effort: "Low" },
+                  { task: "Create 12-month projection", impact: "Show forward visibility", effort: "Low" },
+                  { task: "Reach out to 3 potential clients", impact: "Begin diversification", effort: "Medium" }
+                ]
+              },
+              {
+                phase: "MONTHS 2-3 (Quick Wins)",
+                actions: [
+                  { task: "Secure 1 additional client/project", impact: "+8% income diversification, +12 score points", effort: "Medium" },
+                  { task: "Convert 1 project to 6-month retainer", impact: "+$X/month recurring, +9 score points", effort: "Medium" },
+                  { task: "Build 30-day emergency fund", impact: "Demonstrates financial stability", effort: "Low" }
+                ]
+              },
+              {
+                phase: "MONTHS 4-9 (Strategic Growth)",
+                actions: [
+                  { task: "Reduce dependency on primary client to 60%", impact: "+18 score points, reduces $85K qualification gap to $45K", effort: "High" },
+                  { task: "Build recurring revenue to 25% of income", impact: "+15 score points, improves rate by ~0.5%", effort: "High" },
+                  { task: "Establish product/service you can offer scaled", impact: "Long-term passive income foundation", effort: "High" }
+                ]
+              },
+              {
+                phase: "MONTHS 10-12 (Optimization)",
+                actions: [
+                  { task: "Review and lock forward contracts", impact: "Complete forward visibility, final +10 score points", effort: "Medium" },
+                  { task: "Retake assessment", impact: "Measure progress toward 60+ score", effort: "Low" }
+                ]
+              }
+            ].map((section, si) => (
+              <div key={si} style={{ marginBottom: si < 3 ? "32px" : 0 }}>
+                <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.10em", color: C.teal, marginBottom: "16px" }}>{section.phase}</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                  {section.actions.map((a, ai) => (
+                    <div key={ai} style={{ padding: "12px 16px", borderRadius: "8px", backgroundColor: C.sand, border: "1px solid #DDD5CB" }}>
+                      <div style={{ fontSize: "14px", fontWeight: 600, color: C.navy, marginBottom: "4px" }}>{a.task}</div>
+                      <div style={{ display: "flex", justifyContent: "space-between", gap: "12px" }}>
+                        <span style={{ fontSize: "12px", color: C.textSecondary }}>{a.impact}</span>
+                        <span style={{ fontSize: "11px", fontWeight: 600, color: C.textMuted, padding: "2px 8px", borderRadius: "4px", backgroundColor: "#fff", border: "1px solid #E5E7EB", flexShrink: 0 }}>{a.effort}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
@@ -231,16 +208,176 @@ export default function SectionSampleReport() {
             backgroundColor: C.navy,
             padding: "24px 40px"
           }}>
-            <div style={{ marginBottom: "16px" }}>
-              <div style={{ fontSize: "15px", fontWeight: 600, color: "#fff", marginBottom: "6px" }}>Your Resilience Type: Moderate</div>
-              <p style={{ fontSize: "13px", color: "rgba(244,241,234,0.55)", lineHeight: 1.6, margin: 0 }}>
-                Your structure handles some challenges well, but concentrated income sources create vulnerability. Focus on diversification.
+            <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.35)", marginBottom: "8px" }}>PROJECTED OUTCOME (12 MONTHS)</div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" }}>
+              {[
+                { label: "Current Score", value: "31", change: "" },
+                { label: "Projected Score", value: "67", change: "+36 pts" },
+                { label: "Mortgage Impact", value: "$215K+", change: "vs. ~$85K gap today" }
+              ].map((m, i) => (
+                <div key={i}>
+                  <div style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.35)", marginBottom: "4px" }}>{m.label}</div>
+                  <div style={{ fontSize: "18px", fontWeight: 700, fontFamily: mono, color: C.teal }}>{m.value}</div>
+                  {m.change && <div style={{ fontSize: "11px", color: "rgba(244,241,234,0.50)", marginTop: "2px" }}>{m.change}</div>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Professional Documentation (For Lenders/Advisors)",
+      description: "A certified summary you can share with mortgage lenders, financial advisors, or business partners. Timestamped proof of your income analysis.",
+      content: (
+        <div style={{
+          backgroundColor: C.white,
+          borderRadius: "16px",
+          overflow: "hidden"
+        }}>
+          <div style={{
+            backgroundColor: C.navy,
+            padding: "28px 40px",
+            position: "relative",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start"
+          }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: `linear-gradient(90deg, ${C.teal}, #4B3FAE)` }} />
+              <div style={{ fontSize: "14px", fontWeight: 600, color: C.teal, marginBottom: "8px" }}>INCOME STABILITY ASSESSMENT</div>
+              <div style={{ fontSize: "18px", fontWeight: 700, color: "#fff" }}>Professional Summary</div>
+            </div>
+            <div style={{ textAlign: "right", fontSize: "11px", color: "rgba(244,241,234,0.40)" }}>
+              <div>Timestamped</div>
+              <div style={{ fontFamily: mono, marginTop: "4px" }}>May 2026</div>
+            </div>
+          </div>
+
+          <div style={{ padding: "32px 40px" }}>
+            <div style={{ marginBottom: "24px" }}>
+              <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.10em", color: C.textMuted, marginBottom: "8px" }}>SUBJECT</div>
+              <div style={{ fontSize: "16px", fontWeight: 600, color: C.navy, marginBottom: "12px" }}>Income Structure Analysis & Stability Certification</div>
+              <p style={{ fontSize: "14px", lineHeight: 1.6, color: C.textSecondary, margin: 0 }}>
+                This document certifies that the undersigned has completed a comprehensive income stability assessment using the RunPayway™ Income Stability Score™ (Model RP-2.0). The assessment evaluates income structure across 6 factors: Concentration, Source Diversity, Forward Visibility, Stability Pattern, Continuity, and Dependency.
               </p>
             </div>
-            <div style={{ padding: "14px 16px", borderRadius: "8px", backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}>
-              <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.10em", color: C.risk, marginBottom: "4px" }}>PRIMARY RISK</div>
-              <div style={{ fontSize: "14px", fontWeight: 600, color: "#fff" }}>Over-reliance on 1-2 income sources</div>
+
+            <div style={{ marginBottom: "24px" }}>
+              <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.10em", color: C.textMuted, marginBottom: "8px" }}>KEY FINDINGS</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                {[
+                  { label: "Stability Score", value: "31/100" },
+                  { label: "Classification", value: "Limited Stability" },
+                  { label: "Primary Constraint", value: "Income Concentration (80% from 1 source)" },
+                  { label: "Risk Profile", value: "High Vulnerability to Disruption" }
+                ].map((f, i) => (
+                  <div key={i} style={{ padding: "12px 16px", backgroundColor: C.sand, borderRadius: "8px" }}>
+                    <div style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", color: C.textMuted, marginBottom: "4px" }}>{f.label}</div>
+                    <div style={{ fontSize: "13px", fontWeight: 600, color: C.navy }}>{f.value}</div>
+                  </div>
+                ))}
+              </div>
             </div>
+
+            <div style={{ marginBottom: "24px" }}>
+              <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.10em", color: C.textMuted, marginBottom: "8px" }}>PROFESSIONAL USE</div>
+              <p style={{ fontSize: "14px", lineHeight: 1.6, color: C.textSecondary, margin: 0 }}>
+                This report is designed for use with financial advisors, mortgage lenders, business partners, and investors. It provides objective, data-driven assessment of income stability using fixed rules—same inputs always produce the same score. No algorithms, no AI predictions. Rules-based analysis you can rely on.
+              </p>
+            </div>
+
+            <div style={{
+              padding: "16px 20px",
+              backgroundColor: "rgba(31, 109, 122, 0.08)",
+              borderLeft: `4px solid ${C.teal}`,
+              borderRadius: "0 8px 8px 0",
+              fontSize: "12px",
+              color: C.textSecondary,
+              lineHeight: 1.6
+            }}>
+              This assessment is confidential, timestamped, and yours to use and share at your discretion. Your data is encrypted and never shared with third parties.
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Stress Testing: What If Scenarios",
+      description: "See exactly how your income structure responds to real-world challenges. Understand your contingency position and resilience.",
+      content: (
+        <div style={{
+          backgroundColor: C.white,
+          borderRadius: "16px",
+          overflow: "hidden"
+        }}>
+          <div style={{
+            backgroundColor: C.navy,
+            padding: "28px 40px",
+            position: "relative"
+          }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: `linear-gradient(90deg, ${C.risk}, ${C.moderate})` }} />
+            <div style={{ fontSize: "20px", fontWeight: 600, color: "#fff", marginBottom: "6px" }}>When Crisis Hits</div>
+            <p style={{ fontSize: "13px", color: "rgba(244,241,234,0.50)", margin: 0 }}>Real scenarios, real impact on your financial position.</p>
+          </div>
+
+          <div style={{ padding: "28px 40px" }}>
+            {[
+              {
+                scenario: "Lose your primary client (80% of income)",
+                severity: C.risk,
+                severityLabel: "CRITICAL",
+                outcomes: [
+                  "Income drops to $X/month (from $X/month)",
+                  "Cannot qualify for mortgage",
+                  "Emergency fund depleted in 45 days",
+                  "Must immediately secure replacement"
+                ]
+              },
+              {
+                scenario: "Unable to work for 90 days",
+                severity: C.moderate,
+                severityLabel: "HIGH",
+                outcomes: [
+                  "Passive/conditional income: $X/month continues",
+                  "Active income: $0 for quarter",
+                  "Emergency fund covers ~60 days",
+                  "Dependent clients may churn"
+                ]
+              },
+              {
+                scenario: "Market downturn reduces project work by 40%",
+                severity: C.moderate,
+                severityLabel: "MODERATE",
+                outcomes: [
+                  "Income decreases to $X/month",
+                  "Still qualify for mortgage, but tighter",
+                  "Emergency fund lasts 120+ days",
+                  "Primary client income unaffected"
+                ]
+              }
+            ].map((s, i) => (
+              <div key={i} style={{ marginBottom: i < 2 ? "24px" : 0, paddingBottom: i < 2 ? "24px" : 0, borderBottom: i < 2 ? "1px solid #E5E7EB" : "none" }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "12px" }}>
+                  <div style={{ padding: "6px 10px", borderRadius: "6px", backgroundColor: `${s.severity}15`, fontSize: "10px", fontWeight: 700, color: s.severity, flexShrink: 0 }}>{s.severityLabel}</div>
+                  <div style={{ fontSize: "15px", fontWeight: 600, color: C.navy, flex: 1 }}>{s.scenario}</div>
+                </div>
+                <ul style={{ margin: "0 0 0 16px", padding: 0, fontSize: "13px", color: C.textSecondary, lineHeight: 1.7 }}>
+                  {s.outcomes.map((o, oi) => (
+                    <li key={oi} style={{ marginBottom: "6px" }}>{o}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <div style={{
+            backgroundColor: C.sand,
+            padding: "20px 40px",
+            borderTop: "1px solid #DDD5CB"
+          }}>
+            <div style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.10em", color: C.navy, marginBottom: "6px" }}>YOUR RESILIENCE ASSESSMENT</div>
+            <p style={{ fontSize: "14px", color: C.textSecondary, margin: 0, lineHeight: 1.6 }}>You have low financial resilience. Your income structure is vulnerable to disruption because 80% comes from a single source. Without emergency fund diversification, you have ~45 days before crisis. This is why the 12-month roadmap prioritizes diversification first.</p>
           </div>
         </div>
       )
@@ -271,7 +408,7 @@ export default function SectionSampleReport() {
               color: C.navy,
               margin: "0 0 20px 0"
             }}>
-              Your Personalized Report
+              Inside Your $69 Report
             </h2>
             <p style={{
               fontSize: "20px",
@@ -280,11 +417,11 @@ export default function SectionSampleReport() {
               color: C.textSecondary,
               margin: "0 0 32px 0"
             }}>
-              A comprehensive 4-page analysis of your income stability. Click through to see exactly what you receive for $69.
+              A $289-quality comprehensive analysis. Click through all 5 pages to see exactly what you're getting—zero fluff, 100% actionable.
             </p>
 
             <div style={{
-              maxWidth: "680px",
+              maxWidth: "720px",
               margin: "0 auto",
               padding: "24px 32px",
               backgroundColor: C.sand,
@@ -298,7 +435,7 @@ export default function SectionSampleReport() {
                 color: C.navy,
                 margin: "0"
               }}>
-                Every report is personalized to your unique income structure. These pages show the actual format and depth of analysis you'll receive.
+                Every metric, financial impact, and timeline below is personalized to <strong>your unique income structure</strong>. This is what you'll unlock for $69.
               </p>
             </div>
           </div>
@@ -313,7 +450,7 @@ export default function SectionSampleReport() {
                 color: C.navy,
                 margin: "0 0 12px 0"
               }}>
-                Page {currentPage + 1}: {pages[currentPage].title}
+                Page {currentPage + 1} of {pages.length}: {pages[currentPage].title}
               </h3>
               <p style={{
                 fontSize: "16px",
@@ -484,16 +621,16 @@ export default function SectionSampleReport() {
               color: C.navy,
               margin: "0 0 16px 0"
             }}>
-              Your Personalized Report
+              Inside Your $69 Report
             </h2>
             <p style={{
               fontSize: "16px",
               fontWeight: 500,
               lineHeight: "1.5",
               color: C.textSecondary,
-              margin: "0 0 24px 0"
+              margin: "0 0 20px 0"
             }}>
-              See all 4 pages of your personalized income stability analysis.
+              $289-quality analysis. All 5 pages, personalized to you.
             </p>
 
             <div style={{
@@ -509,7 +646,7 @@ export default function SectionSampleReport() {
                 color: C.navy,
                 margin: "0"
               }}>
-                Every report is personalized to your unique income structure.
+                Every metric below is personalized to your income. This is exactly what you'll get.
               </p>
             </div>
           </div>
@@ -524,7 +661,7 @@ export default function SectionSampleReport() {
                 color: C.navy,
                 margin: "0 0 8px 0"
               }}>
-                Page {currentPage + 1}: {pages[currentPage].title}
+                Page {currentPage + 1} of {pages.length}: {pages[currentPage].title}
               </h3>
               <p style={{
                 fontSize: "14px",
