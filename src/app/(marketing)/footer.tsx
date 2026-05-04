@@ -234,7 +234,7 @@ export default function Footer() {
             color: "#6B7280",
             fontWeight: 400
           }}>
-            © 2026 RunPayway™ · PeopleStar Enterprises, LLC · Orange County, CA, USA
+            © 2026 RunPayway™ · PeopleStar Enterprises, INC · Orange County, CA, USA
           </div>
         </div>
       </div>
@@ -417,7 +417,7 @@ export default function Footer() {
             fontWeight: 400,
             lineHeight: 1.6
           }}>
-            © 2026 RunPayway™ · PeopleStar Enterprises, LLC · Orange County, CA, USA
+            © 2026 RunPayway™ · PeopleStar Enterprises, INC · Orange County, CA, USA
           </div>
         </div>
       </div>
