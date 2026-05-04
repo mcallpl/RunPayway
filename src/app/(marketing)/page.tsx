@@ -8,6 +8,7 @@ import SectionIntegrity from "./sectionIntegrity";
 import SectionSampleReport from "./sectionSampleReport";
 import SectionWhyNow from "./sectionWhyNow";
 import SectionWhoUsesThis from "./sectionWhoUsesThis";
+import SectionFAQ from "./sectionFAQ";
 import Footer from "./footer";
 
 const globalStyles = `
@@ -529,6 +530,7 @@ export default function LandingPage() {
       <SectionFree />
       <SectionIntegrity />
       <SectionWhoUsesThis />
+      <SectionFAQ />
 
       {/* FOOTER */}
       <Footer />
