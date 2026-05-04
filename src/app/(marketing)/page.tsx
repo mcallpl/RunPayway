@@ -461,10 +461,10 @@ export default function LandingPage() {
       </section>
 
       <SectionWhyNow />
-      <SectionSampleReport />
-      <SectionFree />
       <Section2 />
       <Section3 />
+      <SectionSampleReport />
+      <SectionFree />
       <SectionIntegrity />
       <SectionWhoUsesThis />
 
