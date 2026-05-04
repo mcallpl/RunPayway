@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import SectionFree from "./sectionFree";
 import Section2 from "./section2";
 import Section3 from "./section3";
 import Section4 from "./section4";
+import SectionIntegrity from "./sectionIntegrity";
+import SectionSampleReport from "./sectionSampleReport";
 import Footer from "./footer";
 
 const globalStyles = `
@@ -138,17 +141,17 @@ export default function LandingPage() {
                 color: "#0E1A2B",
                 margin: "0 0 24px 0"
               }}>
-                Verify your income stability before making major financial decisions.
+                Check Your Income Stability — Free, Fast, and Easy
               </h1>
 
               <p style={{
-                fontSize: "18px",
+                fontSize: "24px",
                 fontWeight: 400,
-                lineHeight: "1.6",
+                lineHeight: "1.5",
                 color: "#6B7280",
                 margin: "0 0 32px 0"
               }}>
-                RunPayway™ defines whether your income stability holds before you commit.
+                Know how your income holds up before making important financial decisions.
               </p>
 
               <button style={{
@@ -172,7 +175,7 @@ export default function LandingPage() {
               onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0px 4px 12px rgba(14, 26, 43, 0.2)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "none"; }}
               >
-                Start Your Income Verification Now
+                Get Your Free Income Stability Check — Just 2 Minutes
               </button>
 
               <p style={{
@@ -272,17 +275,17 @@ export default function LandingPage() {
               color: "#0E1A2B",
               margin: "0 0 16px 0"
             }}>
-              Verify your income stability before making major financial decisions.
+              Check Your Income Stability — Free, Fast, and Easy
             </h1>
 
             <p style={{
-              fontSize: "16px",
+              fontSize: "18px",
               fontWeight: 400,
-              lineHeight: "1.6",
+              lineHeight: "1.5",
               color: "#6B7280",
               margin: "0 0 24px 0"
             }}>
-              RunPayway™ defines whether your income stability holds before you commit.
+              Know how your income holds up before making important financial decisions.
             </p>
 
             <button style={{
@@ -300,7 +303,7 @@ export default function LandingPage() {
               transition: "all 150ms ease",
               fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
             }}>
-              Start Your Income Verification Now
+              Get Your Free Income Stability Check — Just 2 Minutes
             </button>
 
             <p style={{
@@ -386,57 +389,12 @@ export default function LandingPage() {
         </div>
       </section>
 
+      <SectionFree />
       <Section2 />
       <Section3 />
       <Section4 />
-
-      {/* SYSTEM INTEGRITY */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "96px 48px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
-        <div style={{ maxWidth: "1200px", marginLeft: "auto", marginRight: "auto" }}>
-          <div style={{ marginBottom: "64px" }}>
-            <h2 style={{ fontSize: "32px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 16px 0", lineHeight: "1.2" }}>System integrity</h2>
-            <p style={{ fontSize: "18px", fontWeight: "400", color: "#6B7280", margin: "0", lineHeight: "1.6" }}>Fixed rules. Consistent results.</p>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px" }}>
-            <div style={{ backgroundColor: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "8px", padding: "32px 24px" }}>
-              <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 24px 0" }}>Model</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-                <div>
-                  <h4 style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A2B", margin: "0 0 4px 0" }}>Fixed rules applied</h4>
-                  <p style={{ fontSize: "14px", color: "#6B7280", margin: "0", lineHeight: "1.6" }}>Rules are locked for all results.</p>
-                </div>
-                <div>
-                  <h4 style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A2B", margin: "0 0 4px 0" }}>No discretion</h4>
-                  <p style={{ fontSize: "14px", color: "#6B7280", margin: "0", lineHeight: "1.6" }}>Rules are identical for all users.</p>
-                </div>
-                <div>
-                  <h4 style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A2B", margin: "0 0 4px 0" }}>Same inputs produce same result</h4>
-                  <p style={{ fontSize: "14px", color: "#6B7280", margin: "0", lineHeight: "1.6" }}>Consistency is guaranteed.</p>
-                </div>
-              </div>
-            </div>
-
-            <div style={{ backgroundColor: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "8px", padding: "32px 24px" }}>
-              <h3 style={{ fontSize: "18px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 24px 0" }}>Record</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-                <div>
-                  <h4 style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A2B", margin: "0 0 4px 0" }}>Timestamped result</h4>
-                  <p style={{ fontSize: "14px", color: "#6B7280", margin: "0", lineHeight: "1.6" }}>Every result is timestamped to the second.</p>
-                </div>
-                <div>
-                  <h4 style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A2B", margin: "0 0 4px 0" }}>Permanent record ID</h4>
-                  <p style={{ fontSize: "14px", color: "#6B7280", margin: "0", lineHeight: "1.6" }}>Unique ID assigned for permanent retrieval.</p>
-                </div>
-                <div>
-                  <h4 style={{ fontSize: "16px", fontWeight: "600", color: "#0E1A2B", margin: "0 0 4px 0" }}>Results are not modified</h4>
-                  <p style={{ fontSize: "14px", color: "#6B7280", margin: "0", lineHeight: "1.6" }}>Prior results never modified or deleted.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <SectionIntegrity />
+      <SectionSampleReport />
 
       {/* FOOTER */}
       <Footer />

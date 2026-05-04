@@ -2,12 +2,12 @@
 
 export default function Section2() {
   const items = [
-    { title: "Concentration", description: "Reliance on primary income" },
-    { title: "Source Diversity", description: "Distribution across sources" },
-    { title: "Forward Visibility", description: "Income already secured" },
-    { title: "Stability Pattern", description: "Consistency over time" },
-    { title: "Continuity", description: "Income without activity" },
-    { title: "Dependency", description: "Dependence on effort" },
+    { title: "Concentration", description: "Relying on one income source is a risk" },
+    { title: "Source Diversity", description: "More income sources equal more stability" },
+    { title: "Forward Visibility", description: "How much of your income is secured for the future?" },
+    { title: "Stability Pattern", description: "Income consistency over time matters" },
+    { title: "Continuity", description: "Can you sustain income without active work?" },
+    { title: "Dependency", description: "How much of your income depends on active effort?" },
   ];
 
   return (
@@ -73,6 +73,25 @@ export default function Section2() {
           </div>
 
           <div style={{
+            textAlign: "center",
+            marginBottom: "48px"
+          }}>
+            <a href="#" style={{
+              fontSize: "16px",
+              fontWeight: 600,
+              color: "#1F6D7A",
+              textDecoration: "none",
+              cursor: "pointer",
+              transition: "color 150ms ease"
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.color = "#0E1A2B"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "#1F6D7A"}
+            >
+              Unlock Full Report to See Your Complete Breakdown and Actionable Steps →
+            </a>
+          </div>
+
+          <div style={{
             fontSize: "12px",
             fontWeight: 400,
             lineHeight: "1.6",
@@ -133,6 +152,25 @@ export default function Section2() {
                 </p>
               </div>
             ))}
+          </div>
+
+          <div style={{
+            textAlign: "center",
+            marginBottom: "32px"
+          }}>
+            <a href="#" style={{
+              fontSize: "15px",
+              fontWeight: 600,
+              color: "#1F6D7A",
+              textDecoration: "none",
+              cursor: "pointer",
+              transition: "color 150ms ease"
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.color = "#0E1A2B"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "#1F6D7A"}
+            >
+              Unlock Full Report to See Your Complete Breakdown and Actionable Steps →
+            </a>
           </div>
 
           <div style={{
