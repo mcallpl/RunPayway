@@ -9,28 +9,44 @@ export default function SectionFAQ() {
 
   const faqs = [
     {
-      q: "Will lenders or creditors accept this?",
-      a: "Your RunPayway™ report provides a transparent, rules-based analysis of your income stability—exactly what lenders and creditors need to evaluate your financial position. While each lender has their own requirements, many find the structured format and clear risk assessment valuable for decision-making. Share it with your lender to see if it meets their standards."
+      q: "How long does the 2-minute assessment actually take?",
+      a: "The assessment asks about your income sources, how predictable each is, and how many clients or revenue streams you have. Most people complete it in 90 seconds to 2 minutes, depending on how complex their income structure is. There are no long-form questions—just straightforward answers about your income."
     },
     {
-      q: "Can I show this to my bank or mortgage broker?",
-      a: "Yes. Your report is designed to be shareable. It provides professional documentation of your income structure and stability in a format that advisors, brokers, and creditors can understand. The timestamped record proves when you conducted the assessment."
+      q: "What exactly counts as 'income' in this assessment?",
+      a: "Income includes any money you earn: client payments, project work, retainer fees, contract income, self-employment earnings, passive income (rental, products, investments), and any other revenue source. The assessment doesn't care about the amount—it cares about structure: how many sources you have, how stable each is, and how much you rely on actively working."
     },
     {
-      q: "What if my income changes? Is the score still valid?",
-      a: "Your score is a snapshot of your income structure at the time of assessment. If your income changes significantly (new client, lost revenue source, increased passive income), your structure changes and your score would change. You can conduct a new assessment anytime to see your updated stability rating."
+      q: "What do the 6 factors actually measure?",
+      a: "They measure: (1) Concentration—relying on too few sources, (2) Diversity—how many revenue streams you have, (3) Forward Visibility—how much future income is already locked in, (4) Stability Pattern—whether your income is consistent month-to-month, (5) Continuity—can you earn without actively working, (6) Dependency—how much depends on your effort vs. automatic revenue. Together, they paint a complete picture of your income structure."
     },
     {
-      q: "Is this report legally binding or certified?",
-      a: "RunPayway™ provides a deterministic analysis based on fixed rules applied to your income data. It's not a legal document or professional certification, but it is a credible, rule-based assessment. Whether lenders or creditors accept it depends on their specific requirements—treat it as evidence of your income structure to support your applications."
+      q: "What does my score actually mean? Is 72 good?",
+      a: "Your score ranges 0-100. A score of 50+ indicates a reasonably stable income structure. A score of 72 (like the example) means your income structure is established and stable, but there are specific areas to improve. A score of 25 would indicate high vulnerability. Think of it like a health score—higher is better, but even high scores show where you're most at risk."
     },
     {
-      q: "How is my data used and stored?",
-      a: "Your data is encrypted and never shared, sold, or monetized. Your assessment results belong to you. The permanent record is stored securely so you can reference it anytime. Read our full privacy policy for complete details on data handling and security."
+      q: "What if my income is mostly from one client? Can I still get a good score?",
+      a: "Your score will reflect your actual structure. If 80% of your income comes from one client, that's a real vulnerability, and your score will show it. That's the point—RunPayway™ helps you see what's actually risky so you know what to improve. The action plan will show you specific ways to reduce that concentration risk."
     },
     {
-      q: "Can I update my assessment or get a new one?",
-      a: "Yes. You can conduct a new assessment anytime to capture changes in your income structure. Each assessment generates a new timestamped report, giving you a record of your stability over time—useful if you're tracking progress on your action plan."
+      q: "What if my income changed since I took the assessment?",
+      a: "Your score is a snapshot from the date you took it. If you gained a major new client, lost a revenue source, or shifted to more passive income, your structure changed and so would your score. You can retake the assessment anytime to see your updated rating. Many people reassess every 6-12 months to track their progress."
+    },
+    {
+      q: "Is my data private? What happens to my information?",
+      a: "Your data is encrypted and never shared, sold, or used for marketing. Your results belong to you. Your assessment is timestamped and stored securely so you can access it anytime. We don't monetize your data or share it with third parties. See our privacy policy for complete details."
+    },
+    {
+      q: "Can I retake the assessment multiple times?",
+      a: "Yes, anytime. You can take it once to establish your baseline, then retake it after making changes to see your progress. Each assessment generates a timestamped report, so you have a record over time. This is useful if you're working through the action plan—you can measure improvement."
+    },
+    {
+      q: "What if I'm employed, not self-employed? Is this for me?",
+      a: "RunPayway™ is designed for people with variable income: freelancers, business owners, contractors, and self-employed professionals. If you're a W-2 employee with a stable salary, your income structure is already stable, so the assessment won't be as relevant. But if you have side income, multiple gigs, or uncertain employment, you're the ideal user."
+    },
+    {
+      q: "How is the score calculated? Can you show me the formula?",
+      a: "Your score is calculated using fixed rules applied to the 6 factors you provide. The exact formula is proprietary, but the process is deterministic: same income structure always produces the same score. There's no AI or guessing—it's rules-based and transparent. Model RP-2.0 ensures consistency and reliability."
     }
   ];
 
@@ -151,7 +167,7 @@ export default function SectionFAQ() {
             color: "#5E6873",
             margin: "0"
           }}>
-            Have more questions? <strong style={{ color: NavyColor }}>Every assessment is personalized to your income structure</strong>. Your assessment asks specific questions about your situation, ensuring your result is accurate to your circumstances.
+            Ready to understand your income stability? <strong style={{ color: NavyColor }}>Your 2-minute assessment is completely private</strong>, and you'll get your result instantly. No documents needed, no sign-up hassle.
           </p>
         </div>
       </div>
