@@ -62,8 +62,8 @@ export default function LandingPage() {
       {/* SECTION 1: HERO - ELITE ENTERPRISE LEVEL */}
       <section style={{ background: "linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%)", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         {/* Desktop */}
-        <div className="hidden lg:block" style={{ padding: "96px 48px 88px" }}>
-          <div style={{ maxWidth: "1320px", marginLeft: "auto", marginRight: "auto", display: "grid", gridTemplateColumns: "58% 42%", gap: "88px", alignItems: "flex-start" }}>
+        <div className="hidden lg:block" style={{ padding: "96px 48px 88px", maxWidth: "1440px", marginLeft: "auto", marginRight: "auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "58% 42%", gap: "88px", alignItems: "flex-start" }}>
             {/* LEFT COLUMN */}
             <div style={{ maxWidth: "700px" }}>
               {/* Eyebrow */}
@@ -246,7 +246,7 @@ export default function LandingPage() {
       </section>
 
       {/* TRUST STRIP - HORIZONTAL LAYOUT */}
-      <section style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB", padding: "80px 48px 80px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
+      <section style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB", padding: "80px 48px 80px", maxWidth: "1440px", marginLeft: "auto", marginRight: "auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         {/* Divider Above Arrow */}
         <div style={{ width: "120px", height: "1px", backgroundColor: "#E5E7EB", margin: "0 auto 16px" }}></div>
 
@@ -263,7 +263,7 @@ export default function LandingPage() {
         </p>
 
         {/* Trust Row - Horizontal Layout */}
-        <div style={{ maxWidth: "1000px", marginLeft: "auto", marginRight: "auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "80px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "80px" }}>
           {/* Item 1 */}
           <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
