@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Section2 from "./section2";
 import Section3 from "./section3";
+import Section4 from "./section4";
 
 // Global styles for WCAG 2.1 AA compliance
 const globalStyles = `
@@ -464,117 +465,7 @@ export default function LandingPage() {
 
       <Section3 />
 
-      {/* YOUR CURRENT RESULT IS INCOMPLETE */}
-      <section className="bg-white" style={{ padding: "80px 40px" }}>
-        <div className="max-w-[1400px] mx-auto">
-          <h2 className="text-[42px] font-bold text-[#0E1A2B] mb-6">Your current result is incomplete.</h2>
-          <p className="text-[16px] text-[#4B5563] mb-12">Full verification defines your income stability.</p>
-
-          <div className="grid grid-cols-2 gap-12 items-center">
-            <div className="bg-white rounded-[12px] border border-[#E5E7EB] p-10">
-              <div className="text-[12px] font-semibold text-[#4B5563] uppercase mb-6">Initial Output</div>
-              <h3 className="text-[32px] font-bold text-[#0E1A2B] mb-8">FREE</h3>
-
-              <div className="space-y-6">
-                <div className="flex gap-4 items-start pb-6 border-b border-[#E5E7EB]">
-                  <div className="w-10 h-10 rounded-lg bg-[#F3F4F6] flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-[#4B5563]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                      <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-[14px] font-semibold text-[#0E1A2B] m-0">Stability classification</p>
-                    <p className="text-[13px] text-[#4B5563] m-0 mt-1">Your current stability class (band)</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4 items-start pb-6 border-b border-[#E5E7EB]">
-                  <div className="w-10 h-10 rounded-lg bg-[#F3F4F6] flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-[#4B5563]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                      <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-[14px] font-semibold text-[#0E1A2B] m-0">Primary structural constraint</p>
-                    <p className="text-[13px] text-[#4B5563] m-0 mt-1">The main factor limiting your stability</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-lg bg-[#F3F4F6] flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-[#4B5563]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                      <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-[14px] font-semibold text-[#0E1A2B] m-0">Not sufficient for full decision verification.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-[12px] border-2 border-[#0275D8] p-10">
-              <div className="text-[12px] font-semibold text-[#0275D8] uppercase mb-6">Full Verification</div>
-              <h3 className="text-[42px] font-bold text-[#0275D8] mb-8">$69</h3>
-
-              <div className="space-y-6 mb-8">
-                <div className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-lg bg-[#E8F4F7] flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 3.062v6.718a3.066 3.066 0 01-3.062 3.062H9.391A3.066 3.066 0 016.329 19.5V9.517a3.066 3.066 0 012.938-3.062zm7.381 5.930a1 1 0 00-1.414-1.414L9 12.586 7.707 11.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-[14px] font-semibold text-[#0E1A2B] m-0">Income Stability Score™</p>
-                    <p className="text-[13px] text-[#4B5563] m-0 mt-1">Your overall stability score on a 0–100 scale</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-lg bg-[#E8F4F7] flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M7.5 3a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-[14px] font-semibold text-[#0E1A2B] m-0">Full structural breakdown</p>
-                    <p className="text-[13px] text-[#4B5563] m-0 mt-1">Complete view across all 6 structural inputs</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-lg bg-[#E8F4F7] flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-[14px] font-semibold text-[#0E1A2B] m-0">Decision definition</p>
-                    <p className="text-[13px] text-[#4B5563] m-0 mt-1">What to change, how it impacts your score</p>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                className="w-full bg-[#0E1A2B] text-white py-3 rounded-[8px] text-[16px] font-semibold mb-6 flex items-center justify-center gap-2 transition-all duration-150"
-                style={{
-                  outline: "2px solid transparent",
-                  outlineOffset: "4px"
-                }}
-                onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
-                onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
-                onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-1px)"}
-                onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0px)"}
-                aria-label="Complete income verification for $69"
-              >
-                Complete Verification
-                <span aria-hidden="true">→</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      <Section4 />
       {/* SYSTEM INTEGRITY */}
       <section className="bg-white" style={{ padding: "80px 40px" }}>
         <div className="max-w-[1400px] mx-auto">
