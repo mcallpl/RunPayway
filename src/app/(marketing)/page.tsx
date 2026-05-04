@@ -187,104 +187,110 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* HERO SECTION */}
+      {/* HERO SECTION — PREMIUM */}
       <section style={{ backgroundColor: "#FFFFFF", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
         {/* Desktop */}
         <div className="hidden lg:block">
-          <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "96px 48px", display: "flex", gap: "80px", alignItems: "flex-start" }}>
+          <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "144px 48px", display: "flex", gap: "80px", alignItems: "flex-start" }}>
             {/* Left Column */}
             <div style={{ flex: 1 }}>
               <h1 style={{
-                fontSize: "48px",
+                fontSize: "72px",
                 fontWeight: 700,
-                lineHeight: "1.2",
+                lineHeight: "1.15",
+                letterSpacing: "-0.025em",
                 color: "#0E1A2B",
-                margin: "0 0 24px 0"
+                margin: "0 0 28px 0"
               }}>
                 Check Your Income Stability — Free, Fast, and Easy
               </h1>
 
               <p style={{
-                fontSize: "24px",
-                fontWeight: 400,
+                fontSize: "28px",
+                fontWeight: 500,
                 lineHeight: "1.5",
-                color: "#6B7280",
-                margin: "0 0 32px 0"
+                color: "#5E6873",
+                margin: "0 0 40px 0"
               }}>
                 Know how your income holds up before making important financial decisions.
               </p>
 
               <button style={{
-                fontSize: "16px",
+                fontSize: "18px",
                 fontWeight: 600,
                 lineHeight: "1.5",
                 color: "#FFFFFF",
                 backgroundColor: "#0E1A2B",
-                padding: "16px 32px",
-                borderRadius: "8px",
+                padding: "18px 40px",
+                borderRadius: "12px",
                 border: "none",
                 cursor: "pointer",
-                marginBottom: "24px",
-                transition: "all 150ms ease",
+                marginBottom: "28px",
+                transition: "all 200ms ease",
                 outline: "2px solid transparent",
                 outlineOffset: "4px",
-                fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+                fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                boxShadow: "0 8px 24px rgba(14, 26, 43, 0.12)"
               }}
               onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
               onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0px 4px 12px rgba(14, 26, 43, 0.2)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "none"; }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14, 26, 43, 0.18)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14, 26, 43, 0.12)"; }}
               >
                 Get Your Free Income Stability Check — Just 2 Minutes
               </button>
 
               <p style={{
                 fontSize: "14px",
-                fontWeight: 400,
+                fontWeight: 500,
                 lineHeight: "1.6",
-                color: "#6B7280",
+                color: "#5E6873",
                 margin: "0"
               }}>
                 ✓ Under 2 minutes · No documents required · Private
               </p>
             </div>
 
-            {/* Right Column - Score Card */}
-            <div style={{ flex: 1, maxWidth: "500px" }}>
+            {/* Right Column - Premium Score Card */}
+            <div style={{ flex: 1, maxWidth: "520px" }}>
               <div style={{
                 backgroundColor: "#FFFFFF",
+                background: "linear-gradient(135deg, #FFFFFF 0%, #F9FAFB 100%)",
                 border: "1px solid #E5E7EB",
-                borderRadius: "8px",
-                padding: "40px 32px",
+                borderRadius: "16px",
+                padding: "48px 40px",
                 display: "flex",
-                flexDirection: "column"
+                flexDirection: "column",
+                boxShadow: "0 4px 12px rgba(14, 26, 43, 0.06), 0 16px 48px rgba(14, 26, 43, 0.08)"
               }}>
                 <div style={{
-                  fontSize: "18px",
+                  fontSize: "12px",
                   fontWeight: 600,
-                  lineHeight: "1.2",
-                  color: "#0E1A2B",
-                  marginBottom: "32px"
+                  letterSpacing: "0.10em",
+                  color: "#1F6D7A",
+                  textTransform: "uppercase",
+                  marginBottom: "24px"
                 }}>
                   Income Stability Score™
                 </div>
 
                 <div style={{
-                  fontSize: "72px",
+                  fontSize: "64px",
                   fontWeight: 700,
                   lineHeight: "1",
                   color: "#0E1A2B",
-                  marginBottom: "16px"
+                  marginBottom: "12px",
+                  fontFamily: '"SF Mono", "Fira Code", "IBM Plex Mono", monospace'
                 }}>
                   72
                 </div>
 
                 <div style={{
-                  fontSize: "16px",
+                  fontSize: "18px",
                   fontWeight: 600,
                   lineHeight: "1.6",
                   color: "#0E1A2B",
-                  marginBottom: "24px"
+                  marginBottom: "32px"
                 }}>
                   Established Stability
                 </div>
@@ -301,19 +307,19 @@ export default function LandingPage() {
                   <div style={{
                     width: "72%",
                     height: "100%",
-                    backgroundColor: "#2563EB",
+                    background: "linear-gradient(90deg, #1F6D7A, #2A9B9F)",
                     borderRadius: "4px",
                     transition: "width 2s ease"
                   }}></div>
                 </div>
 
                 <div style={{
-                  fontSize: "12px",
-                  fontWeight: 400,
+                  fontSize: "13px",
+                  fontWeight: 500,
                   lineHeight: "1.6",
-                  color: "#6B7280",
+                  color: "#5E6873",
                   marginTop: "auto",
-                  paddingTop: "24px",
+                  paddingTop: "32px",
                   borderTop: "1px solid #E5E7EB"
                 }}>
                   <span style={{ fontWeight: 600, color: "#0E1A2B" }}>Model RP-2.0</span>
@@ -327,23 +333,24 @@ export default function LandingPage() {
 
         {/* Mobile */}
         <div className="lg:hidden">
-          <div style={{ padding: "64px 24px", maxWidth: "1200px", margin: "0 auto" }}>
+          <div style={{ padding: "80px 24px", maxWidth: "1200px", margin: "0 auto" }}>
             <h1 style={{
-              fontSize: "32px",
+              fontSize: "48px",
               fontWeight: 700,
-              lineHeight: "1.2",
+              lineHeight: "1.15",
+              letterSpacing: "-0.025em",
               color: "#0E1A2B",
-              margin: "0 0 16px 0"
+              margin: "0 0 20px 0"
             }}>
               Check Your Income Stability — Free, Fast, and Easy
             </h1>
 
             <p style={{
-              fontSize: "18px",
-              fontWeight: 400,
+              fontSize: "20px",
+              fontWeight: 500,
               lineHeight: "1.5",
-              color: "#6B7280",
-              margin: "0 0 24px 0"
+              color: "#5E6873",
+              margin: "0 0 32px 0"
             }}>
               Know how your income holds up before making important financial decisions.
             </p>
@@ -356,7 +363,7 @@ export default function LandingPage() {
               color: "#FFFFFF",
               backgroundColor: "#0E1A2B",
               padding: "16px 32px",
-              borderRadius: "8px",
+              borderRadius: "12px",
               border: "none",
               cursor: "pointer",
               marginBottom: "24px",
@@ -368,28 +375,31 @@ export default function LandingPage() {
 
             <p style={{
               fontSize: "14px",
-              fontWeight: 400,
+              fontWeight: 500,
               lineHeight: "1.6",
-              color: "#6B7280",
-              margin: "0 0 32px 0"
+              color: "#5E6873",
+              margin: "0 0 40px 0"
             }}>
               ✓ Under 2 minutes · No documents required · Private
             </p>
 
             <div style={{
               backgroundColor: "#FFFFFF",
+              background: "linear-gradient(135deg, #FFFFFF 0%, #F9FAFB 100%)",
               border: "1px solid #E5E7EB",
-              borderRadius: "8px",
-              padding: "32px 24px",
+              borderRadius: "16px",
+              padding: "40px 28px",
               display: "flex",
-              flexDirection: "column"
+              flexDirection: "column",
+              boxShadow: "0 4px 12px rgba(14, 26, 43, 0.06), 0 16px 48px rgba(14, 26, 43, 0.08)"
             }}>
               <div style={{
-                fontSize: "16px",
+                fontSize: "12px",
                 fontWeight: 600,
-                lineHeight: "1.2",
-                color: "#0E1A2B",
-                marginBottom: "24px"
+                letterSpacing: "0.10em",
+                color: "#1F6D7A",
+                textTransform: "uppercase",
+                marginBottom: "20px"
               }}>
                 Income Stability Score™
               </div>
@@ -399,13 +409,14 @@ export default function LandingPage() {
                 fontWeight: 700,
                 lineHeight: "1",
                 color: "#0E1A2B",
-                marginBottom: "16px"
+                marginBottom: "12px",
+                fontFamily: '"SF Mono", "Fira Code", "IBM Plex Mono", monospace'
               }}>
                 72
               </div>
 
               <div style={{
-                fontSize: "14px",
+                fontSize: "16px",
                 fontWeight: 600,
                 lineHeight: "1.6",
                 color: "#0E1A2B",
@@ -426,7 +437,7 @@ export default function LandingPage() {
                 <div style={{
                   width: "72%",
                   height: "100%",
-                  backgroundColor: "#2563EB",
+                  background: "linear-gradient(90deg, #1F6D7A, #2A9B9F)",
                   borderRadius: "4px",
                   transition: "width 2s ease"
                 }}></div>
@@ -434,9 +445,9 @@ export default function LandingPage() {
 
               <div style={{
                 fontSize: "12px",
-                fontWeight: 400,
+                fontWeight: 500,
                 lineHeight: "1.6",
-                color: "#6B7280",
+                color: "#5E6873",
                 paddingTop: "24px",
                 borderTop: "1px solid #E5E7EB"
               }}>

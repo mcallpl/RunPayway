@@ -3,29 +3,30 @@
 export default function SectionIntegrity() {
   return (
     <section style={{
-      backgroundColor: "#FFFFFF",
-      padding: "96px 24px",
+      backgroundColor: "#F9FAFB",
+      padding: "120px 24px",
       fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
     }}>
-      {/* DESKTOP */}
-      <div className="hidden lg:block">
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div style={{ marginBottom: "64px", textAlign: "center" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        {/* DESKTOP */}
+        <div className="hidden lg:block">
+          <div style={{ textAlign: "center", marginBottom: "80px" }}>
             <h2 style={{
-              fontSize: "32px",
+              fontSize: "48px",
               fontWeight: 700,
+              lineHeight: "1.2",
+              letterSpacing: "-0.020em",
               color: "#0E1A2B",
-              margin: "0 0 16px 0",
-              lineHeight: "1.2"
+              margin: "0 0 20px 0"
             }}>
               System Integrity
             </h2>
             <p style={{
-              fontSize: "18px",
-              fontWeight: 400,
-              color: "#6B7280",
-              margin: "0",
-              lineHeight: "1.6"
+              fontSize: "20px",
+              fontWeight: 500,
+              lineHeight: "1.6",
+              color: "#5E6873",
+              margin: "0"
             }}>
               Fixed rules. Consistent results.
             </p>
@@ -34,103 +35,79 @@ export default function SectionIntegrity() {
           <div style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: "48px"
+            gap: "56px",
+            maxWidth: "960px",
+            margin: "0 auto"
           }}>
-            {/* Model Section */}
-            <div style={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #E5E7EB",
-              borderRadius: "8px",
-              padding: "48px 40px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              textAlign: "center"
-            }}>
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="1.5" style={{ marginBottom: "24px" }}>
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-              </svg>
-
-              <h3 style={{
-                fontSize: "18px",
-                fontWeight: 700,
-                color: "#0E1A2B",
-                margin: "0 0 12px 0",
-                lineHeight: "1.2"
+            {[
+              {
+                icon: "⚙️",
+                title: "How it works",
+                text: "Your results are determined by fixed inputs. Same income structure = same score. No algorithms. No guessing."
+              },
+              {
+                icon: "🔐",
+                title: "Your privacy",
+                text: "Your data is private and encrypted. Your results are yours alone. We don't sell, share, or monetize your information."
+              }
+            ].map((item, i) => (
+              <div key={i} style={{
+                padding: "48px 40px",
+                backgroundColor: "#FFFFFF",
+                border: "1px solid #E5E7EB",
+                borderRadius: "16px",
+                boxShadow: "0 2px 8px rgba(14, 26, 43, 0.04)"
               }}>
-                How it works
-              </h3>
-
-              <p style={{
-                fontSize: "16px",
-                fontWeight: 400,
-                color: "#6B7280",
-                margin: "0",
-                lineHeight: "1.6"
-              }}>
-                Your results are determined by fixed inputs. Same income structure = same score. No algorithms. No guessing.
-              </p>
-            </div>
-
-            {/* Record Section */}
-            <div style={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #E5E7EB",
-              borderRadius: "8px",
-              padding: "48px 40px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              textAlign: "center"
-            }}>
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="1.5" style={{ marginBottom: "24px" }}>
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v4"></path>
-              </svg>
-
-              <h3 style={{
-                fontSize: "18px",
-                fontWeight: 700,
-                color: "#0E1A2B",
-                margin: "0 0 12px 0",
-                lineHeight: "1.2"
-              }}>
-                Your privacy
-              </h3>
-
-              <p style={{
-                fontSize: "16px",
-                fontWeight: 400,
-                color: "#6B7280",
-                margin: "0",
-                lineHeight: "1.6"
-              }}>
-                Your data is private and encrypted. Your results are yours alone. We don't sell, share, or monetize your information.
-              </p>
-            </div>
+                <div style={{
+                  fontSize: "40px",
+                  marginBottom: "24px",
+                  display: "flex",
+                  justifyContent: "center"
+                }}>
+                  {item.icon}
+                </div>
+                <h3 style={{
+                  fontSize: "20px",
+                  fontWeight: 700,
+                  color: "#0E1A2B",
+                  margin: "0 0 16px 0",
+                  textAlign: "center"
+                }}>
+                  {item.title}
+                </h3>
+                <p style={{
+                  fontSize: "15px",
+                  fontWeight: 400,
+                  lineHeight: "1.7",
+                  color: "#5E6873",
+                  margin: "0",
+                  textAlign: "center"
+                }}>
+                  {item.text}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
 
-      {/* MOBILE */}
-      <div className="lg:hidden">
-        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 16px" }}>
-          <div style={{ marginBottom: "48px", textAlign: "center" }}>
+        {/* MOBILE */}
+        <div className="lg:hidden">
+          <div style={{ textAlign: "center", marginBottom: "56px" }}>
             <h2 style={{
-              fontSize: "24px",
+              fontSize: "32px",
               fontWeight: 700,
+              lineHeight: "1.2",
               color: "#0E1A2B",
-              margin: "0 0 16px 0",
-              lineHeight: "1.2"
+              margin: "0 0 16px 0"
             }}>
               System Integrity
             </h2>
             <p style={{
               fontSize: "16px",
-              fontWeight: 400,
-              color: "#6B7280",
-              margin: "0",
-              lineHeight: "1.6"
+              fontWeight: 500,
+              lineHeight: "1.6",
+              color: "#5E6873",
+              margin: "0"
             }}>
               Fixed rules. Consistent results.
             </p>
@@ -139,80 +116,56 @@ export default function SectionIntegrity() {
           <div style={{
             display: "flex",
             flexDirection: "column",
-            gap: "24px"
+            gap: "20px"
           }}>
-            {/* Model Section */}
-            <div style={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #E5E7EB",
-              borderRadius: "8px",
-              padding: "32px 24px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              textAlign: "center"
-            }}>
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="1.5" style={{ marginBottom: "16px" }}>
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-              </svg>
-
-              <h3 style={{
-                fontSize: "16px",
-                fontWeight: 700,
-                color: "#0E1A2B",
-                margin: "0 0 8px 0",
-                lineHeight: "1.2"
+            {[
+              {
+                icon: "⚙️",
+                title: "How it works",
+                text: "Your results are determined by fixed inputs. Same income structure = same score."
+              },
+              {
+                icon: "🔐",
+                title: "Your privacy",
+                text: "Your data is private and encrypted. We don't sell or share your information."
+              }
+            ].map((item, i) => (
+              <div key={i} style={{
+                padding: "32px 24px",
+                backgroundColor: "#FFFFFF",
+                border: "1px solid #E5E7EB",
+                borderRadius: "16px",
+                boxShadow: "0 2px 8px rgba(14, 26, 43, 0.04)"
               }}>
-                How it works
-              </h3>
-
-              <p style={{
-                fontSize: "14px",
-                fontWeight: 400,
-                color: "#6B7280",
-                margin: "0",
-                lineHeight: "1.6"
-              }}>
-                Your results are determined by fixed inputs. Same income structure = same score. No algorithms. No guessing.
-              </p>
-            </div>
-
-            {/* Record Section */}
-            <div style={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #E5E7EB",
-              borderRadius: "8px",
-              padding: "32px 24px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              textAlign: "center"
-            }}>
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="1.5" style={{ marginBottom: "16px" }}>
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v4"></path>
-              </svg>
-
-              <h3 style={{
-                fontSize: "16px",
-                fontWeight: 700,
-                color: "#0E1A2B",
-                margin: "0 0 8px 0",
-                lineHeight: "1.2"
-              }}>
-                Your privacy
-              </h3>
-
-              <p style={{
-                fontSize: "14px",
-                fontWeight: 400,
-                color: "#6B7280",
-                margin: "0",
-                lineHeight: "1.6"
-              }}>
-                Your data is private and encrypted. Your results are yours alone. We don't sell, share, or monetize your information.
-              </p>
-            </div>
+                <div style={{
+                  fontSize: "36px",
+                  marginBottom: "16px",
+                  display: "flex",
+                  justifyContent: "center"
+                }}>
+                  {item.icon}
+                </div>
+                <h3 style={{
+                  fontSize: "17px",
+                  fontWeight: 700,
+                  color: "#0E1A2B",
+                  margin: "0 0 12px 0",
+                  textAlign: "center"
+                }}>
+                  {item.title}
+                </h3>
+                <p style={{
+                  fontSize: "13px",
+                  fontWeight: 400,
+                  lineHeight: "1.6",
+                  color: "#5E6873",
+                  margin: "0",
+                  textAlign: "center"
+                }}>
+                  {item.text}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

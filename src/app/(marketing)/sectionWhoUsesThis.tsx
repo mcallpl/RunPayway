@@ -3,28 +3,29 @@
 export default function SectionWhoUsesThis() {
   return (
     <section style={{
-      backgroundColor: "#F9FAFB",
-      padding: "96px 24px",
+      backgroundColor: "#F4F1EA",
+      padding: "120px 24px",
       fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
     }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         {/* DESKTOP */}
         <div className="hidden lg:block">
-          <div style={{ textAlign: "center", marginBottom: "72px" }}>
+          <div style={{ textAlign: "center", marginBottom: "80px" }}>
             <h2 style={{
-              fontSize: "32px",
+              fontSize: "48px",
               fontWeight: 700,
               lineHeight: "1.2",
+              letterSpacing: "-0.020em",
               color: "#0E1A2B",
-              margin: "0 0 16px 0"
+              margin: "0 0 20px 0"
             }}>
               Who Recommends This
             </h2>
             <p style={{
-              fontSize: "18px",
-              fontWeight: 400,
+              fontSize: "20px",
+              fontWeight: 500,
               lineHeight: "1.6",
-              color: "#6B7280",
+              color: "#5E6873",
               margin: "0"
             }}>
               Professionals use RunPayway™ to give clients concrete clarity
@@ -34,7 +35,7 @@ export default function SectionWhoUsesThis() {
           <div style={{
             display: "grid",
             gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "40px"
+            gap: "48px"
           }}>
             {[
               {
@@ -51,26 +52,27 @@ export default function SectionWhoUsesThis() {
               }
             ].map((item, idx) => (
               <div key={idx} style={{
-                padding: "32px 28px",
+                padding: "48px 40px",
                 backgroundColor: "#FFFFFF",
-                border: "1px solid #E5E7EB",
-                borderRadius: "12px"
+                border: "1px solid #DDD5CB",
+                borderRadius: "16px",
+                boxShadow: "0 2px 8px rgba(14, 26, 43, 0.04)"
               }}>
                 <div style={{
-                  fontSize: "14px",
+                  fontSize: "12px",
                   fontWeight: 700,
                   color: "#1F6D7A",
                   textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                  marginBottom: "12px"
+                  letterSpacing: "0.08em",
+                  marginBottom: "16px"
                 }}>
                   {item.role}
                 </div>
                 <p style={{
                   fontSize: "15px",
-                  fontWeight: 400,
-                  lineHeight: "1.6",
-                  color: "#6B7280",
+                  fontWeight: 500,
+                  lineHeight: "1.7",
+                  color: "#5E6873",
                   margin: "0"
                 }}>
                   {item.use}
@@ -82,9 +84,9 @@ export default function SectionWhoUsesThis() {
 
         {/* MOBILE */}
         <div className="lg:hidden">
-          <div style={{ textAlign: "center", marginBottom: "48px" }}>
+          <div style={{ textAlign: "center", marginBottom: "56px" }}>
             <h2 style={{
-              fontSize: "24px",
+              fontSize: "32px",
               fontWeight: 700,
               lineHeight: "1.2",
               color: "#0E1A2B",
@@ -94,9 +96,9 @@ export default function SectionWhoUsesThis() {
             </h2>
             <p style={{
               fontSize: "16px",
-              fontWeight: 400,
+              fontWeight: 500,
               lineHeight: "1.6",
-              color: "#6B7280",
+              color: "#5E6873",
               margin: "0"
             }}>
               Professionals use it to give clients clarity
@@ -106,7 +108,7 @@ export default function SectionWhoUsesThis() {
           <div style={{
             display: "flex",
             flexDirection: "column",
-            gap: "16px"
+            gap: "20px"
           }}>
             {[
               {
@@ -123,26 +125,27 @@ export default function SectionWhoUsesThis() {
               }
             ].map((item, idx) => (
               <div key={idx} style={{
-                padding: "24px 20px",
+                padding: "32px 24px",
                 backgroundColor: "#FFFFFF",
-                border: "1px solid #E5E7EB",
-                borderRadius: "12px"
+                border: "1px solid #DDD5CB",
+                borderRadius: "16px",
+                boxShadow: "0 2px 8px rgba(14, 26, 43, 0.04)"
               }}>
                 <div style={{
                   fontSize: "12px",
                   fontWeight: 700,
                   color: "#1F6D7A",
                   textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                  marginBottom: "8px"
+                  letterSpacing: "0.08em",
+                  marginBottom: "12px"
                 }}>
                   {item.role}
                 </div>
                 <p style={{
                   fontSize: "13px",
-                  fontWeight: 400,
-                  lineHeight: "1.5",
-                  color: "#6B7280",
+                  fontWeight: 500,
+                  lineHeight: "1.6",
+                  color: "#5E6873",
                   margin: "0"
                 }}>
                   {item.use}
