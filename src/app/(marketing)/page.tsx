@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Section2 from "./section2";
+import Section3 from "./section3";
 
 // Global styles for WCAG 2.1 AA compliance
 const globalStyles = `
@@ -461,48 +462,7 @@ export default function LandingPage() {
 
       <Section2 />
 
-      {/* SAME INCOME, DIFFERENT OUTCOME */}
-      <section className="bg-white" style={{ padding: "80px 40px" }}>
-        <div className="max-w-[1400px] mx-auto">
-          <h2 className="text-[42px] font-bold text-[#0E1A2B] mb-6">Same income. Different outcome.</h2>
-          <p className="text-[16px] text-[#4B5563] mb-12">Income level does not determine stability. Structure does.</p>
-
-          <div className="mb-8">
-            <div className="bg-[#F9F5F0] rounded-[8px] px-6 py-3 inline-flex items-center gap-3 mb-12">
-              <span className="text-[20px]">💵</span>
-              <span className="text-[14px] font-semibold text-[#0E1A2B]">Both examples: $150K annual income</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-12 items-start mb-12">
-            <div className="bg-white rounded-[12px] border border-[#E5E7EB] p-10">
-              <div className="text-[12px] font-semibold text-[#C62828] mb-4 tracking-widest">1 INCOME SOURCE</div>
-              <div className="text-[72px] font-bold text-[#C62828] mb-2" style={{ lineHeight: "1" }}>31</div>
-              <div className="text-[18px] font-bold text-[#C62828] mb-8">Limited Stability</div>
-              <div className="border-b border-[#E5E7EB] pb-6 mb-6">
-                <p className="text-[14px] text-[#4B5563] m-0">Income depends on <span className="font-semibold">one source.</span></p>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-[12px] border border-[#E5E7EB] p-10">
-              <div className="text-[12px] font-semibold text-[#2E7D32] mb-4 tracking-widest">MULTIPLE INCOME SOURCES</div>
-              <div className="text-[72px] font-bold text-[#2E7D32] mb-2" style={{ lineHeight: "1" }}>74</div>
-              <div className="text-[18px] font-bold text-[#2E7D32] mb-8">Established Stability</div>
-              <div className="border-b border-[#E5E7EB] pb-6 mb-6">
-                <p className="text-[14px] text-[#4B5563] m-0">Income is <span className="font-semibold">distributed.</span></p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-center gap-4 mb-12">
-            <svg className="w-6 h-6 text-[#0275D8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
-          </div>
-
-          <p className="text-center text-[16px] text-[#4B5563] mb-8">Structure determines outcome</p>
-        </div>
-      </section>
+      <Section3 />
 
       {/* YOUR CURRENT RESULT IS INCOMPLETE */}
       <section className="bg-white" style={{ padding: "80px 40px" }}>
