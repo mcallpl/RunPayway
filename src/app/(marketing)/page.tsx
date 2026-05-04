@@ -402,27 +402,28 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* TRUST STRIP - WCAG 2.1 AA COMPLIANT */}
-      <section style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB", padding: "80px 48px 80px", maxWidth: "1440px", marginLeft: "auto", marginRight: "auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
-        {/* Divider Above Arrow */}
-        <div style={{ width: "120px", height: "1px", backgroundColor: "#E5E7EB", margin: "0 auto 16px" }}></div>
+      {/* TRUST STRIP - WCAG 2.1 AA COMPLIANT - CENTERED */}
+      <section style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB", padding: "80px 48px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
+        <div style={{ maxWidth: "1440px", marginLeft: "auto", marginRight: "auto" }}>
+          {/* Divider Above Arrow */}
+          <div style={{ width: "120px", height: "1px", backgroundColor: "#E5E7EB", margin: "0 auto 16px" }}></div>
 
-        {/* Arrow */}
-        <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2.5" style={{ marginLeft: "auto", marginRight: "auto" }} aria-hidden="true">
-            <path d="M12 5v14M5 12l7 7 7-7" />
-          </svg>
-        </div>
+          {/* Arrow */}
+          <div style={{ textAlign: "center", marginBottom: "32px" }}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2.5" style={{ display: "block", marginLeft: "auto", marginRight: "auto" }} aria-hidden="true">
+              <path d="M12 5v14M5 12l7 7 7-7" />
+            </svg>
+          </div>
 
-        {/* Headline */}
-        <p style={{ fontSize: "18px", lineHeight: "1.5", fontWeight: "700", color: "#0E1A2B", textAlign: "center", margin: "0 0 64px 0", fontFamily: "Inter", maxWidth: "600px", marginLeft: "auto", marginRight: "auto" }}>
-          Trusted by organizations and professionals for verified income stability.
-        </p>
+          {/* Headline */}
+          <p style={{ fontSize: "18px", lineHeight: "1.5", fontWeight: "700", color: "#0E1A2B", textAlign: "center", margin: "0 0 64px 0", fontFamily: "Inter", maxWidth: "700px", marginLeft: "auto", marginRight: "auto" }}>
+            Trusted by organizations and professionals for verified income stability.
+          </p>
 
-        {/* Trust Row - Horizontal Layout */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "80px" }}>
+          {/* Trust Row - Horizontal Layout - Centered */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "80px", maxWidth: "1200px", marginLeft: "auto", marginRight: "auto" }}>
           {/* Item 1 */}
-          <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
               <path d="M12 2L5 5v7c0 6 7 9 7 9s7-3 7-9V5l-7-3z" />
               <polyline points="9 12 11 14 15 10" />
@@ -433,7 +434,7 @@ export default function LandingPage() {
           </div>
 
           {/* Item 2 */}
-          <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
               <path d="M7 11V7a5 5 0 0110 0v4" />
@@ -445,7 +446,7 @@ export default function LandingPage() {
           </div>
 
           {/* Item 3 */}
-          <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
             </svg>
@@ -453,6 +454,7 @@ export default function LandingPage() {
               Instant results
             </p>
           </div>
+        </div>
         </div>
       </section>
 
