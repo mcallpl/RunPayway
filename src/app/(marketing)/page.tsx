@@ -404,7 +404,7 @@ export default function LandingPage() {
 
       {/* TRUST STRIP - WCAG 2.1 AA COMPLIANT - CENTERED */}
       <section style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB", padding: "80px 48px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
-        <div style={{ maxWidth: "1440px", marginLeft: "auto", marginRight: "auto" }}>
+        <div style={{ maxWidth: "1200px", marginLeft: "auto", marginRight: "auto" }}>
           {/* Divider Above Arrow */}
           <div style={{ width: "120px", height: "1px", backgroundColor: "#E5E7EB", margin: "0 auto 16px" }}></div>
 
@@ -421,7 +421,7 @@ export default function LandingPage() {
           </p>
 
           {/* Trust Row - Horizontal Layout - Centered */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "80px", maxWidth: "1200px", marginLeft: "auto", marginRight: "auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "48px", width: "100%" }}>
           {/* Item 1 */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
