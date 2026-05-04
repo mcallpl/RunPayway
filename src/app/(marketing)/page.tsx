@@ -177,10 +177,9 @@ export default function LandingPage() {
                 fontWeight: 700,
                 lineHeight: "1.2",
                 color: "#0E1A2B",
-                margin: "0 0 0 0",
-                marginBottom: "16px"
+                margin: "0 0 16px 0"
               }}>
-                Major financial decisions require income verification.
+                Verify your income stability before making major financial decisions.
               </h1>
 
               {/* Subheadline */}
@@ -191,13 +190,14 @@ export default function LandingPage() {
                 color: "#6B7280",
                 margin: "0 0 16px 0"
               }}>
-                RunPayway™ defines whether income stability holds before commitment.
+                RunPayway™ defines whether your income stability holds before you commit.
               </p>
 
               {/* CTA Button */}
               <button style={{
                 fontSize: "16px",
                 fontWeight: 600,
+                lineHeight: "1.5",
                 color: "#FFFFFF",
                 backgroundColor: "#0E1A2B",
                 padding: "16px 28px",
@@ -207,14 +207,15 @@ export default function LandingPage() {
                 marginBottom: "16px",
                 transition: "all 150ms ease",
                 outline: "2px solid transparent",
-                outlineOffset: "4px"
+                outlineOffset: "4px",
+                fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
               }}
               onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
               onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
               onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0px 4px 12px rgba(14, 26, 43, 0.2)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "none"; }}
               >
-                Start Verification
+                Start Your Income Verification Now
               </button>
 
               {/* Support Text */}
@@ -321,7 +322,7 @@ export default function LandingPage() {
               color: "#0E1A2B",
               margin: "0 0 16px 0"
             }}>
-              Major financial decisions require income verification.
+              Verify your income stability before making major financial decisions.
             </h1>
 
             {/* Subheadline */}
@@ -332,7 +333,7 @@ export default function LandingPage() {
               color: "#6B7280",
               margin: "0 0 16px 0"
             }}>
-              RunPayway™ defines whether income stability holds before commitment.
+              RunPayway™ defines whether your income stability holds before you commit.
             </p>
 
             {/* CTA Button */}
@@ -340,6 +341,7 @@ export default function LandingPage() {
               width: "100%",
               fontSize: "16px",
               fontWeight: 600,
+              lineHeight: "1.5",
               color: "#FFFFFF",
               backgroundColor: "#0E1A2B",
               padding: "16px 28px",
@@ -347,9 +349,10 @@ export default function LandingPage() {
               border: "none",
               cursor: "pointer",
               marginBottom: "16px",
-              transition: "all 150ms ease"
+              transition: "all 150ms ease",
+              fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
             }}>
-              Start Verification
+              Start Your Income Verification Now
             </button>
 
             {/* Support Text */}
