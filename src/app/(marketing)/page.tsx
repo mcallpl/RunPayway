@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Section2 from "./section2";
 
 // Global styles for WCAG 2.1 AA compliance
 const globalStyles = `
@@ -458,45 +459,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION 2: WHAT THE MODEL EVALUATES */}
-      <section className="bg-white" style={{ padding: "80px 40px" }}>
-        <div className="max-w-[1400px] mx-auto">
-          <h2 className="text-[42px] font-bold text-[#0E1A2B] mb-6">What the model evaluates</h2>
-          <p className="text-[16px] text-[#4B5563] mb-12">A fixed set of inputs determines the result.</p>
-          <div className="grid grid-cols-3 gap-10 mb-8">
-            <div className="bg-white p-8 rounded-[12px] border border-[#E5E7EB]">
-              <h3 className="text-[18px] font-bold text-[#0E1A2B] mb-3">Concentration</h3>
-              <p className="text-[14px] text-[#4B5563]">Reliance on primary income</p>
-            </div>
-            <div className="bg-white p-8 rounded-[12px] border border-[#E5E7EB]">
-              <h3 className="text-[18px] font-bold text-[#0E1A2B] mb-3">Source Diversity</h3>
-              <p className="text-[14px] text-[#4B5563]">Distribution across sources</p>
-            </div>
-            <div className="bg-white p-8 rounded-[12px] border border-[#E5E7EB]">
-              <h3 className="text-[18px] font-bold text-[#0E1A2B] mb-3">Forward Visibility</h3>
-              <p className="text-[14px] text-[#4B5563]">Income already secured</p>
-            </div>
-            <div className="bg-white p-8 rounded-[12px] border border-[#E5E7EB]">
-              <h3 className="text-[18px] font-bold text-[#0E1A2B] mb-3">Stability Pattern</h3>
-              <p className="text-[14px] text-[#4B5563]">Consistency over time</p>
-            </div>
-            <div className="bg-white p-8 rounded-[12px] border border-[#E5E7EB]">
-              <h3 className="text-[18px] font-bold text-[#0E1A2B] mb-3">Continuity</h3>
-              <p className="text-[14px] text-[#4B5563]">Income without activity</p>
-            </div>
-            <div className="bg-white p-8 rounded-[12px] border border-[#E5E7EB]">
-              <h3 className="text-[18px] font-bold text-[#0E1A2B] mb-3">Dependency</h3>
-              <p className="text-[14px] text-[#4B5563]">Dependence on effort</p>
-            </div>
-          </div>
-          <div className="bg-[#F3F4F6] rounded-[12px] p-6 flex items-center gap-3">
-            <svg className="w-5 h-5 text-[#0275D8] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-            </svg>
-            <p className="text-[13px] text-[#4B5563] m-0"><span className="font-semibold text-[#0E1A2B]">Model RP-2.0</span> · Fixed rules · Same inputs produce same result</p>
-          </div>
-        </div>
-      </section>
+      <Section2 />
 
       {/* SAME INCOME, DIFFERENT OUTCOME */}
       <section className="bg-white" style={{ padding: "80px 40px" }}>
