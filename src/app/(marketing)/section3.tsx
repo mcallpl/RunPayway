@@ -62,30 +62,32 @@ export default function Section3() {
             gridTemplateColumns: "1fr 1fr",
             gap: "40px",
             position: "relative",
-            marginBottom: "40px"
+            marginBottom: "80px"
           }}>
             {/* LEFT CARD */}
             <div style={{
               backgroundColor: "#FFFFFF",
               border: "1px solid #E5E7EB",
               borderRadius: "16px",
-              padding: "32px",
+              padding: "40px 32px",
               boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
               display: "flex",
               flexDirection: "column",
+              alignItems: "center",
               justifyContent: "space-between",
-              minHeight: "380px"
+              minHeight: "420px"
             }}>
               {/* Icon Circle */}
               <div style={{
                 width: "56px",
                 height: "56px",
                 borderRadius: "999px",
-                backgroundColor: "rgba(220,38,38,0.10)",
+                backgroundColor: "rgba(220, 38, 38, 0.08)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                margin: "0 auto 16px"
+                marginBottom: "20px",
+                flexShrink: 0
               }}>
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -95,13 +97,12 @@ export default function Section3() {
 
               {/* Label */}
               <div style={{
-                fontSize: "12px",
-                letterSpacing: "0.12em",
-                fontWeight: 600,
+                fontSize: "32px",
+                fontWeight: 700,
                 color: "#DC2626",
                 textAlign: "center",
-                marginBottom: "12px",
-                textTransform: "uppercase"
+                marginBottom: "24px",
+                lineHeight: 1.2
               }}>
                 1 INCOME SOURCE
               </div>
@@ -113,7 +114,7 @@ export default function Section3() {
                 lineHeight: 1,
                 color: "#DC2626",
                 textAlign: "center",
-                marginBottom: "8px"
+                marginBottom: "12px"
               }}>
                 31
               </div>
@@ -124,7 +125,7 @@ export default function Section3() {
                 fontWeight: 600,
                 color: "#DC2626",
                 textAlign: "center",
-                marginBottom: "20px"
+                marginBottom: "24px"
               }}>
                 Limited Stability
               </div>
@@ -133,7 +134,8 @@ export default function Section3() {
               <div style={{
                 height: "1px",
                 backgroundColor: "#E5E7EB",
-                marginBottom: "20px"
+                width: "100%",
+                marginBottom: "24px"
               }}></div>
 
               {/* Description */}
@@ -153,23 +155,25 @@ export default function Section3() {
               backgroundColor: "#FFFFFF",
               border: "1px solid #E5E7EB",
               borderRadius: "16px",
-              padding: "32px",
+              padding: "40px 32px",
               boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
               display: "flex",
               flexDirection: "column",
+              alignItems: "center",
               justifyContent: "space-between",
-              minHeight: "380px"
+              minHeight: "420px"
             }}>
               {/* Icon Circle */}
               <div style={{
                 width: "56px",
                 height: "56px",
                 borderRadius: "999px",
-                backgroundColor: "rgba(22,163,74,0.10)",
+                backgroundColor: "rgba(22, 163, 74, 0.08)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                margin: "0 auto 16px"
+                marginBottom: "20px",
+                flexShrink: 0
               }}>
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16A34A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -181,13 +185,12 @@ export default function Section3() {
 
               {/* Label */}
               <div style={{
-                fontSize: "12px",
-                letterSpacing: "0.12em",
-                fontWeight: 600,
+                fontSize: "32px",
+                fontWeight: 700,
                 color: "#16A34A",
                 textAlign: "center",
-                marginBottom: "12px",
-                textTransform: "uppercase"
+                marginBottom: "24px",
+                lineHeight: 1.2
               }}>
                 MULTIPLE INCOME SOURCES
               </div>
@@ -199,7 +202,7 @@ export default function Section3() {
                 lineHeight: 1,
                 color: "#16A34A",
                 textAlign: "center",
-                marginBottom: "8px"
+                marginBottom: "12px"
               }}>
                 74
               </div>
@@ -210,7 +213,7 @@ export default function Section3() {
                 fontWeight: 600,
                 color: "#16A34A",
                 textAlign: "center",
-                marginBottom: "20px"
+                marginBottom: "24px"
               }}>
                 Established Stability
               </div>
@@ -219,7 +222,8 @@ export default function Section3() {
               <div style={{
                 height: "1px",
                 backgroundColor: "#E5E7EB",
-                marginBottom: "20px"
+                width: "100%",
+                marginBottom: "24px"
               }}></div>
 
               {/* Description */}
@@ -234,42 +238,31 @@ export default function Section3() {
               </p>
             </div>
 
-            {/* CENTER CONNECTOR */}
+            {/* CONNECTOR SYSTEM */}
             <div style={{
               position: "absolute",
-              top: "0",
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: "1px",
-              height: "100%",
+              top: "50%",
+              left: "0",
+              right: "0",
+              transform: "translateY(-50%)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               pointerEvents: "none"
             }}>
-              {/* Dashed Line */}
-              <div style={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                borderLeft: "1px dashed #D1D5DB"
-              }}></div>
-
               {/* Horizontal Dashed Line */}
               <div style={{
                 position: "absolute",
-                top: "50%",
-                left: "-9999px",
-                width: "19998px",
+                width: "100%",
                 height: "1px",
-                borderTop: "1px dashed #D1D5DB"
+                borderTop: "1px dashed #D1D5DB",
+                left: 0,
+                right: 0
               }}></div>
 
-              {/* Circle Badge */}
+              {/* Center Circle with VS */}
               <div style={{
                 position: "absolute",
-                top: "50%",
-                transform: "translateY(-50%)",
                 width: "88px",
                 height: "88px",
                 borderRadius: "999px",
@@ -278,36 +271,49 @@ export default function Section3() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                padding: "12px",
-                textAlign: "center",
                 zIndex: 10
               }}>
                 <p style={{
-                  fontSize: "13px",
-                  fontWeight: 400,
-                  color: "#6B7280",
-                  lineHeight: 1.3,
-                  margin: 0
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  color: "#0E1A2B",
+                  margin: 0,
+                  textAlign: "center"
                 }}>
-                  Structure determines outcome
+                  VS
                 </p>
               </div>
             </div>
+
+            {/* VERTICAL DASHED LINE FROM CENTER */}
+            <div style={{
+              position: "absolute",
+              left: "50%",
+              top: "50%",
+              transform: "translateX(-50%)",
+              width: "1px",
+              height: "60px",
+              borderLeft: "1px dashed #E5E7EB"
+            }}></div>
           </div>
 
-          {/* Bottom Indicator */}
+          {/* Bottom Text and Arrow */}
           <div style={{
             textAlign: "center",
-            marginTop: "48px"
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "8px"
           }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ margin: "0 auto 8px", display: "block" }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
             <p style={{
               fontSize: "14px",
               fontWeight: 400,
               color: "#6B7280",
-              margin: 0
+              margin: 0,
+              lineHeight: 1.6
             }}>
               Structure determines outcome
             </p>
@@ -364,26 +370,26 @@ export default function Section3() {
         </div>
 
         {/* Stacked Cards */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "18px", marginBottom: "28px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "18px", marginBottom: "32px" }}>
           {/* LEFT CARD */}
           <div style={{
             backgroundColor: "#FFFFFF",
             border: "1px solid #E5E7EB",
             borderRadius: "14px",
-            padding: "24px",
+            padding: "28px",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between"
+            alignItems: "center"
           }}>
             <div style={{
               width: "44px",
               height: "44px",
               borderRadius: "999px",
-              backgroundColor: "rgba(220,38,38,0.10)",
+              backgroundColor: "rgba(220, 38, 38, 0.08)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              margin: "0 auto 12px"
+              marginBottom: "16px"
             }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#DC2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -391,22 +397,20 @@ export default function Section3() {
               </svg>
             </div>
             <div style={{
-              fontSize: "10px",
-              letterSpacing: "0.1em",
-              fontWeight: 600,
+              fontSize: "18px",
+              fontWeight: 700,
               color: "#DC2626",
               textAlign: "center",
-              marginBottom: "8px",
-              textTransform: "uppercase"
+              marginBottom: "16px"
             }}>
-              1 Income Source
+              1 INCOME SOURCE
             </div>
             <div style={{
               fontSize: "48px",
               fontWeight: 700,
               color: "#DC2626",
               textAlign: "center",
-              marginBottom: "4px",
+              marginBottom: "8px",
               lineHeight: 1
             }}>
               31
@@ -416,14 +420,15 @@ export default function Section3() {
               fontWeight: 600,
               color: "#DC2626",
               textAlign: "center",
-              marginBottom: "14px"
+              marginBottom: "16px"
             }}>
               Limited Stability
             </div>
             <div style={{
               height: "1px",
               backgroundColor: "#E5E7EB",
-              marginBottom: "14px"
+              width: "100%",
+              marginBottom: "16px"
             }}></div>
             <p style={{
               fontSize: "13px",
@@ -441,20 +446,20 @@ export default function Section3() {
             backgroundColor: "#FFFFFF",
             border: "1px solid #E5E7EB",
             borderRadius: "14px",
-            padding: "24px",
+            padding: "28px",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between"
+            alignItems: "center"
           }}>
             <div style={{
               width: "44px",
               height: "44px",
               borderRadius: "999px",
-              backgroundColor: "rgba(22,163,74,0.10)",
+              backgroundColor: "rgba(22, 163, 74, 0.08)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              margin: "0 auto 12px"
+              marginBottom: "16px"
             }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16A34A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -464,22 +469,20 @@ export default function Section3() {
               </svg>
             </div>
             <div style={{
-              fontSize: "10px",
-              letterSpacing: "0.1em",
-              fontWeight: 600,
+              fontSize: "18px",
+              fontWeight: 700,
               color: "#16A34A",
               textAlign: "center",
-              marginBottom: "8px",
-              textTransform: "uppercase"
+              marginBottom: "16px"
             }}>
-              Multiple Sources
+              MULTIPLE INCOME SOURCES
             </div>
             <div style={{
               fontSize: "48px",
               fontWeight: 700,
               color: "#16A34A",
               textAlign: "center",
-              marginBottom: "4px",
+              marginBottom: "8px",
               lineHeight: 1
             }}>
               74
@@ -489,14 +492,15 @@ export default function Section3() {
               fontWeight: 600,
               color: "#16A34A",
               textAlign: "center",
-              marginBottom: "14px"
+              marginBottom: "16px"
             }}>
               Established Stability
             </div>
             <div style={{
               height: "1px",
               backgroundColor: "#E5E7EB",
-              marginBottom: "14px"
+              width: "100%",
+              marginBottom: "16px"
             }}></div>
             <p style={{
               fontSize: "13px",
@@ -510,18 +514,23 @@ export default function Section3() {
           </div>
         </div>
 
-        {/* Bottom Indicator */}
+        {/* Bottom Text and Arrow */}
         <div style={{
-          textAlign: "center"
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "6px"
         }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ margin: "0 auto 5px", display: "block" }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
           <p style={{
             fontSize: "12px",
             fontWeight: 400,
             color: "#6B7280",
-            margin: 0
+            margin: 0,
+            lineHeight: 1.6
           }}>
             Structure determines outcome
           </p>
