@@ -32,7 +32,7 @@ export default function LandingPage() {
               </button>
             </div>
 
-            <a href="#plans" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>Plans</a>
+            <a href="/plans" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer", border: "none", backgroundColor: "transparent", outline: "none" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>Plans</a>
             <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>Learn</a>
             <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>About</a>
           </nav>
