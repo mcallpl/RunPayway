@@ -522,50 +522,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* FINAL CTA */}
-      <section className="bg-[#F3F4F6]" style={{ padding: "80px 40px" }}>
-        <div className="max-w-[1400px] mx-auto text-center">
-          <h2 className="text-[42px] font-bold text-[#0E1A2B] mb-6">Check how your income is structured before you move forward.</h2>
-          <p className="text-[16px] text-[#4B5563] mb-8">Takes less than a minute · No documents required · Instant result</p>
-          <button
-            className="bg-[#0E1A2B] text-white px-8 py-3 rounded-[8px] text-[16px] font-semibold mb-6 inline-flex items-center gap-2 transition-all duration-150"
-            style={{
-              outline: "2px solid transparent",
-              outlineOffset: "4px"
-            }}
-            onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
-            onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
-            onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-1px)"}
-            onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0px)"}
-            aria-label="Start income verification"
-          >
-            Start Verification
-            <span aria-hidden="true">→</span>
-          </button>
-
-          <div className="mt-10 flex justify-center gap-8 text-[14px]">
-            <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 3.062v6.718a3.066 3.066 0 01-3.062 3.062H9.391A3.066 3.066 0 016.329 19.5V9.517a3.066 3.066 0 012.938-3.062zm7.381 5.93a1 1 0 00-1.414-1.414L9 12.586 7.707 11.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-              <span className="text-[#4B5563]">Free</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-              </svg>
-              <span className="text-[#4B5563]">Private</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 17v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.381z" clipRule="evenodd" />
-              </svg>
-              <span className="text-[#4B5563]">Immediate result</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <Footer />
     </div>
   );
