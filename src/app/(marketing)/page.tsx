@@ -201,9 +201,19 @@ export default function LandingPage() {
                 letterSpacing: "0.10em",
                 color: "#1F6D7A",
                 textTransform: "uppercase",
-                marginBottom: "24px"
+                marginBottom: "8px"
               }}>
                 For Freelancers, Self-Employed & Business Owners
+              </div>
+              <div style={{
+                fontSize: "12px",
+                fontWeight: 400,
+                letterSpacing: "0.05em",
+                color: "#6B7280",
+                marginBottom: "24px",
+                fontStyle: "italic"
+              }}>
+                Trusted by financial advisors and organizations
               </div>
 
               <h1 style={{
@@ -372,9 +382,20 @@ export default function LandingPage() {
               letterSpacing: "0.10em",
               color: "#1F6D7A",
               textTransform: "uppercase",
-              marginBottom: "16px"
+              marginBottom: "6px"
             }}>
               For Freelancers & Self-Employed
+            </div>
+
+            <div style={{
+              fontSize: "11px",
+              fontWeight: 400,
+              letterSpacing: "0.05em",
+              color: "#6B7280",
+              marginBottom: "16px",
+              fontStyle: "italic"
+            }}>
+              Trusted by advisors and organizations
             </div>
 
             <h1 style={{

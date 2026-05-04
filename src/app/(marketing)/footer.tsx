@@ -22,8 +22,8 @@ export default function Footer() {
     {
       title: "PROFESSIONALS",
       links: [
-        { label: "For Advisors", href: "#" },
-        { label: "For Organizations", href: "#" },
+        { label: "For Advisors", href: "/advisors" },
+        { label: "For Organizations", href: "/organizations" },
         { label: "Use Cases", href: "#" },
         { label: "Industries", href: "#" }
       ]
