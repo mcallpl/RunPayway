@@ -48,8 +48,8 @@ export default function LandingPage() {
         {/* Desktop */}
         <div className="hidden lg:flex h-full items-center" style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 48px", justifyContent: "space-between" }}>
           {/* Logo */}
-          <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: "0", marginRight: "80px", outline: "2px solid transparent", outlineOffset: "4px", borderRadius: "4px", transition: "outline 150ms ease" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>
-            <img src="/logo.png" alt="RunPayway™" style={{ height: "30px", width: "auto" }} />
+          <a href="/RunPayway" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: "0", marginRight: "80px", outline: "2px solid transparent", outlineOffset: "4px", borderRadius: "4px", transition: "outline 150ms ease" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>
+            <img src="/RunPayway/logo.png" alt="RunPayway™" style={{ height: "32px", width: "auto" }} />
           </a>
 
           {/* Center Navigation */}
@@ -129,8 +129,8 @@ export default function LandingPage() {
 
         {/* Mobile */}
         <div className="lg:hidden flex h-full items-center justify-between" style={{ padding: "0 24px" }}>
-          <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-            <img src="/logo.png" alt="RunPayway™" style={{ height: "25px", width: "auto" }} />
+          <a href="/RunPayway" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+            <img src="/RunPayway/logo.png" alt="RunPayway™" style={{ height: "32px", width: "auto" }} />
           </a>
           <button
             style={{
