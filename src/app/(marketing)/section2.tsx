@@ -25,16 +25,29 @@ export default function Section2() {
             margin: "0 0 16px 0",
             lineHeight: "1.2"
           }}>
-            What the model evaluates
+            The 6 Factors of Your Income Stability
           </h2>
           <p style={{
             fontSize: "18px",
             fontWeight: 400,
             lineHeight: "1.6",
             color: "#6B7280",
-            margin: "0 0 48px 0"
+            margin: "0 0 12px 0"
           }}>
             A fixed set of inputs determines the result.
+          </p>
+          <p style={{
+            fontSize: "16px",
+            fontWeight: 500,
+            lineHeight: "1.6",
+            color: "#1F6D7A",
+            margin: "0 0 48px 0",
+            padding: "12px 16px",
+            backgroundColor: "rgba(31, 109, 122, 0.06)",
+            borderRadius: "8px",
+            borderLeft: "3px solid #1F6D7A"
+          }}>
+            These 6 factors combine to calculate your 0-100 stability score. Each factor is evaluated based on your specific income structure.
           </p>
 
           <div style={{
@@ -113,16 +126,29 @@ export default function Section2() {
             margin: "0 0 16px 0",
             lineHeight: "1.2"
           }}>
-            What the model evaluates
+            The 6 Factors of Your Income Stability
           </h2>
           <p style={{
-            fontSize: "16px",
+            fontSize: "15px",
             fontWeight: 400,
             lineHeight: "1.6",
             color: "#6B7280",
-            margin: "0 0 32px 0"
+            margin: "0 0 12px 0"
           }}>
             A fixed set of inputs determines the result.
+          </p>
+          <p style={{
+            fontSize: "14px",
+            fontWeight: 500,
+            lineHeight: "1.6",
+            color: "#1F6D7A",
+            margin: "0 0 32px 0",
+            padding: "12px 14px",
+            backgroundColor: "rgba(31, 109, 122, 0.06)",
+            borderRadius: "8px",
+            borderLeft: "2px solid #1F6D7A"
+          }}>
+            These 6 factors combine to calculate your 0-100 stability score based on your income structure.
           </p>
 
           <div style={{ marginBottom: "32px", display: "flex", flexDirection: "column", gap: "16px" }}>

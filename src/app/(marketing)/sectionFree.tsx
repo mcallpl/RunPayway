@@ -84,9 +84,9 @@ export default function SectionFree() {
                 marginBottom: "auto"
               }}>
                 {[
-                  "Your stability classification",
-                  "Primary income constraint",
-                  "One key improvement area"
+                  "Stability classification (e.g., 'Established' or 'Limited')",
+                  "Your primary income constraint identified",
+                  "One key improvement suggestion"
                 ].map((item, idx) => (
                   <li key={idx} style={{
                     fontSize: "14px",
@@ -173,11 +173,11 @@ export default function SectionFree() {
               }}>
                 {[
                   "Everything in free +",
-                  "Complete 6-factor breakdown",
-                  "Detailed risk assessment",
-                  "3-step personalized action plan",
-                  "Impact scores for each action",
-                  "Permanent timestamped record"
+                  "All 6 factors explained (not just the primary one)",
+                  "Detailed risk assessment with severity levels",
+                  "3 specific, prioritized actions with timelines",
+                  "Impact scores showing potential score improvement",
+                  "Permanent timestamped record for future reference"
                 ].map((item, idx) => (
                   <li key={idx} style={{
                     fontSize: "14px",
@@ -317,9 +317,9 @@ export default function SectionFree() {
                 gap: "12px"
               }}>
                 {[
-                  "Your stability classification",
-                  "Primary income constraint",
-                  "One key improvement area"
+                  "Stability classification (e.g., 'Established')",
+                  "Your primary income constraint",
+                  "One improvement suggestion"
                 ].map((item, idx) => (
                   <li key={idx} style={{
                     fontSize: "13px",
@@ -401,10 +401,10 @@ export default function SectionFree() {
               }}>
                 {[
                   "Everything in free +",
-                  "Complete 6-factor breakdown",
+                  "All 6 factors explained",
                   "Detailed risk assessment",
-                  "3-step personalized action plan",
-                  "Impact scores for each action",
+                  "3 specific action steps",
+                  "Impact scores (potential improvement)",
                   "Permanent timestamped record"
                 ].map((item, idx) => (
                   <li key={idx} style={{

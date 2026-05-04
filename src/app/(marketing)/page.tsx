@@ -194,6 +194,17 @@ export default function LandingPage() {
           <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "144px 48px", display: "flex", gap: "80px", alignItems: "flex-start" }}>
             {/* Left Column */}
             <div style={{ flex: 1 }}>
+              <div style={{
+                fontSize: "12px",
+                fontWeight: 700,
+                letterSpacing: "0.10em",
+                color: "#1F6D7A",
+                textTransform: "uppercase",
+                marginBottom: "24px"
+              }}>
+                For Freelancers, Self-Employed & Business Owners
+              </div>
+
               <h1 style={{
                 fontSize: "72px",
                 fontWeight: 700,
@@ -240,15 +251,25 @@ export default function LandingPage() {
                 Get Your Free Income Stability Check — Just 2 Minutes
               </button>
 
-              <p style={{
+              <div style={{
                 fontSize: "14px",
                 fontWeight: 500,
                 lineHeight: "1.6",
                 color: "#5E6873",
-                margin: "0"
+                margin: "0 0 24px 0"
               }}>
                 ✓ Under 2 minutes · No documents required · Private
-              </p>
+              </div>
+
+              <div style={{
+                fontSize: "13px",
+                fontWeight: 400,
+                lineHeight: "1.7",
+                color: "#6B7280",
+                maxWidth: "420px"
+              }}>
+                <strong style={{ color: "#0E1A2B" }}>What you'll answer:</strong> Your income sources, how predictable they are, and how many clients or streams you have. <strong style={{ color: "#0E1A2B" }}>What you'll get:</strong> Your instant stability classification and primary income constraint.
+              </div>
             </div>
 
             {/* Right Column - Premium Score Card */}
@@ -290,9 +311,19 @@ export default function LandingPage() {
                   fontWeight: 600,
                   lineHeight: "1.6",
                   color: "#0E1A2B",
-                  marginBottom: "32px"
+                  marginBottom: "12px"
                 }}>
                   Established Stability
+                </div>
+
+                <div style={{
+                  fontSize: "12px",
+                  fontWeight: 400,
+                  lineHeight: "1.5",
+                  color: "#6B7280",
+                  marginBottom: "32px"
+                }}>
+                  Score of 72 out of 100 (50+ indicates stable income)
                 </div>
 
                 <div style={{
@@ -334,6 +365,17 @@ export default function LandingPage() {
         {/* Mobile */}
         <div className="lg:hidden">
           <div style={{ padding: "80px 24px", maxWidth: "1200px", margin: "0 auto" }}>
+            <div style={{
+              fontSize: "11px",
+              fontWeight: 700,
+              letterSpacing: "0.10em",
+              color: "#1F6D7A",
+              textTransform: "uppercase",
+              marginBottom: "16px"
+            }}>
+              For Freelancers & Self-Employed
+            </div>
+
             <h1 style={{
               fontSize: "48px",
               fontWeight: 700,
@@ -373,15 +415,25 @@ export default function LandingPage() {
               Get Your Free Income Stability Check — Just 2 Minutes
             </button>
 
-            <p style={{
-              fontSize: "14px",
+            <div style={{
+              fontSize: "13px",
               fontWeight: 500,
               lineHeight: "1.6",
               color: "#5E6873",
-              margin: "0 0 40px 0"
+              margin: "0 0 24px 0"
             }}>
               ✓ Under 2 minutes · No documents required · Private
-            </p>
+            </div>
+
+            <div style={{
+              fontSize: "13px",
+              fontWeight: 400,
+              lineHeight: "1.7",
+              color: "#6B7280",
+              marginBottom: "32px"
+            }}>
+              <strong style={{ color: "#0E1A2B" }}>What you answer:</strong> Income sources, predictability, number of clients. <strong style={{ color: "#0E1A2B" }}>What you get:</strong> Instant stability classification.
+            </div>
 
             <div style={{
               backgroundColor: "#FFFFFF",
@@ -420,9 +472,19 @@ export default function LandingPage() {
                 fontWeight: 600,
                 lineHeight: "1.6",
                 color: "#0E1A2B",
-                marginBottom: "24px"
+                marginBottom: "8px"
               }}>
                 Established Stability
+              </div>
+
+              <div style={{
+                fontSize: "12px",
+                fontWeight: 400,
+                lineHeight: "1.5",
+                color: "#6B7280",
+                marginBottom: "24px"
+              }}>
+                Score of 72 out of 100
               </div>
 
               <div style={{

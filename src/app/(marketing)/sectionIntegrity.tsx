@@ -96,10 +96,21 @@ export default function SectionIntegrity() {
                 fontWeight: 400,
                 lineHeight: "1.7",
                 color: "#5E6873",
-                margin: "0"
+                margin: "0 0 16px 0"
               }}>
-                Your results are determined by fixed inputs. Same income structure = same score. No algorithms. No guessing.
+                Your results are determined by fixed rules, not AI or predictions. Same income structure = same score, every time.
               </p>
+              <div style={{
+                fontSize: "13px",
+                fontWeight: 500,
+                color: "#1F6D7A",
+                padding: "12px 16px",
+                backgroundColor: "rgba(31, 109, 122, 0.06)",
+                borderRadius: "8px",
+                borderLeft: "3px solid #1F6D7A"
+              }}>
+                <strong>Income structure:</strong> Your mix of active/passive income, number of revenue sources, and how predictable they are.
+              </div>
             </div>
 
             {/* Your Privacy */}
@@ -212,10 +223,21 @@ export default function SectionIntegrity() {
                 fontWeight: 400,
                 lineHeight: "1.6",
                 color: "#5E6873",
-                margin: "0"
+                margin: "0 0 12px 0"
               }}>
-                Your results are determined by fixed inputs. Same income structure = same score. No algorithms. No guessing.
+                Your results are determined by fixed rules, not AI or predictions. Same income structure = same score, every time.
               </p>
+              <div style={{
+                fontSize: "12px",
+                fontWeight: 500,
+                color: "#1F6D7A",
+                padding: "10px 12px",
+                backgroundColor: "rgba(31, 109, 122, 0.06)",
+                borderRadius: "6px",
+                borderLeft: "2px solid #1F6D7A"
+              }}>
+                <strong>Income structure:</strong> Your mix of active/passive income, number of sources, and predictability.
+              </div>
             </div>
 
             {/* Your Privacy */}
