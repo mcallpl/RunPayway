@@ -49,7 +49,7 @@ export default function LandingPage() {
         <div className="hidden lg:flex h-full items-center" style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 48px", justifyContent: "space-between" }}>
           {/* Logo */}
           <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: "0", marginRight: "80px", outline: "2px solid transparent", outlineOffset: "4px", borderRadius: "4px", transition: "outline 150ms ease" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>
-            <img src="/runpayway-logo.png" alt="RunPayway™" style={{ height: "30px", width: "auto" }} />
+            <img src="/runpayway-logo-v2.png" alt="RunPayway™" style={{ height: "30px", width: "auto" }} />
           </a>
 
           {/* Center Navigation */}
@@ -130,7 +130,7 @@ export default function LandingPage() {
         {/* Mobile */}
         <div className="lg:hidden flex h-full items-center justify-between" style={{ padding: "0 24px" }}>
           <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-            <img src="/RunPayway/runpayway-logo-blue.png" alt="RunPayway™" style={{ height: "25px", width: "auto" }} />
+            <img src="/runpayway-logo-mobile-v2.png" alt="RunPayway™" style={{ height: "25px", width: "auto" }} />
           </a>
           <button
             style={{
@@ -423,34 +423,34 @@ export default function LandingPage() {
           {/* Trust Row - Horizontal Layout - Centered */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "48px", width: "100%" }}>
           {/* Item 1 */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textAlign: "center", padding: "0 16px" }}>
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
               <path d="M12 2L5 5v7c0 6 7 9 7 9s7-3 7-9V5l-7-3z" />
               <polyline points="9 12 11 14 15 10" />
             </svg>
-            <p style={{ fontSize: "15px", fontWeight: "500", color: "#4B5563", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
+            <p style={{ fontSize: "15px", fontWeight: "500", color: "#4B5563", margin: "0", fontFamily: "Inter", lineHeight: "1.6", maxWidth: "140px" }}>
               Independent verification
             </p>
           </div>
 
           {/* Item 2 */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textAlign: "center", padding: "0 16px" }}>
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
               <path d="M7 11V7a5 5 0 0110 0v4" />
               <circle cx="12" cy="16" r="1" />
             </svg>
-            <p style={{ fontSize: "15px", fontWeight: "500", color: "#4B5563", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
+            <p style={{ fontSize: "15px", fontWeight: "500", color: "#4B5563", margin: "0", fontFamily: "Inter", lineHeight: "1.6", maxWidth: "140px" }}>
               No documents required
             </p>
           </div>
 
           {/* Item 3 */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textAlign: "center", padding: "0 16px" }}>
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
             </svg>
-            <p style={{ fontSize: "15px", fontWeight: "500", color: "#4B5563", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
+            <p style={{ fontSize: "15px", fontWeight: "500", color: "#4B5563", margin: "0", fontFamily: "Inter", lineHeight: "1.6", maxWidth: "140px" }}>
               Instant results
             </p>
           </div>
