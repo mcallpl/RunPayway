@@ -2,12 +2,10 @@
 
 import { useState } from "react";
 import SectionFree from "./sectionFree";
-import SectionTrustProof from "./sectionTrustProof";
 import Section2 from "./section2";
 import Section3 from "./section3";
 import Section4 from "./section4";
 import SectionIntegrity from "./sectionIntegrity";
-import SectionPricingComparison from "./sectionPricingComparison";
 import SectionSampleReport from "./sectionSampleReport";
 import Footer from "./footer";
 
@@ -469,12 +467,10 @@ export default function LandingPage() {
       </section>
 
       <SectionFree />
-      <SectionTrustProof />
       <Section2 />
       <Section3 />
       <Section4 />
       <SectionIntegrity />
-      <SectionPricingComparison />
       <SectionSampleReport />
 
       {/* FOOTER */}
