@@ -1,6 +1,7 @@
 export default function LandingPage() {
   return (
     <div className="w-full">
+      {/* Force rebuild - logo 32px */}
       {/* HEADER - EXACT REFERENCE MATCH */}
       <header style={{ position: "sticky", top: "0", zIndex: "50", backgroundColor: "#FFFFFF", borderBottom: "1px solid #E5E7EB", boxShadow: "0px 1px 0px rgba(0,0,0,0.04)", height: "72px", width: "100%", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         {/* Desktop */}
