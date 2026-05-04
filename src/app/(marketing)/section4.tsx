@@ -53,7 +53,6 @@ export default function Section4() {
               <div style={{
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "0",
                 padding: "6px 12px",
                 borderRadius: "999px",
                 backgroundColor: "#F3F4F6",
@@ -172,7 +171,7 @@ export default function Section4() {
               {/* Lock row */}
               <div style={{
                 display: "flex",
-                gap: "12px",
+                gap: "16px",
                 alignItems: "flex-start",
                 paddingTop: "24px",
                 borderTop: "1px solid #E5E7EB"
@@ -204,7 +203,6 @@ export default function Section4() {
               <div style={{
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "0",
                 padding: "6px 12px",
                 borderRadius: "999px",
                 backgroundColor: "rgba(15,118,110,0.1)",
@@ -256,7 +254,8 @@ export default function Section4() {
                     flexShrink: 0
                   }}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F766E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16zm-1-13h2v6h-2V7zm1 8a1 1 0 110-2 1 1 0 010 2z"></path>
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 6v6l4 2"></path>
                     </svg>
                   </div>
                   <div>
@@ -369,7 +368,8 @@ export default function Section4() {
                 marginBottom: "20px"
               }}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0F766E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px" }}>
-                  <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11.414l2.121-2.122a1 1 0 011.414 1.415l-3.536 3.535a1 1 0 01-1.414 0L9.05 11.88a1 1 0 011.414-1.414L11 12.586z"></path>
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                 </svg>
                 <div style={{
                   fontSize: "14px",
@@ -514,7 +514,6 @@ export default function Section4() {
           <div style={{
             display: "inline-flex",
             alignItems: "center",
-            gap: "0",
             padding: "6px 12px",
             borderRadius: "999px",
             backgroundColor: "#F3F4F6",
@@ -692,7 +691,6 @@ export default function Section4() {
           <div style={{
             display: "inline-flex",
             alignItems: "center",
-            gap: "0",
             padding: "6px 12px",
             borderRadius: "999px",
             backgroundColor: "rgba(15,118,110,0.1)",
@@ -742,7 +740,8 @@ export default function Section4() {
               flexShrink: 0
             }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0F766E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 100-16 8 8 0 000 16zm-1-13h2v6h-2V7zm1 8a1 1 0 110-2 1 1 0 010 2z"></path>
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v6l4 2"></path>
               </svg>
             </div>
             <div>
@@ -854,7 +853,8 @@ export default function Section4() {
             marginBottom: "16px"
           }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0F766E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px" }}>
-              <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-11.414l2.121-2.122a1 1 0 011.414 1.415l-3.536 3.535a1 1 0 01-1.414 0L9.05 11.88a1 1 0 011.414-1.414L11 12.586z"></path>
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
             </svg>
             <div style={{
               fontSize: "13px",
