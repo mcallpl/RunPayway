@@ -6,6 +6,8 @@ import Section2 from "./section2";
 import Section3 from "./section3";
 import SectionIntegrity from "./sectionIntegrity";
 import SectionSampleReport from "./sectionSampleReport";
+import SectionWhyNow from "./sectionWhyNow";
+import SectionWhoUsesThis from "./sectionWhoUsesThis";
 import Footer from "./footer";
 
 const globalStyles = `
@@ -245,15 +247,6 @@ export default function LandingPage() {
               }}>
                 ✓ Under 2 minutes · No documents required · Private
               </p>
-              <p style={{
-                fontSize: "13px",
-                fontWeight: 500,
-                lineHeight: "1.6",
-                color: "#1F6D7A",
-                margin: "8px 0 0 0"
-              }}>
-                Join 12K+ users taking control of their income stability
-              </p>
             </div>
 
             {/* Right Column - Score Card */}
@@ -378,18 +371,9 @@ export default function LandingPage() {
               fontWeight: 400,
               lineHeight: "1.6",
               color: "#6B7280",
-              margin: "0 0 12px 0"
-            }}>
-              ✓ Under 2 minutes · No documents required · Private
-            </p>
-            <p style={{
-              fontSize: "13px",
-              fontWeight: 500,
-              lineHeight: "1.6",
-              color: "#1F6D7A",
               margin: "0 0 32px 0"
             }}>
-              Join 12K+ users taking control of their income stability
+              ✓ Under 2 minutes · No documents required · Private
             </p>
 
             <div style={{
@@ -465,11 +449,13 @@ export default function LandingPage() {
         </div>
       </section>
 
+      <SectionWhyNow />
+      <SectionSampleReport />
       <SectionFree />
       <Section2 />
       <Section3 />
       <SectionIntegrity />
-      <SectionSampleReport />
+      <SectionWhoUsesThis />
 
       {/* FOOTER */}
       <Footer />
