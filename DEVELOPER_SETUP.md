@@ -16,85 +16,70 @@ Takes ~10 seconds.
 
 ---
 
-## The Workflow (Safe & Tested)
+## The Workflow (Optimized for Speed & Safety)
 
 ### 1. Start Your Session
 ```bash
 ./scripts/sync.sh
 npm run dev
 ```
-Response: "✅ Ready to work" + local dev server running on localhost:3000/RunPayway
+Local dev server running on localhost:3000/RunPayway
 
 ### 2. Make Changes & Test Locally
 - Edit files in your editor
 - See changes in `npm run dev` (hot reload)
-- **Verify visually against mockups** before committing
-- This prevents bad code from going to production
+- **Verify visually** before committing
+- Test against mockups and reference designs
 
-### 3. Commit (Pre-Commit Validation)
+### 3. Commit & Deploy (One Step)
 ```bash
 git add .
 git commit -m "Your message"
 ```
 
-What happens:
-- **Pre-commit hook runs:**
-  1. Checks you're on latest code
-  2. Runs `npm run build` to validate code compiles
-  3. If build fails → commit blocked with error details
-  4. If build succeeds → commit allowed
+What happens automatically:
+1. **Pre-commit hook validates:**
+   - ✓ You're on latest code (pulls if needed)
+   - ✓ Code builds successfully (`npm run build`)
+   - ✓ If build fails → commit blocked, fix code, try again
+   - ✓ If build succeeds → commit allowed
 
-**Result:** Bad code can't be committed. Period.
+2. **Post-commit hook deploys:**
+   - ✓ Pushes to GitHub automatically
+   - ✓ Triggers GitHub Actions
+   - ✓ Deploys to peoplestar.com/RunPayway in ~1-2 minutes
 
-### 4. Review & Push (You Control Deployment)
-After commit succeeds, you get a reminder:
-```
-✅ Commit successful (build validated)
-
-Next step: Push to deploy
-  → Run: git push origin main
-
-This will:
-  1. Upload to GitHub
-  2. Trigger GitHub Actions
-  3. Deploy to peoplestar.com/RunPayway
-```
-
-**You decide when to push.** This creates a review point.
-
-```bash
-git push origin main
-# GitHub Actions deploys within 1-2 minutes
-# Visit peoplestar.com/RunPayway to verify
-```
-
-**Result:** Changes are live after you push.
+**Result:** One command (`git commit`) = fully deployed. No manual push needed.
 
 ---
 
-## What The Hooks Do (Now)
+## What The Hooks Do
 
-### Pre-Commit Hook (Prevents Bad Code)
+### Pre-Commit Hook (Validates Quality)
 Before allowing any commit:
-- ✓ Checks you're on latest code (pulls if needed)
-- ✓ Validates build with `npm run build`
-- ✓ If build fails: blocks commit, shows errors, you fix and try again
+- ✓ Fetches latest code from GitHub
+- ✓ Checks you're not behind origin/main
+- ✓ Runs `npm run build` to ensure code compiles
+- ✓ If any check fails: commit is blocked, errors shown, you fix and retry
 
-**Result:** Only compilable code reaches GitHub/production.
+**Result:** Only validated, compilable code leaves your machine.
 
-### Post-Commit Hook (Reminds You to Push)
+### Post-Commit Hook (Auto-Deploys)
 After successful commit:
-- Prints reminder: "Your code is committed locally"
-- Reminds you to: `git push origin main` when ready
-- No auto-push (you control deployment timing)
+- ✓ Automatically runs `git push origin main`
+- ✓ Pushes code to GitHub
+- ✓ Triggers GitHub Actions workflow
+- ✓ Shows deployment URL and status
+
+**Result:** Changes deployed automatically within 1-2 minutes.
 
 ---
 
-## The Difference
+## The Flow
 
-**Old way:** Commit → Auto-push → Deploy → Discover problems on live site
+**Old way:** Manual commit → Manual push → Hope code works → Discover problems on live site
 
-**New way:** Commit → Local validation → Manual push → Deploy → Verify works
+**New way:** Commit → Build validation → Auto-push → Deploy → Done
 
 ---
 
@@ -114,10 +99,17 @@ git pull origin main
 git commit -m "..."  # Try again
 ```
 
-**Q: Changes pushed but not showing on live site**
+**Q: Push failed during post-commit hook**
+```bash
+# Check your internet connection
+# Check GitHub status (github.com/status)
+# Retry: git commit --amend --no-edit (re-triggers hooks)
+```
+
+**Q: Changes not showing on live site**
 1. Wait 2 minutes (GitHub Actions needs time)
 2. Hard refresh in browser (Cmd+Shift+R or Ctrl+Shift+R)
-3. If still not there, check GitHub Actions build status (Actions tab)
+3. Check GitHub Actions status: github.com/anthropics/RunPayway/actions
 
 **Q: I broke production, how do I fix it?**
 ```bash
@@ -126,10 +118,8 @@ git log --oneline
 
 # Revert it
 git revert <bad-commit-hash>
-git push origin main
-
-# This creates a new commit that undoes the bad one
-# GitHub Actions will re-deploy the fixed version
+# This creates NEW commit that undoes the bad one
+# Post-commit hook will auto-push and deploy the fix
 ```
 
 ---
@@ -137,55 +127,54 @@ git push origin main
 ## Key Rules
 
 1. **Always run `./scripts/sync.sh` at session start**
-   - Guarantees you're on latest code
+   - Guarantees you're on latest code before testing
 
-2. **Always use `npm run dev` to test locally**
-   - See changes before committing
-   - Catch visual errors before production
+2. **Always test with `npm run dev` before committing**
+   - See changes live in dev environment
+   - Catch visual/functional errors before production
 
 3. **Never skip the pre-commit hook**
    - Don't use `git commit --no-verify`
-   - The build validation is your safety net
+   - Build validation prevents broken code from deploying
 
-4. **Push manually when you're confident**
-   - You control when code goes to production
-   - Review the commit before pushing
-   - Creates natural review point
+4. **Trust the workflow**
+   - Commit = build validation + auto-deploy
+   - Changes live within 1-2 minutes
+   - No manual push needed
 
 ---
 
 ## Quick Reference
 
 ```bash
-# Session start
+# Start session
 ./scripts/sync.sh
 npm run dev
 
-# Work normally
-# (test locally, verify against mockups)
+# Make changes, test locally
+# (verify against mockups)
 
-# When ready to commit
+# Commit (automatically validates build + pushes + deploys)
 git add .
 git commit -m "description of changes"
-# Pre-commit hook validates build
 
-# When ready to deploy
-git push origin main
-# GitHub Actions deploys to peoplestar.com/RunPayway
+# Check deployment (wait 1-2 minutes)
+# Visit: peoplestar.com/RunPayway
+# Hard refresh: Cmd+Shift+R (or Ctrl+Shift+R)
 
 # If something breaks
 git revert <commit-hash>
-git push origin main
+# Auto-deploys the fix
 ```
 
 ---
 
 ## Summary
 
-- **Local testing:** `npm run dev` before committing
-- **Build validation:** Pre-commit hook checks it compiles
-- **Manual deploy:** You push when ready (not auto)
-- **Safety net:** Bad code can't leave your machine
-- **Rollback:** Easy to undo with `git revert`
+- **Local testing:** `npm run dev` catches issues before commit
+- **Build validation:** Pre-commit blocks non-compiling code
+- **Auto-deploy:** Post-commit hook pushes and GitHub Actions deploys
+- **Safety:** Bad code never reaches GitHub or production
+- **Fast rollback:** `git revert` creates new commit that auto-deploys
 
-This prevents the "changes don't match mockups" and "site is broken" problems.
+This ensures: Test → Commit → Deploy, all in one atomic operation.
