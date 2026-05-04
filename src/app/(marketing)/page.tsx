@@ -407,54 +407,44 @@ export default function LandingPage() {
       </section>
 
       {/* TRUST STRIP - WCAG 2.1 AA COMPLIANT - CENTERED */}
-      <section style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB", padding: "80px 48px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
+      <section style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB", padding: "96px 48px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         <div style={{ maxWidth: "1200px", marginLeft: "auto", marginRight: "auto" }}>
-          {/* Divider Above Arrow */}
-          <div style={{ width: "120px", height: "1px", backgroundColor: "#E5E7EB", margin: "0 auto 16px" }}></div>
-
-          {/* Arrow */}
-          <div style={{ textAlign: "center", marginBottom: "32px" }}>
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2.5" style={{ display: "block", marginLeft: "auto", marginRight: "auto" }} aria-hidden="true">
-              <path d="M12 5v14M5 12l7 7 7-7" />
-            </svg>
-          </div>
-
           {/* Headline */}
-          <p style={{ fontSize: "18px", lineHeight: "1.5", fontWeight: "700", color: "#0E1A2B", textAlign: "center", margin: "0 0 64px 0", fontFamily: "Inter", maxWidth: "700px", marginLeft: "auto", marginRight: "auto" }}>
+          <p style={{ fontSize: "20px", lineHeight: "1.5", fontWeight: "700", color: "#0E1A2B", textAlign: "center", margin: "0 0 64px 0", fontFamily: "Inter", maxWidth: "700px", marginLeft: "auto", marginRight: "auto" }}>
             Trusted by organizations and professionals for verified income stability.
           </p>
 
           {/* Trust Row - Horizontal Layout - Centered */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "48px", width: "100%" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "64px", width: "100%" }}>
           {/* Item 1 */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textAlign: "center", padding: "0 16px" }}>
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
               <path d="M12 2L5 5v7c0 6 7 9 7 9s7-3 7-9V5l-7-3z" />
               <polyline points="9 12 11 14 15 10" />
             </svg>
-            <p style={{ fontSize: "15px", fontWeight: "500", color: "#4B5563", margin: "0", fontFamily: "Inter", lineHeight: "1.6", maxWidth: "140px" }}>
+            <p style={{ fontSize: "14px", fontWeight: "600", color: "#0E1A2B", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
               Independent verification
             </p>
           </div>
 
           {/* Item 2 */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textAlign: "center", padding: "0 16px" }}>
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
               <path d="M7 11V7a5 5 0 0110 0v4" />
               <circle cx="12" cy="16" r="1" />
             </svg>
-            <p style={{ fontSize: "15px", fontWeight: "500", color: "#4B5563", margin: "0", fontFamily: "Inter", lineHeight: "1.6", maxWidth: "140px" }}>
+            <p style={{ fontSize: "14px", fontWeight: "600", color: "#0E1A2B", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
               No documents required
             </p>
           </div>
 
           {/* Item 3 */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", textAlign: "center", padding: "0 16px" }}>
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px", textAlign: "center" }}>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
             </svg>
-            <p style={{ fontSize: "15px", fontWeight: "500", color: "#4B5563", margin: "0", fontFamily: "Inter", lineHeight: "1.6", maxWidth: "140px" }}>
+            <p style={{ fontSize: "14px", fontWeight: "600", color: "#0E1A2B", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
               Instant results
             </p>
           </div>
@@ -468,55 +458,61 @@ export default function LandingPage() {
 
       <Section4 />
       {/* SYSTEM INTEGRITY */}
-      <section className="bg-white" style={{ padding: "80px 40px" }}>
-        <div className="max-w-[1400px] mx-auto">
-          <h2 className="text-[42px] font-bold text-[#0E1A2B] mb-6">System integrity</h2>
-          <p className="text-[18px] font-semibold text-[#0275D8] mb-12">Fixed rules. Consistent results.</p>
+      <section className="bg-white" style={{ padding: "96px 48px", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
+        <div style={{ maxWidth: "1200px", marginLeft: "auto", marginRight: "auto" }}>
+          <div style={{ marginBottom: "64px" }}>
+            <h2 style={{ fontSize: "40px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 16px 0" }}>System integrity</h2>
+            <p style={{ fontSize: "16px", fontWeight: "400", color: "#6B7280", margin: "0" }}>Fixed rules. Consistent results.</p>
+          </div>
 
-          <div className="grid grid-cols-2 gap-12">
-            <div className="bg-white rounded-[12px] border border-[#E5E7EB] p-10">
-              <h3 className="text-[24px] font-bold text-[#0E1A2B] mb-8 pb-6 border-b border-[#E5E7EB]">Model</h3>
-              <div className="space-y-6">
-                <div className="pb-6 border-b border-[#E5E7EB]">
-                  <h4 className="text-[16px] font-bold text-[#0E1A2B] mb-2">Fixed rules applied</h4>
-                  <p className="text-[14px] text-[#4B5563] m-0">Rules are locked for all results.</p>
-                </div>
-                <div className="pb-6 border-b border-[#E5E7EB]">
-                  <h4 className="text-[16px] font-bold text-[#0E1A2B] mb-2">No discretion</h4>
-                  <p className="text-[14px] text-[#4B5563] m-0">Rules are identical for all users.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "40px", marginBottom: "48px" }}>
+            <div style={{ backgroundColor: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "12px", padding: "40px 32px" }}>
+              <h3 style={{ fontSize: "20px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 32px 0", paddingBottom: "24px", borderBottom: "1px solid #E5E7EB" }}>Model</h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
+                <div>
+                  <h4 style={{ fontSize: "15px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 8px 0" }}>Fixed rules applied</h4>
+                  <p style={{ fontSize: "14px", color: "#6B7280", margin: "0" }}>Rules are locked for all results.</p>
                 </div>
                 <div>
-                  <h4 className="text-[16px] font-bold text-[#0E1A2B] mb-2">Same inputs produce same result</h4>
-                  <p className="text-[14px] text-[#4B5563] m-0">Consistency is guaranteed.</p>
+                  <h4 style={{ fontSize: "15px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 8px 0" }}>No discretion</h4>
+                  <p style={{ fontSize: "14px", color: "#6B7280", margin: "0" }}>Rules are identical for all users.</p>
+                </div>
+                <div>
+                  <h4 style={{ fontSize: "15px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 8px 0" }}>Same inputs produce same result</h4>
+                  <p style={{ fontSize: "14px", color: "#6B7280", margin: "0" }}>Consistency is guaranteed.</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white rounded-[12px] border border-[#E5E7EB] p-10">
-              <h3 className="text-[24px] font-bold text-[#0E1A2B] mb-8 pb-6 border-b border-[#E5E7EB]">Record</h3>
-              <div className="space-y-6">
-                <div className="pb-6 border-b border-[#E5E7EB]">
-                  <h4 className="text-[16px] font-bold text-[#0E1A2B] mb-2">Timestamped result</h4>
-                  <p className="text-[14px] text-[#4B5563] m-0">Every result is timestamped to the second.</p>
-                </div>
-                <div className="pb-6 border-b border-[#E5E7EB]">
-                  <h4 className="text-[16px] font-bold text-[#0E1A2B] mb-2">Permanent record ID</h4>
-                  <p className="text-[14px] text-[#4B5563] m-0">Unique ID assigned for permanent retrieval.</p>
+            <div style={{ backgroundColor: "#FFFFFF", border: "1px solid #E5E7EB", borderRadius: "12px", padding: "40px 32px" }}>
+              <h3 style={{ fontSize: "20px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 32px 0", paddingBottom: "24px", borderBottom: "1px solid #E5E7EB" }}>Record</h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
+                <div>
+                  <h4 style={{ fontSize: "15px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 8px 0" }}>Timestamped result</h4>
+                  <p style={{ fontSize: "14px", color: "#6B7280", margin: "0" }}>Every result is timestamped to the second.</p>
                 </div>
                 <div>
-                  <h4 className="text-[16px] font-bold text-[#0E1A2B] mb-2">Results are not modified</h4>
-                  <p className="text-[14px] text-[#4B5563] m-0">Prior results never modified or deleted.</p>
+                  <h4 style={{ fontSize: "15px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 8px 0" }}>Permanent record ID</h4>
+                  <p style={{ fontSize: "14px", color: "#6B7280", margin: "0" }}>Unique ID assigned for permanent retrieval.</p>
+                </div>
+                <div>
+                  <h4 style={{ fontSize: "15px", fontWeight: "700", color: "#0E1A2B", margin: "0 0 8px 0" }}>Results are not modified</h4>
+                  <p style={{ fontSize: "14px", color: "#6B7280", margin: "0" }}>Prior results never modified or deleted.</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="mt-12 bg-[#F3F4F6] rounded-[12px] p-6 flex items-center gap-4">
-            <span className="text-[18px]">✓</span>
-            <p className="text-[13px] text-[#4B5563] m-0">
-              <span className="font-semibold text-[#0E1A2B]">Model RP-2.0</span> ·
-              <span className="mx-2">Version locked</span> ·
-              <span className="font-semibold text-[#0275D8]">Same inputs produce same result</span>
+          <div style={{ backgroundColor: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: "12px", padding: "28px 32px", display: "flex", alignItems: "center", gap: "16px" }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1F6D7A" strokeWidth="2" style={{ flexShrink: "0" }}>
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <p style={{ fontSize: "14px", color: "#6B7280", margin: "0" }}>
+              <span style={{ fontWeight: "700", color: "#0E1A2B" }}>Model RP-2.0</span>
+              <span style={{ color: "#D1D5DB", margin: "0 12px" }}>·</span>
+              <span style={{ fontWeight: "600", color: "#0E1A2B" }}>Version locked</span>
+              <span style={{ color: "#D1D5DB", margin: "0 12px" }}>·</span>
+              <span style={{ fontWeight: "600" }}>Same inputs produce same result</span>
             </p>
           </div>
         </div>
