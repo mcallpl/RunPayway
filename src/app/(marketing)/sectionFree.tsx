@@ -1,6 +1,15 @@
 "use client";
 
 export default function SectionFree() {
+  const TealColor = "#1F6D7A";
+  const NavyColor = "#0E1A2B";
+
+  const CheckIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <path d="M20 6L9 17L4 12" stroke={TealColor} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+
   return (
     <section style={{
       padding: "120px 24px",
@@ -16,10 +25,10 @@ export default function SectionFree() {
               fontWeight: 700,
               lineHeight: "1.2",
               letterSpacing: "-0.020em",
-              color: "#0E1A2B",
+              color: NavyColor,
               margin: "0 0 20px 0"
             }}>
-              Your result is ready.
+              Your Result is Ready
             </h2>
             <p style={{
               fontSize: "20px",
@@ -28,13 +37,13 @@ export default function SectionFree() {
               color: "#5E6873",
               margin: "0"
             }}>
-              Full verification defines your income stability.
+              See what you get instantly, and what unlocks with the full report.
             </p>
           </div>
 
           <div style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: "1fr 1.2fr",
             gap: "56px"
           }}>
             {/* FREE TIER */}
@@ -42,26 +51,26 @@ export default function SectionFree() {
               backgroundColor: "#F9FAFB",
               border: "1px solid #E5E7EB",
               borderRadius: "16px",
-              padding: "48px 40px",
+              padding: "40px 32px",
               display: "flex",
               flexDirection: "column",
-              boxShadow: "0 2px 8px rgba(14, 26, 43, 0.04)"
+              opacity: 0.85
             }}>
               <div style={{
                 fontSize: "12px",
                 fontWeight: 700,
                 letterSpacing: "0.12em",
-                color: "#1F6D7A",
+                color: TealColor,
                 textTransform: "uppercase",
-                marginBottom: "20px"
+                marginBottom: "16px"
               }}>
-                What you get free
+                Instant Result
               </div>
               <div style={{
-                fontSize: "32px",
+                fontSize: "28px",
                 fontWeight: 700,
-                color: "#0E1A2B",
-                marginBottom: "40px"
+                color: NavyColor,
+                marginBottom: "32px"
               }}>
                 FREE
               </div>
@@ -71,36 +80,27 @@ export default function SectionFree() {
                 listStyle: "none",
                 display: "flex",
                 flexDirection: "column",
-                gap: "20px",
-                marginBottom: "40px"
+                gap: "14px",
+                marginBottom: "auto"
               }}>
-                <li style={{
-                  fontSize: "15px",
-                  fontWeight: 500,
-                  color: "#5E6873",
-                  lineHeight: "1.7"
-                }}>
-                  <span style={{ fontWeight: 700, color: "#0E1A2B", display: "block", marginBottom: "4px" }}>Stability classification</span>
-                  Your income stability class
-                </li>
-                <li style={{
-                  fontSize: "15px",
-                  fontWeight: 500,
-                  color: "#5E6873",
-                  lineHeight: "1.7"
-                }}>
-                  <span style={{ fontWeight: 700, color: "#0E1A2B", display: "block", marginBottom: "4px" }}>Primary constraint</span>
-                  What limits your stability
-                </li>
-                <li style={{
-                  fontSize: "15px",
-                  fontWeight: 500,
-                  color: "#5E6873",
-                  lineHeight: "1.7"
-                }}>
-                  <span style={{ fontWeight: 700, color: "#0E1A2B", display: "block", marginBottom: "4px" }}>Decision definition</span>
-                  What to change, impact on score
-                </li>
+                {[
+                  "Your stability classification",
+                  "Primary income constraint",
+                  "One key improvement area"
+                ].map((item, idx) => (
+                  <li key={idx} style={{
+                    fontSize: "14px",
+                    fontWeight: 500,
+                    color: "#5E6873",
+                    lineHeight: "1.6",
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "10px"
+                  }}>
+                    <CheckIcon />
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -108,12 +108,12 @@ export default function SectionFree() {
             <div style={{
               position: "relative",
               backgroundColor: "#FFFFFF",
-              border: "2px solid #1F6D7A",
+              border: "2px solid " + TealColor,
               borderRadius: "16px",
               padding: "48px 40px",
               display: "flex",
               flexDirection: "column",
-              boxShadow: "0 4px 12px rgba(31, 109, 122, 0.08), 0 12px 32px rgba(31, 109, 122, 0.12)"
+              boxShadow: "0 8px 32px rgba(31, 109, 122, 0.12), 0 2px 8px rgba(31, 109, 122, 0.06)"
             }}>
               {/* Recommended Badge */}
               <div style={{
@@ -121,13 +121,13 @@ export default function SectionFree() {
                 top: "-14px",
                 left: "50%",
                 transform: "translateX(-50%)",
-                backgroundColor: "#1F6D7A",
+                backgroundColor: TealColor,
                 color: "#FFFFFF",
-                padding: "6px 18px",
+                padding: "6px 20px",
                 borderRadius: "999px",
-                fontSize: "12px",
+                fontSize: "11px",
                 fontWeight: 700,
-                letterSpacing: "0.08em",
+                letterSpacing: "0.1em",
                 textTransform: "uppercase",
                 whiteSpace: "nowrap",
                 boxShadow: "0 4px 12px rgba(31, 109, 122, 0.2)"
@@ -139,16 +139,16 @@ export default function SectionFree() {
                 fontSize: "12px",
                 fontWeight: 700,
                 letterSpacing: "0.12em",
-                color: "#1F6D7A",
+                color: TealColor,
                 textTransform: "uppercase",
-                marginBottom: "20px"
+                marginBottom: "16px"
               }}>
-                Complete verification
+                Complete Analysis
               </div>
               <div style={{
                 fontSize: "40px",
                 fontWeight: 700,
-                color: "#0E1A2B",
+                color: NavyColor,
                 marginBottom: "8px"
               }}>
                 $69
@@ -168,42 +168,36 @@ export default function SectionFree() {
                 listStyle: "none",
                 display: "flex",
                 flexDirection: "column",
-                gap: "20px",
-                marginBottom: "48px"
+                gap: "14px",
+                marginBottom: "auto"
               }}>
-                <li style={{
-                  fontSize: "15px",
-                  fontWeight: 500,
-                  color: "#5E6873",
-                  lineHeight: "1.7"
-                }}>
-                  <span style={{ fontWeight: 700, color: "#0E1A2B", display: "block", marginBottom: "4px" }}>Full stability report</span>
-                  Complete analysis and breakdown
-                </li>
-                <li style={{
-                  fontSize: "15px",
-                  fontWeight: 500,
-                  color: "#5E6873",
-                  lineHeight: "1.7"
-                }}>
-                  <span style={{ fontWeight: 700, color: "#0E1A2B", display: "block", marginBottom: "4px" }}>Risk assessment</span>
-                  Identify all structural risks
-                </li>
-                <li style={{
-                  fontSize: "15px",
-                  fontWeight: 500,
-                  color: "#5E6873",
-                  lineHeight: "1.7"
-                }}>
-                  <span style={{ fontWeight: 700, color: "#0E1A2B", display: "block", marginBottom: "4px" }}>Action plan</span>
-                  Steps to improve stability
-                </li>
+                {[
+                  "Everything in free +",
+                  "Complete 6-factor breakdown",
+                  "Detailed risk assessment",
+                  "3-step personalized action plan",
+                  "Impact scores for each action",
+                  "Permanent timestamped record"
+                ].map((item, idx) => (
+                  <li key={idx} style={{
+                    fontSize: "14px",
+                    fontWeight: 500,
+                    color: "#0E1A2B",
+                    lineHeight: "1.6",
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "10px"
+                  }}>
+                    <CheckIcon />
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
 
               <button style={{
                 width: "100%",
                 height: "56px",
-                backgroundColor: "#1F6D7A",
+                backgroundColor: TealColor,
                 color: "#FFFFFF",
                 fontSize: "16px",
                 fontWeight: 600,
@@ -218,7 +212,8 @@ export default function SectionFree() {
                 transition: "all 200ms ease",
                 outline: "2px solid transparent",
                 outlineOffset: "4px",
-                boxShadow: "0 8px 24px rgba(31, 109, 122, 0.16)"
+                boxShadow: "0 8px 24px rgba(31, 109, 122, 0.16)",
+                marginTop: "32px"
               }}
               onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
               onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
@@ -248,7 +243,7 @@ export default function SectionFree() {
             textAlign: "center",
             marginTop: "80px"
           }}>
-            <span style={{ fontWeight: 700, color: "#0E1A2B" }}>Model RP-2.0</span>
+            <span style={{ fontWeight: 700, color: NavyColor }}>Model RP-2.0</span>
             <span style={{ color: "#D1D5DB", margin: "0 8px" }}>·</span>
             Same inputs produce same result
           </div>
@@ -263,10 +258,10 @@ export default function SectionFree() {
               fontSize: "32px",
               fontWeight: 700,
               lineHeight: "1.2",
-              color: "#0E1A2B",
+              color: NavyColor,
               margin: "0 0 16px 0"
             }}>
-              Your result is ready.
+              Your Result is Ready
             </h2>
 
             <p style={{
@@ -276,7 +271,7 @@ export default function SectionFree() {
               color: "#5E6873",
               margin: "0"
             }}>
-              Full verification defines your income stability.
+              See what you get instantly, and what unlocks with the full report.
             </p>
           </div>
 
@@ -292,22 +287,23 @@ export default function SectionFree() {
               backgroundColor: "#F9FAFB",
               border: "1px solid #E5E7EB",
               borderRadius: "16px",
-              padding: "32px 24px"
+              padding: "32px 24px",
+              opacity: 0.85
             }}>
               <div style={{
                 fontSize: "11px",
                 fontWeight: 700,
                 letterSpacing: "0.12em",
-                color: "#1F6D7A",
+                color: TealColor,
                 textTransform: "uppercase",
-                marginBottom: "16px"
+                marginBottom: "12px"
               }}>
-                What you get free
+                Instant Result
               </div>
               <div style={{
-                fontSize: "28px",
+                fontSize: "24px",
                 fontWeight: 700,
-                color: "#0E1A2B",
+                color: NavyColor,
                 marginBottom: "24px"
               }}>
                 FREE
@@ -318,42 +314,33 @@ export default function SectionFree() {
                 listStyle: "none",
                 display: "flex",
                 flexDirection: "column",
-                gap: "16px"
+                gap: "12px"
               }}>
-                <li style={{
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  color: "#5E6873",
-                  lineHeight: "1.6"
-                }}>
-                  <span style={{ fontWeight: 700, color: "#0E1A2B", display: "block", marginBottom: "4px" }}>Stability class</span>
-                  Your income stability classification
-                </li>
-                <li style={{
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  color: "#5E6873",
-                  lineHeight: "1.6"
-                }}>
-                  <span style={{ fontWeight: 700, color: "#0E1A2B", display: "block", marginBottom: "4px" }}>Primary constraint</span>
-                  What limits your stability
-                </li>
-                <li style={{
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  color: "#5E6873",
-                  lineHeight: "1.6"
-                }}>
-                  <span style={{ fontWeight: 700, color: "#0E1A2B", display: "block", marginBottom: "4px" }}>Decision impact</span>
-                  What to change, score impact
-                </li>
+                {[
+                  "Your stability classification",
+                  "Primary income constraint",
+                  "One key improvement area"
+                ].map((item, idx) => (
+                  <li key={idx} style={{
+                    fontSize: "13px",
+                    fontWeight: 500,
+                    color: "#5E6873",
+                    lineHeight: "1.6",
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "8px"
+                  }}>
+                    <CheckIcon />
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
             </div>
 
             {/* PAID TIER */}
             <div style={{
               backgroundColor: "#FFFFFF",
-              border: "2px solid #1F6D7A",
+              border: "2px solid " + TealColor,
               borderRadius: "16px",
               padding: "32px 24px",
               position: "relative"
@@ -363,11 +350,11 @@ export default function SectionFree() {
                 top: "-12px",
                 left: "50%",
                 transform: "translateX(-50%)",
-                backgroundColor: "#1F6D7A",
+                backgroundColor: TealColor,
                 color: "#FFFFFF",
-                padding: "4px 14px",
+                padding: "4px 16px",
                 borderRadius: "999px",
-                fontSize: "11px",
+                fontSize: "10px",
                 fontWeight: 700,
                 letterSpacing: "0.08em",
                 textTransform: "uppercase"
@@ -379,17 +366,17 @@ export default function SectionFree() {
                 fontSize: "11px",
                 fontWeight: 700,
                 letterSpacing: "0.12em",
-                color: "#1F6D7A",
+                color: TealColor,
                 textTransform: "uppercase",
                 marginBottom: "12px",
                 marginTop: "8px"
               }}>
-                Complete verification
+                Complete Analysis
               </div>
               <div style={{
                 fontSize: "28px",
                 fontWeight: 700,
-                color: "#0E1A2B",
+                color: NavyColor,
                 marginBottom: "4px"
               }}>
                 $69
@@ -409,42 +396,36 @@ export default function SectionFree() {
                 listStyle: "none",
                 display: "flex",
                 flexDirection: "column",
-                gap: "16px",
+                gap: "12px",
                 marginBottom: "28px"
               }}>
-                <li style={{
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  color: "#5E6873",
-                  lineHeight: "1.6"
-                }}>
-                  <span style={{ fontWeight: 700, color: "#0E1A2B", display: "block", marginBottom: "4px" }}>Full report</span>
-                  Complete analysis and breakdown
-                </li>
-                <li style={{
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  color: "#5E6873",
-                  lineHeight: "1.6"
-                }}>
-                  <span style={{ fontWeight: 700, color: "#0E1A2B", display: "block", marginBottom: "4px" }}>Risk assessment</span>
-                  All structural risks identified
-                </li>
-                <li style={{
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  color: "#5E6873",
-                  lineHeight: "1.6"
-                }}>
-                  <span style={{ fontWeight: 700, color: "#0E1A2B", display: "block", marginBottom: "4px" }}>Action plan</span>
-                  Steps to improve stability
-                </li>
+                {[
+                  "Everything in free +",
+                  "Complete 6-factor breakdown",
+                  "Detailed risk assessment",
+                  "3-step personalized action plan",
+                  "Impact scores for each action",
+                  "Permanent timestamped record"
+                ].map((item, idx) => (
+                  <li key={idx} style={{
+                    fontSize: "13px",
+                    fontWeight: 500,
+                    color: NavyColor,
+                    lineHeight: "1.6",
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "8px"
+                  }}>
+                    <CheckIcon />
+                    <span>{item}</span>
+                  </li>
+                ))}
               </ul>
 
               <button style={{
                 width: "100%",
                 height: "52px",
-                backgroundColor: "#1F6D7A",
+                backgroundColor: TealColor,
                 color: "#FFFFFF",
                 fontSize: "15px",
                 fontWeight: 600,
@@ -481,7 +462,7 @@ export default function SectionFree() {
             color: "#5E6873",
             textAlign: "center"
           }}>
-            <span style={{ fontWeight: 700, color: "#0E1A2B" }}>Model RP-2.0</span>
+            <span style={{ fontWeight: 700, color: NavyColor }}>Model RP-2.0</span>
             <span style={{ color: "#D1D5DB", margin: "0 6px" }}>·</span>
             Same inputs produce same result
           </div>
