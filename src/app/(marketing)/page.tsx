@@ -362,9 +362,9 @@ export default function LandingPage() {
               </div>
 
               {/* Score Number */}
-              <div style={{ display: "flex", alignItems: "baseline", gap: "12px", marginBottom: "0" }}>
-                <span style={{ fontSize: "100px", fontWeight: "700", lineHeight: "0.85", letterSpacing: "-0.05em", color: "#0E1A2B" }}>72</span>
-                <span style={{ fontSize: "32px", fontWeight: "400", color: "#6B7280" }}>/100</span>
+              <div style={{ display: "flex", alignItems: "flex-end", gap: "8px", marginBottom: "0" }}>
+                <span style={{ fontSize: "100px", fontWeight: "700", lineHeight: "0.9", letterSpacing: "-0.05em", color: "#0E1A2B", paddingBottom: "4px" }}>72</span>
+                <span style={{ fontSize: "32px", fontWeight: "400", color: "#6B7280", lineHeight: "1", paddingBottom: "6px" }}>/100</span>
               </div>
 
               {/* Divider */}
