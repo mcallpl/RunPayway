@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import logoBlue from "../../../../public/runpayway-logo-blue.png";
+import logoBlue from "../../../../public/runpayway-logo.png";
 import { C, sans } from "@/lib/design-tokens";
 
 /* ------------------------------------------------------------------ */

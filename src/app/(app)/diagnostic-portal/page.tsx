@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import logoBlue from "../../../../public/runpayway-logo-blue.png";
+import logoBlue from "../../../../public/runpayway-logo.png";
 import { getRemaining, getRemainingServer } from "@/lib/monitoring";
 import { C, T, mono, sans, sp, padX, cardStyle, ctaButton, canHover, h2Style, body, bodySm } from "@/lib/design-tokens";
 

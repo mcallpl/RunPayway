@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import logoBlue from "../../../../public/runpayway-logo-blue.png";
+import logoBlue from "../../../../public/runpayway-logo.png";
 import { C, mono, sans } from "@/lib/design-tokens";
 import { STRIPE_ADVISOR_STARTER, STRIPE_ADVISOR_PROFESSIONAL, STRIPE_ADVISOR_ENTERPRISE } from "@/lib/config";
 
