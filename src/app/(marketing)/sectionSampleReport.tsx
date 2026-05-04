@@ -443,25 +443,33 @@ export default function SectionSampleReport() {
                 height: "56px",
                 padding: "0 40px",
                 borderRadius: "12px",
-                backgroundColor: C.navy,
+                backgroundColor: C.teal,
                 color: "#FFFFFF",
                 fontSize: "16px",
                 fontWeight: 600,
                 border: "none",
                 cursor: "pointer",
                 transition: "all 200ms ease",
-                boxShadow: "0 8px 24px rgba(14, 26, 43, 0.12)"
+                boxShadow: "0 8px 24px rgba(31, 109, 122, 0.16)"
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 12px 32px rgba(14, 26, 43, 0.16)";
+                e.currentTarget.style.boxShadow = "0 12px 32px rgba(31, 109, 122, 0.24)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 8px 24px rgba(14, 26, 43, 0.12)";
+                e.currentTarget.style.boxShadow = "0 8px 24px rgba(31, 109, 122, 0.16)";
               }}>
-                Get Your Full Report Today — $69
+                Get Full Report for $69
               </button>
+              <p style={{
+                fontSize: "13px",
+                color: C.textSecondary,
+                marginTop: "12px",
+                marginBottom: "0"
+              }}>
+                One-time purchase · No subscriptions
+              </p>
             </div>
           </div>
         </div>
@@ -611,26 +619,38 @@ export default function SectionSampleReport() {
             </div>
 
             {/* Final CTA Mobile */}
-            <button style={{
-              width: "100%",
-              height: "52px",
-              borderRadius: "12px",
-              backgroundColor: C.navy,
-              color: "#FFFFFF",
-              fontSize: "15px",
-              fontWeight: 600,
-              border: "none",
-              cursor: "pointer",
-              transition: "all 150ms ease"
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = "0 6px 16px rgba(14, 26, 43, 0.12)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = "none";
-            }}>
-              Get Your Full Report — $69
-            </button>
+            <div>
+              <button style={{
+                width: "100%",
+                height: "52px",
+                borderRadius: "12px",
+                backgroundColor: C.teal,
+                color: "#FFFFFF",
+                fontSize: "15px",
+                fontWeight: 600,
+                border: "none",
+                cursor: "pointer",
+                transition: "all 150ms ease",
+                boxShadow: "0 6px 20px rgba(31, 109, 122, 0.16)"
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = "0 8px 24px rgba(31, 109, 122, 0.24)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = "0 6px 20px rgba(31, 109, 122, 0.16)";
+              }}>
+                Get Full Report for $69
+              </button>
+              <p style={{
+                fontSize: "12px",
+                color: C.textSecondary,
+                textAlign: "center",
+                marginTop: "10px",
+                marginBottom: "0"
+              }}>
+                One-time purchase · No subscriptions
+              </p>
+            </div>
           </div>
         </div>
       </div>

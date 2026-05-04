@@ -230,7 +230,7 @@ export default function SectionFree() {
                 e.currentTarget.style.transform = "translateY(0)";
                 e.currentTarget.style.boxShadow = "0 8px 24px rgba(31, 109, 122, 0.16)";
               }}>
-                Start Complete Verification
+                Get Full Report for $69
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>
@@ -464,7 +464,7 @@ export default function SectionFree() {
               onMouseLeave={(e) => {
                 e.currentTarget.style.boxShadow = "none";
               }}>
-                Start Verification
+                Get Full Report for $69
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>
