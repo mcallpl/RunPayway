@@ -1,40 +1,127 @@
 "use client";
 
+import { useState } from "react";
+
+// Global styles for WCAG 2.1 AA compliance
+const globalStyles = `
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid #2F6BFF;
+    outline-offset: 4px;
+  }
+`;
+
+const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
+  <a
+    href={href}
+    style={{
+      fontSize: "14px",
+      fontWeight: "500",
+      color: "#0E1A2B",
+      textDecoration: "none",
+      lineHeight: "1",
+      whiteSpace: "nowrap",
+      padding: "8px 4px",
+      transition: "color 150ms ease, outline 150ms ease",
+      cursor: "pointer",
+      outline: "2px solid transparent",
+      outlineOffset: "4px",
+      borderRadius: "4px"
+    }}
+    onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"}
+    onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}
+    onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
+    onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
+  >
+    {children}
+  </a>
+);
+
 export default function LandingPage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <div className="w-full">
-      {/* Force rebuild - logo 32px */}
-      {/* HEADER - EXACT REFERENCE MATCH */}
+      <style dangerouslySetInnerHTML={{ __html: globalStyles }} />
+      {/* HEADER - WCAG 2.1 AA COMPLIANT */}
       <header style={{ position: "sticky", top: "0", zIndex: "50", backgroundColor: "#FFFFFF", borderBottom: "1px solid #E5E7EB", boxShadow: "0px 1px 0px rgba(0,0,0,0.04)", height: "72px", width: "100%", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         {/* Desktop */}
         <div className="hidden lg:flex h-full items-center" style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 48px", justifyContent: "space-between" }}>
           {/* Logo */}
-          <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: "0", marginRight: "80px" }}>
+          <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none", flexShrink: "0", marginRight: "80px", outline: "2px solid transparent", outlineOffset: "4px", borderRadius: "4px", transition: "outline 150ms ease" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>
             <img src="/runpayway-logo.png" alt="RunPayway™" style={{ height: "30px", width: "auto" }} />
           </a>
 
           {/* Center Navigation */}
-          <nav style={{ display: "flex", gap: "28px", alignItems: "center", flex: "1" }}>
-            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>How It Works</a>
-            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>Methodology</a>
-            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>Use Cases</a>
+          <nav style={{ display: "flex", gap: "28px", alignItems: "center", flex: "1" }} aria-label="Main navigation">
+            <NavLink href="#how-it-works">How It Works</NavLink>
+            <NavLink href="#methodology">Methodology</NavLink>
+            <NavLink href="#use-cases">Use Cases</NavLink>
 
             <div style={{ position: "relative" }}>
-              <button style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", padding: "8px 4px", transition: "color 150ms ease" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>
+              <button
+                style={{
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  color: "#0E1A2B",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  padding: "8px 4px",
+                  transition: "color 150ms ease, outline 150ms ease",
+                  outline: "2px solid transparent",
+                  outlineOffset: "4px",
+                  borderRadius: "4px"
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"}
+                onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}
+                onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
+                onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
+                aria-haspopup="menu"
+              >
                 Solutions
                 <span style={{ fontSize: "11px" }}>▼</span>
               </button>
             </div>
 
-            <a href="/plans" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer", border: "none", backgroundColor: "transparent", outline: "none" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>Plans</a>
-            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>Learn</a>
-            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", whiteSpace: "nowrap", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>About</a>
+            <NavLink href="/plans">Plans</NavLink>
+            <NavLink href="#learn">Learn</NavLink>
+            <NavLink href="#about">About</NavLink>
           </nav>
 
           {/* Right Side */}
           <div style={{ display: "flex", gap: "28px", alignItems: "center", marginLeft: "auto" }}>
-            <a href="#" style={{ fontSize: "14px", fontWeight: "500", color: "#0E1A2B", textDecoration: "none", lineHeight: "1", padding: "8px 4px", transition: "color 150ms ease", cursor: "pointer" }} onMouseEnter={(e) => e.currentTarget.style.color = "#2F6BFF"} onMouseLeave={(e) => e.currentTarget.style.color = "#0E1A2B"}>Sign In</a>
-            <button style={{ height: "40px", padding: "0 24px", background: "linear-gradient(135deg, #0E1A2B 0%, #0A2540 100%)", color: "#FFFFFF", borderRadius: "6px", fontWeight: "600", fontSize: "14px", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", whiteSpace: "nowrap", boxShadow: "0px 6px 14px rgba(14, 26, 43, 0.18)", transition: "all 150ms ease" }} onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0px 14px 32px rgba(10, 37, 64, 0.32)"; }} onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 6px 14px rgba(14, 26, 43, 0.18)"; }} onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 6px 14px rgba(10, 37, 64, 0.2)"; }}>
+            <NavLink href="#sign-in">Sign In</NavLink>
+            <button
+              style={{
+                height: "40px",
+                padding: "0 24px",
+                background: "linear-gradient(135deg, #0E1A2B 0%, #0A2540 100%)",
+                color: "#FFFFFF",
+                borderRadius: "6px",
+                fontWeight: "600",
+                fontSize: "14px",
+                border: "none",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                whiteSpace: "nowrap",
+                boxShadow: "0px 6px 14px rgba(14, 26, 43, 0.18)",
+                transition: "all 150ms ease",
+                outline: "2px solid transparent",
+                outlineOffset: "4px"
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0px 14px 32px rgba(10, 37, 64, 0.32)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 6px 14px rgba(14, 26, 43, 0.18)"; }}
+              onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 6px 14px rgba(10, 37, 64, 0.2)"; }}
+              onFocus={(e) => e.currentTarget.style.outline = "2px solid #FFFFFF"}
+              onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
+              aria-label="Start income verification"
+            >
               Start Verification
             </button>
           </div>
@@ -45,7 +132,27 @@ export default function LandingPage() {
           <a href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
             <img src="/RunPayway/runpayway-logo-blue.png" alt="RunPayway™" style={{ height: "25px", width: "auto" }} />
           </a>
-          <button style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", gap: "5px", padding: "0" }}>
+          <button
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              display: "flex",
+              flexDirection: "column",
+              gap: "5px",
+              padding: "8px",
+              outline: "2px solid transparent",
+              outlineOffset: "4px",
+              borderRadius: "4px",
+              transition: "outline 150ms ease"
+            }}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
+            onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
+            aria-label="Toggle navigation menu"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
+          >
             <span style={{ display: "block", width: "24px", height: "2px", backgroundColor: "#0E1A2B" }}></span>
             <span style={{ display: "block", width: "24px", height: "2px", backgroundColor: "#0E1A2B" }}></span>
             <span style={{ display: "block", width: "24px", height: "2px", backgroundColor: "#0E1A2B" }}></span>
@@ -53,7 +160,7 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* SECTION 1: HERO - ELITE ENTERPRISE LEVEL */}
+      {/* SECTION 1: HERO - WCAG 2.1 AA COMPLIANT */}
       <section style={{ background: "linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%)", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         {/* Desktop */}
         <div className="hidden lg:block" style={{ padding: "96px 48px 88px", maxWidth: "1440px", marginLeft: "auto", marginRight: "auto" }}>
@@ -75,15 +182,44 @@ export default function LandingPage() {
                 <span style={{ fontWeight: "700", color: "#2F6BFF" }}>RunPayway™</span> defines whether income stability holds before commitment.
               </p>
 
-              {/* Support */}
-              <p style={{ fontSize: "16px", lineHeight: "1.6", color: "#6B7280", marginBottom: "56px", fontFamily: "Inter" }}>
+              {/* Support - WCAG compliant color (#4B5563 has 7.2:1 contrast) */}
+              <p style={{ fontSize: "16px", lineHeight: "1.6", color: "#4B5563", marginBottom: "56px", fontFamily: "Inter" }}>
                 Without verification, income risk remains undefined.
               </p>
 
               {/* CTA */}
-              <button style={{ width: "280px", height: "56px", borderRadius: "10px", background: "linear-gradient(135deg, #0E1A2B 0%, #0A2540 100%)", color: "#FFFFFF", fontSize: "16px", fontWeight: "600", padding: "0 24px", display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", border: "none", cursor: "pointer", marginBottom: "44px", fontFamily: "Inter", boxShadow: "0px 10px 24px rgba(10, 37, 64, 0.28)", transition: "all 150ms ease" }} onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0px 14px 32px rgba(10, 37, 64, 0.32)"; }} onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 10px 24px rgba(10, 37, 64, 0.28)"; }} onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 6px 14px rgba(10, 37, 64, 0.2)"; }}>
+              <button
+                style={{
+                  width: "280px",
+                  height: "56px",
+                  borderRadius: "10px",
+                  background: "linear-gradient(135deg, #0E1A2B 0%, #0A2540 100%)",
+                  color: "#FFFFFF",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  padding: "0 24px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "12px",
+                  border: "none",
+                  cursor: "pointer",
+                  marginBottom: "44px",
+                  fontFamily: "Inter",
+                  boxShadow: "0px 10px 24px rgba(10, 37, 64, 0.28)",
+                  transition: "all 150ms ease",
+                  outline: "2px solid transparent",
+                  outlineOffset: "4px"
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0px 14px 32px rgba(10, 37, 64, 0.32)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 10px 24px rgba(10, 37, 64, 0.28)"; }}
+                onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 6px 14px rgba(10, 37, 64, 0.2)"; }}
+                onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
+                onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
+                aria-label="Start income verification"
+              >
                 Start Verification
-                <span>→</span>
+                <span aria-hidden="true">→</span>
               </button>
 
               {/* Micro text */}
@@ -91,7 +227,7 @@ export default function LandingPage() {
                 <div style={{ fontSize: "15px", fontWeight: "700", color: "#0E1A2B", marginBottom: "10px" }}>
                   Before financial commitment
                 </div>
-                <div style={{ fontSize: "14px", color: "#6B7280", lineHeight: "1.5" }}>
+                <div style={{ fontSize: "14px", color: "#4B5563", lineHeight: "1.5" }}>
                   Answer 6 inputs
                   <span style={{ color: "#D1D5DB", padding: "0 8px" }}>•</span>
                   Immediate result
@@ -110,7 +246,7 @@ export default function LandingPage() {
                 {/* Score Number Row */}
                 <div style={{ display: "flex", alignItems: "baseline", gap: "16px", marginBottom: "0" }}>
                   <span style={{ fontSize: "130px", fontWeight: "700", lineHeight: "0.85", letterSpacing: "-0.05em", color: "#0E1A2B" }}>72</span>
-                  <span style={{ fontSize: "44px", fontWeight: "400", color: "#9CA3AF", lineHeight: "0.9" }}>/100</span>
+                  <span style={{ fontSize: "44px", fontWeight: "400", color: "#6B7280", lineHeight: "0.9" }}>/100</span>
                 </div>
 
                 {/* Divider */}
@@ -121,8 +257,8 @@ export default function LandingPage() {
                   Established Stability
                 </div>
 
-                {/* Description */}
-                <p style={{ fontSize: "15px", lineHeight: "1.6", color: "#6B7280", margin: "0 0 44px 0" }}>
+                {/* Description - WCAG compliant color */}
+                <p style={{ fontSize: "15px", lineHeight: "1.6", color: "#4B5563", margin: "0 0 44px 0" }}>
                   Determines whether income holds under disruption.
                 </p>
 
@@ -134,15 +270,15 @@ export default function LandingPage() {
                   <div style={{ position: "absolute", left: "38%", top: "50%", width: "24px", height: "24px", backgroundColor: "#2F6BFF", border: "4px solid #FFFFFF", borderRadius: "999px", transform: "translate(-50%, -50%)" }}></div>
                 </div>
 
-                {/* Progress Labels */}
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", fontSize: "14px", color: "#6B7280", marginBottom: "48px" }}>
+                {/* Progress Labels - WCAG compliant color */}
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", fontSize: "14px", color: "#4B5563", marginBottom: "48px" }}>
                   <span style={{ color: "#2F6BFF", fontWeight: "600" }}>Protected</span>
                   <span style={{ textAlign: "center" }}>Recurring</span>
                   <span style={{ textAlign: "right" }}>At Risk</span>
                 </div>
 
-                {/* Footer */}
-                <div style={{ borderTop: "1px solid #E5E7EB", paddingTop: "28px", display: "flex", alignItems: "center", gap: "28px", fontSize: "14px", color: "#6B7280", marginTop: "auto" }}>
+                {/* Footer - WCAG compliant color */}
+                <div style={{ borderTop: "1px solid #E5E7EB", paddingTop: "28px", display: "flex", alignItems: "center", gap: "28px", fontSize: "14px", color: "#4B5563", marginTop: "auto" }}>
                   <span style={{ fontWeight: "500" }}>Model RP-2.0</span>
                   <div style={{ width: "1px", height: "18px", backgroundColor: "#E5E7EB" }}></div>
                   <span>Same inputs produce same result</span>
@@ -170,15 +306,42 @@ export default function LandingPage() {
               <span style={{ fontWeight: "700", color: "#2F6BFF" }}>RunPayway™</span> defines whether income stability holds before commitment.
             </p>
 
-            {/* Support Mobile */}
-            <p style={{ fontSize: "16px", lineHeight: "1.55", color: "#6B7280", marginBottom: "32px" }}>
+            {/* Support Mobile - WCAG compliant color */}
+            <p style={{ fontSize: "16px", lineHeight: "1.55", color: "#4B5563", marginBottom: "32px" }}>
               Without verification, income risk remains undefined.
             </p>
 
             {/* CTA Mobile */}
-            <button style={{ width: "100%", height: "64px", borderRadius: "12px", background: "linear-gradient(135deg, #0E1A2B 0%, #0A2540 100%)", color: "#FFFFFF", fontSize: "18px", fontWeight: "600", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", border: "none", cursor: "pointer", marginBottom: "28px", boxShadow: "0px 10px 24px rgba(10, 37, 64, 0.28)", transition: "all 150ms ease" }} onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0px 14px 32px rgba(10, 37, 64, 0.32)"; }} onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 10px 24px rgba(10, 37, 64, 0.28)"; }} onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 6px 14px rgba(10, 37, 64, 0.2)"; }}>
+            <button
+              style={{
+                width: "100%",
+                height: "64px",
+                borderRadius: "12px",
+                background: "linear-gradient(135deg, #0E1A2B 0%, #0A2540 100%)",
+                color: "#FFFFFF",
+                fontSize: "18px",
+                fontWeight: "600",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                border: "none",
+                cursor: "pointer",
+                marginBottom: "28px",
+                boxShadow: "0px 10px 24px rgba(10, 37, 64, 0.28)",
+                transition: "all 150ms ease",
+                outline: "2px solid transparent",
+                outlineOffset: "4px"
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0px 14px 32px rgba(10, 37, 64, 0.32)"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 10px 24px rgba(10, 37, 64, 0.28)"; }}
+              onMouseDown={(e) => { e.currentTarget.style.transform = "translateY(0px)"; e.currentTarget.style.boxShadow = "0px 6px 14px rgba(10, 37, 64, 0.2)"; }}
+              onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
+              onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
+              aria-label="Start income verification"
+            >
               Start Verification
-              <span>→</span>
+              <span aria-hidden="true">→</span>
             </button>
 
             {/* Micro Mobile */}
@@ -186,7 +349,7 @@ export default function LandingPage() {
               <div style={{ fontSize: "16px", fontWeight: "700", color: "#0E1A2B", marginBottom: "8px" }}>
                 Before financial commitment
               </div>
-              <div style={{ fontSize: "15px", color: "#6B7280" }}>
+              <div style={{ fontSize: "15px", color: "#4B5563" }}>
                 Answer 6 inputs · Immediate result
               </div>
             </div>
@@ -201,7 +364,7 @@ export default function LandingPage() {
               {/* Score Number */}
               <div style={{ display: "flex", alignItems: "baseline", gap: "12px", marginBottom: "0" }}>
                 <span style={{ fontSize: "100px", fontWeight: "700", lineHeight: "0.85", letterSpacing: "-0.05em", color: "#0E1A2B" }}>72</span>
-                <span style={{ fontSize: "32px", fontWeight: "400", color: "#9CA3AF" }}>/100</span>
+                <span style={{ fontSize: "32px", fontWeight: "400", color: "#6B7280" }}>/100</span>
               </div>
 
               {/* Divider */}
@@ -212,8 +375,8 @@ export default function LandingPage() {
                 Established Stability
               </div>
 
-              {/* Description */}
-              <p style={{ fontSize: "14px", lineHeight: "1.5", color: "#6B7280", marginBottom: "24px", margin: "0 0 24px 0" }}>
+              {/* Description - WCAG compliant color */}
+              <p style={{ fontSize: "14px", lineHeight: "1.5", color: "#4B5563", marginBottom: "24px", margin: "0 0 24px 0" }}>
                 Determines whether income holds under disruption.
               </p>
 
@@ -223,15 +386,15 @@ export default function LandingPage() {
                 <div style={{ position: "absolute", left: "38%", top: "50%", width: "20px", height: "20px", backgroundColor: "#2F6BFF", border: "3px solid #FFFFFF", borderRadius: "999px", transform: "translate(-50%, -50%)" }}></div>
               </div>
 
-              {/* Progress Labels */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", fontSize: "13px", color: "#6B7280", marginBottom: "24px" }}>
+              {/* Progress Labels - WCAG compliant color */}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", fontSize: "13px", color: "#4B5563", marginBottom: "24px" }}>
                 <span style={{ color: "#2F6BFF", fontWeight: "600" }}>Protected</span>
                 <span style={{ textAlign: "center" }}>Recurring</span>
                 <span style={{ textAlign: "right" }}>At Risk</span>
               </div>
 
-              {/* Footer */}
-              <div style={{ borderTop: "1px solid #E5E7EB", paddingTop: "20px", fontSize: "13px", color: "#6B7280", marginTop: "auto" }}>
+              {/* Footer - WCAG compliant color */}
+              <div style={{ borderTop: "1px solid #E5E7EB", paddingTop: "20px", fontSize: "13px", color: "#4B5563", marginTop: "auto" }}>
                 <span>Model RP-2.0 · Same inputs produce same result</span>
               </div>
             </div>
@@ -239,14 +402,14 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* TRUST STRIP - HORIZONTAL LAYOUT */}
+      {/* TRUST STRIP - WCAG 2.1 AA COMPLIANT */}
       <section style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E5E7EB", padding: "80px 48px 80px", maxWidth: "1440px", marginLeft: "auto", marginRight: "auto", fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}>
         {/* Divider Above Arrow */}
         <div style={{ width: "120px", height: "1px", backgroundColor: "#E5E7EB", margin: "0 auto 16px" }}></div>
 
         {/* Arrow */}
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2.5" style={{ marginLeft: "auto", marginRight: "auto" }}>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2.5" style={{ marginLeft: "auto", marginRight: "auto" }} aria-hidden="true">
             <path d="M12 5v14M5 12l7 7 7-7" />
           </svg>
         </div>
@@ -260,33 +423,33 @@ export default function LandingPage() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "80px" }}>
           {/* Item 1 */}
           <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
               <path d="M12 2L5 5v7c0 6 7 9 7 9s7-3 7-9V5l-7-3z" />
               <polyline points="9 12 11 14 15 10" />
             </svg>
-            <p style={{ fontSize: "15px", fontWeight: "500", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
+            <p style={{ fontSize: "15px", fontWeight: "500", color: "#4B5563", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
               Independent verification
             </p>
           </div>
 
           {/* Item 2 */}
           <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
               <path d="M7 11V7a5 5 0 0110 0v4" />
               <circle cx="12" cy="16" r="1" />
             </svg>
-            <p style={{ fontSize: "15px", fontWeight: "500", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
+            <p style={{ fontSize: "15px", fontWeight: "500", color: "#4B5563", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
               No documents required
             </p>
           </div>
 
           {/* Item 3 */}
           <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2F6BFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: "0" }} aria-hidden="true">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
             </svg>
-            <p style={{ fontSize: "15px", fontWeight: "500", color: "#6B7280", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
+            <p style={{ fontSize: "15px", fontWeight: "500", color: "#4B5563", margin: "0", fontFamily: "Inter", lineHeight: "1.5" }}>
               Instant results
             </p>
           </div>
@@ -315,38 +478,38 @@ export default function LandingPage() {
       <section className="bg-white" style={{ padding: "80px 40px" }}>
         <div className="max-w-[1400px] mx-auto">
           <h2 className="text-[42px] font-bold text-[#0E1A2B] mb-6">What the model evaluates</h2>
-          <p className="text-[16px] text-[#6B7280] mb-12">A fixed set of inputs determines the result.</p>
+          <p className="text-[16px] text-[#4B5563] mb-12">A fixed set of inputs determines the result.</p>
           <div className="grid grid-cols-3 gap-10 mb-8">
             <div className="bg-white p-8 rounded-[12px] border border-[#E5E7EB]">
               <h3 className="text-[18px] font-bold text-[#0E1A2B] mb-3">Concentration</h3>
-              <p className="text-[14px] text-[#6B7280]">Reliance on primary income</p>
+              <p className="text-[14px] text-[#4B5563]">Reliance on primary income</p>
             </div>
             <div className="bg-white p-8 rounded-[12px] border border-[#E5E7EB]">
               <h3 className="text-[18px] font-bold text-[#0E1A2B] mb-3">Source Diversity</h3>
-              <p className="text-[14px] text-[#6B7280]">Distribution across sources</p>
+              <p className="text-[14px] text-[#4B5563]">Distribution across sources</p>
             </div>
             <div className="bg-white p-8 rounded-[12px] border border-[#E5E7EB]">
               <h3 className="text-[18px] font-bold text-[#0E1A2B] mb-3">Forward Visibility</h3>
-              <p className="text-[14px] text-[#6B7280]">Income already secured</p>
+              <p className="text-[14px] text-[#4B5563]">Income already secured</p>
             </div>
             <div className="bg-white p-8 rounded-[12px] border border-[#E5E7EB]">
               <h3 className="text-[18px] font-bold text-[#0E1A2B] mb-3">Stability Pattern</h3>
-              <p className="text-[14px] text-[#6B7280]">Consistency over time</p>
+              <p className="text-[14px] text-[#4B5563]">Consistency over time</p>
             </div>
             <div className="bg-white p-8 rounded-[12px] border border-[#E5E7EB]">
               <h3 className="text-[18px] font-bold text-[#0E1A2B] mb-3">Continuity</h3>
-              <p className="text-[14px] text-[#6B7280]">Income without activity</p>
+              <p className="text-[14px] text-[#4B5563]">Income without activity</p>
             </div>
             <div className="bg-white p-8 rounded-[12px] border border-[#E5E7EB]">
               <h3 className="text-[18px] font-bold text-[#0E1A2B] mb-3">Dependency</h3>
-              <p className="text-[14px] text-[#6B7280]">Dependence on effort</p>
+              <p className="text-[14px] text-[#4B5563]">Dependence on effort</p>
             </div>
           </div>
           <div className="bg-[#F3F4F6] rounded-[12px] p-6 flex items-center gap-3">
-            <svg className="w-5 h-5 text-[#0275D8] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <svg className="w-5 h-5 text-[#0275D8] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
-            <p className="text-[13px] text-[#6B7280] m-0"><span className="font-semibold text-[#0E1A2B]">Model RP-2.0</span> · Fixed rules · Same inputs produce same result</p>
+            <p className="text-[13px] text-[#4B5563] m-0"><span className="font-semibold text-[#0E1A2B]">Model RP-2.0</span> · Fixed rules · Same inputs produce same result</p>
           </div>
         </div>
       </section>
@@ -355,7 +518,7 @@ export default function LandingPage() {
       <section className="bg-white" style={{ padding: "80px 40px" }}>
         <div className="max-w-[1400px] mx-auto">
           <h2 className="text-[42px] font-bold text-[#0E1A2B] mb-6">Same income. Different outcome.</h2>
-          <p className="text-[16px] text-[#6B7280] mb-12">Income level does not determine stability. Structure does.</p>
+          <p className="text-[16px] text-[#4B5563] mb-12">Income level does not determine stability. Structure does.</p>
 
           <div className="mb-8">
             <div className="bg-[#F9F5F0] rounded-[8px] px-6 py-3 inline-flex items-center gap-3 mb-12">
@@ -370,7 +533,7 @@ export default function LandingPage() {
               <div className="text-[72px] font-bold text-[#C62828] mb-2" style={{ lineHeight: "1" }}>31</div>
               <div className="text-[18px] font-bold text-[#C62828] mb-8">Limited Stability</div>
               <div className="border-b border-[#E5E7EB] pb-6 mb-6">
-                <p className="text-[14px] text-[#6B7280] m-0">Income depends on <span className="font-semibold">one source.</span></p>
+                <p className="text-[14px] text-[#4B5563] m-0">Income depends on <span className="font-semibold">one source.</span></p>
               </div>
             </div>
 
@@ -379,18 +542,18 @@ export default function LandingPage() {
               <div className="text-[72px] font-bold text-[#2E7D32] mb-2" style={{ lineHeight: "1" }}>74</div>
               <div className="text-[18px] font-bold text-[#2E7D32] mb-8">Established Stability</div>
               <div className="border-b border-[#E5E7EB] pb-6 mb-6">
-                <p className="text-[14px] text-[#6B7280] m-0">Income is <span className="font-semibold">distributed.</span></p>
+                <p className="text-[14px] text-[#4B5563] m-0">Income is <span className="font-semibold">distributed.</span></p>
               </div>
             </div>
           </div>
 
           <div className="flex items-center justify-center gap-4 mb-12">
-            <svg className="w-6 h-6 text-[#0275D8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 text-[#0275D8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
           </div>
 
-          <p className="text-center text-[16px] text-[#6B7280] mb-8">Structure determines outcome</p>
+          <p className="text-center text-[16px] text-[#4B5563] mb-8">Structure determines outcome</p>
         </div>
       </section>
 
@@ -398,41 +561,41 @@ export default function LandingPage() {
       <section className="bg-white" style={{ padding: "80px 40px" }}>
         <div className="max-w-[1400px] mx-auto">
           <h2 className="text-[42px] font-bold text-[#0E1A2B] mb-6">Your current result is incomplete.</h2>
-          <p className="text-[16px] text-[#6B7280] mb-12">Full verification defines your income stability.</p>
+          <p className="text-[16px] text-[#4B5563] mb-12">Full verification defines your income stability.</p>
 
           <div className="grid grid-cols-2 gap-12 items-center">
             <div className="bg-white rounded-[12px] border border-[#E5E7EB] p-10">
-              <div className="text-[12px] font-semibold text-[#6B7280] uppercase mb-6">Initial Output</div>
+              <div className="text-[12px] font-semibold text-[#4B5563] uppercase mb-6">Initial Output</div>
               <h3 className="text-[32px] font-bold text-[#0E1A2B] mb-8">FREE</h3>
 
               <div className="space-y-6">
                 <div className="flex gap-4 items-start pb-6 border-b border-[#E5E7EB]">
                   <div className="w-10 h-10 rounded-lg bg-[#F3F4F6] flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-[#6B7280]" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5 text-[#4B5563]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                       <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
                     </svg>
                   </div>
                   <div>
                     <p className="text-[14px] font-semibold text-[#0E1A2B] m-0">Stability classification</p>
-                    <p className="text-[13px] text-[#6B7280] m-0 mt-1">Your current stability class (band)</p>
+                    <p className="text-[13px] text-[#4B5563] m-0 mt-1">Your current stability class (band)</p>
                   </div>
                 </div>
 
                 <div className="flex gap-4 items-start pb-6 border-b border-[#E5E7EB]">
                   <div className="w-10 h-10 rounded-lg bg-[#F3F4F6] flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-[#6B7280]" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5 text-[#4B5563]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                       <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                     </svg>
                   </div>
                   <div>
                     <p className="text-[14px] font-semibold text-[#0E1A2B] m-0">Primary structural constraint</p>
-                    <p className="text-[13px] text-[#6B7280] m-0 mt-1">The main factor limiting your stability</p>
+                    <p className="text-[13px] text-[#4B5563] m-0 mt-1">The main factor limiting your stability</p>
                   </div>
                 </div>
 
                 <div className="flex gap-4 items-start">
                   <div className="w-10 h-10 rounded-lg bg-[#F3F4F6] flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-[#6B7280]" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5 text-[#4B5563]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                       <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
                     </svg>
                   </div>
@@ -456,7 +619,7 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <p className="text-[14px] font-semibold text-[#0E1A2B] m-0">Income Stability Score™</p>
-                    <p className="text-[13px] text-[#6B7280] m-0 mt-1">Your overall stability score on a 0–100 scale</p>
+                    <p className="text-[13px] text-[#4B5563] m-0 mt-1">Your overall stability score on a 0–100 scale</p>
                   </div>
                 </div>
 
@@ -468,7 +631,7 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <p className="text-[14px] font-semibold text-[#0E1A2B] m-0">Full structural breakdown</p>
-                    <p className="text-[13px] text-[#6B7280] m-0 mt-1">Complete view across all 6 structural inputs</p>
+                    <p className="text-[13px] text-[#4B5563] m-0 mt-1">Complete view across all 6 structural inputs</p>
                   </div>
                 </div>
 
@@ -480,14 +643,25 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <p className="text-[14px] font-semibold text-[#0E1A2B] m-0">Decision definition</p>
-                    <p className="text-[13px] text-[#6B7280] m-0 mt-1">What to change, how it impacts your score</p>
+                    <p className="text-[13px] text-[#4B5563] m-0 mt-1">What to change, how it impacts your score</p>
                   </div>
                 </div>
               </div>
 
-              <button className="w-full bg-[#0E1A2B] text-white py-3 rounded-[8px] text-[16px] font-semibold mb-6 flex items-center justify-center gap-2">
+              <button
+                className="w-full bg-[#0E1A2B] text-white py-3 rounded-[8px] text-[16px] font-semibold mb-6 flex items-center justify-center gap-2 transition-all duration-150"
+                style={{
+                  outline: "2px solid transparent",
+                  outlineOffset: "4px"
+                }}
+                onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
+                onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
+                onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-1px)"}
+                onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0px)"}
+                aria-label="Complete income verification for $69"
+              >
                 Complete Verification
-                <span>→</span>
+                <span aria-hidden="true">→</span>
               </button>
             </div>
           </div>
@@ -506,15 +680,15 @@ export default function LandingPage() {
               <div className="space-y-6">
                 <div className="pb-6 border-b border-[#E5E7EB]">
                   <h4 className="text-[16px] font-bold text-[#0E1A2B] mb-2">Fixed rules applied</h4>
-                  <p className="text-[14px] text-[#6B7280] m-0">Rules are locked for all results.</p>
+                  <p className="text-[14px] text-[#4B5563] m-0">Rules are locked for all results.</p>
                 </div>
                 <div className="pb-6 border-b border-[#E5E7EB]">
                   <h4 className="text-[16px] font-bold text-[#0E1A2B] mb-2">No discretion</h4>
-                  <p className="text-[14px] text-[#6B7280] m-0">Rules are identical for all users.</p>
+                  <p className="text-[14px] text-[#4B5563] m-0">Rules are identical for all users.</p>
                 </div>
                 <div>
                   <h4 className="text-[16px] font-bold text-[#0E1A2B] mb-2">Same inputs produce same result</h4>
-                  <p className="text-[14px] text-[#6B7280] m-0">Consistency is guaranteed.</p>
+                  <p className="text-[14px] text-[#4B5563] m-0">Consistency is guaranteed.</p>
                 </div>
               </div>
             </div>
@@ -524,15 +698,15 @@ export default function LandingPage() {
               <div className="space-y-6">
                 <div className="pb-6 border-b border-[#E5E7EB]">
                   <h4 className="text-[16px] font-bold text-[#0E1A2B] mb-2">Timestamped result</h4>
-                  <p className="text-[14px] text-[#6B7280] m-0">Every result is timestamped to the second.</p>
+                  <p className="text-[14px] text-[#4B5563] m-0">Every result is timestamped to the second.</p>
                 </div>
                 <div className="pb-6 border-b border-[#E5E7EB]">
                   <h4 className="text-[16px] font-bold text-[#0E1A2B] mb-2">Permanent record ID</h4>
-                  <p className="text-[14px] text-[#6B7280] m-0">Unique ID assigned for permanent retrieval.</p>
+                  <p className="text-[14px] text-[#4B5563] m-0">Unique ID assigned for permanent retrieval.</p>
                 </div>
                 <div>
                   <h4 className="text-[16px] font-bold text-[#0E1A2B] mb-2">Results are not modified</h4>
-                  <p className="text-[14px] text-[#6B7280] m-0">Prior results never modified or deleted.</p>
+                  <p className="text-[14px] text-[#4B5563] m-0">Prior results never modified or deleted.</p>
                 </div>
               </div>
             </div>
@@ -540,7 +714,7 @@ export default function LandingPage() {
 
           <div className="mt-12 bg-[#F3F4F6] rounded-[12px] p-6 flex items-center gap-4">
             <span className="text-[18px]">✓</span>
-            <p className="text-[13px] text-[#6B7280] m-0">
+            <p className="text-[13px] text-[#4B5563] m-0">
               <span className="font-semibold text-[#0E1A2B]">Model RP-2.0</span> ·
               <span className="mx-2">Version locked</span> ·
               <span className="font-semibold text-[#0275D8]">Same inputs produce same result</span>
@@ -553,30 +727,41 @@ export default function LandingPage() {
       <section className="bg-[#F3F4F6]" style={{ padding: "80px 40px" }}>
         <div className="max-w-[1400px] mx-auto text-center">
           <h2 className="text-[42px] font-bold text-[#0E1A2B] mb-6">Check how your income is structured before you move forward.</h2>
-          <p className="text-[16px] text-[#6B7280] mb-8">Takes less than a minute · No documents required · Instant result</p>
-          <button className="bg-[#0E1A2B] text-white px-8 py-3 rounded-[8px] text-[16px] font-semibold mb-6 inline-flex items-center gap-2">
+          <p className="text-[16px] text-[#4B5563] mb-8">Takes less than a minute · No documents required · Instant result</p>
+          <button
+            className="bg-[#0E1A2B] text-white px-8 py-3 rounded-[8px] text-[16px] font-semibold mb-6 inline-flex items-center gap-2 transition-all duration-150"
+            style={{
+              outline: "2px solid transparent",
+              outlineOffset: "4px"
+            }}
+            onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
+            onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
+            onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-1px)"}
+            onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0px)"}
+            aria-label="Start income verification"
+          >
             Start Verification
-            <span>→</span>
+            <span aria-hidden="true">→</span>
           </button>
 
           <div className="mt-10 flex justify-center gap-8 text-[14px]">
             <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                 <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 3.062v6.718a3.066 3.066 0 01-3.062 3.062H9.391A3.066 3.066 0 016.329 19.5V9.517a3.066 3.066 0 012.938-3.062zm7.381 5.93a1 1 0 00-1.414-1.414L9 12.586 7.707 11.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-              <span className="text-[#6B7280]">Free</span>
+              <span className="text-[#4B5563]">Free</span>
             </div>
             <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                 <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
               </svg>
-              <span className="text-[#6B7280]">Private</span>
+              <span className="text-[#4B5563]">Private</span>
             </div>
             <div className="flex items-center gap-2">
-              <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                 <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 17v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.381z" clipRule="evenodd" />
               </svg>
-              <span className="text-[#6B7280]">Immediate result</span>
+              <span className="text-[#4B5563]">Immediate result</span>
             </div>
           </div>
         </div>
@@ -588,12 +773,12 @@ export default function LandingPage() {
         <div style={{ padding: "0 40px 64px", borderBottom: "1px solid #E5E7EB" }}>
           <div className="max-w-[800px] mx-auto text-center">
             <div className="mb-8 flex items-center justify-center gap-3">
-              <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                 <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 17v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.381z" clipRule="evenodd" />
               </svg>
               <span className="text-[12px] font-semibold text-[#0275D8] tracking-widest">METHODOLOGY</span>
             </div>
-            <p className="text-[16px] text-[#6B7280] mb-6">Structural Stability Model RP-2.0. Fixed methodology. Version-locked. Auditable results.</p>
+            <p className="text-[16px] text-[#4B5563] mb-6">Structural Stability Model RP-2.0. Fixed methodology. Version-locked. Auditable results.</p>
             <hr className="border-[#E5E7EB] mb-6" />
           </div>
         </div>
@@ -603,30 +788,41 @@ export default function LandingPage() {
           <div className="max-w-[1400px] mx-auto grid grid-cols-3 gap-16">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
                 </svg>
                 <h3 className="text-[12px] font-semibold text-[#0E1A2B] tracking-widest">DEVELOPER</h3>
               </div>
-              <p className="text-[14px] text-[#6B7280]">PeopleStar Enterprises, LLC.<br/>Orange County, California, USA.</p>
+              <p className="text-[14px] text-[#4B5563]">PeopleStar Enterprises, LLC.<br/>Orange County, California, USA.</p>
             </div>
 
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-[#0275D8]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 3.062v6.718a3.066 3.066 0 01-3.062 3.062H9.391A3.066 3.066 0 016.329 19.5V9.517a3.066 3.066 0 012.938-3.062zm7.381 5.93a1 1 0 00-1.414-1.414L9 12.586 7.707 11.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
                 <h3 className="text-[12px] font-semibold text-[#0E1A2B] tracking-widest">COMPLIANCE</h3>
               </div>
-              <p className="text-[14px] text-[#6B7280]">Designed for financial decision support. FCRA-aligned. GDPR/CCPA compatible.</p>
+              <p className="text-[14px] text-[#4B5563]">Designed for financial decision support. FCRA-aligned. GDPR/CCPA compatible.</p>
             </div>
 
             <div>
               <h3 className="text-[12px] font-semibold text-[#0E1A2B] tracking-widest mb-4">STAY INFORMED</h3>
               <div className="flex gap-2">
-                <input type="email" placeholder="Email address" className="flex-1 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-[6px] text-[14px]" />
-                <button className="bg-[#0275D8] text-white px-4 py-2.5 rounded-[6px]">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  className="flex-1 px-4 py-2.5 bg-white border border-[#E5E7EB] rounded-[6px] text-[14px]"
+                  aria-label="Email address for newsletter signup"
+                />
+                <button
+                  className="bg-[#0275D8] text-white px-4 py-2.5 rounded-[6px] transition-all duration-150"
+                  style={{ outline: "2px solid transparent", outlineOffset: "4px" }}
+                  onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"}
+                  onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}
+                  aria-label="Subscribe to newsletter"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
@@ -644,51 +840,51 @@ export default function LandingPage() {
                   <span className="text-[#0E1A2B] font-bold text-[18px]">RUNPAYWAY</span>
                   <span className="w-3 h-2 bg-[#0275D8]" style={{ clipPath: "polygon(0 0, 100% 0, 80% 100%, 0% 100%)" }}></span>
                 </div>
-                <p className="text-[13px] text-[#6B7280]">Income Stability Score™<br/>Income Structure Verification Standard</p>
-                <p className="text-[13px] text-[#6B7280] mt-4">Independent income verification based on fixed rules and structural analysis.</p>
+                <p className="text-[13px] text-[#4B5563]">Income Stability Score™<br/>Income Structure Verification Standard</p>
+                <p className="text-[13px] text-[#4B5563] mt-4">Independent income verification based on fixed rules and structural analysis.</p>
               </div>
 
               <div>
                 <h4 className="text-[12px] font-semibold text-[#0E1A2B] tracking-widest mb-4">PRODUCT</h4>
                 <div className="space-y-3">
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">How It Works</a>
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">Pricing</a>
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">Sample Report</a>
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">Methodology</a>
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">For Advisors</a>
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">For Organizations</a>
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">Industries</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>How It Works</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>Pricing</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>Sample Report</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>Methodology</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>For Advisors</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>For Organizations</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>Industries</a>
                 </div>
               </div>
 
               <div>
                 <h4 className="text-[12px] font-semibold text-[#0E1A2B] tracking-widest mb-4">COMPANY</h4>
                 <div className="space-y-3">
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">About</a>
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">Blog</a>
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">FAQ</a>
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">What's New</a>
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">Contact</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>About</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>Blog</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>FAQ</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>What's New</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>Contact</a>
                 </div>
               </div>
 
               <div>
                 <h4 className="text-[12px] font-semibold text-[#0E1A2B] tracking-widest mb-4">RESOURCES</h4>
                 <div className="space-y-3">
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">Documentation</a>
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">Methodology</a>
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">Use Cases</a>
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">Security</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>Documentation</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>Methodology</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>Use Cases</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>Security</a>
                 </div>
               </div>
 
               <div>
                 <h4 className="text-[12px] font-semibold text-[#0E1A2B] tracking-widest mb-4">LEGAL</h4>
                 <div className="space-y-3">
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">Privacy Policy</a>
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">Terms of Use</a>
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">Accessibility</a>
-                  <a href="#" className="text-[14px] text-[#6B7280] block hover:text-[#0E1A2B]">Security Practices</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>Privacy Policy</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>Terms of Use</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>Accessibility</a>
+                  <a href="#" className="text-[14px] text-[#4B5563] block hover:text-[#0E1A2B] transition-colors duration-150" style={{ outline: "2px solid transparent", outlineOffset: "4px" }} onFocus={(e) => e.currentTarget.style.outline = "2px solid #2F6BFF"} onBlur={(e) => e.currentTarget.style.outline = "2px solid transparent"}>Security Practices</a>
                 </div>
               </div>
             </div>
@@ -701,34 +897,34 @@ export default function LandingPage() {
             <span className="text-[#0E1A2B] font-bold text-[16px]">RUNPAYWAY</span>
             <span className="w-2 h-1.5 bg-[#0275D8]" style={{ clipPath: "polygon(0 0, 100% 0, 80% 100%, 0% 100%)" }}></span>
           </div>
-          <p className="text-[12px] text-[#6B7280] mb-8">Income Stability Score™<br/>Income Structure Verification Standard</p>
+          <p className="text-[12px] text-[#4B5563] mb-8">Income Stability Score™<br/>Income Structure Verification Standard</p>
 
           <div className="space-y-6 border-t border-[#E5E7EB] pt-6">
             <div>
               <h4 className="text-[12px] font-semibold text-[#0E1A2B] tracking-widest mb-3">PRODUCT</h4>
               <div className="space-y-2">
-                <a href="#" className="text-[13px] text-[#6B7280] block">How It Works</a>
-                <a href="#" className="text-[13px] text-[#6B7280] block">Pricing</a>
-                <a href="#" className="text-[13px] text-[#6B7280] block">Methodology</a>
-                <a href="#" className="text-[13px] text-[#6B7280] block">For Advisors</a>
+                <a href="#" className="text-[13px] text-[#4B5563] block">How It Works</a>
+                <a href="#" className="text-[13px] text-[#4B5563] block">Pricing</a>
+                <a href="#" className="text-[13px] text-[#4B5563] block">Methodology</a>
+                <a href="#" className="text-[13px] text-[#4B5563] block">For Advisors</a>
               </div>
             </div>
 
             <div>
               <h4 className="text-[12px] font-semibold text-[#0E1A2B] tracking-widest mb-3">COMPANY</h4>
               <div className="space-y-2">
-                <a href="#" className="text-[13px] text-[#6B7280] block">About</a>
-                <a href="#" className="text-[13px] text-[#6B7280] block">Blog</a>
-                <a href="#" className="text-[13px] text-[#6B7280] block">Contact</a>
+                <a href="#" className="text-[13px] text-[#4B5563] block">About</a>
+                <a href="#" className="text-[13px] text-[#4B5563] block">Blog</a>
+                <a href="#" className="text-[13px] text-[#4B5563] block">Contact</a>
               </div>
             </div>
 
             <div>
               <h4 className="text-[12px] font-semibold text-[#0E1A2B] tracking-widest mb-3">LEGAL</h4>
               <div className="space-y-2">
-                <a href="#" className="text-[13px] text-[#6B7280] block">Privacy Policy</a>
-                <a href="#" className="text-[13px] text-[#6B7280] block">Terms of Use</a>
-                <a href="#" className="text-[13px] text-[#6B7280] block">Accessibility</a>
+                <a href="#" className="text-[13px] text-[#4B5563] block">Privacy Policy</a>
+                <a href="#" className="text-[13px] text-[#4B5563] block">Terms of Use</a>
+                <a href="#" className="text-[13px] text-[#4B5563] block">Accessibility</a>
               </div>
             </div>
 
@@ -748,7 +944,7 @@ export default function LandingPage() {
 
         {/* COPYRIGHT */}
         <div style={{ padding: "24px 40px", backgroundColor: "#F9FAFB", borderTop: "1px solid #E5E7EB", textAlign: "center" }}>
-          <p className="text-[12px] text-[#6B7280] m-0">© 2026 RunPayway™. All rights reserved. · RunPayway™ is a product of PeopleStar Enterprises, LLC. · Orange County, California, USA. · Structural Stability Model RP-2.0.</p>
+          <p className="text-[12px] text-[#4B5563] m-0">© 2026 RunPayway™. All rights reserved. · RunPayway™ is a product of PeopleStar Enterprises, LLC. · Orange County, California, USA. · Structural Stability Model RP-2.0.</p>
         </div>
       </footer>
     </div>
