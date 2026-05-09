@@ -48,4 +48,4 @@ jobs:
           script: |
             cd /var/www/html/RunPayway
             npm install --production
-            pm2 restart runpayway 2>/dev/null || echo "PM2 app not running yet"
+            pm2 restart runpayway || (npm install -g pm2 && pm2 start npm --name runpayway -- start && pm2 save && pm2 startup)
