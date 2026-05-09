@@ -5,8 +5,17 @@ echo "🚀 Deploying to DigitalOcean..."
 
 cd /var/www/html/RunPayway
 
-echo "📥 Pulling latest code from GitHub..."
-git pull origin main
+# Initialize git if needed
+if [ ! -d .git ]; then
+  echo "📥 Initializing git repository..."
+  git init
+  git remote add origin https://github.com/mcallpl/RunPayway.git
+  git fetch origin main
+  git checkout main
+else
+  echo "📥 Pulling latest code from GitHub..."
+  git pull origin main
+fi
 
 echo "🔄 Installing dependencies..."
 npm install --no-audit --no-fund 2>&1 | tail -5
