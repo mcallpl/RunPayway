@@ -138,11 +138,12 @@ export default function LandingPage() {
           {/* Eyebrow */}
           <p style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '12px',
+            fontSize: '13px',
             fontWeight: 700,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            color: '#0E2A7B',
+            lineHeight: '1.2',
+            color: '#1F5E5B',
             margin: '0 0 28px 0',
           }}>
             FOR INDEPENDENT INCOME STRUCTURES.
