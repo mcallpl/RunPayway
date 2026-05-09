@@ -13,7 +13,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to server
+      - name: Deploy code
+        uses: easingthemes/ssh-deploy@v5.1.0
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          REMOTE_HOST: 64.227.108.128
+          REMOTE_USER: root
+          SOURCE: ./
+          TARGET: /var/www/html/RunPayway/
+          EXCLUDE: >-
+            .git/,
+            .github/,
+            .DS_Store,
+            node_modules/,
+            out/
+
+      - name: Run deploy script
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: 64.227.108.128
