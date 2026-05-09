@@ -33,7 +33,7 @@ export default function LandingPage() {
           justifyContent: 'space-between',
         }}>
           {/* Logo */}
-          <a href="/RunPayway" style={{
+          <a href="/" style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
@@ -41,7 +41,7 @@ export default function LandingPage() {
             marginRight: '80px',
             textDecoration: 'none',
           }}>
-            <img src="/RunPayway/logo.png" alt="RunPayway™" style={{
+            <img src="/logo.png" alt="RunPayway™" style={{
               height: '62px',
               width: 'auto',
               marginBottom: '8px',
