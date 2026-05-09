@@ -39,19 +39,19 @@ jobs:
             node_modules/,
             out/
 
-      - name: Restart application
+      - name: Rebuild and restart application
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: 64.227.108.128
           username: root
           key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
           timeout: 60s
-          command_timeout: 10m
+          command_timeout: 15m
           script: |
             cd /var/www/html/RunPayway
-            npm install --production 2>&1
+            npm install 2>&1
             pm2 kill 2>/dev/null || true
+            npm run build 2>&1
             npm install -g pm2 2>&1
             pm2 start npm --name runpayway -- start 2>&1
             pm2 save 2>&1
-            systemctl restart nginx 2>/dev/null || service nginx restart 2>/dev/null || echo "Nginx restart skipped"
