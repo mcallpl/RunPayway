@@ -5,9 +5,6 @@ on:
     branches: [main]
   workflow_dispatch:
 
-env:
-  STATIC_EXPORT: 'true'
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -24,33 +21,31 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      - name: Move server-only files aside for static export
-        run: |
-          mv src/app/api src/app/_api_dev
-          mv src/middleware.ts src/_middleware_dev.ts
+      - name: Build Next.js app
+        run: npm run build
 
-      - name: Build static export
-        run: |
-          echo "STATIC_EXPORT=$STATIC_EXPORT"
-          npx next build
-          echo "Build complete. Checking for out/ directory..."
-          ls -la out/ | head -5
-
-      - name: Restore server-only files
-        if: always()
-        run: |
-          if [ -d src/app/_api_dev ]; then mv src/app/_api_dev src/app/api; fi
-          if [ -f src/_middleware_dev.ts ]; then mv src/_middleware_dev.ts src/middleware.ts; fi
-
-      - name: Deploy via rsync over SSH
+      - name: Deploy code
         uses: easingthemes/ssh-deploy@v5.1.0
         with:
           SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
           REMOTE_HOST: 64.227.108.128
           REMOTE_USER: root
-          SOURCE: out/
+          SOURCE: ./
           TARGET: /var/www/html/RunPayway/
           EXCLUDE: >-
             .git/,
             .github/,
-            .DS_Store
+            .DS_Store,
+            node_modules/,
+            out/
+
+      - name: Restart application
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 64.227.108.128
+          username: root
+          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/html/RunPayway
+            npm install --production
+            pm2 restart runpayway 2>/dev/null || echo "PM2 app not running yet"
