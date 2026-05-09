@@ -3,23 +3,24 @@
 @tailwind utilities;
 
 :root {
-  --rp-navy: #0E1A2B;
-  --rp-navy-2: #0B2A4A;
-  --rp-teal: #1F6D7A;
-  --rp-blue: #2F6BFF;
+  --rp-navy: #0E2A7B;
+  --rp-navy-2: #183C96;
+  --rp-teal: #0D6E67;
+  --rp-blue: #0E2A7B;
 
-  --rp-page: #F8FAFC;
+  --rp-page: #F8FAFD;
   --rp-white: #FFFFFF;
 
-  --rp-border: #E6E8EB;
-  --rp-divider: #E5E7EB;
+  --rp-border: #E6EAF2;
+  --rp-divider: #E6EAF2;
+  --rp-soft-gray: #D8DCE5;
 
-  --rp-text: #111827;
+  --rp-text: #1B2B52;
   --rp-muted: #6B7280;
-  --rp-soft: #9CA3AF;
+  --rp-soft: #D8DCE5;
 
-  --rp-green: #2E7D32;
-  --rp-red: #C62828;
+  --rp-green: #0D6E67;
+  --rp-red: #E5484D;
 
   --rp-shadow-card: 0px 8px 24px rgba(16, 24, 40, 0.04);
   --rp-shadow-subtle: 0px 2px 8px rgba(0, 0, 0, 0.02);
@@ -71,7 +72,7 @@ html, body {
 
 body {
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background: var(--rp-page);
+  background: #FFFFFF;
   color: var(--rp-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
