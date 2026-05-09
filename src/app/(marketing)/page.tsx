@@ -180,7 +180,7 @@ export default function LandingPage() {
             fontWeight: 400,
             color: '#0E2A7B',
             maxWidth: '520px',
-            margin: '0 0 0 0',
+            margin: '24px 0 0 0',
           }}>
             The Standard for Measuring Income Stability.
           </h1>
