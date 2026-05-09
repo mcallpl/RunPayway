@@ -54,3 +54,4 @@ jobs:
             npm install -g pm2 2>&1
             pm2 start npm --name runpayway -- start 2>&1
             pm2 save 2>&1
+            systemctl restart nginx 2>/dev/null || service nginx restart 2>/dev/null || echo "Nginx restart skipped"
