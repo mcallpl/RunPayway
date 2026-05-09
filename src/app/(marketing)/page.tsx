@@ -207,6 +207,14 @@ export default function LandingPage() {
             RunPayway™ evaluates how resilient income remains under real-world conditions before financial, business, and career decisions are made.
           </p>
 
+          {/* Blue Divider Above Statement */}
+          <div style={{
+            width: '56px',
+            height: '2px',
+            backgroundColor: '#2563EB',
+            margin: '40px 0 24px 0',
+          }}></div>
+
           {/* INCOME DOES NOT EQUAL STABILITY */}
           <p style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
@@ -215,7 +223,7 @@ export default function LandingPage() {
             letterSpacing: '0.06em',
             textTransform: 'uppercase',
             color: '#0E1A2B',
-            margin: '0 0 28px 0',
+            margin: '0 0 24px 0',
           }}>
             INCOME DOES NOT EQUAL STABILITY.
           </p>
