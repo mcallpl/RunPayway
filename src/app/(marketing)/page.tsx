@@ -223,7 +223,7 @@ export default function LandingPage() {
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0a1d5c'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#0E2A7B'}
             >
-              Start Free Evaluation
+              Get My Stability Class
             </button>
             <button style={{
               height: '48px',
@@ -288,6 +288,53 @@ export default function LandingPage() {
           }}>
             INCOME STABILITY SCORE™
           </p>
+
+          {/* Legend */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            marginBottom: '28px',
+          }}>
+            {[
+              { color: '#D8DCE5', range: '0–39', label: 'Limited Stability' },
+              { color: '#D8DCE5', range: '40–59', label: 'Developing Stability' },
+              { color: '#0E2A7B', range: '60–79', label: 'Established Stability' },
+              { color: '#D8DCE5', range: '80–100', label: 'High Stability' }
+            ].map((item, idx) => (
+              <div key={idx} style={{
+                display: 'flex',
+                gap: '10px',
+                alignItems: 'center',
+              }}>
+                <div style={{
+                  width: '10px',
+                  height: '10px',
+                  backgroundColor: item.color,
+                  borderRadius: '2px',
+                  flexShrink: 0,
+                }}></div>
+                <span style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  color: item.color === '#0E2A7B' ? '#0E2A7B' : '#1B2B52',
+                  minWidth: '44px',
+                }}>
+                  {item.range}
+                </span>
+                <span style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  lineHeight: '1.6',
+                  color: '#0E1A2B',
+                }}>
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          </div>
 
           {/* Score Number */}
           <div style={{
@@ -569,7 +616,6 @@ export default function LandingPage() {
         backgroundColor: '#FFFFFF',
         borderTop: '1px solid #E5E7EB',
         borderBottom: '1px solid #E5E7EB',
-        height: '120px',
         display: 'flex',
         alignItems: 'center',
       }}>
@@ -579,38 +625,56 @@ export default function LandingPage() {
           margin: '0 auto',
           paddingLeft: '32px',
           paddingRight: '32px',
+          paddingTop: '34px',
+          paddingBottom: '34px',
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '80px',
         }}>
           {[
             {
-              icon: '⚙',
               title: 'DETERMINISTIC METHODOLOGY',
-              subtitle: 'Fixed scoring architecture'
+              subtitle: 'Fixed scoring architecture',
+              icon: 'hexagon'
             },
             {
-              icon: '⊞',
               title: 'VERSION-STAMPED RESULTS',
-              subtitle: 'Tied to model version'
+              subtitle: 'Tied to model version',
+              icon: 'layers'
             },
             {
-              icon: '🔒',
               title: 'PRIVATE BY DEFAULT',
-              subtitle: 'Your data stays yours'
+              subtitle: 'Your data stays yours',
+              icon: 'lock'
             }
           ].map((block, idx) => (
             <div key={idx} style={{
               display: 'flex',
-              gap: '16px',
+              gap: '22px',
               alignItems: 'flex-start',
             }}>
-              <div style={{
-                fontSize: '24px',
-                flexShrink: 0,
-              }}>
-                {block.icon}
-              </div>
+              {/* Icon SVG */}
+              {block.icon === 'hexagon' && (
+                <svg style={{ width: '56px', height: '56px', flexShrink: 0, stroke: '#0E2A7B', fill: 'none', strokeWidth: '2' }} viewBox="0 0 24 24">
+                  <path d="M12 2L3 6.5V17.5L12 22L21 17.5V6.5L12 2Z"/>
+                  <circle cx="12" cy="12" r="2" fill="#0E2A7B"/>
+                  <path d="M12 9V15" strokeLinecap="round"/>
+                  <path d="M10 13L14 11" strokeLinecap="round"/>
+                </svg>
+              )}
+              {block.icon === 'layers' && (
+                <svg style={{ width: '56px', height: '56px', flexShrink: 0, stroke: '#0E2A7B', fill: 'none', strokeWidth: '2' }} viewBox="0 0 24 24">
+                  <path d="M3 8L12 4L21 8" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M3 16L12 20L21 16" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M3 12L12 16L21 12" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              )}
+              {block.icon === 'lock' && (
+                <svg style={{ width: '56px', height: '56px', flexShrink: 0, stroke: '#0E2A7B', fill: 'none', strokeWidth: '2' }} viewBox="0 0 24 24">
+                  <path d="M7 10V7C7 4.24 9.24 2 12 2C14.76 2 17 4.24 17 7V10M5 10H19C19.55 10 20 10.45 20 11V20C20 20.55 19.55 21 19 21H5C4.45 21 4 20.55 4 20V11C4 10.45 4.45 10 5 10Z" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="12" cy="15" r="1.5" fill="#0E2A7B"/>
+                </svg>
+              )}
               <div>
                 <p style={{
                   fontFamily: 'Inter, -apple-system, sans-serif',
