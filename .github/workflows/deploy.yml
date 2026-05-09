@@ -48,4 +48,11 @@ jobs:
           script: |
             cd /var/www/html/RunPayway
             npm install --production
-            pm2 restart runpayway || (npm install -g pm2 && pm2 start npm --name runpayway -- start && pm2 save && pm2 startup)
+            pkill -f "node.*next" || true
+            sleep 2
+            pm2 delete runpayway || true
+            sleep 1
+            npm install -g pm2
+            pm2 start npm --name runpayway -- start
+            pm2 save
+            pm2 startup
