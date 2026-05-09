@@ -35,7 +35,8 @@ export default function LandingPage() {
           {/* Logo */}
           <a href="/RunPayway" style={{
             display: 'flex',
-            alignItems: 'center',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
             flexShrink: 0,
             marginRight: '80px',
             textDecoration: 'none',
@@ -43,7 +44,18 @@ export default function LandingPage() {
             <img src="/RunPayway/logo.png" alt="RunPayway™" style={{
               height: '56px',
               width: 'auto',
+              marginBottom: '8px',
             }} />
+            <span style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '11px',
+              fontWeight: 500,
+              letterSpacing: '0.28em',
+              textTransform: 'uppercase',
+              color: '#1B2B52',
+            }}>
+              INCOME STABILITY SCORE™
+            </span>
           </a>
 
           {/* Center Navigation */}
@@ -143,11 +155,19 @@ export default function LandingPage() {
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
             lineHeight: '1.2',
-            color: '#1F5E5B',
+            color: '#2563EB',
             margin: '0 0 28px 0',
           }}>
             FOR INDEPENDENT INCOME STRUCTURES.
           </p>
+
+          {/* Divider */}
+          <div style={{
+            width: '100%',
+            height: '1px',
+            backgroundColor: '#E5E7EB',
+            margin: '0 0 24px 0',
+          }}></div>
 
           {/* H1 */}
           <h1 style={{
@@ -631,7 +651,25 @@ export default function LandingPage() {
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '80px',
+          position: 'relative',
         }}>
+          {/* Vertical Dividers */}
+          <div style={{
+            position: 'absolute',
+            left: 'calc(33.333% - 40px)',
+            top: '20px',
+            bottom: '20px',
+            width: '1px',
+            backgroundColor: '#E5E7EB',
+          }}></div>
+          <div style={{
+            position: 'absolute',
+            left: 'calc(66.666% - 40px)',
+            top: '20px',
+            bottom: '20px',
+            width: '1px',
+            backgroundColor: '#E5E7EB',
+          }}></div>
           {[
             {
               title: 'DETERMINISTIC METHODOLOGY',
