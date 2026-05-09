@@ -46,18 +46,6 @@ export default function LandingPage() {
               width: 'auto',
               marginBottom: '8px',
             }} />
-            <span style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '11px',
-              fontWeight: 500,
-              letterSpacing: '0.28em',
-              textTransform: 'uppercase',
-              color: '#1B2B52',
-              display: 'block',
-              textAlign: 'left',
-            }}>
-              INCOME STABILITY SCORE™
-            </span>
           </a>
 
           {/* Center Navigation */}
