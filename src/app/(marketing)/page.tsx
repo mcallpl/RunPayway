@@ -82,7 +82,7 @@ export default function LandingPage() {
           </div>
 
           {/* Right Column - Score Framework Card */}
-          <div className="bg-white border border-rp-border rounded-lg p-8">
+          <div className="bg-white border border-rp-border rounded-lg p-10">
             <p className="text-xs font-medium tracking-wider text-rp-navy uppercase mb-8">
               Income Stability Score™
             </p>
@@ -155,7 +155,7 @@ export default function LandingPage() {
 
       {/* METHODOLOGY STRIP */}
       <section className="bg-rp-page border-y border-rp-border">
-        <div className="max-w-[1440px] mx-auto px-8 py-16">
+        <div className="max-w-[1440px] mx-auto px-8 py-20">
           <div className="grid grid-cols-3 gap-16">
             <div className="flex gap-4">
               <div className="flex-shrink-0">
@@ -227,7 +227,7 @@ export default function LandingPage() {
 
         {/* Three Exposure Cards */}
         <div className="grid grid-cols-3 gap-8">
-          <div className="border border-rp-border rounded-lg p-8">
+          <div className="border border-rp-border rounded-lg p-10">
             <div className="flex items-center gap-3 mb-6">
               <svg className="w-8 h-8 text-rp-navy" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
@@ -245,7 +245,7 @@ export default function LandingPage() {
             </ul>
           </div>
 
-          <div className="border border-rp-border rounded-lg p-8">
+          <div className="border border-rp-border rounded-lg p-10">
             <div className="flex items-center gap-3 mb-6">
               <svg className="w-8 h-8 text-rp-navy" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M19 5H5c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 12H5V7h14v10zm-5.04-6.71l-2.75 3.54-2.16-2.66c-.23-.29-.62-.29-.85 0-.23.29-.23.77 0 1.06L10.5 15.5c.23.29.62.29.85 0l3.54-4.29c.23-.29.23-.77 0-1.06-.23-.28-.62-.28-.85.01z"/>
@@ -263,7 +263,7 @@ export default function LandingPage() {
             </ul>
           </div>
 
-          <div className="border border-rp-border rounded-lg p-8">
+          <div className="border border-rp-border rounded-lg p-10">
             <div className="flex items-center gap-3 mb-6">
               <svg className="w-8 h-8 text-rp-navy" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.72-7 8.77V12H5V6.3l7-3.11v8.8z"/>
@@ -419,7 +419,7 @@ export default function LandingPage() {
           </div>
 
           {/* Basic Insight Card */}
-          <div className="border border-rp-border rounded-lg p-8 bg-white">
+          <div className="border border-rp-border rounded-lg p-10 bg-white">
             <p className="text-xs font-medium tracking-wider text-rp-navy uppercase mb-4">Basic Insight</p>
             <p className="text-4xl font-bold text-rp-navy mb-1">$0</p>
             <p className="text-xs text-rp-softGray mb-8">One-time. Never expires.</p>
@@ -441,7 +441,7 @@ export default function LandingPage() {
           </div>
 
           {/* Full Evaluation Card */}
-          <div className="border border-rp-navy rounded-lg p-8 bg-white relative">
+          <div className="border border-rp-navy rounded-lg p-10 bg-white relative">
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-rp-navy text-white px-3 py-1 text-xs font-medium rounded">
               MOST COMPREHENSIVE
             </div>
@@ -487,7 +487,7 @@ export default function LandingPage() {
         <div className="grid grid-cols-3 gap-8 mt-16">
           <div></div>
           <div></div>
-          <div className="border border-rp-border rounded-lg p-8 bg-rp-page">
+          <div className="border border-rp-border rounded-lg p-10 bg-rp-page">
             <p className="font-serif text-xl text-rp-navy mb-4">The deeper the insight, the better the decision.</p>
             <p className="text-sm text-rp-textNavy mb-4">
               The full evaluation reveals the structural factors that determine how your income performs when it matters most.
@@ -557,7 +557,7 @@ export default function LandingPage() {
 
       {/* FOOTER */}
       <footer className="bg-rp-navy text-white">
-        <div className="max-w-[1440px] mx-auto px-8 py-20">
+        <div className="max-w-[1440px] mx-auto px-8 py-24">
           <div className="grid grid-cols-5 gap-12 mb-16">
             <div>
               <img src="/RunPayway/logo.png" alt="RunPayway™" className="h-12 w-auto mb-6 brightness-0 invert" />
