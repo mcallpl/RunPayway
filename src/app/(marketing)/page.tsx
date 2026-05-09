@@ -42,7 +42,7 @@ export default function LandingPage() {
             textDecoration: 'none',
           }}>
             <img src="/RunPayway/logo.png" alt="RunPayway™" style={{
-              height: '56px',
+              height: '62px',
               width: 'auto',
               marginBottom: '8px',
             }} />
@@ -53,6 +53,8 @@ export default function LandingPage() {
               letterSpacing: '0.28em',
               textTransform: 'uppercase',
               color: '#1B2B52',
+              display: 'block',
+              textAlign: 'left',
             }}>
               INCOME STABILITY SCORE™
             </span>
@@ -131,14 +133,14 @@ export default function LandingPage() {
 
       {/* HERO SECTION - EXACT SPECIFICATION */}
       <section style={{
-        maxWidth: '1440px',
+        maxWidth: '1280px',
         margin: '0 auto',
         paddingTop: '96px',
         paddingBottom: '92px',
-        paddingLeft: '32px',
-        paddingRight: '32px',
+        paddingLeft: '48px',
+        paddingRight: '48px',
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
+        gridTemplateColumns: '5fr 6fr',
         gap: '72px',
         alignItems: 'center',
       }}>
@@ -156,7 +158,7 @@ export default function LandingPage() {
             textTransform: 'uppercase',
             lineHeight: '1.2',
             color: '#2563EB',
-            margin: '0 0 28px 0',
+            margin: '0 0 34px 0',
           }}>
             FOR INDEPENDENT INCOME STRUCTURES.
           </p>
@@ -173,37 +175,37 @@ export default function LandingPage() {
           <h1 style={{
             fontFamily: 'Canela, Freight Display, Editorial New, Georgia, serif',
             fontSize: '64px',
-            lineHeight: '1.06',
+            lineHeight: '1.0',
             letterSpacing: '-0.045em',
             fontWeight: 400,
             color: '#0E2A7B',
-            maxWidth: '540px',
-            margin: '0 0 40px 0',
+            maxWidth: '520px',
+            margin: '0 0 0 0',
           }}>
             The Standard for Measuring Income Stability.
           </h1>
+
+          {/* Top Blue Accent Line */}
+          <div style={{
+            width: '56px',
+            height: '2px',
+            backgroundColor: '#2563EB',
+            margin: '34px 0 34px 0',
+          }}></div>
 
           {/* Body Copy */}
           <p style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
             fontSize: '16px',
-            lineHeight: '1.72',
+            lineHeight: '1.85',
             fontWeight: 400,
             letterSpacing: '0',
             color: '#1B2B52',
-            maxWidth: '420px',
-            margin: '0 0 56px 0',
+            maxWidth: '430px',
+            margin: '0 0 0 0',
           }}>
             RunPayway™ evaluates how resilient income remains under real-world conditions before financial, business, and career decisions are made.
           </p>
-
-          {/* Divider Line - BLUE */}
-          <div style={{
-            width: '100%',
-            height: '1px',
-            backgroundColor: '#0E2A7B',
-            margin: '0 0 32px 0',
-          }}></div>
 
           {/* INCOME DOES NOT EQUAL STABILITY */}
           <p style={{
@@ -221,8 +223,8 @@ export default function LandingPage() {
           {/* CTA Row */}
           <div style={{
             display: 'flex',
-            gap: '16px',
-            margin: '0 0 24px 0',
+            gap: '18px',
+            margin: '24px 0 24px 0',
           }}>
             <button style={{
               height: '48px',
@@ -278,7 +280,7 @@ export default function LandingPage() {
             lineHeight: '1.72',
             fontWeight: 400,
             color: '#4B5563',
-            maxWidth: '420px',
+            maxWidth: '360px',
             margin: '0',
           }}>
             Free evaluation includes Stability Classification™ and primary exposure indicator.<br />
@@ -292,9 +294,9 @@ export default function LandingPage() {
           border: '1px solid #E6EAF2',
           borderRadius: '12px',
           paddingTop: '48px',
-          paddingLeft: '56px',
-          paddingRight: '56px',
-          paddingBottom: '44px',
+          paddingLeft: '48px',
+          paddingRight: '48px',
+          paddingBottom: '48px',
           boxShadow: 'none',
         }}>
           {/* Card Title */}
@@ -305,7 +307,7 @@ export default function LandingPage() {
             letterSpacing: '0.06em',
             textTransform: 'uppercase',
             color: '#0E1A2B',
-            margin: '0 0 28px 0',
+            margin: '0 0 24px 0',
           }}>
             INCOME STABILITY SCORE™
           </p>
@@ -315,7 +317,7 @@ export default function LandingPage() {
             display: 'flex',
             flexDirection: 'column',
             gap: '10px',
-            marginBottom: '28px',
+            marginBottom: '24px',
           }}>
             {[
               { color: '#D8DCE5', range: '0–39', label: 'Limited Stability' },
@@ -364,7 +366,7 @@ export default function LandingPage() {
             letterSpacing: '-0.06em',
             fontWeight: 500,
             color: '#0E2A7B',
-            margin: '0 0 16px 0',
+            margin: '0 0 24px 0',
             fontFamily: 'Inter, -apple-system, sans-serif',
             fontVariantNumeric: 'tabular-nums',
           }}>
@@ -379,7 +381,7 @@ export default function LandingPage() {
             letterSpacing: '0.02em',
             textTransform: 'uppercase',
             color: '#0E1A2B',
-            margin: '0 0 28px 0',
+            margin: '0 0 24px 0',
           }}>
             ESTABLISHED STABILITY
           </p>
@@ -391,14 +393,14 @@ export default function LandingPage() {
             lineHeight: '1.72',
             fontWeight: 400,
             color: '#1B2B52',
-            maxWidth: '460px',
-            margin: '0 0 36px 0',
+            maxWidth: '420px',
+            margin: '0 0 40px 0',
           }}>
             Recurring income characteristics with moderate diversification, continuity, and forward visibility.
           </p>
 
           {/* Range Visualization */}
-          <div style={{ margin: '0 0 32px 0' }}>
+          <div style={{ margin: '0 0 40px 0' }}>
             {/* Bars */}
             <div style={{
               display: 'grid',
@@ -470,7 +472,7 @@ export default function LandingPage() {
           {/* Metadata Grid */}
           <div style={{
             borderTop: '1px solid #E5E7EB',
-            paddingTop: '28px',
+            paddingTop: '32px',
           }}>
             {/* First Row */}
             <div style={{
@@ -639,6 +641,7 @@ export default function LandingPage() {
         borderBottom: '1px solid #E5E7EB',
         display: 'flex',
         alignItems: 'center',
+        minHeight: '112px',
       }}>
         <div style={{
           maxWidth: '1440px',
