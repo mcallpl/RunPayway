@@ -753,6 +753,339 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* STRUCTURAL EXPOSURE SECTION */}
+      <section style={{
+        backgroundColor: '#FFFFFF',
+        paddingTop: '96px',
+        paddingBottom: '96px',
+      }}>
+        <div style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          paddingLeft: '48px',
+          paddingRight: '48px',
+        }}>
+          {/* Eyebrow */}
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '13px',
+            fontWeight: 700,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: '#2563EB',
+            margin: '0 0 34px 0',
+          }}>
+            Strong Income Can Still Fail Structurally
+          </p>
+
+          {/* Main Grid Layout (12 columns) */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(12, 1fr)',
+            gap: '48px',
+            marginBottom: '64px',
+          }}>
+            {/* 4-column heading */}
+            <div style={{ gridColumn: 'span 4' }}>
+              <h2 style={{
+                fontFamily: 'Crimson Text, Georgia, serif',
+                fontSize: '64px',
+                fontWeight: 600,
+                lineHeight: '1.1',
+                letterSpacing: '-0.03em',
+                color: '#0E2A7B',
+                margin: '0',
+              }}>
+                Structural Exposure Appears Different Under Pressure
+              </h2>
+            </div>
+
+            {/* 3-column middle paragraph */}
+            <div style={{ gridColumn: 'span 3' }}>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '16px',
+                fontWeight: 400,
+                lineHeight: '1.6',
+                color: '#1B2B52',
+                margin: '0',
+              }}>
+                RunPayway™ reveals income structures that appear stable in normal markets, but fail when pressure increases. This is the structural exposure that most assessments miss.
+              </p>
+            </div>
+
+            {/* 1-column divider */}
+            <div style={{
+              gridColumn: 'span 1',
+              display: 'flex',
+              justifyContent: 'center',
+            }}>
+              <div style={{
+                width: '1px',
+                height: '82px',
+                backgroundColor: '#E5E7EB',
+              }}></div>
+            </div>
+
+            {/* 3-column right section */}
+            <div style={{ gridColumn: 'span 3' }}>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '16px',
+                fontWeight: 400,
+                lineHeight: '1.6',
+                color: '#1B2B52',
+                margin: '0 0 24px 0',
+              }}>
+                The score reveals where structural weaknesses hide. Three domains show exposure through financial pressure.
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '16px',
+                fontWeight: 400,
+                lineHeight: '1.6',
+                color: '#1B2B52',
+                margin: '0',
+              }}>
+                Use these insights to build income stability that holds under pressure.
+              </p>
+            </div>
+          </div>
+
+          {/* 3-Card Grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '24px',
+            marginBottom: '64px',
+          }}>
+            {/* Card 1: Building */}
+            <div style={{
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #E5E7EB',
+              borderRadius: '12px',
+              padding: '32px',
+              minHeight: '340px',
+              display: 'flex',
+              flexDirection: 'column',
+            }}>
+              <div style={{
+                width: '52px',
+                height: '52px',
+                backgroundColor: '#F8FAFC',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '24px',
+              }}>
+                <svg style={{ width: '32px', height: '32px', stroke: '#0E2A7B', fill: 'none', strokeWidth: '2' }} viewBox="0 0 24 24">
+                  <path d="M5 3V21M19 3V21M3 7H21M3 11H21M3 15H21M3 19H21" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M9 7V21M15 7V21" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 700,
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase',
+                color: '#1B2B52',
+                margin: '0 0 16px 0',
+              }}>
+                Before a Major Financial Decision
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '14px',
+                fontWeight: 400,
+                lineHeight: '1.6',
+                color: '#1B2B52',
+                margin: '0 0 16px 0',
+                flex: 1,
+              }}>
+                Understand your income foundation before making big commitments.
+              </p>
+              <ul style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '14px',
+                fontWeight: 400,
+                lineHeight: '1.6',
+                color: '#1B2B52',
+                margin: '0',
+                paddingLeft: '20px',
+              }}>
+                <li style={{ marginBottom: '8px' }}>Concentration exposure</li>
+                <li style={{ marginBottom: '8px' }}>Continuity weakness</li>
+                <li>Variability risk</li>
+              </ul>
+            </div>
+
+            {/* Card 2: Briefcase */}
+            <div style={{
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #E5E7EB',
+              borderRadius: '12px',
+              padding: '32px',
+              minHeight: '340px',
+              display: 'flex',
+              flexDirection: 'column',
+            }}>
+              <div style={{
+                width: '52px',
+                height: '52px',
+                backgroundColor: '#F8FAFC',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '24px',
+              }}>
+                <svg style={{ width: '32px', height: '32px', stroke: '#0E2A7B', fill: 'none', strokeWidth: '2' }} viewBox="0 0 24 24">
+                  <path d="M20 7H4C2.9 7 2 7.9 2 9V19C2 20.1 2.9 21 4 21H20C21.1 21 22 20.1 22 19V9C22 7.9 21.1 7 20 7Z" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M16 7V5C16 3.9 15.1 3 14 3H10C8.9 3 8 3.9 8 5V7" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 700,
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase',
+                color: '#1B2B52',
+                margin: '0 0 16px 0',
+              }}>
+                Business & Career Decisions
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '14px',
+                fontWeight: 400,
+                lineHeight: '1.6',
+                color: '#1B2B52',
+                margin: '0 0 16px 0',
+                flex: 1,
+              }}>
+                Make career moves with confidence in your income foundation.
+              </p>
+              <ul style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '14px',
+                fontWeight: 400,
+                lineHeight: '1.6',
+                color: '#1B2B52',
+                margin: '0',
+                paddingLeft: '20px',
+              }}>
+                <li style={{ marginBottom: '8px' }}>Dependence risk</li>
+                <li style={{ marginBottom: '8px' }}>Forward visibility instability</li>
+                <li>Revenue interruption exposure</li>
+              </ul>
+            </div>
+
+            {/* Card 3: Shield */}
+            <div style={{
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #E5E7EB',
+              borderRadius: '12px',
+              padding: '32px',
+              minHeight: '340px',
+              display: 'flex',
+              flexDirection: 'column',
+            }}>
+              <div style={{
+                width: '52px',
+                height: '52px',
+                backgroundColor: '#F8FAFC',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '24px',
+              }}>
+                <svg style={{ width: '32px', height: '32px', stroke: '#0E2A7B', fill: 'none', strokeWidth: '2' }} viewBox="0 0 24 24">
+                  <path d="M12 1L3 5V12C3 18.63 12 23 12 23S21 18.63 21 12V5L12 1Z" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 9V15M9 12H15" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 700,
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase',
+                color: '#1B2B52',
+                margin: '0 0 16px 0',
+              }}>
+                Household Financial Pressure
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '14px',
+                fontWeight: 400,
+                lineHeight: '1.6',
+                color: '#1B2B52',
+                margin: '0 0 16px 0',
+                flex: 1,
+              }}>
+                Plan household finances on the income stability you actually have.
+              </p>
+              <ul style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '14px',
+                fontWeight: 400,
+                lineHeight: '1.6',
+                color: '#1B2B52',
+                margin: '0',
+                paddingLeft: '20px',
+              }}>
+                <li style={{ marginBottom: '8px' }}>Insufficient diversification</li>
+                <li style={{ marginBottom: '8px' }}>Continuity gaps</li>
+                <li>Unstable revenue dependency</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom Info Bar */}
+          <div style={{
+            backgroundColor: '#F8FAFC',
+            borderRadius: '12px',
+            padding: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '24px',
+          }}>
+            <div style={{
+              width: '44px',
+              height: '44px',
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #0E2A7B',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <svg style={{ width: '20px', height: '20px', stroke: '#0E2A7B', fill: 'none', strokeWidth: '2' }} viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M12 8V12M12 16V16.01" strokeLinecap="round"/>
+              </svg>
+            </div>
+            <p style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '16px',
+              fontWeight: 400,
+              lineHeight: '1.6',
+              color: '#1B2B52',
+              margin: '0',
+            }}>
+              Your income structure tells you what to fix before markets change. RunPayway™ makes that visible.
+            </p>
+          </div>
+        </div>
+      </section>
+
+
       {/* Placeholder for remaining sections */}
       <div style={{
         maxWidth: '1440px',
