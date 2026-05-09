@@ -13,46 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
-
-      - name: Build Next.js app
-        run: npm run build
-
-      - name: Deploy code
-        uses: easingthemes/ssh-deploy@v5.1.0
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
-          REMOTE_HOST: 64.227.108.128
-          REMOTE_USER: root
-          SOURCE: ./
-          TARGET: /var/www/html/RunPayway/
-          EXCLUDE: >-
-            .git/,
-            .github/,
-            .DS_Store,
-            node_modules/,
-            out/
-
-      - name: Rebuild and restart application
+      - name: Deploy to server
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: 64.227.108.128
           username: root
           key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
           timeout: 60s
-          command_timeout: 15m
+          command_timeout: 10m
           script: |
-            cd /var/www/html/RunPayway
-            rm -rf .next node_modules 2>/dev/null || true
-            npm install 2>&1
-            pm2 kill 2>/dev/null || true
-            npm run build 2>&1
-            npm install -g pm2 2>&1
-            pm2 start npm --name runpayway -- start 2>&1
-            pm2 save 2>&1
+            bash /var/www/html/RunPayway/scripts/deploy.sh
