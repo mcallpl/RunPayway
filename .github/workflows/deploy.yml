@@ -75,11 +75,14 @@ jobs:
 
             echo "=== Checking for /RunPayway/ ProxyPass ==="
             if grep -q "ProxyPass /RunPayway/" "$APACHE_CONF"; then
-              echo "✓ Already configured"
+              echo "✓ ProxyPass exists, correcting routing (strip /RunPayway/ from destination)..."
+              sed -i 's|ProxyPass /RunPayway/ http://127\.0\.0\.1:3000/RunPayway/|ProxyPass /RunPayway/ http://127.0.0.1:3000/|g' "$APACHE_CONF"
+              sed -i 's|ProxyPassReverse /RunPayway/ http://127\.0\.0\.1:3000/RunPayway/|ProxyPassReverse /RunPayway/ http://127.0.0.1:3000/|g' "$APACHE_CONF"
+              echo "✓ Routing corrected"
             else
               echo "→ Adding ProxyPass directives for /RunPayway/..."
               # Insert ProxyPass directives before closing </VirtualHost>
-              sed -i '/<\/VirtualHost>/i\	ProxyPreserveHost On\n	ProxyPass /RunPayway/ http://127.0.0.1:3000/RunPayway/\n	ProxyPassReverse /RunPayway/ http://127.0.0.1:3000/RunPayway/' "$APACHE_CONF"
+              sed -i '/<\/VirtualHost>/i\	ProxyPreserveHost On\n	ProxyPass /RunPayway/ http://127.0.0.1:3000/\n	ProxyPassReverse /RunPayway/ http://127.0.0.1:3000/' "$APACHE_CONF"
               echo "✓ Directives added"
             fi
 
@@ -97,7 +100,10 @@ jobs:
               exit 1
             fi
 
-            echo "=== Verifying live site ==="
+            echo "=== Testing direct app (port 3000 root) ==="
+            curl -s http://127.0.0.1:3000/ | grep -o "Structural Exposure\|Additional sections" | head -10
+
+            echo "=== Testing public URL through Apache ==="
             sleep 2
             curl -sL https://peoplestar.com/RunPayway/ | grep -o "Structural Exposure\|Additional sections" | head -10
 
