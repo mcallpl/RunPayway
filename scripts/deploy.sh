@@ -5,8 +5,8 @@ echo "🚀 Deploying to DigitalOcean..."
 
 cd /var/www/html/RunPayway
 
-echo "🔄 Installing production dependencies..."
-npm ci --omit=dev 2>&1 | tail -3
+echo "🔄 Installing dependencies..."
+npm ci 2>&1 | tail -3
 
 echo "🧹 Clearing build cache..."
 rm -rf .next/cache 2>/dev/null || true
