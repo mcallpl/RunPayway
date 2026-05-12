@@ -70,23 +70,26 @@ jobs:
             cp "$APACHE_CONF" "$BACKUP"
             echo "Backup: $BACKUP"
 
+            echo "=== Enabling proxy modules ==="
+            a2enmod proxy proxy_http proxy_wstunnel headers rewrite 2>&1 | grep -E "Enabling|already"
+
             echo "=== Checking for /RunPayway/ ProxyPass ==="
             if grep -q "ProxyPass /RunPayway/" "$APACHE_CONF"; then
               echo "✓ Already configured"
             else
-              echo "→ Adding ProxyPass directive for /RunPayway/..."
-              # Insert ProxyPass directives before the closing </VirtualHost>
-              sed -i '/<\/VirtualHost>/i\	ProxyPass /RunPayway/ http://localhost:3000/\n	ProxyPassReverse /RunPayway/ http://localhost:3000/' "$APACHE_CONF"
-              echo "✓ ProxyPass added"
+              echo "→ Adding ProxyPass directives for /RunPayway/..."
+              # Insert ProxyPass directives before closing </VirtualHost>
+              sed -i '/<\/VirtualHost>/i\	ProxyPreserveHost On\n	ProxyPass /RunPayway/ http://127.0.0.1:3000/RunPayway/\n	ProxyPassReverse /RunPayway/ http://127.0.0.1:3000/RunPayway/' "$APACHE_CONF"
+              echo "✓ Directives added"
             fi
 
             echo "=== Testing Apache config ==="
             if apache2ctl configtest 2>&1; then
               echo "✓ Config valid"
-              echo "→ Restarting Apache..."
-              systemctl restart apache2
-              sleep 1
-              echo "✓ Restarted"
+              echo "→ Reloading Apache..."
+              systemctl reload apache2
+              sleep 2
+              echo "✓ Reloaded"
             else
               echo "✗ Config test failed"
               echo "→ Restoring backup..."
