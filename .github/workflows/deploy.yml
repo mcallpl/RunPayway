@@ -52,3 +52,29 @@ jobs:
           command_timeout: 10m
           script: |
             bash /var/www/html/RunPayway/scripts/deploy.sh
+
+      - name: Diagnostic - Check PM2 and routing
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 64.227.108.128
+          username: root
+          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          timeout: 60s
+          command_timeout: 10m
+          script: |
+            echo "=== PWD ==="
+            pwd
+            echo "=== PM2 LIST ==="
+            pm2 list
+            echo "=== PM2 SHOW RUNPAYWAY ==="
+            pm2 show runpayway
+            echo "=== PM2 LOGS (last 50 lines) ==="
+            pm2 logs runpayway --nostream --lines 50
+            echo "=== LISTENING PORTS (3000/3001/node/next) ==="
+            ss -tulpn | grep -E "3000|3001|node|next" || echo "No matches found"
+            echo "=== CURL localhost:3000/RunPayway/ ==="
+            curl -s http://localhost:3000/RunPayway/ | grep -o "Structural Exposure\|Additional sections" | head -10 || echo "No match or curl failed"
+            echo "=== CURL localhost:3000/ ==="
+            curl -s http://localhost:3000/ | grep -o "Structural Exposure\|Additional sections" | head -10 || echo "No match or curl failed"
+            echo "=== NGINX CONFIG (RunPayway/proxy_pass/3000/3001) ==="
+            nginx -T 2>/dev/null | grep -A 20 -B 10 "RunPayway\|proxy_pass\|3000\|3001" || echo "No nginx config found"
