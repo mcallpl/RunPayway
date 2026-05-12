@@ -107,6 +107,40 @@ jobs:
             sleep 2
             curl -sL https://peoplestar.com/RunPayway/ | grep -o "Structural Exposure\|Additional sections" | head -10
 
+      - name: Server Diagnostics - Check build and app state
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 64.227.108.128
+          username: root
+          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          timeout: 60s
+          command_timeout: 10m
+          script: |
+            cd /var/www/html/RunPayway
+            echo "=== PWD ==="
+            pwd
+            echo ""
+            echo "=== .next/server contents ==="
+            ls -la .next/server | head
+            echo ""
+            echo "=== Search for missing 1331.js ==="
+            find .next/server -name "1331.js" -o -name "*1331*"
+            echo ""
+            echo "=== Search for 'Structural Exposure' in build ==="
+            grep -R "Structural Exposure" .next/server/app .next/server/pages 2>/dev/null | head -10
+            echo ""
+            echo "=== PM2 Status ==="
+            pm2 status
+            echo ""
+            echo "=== PM2 Logs (last 80 lines) ==="
+            pm2 logs runpayway --nostream --lines 80
+            echo ""
+            echo "=== HTTP Headers from localhost:3000 ==="
+            curl -I http://127.0.0.1:3000/
+            echo ""
+            echo "=== Content from localhost:3000 (first 80 lines) ==="
+            curl -s http://127.0.0.1:3000/ | head -80
+
       - name: Diagnostic - Test app directly vs Apache proxy
         uses: appleboy/ssh-action@v1.0.0
         with:
