@@ -53,7 +53,7 @@ jobs:
           script: |
             bash /var/www/html/RunPayway/scripts/deploy.sh
 
-      - name: Configure Nginx for /RunPayway/
+      - name: Diagnose Nginx
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: 64.227.108.128
@@ -62,63 +62,20 @@ jobs:
           timeout: 60s
           command_timeout: 10m
           script: |
-            set -e
-            NGINX_CONF="/etc/nginx/nginx.conf"
-            BACKUP="${NGINX_CONF}.bak.$(date +%s)"
-
-            echo "=== Backing up Nginx config ==="
-            cp "$NGINX_CONF" "$BACKUP"
-            echo "Backup: $BACKUP"
-
-            echo "=== Checking for /RunPayway/ location ==="
-            if grep -q "location /RunPayway/" "$NGINX_CONF"; then
-              echo "✓ Already configured"
-            else
-              echo "→ Adding /RunPayway/ location block..."
-              awk '/^[[:space:]]*location \/ \{/{
-                print "    location /RunPayway/ {"
-                print "        proxy_pass http://localhost:3000/;"
-                print "        proxy_set_header Host $host;"
-                print "        proxy_set_header X-Real-IP $remote_addr;"
-                print "        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;"
-                print "        proxy_set_header X-Forwarded-Proto $scheme;"
-                print "    }"
-              }
-              {print}' "$NGINX_CONF" > "${NGINX_CONF}.tmp"
-              mv "${NGINX_CONF}.tmp" "$NGINX_CONF"
-              echo "✓ Block added"
-            fi
-
-            echo "=== Testing Nginx config ==="
-            if nginx -t 2>&1; then
-              echo "✓ Config valid"
-              echo "→ Restarting Nginx..."
-              if systemctl restart nginx 2>&1; then
-                sleep 1
-                echo "✓ Restarted"
-              else
-                echo "✗ Nginx restart failed"
-                echo "→ Checking Nginx error..."
-                systemctl status nginx.service 2>&1 | tail -10
-                journalctl -xeu nginx.service 2>&1 | tail -20
-                echo "→ Restoring backup..."
-                cp "$BACKUP" "$NGINX_CONF"
-                systemctl restart nginx 2>&1 || true
-                exit 1
-              fi
-            else
-              echo "✗ Config test failed"
-              echo "→ Restoring backup..."
-              cp "$BACKUP" "$NGINX_CONF"
-              exit 1
-            fi
-
-            echo "=== Modified Nginx config (first 100 lines) ==="
-            head -100 "$NGINX_CONF"
-
-            echo "=== Verifying live site ==="
-            sleep 2
-            curl -sL https://peoplestar.com/RunPayway/ | grep -o "Structural Exposure\|Additional sections" | head -10
+            echo "=== nginx -t ==="
+            nginx -t
+            echo ""
+            echo "=== systemctl status nginx --no-pager ==="
+            systemctl status nginx --no-pager
+            echo ""
+            echo "=== journalctl -xeu nginx.service --no-pager (last 80 lines) ==="
+            journalctl -xeu nginx.service --no-pager | tail -80
+            echo ""
+            echo "=== ss -tulpn (port 80/443/3000/8080) ==="
+            ss -tulpn | grep -E ':80|:443|:3000|:8080'
+            echo ""
+            echo "=== nginx -T (server_name context) ==="
+            nginx -T 2>&1 | grep -A 80 -B 20 "server_name"
 
       - name: Diagnostic - Check PM2 and routing
         uses: appleboy/ssh-action@v1.0.0
