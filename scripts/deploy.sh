@@ -8,6 +8,20 @@ cd /var/www/html/RunPayway
 echo "🔄 Installing dependencies..."
 npm install --no-audit --no-fund 2>&1 | tail -5
 
+echo "💾 Checking swap..."
+if ! swapon --show | grep -q '/swapfile'; then
+  echo "📝 Creating 2GB swap file..."
+  fallocate -l 2G /swapfile
+  chmod 600 /swapfile
+  mkswap /swapfile
+  swapon /swapfile
+  echo '/swapfile none swap sw 0 0' >> /etc/fstab
+  echo "✅ Swap created"
+else
+  echo "✅ Swap already exists"
+fi
+free -h
+
 echo "🏗️  Building app..."
 npm run build 2>&1 | tail -10
 
