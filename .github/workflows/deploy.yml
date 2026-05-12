@@ -101,6 +101,24 @@ jobs:
             sleep 2
             curl -sL https://peoplestar.com/RunPayway/ | grep -o "Structural Exposure\|Additional sections" | head -10
 
+      - name: Diagnostic - Test app directly vs Apache proxy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 64.227.108.128
+          username: root
+          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          timeout: 60s
+          command_timeout: 10m
+          script: |
+            echo "=== 1. Direct app on port 3000 with /RunPayway/ path ==="
+            curl -s http://127.0.0.1:3000/RunPayway/ | grep -o "Structural Exposure\|Additional sections" | head -10
+            echo ""
+            echo "=== 2. Direct app on port 3000 with / path ==="
+            curl -s http://127.0.0.1:3000/ | grep -o "Structural Exposure\|Additional sections" | head -10
+            echo ""
+            echo "=== 3. Public URL through Apache proxy ==="
+            curl -s https://peoplestar.com/RunPayway/ | grep -o "Structural Exposure\|Additional sections" | head -10
+
       - name: Diagnostic - Check PM2 and routing
         uses: appleboy/ssh-action@v1.0.0
         with:
