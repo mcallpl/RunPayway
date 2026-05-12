@@ -93,7 +93,7 @@ jobs:
             if nginx -t 2>&1; then
               echo "✓ Config valid"
               echo "→ Reloading Nginx..."
-              nginx -s reload
+              systemctl reload nginx
               sleep 1
               echo "✓ Reloaded"
             else
