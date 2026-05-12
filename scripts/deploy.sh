@@ -1,23 +1,25 @@
 #!/bin/bash
 set -e
 
-echo "🚀 Deploying to DigitalOcean..."
-
 cd /var/www/html/RunPayway
 
-echo "🔄 Installing dependencies..."
-npm ci 2>&1 | tail -3
+echo "Installing dependencies..."
+npm ci
 
-echo "🧹 Clearing build cache..."
-rm -rf .next/cache 2>/dev/null || true
+echo "Verifying Next binary..."
+ls -la node_modules/.bin/next
+test -x node_modules/.bin/next
 
-echo "▶️  Restarting app..."
-npm install -g pm2 2>&1 | tail -1
-pm2 kill 2>/dev/null || true
-sleep 3
-pm2 start npm --name runpayway --cwd /var/www/html/RunPayway -- start
+echo "Restarting RunPayway..."
+pm2 delete runpayway || true
+pm2 start ./node_modules/.bin/next --name runpayway -- start -p 3000
 pm2 save
-sleep 2
-pm2 logs runpayway --nostream --lines 5
 
-echo "✅ Deployment complete!"
+sleep 3
+pm2 logs runpayway --nostream --lines 30
+
+echo "Testing local app..."
+curl -s http://127.0.0.1:3000/RunPayway/ | grep -o "Structural Exposure\|Additional sections" | head -10
+
+echo "Testing public URL..."
+curl -sL https://peoplestar.com/RunPayway/ | grep -o "Structural Exposure\|Additional sections" | head -10
