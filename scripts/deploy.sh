@@ -12,7 +12,7 @@ test -x node_modules/.bin/next
 
 echo "Restarting RunPayway..."
 pm2 delete runpayway || true
-pm2 start ./node_modules/.bin/next --name runpayway -- start -p 3000
+pm2 start /var/www/html/RunPayway/node_modules/.bin/next --name runpayway -- start -p 3000
 pm2 save
 
 sleep 3
