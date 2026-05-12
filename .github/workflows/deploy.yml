@@ -93,15 +93,28 @@ jobs:
             if nginx -t 2>&1; then
               echo "✓ Config valid"
               echo "→ Restarting Nginx..."
-              systemctl restart nginx
-              sleep 1
-              echo "✓ Restarted"
+              if systemctl restart nginx 2>&1; then
+                sleep 1
+                echo "✓ Restarted"
+              else
+                echo "✗ Nginx restart failed"
+                echo "→ Checking Nginx error..."
+                systemctl status nginx.service 2>&1 | tail -10
+                journalctl -xeu nginx.service 2>&1 | tail -20
+                echo "→ Restoring backup..."
+                cp "$BACKUP" "$NGINX_CONF"
+                systemctl restart nginx 2>&1 || true
+                exit 1
+              fi
             else
               echo "✗ Config test failed"
               echo "→ Restoring backup..."
               cp "$BACKUP" "$NGINX_CONF"
               exit 1
             fi
+
+            echo "=== Modified Nginx config (first 100 lines) ==="
+            head -100 "$NGINX_CONF"
 
             echo "=== Verifying live site ==="
             sleep 2
