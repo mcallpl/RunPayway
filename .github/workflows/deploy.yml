@@ -13,7 +13,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy code
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js
+        run: npm run build
+
+      - name: Deploy built app
         uses: easingthemes/ssh-deploy@v5.1.0
         with:
           SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
@@ -26,7 +37,10 @@ jobs:
             .github/,
             .DS_Store,
             node_modules/,
-            out/
+            out/,
+            src/,
+            .next/.cache/,
+            .env*
 
       - name: Run deploy script
         uses: appleboy/ssh-action@v1.0.0
