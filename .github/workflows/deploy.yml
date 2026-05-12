@@ -36,7 +36,6 @@ jobs:
             .git/,
             .github/,
             .DS_Store,
-            node_modules/,
             out/,
             src/,
             .next/.cache/,
