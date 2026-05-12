@@ -5,30 +5,15 @@ echo "🚀 Deploying to DigitalOcean..."
 
 cd /var/www/html/RunPayway
 
-# Initialize git if needed
-if [ ! -d .git ]; then
-  echo "📥 Initializing git repository..."
-  git init
-  git remote add origin https://github.com/mcallpl/RunPayway.git
-  git fetch origin main
-  git checkout main
-else
-  echo "📥 Pulling latest code from GitHub..."
-  git pull origin main
-fi
-
 echo "🔄 Installing dependencies..."
 npm install --no-audit --no-fund 2>&1 | tail -5
-
-echo "🛑 Stopping old process..."
-pm2 kill 2>/dev/null || true
 
 echo "🏗️  Building app..."
 npm run build 2>&1 | tail -10
 
 echo "▶️  Starting app..."
 npm install -g pm2 2>&1 | tail -1
-pm2 start npm --name runpayway -- start
+pm2 restart runpayway || pm2 start npm --name runpayway -- start
 pm2 save
 
 echo "✅ Deployment complete!"
