@@ -1,5 +1,3 @@
-import type { NextConfig } from "next";
-
 const isStaticExport = process.env.STATIC_EXPORT === "true";
 
 const securityHeaders = [
@@ -43,9 +41,9 @@ const securityHeaders = [
   },
 ];
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   ...(isStaticExport ? {
-    output: "export" as const,
+    output: "export",
     basePath: "/RunPayway",
   } : {}),
   trailingSlash: true,
@@ -68,4 +66,4 @@ const nextConfig: NextConfig = {
     : {}),
 };
 
-export default nextConfig;
+module.exports = nextConfig;
