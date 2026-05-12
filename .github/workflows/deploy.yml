@@ -53,6 +53,60 @@ jobs:
           script: |
             bash /var/www/html/RunPayway/scripts/deploy.sh
 
+      - name: Configure Nginx for /RunPayway/
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: 64.227.108.128
+          username: root
+          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          timeout: 60s
+          command_timeout: 10m
+          script: |
+            set -e
+            NGINX_CONF="/etc/nginx/nginx.conf"
+            BACKUP="${NGINX_CONF}.bak.$(date +%s)"
+
+            echo "=== Backing up Nginx config ==="
+            cp "$NGINX_CONF" "$BACKUP"
+            echo "Backup: $BACKUP"
+
+            echo "=== Checking for /RunPayway/ location ==="
+            if grep -q "location /RunPayway/" "$NGINX_CONF"; then
+              echo "✓ Already configured"
+            else
+              echo "→ Adding /RunPayway/ location block..."
+              awk '/^[[:space:]]*location \/ \{/{
+                print "    location /RunPayway/ {"
+                print "        proxy_pass http://localhost:3000/;"
+                print "        proxy_set_header Host $host;"
+                print "        proxy_set_header X-Real-IP $remote_addr;"
+                print "        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;"
+                print "        proxy_set_header X-Forwarded-Proto $scheme;"
+                print "    }"
+              }
+              {print}' "$NGINX_CONF" > "${NGINX_CONF}.tmp"
+              mv "${NGINX_CONF}.tmp" "$NGINX_CONF"
+              echo "✓ Block added"
+            fi
+
+            echo "=== Testing Nginx config ==="
+            if nginx -t 2>&1; then
+              echo "✓ Config valid"
+              echo "→ Reloading Nginx..."
+              nginx -s reload
+              sleep 1
+              echo "✓ Reloaded"
+            else
+              echo "✗ Config test failed"
+              echo "→ Restoring backup..."
+              cp "$BACKUP" "$NGINX_CONF"
+              exit 1
+            fi
+
+            echo "=== Verifying live site ==="
+            sleep 2
+            curl -sL https://peoplestar.com/RunPayway/ | grep -o "Structural Exposure\|Additional sections" | head -10
+
       - name: Diagnostic - Check PM2 and routing
         uses: appleboy/ssh-action@v1.0.0
         with:
