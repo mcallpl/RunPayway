@@ -92,10 +92,10 @@ jobs:
             echo "=== Testing Nginx config ==="
             if nginx -t 2>&1; then
               echo "✓ Config valid"
-              echo "→ Reloading Nginx..."
-              systemctl reload nginx
+              echo "→ Restarting Nginx..."
+              systemctl restart nginx
               sleep 1
-              echo "✓ Reloaded"
+              echo "✓ Restarted"
             else
               echo "✗ Config test failed"
               echo "→ Restoring backup..."
