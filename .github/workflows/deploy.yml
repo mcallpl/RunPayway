@@ -53,7 +53,7 @@ jobs:
           script: |
             bash /var/www/html/RunPayway/scripts/deploy.sh
 
-      - name: Configure Apache VirtualHost for runpayway.peoplestar.com
+      - name: Configure Apache for runpayway.peoplestar.com
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: 64.227.108.128
@@ -61,30 +61,7 @@ jobs:
           key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
           timeout: 60s
           command_timeout: 10m
-          script: |
-            a2enmod proxy proxy_http headers rewrite ssl
-
-            tee /etc/apache2/sites-available/runpayway.conf > /dev/null << 'EOF'
-<VirtualHost *:80>
-  ServerName runpayway.peoplestar.com
-  Redirect permanent / https://runpayway.peoplestar.com/
-</VirtualHost>
-
-<VirtualHost *:443>
-  ServerName runpayway.peoplestar.com
-  SSLEngine on
-  SSLCertificateFile /etc/letsencrypt/live/webapps.peoplestar.com/fullchain.pem
-  SSLCertificateKeyFile /etc/letsencrypt/live/webapps.peoplestar.com/privkey.pem
-  ProxyPreserveHost On
-  ProxyPass / http://127.0.0.1:3000/
-  ProxyPassReverse / http://127.0.0.1:3000/
-</VirtualHost>
-EOF
-
-            a2ensite runpayway.conf
-            apache2ctl configtest
-            systemctl reload apache2
-            sleep 2
+          script: bash /var/www/html/RunPayway/scripts/configure-apache.sh
 
       - name: Server Diagnostics - Check build and app state
         uses: appleboy/ssh-action@v1.0.0
