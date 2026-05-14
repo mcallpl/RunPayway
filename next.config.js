@@ -45,6 +45,7 @@ const nextConfig = {
   ...(isStaticExport ? {
     output: "export",
   } : {}),
+  basePath: "/RunPayway",
   trailingSlash: true,
   images: { unoptimized: true },
   poweredByHeader: false,
