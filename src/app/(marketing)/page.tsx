@@ -631,6 +631,8 @@ export default function LandingPage() {
         </div>
       </section>
 
+      <StructuralExposure />
+
       {/* METHODOLOGY STRIP - EXACT SPECIFICATION */}
       <section style={{
         backgroundColor: '#FFFFFF',
@@ -743,7 +745,6 @@ export default function LandingPage() {
       </section>
 
       {/* STRUCTURAL EXPOSURE SECTION */}
-      <StructuralExposure />
 
 
       {/* Placeholder for remaining sections */}
