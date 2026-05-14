@@ -18,8 +18,8 @@ pm2 save
 sleep 3
 pm2 logs runpayway --nostream --lines 30
 
-echo "Testing local app (/RunPayway path)..."
-curl -s http://127.0.0.1:3000/RunPayway/ | grep -o "Structural Exposure\|Additional sections" | head -10
+echo "Testing local app (root)..."
+curl -s http://127.0.0.1:3000/ | grep -o "Structural Exposure\|Additional sections" | head -10
 
-echo "Testing public URL..."
-curl -sL https://peoplestar.com/RunPayway/ | grep -o "Structural Exposure\|Additional sections" | head -10
+echo "Testing subdomain..."
+curl -sL https://runpayway.peoplestar.com/ | grep -o "Structural Exposure\|Additional sections" | head -10
