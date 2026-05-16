@@ -4,9 +4,22 @@ set -e
 echo "=== Enabling Apache modules ==="
 a2enmod proxy proxy_http headers rewrite ssl
 
-# Use the certificate that exists
-CERT_PATH="/etc/letsencrypt/live/webapps.peoplestar.com"
-echo "✓ Using certificate: $CERT_PATH"
+CERT_PATH="/etc/letsencrypt/live/runpayway.peoplestar.com"
+
+# Generate certificate if it doesn't exist
+if [ ! -d "$CERT_PATH" ]; then
+  echo "=== Generating Let's Encrypt certificate for runpayway.peoplestar.com ==="
+  systemctl stop apache2 || true
+  certbot certonly \
+    --standalone \
+    -d runpayway.peoplestar.com \
+    -d www.runpayway.peoplestar.com \
+    -n \
+    --agree-tos \
+    --email mcallpl@gmail.com \
+    --preferred-challenges http
+  systemctl start apache2 || true
+fi
 
 echo "=== Creating VirtualHost for runpayway.peoplestar.com ==="
 cat > /etc/apache2/sites-available/runpayway.conf << EOF
@@ -39,4 +52,4 @@ echo "=== Reloading Apache ==="
 systemctl reload apache2
 sleep 2
 
-echo "✓ Apache configured and running"
+echo "✓ Apache configured with valid certificate for runpayway.peoplestar.com"
