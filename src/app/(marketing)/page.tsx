@@ -55,7 +55,7 @@ export default function LandingPage() {
             alignItems: 'center',
             flex: 1,
           }}>
-            {['How It Works', 'Methodology', 'Use Cases', 'Reports', 'For Professionals', 'Learn', 'About'].map((item) => (
+            {['How It Works', 'Methodology', 'Use Cases', 'Reports', 'For Professionals', 'Learn', 'About Us'].map((item) => (
               <a key={item} href="#" style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
                 fontSize: '14px',
