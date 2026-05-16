@@ -30,6 +30,24 @@ jobs:
       - name: Verify build exists
         run: test -d .next/server && echo "✓ Build successful" || (echo "✗ Build missing" && exit 1)
 
+      - name: Verify source code change is in build
+        run: |
+          CHUNK_FILE=$(find .next/server -name "*.js" | xargs grep -l "About Us" | head -1)
+          if [ -n "$CHUNK_FILE" ]; then
+            echo "✓ 'About Us' found in build: $CHUNK_FILE"
+          else
+            echo "✗ 'About Us' NOT found in build - build is stale!"
+            find .next/server -name "*.js" | xargs grep -l "About" | head -1
+            exit 1
+          fi
+
+      - name: Clean old .next on server and deploy fresh build
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          ssh -i <(echo "$SSH_PRIVATE_KEY") -o StrictHostKeyChecking=no root@64.227.108.128 'rm -rf /var/www/html/RunPayway/.next'
+          echo "✓ Cleaned old .next directory"
+
       - name: Deploy built app
         uses: easingthemes/ssh-deploy@v5.1.0
         with:
@@ -46,7 +64,6 @@ jobs:
             out/,
             src/,
             .env*
-          DELETE: true
 
       - name: Run deploy script
         uses: appleboy/ssh-action@v1.0.0
