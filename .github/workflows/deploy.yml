@@ -27,6 +27,9 @@ jobs:
       - name: Build Next.js
         run: npm run build
 
+      - name: Verify build exists
+        run: test -d .next/server && echo "✓ Build successful" || (echo "✗ Build missing" && exit 1)
+
       - name: Deploy built app
         uses: easingthemes/ssh-deploy@v5.1.0
         with:
@@ -42,8 +45,8 @@ jobs:
             node_modules/,
             out/,
             src/,
-            .next/.cache/,
             .env*
+          DELETE: true
 
       - name: Run deploy script
         uses: appleboy/ssh-action@v1.0.0
