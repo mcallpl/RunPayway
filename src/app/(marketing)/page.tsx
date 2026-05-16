@@ -42,7 +42,7 @@ export default function LandingPage() {
             marginRight: '80px',
             textDecoration: 'none',
           }}>
-            <img src="/runpayway-logo-blue.png" alt="RunPayway™" style={{
+            <img src="/RunPayway/runpayway-logo-blue.png" alt="RunPayway™" style={{
               height: '40px',
               width: 'auto',
             }} />
