@@ -121,6 +121,12 @@ export interface ExtendedInputs {
   asset_backed_income_pct?: number;
   booked_but_cancelable_pct?: number;
   historical_assessment_count?: number;
+  renewal_income_pct?: number;
+  new_business_income_pct?: number;
+  bonus_income_pct?: number;
+  commission_payout_delay_days?: number;
+  pipeline_visibility_months?: number;
+  largest_account_or_channel_pct?: number;
 }
 
 // ─── RAW SCORE BREAKDOWN ────────────────────────────────
@@ -425,6 +431,31 @@ export interface ActionResult {
   script_templates: ScriptTemplate[];
 }
 
+// ─── ACTION TRANSLATION (Engine 16B) ──────────────────
+
+export type ActionConfidence = "high" | "moderate" | "guarded";
+
+export interface TranslatedActionMove {
+  rank: number;
+  source_action_id: string;
+  action_title: string;
+  selected_because: string;
+  target_metric: string;
+  first_step: string;
+  avoid_first: string;
+  estimated_score_lift: number;
+  reassess_when: string;
+  action_confidence: ActionConfidence;
+}
+
+export interface ActionPlan {
+  primary_opportunity: string;
+  top_moves: TranslatedActionMove[];
+  first_recommended_shift: string;
+  avoid_first: string;
+  reassessment_trigger: string;
+}
+
 // ─── REASSESSMENT ───────────────────────────────────────
 
 export interface ReassessmentTrigger {
@@ -562,6 +593,7 @@ export interface AssessmentRecord {
   avoid_actions: AvoidAction[];
   execution_roadmap: ExecutionRoadmapWeek[];
   script_templates: ScriptTemplate[];
+  action_plan: ActionPlan;
   reassessment_triggers: ReassessmentTrigger[];
   benchmarks: BenchmarkResult | null;
   comparison: ComparisonResult | null;

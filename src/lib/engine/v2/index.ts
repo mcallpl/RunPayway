@@ -36,6 +36,7 @@ import { computeScoreLift } from "./engines/13-score-lift";
 import { computeConfidence } from "./engines/14-diagnostic-confidence";
 import { generateExplainability } from "./engines/15-explainability";
 import { prioritizeActions } from "./engines/16-action-prioritization";
+import { translateActions } from "./engines/16b-action-translation";
 import { computeReassessmentTriggers } from "./engines/17-reassessment-triggers";
 import { computeBenchmarks } from "./engines/18-benchmarking";
 import { computeComparison } from "./engines/19-comparative-reassessment";
@@ -245,19 +246,31 @@ export function executeAssessment(opts: ExecuteAssessmentOptions): AssessmentRec
   );
   reason_codes.push(REASON_CODES["ACT-001"]);
 
-  // ── 19. Reassessment Triggers ─────────────────────────
+  // ── 19. Action Translation (16B) ───────────────────────
+  const actionPlan = translateActions(
+    actions.recommended_actions,
+    actions.avoid_actions,
+    constraints,
+    sensitivity,
+    scoreLift,
+    resolvedProfile,
+    normalized,
+    validatedExtended,
+  );
+
+  // ── 21. Reassessment Triggers ─────────────────────────
   const reassessmentTriggers = computeReassessmentTriggers(
     normalized,
     quality,
   );
   reason_codes.push(REASON_CODES["RSA-001"]);
 
-  // ── 20. Comparative Reassessment ──────────────────────
+  // ── 22. Comparative Reassessment ──────────────────────
   const comparison = opts.priorAssessment
     ? computeComparison(scores, normalized, opts.priorAssessment)
     : null;
 
-  // ── 21. Integrity ─────────────────────────────────────
+  // ── 23. Integrity ─────────────────────────────────────
   const assessmentId = randomUUID();
   const integrity = computeIntegrity(normalized, scores, assessmentId);
   reason_codes.push(REASON_CODES["IGT-001"]);
@@ -294,6 +307,7 @@ export function executeAssessment(opts: ExecuteAssessmentOptions): AssessmentRec
     avoid_actions: actions.avoid_actions,
     execution_roadmap: actions.execution_roadmap,
     script_templates: actions.script_templates,
+    action_plan: actionPlan,
     reassessment_triggers: reassessmentTriggers,
     benchmarks,
     comparison,
@@ -302,7 +316,7 @@ export function executeAssessment(opts: ExecuteAssessmentOptions): AssessmentRec
     integrity,
   };
 
-  // ── 22. Outcome Layer (OL-1.0) ──────────────────────
+  // ── 24. Outcome Layer (OL-1.0) ──────────────────────
   record.outcome_layer = executeOutcomeLayer(
     record,
     (opts.intakeFields as RawIntakeFields) ?? null,
