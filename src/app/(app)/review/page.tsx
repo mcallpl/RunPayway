@@ -628,6 +628,7 @@ export default function ReviewPage() {
   const v2PredictiveWarnings = v2?.predictive_warnings ?? null;
   const v2NormalizedInputs = v2?.normalized_inputs ?? null;
   const aiPlan = v2?.ai_action_plan as Record<string, string> | undefined;
+  const actionPlan = v2?.action_plan as { primary_opportunity?: string; top_moves?: Array<{ rank: number; source_action_id: string; action_title: string; selected_because: string; target_metric: string; first_step: string; avoid_first: string; estimated_score_lift: number; reassess_when: string; action_confidence: string }>; first_recommended_shift?: string; avoid_first?: string; reassessment_trigger?: string } | undefined;
 
   // ── Outcome layer ──
   const ol = v2?.outcome_layer;
@@ -1386,6 +1387,25 @@ export default function ReviewPage() {
             </div>
           )}
         </div>
+
+
+        {/* Action Plan */}
+        {actionPlan && actionPlan.top_moves && actionPlan.top_moves.length > 0 && (
+          <div style={{ padding: "16px 20px", borderRadius: 14, backgroundColor: "rgba(31,109,122,0.04)", border: "1px solid rgba(31,109,122,0.10)", marginTop: 12 }}>
+            <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.10em", color: B.teal, marginBottom: 12 }}>YOUR ACTION PLAN</div>
+            <div style={{ fontSize: 13, color: B.navy, fontWeight: 500, marginBottom: 10 }}>{actionPlan.primary_opportunity}</div>
+            {actionPlan.top_moves.slice(0, 2).map((move, idx) => (
+              <div key={move.rank} style={{ marginBottom: idx < 1 ? 12 : 0 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4, gap: 8 }}>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: B.navy }}>{move.action_title}</span>
+                  <span style={{ fontSize: 10, fontWeight: 600, padding: "2px 6px", borderRadius: 3, backgroundColor: move.action_confidence === "high" ? "rgba(49,130,206,0.10)" : move.action_confidence === "moderate" ? "rgba(92,102,112,0.08)" : "rgba(180,180,180,0.08)", color: move.action_confidence === "high" ? "#1F6D7A" : move.action_confidence === "moderate" ? B.muted : "rgba(140,140,140,1)", flexShrink: 0 }}>{move.action_confidence}</span>
+                </div>
+                <div style={{ fontSize: 11, color: B.muted, lineHeight: 1.5, marginBottom: 6 }}>{move.first_step}</div>
+                <div style={{ fontSize: 10, color: "rgba(14,26,43,0.45)", fontStyle: "italic" }}>Lift: +{move.estimated_score_lift}</div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Impact block — navy footer */}
         {v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 && (() => {
