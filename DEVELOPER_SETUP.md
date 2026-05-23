@@ -47,7 +47,7 @@ What happens automatically:
 2. **Post-commit hook deploys:**
    - ✓ Pushes to GitHub automatically
    - ✓ Triggers GitHub Actions
-   - ✓ Deploys to peoplestar.com/RunPayway in ~1-2 minutes
+   - ✓ Deploys to runpayway.peoplestar.com in ~1-2 minutes
 
 **Result:** One command (`git commit`) = fully deployed. No manual push needed.
 
@@ -159,7 +159,7 @@ git add .
 git commit -m "description of changes"
 
 # Check deployment (wait 1-2 minutes)
-# Visit: peoplestar.com/RunPayway
+# Visit: runpayway.peoplestar.com
 # Hard refresh: Cmd+Shift+R (or Ctrl+Shift+R)
 
 # If something breaks

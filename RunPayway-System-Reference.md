@@ -4,7 +4,7 @@
 >
 > **Last updated:** 2026-04-10
 > **Model version:** RP-2.0
-> **Live URL:** https://peoplestar.com/RunPayway
+> **Live URL:** https://runpayway.peoplestar.com
 
 ---
 
@@ -22,7 +22,7 @@ The platform is deterministic. Same inputs always produce the same score. No AI 
 ┌─────────────────────────────────────────────────────┐
 │  FRONTEND (Next.js 15, Static Export)               │
 │  Deployed to GoDaddy via GitHub Actions FTP          │
-│  Lives at: peoplestar.com/RunPayway/                 │
+│  Lives at: runpayway.peoplestar.com/                 │
 │                                                     │
 │  ┌─────────────────────────────────────────────┐    │
 │  │  Marketing Pages (28 routes)                │    │

@@ -20,7 +20,7 @@ interface ShareableScoreCardProps {
 /*  CONSTANTS                                                          */
 /* ================================================================== */
 
-const BASE_URL = "https://peoplestar.com/RunPayway";
+const BASE_URL = "https://runpayway.peoplestar.com";
 
 function bandColorFromLabel(band: string): string {
   const b = band.toLowerCase();
@@ -180,7 +180,7 @@ export default function ShareableScoreCard({ score, band, industry, accessCode, 
             </div>
           </div>
           <div style={{ fontSize: 10, color: "rgba(244,241,234,0.15)", letterSpacing: "0.08em" }}>
-            peoplestar.com/RunPayway
+            runpayway.peoplestar.com
           </div>
         </div>
       </div>

@@ -10,7 +10,7 @@ This guide walks you through submitting your sitemap and requesting indexing in 
 2. Sign in with the Google account you want to manage the site from.
 3. Click **"Add Property"** (top-left dropdown).
 4. Select the **"URL prefix"** method.
-5. Enter: **https://peoplestar.com/RunPayway**
+5. Enter: **https://runpayway.peoplestar.com**
 6. Click **"Continue"**.
 7. Choose one of these verification methods:
 
@@ -34,7 +34,7 @@ Once verified, you will see the Search Console dashboard for your site.
 ## Section 2: Submit Sitemap
 
 1. In Search Console, click **"Sitemaps"** in the left sidebar.
-2. In the "Add a new sitemap" field, enter: **https://peoplestar.com/RunPayway/sitemap.xml**
+2. In the "Add a new sitemap" field, enter: **https://runpayway.peoplestar.com/sitemap.xml**
 3. Click **"Submit"**.
 4. You should see a "Success" status. Google will begin processing the sitemap.
 5. Processing usually takes **1-2 days**. Check back to confirm the status shows "Success" with a page count.
@@ -49,21 +49,21 @@ After submitting your sitemap, manually request indexing for these 15 pages in t
 
 | # | URL |
 |---|-----|
-| 1 | https://peoplestar.com/RunPayway/learn |
-| 2 | https://peoplestar.com/RunPayway/learn/what-is-income-stability |
-| 3 | https://peoplestar.com/RunPayway/learn/how-to-measure-income-stability |
-| 4 | https://peoplestar.com/RunPayway/learn/income-stability-vs-credit-score |
-| 5 | https://peoplestar.com/RunPayway/learn/what-is-income-structure |
-| 6 | https://peoplestar.com/RunPayway/learn/how-to-improve-income-stability |
-| 7 | https://peoplestar.com/RunPayway/learn/income-stability-real-estate-agents |
-| 8 | https://peoplestar.com/RunPayway/learn/income-stability-freelancers |
-| 9 | https://peoplestar.com/RunPayway/learn/income-stability-consultants |
-| 10 | https://peoplestar.com/RunPayway/learn/150k-freelancer-one-client |
-| 11 | https://peoplestar.com/RunPayway/learn/income-stability-vs-income |
-| 12 | https://peoplestar.com/RunPayway/learn/what-makes-income-stable |
-| 13 | https://peoplestar.com/RunPayway/learn/income-concentration-risk |
-| 14 | https://peoplestar.com/RunPayway/learn/terms |
-| 15 | https://peoplestar.com/RunPayway/blog/the-income-stability-gap |
+| 1 | https://runpayway.peoplestar.com/learn |
+| 2 | https://runpayway.peoplestar.com/learn/what-is-income-stability |
+| 3 | https://runpayway.peoplestar.com/learn/how-to-measure-income-stability |
+| 4 | https://runpayway.peoplestar.com/learn/income-stability-vs-credit-score |
+| 5 | https://runpayway.peoplestar.com/learn/what-is-income-structure |
+| 6 | https://runpayway.peoplestar.com/learn/how-to-improve-income-stability |
+| 7 | https://runpayway.peoplestar.com/learn/income-stability-real-estate-agents |
+| 8 | https://runpayway.peoplestar.com/learn/income-stability-freelancers |
+| 9 | https://runpayway.peoplestar.com/learn/income-stability-consultants |
+| 10 | https://runpayway.peoplestar.com/learn/150k-freelancer-one-client |
+| 11 | https://runpayway.peoplestar.com/learn/income-stability-vs-income |
+| 12 | https://runpayway.peoplestar.com/learn/what-makes-income-stable |
+| 13 | https://runpayway.peoplestar.com/learn/income-concentration-risk |
+| 14 | https://runpayway.peoplestar.com/learn/terms |
+| 15 | https://runpayway.peoplestar.com/blog/the-income-stability-gap |
 
 **For each page, follow these steps:**
 

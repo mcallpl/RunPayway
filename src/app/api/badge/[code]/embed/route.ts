@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 /*  Returns HTML embed snippet for the verification badge.             */
 /* ================================================================== */
 
-const BASE_URL = "https://peoplestar.com/RunPayway";
+const BASE_URL = "https://runpayway.peoplestar.com";
 
 function lookupBand(code: string): string | null {
   try {

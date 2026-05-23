@@ -41,7 +41,7 @@ export async function handleSendEmail(body, env, corsHeaders) {
   const actionPreviewRaw = sanitizeString(body.action_preview, 1000);
   const shortId = record_id.slice(0, 8);
   const fullId = record_id;
-  const dashboardLink = fullId ? `https://peoplestar.com/RunPayway/dashboard?record=${encodeURIComponent(fullId)}` : "https://peoplestar.com/RunPayway/dashboard";
+  const dashboardLink = fullId ? `https://runpayway.peoplestar.com/dashboard?record=${encodeURIComponent(fullId)}` : "https://runpayway.peoplestar.com/dashboard";
   const bandColor = score >= 75 ? teal : score >= 50 ? "#2B5EA7" : score >= 30 ? "#92640A" : "#9B2C2C";
 
   // Extract first sentence of action preview for teaser, blur the rest
@@ -74,7 +74,7 @@ export async function handleSendEmail(body, env, corsHeaders) {
 
 <!-- 1. Logo bar — navy background -->
 <tr><td style="padding:28px 40px 24px;text-align:left;">
-<img src="https://peoplestar.com/RunPayway/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="display:inline-block;height:auto;filter:brightness(0) invert(1);opacity:0.85;"/>
+<img src="https://runpayway.peoplestar.com/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="display:inline-block;height:auto;filter:brightness(0) invert(1);opacity:0.85;"/>
 </td></tr>
 
 <!-- Thin gradient accent line -->
@@ -213,7 +213,7 @@ ${actionFirst ? `
 <tr><td style="text-align:center;">
 <p style="font-size:11px;color:rgba(244,241,234,0.40);margin:0 0 6px;letter-spacing:0.04em;">RunPayway \u2014 Income Stability Score\u2122</p>
 <p style="font-size:10px;color:rgba(244,241,234,0.22);margin:0 0 12px;">Confidential \u2014 Prepared exclusively for ${name}</p>
-<a href="https://peoplestar.com/RunPayway/contact" style="font-size:10px;color:rgba(244,241,234,0.35);text-decoration:none;letter-spacing:0.06em;">CONTACT US</a>
+<a href="https://runpayway.peoplestar.com/contact" style="font-size:10px;color:rgba(244,241,234,0.35);text-decoration:none;letter-spacing:0.06em;">CONTACT US</a>
 </td></tr>
 </table>
 </td></tr>
@@ -875,13 +875,13 @@ export function getReassessmentPrompts(industry) {
 // ══════════════════════════════════════════════════════════
 
 export function followUpDay7(name, score, band, topAction, recordId, industry) {
-  const link = recordId ? `https://peoplestar.com/RunPayway/dashboard?record=${encodeURIComponent(recordId)}` : "https://peoplestar.com/RunPayway/dashboard";
+  const link = recordId ? `https://runpayway.peoplestar.com/dashboard?record=${encodeURIComponent(recordId)}` : "https://runpayway.peoplestar.com/dashboard";
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
 <body style="margin:0;padding:0;background:#1C1635;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#1C1635;"><tr><td style="height:32px;"></td></tr>
 <tr><td align="center" style="padding:0 16px;">
 <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-<tr><td style="padding:28px 40px 24px;"><img src="https://peoplestar.com/RunPayway/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="height:auto;filter:brightness(0) invert(1);opacity:0.85;"/></td></tr>
+<tr><td style="padding:28px 40px 24px;"><img src="https://runpayway.peoplestar.com/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="height:auto;filter:brightness(0) invert(1);opacity:0.85;"/></td></tr>
 <tr><td style="padding:0 40px;"><table width="100%"><tr><td style="background:linear-gradient(90deg,#4B3FAE,#1F6D7A);height:2px;border-radius:1px;"></td></tr></table></td></tr>
 <tr><td style="padding:0 12px;"><table width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="background:#ffffff;padding:44px 40px 40px;border-radius:12px;">
@@ -898,19 +898,19 @@ ${(() => { const p = getReassessmentPrompts(industry); return `<div style="borde
 </td></tr></table>
 </td></tr></table></td></tr>
 <tr><td style="padding:24px 40px;text-align:center;">
-<p style="font-size:10px;color:rgba(244,241,234,0.30);margin:0;">RunPayway\u2122 \u2014 Income Stability Score \u2014 <a href="https://peoplestar.com/RunPayway/contact" style="color:rgba(244,241,234,0.35);text-decoration:none;">Contact</a></p>
+<p style="font-size:10px;color:rgba(244,241,234,0.30);margin:0;">RunPayway\u2122 \u2014 Income Stability Score \u2014 <a href="https://runpayway.peoplestar.com/contact" style="color:rgba(244,241,234,0.35);text-decoration:none;">Contact</a></p>
 </td></tr>
 </table></td></tr></table></body></html>`;
 }
 
 export function followUpDay30(name, score, topAction, daysSince, recordId, industry) {
-  const link = recordId ? `https://peoplestar.com/RunPayway/dashboard?record=${encodeURIComponent(recordId)}` : "https://peoplestar.com/RunPayway/dashboard";
+  const link = recordId ? `https://runpayway.peoplestar.com/dashboard?record=${encodeURIComponent(recordId)}` : "https://runpayway.peoplestar.com/dashboard";
   return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/></head>
 <body style="margin:0;padding:0;background:#1C1635;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#1C1635;"><tr><td style="height:32px;"></td></tr>
 <tr><td align="center" style="padding:0 16px;">
 <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-<tr><td style="padding:28px 40px 24px;"><img src="https://peoplestar.com/RunPayway/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="height:auto;filter:brightness(0) invert(1);opacity:0.85;"/></td></tr>
+<tr><td style="padding:28px 40px 24px;"><img src="https://runpayway.peoplestar.com/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="height:auto;filter:brightness(0) invert(1);opacity:0.85;"/></td></tr>
 <tr><td style="padding:0 40px;"><table width="100%"><tr><td style="background:linear-gradient(90deg,#4B3FAE,#1F6D7A);height:2px;border-radius:1px;"></td></tr></table></td></tr>
 <tr><td style="padding:0 12px;"><table width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="background:#ffffff;padding:44px 40px 40px;border-radius:12px;">
@@ -927,7 +927,7 @@ ${(() => { const p = getReassessmentPrompts(industry); return `<div style="borde
 </td></tr></table>
 </td></tr></table></td></tr>
 <tr><td style="padding:24px 40px;text-align:center;">
-<p style="font-size:10px;color:rgba(244,241,234,0.30);margin:0;">RunPayway\u2122 \u2014 Income Stability Score \u2014 <a href="https://peoplestar.com/RunPayway/contact" style="color:rgba(244,241,234,0.35);text-decoration:none;">Contact</a></p>
+<p style="font-size:10px;color:rgba(244,241,234,0.30);margin:0;">RunPayway\u2122 \u2014 Income Stability Score \u2014 <a href="https://runpayway.peoplestar.com/contact" style="color:rgba(244,241,234,0.35);text-decoration:none;">Contact</a></p>
 </td></tr>
 </table></td></tr></table></body></html>`;
 }
@@ -964,7 +964,7 @@ export function followUpDay90(name, daysSince, _recordId, industry) {
 <table width="100%" cellpadding="0" cellspacing="0" style="background:#1C1635;"><tr><td style="height:32px;"></td></tr>
 <tr><td align="center" style="padding:0 16px;">
 <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-<tr><td style="padding:28px 40px 24px;"><img src="https://peoplestar.com/RunPayway/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="height:auto;filter:brightness(0) invert(1);opacity:0.85;"/></td></tr>
+<tr><td style="padding:28px 40px 24px;"><img src="https://runpayway.peoplestar.com/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="height:auto;filter:brightness(0) invert(1);opacity:0.85;"/></td></tr>
 <tr><td style="padding:0 40px;"><table width="100%"><tr><td style="background:linear-gradient(90deg,#4B3FAE,#1F6D7A);height:2px;border-radius:1px;"></td></tr></table></td></tr>
 <tr><td style="padding:0 12px;"><table width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="background:#ffffff;padding:44px 40px 40px;border-radius:12px;">
@@ -972,7 +972,7 @@ export function followUpDay90(name, daysSince, _recordId, industry) {
 <p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 16px;">If you have made structural changes to your income \u2014 ${examples} \u2014 your score may have improved. There is only one way to find out.</p>
 <p style="font-size:14px;color:rgba(14,26,43,0.55);line-height:1.65;margin:0 0 24px;">A new assessment will show you exactly how much progress you have made and where to focus next.</p>
 <table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr><td style="background:#1C1635;border-radius:10px;">
-<a href="https://peoplestar.com/RunPayway/pricing" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Reassess Your Score</a>
+<a href="https://runpayway.peoplestar.com/pricing" style="display:inline-block;padding:14px 32px;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;">Reassess Your Score</a>
 </td></tr></table>
 <div style="border-left:3px solid #1F6D7A;padding:16px 20px;background:rgba(31,109,122,0.04);border-radius:0 8px 8px 0;margin-top:24px;">
 <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#1F6D7A;margin-bottom:8px;">ASK YOURSELF</div>
@@ -982,7 +982,7 @@ export function followUpDay90(name, daysSince, _recordId, industry) {
 </div>
 </td></tr></table></td></tr>
 <tr><td style="padding:24px 40px;text-align:center;">
-<p style="font-size:10px;color:rgba(244,241,234,0.30);margin:0;">RunPayway\u2122 \u2014 Income Stability Score \u2014 <a href="https://peoplestar.com/RunPayway/contact" style="color:rgba(244,241,234,0.35);text-decoration:none;">Contact</a></p>
+<p style="font-size:10px;color:rgba(244,241,234,0.30);margin:0;">RunPayway\u2122 \u2014 Income Stability Score \u2014 <a href="https://runpayway.peoplestar.com/contact" style="color:rgba(244,241,234,0.35);text-decoration:none;">Contact</a></p>
 </td></tr>
 </table></td></tr></table></body></html>`;
 }
@@ -1004,7 +1004,7 @@ function nurtureEmailWrapper(bodyContent, recipientName) {
 <tr><td align="center" style="padding:0 16px;">
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
 <tr><td style="padding:28px 40px 24px;text-align:left;">
-<img src="https://peoplestar.com/RunPayway/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="display:inline-block;height:auto;filter:brightness(0) invert(1);opacity:0.85;"/>
+<img src="https://runpayway.peoplestar.com/runpayway-logo-blue.png" alt="RunPayway" width="140" height="17" style="display:inline-block;height:auto;filter:brightness(0) invert(1);opacity:0.85;"/>
 </td></tr>
 <tr><td style="padding:0 40px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td style="background:linear-gradient(90deg,${purple} 0%,${teal} 100%);height:2px;border-radius:1px;">&nbsp;</td></tr></table></td></tr>
 <tr><td style="padding:0 12px;">
@@ -1019,9 +1019,9 @@ ${bodyContent}
 <tr><td style="text-align:center;">
 <p style="font-size:11px;color:rgba(244,241,234,0.40);margin:0 0 6px;letter-spacing:0.04em;">RunPayway \u2014 Income Stability Score\u2122</p>
 <p style="font-size:10px;color:rgba(244,241,234,0.22);margin:0 0 12px;">Confidential \u2014 Prepared exclusively for ${recipientName}</p>
-<a href="https://peoplestar.com/RunPayway/contact" style="font-size:10px;color:rgba(244,241,234,0.35);text-decoration:none;letter-spacing:0.06em;">CONTACT US</a>
+<a href="https://runpayway.peoplestar.com/contact" style="font-size:10px;color:rgba(244,241,234,0.35);text-decoration:none;letter-spacing:0.06em;">CONTACT US</a>
 <span style="font-size:10px;color:rgba(244,241,234,0.18);margin:0 8px;">&middot;</span>
-<a href="https://peoplestar.com/RunPayway/contact?subject=unsubscribe" style="font-size:10px;color:rgba(244,241,234,0.35);text-decoration:none;letter-spacing:0.06em;">UNSUBSCRIBE</a>
+<a href="https://runpayway.peoplestar.com/contact?subject=unsubscribe" style="font-size:10px;color:rgba(244,241,234,0.35);text-decoration:none;letter-spacing:0.06em;">UNSUBSCRIBE</a>
 </td></tr>
 </table>
 </td></tr>
@@ -1060,7 +1060,7 @@ export function buildNurtureWelcomeEmail({ name }) {
 <p style="font-size:14px;color:${muted};line-height:1.75;margin:0 0 12px;">The RunPayway Income Stability Score measures exactly this: how your income holds up when conditions change. It looks at six structural dimensions \u2014 concentration, recurrence, forward visibility, labor dependence, variability, and continuity \u2014 and produces a single number that tells you where you stand.</p>
 <p style="font-size:14px;color:${muted};line-height:1.75;margin:0;">Take your free assessment to receive your personalized income structure analysis. It takes under 3 minutes.</p>
 </td></tr></table>
-${nurtureCta("Take Your Free Assessment", "https://peoplestar.com/RunPayway/begin")}
+${nurtureCta("Take Your Free Assessment", "https://runpayway.peoplestar.com/begin")}
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0 0;">
 <tr><td style="padding:20px 24px;border-radius:8px;background-color:#fafaf8;border:1px solid rgba(14,26,43,0.04);">
 <p style="font-size:13px;font-weight:600;color:${navy};margin:0 0 6px;">What to expect</p>
@@ -1084,7 +1084,7 @@ export function buildNurtureReminder2({ name }) {
 <p style="font-size:14px;color:${muted};line-height:1.75;margin:0 0 12px;">The difference between income that feels stable and income that is structurally stable is not always obvious. Most people discover the gap only when something disrupts their earning pattern \u2014 a lost client, an industry shift, an unexpected change.</p>
 <p style="font-size:14px;color:${muted};line-height:1.75;margin:0;">The free assessment takes under 3 minutes. It maps six structural dimensions of your income and identifies the single highest-leverage change you can make. No financial advice, no sales pitch \u2014 just a structural reading of how your income actually works.</p>
 </td></tr></table>
-${nurtureCta("Start Your Free Assessment", "https://peoplestar.com/RunPayway/begin")}`;
+${nurtureCta("Start Your Free Assessment", "https://runpayway.peoplestar.com/begin")}`;
 
   return { subject: `${name}, your structural analysis is waiting`, html: nurtureEmailWrapper(body, name) };
 }
@@ -1104,7 +1104,7 @@ export function buildNurtureReminder3({ name }) {
 <p style="font-size:14px;color:${muted};line-height:1.75;margin:0 0 12px;">Most professionals answer this question with a feeling, not a number. The Income Stability Score replaces that feeling with a structural measurement. Six dimensions, one score, one clear priority.</p>
 <p style="font-size:14px;color:${muted};line-height:1.75;margin:0;">It takes under 3 minutes. The result will either confirm that your structure is sound, or it will show you exactly where it is not.</p>
 </td></tr></table>
-${nurtureCta("See Where You Stand", "https://peoplestar.com/RunPayway/begin")}`;
+${nurtureCta("See Where You Stand", "https://runpayway.peoplestar.com/begin")}`;
 
   return { subject: `One structural question for ${name}`, html: nurtureEmailWrapper(body, name) };
 }
@@ -1141,7 +1141,7 @@ Your primary constraint is <strong style="color:${navy};font-weight:600;">${(con
 <tr><td style="padding:20px 24px;border-radius:8px;background-color:#fafaf8;border:1px solid rgba(14,26,43,0.04);">
 <p style="font-size:13px;font-weight:600;color:${navy};margin:0 0 6px;">See the full picture</p>
 <p style="font-size:12px;color:${muted};line-height:1.65;margin:0 0 16px;">The diagnostic reveals every dimension of your income structure, maps your specific risks, and gives you a step-by-step plan to improve your score.</p>
-${nurtureCta("See Your Full Diagnostic", "https://peoplestar.com/RunPayway/pricing")}
+${nurtureCta("See Your Full Diagnostic", "https://runpayway.peoplestar.com/pricing")}
 </td></tr></table>`;
 
   return { subject: `${name}, here\u2019s what your ${score} means`, html: nurtureEmailWrapper(body, name) };
@@ -1178,7 +1178,7 @@ function buildNurtureEmail2({ name, score, band, constraint, industry }) {
 <p style="font-size:14px;color:${muted};line-height:1.75;margin:0 0 16px;">${action}</p>
 <p style="font-size:14px;color:${muted};line-height:1.75;margin:0;">${industry ? `In ${industry}, this type of structural adjustment typically produces measurable score improvement within 60\u201390 days.` : "This type of structural adjustment typically produces measurable score improvement within 60\u201390 days."} The full diagnostic includes the complete action plan \u2014 with specific targets, timelines, and ready-to-use negotiation scripts.</p>
 </td></tr></table>
-${nurtureCta("See Your Full Action Plan", "https://peoplestar.com/RunPayway/pricing")}`;
+${nurtureCta("See Your Full Action Plan", "https://runpayway.peoplestar.com/pricing")}`;
 
   return { subject: `The single structural move for ${name}`, html: nurtureEmailWrapper(body, name) };
 }
@@ -1220,7 +1220,7 @@ function buildNurtureEmail3({ name, score, band, constraint, industry }) {
 <tr><td style="padding:20px 24px;border-radius:8px;background-color:#fafaf8;border:1px solid rgba(14,26,43,0.04);">
 <p style="font-size:13px;font-weight:600;color:${navy};margin:0 0 6px;">Your full diagnostic is ready to generate</p>
 <p style="font-size:12px;color:${muted};line-height:1.65;margin:0 0 16px;">Personalized action plan, risk scenarios, 12-week roadmap with your actual numbers, and ready-to-use negotiation scripts. Full refund if it does not reveal something new.</p>
-${nurtureCta("Unlock Your Full Diagnostic", "https://peoplestar.com/RunPayway/pricing")}
+${nurtureCta("Unlock Your Full Diagnostic", "https://runpayway.peoplestar.com/pricing")}
 </td></tr></table>`;
 
   return { subject: `Income patterns in ${displayIndustry}`, html: nurtureEmailWrapper(body, name) };

@@ -10,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://peoplestar.com/RunPayway/sitemap.xml",
+    sitemap: "https://runpayway.peoplestar.com/sitemap.xml",
   };
 }

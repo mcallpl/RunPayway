@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export const dynamic = "force-static";
 
-const BASE = "https://peoplestar.com/RunPayway";
+const BASE = "https://runpayway.peoplestar.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

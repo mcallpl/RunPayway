@@ -1609,7 +1609,7 @@ export default function ReviewPage() {
               Open Your Dashboard &rarr;
             </div>
             <div style={{ marginTop: 12 }}>
-              <span style={{ fontSize: 11, color: "rgba(14,26,43,0.30)" }}>peoplestar.com/RunPayway/dashboard</span>
+              <span style={{ fontSize: 11, color: "rgba(14,26,43,0.30)" }}>runpayway.peoplestar.com/dashboard</span>
             </div>
           </div>
         </>

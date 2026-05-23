@@ -253,7 +253,7 @@ echo ""
 echo "Step 9: Error reporting"
 RESP=$(curl -s -o /tmp/e2e_errreport -w "%{http_code}" \
   -X POST -H "Content-Type: application/json" \
-  -d "{\"error_message\":\"E2E test error from run $RUN_ID\",\"component\":\"e2e-test\",\"page_url\":\"https://peoplestar.com/RunPayway/test\"}" \
+  -d "{\"error_message\":\"E2E test error from run $RUN_ID\",\"component\":\"e2e-test\",\"page_url\":\"https://runpayway.peoplestar.com/test\"}" \
   "${WORKER}/error-report" 2>/dev/null)
 BODY=$(cat /tmp/e2e_errreport 2>/dev/null || echo "")
 

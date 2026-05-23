@@ -30,7 +30,7 @@ Not how much you earn. How your income *behaves* when something changes.
 | **Category** | Structural income measurement system |
 | **Company** | PeopleStar Enterprises, Inc. |
 | **Location** | 24312 Airporter Way, Laguna Niguel, California 92677 |
-| **Site** | peoplestar.com/RunPayway |
+| **Site** | runpayway.peoplestar.com |
 
 ---
 

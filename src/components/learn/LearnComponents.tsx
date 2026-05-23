@@ -77,7 +77,7 @@ export function LearnHero({ label, title, definition, subtitle, description, slu
     "headline": title,
     "description": description || definition || subtitle || "",
     "author": { "@type": "Organization", "name": "RunPayway\u2122 Research" },
-    "publisher": { "@type": "Organization", "name": "RunPayway\u2122", "url": "https://peoplestar.com/RunPayway" },
+    "publisher": { "@type": "Organization", "name": "RunPayway\u2122", "url": "https://runpayway.peoplestar.com" },
     "dateModified": "2026-04-12",
   };
 
@@ -85,7 +85,7 @@ export function LearnHero({ label, title, definition, subtitle, description, slu
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Learn", "item": "https://peoplestar.com/RunPayway/learn" },
+      { "@type": "ListItem", "position": 1, "name": "Learn", "item": "https://runpayway.peoplestar.com/learn" },
       { "@type": "ListItem", "position": 2, "name": title },
     ]
   };
@@ -94,11 +94,11 @@ export function LearnHero({ label, title, definition, subtitle, description, slu
     <header style={{ backgroundColor: L.sand, paddingTop: m ? 104 : 148, paddingBottom: m ? 56 : 80, paddingLeft: px(m, t), paddingRight: px(m, t) }}>
       <title>{title} | RunPayway™ Learn</title>
       <meta name="description" content={description || definition || subtitle || `${title} — Income stability measurement by RunPayway™`} />
-      {slug && <link rel="canonical" href={`https://peoplestar.com/RunPayway/learn/${slug}`} />}
+      {slug && <link rel="canonical" href={`https://runpayway.peoplestar.com/learn/${slug}`} />}
       <meta property="og:title" content={`${title} | RunPayway™`} />
       <meta property="og:description" content={description || definition || subtitle || ""} />
       <meta property="og:type" content="article" />
-      {slug && <meta property="og:url" content={`https://peoplestar.com/RunPayway/learn/${slug}`} />}
+      {slug && <meta property="og:url" content={`https://runpayway.peoplestar.com/learn/${slug}`} />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>

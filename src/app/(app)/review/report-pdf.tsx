@@ -287,7 +287,7 @@ function footer(doc: jsPDF, section: string, page: number) {
   sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#6B6155");
   doc.text(S(`Confidential - ${section}`), ML, YF);
   doc.text(`Page ${page} of 4`, CX, YF, { align: "center" });
-  doc.text("peoplestar.com/RunPayway/contact", ML + CW, YF, { align: "right" });
+  doc.text("runpayway.peoplestar.com/contact", ML + CW, YF, { align: "right" });
 }
 
 /** Draw interior page header — score badge top right */
@@ -438,7 +438,7 @@ async function page1(doc: jsPDF, d: ReportPDFData) {
   // ── FOOTER ──
   sf(doc, "Inter"); doc.setFontSize(8); doc.setTextColor("#6B6155");
   doc.text("Model RP-2.0  -  4 Pages  -  Confidential", ML, YF);
-  doc.text("peoplestar.com/RunPayway/contact", ML + CW, YF, { align: "right" });
+  doc.text("runpayway.peoplestar.com/contact", ML + CW, YF, { align: "right" });
 }
 
 /* ================================================================== */
