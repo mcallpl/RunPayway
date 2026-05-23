@@ -13,34 +13,36 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Test SSH Connection
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: 64.227.108.128
-          username: root
-          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
-          script: |
-            echo "✓ SSH connection successful"
-            whoami
-            pwd
+      - name: Setup SSH and Test Connection
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 700 ~/.ssh
+          chmod 600 ~/.ssh/id_rsa
 
-      - name: Deploy logo.png via SCP
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: 64.227.108.128
-          username: root
-          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
-          source: "public/logo.png"
-          target: "/var/www/html/RunPayway/public/"
+          echo "Testing SSH connection..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@64.227.108.128 "echo '✓ SSH connection successful'; whoami; pwd"
 
-      - name: Verify file deployed
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: 64.227.108.128
-          username: root
-          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
-          script: |
-            echo "✓ Verifying logo.png on server..."
-            ls -lh /var/www/html/RunPayway/public/logo.png
-            file /var/www/html/RunPayway/public/logo.png
-            echo "✓ File deployment successful"
+      - name: Deploy logo.png
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          echo "Copying logo.png to server..."
+          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no public/logo.png root@64.227.108.128:/var/www/html/RunPayway/public/
+
+      - name: Verify Deployment
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          echo "Verifying file on server..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "ls -lh /var/www/html/RunPayway/public/logo.png && file /var/www/html/RunPayway/public/logo.png && echo '✓ DEPLOYMENT SUCCESSFUL'"
