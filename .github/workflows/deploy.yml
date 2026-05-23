@@ -135,8 +135,8 @@ jobs:
             echo "=== 2. Public URL through subdomain (https://runpayway.peoplestar.com) ==="
             curl -sL https://runpayway.peoplestar.com/ | grep -o "Structural Exposure\|Additional sections" | head -10
             echo ""
-            echo "=== 3. Verify /RunPayway path redirects properly ==="
-            curl -sL https://peoplestar.com/RunPayway/ | head -c 200
+            echo "=== 3. Verify subdomain is responsive ==="
+            curl -sL https://runpayway.peoplestar.com/ | head -c 200
 
       - name: Diagnostic - Check PM2 and subdomain routing
         uses: appleboy/ssh-action@v1.0.0
