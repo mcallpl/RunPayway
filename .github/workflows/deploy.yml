@@ -33,6 +33,9 @@ jobs:
           echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
+          echo "Creating directory on server..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "mkdir -p /var/www/html/RunPayway/public"
+
           echo "Copying logo.png to server..."
           scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no public/logo.png root@64.227.108.128:/var/www/html/RunPayway/public/
 
