@@ -45,7 +45,11 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
         run: |
-          ssh -i <(echo "$SSH_PRIVATE_KEY") -o StrictHostKeyChecking=no root@64.227.108.128 'rm -rf /var/www/html/RunPayway/.next'
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no root@64.227.108.128 'rm -rf /var/www/html/RunPayway/.next'
+          rm ~/.ssh/deploy_key
           echo "✓ Cleaned old .next directory"
 
       - name: Deploy built app
