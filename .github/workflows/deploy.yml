@@ -13,7 +13,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup SSH and Test Connection
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js
+        run: npm run build
+
+      - name: Test SSH Connection
         env:
           SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
         run: |
@@ -21,11 +32,10 @@ jobs:
           echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/id_rsa
-
           echo "Testing SSH connection..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@64.227.108.128 "echo '✓ SSH connection successful'; whoami; pwd"
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@64.227.108.128 "echo '✓ SSH connection successful'"
 
-      - name: Deploy logo.png
+      - name: Deploy to Server
         env:
           SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
         run: |
@@ -33,13 +43,28 @@ jobs:
           echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          echo "Creating directory on server..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "mkdir -p /var/www/html/RunPayway/public"
+          echo "Creating deployment directory..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "rm -rf /var/www/html/RunPayway && mkdir -p /var/www/html/RunPayway"
 
-          echo "Copying logo.png to server..."
-          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no public/logo.png root@64.227.108.128:/var/www/html/RunPayway/public/
+          echo "Transferring project files..."
+          scp -r -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no \
+            .next \
+            node_modules \
+            public \
+            src \
+            package.json \
+            package-lock.json \
+            next.config.js \
+            tsconfig.json \
+            postcss.config.mjs \
+            tailwind.config.ts \
+            scripts \
+            worker \
+            root@64.227.108.128:/var/www/html/RunPayway/
 
-      - name: Verify Deployment
+          echo "✓ Project files deployed"
+
+      - name: Start Application
         env:
           SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
         run: |
@@ -47,5 +72,32 @@ jobs:
           echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          echo "Verifying file on server..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "ls -lh /var/www/html/RunPayway/public/logo.png && file /var/www/html/RunPayway/public/logo.png && echo '✓ DEPLOYMENT SUCCESSFUL'"
+          echo "Installing PM2 globally..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "npm install -g pm2"
+
+          echo "Starting RunPayway with PM2..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "cd /var/www/html/RunPayway && pm2 delete runpayway || true && pm2 start 'npm start' --name runpayway -- -p 3000 && pm2 save"
+
+          sleep 2
+
+          echo "Checking PM2 status..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "pm2 status"
+
+      - name: Verify Application
+        env:
+          SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          echo "Waiting for app to start..."
+          sleep 3
+
+          echo "Testing app on localhost:3000..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "curl -s http://127.0.0.1:3000/ | head -c 200"
+
+          echo ""
+          echo ""
+          echo "✓ FULL DEPLOYMENT SUCCESSFUL"
+          echo "App running at: https://runpayway.peoplestar.com"
