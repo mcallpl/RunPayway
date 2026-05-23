@@ -13,155 +13,34 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Clean previous build
-        run: rm -rf .next
-
-      - name: Build Next.js
-        run: npm run build
-
-      - name: Verify build exists
-        run: test -d .next/server && echo "✓ Build successful" || (echo "✗ Build missing" && exit 1)
-
-      - name: Verify source code change is in build
-        run: |
-          CHUNK_FILE=$(find .next/server -name "*.js" | xargs grep -l "About Us" | head -1)
-          if [ -n "$CHUNK_FILE" ]; then
-            echo "✓ 'About Us' found in build: $CHUNK_FILE"
-          else
-            echo "✗ 'About Us' NOT found in build - build is stale!"
-            find .next/server -name "*.js" | xargs grep -l "About" | head -1
-            exit 1
-          fi
-
-      - name: Clean old .next on server and deploy fresh build
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no root@64.227.108.128 'rm -rf /var/www/html/RunPayway/.next'
-          rm ~/.ssh/deploy_key
-          echo "✓ Cleaned old .next directory"
-
-      - name: Deploy built app
-        uses: easingthemes/ssh-deploy@v5.1.0
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
-          REMOTE_HOST: 64.227.108.128
-          REMOTE_USER: root
-          SOURCE: ./
-          TARGET: /var/www/html/RunPayway/
-          EXCLUDE: >-
-            .git/,
-            .github/,
-            .DS_Store,
-            node_modules/,
-            out/,
-            src/,
-            .env*
-
-      - name: Run deploy script
+      - name: Test SSH Connection
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: 64.227.108.128
           username: root
           key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
-          timeout: 60s
-          command_timeout: 10m
           script: |
-            bash /var/www/html/RunPayway/scripts/deploy.sh
-
-      - name: Configure Apache for runpayway.peoplestar.com
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: 64.227.108.128
-          username: root
-          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
-          timeout: 60s
-          command_timeout: 10m
-          script: bash /var/www/html/RunPayway/scripts/configure-apache.sh
-
-      - name: Server Diagnostics - Check build and app state
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: 64.227.108.128
-          username: root
-          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
-          timeout: 60s
-          command_timeout: 10m
-          script: |
-            cd /var/www/html/RunPayway
-            echo "=== PWD ==="
+            echo "✓ SSH connection successful"
+            whoami
             pwd
-            echo ""
-            echo "=== .next/server contents ==="
-            ls -la .next/server | head
-            echo ""
-            echo "=== Search for missing 1331.js ==="
-            find .next/server -name "1331.js" -o -name "*1331*"
-            echo ""
-            echo "=== Search for 'Structural Exposure' in build ==="
-            grep -R "Structural Exposure" .next/server/app .next/server/pages 2>/dev/null | head -10
-            echo ""
-            echo "=== PM2 Status ==="
-            pm2 status
-            echo ""
-            echo "=== PM2 Logs (last 80 lines) ==="
-            pm2 logs runpayway --nostream --lines 80
-            echo ""
-            echo "=== HTTP Headers from localhost:3000 ==="
-            curl -I http://127.0.0.1:3000/
-            echo ""
-            echo "=== Content from localhost:3000 (first 80 lines) ==="
-            curl -s http://127.0.0.1:3000/ | head -80
 
-      - name: Diagnostic - Test app directly vs Apache proxy
+      - name: Deploy logo.png via SCP
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: 64.227.108.128
+          username: root
+          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          source: "public/logo.png"
+          target: "/var/www/html/RunPayway/public/"
+
+      - name: Verify file deployed
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: 64.227.108.128
           username: root
           key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
-          timeout: 60s
-          command_timeout: 10m
           script: |
-            echo "=== 1. Direct app on port 3000 (root) ==="
-            curl -s http://127.0.0.1:3000/ | grep -o "Structural Exposure\|Additional sections" | head -10
-            echo ""
-            echo "=== 2. Public URL through subdomain (https://runpayway.peoplestar.com) ==="
-            curl -sL https://runpayway.peoplestar.com/ | grep -o "Structural Exposure\|Additional sections" | head -10
-            echo ""
-            echo "=== 3. Verify subdomain is responsive ==="
-            curl -sL https://runpayway.peoplestar.com/ | head -c 200
-
-      - name: Diagnostic - Check PM2 and subdomain routing
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: 64.227.108.128
-          username: root
-          key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
-          timeout: 60s
-          command_timeout: 10m
-          script: |
-            echo "=== PWD ==="
-            pwd
-            echo "=== PM2 LIST ==="
-            pm2 list
-            echo "=== PM2 SHOW RUNPAYWAY ==="
-            pm2 show runpayway
-            echo "=== PM2 LOGS (last 50 lines) ==="
-            pm2 logs runpayway --nostream --lines 50
-            echo "=== LISTENING PORTS (3000) ==="
-            ss -tulpn | grep -E "3000|node|next" || echo "No matches found"
-            echo "=== CURL localhost:3000/ (direct to Next.js) ==="
-            curl -s http://localhost:3000/ | grep -o "Structural Exposure\|Additional sections" | head -10 || echo "No match or curl failed"
-            echo "=== APACHE VHOST CONFIG ==="
-            cat /etc/apache2/sites-enabled/runpayway.conf 2>/dev/null || echo "Config not found"
+            echo "✓ Verifying logo.png on server..."
+            ls -lh /var/www/html/RunPayway/public/logo.png
+            file /var/www/html/RunPayway/public/logo.png
+            echo "✓ File deployment successful"
