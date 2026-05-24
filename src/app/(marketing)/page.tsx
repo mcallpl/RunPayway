@@ -1,18 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
-import StructuralExposure from '@/components/StructuralExposure';
+import React from 'react';
 
 export default function LandingPage() {
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
-
-  const toggleFaq = (index: number) => {
-    setOpenFaqIndex(openFaqIndex === index ? null : index);
-  };
-
   return (
     <div style={{ width: '100%', backgroundColor: '#FFFFFF' }}>
-      {/* HEADER - EXACT SPECIFICATION */}
+      {/* HEADER */}
       <header style={{
         position: 'sticky',
         top: 0,
@@ -22,8 +15,8 @@ export default function LandingPage() {
         height: '72px',
         display: 'flex',
         alignItems: 'center',
-        paddingLeft: '32px',
-        paddingRight: '32px',
+        paddingLeft: '48px',
+        paddingRight: '48px',
       }}>
         <div style={{
           maxWidth: '1440px',
@@ -36,14 +29,13 @@ export default function LandingPage() {
           {/* Logo */}
           <a href="/" style={{
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            flexShrink: 0,
+            alignItems: 'center',
             marginRight: '80px',
             textDecoration: 'none',
+            flexShrink: 0,
           }}>
-            <img src="/logo.png" alt="RunPayway™" style={{
-              height: '40px',
+            <img src="/rplogo.png" alt="RunPayway™" style={{
+              height: '48px',
               width: 'auto',
             }} />
           </a>
@@ -55,88 +47,63 @@ export default function LandingPage() {
             alignItems: 'center',
             flex: 1,
           }}>
-            {['How It Works', 'Methodology', 'Use Cases', 'Reports', 'For Professionals', 'Learn', 'About Us'].map((item) => (
+            {['HOW IT WORKS', 'METHODOLOGY', 'USE CASES', 'FOR PROFESSIONALS', 'VERIFICATION ENVIRONMENTS', 'LEARN'].map((item) => (
               <a key={item} href="#" style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '14px',
-                fontWeight: 500,
-                lineHeight: '1',
-                letterSpacing: '0',
+                fontSize: '13px',
+                fontWeight: 600,
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase',
                 color: '#0E1A2B',
                 textDecoration: 'none',
                 cursor: 'pointer',
-                transition: 'color 150ms ease',
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.color = '#0E2A7B'}
-              onMouseLeave={(e) => e.currentTarget.style.color = '#0E1A2B'}
-              >
+              }}>
                 {item}
               </a>
             ))}
           </nav>
 
-          {/* Right Actions */}
-          <div style={{
+          {/* Right CTA */}
+          <button style={{
+            height: '48px',
+            paddingLeft: '24px',
+            paddingRight: '24px',
+            backgroundColor: '#0E1A2B',
+            color: '#FFFFFF',
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '13px',
+            fontWeight: 700,
+            letterSpacing: '0.05em',
+            textTransform: 'uppercase',
+            border: 'none',
+            borderRadius: '0px',
+            cursor: 'pointer',
             display: 'flex',
-            gap: '24px',
             alignItems: 'center',
+            gap: '8px',
             marginLeft: 'auto',
           }}>
-            <a href="#sign-in" style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '14px',
-              fontWeight: 500,
-              color: '#0E1A2B',
-              textDecoration: 'none',
-              cursor: 'pointer',
-            }}>
-              Sign In
-            </a>
-            <button style={{
-              height: '42px',
-              paddingLeft: '22px',
-              paddingRight: '22px',
-              backgroundColor: '#0E2A7B',
-              color: '#FFFFFF',
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '14px',
-              fontWeight: 600,
-              border: 'none',
-              borderRadius: '6px',
-              cursor: 'pointer',
-              transition: 'background-color 150ms ease',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0a1d5c'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#0E2A7B'}
-            >
-              Start Evaluation
-              <span>→</span>
-            </button>
-          </div>
+            BEGIN VERIFICATION
+            <span style={{ fontSize: '16px' }}>→</span>
+          </button>
         </div>
       </header>
 
-      {/* HERO SECTION - EXACT SPECIFICATION */}
+      {/* HERO SECTION */}
       <section style={{
-        maxWidth: '1280px',
+        maxWidth: '1440px',
         margin: '0 auto',
         paddingTop: '96px',
-        paddingBottom: '92px',
+        paddingBottom: '96px',
         paddingLeft: '48px',
         paddingRight: '48px',
         display: 'grid',
-        gridTemplateColumns: '5fr 6fr',
-        gap: '72px',
-        alignItems: 'center',
+        gridTemplateColumns: '1fr 1fr',
+        gap: '96px',
+        alignItems: 'flex-start',
       }}>
         {/* LEFT COLUMN */}
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-        }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           {/* Eyebrow */}
           <p style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
@@ -144,128 +111,102 @@ export default function LandingPage() {
             fontWeight: 700,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            lineHeight: '1.2',
             color: '#2563EB',
-            margin: '0 0 34px 0',
-          }}>
-            FOR INDEPENDENT INCOME STRUCTURES.
-          </p>
-
-          {/* Divider */}
-          <div style={{
-            width: '100%',
-            height: '1px',
-            backgroundColor: '#E5E7EB',
             margin: '0 0 24px 0',
-          }}></div>
+          }}>
+            FOR INDIVIDUALS, ADVISORS, AND ORGANIZATIONS.
+          </p>
 
           {/* H1 */}
           <h1 style={{
-            fontFamily: 'Canela, Freight Display, Editorial New, Georgia, serif',
-            fontSize: '64px',
-            lineHeight: '1.0',
-            letterSpacing: '-0.045em',
+            fontFamily: 'Garamond, Sabon, Georgia, serif',
+            fontSize: '56px',
+            lineHeight: '1.2',
+            letterSpacing: '-0.02em',
             fontWeight: 400,
-            color: '#0E2A7B',
-            maxWidth: '520px',
-            margin: '24px 0 0 0',
+            color: '#0E1A2B',
+            maxWidth: '500px',
+            margin: '0 0 24px 0',
           }}>
-            The Standard for Measuring Income Stability.
+            Income can appear stable long before the foundation behind it actually is.
           </h1>
 
-          {/* Top Blue Accent Line */}
-          <div style={{
-            width: '56px',
-            height: '2px',
-            backgroundColor: '#2563EB',
-            margin: '34px 0 34px 0',
-          }}></div>
+          {/* Secondary Copy */}
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '16px',
+            lineHeight: '1.7',
+            fontWeight: 600,
+            color: '#2563EB',
+            maxWidth: '480px',
+            margin: '32px 0 0 0',
+          }}>
+            Know whether your income is built on stable ground.
+          </p>
 
           {/* Body Copy */}
           <p style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
             fontSize: '16px',
-            lineHeight: '1.85',
+            lineHeight: '1.7',
             fontWeight: 400,
-            letterSpacing: '0',
             color: '#1B2B52',
-            maxWidth: '430px',
-            margin: '0 0 0 0',
+            maxWidth: '480px',
+            margin: '24px 0 0 0',
           }}>
-            RunPayway™ evaluates how resilient income remains under real-world conditions before financial, business, and career decisions are made.
-          </p>
-
-          {/* Blue Divider Above Statement */}
-          <div style={{
-            width: '56px',
-            height: '2px',
-            backgroundColor: '#2563EB',
-            margin: '40px 0 24px 0',
-          }}></div>
-
-          {/* INCOME DOES NOT EQUAL STABILITY */}
-          <p style={{
-            fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '13px',
-            fontWeight: 700,
-            letterSpacing: '0.06em',
-            textTransform: 'uppercase',
-            color: '#0E1A2B',
-            margin: '0 0 24px 0',
-          }}>
-            INCOME DOES NOT EQUAL STABILITY.
+            RunPayway™ verifies how stable income really appears to be.
           </p>
 
           {/* CTA Row */}
           <div style={{
             display: 'flex',
-            gap: '18px',
-            margin: '24px 0 24px 0',
+            gap: '16px',
+            margin: '40px 0 0 0',
+            alignItems: 'center',
           }}>
             <button style={{
-              height: '48px',
-              paddingLeft: '24px',
-              paddingRight: '24px',
-              backgroundColor: '#0E2A7B',
+              height: '60px',
+              paddingLeft: '32px',
+              paddingRight: '32px',
+              backgroundColor: '#0E1A2B',
               color: '#FFFFFF',
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '14px',
-              fontWeight: 600,
+              fontSize: '13px',
+              fontWeight: 700,
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
               border: 'none',
-              borderRadius: '6px',
+              borderRadius: '0px',
               cursor: 'pointer',
-              transition: 'background-color 150ms ease',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#0a1d5c'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#0E2A7B'}
-            >
-              Get My Stability Class
+              gap: '8px',
+            }}>
+              BEGIN STRUCTURAL VERIFICATION
+              <span style={{ fontSize: '16px' }}>→</span>
             </button>
             <button style={{
-              height: '48px',
-              paddingLeft: '24px',
-              paddingRight: '24px',
+              height: '60px',
+              paddingLeft: '32px',
+              paddingRight: '32px',
               backgroundColor: 'transparent',
               color: '#0E1A2B',
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '14px',
-              fontWeight: 600,
-              border: 'none',
-              borderRadius: '6px',
+              fontSize: '13px',
+              fontWeight: 700,
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              border: '1px solid #0E1A2B',
+              borderRadius: '0px',
               cursor: 'pointer',
-              transition: 'background-color 150ms ease',
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: '8px',
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(14, 42, 123, 0.05)'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-            >
-              How it works
-              <span>→</span>
+            }}>
+              HOW IT WORKS
+              <span style={{ fontSize: '16px' }}>→</span>
             </button>
           </div>
 
@@ -273,96 +214,55 @@ export default function LandingPage() {
           <p style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
             fontSize: '13px',
-            lineHeight: '1.72',
+            lineHeight: '1.7',
             fontWeight: 400,
-            color: '#4B5563',
-            maxWidth: '360px',
-            margin: '0',
+            color: '#666666',
+            maxWidth: '420px',
+            margin: '32px 0 0 0',
           }}>
-            Free evaluation includes Stability Classification™ and primary exposure indicator.<br />
-            Full Income Stability Score™ and evaluation report available for $69.
+            Initial income stability visibility provided at no cost.
           </p>
         </div>
 
-        {/* RIGHT COLUMN - SCORE FRAMEWORK CARD */}
+        {/* RIGHT COLUMN - SCORE CARD */}
         <div style={{
           backgroundColor: '#FFFFFF',
-          border: '1px solid #E6EAF2',
-          borderRadius: '12px',
-          paddingTop: '48px',
-          paddingLeft: '48px',
-          paddingRight: '48px',
-          paddingBottom: '48px',
-          boxShadow: 'none',
+          border: '1px solid #D8DCE5',
+          paddingTop: '40px',
+          paddingLeft: '40px',
+          paddingRight: '40px',
+          paddingBottom: '40px',
         }}>
-          {/* Card Title */}
-          <p style={{
-            fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '14px',
-            fontWeight: 700,
-            letterSpacing: '0.06em',
-            textTransform: 'uppercase',
-            color: '#0E1A2B',
-            margin: '0 0 24px 0',
-          }}>
-            INCOME STABILITY SCORE™
-          </p>
-
-          {/* Legend */}
+          {/* Card Header */}
           <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '10px',
-            marginBottom: '24px',
+            backgroundColor: '#0E1A2B',
+            color: '#FFFFFF',
+            padding: '16px 0',
+            marginLeft: '-40px',
+            marginRight: '-40px',
+            paddingLeft: '40px',
+            paddingRight: '40px',
+            marginBottom: '32px',
           }}>
-            {[
-              { color: '#D8DCE5', range: '0–39', label: 'Limited Stability' },
-              { color: '#D8DCE5', range: '40–59', label: 'Developing Stability' },
-              { color: '#0E2A7B', range: '60–79', label: 'Established Stability' },
-              { color: '#D8DCE5', range: '80–100', label: 'High Stability' }
-            ].map((item, idx) => (
-              <div key={idx} style={{
-                display: 'flex',
-                gap: '10px',
-                alignItems: 'center',
-              }}>
-                <div style={{
-                  width: '10px',
-                  height: '10px',
-                  backgroundColor: item.color,
-                  borderRadius: '2px',
-                  flexShrink: 0,
-                }}></div>
-                <span style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  color: item.color === '#0E2A7B' ? '#0E2A7B' : '#1B2B52',
-                  minWidth: '44px',
-                }}>
-                  {item.range}
-                </span>
-                <span style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  lineHeight: '1.6',
-                  color: '#0E1A2B',
-                }}>
-                  {item.label}
-                </span>
-              </div>
-            ))}
+            <p style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '13px',
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              margin: '0',
+            }}>
+              INCOME STABILITY SCORE™
+            </p>
           </div>
 
           {/* Score Number */}
           <div style={{
-            fontSize: '108px',
-            lineHeight: '0.92',
-            letterSpacing: '-0.06em',
-            fontWeight: 500,
-            color: '#0E2A7B',
-            margin: '0 0 24px 0',
+            fontSize: '96px',
+            lineHeight: '1',
+            fontWeight: 700,
+            color: '#2563EB',
+            margin: '0 0 16px 0',
             fontFamily: 'Inter, -apple-system, sans-serif',
             fontVariantNumeric: 'tabular-nums',
           }}>
@@ -372,12 +272,12 @@ export default function LandingPage() {
           {/* Classification */}
           <p style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '16px',
+            fontSize: '13px',
             fontWeight: 700,
-            letterSpacing: '0.02em',
+            letterSpacing: '0.08em',
             textTransform: 'uppercase',
             color: '#0E1A2B',
-            margin: '0 0 24px 0',
+            margin: '0 0 12px 0',
           }}>
             ESTABLISHED STABILITY
           </p>
@@ -386,376 +286,1136 @@ export default function LandingPage() {
           <p style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
             fontSize: '14px',
-            lineHeight: '1.72',
+            lineHeight: '1.6',
             fontWeight: 400,
-            color: '#1B2B52',
-            maxWidth: '420px',
-            margin: '0 0 40px 0',
+            color: '#4B5563',
+            maxWidth: '100%',
+            margin: '0 0 32px 0',
           }}>
-            Recurring income characteristics with moderate diversification, continuity, and forward visibility.
+            Current income foundation appears stable with identifiable pressure conditions.
           </p>
 
-          {/* Range Visualization */}
-          <div style={{ margin: '0 0 40px 0' }}>
-            {/* Bars */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '8px',
-              marginBottom: '12px',
-            }}>
-              <div style={{
-                height: '5px',
-                borderRadius: '999px',
-                backgroundColor: '#D8DCE5',
-              }}></div>
-              <div style={{
-                height: '5px',
-                borderRadius: '999px',
-                backgroundColor: '#D8DCE5',
-              }}></div>
-              <div style={{
-                height: '5px',
-                borderRadius: '999px',
-                backgroundColor: '#0E2A7B',
-              }}></div>
-              <div style={{
-                height: '5px',
-                borderRadius: '999px',
-                backgroundColor: '#D8DCE5',
-              }}></div>
-            </div>
-
-            {/* Labels */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '8px',
-            }}>
-              {['0–39', '40–59', '60–79', '80–100'].map((label, idx) => (
-                <p key={idx} style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  lineHeight: '1',
-                  letterSpacing: '0',
-                  color: idx === 2 ? '#0E2A7B' : '#6B7280',
-                  margin: '0',
-                  textAlign: 'center',
-                }}>
-                  {label}
-                </p>
-              ))}
-            </div>
-          </div>
-
-          {/* Scale Label */}
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            margin: '0 0 32px 0',
-            fontSize: '13px',
-            fontWeight: 600,
-            color: '#6B7280',
-            fontFamily: 'Inter, -apple-system, sans-serif',
-          }}>
-            <span>0</span>
-            <span>SCORE RANGE 0–100</span>
-            <span>100</span>
-          </div>
-
-          {/* Metadata Grid */}
+          {/* Metrics Grid */}
           <div style={{
             borderTop: '1px solid #E5E7EB',
-            paddingTop: '32px',
+            paddingTop: '24px',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '24px',
+            marginBottom: '32px',
           }}>
-            {/* First Row */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '32px',
-              margin: '0 0 28px 0',
-              paddingBottom: '28px',
-              borderBottom: '1px solid #E5E7EB',
-            }}>
-              <div>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                  color: '#6B7280',
-                  margin: '0 0 8px 0',
-                }}>
-                  Revenue Structure
-                </p>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  lineHeight: '1.5',
-                  color: '#0E1A2B',
-                  margin: '0',
-                }}>
-                  Distributed
-                </p>
-              </div>
-              <div>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                  color: '#6B7280',
-                  margin: '0 0 8px 0',
-                }}>
-                  Continuity
-                </p>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  lineHeight: '1.5',
-                  color: '#0E1A2B',
-                  margin: '0',
-                }}>
-                  Moderate
-                </p>
-              </div>
-              <div>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                  color: '#6B7280',
-                  margin: '0 0 8px 0',
-                }}>
-                  Labor Independence
-                </p>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  lineHeight: '1.5',
-                  color: '#0E1A2B',
-                  margin: '0',
-                }}>
-                  Partial
-                </p>
-              </div>
+            <div>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '11px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#6B7280',
+                margin: '0 0 8px 0',
+              }}>
+                CONTINUITY
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 600,
+                color: '#FF6B35',
+                margin: '0',
+              }}>
+                MODERATE
+              </p>
             </div>
+            <div>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '11px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#6B7280',
+                margin: '0 0 8px 0',
+              }}>
+                CONCENTRATION
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 600,
+                color: '#10B981',
+                margin: '0',
+              }}>
+                MANAGEABLE
+              </p>
+            </div>
+            <div>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '11px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#6B7280',
+                margin: '0 0 8px 0',
+              }}>
+                DEPENDENCY
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 600,
+                color: '#EF4444',
+                margin: '0',
+              }}>
+                ELEVATED
+              </p>
+            </div>
+          </div>
 
-            {/* Second Row */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '32px',
-            }}>
-              <div>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                  color: '#6B7280',
-                  margin: '0 0 8px 0',
-                }}>
-                  Model
-                </p>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  lineHeight: '1.5',
-                  color: '#0E1A2B',
-                  margin: '0',
-                }}>
-                  RP-2.0
-                </p>
-              </div>
-              <div>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                  color: '#6B7280',
-                  margin: '0 0 8px 0',
-                }}>
-                  Evaluation
-                </p>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  lineHeight: '1.5',
-                  color: '#0E1A2B',
-                  margin: '0',
-                }}>
-                  Version-Stamped
-                </p>
-              </div>
-              <div>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                  color: '#6B7280',
-                  margin: '0 0 8px 0',
-                }}>
-                  Integrity
-                </p>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  lineHeight: '1.5',
-                  color: '#0E1A2B',
-                  margin: '0',
-                }}>
-                  Same inputs<br/>produce same result
-                </p>
-              </div>
+          {/* Model Info Grid */}
+          <div style={{
+            borderTop: '1px solid #E5E7EB',
+            paddingTop: '24px',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '16px',
+          }}>
+            <div>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '11px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#6B7280',
+                margin: '0 0 6px 0',
+              }}>
+                MODEL
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 600,
+                color: '#0E1A2B',
+                margin: '0',
+              }}>
+                RP-2.0
+              </p>
+            </div>
+            <div>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '11px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#6B7280',
+                margin: '0 0 6px 0',
+              }}>
+                INTEGRITY
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 600,
+                color: '#0E1A2B',
+                margin: '0',
+              }}>
+                Same inputs produce same result
+              </p>
+            </div>
+            <div>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '11px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#6B7280',
+                margin: '0 0 6px 0',
+              }}>
+                EVALUATION
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 600,
+                color: '#0E1A2B',
+                margin: '0',
+              }}>
+                Version-Stamped
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* METHODOLOGY STRIP - EXACT SPECIFICATION */}
+      {/* TRUST STRIP */}
       <section style={{
         backgroundColor: '#FFFFFF',
         borderTop: '1px solid #E5E7EB',
         borderBottom: '1px solid #E5E7EB',
-        display: 'flex',
-        alignItems: 'center',
-        minHeight: '112px',
+        paddingTop: '64px',
+        paddingBottom: '64px',
       }}>
         <div style={{
           maxWidth: '1440px',
-          width: '100%',
           margin: '0 auto',
-          paddingLeft: '32px',
-          paddingRight: '32px',
-          paddingTop: '34px',
-          paddingBottom: '34px',
+          paddingLeft: '48px',
+          paddingRight: '48px',
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '80px',
-          position: 'relative',
+          gap: '96px',
         }}>
-          {/* Vertical Dividers */}
-          <div style={{
-            position: 'absolute',
-            left: 'calc(33.333% - 40px)',
-            top: '20px',
-            bottom: '20px',
-            width: '1px',
-            backgroundColor: '#E5E7EB',
-          }}></div>
-          <div style={{
-            position: 'absolute',
-            left: 'calc(66.666% - 40px)',
-            top: '20px',
-            bottom: '20px',
-            width: '1px',
-            backgroundColor: '#E5E7EB',
-          }}></div>
-          {[
-            {
-              title: 'DETERMINISTIC METHODOLOGY',
-              subtitle: 'Fixed scoring architecture',
-              icon: 'hexagon'
-            },
-            {
-              title: 'VERSION-STAMPED RESULTS',
-              subtitle: 'Tied to model version',
-              icon: 'layers'
-            },
-            {
-              title: 'PRIVATE BY DEFAULT',
-              subtitle: 'Your data stays yours',
-              icon: 'lock'
-            }
-          ].map((block, idx) => (
-            <div key={idx} style={{
-              display: 'flex',
-              gap: '22px',
-              alignItems: 'flex-start',
+          <div>
+            <p style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '13px',
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: '#0E1A2B',
+              margin: '0 0 12px 0',
             }}>
-              {/* Icon SVG */}
-              {block.icon === 'hexagon' && (
-                <svg style={{ width: '56px', height: '56px', flexShrink: 0, stroke: '#0E2A7B', fill: 'none', strokeWidth: '2' }} viewBox="0 0 24 24">
-                  <path d="M12 2L3 6.5V17.5L12 22L21 17.5V6.5L12 2Z"/>
-                  <circle cx="12" cy="12" r="2" fill="#0E2A7B"/>
-                  <path d="M12 9V15" strokeLinecap="round"/>
-                  <path d="M10 13L14 11" strokeLinecap="round"/>
-                </svg>
-              )}
-              {block.icon === 'layers' && (
-                <svg style={{ width: '56px', height: '56px', flexShrink: 0, stroke: '#0E2A7B', fill: 'none', strokeWidth: '2' }} viewBox="0 0 24 24">
-                  <path d="M3 8L12 4L21 8" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M3 16L12 20L21 16" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M3 12L12 16L21 12" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              )}
-              {block.icon === 'lock' && (
-                <svg style={{ width: '56px', height: '56px', flexShrink: 0, stroke: '#0E2A7B', fill: 'none', strokeWidth: '2' }} viewBox="0 0 24 24">
-                  <path d="M7 10V7C7 4.24 9.24 2 12 2C14.76 2 17 4.24 17 7V10M5 10H19C19.55 10 20 10.45 20 11V20C20 20.55 19.55 21 19 21H5C4.45 21 4 20.55 4 20V11C4 10.45 4.45 10 5 10Z" strokeLinecap="round" strokeLinejoin="round"/>
-                  <circle cx="12" cy="15" r="1.5" fill="#0E2A7B"/>
-                </svg>
-              )}
-              <div>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  letterSpacing: '0.05em',
-                  textTransform: 'uppercase',
-                  color: '#0E1A2B',
-                  margin: '0 0 4px 0',
-                }}>
-                  {block.title}
-                </p>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '13px',
-                  fontWeight: 400,
-                  lineHeight: '1.6',
-                  color: '#4B5563',
-                  margin: '0',
-                }}>
-                  {block.subtitle}
-                </p>
-              </div>
+              FIXED FRAMEWORK.
+            </p>
+            <p style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '15px',
+              lineHeight: '1.6',
+              fontWeight: 400,
+              color: '#4B5563',
+              margin: '0',
+            }}>
+              Evaluations are derived from a fixed methodological framework.
+            </p>
+          </div>
+          <div>
+            <p style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '13px',
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: '#0E1A2B',
+              margin: '0 0 12px 0',
+            }}>
+              VERSION-STAMPED RESULTS.
+            </p>
+            <p style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '15px',
+              lineHeight: '1.6',
+              fontWeight: 400,
+              color: '#4B5563',
+              margin: '0',
+            }}>
+              Every evaluation is stamped to the exact methodology version used.
+            </p>
+          </div>
+          <div>
+            <p style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '13px',
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: '#0E1A2B',
+              margin: '0 0 12px 0',
+            }}>
+              PRIVATE BY DEFAULT.
+            </p>
+            <p style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '15px',
+              lineHeight: '1.6',
+              fontWeight: 400,
+              color: '#4B5563',
+              margin: '0',
+            }}>
+              Your information remains private and is never sold.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* COMMONLY REVIEWED BEFORE SECTION */}
+      <section style={{
+        maxWidth: '1440px',
+        margin: '0 auto',
+        paddingTop: '80px',
+        paddingBottom: '80px',
+        paddingLeft: '48px',
+        paddingRight: '48px',
+      }}>
+        <p style={{
+          fontFamily: 'Inter, -apple-system, sans-serif',
+          fontSize: '13px',
+          fontWeight: 700,
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase',
+          color: '#0E1A2B',
+          margin: '0 0 32px 0',
+        }}>
+          COMMONLY REVIEWED BEFORE:
+        </p>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(6, 1fr)',
+          gap: '32px',
+        }}>
+          {['Mortgage Applications', 'Business Expansion', 'Income Transitions', 'Operational Scaling', 'Financial Commitments', 'Career Changes'].map((item, idx) => (
+            <div key={idx} style={{
+              paddingBottom: '16px',
+              borderBottom: '1px solid #E5E7EB',
+            }}>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '14px',
+                fontWeight: 600,
+                color: '#0E1A2B',
+                margin: '0',
+              }}>
+                {item}
+              </p>
             </div>
           ))}
         </div>
       </section>
 
-      <StructuralExposure />
-
-      {/* STRUCTURAL EXPOSURE SECTION */}
-
-
-      {/* Placeholder for remaining sections */}
-      <div style={{
+      {/* STRUCTURAL REALITY SECTION */}
+      <section style={{
         maxWidth: '1440px',
         margin: '0 auto',
-        padding: '96px 32px',
-        textAlign: 'center',
-        color: '#999',
+        paddingTop: '80px',
+        paddingBottom: '80px',
+        paddingLeft: '48px',
+        paddingRight: '48px',
+        display: 'grid',
+        gridTemplateColumns: '300px 1fr',
+        gap: '96px',
+        alignItems: 'flex-start',
       }}>
-        Additional sections to be implemented with same precision
-      </div>
+        {/* LEFT COLUMN */}
+        <div>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '13px',
+            fontWeight: 700,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: '#0E1A2B',
+            margin: '0 0 4px 0',
+          }}>
+            STRUCTURAL REALITY
+          </p>
+          <div style={{
+            width: '40px',
+            height: '1px',
+            backgroundColor: '#E5E7EB',
+            margin: '16px 0 24px 0',
+          }}></div>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '16px',
+            lineHeight: '1.7',
+            fontWeight: 400,
+            color: '#1B2B52',
+            margin: '0 0 16px 0',
+          }}>
+            Income amount alone does not determine financial stability.
+          </p>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '16px',
+            lineHeight: '1.7',
+            fontWeight: 400,
+            color: '#1B2B52',
+            margin: '0 0 16px 0',
+          }}>
+            Two people earning similar income can operate under very different stability conditions.
+          </p>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '16px',
+            lineHeight: '1.7',
+            fontWeight: 400,
+            color: '#1B2B52',
+            margin: '0',
+          }}>
+            RunPayway™ evaluates the conditions supporting income using fixed structural rules.
+          </p>
+        </div>
+
+        {/* RIGHT COLUMN */}
+        <div>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '13px',
+            fontWeight: 700,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: '#0E1A2B',
+            margin: '0 0 48px 0',
+          }}>
+            SAME INCOME. DIFFERENT STABILITY CONDITIONS.
+          </p>
+
+          {/* Comparison Grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 40px 1fr',
+            gap: '48px',
+            alignItems: 'center',
+          }}>
+            {/* Profile A */}
+            <div>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#0E1A2B',
+                margin: '0 0 16px 0',
+              }}>
+                PROFILE A
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '32px',
+                fontWeight: 700,
+                color: '#0E1A2B',
+                margin: '0 0 16px 0',
+              }}>
+                $150K
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 600,
+                color: '#6B7280',
+                margin: '0 0 16px 0',
+              }}>
+                Annual income
+              </p>
+              <ul style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '14px',
+                lineHeight: '1.8',
+                fontWeight: 400,
+                color: '#1B2B52',
+                margin: '0',
+                paddingLeft: '0',
+                listStyle: 'none',
+              }}>
+                <li>• 1 primary client</li>
+                <li>• Inconsistent monthly distribution</li>
+                <li>• no long-term agreements</li>
+                <li>• high dependency on active production</li>
+              </ul>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 700,
+                color: '#EF4444',
+                margin: '24px 0 0 0',
+              }}>
+                DEVELOPING STABILITY
+              </p>
+            </div>
+
+            {/* VS */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '100%',
+            }}>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 700,
+                color: '#0E1A2B',
+                margin: '0',
+              }}>
+                vs.
+              </p>
+            </div>
+
+            {/* Profile B */}
+            <div>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#0E1A2B',
+                margin: '0 0 16px 0',
+              }}>
+                PROFILE B
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '32px',
+                fontWeight: 700,
+                color: '#0E1A2B',
+                margin: '0 0 16px 0',
+              }}>
+                $150K
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 600,
+                color: '#6B7280',
+                margin: '0 0 16px 0',
+              }}>
+                Annual income
+              </p>
+              <ul style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '14px',
+                lineHeight: '1.8',
+                fontWeight: 400,
+                color: '#1B2B52',
+                margin: '0',
+                paddingLeft: '0',
+                listStyle: 'none',
+              }}>
+                <li>• 7 distributed income sources</li>
+                <li>• recurring monthly agreements</li>
+                <li>• diversified recurring income conditions</li>
+                <li>• lower reliance on any single income source</li>
+              </ul>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 700,
+                color: '#10B981',
+                margin: '24px 0 0 0',
+              }}>
+                ESTABLISHED STABILITY
+              </p>
+            </div>
+          </div>
+
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '14px',
+            lineHeight: '1.7',
+            fontWeight: 400,
+            color: '#4B5563',
+            margin: '64px 0 0 0',
+          }}>
+            RunPayway™ helps identify these differences through a fixed verification framework.
+          </p>
+        </div>
+      </section>
+
+      {/* VERIFICATION TIERS SECTION */}
+      <section style={{
+        maxWidth: '1440px',
+        margin: '0 auto',
+        paddingTop: '80px',
+        paddingBottom: '80px',
+        paddingLeft: '48px',
+        paddingRight: '48px',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '48px',
+      }}>
+        {/* Tier 1: Basic */}
+        <div>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '13px',
+            fontWeight: 700,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: '#0E1A2B',
+            margin: '0 0 12px 0',
+          }}>
+            BASIC STRUCTURAL INSIGHT™
+          </p>
+          <div style={{
+            width: '40px',
+            height: '1px',
+            backgroundColor: '#E5E7EB',
+            margin: '0 0 24px 0',
+          }}></div>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '32px',
+            fontWeight: 700,
+            color: '#0E1A2B',
+            margin: '0 0 24px 0',
+          }}>
+            No Cost
+          </p>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '15px',
+            lineHeight: '1.7',
+            fontWeight: 400,
+            color: '#1B2B52',
+            margin: '0 0 32px 0',
+          }}>
+            Initial visibility into the stability conditions supporting your income.
+          </p>
+          <button style={{
+            width: '100%',
+            height: '52px',
+            backgroundColor: '#FFFFFF',
+            color: '#0E1A2B',
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '13px',
+            fontWeight: 700,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            border: '1px solid #0E1A2B',
+            borderRadius: '0px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+          }}>
+            START BASIC EVALUATION
+            <span style={{ fontSize: '16px' }}>→</span>
+          </button>
+        </div>
+
+        {/* Tier 2: Full */}
+        <div style={{
+          backgroundColor: '#0E1A2B',
+          color: '#FFFFFF',
+          padding: '40px',
+          borderRadius: '0px',
+        }}>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '13px',
+            fontWeight: 700,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: '#FFFFFF',
+            margin: '0 0 12px 0',
+          }}>
+            FULL STRUCTURAL VERIFICATION™
+          </p>
+          <div style={{
+            width: '40px',
+            height: '1px',
+            backgroundColor: 'rgba(255, 255, 255, 0.3)',
+            margin: '0 0 24px 0',
+          }}></div>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '32px',
+            fontWeight: 700,
+            color: '#FFFFFF',
+            margin: '0 0 24px 0',
+          }}>
+            $69
+          </p>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '15px',
+            lineHeight: '1.7',
+            fontWeight: 400,
+            color: '#E5E7EB',
+            margin: '0 0 32px 0',
+          }}>
+            Expanded visibility into the conditions affecting income stability.
+          </p>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '13px',
+            fontWeight: 700,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: '#FFFFFF',
+            margin: '0 0 16px 0',
+          }}>
+            VERIFICATION ENVIRONMENT INCLUDES:
+          </p>
+          <ul style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '14px',
+            lineHeight: '2',
+            fontWeight: 400,
+            color: '#E5E7EB',
+            margin: '0 0 32px 0',
+            paddingLeft: '0',
+            listStyle: 'none',
+          }}>
+            <li>— Income Stability Score™</li>
+            <li>— Stability Scenario Analysis™</li>
+            <li>— Industry-Aware Interpretation</li>
+            <li>— Highest-Impact Stability Opportunities</li>
+          </ul>
+          <button style={{
+            width: '100%',
+            height: '52px',
+            backgroundColor: '#FFFFFF',
+            color: '#0E1A2B',
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '13px',
+            fontWeight: 700,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            border: 'none',
+            borderRadius: '0px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+          }}>
+            UNLOCK FULL VERIFICATION
+            <span style={{ fontSize: '16px' }}>→</span>
+          </button>
+        </div>
+
+        {/* Tier 3: Professional */}
+        <div>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '13px',
+            fontWeight: 700,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: '#0E1A2B',
+            margin: '0 0 12px 0',
+          }}>
+            FOR PROFESSIONALS
+          </p>
+          <div style={{
+            width: '40px',
+            height: '1px',
+            backgroundColor: '#E5E7EB',
+            margin: '0 0 24px 0',
+          }}></div>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '15px',
+            lineHeight: '1.7',
+            fontWeight: 400,
+            color: '#1B2B52',
+            margin: '0 0 32px 0',
+          }}>
+            Professional verification environments support repeatable review across client and operational evaluations.
+          </p>
+          <button style={{
+            width: '100%',
+            height: '52px',
+            backgroundColor: '#FFFFFF',
+            color: '#0E1A2B',
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '13px',
+            fontWeight: 700,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            border: '1px solid #0E1A2B',
+            borderRadius: '0px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+          }}>
+            EXPLORE PROFESSIONAL VERIFICATION
+            <span style={{ fontSize: '16px' }}>→</span>
+          </button>
+        </div>
+      </section>
+
+      {/* SYSTEM INTEGRITY SECTION */}
+      <section style={{
+        backgroundColor: '#FAFBFC',
+        borderTop: '1px solid #E5E7EB',
+        borderBottom: '1px solid #E5E7EB',
+        paddingTop: '80px',
+        paddingBottom: '80px',
+      }}>
+        <div style={{
+          maxWidth: '1440px',
+          margin: '0 auto',
+          paddingLeft: '48px',
+          paddingRight: '48px',
+        }}>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '13px',
+            fontWeight: 700,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: '#0E1A2B',
+            margin: '0 0 48px 0',
+          }}>
+            SYSTEM INTEGRITY
+          </p>
+
+          {/* Grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '48px',
+            marginBottom: '64px',
+          }}>
+            <div>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#0E1A2B',
+                margin: '0 0 12px 0',
+              }}>
+                FIXED RULES.
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '15px',
+                lineHeight: '1.7',
+                fontWeight: 400,
+                color: '#1B2B52',
+                margin: '0',
+              }}>
+                Evaluations are derived exclusively from a fixed methodological framework.
+              </p>
+            </div>
+            <div>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#0E1A2B',
+                margin: '0 0 12px 0',
+              }}>
+                DETERMINISTIC RESULTS.
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '15px',
+                lineHeight: '1.7',
+                fontWeight: 400,
+                color: '#1B2B52',
+                margin: '0',
+              }}>
+                Same inputs, through the same framework, always produce the same result.
+              </p>
+            </div>
+            <div>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#0E1A2B',
+                margin: '0 0 12px 0',
+              }}>
+                VERSION-LOCKED METHODOLOGY.
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '15px',
+                lineHeight: '1.7',
+                fontWeight: 400,
+                color: '#1B2B52',
+                margin: '0',
+              }}>
+                Every evaluation is stamped to the exact methodology version used.
+              </p>
+            </div>
+            <div>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#0E1A2B',
+                margin: '0 0 12px 0',
+              }}>
+                STRUCTURAL STABILITY MODEL
+              </p>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '24px',
+                fontWeight: 700,
+                color: '#0E1A2B',
+                margin: '0',
+              }}>
+                RP-2.0
+              </p>
+            </div>
+          </div>
+
+          {/* Evaluation Notice */}
+          <div style={{
+            backgroundColor: '#FFFFFF',
+            borderTop: '1px solid #E5E7EB',
+            borderBottom: '1px solid #E5E7EB',
+            paddingTop: '24px',
+            paddingBottom: '24px',
+          }}>
+            <p style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '13px',
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: '#0E1A2B',
+              margin: '0 0 16px 0',
+            }}>
+              STRUCTURAL EVALUATION NOTICE:
+            </p>
+            <p style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '14px',
+              lineHeight: '1.7',
+              fontWeight: 400,
+              color: '#4B5563',
+              margin: '0',
+            }}>
+              RunPayway™ evaluates income stability conditions using a fixed methodological framework. Results are informational only and not financial, legal, tax, lending, insurance, investment, or employment advice. RunPayway™ does not guarantee future outcomes or replace professional judgment.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA SECTION */}
+      <section style={{
+        maxWidth: '1440px',
+        margin: '0 auto',
+        paddingTop: '80px',
+        paddingBottom: '80px',
+        paddingLeft: '48px',
+        paddingRight: '48px',
+        textAlign: 'center',
+      }}>
+        <h2 style={{
+          fontFamily: 'Garamond, Sabon, Georgia, serif',
+          fontSize: '48px',
+          lineHeight: '1.3',
+          fontWeight: 400,
+          color: '#0E1A2B',
+          margin: '0 0 24px 0',
+        }}>
+          Structural clarity before important financial decisions.
+        </h2>
+        <p style={{
+          fontFamily: 'Inter, -apple-system, sans-serif',
+          fontSize: '16px',
+          fontWeight: 400,
+          color: '#4B5563',
+          margin: '0 0 48px 0',
+        }}>
+          Complete your verification in under 2 minutes.
+        </p>
+        <button style={{
+          height: '60px',
+          paddingLeft: '32px',
+          paddingRight: '32px',
+          backgroundColor: '#0E1A2B',
+          color: '#FFFFFF',
+          fontFamily: 'Inter, -apple-system, sans-serif',
+          fontSize: '13px',
+          fontWeight: 700,
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase',
+          border: 'none',
+          borderRadius: '0px',
+          cursor: 'pointer',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+        }}>
+          BEGIN STRUCTURAL VERIFICATION
+          <span style={{ fontSize: '16px' }}>→</span>
+        </button>
+      </section>
+
+      {/* FOOTER */}
+      <footer style={{
+        backgroundColor: '#FFFFFF',
+        borderTop: '1px solid #E5E7EB',
+        paddingTop: '80px',
+        paddingBottom: '64px',
+        paddingLeft: '48px',
+        paddingRight: '48px',
+      }}>
+        <div style={{
+          maxWidth: '1440px',
+          margin: '0 auto',
+        }}>
+          {/* Footer Top */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'auto 1fr',
+            gap: '128px',
+            marginBottom: '64px',
+            alignItems: 'flex-start',
+          }}>
+            {/* Logo Section */}
+            <div>
+              <img src="/rplogo.png" alt="RunPayway™" style={{
+                height: '48px',
+                width: 'auto',
+              }} />
+            </div>
+
+            {/* Links Columns */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '64px',
+            }}>
+              <div>
+                <p style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: '#0E1A2B',
+                  margin: '0 0 16px 0',
+                }}>
+                  Product
+                </p>
+                <ul style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '14px',
+                  lineHeight: '2',
+                  fontWeight: 400,
+                  color: '#4B5563',
+                  margin: '0',
+                  paddingLeft: '0',
+                  listStyle: 'none',
+                }}>
+                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>How It Works</a></li>
+                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Methodology</a></li>
+                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Use Cases</a></li>
+                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>For Professionals</a></li>
+                </ul>
+              </div>
+              <div>
+                <p style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: '#0E1A2B',
+                  margin: '0 0 16px 0',
+                }}>
+                  Learn
+                </p>
+                <ul style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '14px',
+                  lineHeight: '2',
+                  fontWeight: 400,
+                  color: '#4B5563',
+                  margin: '0',
+                  paddingLeft: '0',
+                  listStyle: 'none',
+                }}>
+                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Learn</a></li>
+                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Contact</a></li>
+                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Data Security</a></li>
+                </ul>
+              </div>
+              <div>
+                <p style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: '#0E1A2B',
+                  margin: '0 0 16px 0',
+                }}>
+                  Legal
+                </p>
+                <ul style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '14px',
+                  lineHeight: '2',
+                  fontWeight: 400,
+                  color: '#4B5563',
+                  margin: '0',
+                  paddingLeft: '0',
+                  listStyle: 'none',
+                }}>
+                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Privacy Policy</a></li>
+                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Terms</a></li>
+                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Accessibility</a></li>
+                </ul>
+              </div>
+              <div>
+                <p style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: '#0E1A2B',
+                  margin: '0 0 16px 0',
+                }}>
+                  Verification
+                </p>
+                <ul style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '14px',
+                  lineHeight: '2',
+                  fontWeight: 400,
+                  color: '#4B5563',
+                  margin: '0',
+                  paddingLeft: '0',
+                  listStyle: 'none',
+                }}>
+                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Verification Environments</a></li>
+                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>System Integrity</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer Bottom */}
+          <div style={{
+            borderTop: '1px solid #E5E7EB',
+            paddingTop: '48px',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '64px',
+          }}>
+            <div>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                lineHeight: '1.7',
+                fontWeight: 400,
+                color: '#4B5563',
+                margin: '0',
+              }}>
+                © 2025 RunPayway™ - All rights reserved<br />
+                RunPayway™ is a product of PeopleStar Enterprises, Inc.<br />
+                Orange County, California, USA.<br />
+                Structural Stability Model RP-2.0
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
