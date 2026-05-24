@@ -1,0 +1,121 @@
+name: Debug RunPayway Deployment
+
+on:
+  workflow_dispatch
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup SSH
+        env:
+          SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: "1. Check Node.js on port 3000"
+        env:
+          SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          echo "=== Checking for process listening on port 3000 ==="
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "lsof -i :3000 || echo 'No process on port 3000'"
+
+          echo ""
+          echo "=== Testing curl to http://localhost:3000 ==="
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "curl -I http://localhost:3000 2>&1 | head -20"
+
+      - name: "2. Check Apache VirtualHost routing"
+        env:
+          SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          echo "=== Apache VirtualHost Configuration ==="
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "apachectl -S"
+
+      - name: "3. Check Apache proxy modules"
+        env:
+          SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          echo "=== Loaded Apache Modules (proxy-related) ==="
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "apachectl -M | grep proxy"
+
+      - name: "4. Show active RunPayway VirtualHost config"
+        env:
+          SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          echo "=== Content of /etc/apache2/sites-enabled/runpayway.conf ==="
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "cat /etc/apache2/sites-enabled/runpayway.conf 2>/dev/null || echo 'File not found in sites-enabled'"
+
+          echo ""
+          echo "=== Checking if file exists in sites-available ==="
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "ls -la /etc/apache2/sites-available/runpayway.conf"
+
+      - name: "5. Test Apache externally"
+        env:
+          SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          echo "=== Testing HTTP request to runpayway.peoplestar.com ==="
+          curl -I http://runpayway.peoplestar.com 2>&1 | head -20
+
+          echo ""
+          echo "=== Testing HTTPS request to runpayway.peoplestar.com ==="
+          curl -I https://runpayway.peoplestar.com 2>&1 | head -20
+
+      - name: "6. Check Apache error logs"
+        env:
+          SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          echo "=== Recent Apache error log (last 30 lines) ==="
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "tail -30 /var/log/apache2/error.log"
+
+      - name: "7. Check PM2 status"
+        env:
+          SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          echo "=== PM2 Status ==="
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "pm2 status"
+
+          echo ""
+          echo "=== PM2 Logs (last 50 lines) ==="
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "pm2 logs runpayway --lines 50 --nostream"
+
+      - name: "8. List files in deployment directory"
+        env:
+          SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          echo "=== Files in /var/www/html/RunPayway ==="
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "ls -la /var/www/html/RunPayway | head -20"
