@@ -52,6 +52,7 @@ jobs:
             node_modules \
             public \
             src \
+            .htaccess \
             package.json \
             package-lock.json \
             next.config.js \

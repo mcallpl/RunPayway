@@ -1,0 +1,25 @@
+# ============================================================
+# RUNPAYWAY — PROXY TO NODE.JS APP
+# ============================================================
+# The Node.js app runs on localhost:3000 via PM2
+# All requests must be proxied to the app
+# ============================================================
+
+<IfModule mod_proxy.c>
+  ProxyPreserveHost On
+
+  # Proxy all requests to Node.js app
+  ProxyPass / http://localhost:3000/
+  ProxyPassReverse / http://localhost:3000/
+
+  # WebSocket support
+  RewriteEngine On
+  RewriteCond %{HTTP:Upgrade} websocket [NC]
+  RewriteCond %{HTTP:Connection} upgrade [NC]
+  RewriteRule ^/?(.*) "ws://localhost:3000/$1" [P,L]
+</IfModule>
+
+# Prevent directory listing
+<IfModule mod_dir.c>
+  DirectoryIndex /dev/null
+</IfModule>
