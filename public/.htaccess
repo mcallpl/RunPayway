@@ -1,27 +1,18 @@
-# Serve directory index files automatically
-DirectoryIndex index.html
+# ============================================================
+# PROXY TO NODE.JS APPLICATION
+# The actual Node.js app runs on localhost:3000
+# Apache forwards all requests to the Node server
+# ============================================================
+<IfModule mod_proxy.c>
+  ProxyPreserveHost On
+  ProxyPass / http://localhost:3000/
+  ProxyPassReverse / http://localhost:3000/
 
-# ============================================================
-# URL REWRITING — serve /path as /path/index.html
-# Required for Next.js static export on Apache (GoDaddy)
-# Deploys to /public_html/RunPayway/
-# ============================================================
-<IfModule mod_rewrite.c>
+  # WebSocket support
   RewriteEngine On
-  RewriteBase /RunPayway/
-
-  # 301 redirects — consolidated/deleted pages
-  RewriteRule ^how-runpayway-works/?$ /RunPayway/how-it-works/ [R=301,L]
-  RewriteRule ^interpretation-contract/?$ /RunPayway/methodology/ [R=301,L]
-  RewriteRule ^version-governance/?$ /RunPayway/methodology/ [R=301,L]
-  RewriteRule ^badge/?$ /RunPayway/ [R=301,L]
-  RewriteRule ^checkout-placeholder/?$ /RunPayway/pricing/ [R=301,L]
-
-  # If the request is not a file or directory, try /path/index.html
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_FILENAME}/index.html -f
-  RewriteRule ^(.*)$ $1/index.html [L]
+  RewriteCond %{HTTP:Upgrade} websocket [NC]
+  RewriteCond %{HTTP:Connection} upgrade [NC]
+  RewriteRule ^/?(.*) "ws://localhost:3000/$1" [P,L]
 </IfModule>
 
 # ============================================================
