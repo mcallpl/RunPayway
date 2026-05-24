@@ -1,0 +1,37 @@
+<VirtualHost *:443>
+  ServerName runpayway.peoplestar.com
+  ServerAlias runpayway.peoplestar.com
+
+  # SSL configuration (managed by certbot or your hosting provider)
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/runpayway.crt
+  SSLCertificateKeyFile /etc/ssl/private/runpayway.key
+
+  # Proxy to Node.js app on port 3000
+  ProxyPreserveHost On
+  ProxyPass / http://localhost:3000/
+  ProxyPassReverse / http://localhost:3000/
+
+  # WebSocket support
+  RewriteEngine On
+  RewriteCond %{HTTP:Upgrade} websocket [NC]
+  RewriteCond %{HTTP:Connection} upgrade [NC]
+  RewriteRule ^/?(.*) "ws://localhost:3000/$1" [P,L]
+
+  DocumentRoot /var/www/html/RunPayway/public
+
+  <Directory /var/www/html/RunPayway/public>
+    AllowOverride All
+    Require all granted
+  </Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+  ServerName runpayway.peoplestar.com
+  ServerAlias runpayway.peoplestar.com
+
+  # Redirect HTTP to HTTPS
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
+</VirtualHost>

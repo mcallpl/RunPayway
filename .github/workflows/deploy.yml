@@ -64,13 +64,61 @@ jobs:
 
           echo "✓ Project files deployed"
 
-      - name: Start Application
+      - name: Configure Apache & Start Application
         env:
           SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+
+          echo "Enabling Apache proxy modules..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "a2enmod proxy && a2enmod proxy_http && a2enmod rewrite && a2enmod headers"
+
+          echo "Configuring Apache VirtualHost..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 'cat > /etc/apache2/sites-available/runpayway.conf << "APACHE_EOF"
+<VirtualHost *:443>
+  ServerName runpayway.peoplestar.com
+  ServerAlias runpayway.peoplestar.com
+
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/runpayway.crt
+  SSLCertificateKeyFile /etc/ssl/private/runpayway.key
+
+  ProxyPreserveHost On
+  ProxyPass / http://localhost:3000/
+  ProxyPassReverse / http://localhost:3000/
+
+  RewriteEngine On
+  RewriteCond %{HTTP:Upgrade} websocket [NC]
+  RewriteCond %{HTTP:Connection} upgrade [NC]
+  RewriteRule ^/?(.*) "ws://localhost:3000/$1" [P,L]
+
+  DocumentRoot /var/www/html/RunPayway/public
+  <Directory /var/www/html/RunPayway/public>
+    AllowOverride All
+    Require all granted
+  </Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+  ServerName runpayway.peoplestar.com
+  ServerAlias runpayway.peoplestar.com
+
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
+</VirtualHost>
+APACHE_EOF'
+
+          echo "Enabling RunPayway site..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "a2ensite runpayway.conf && a2dissite 000-default || true"
+
+          echo "Testing Apache configuration..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "apache2ctl configtest"
+
+          echo "Restarting Apache..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "systemctl restart apache2"
 
           echo "Installing PM2 globally..."
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "npm install -g pm2"
