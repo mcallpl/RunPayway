@@ -191,13 +191,13 @@ export default function LandingPage() {
       <section style={{
         maxWidth: '1280px',
         margin: '0 auto',
-        paddingTop: '240px',
-        paddingBottom: '160px',
+        paddingTop: '200px',
+        paddingBottom: '140px',
         paddingLeft: '48px',
         paddingRight: '48px',
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gap: '160px',
+        gap: '140px',
         alignItems: 'flex-start',
       }}>
         {/* LEFT COLUMN */}
@@ -205,12 +205,12 @@ export default function LandingPage() {
           {/* H1 - Doctrine Headline */}
           <h1 style={{
             fontFamily: 'Cormorant Garamond, Garamond, serif',
-            fontSize: '96px',
-            lineHeight: '112px',
+            fontSize: '82px',
+            lineHeight: '100px',
             letterSpacing: '-0.03em',
             fontWeight: 400,
             color: '#0E1A2B',
-            margin: '0 0 48px 0',
+            margin: '0 0 32px 0',
             maxWidth: '620px',
           }}>
             Income and income stability are not the same thing.
@@ -219,11 +219,11 @@ export default function LandingPage() {
           {/* Supporting Copy */}
           <p style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '18px',
-            lineHeight: '32px',
+            fontSize: '16px',
+            lineHeight: '28px',
             fontWeight: 400,
             color: '#111827',
-            margin: '0 0 64px 0',
+            margin: '0 0 48px 0',
             maxWidth: '520px',
           }}>
             RunPayway™ shows whether your income is actually stable.
@@ -232,14 +232,14 @@ export default function LandingPage() {
           {/* CTA Row */}
           <div style={{
             display: 'flex',
-            gap: '20px',
+            gap: '16px',
             alignItems: 'center',
-            marginBottom: '64px',
+            marginBottom: '40px',
           }}>
             <button style={{
-              height: '64px',
-              paddingLeft: '40px',
-              paddingRight: '40px',
+              height: '56px',
+              paddingLeft: '32px',
+              paddingRight: '32px',
               backgroundColor: '#0E1A2B',
               color: '#FFFFFF',
               fontFamily: 'Inter, -apple-system, sans-serif',
@@ -259,9 +259,9 @@ export default function LandingPage() {
               <span style={{ fontSize: '14px' }}>→</span>
             </button>
             <button style={{
-              height: '64px',
-              paddingLeft: '40px',
-              paddingRight: '40px',
+              height: '56px',
+              paddingLeft: '32px',
+              paddingRight: '32px',
               backgroundColor: 'transparent',
               color: '#0E1A2B',
               fontFamily: 'Inter, -apple-system, sans-serif',
@@ -269,7 +269,7 @@ export default function LandingPage() {
               fontWeight: 700,
               letterSpacing: '0.03em',
               textTransform: 'uppercase',
-              border: '2px solid #0E1A2B',
+              border: '1px solid #0E1A2B',
               borderRadius: '2px',
               cursor: 'pointer',
               display: 'flex',
@@ -298,10 +298,10 @@ export default function LandingPage() {
         <div style={{
           backgroundColor: '#FFFFFF',
           border: '1px solid #E5E7EB',
-          paddingTop: '80px',
-          paddingLeft: '80px',
-          paddingRight: '80px',
-          paddingBottom: '80px',
+          paddingTop: '72px',
+          paddingLeft: '72px',
+          paddingRight: '72px',
+          paddingBottom: '72px',
         }}>
           {/* Profile Title */}
           <p style={{
@@ -311,7 +311,7 @@ export default function LandingPage() {
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
             color: '#0E1A2B',
-            margin: '0 0 64px 0',
+            margin: '0 0 56px 0',
             textAlign: 'center',
           }}>
             STRUCTURAL STABILITY PROFILE™
@@ -326,17 +326,17 @@ export default function LandingPage() {
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
               color: '#6B7280',
-              margin: '0 0 24px 0',
+              margin: '0 0 20px 0',
             }}>
               INCOME STABILITY SCORE™
             </p>
 
             <div style={{
-              fontSize: '120px',
+              fontSize: '100px',
               lineHeight: '1',
               fontWeight: 700,
               color: '#0E1A2B',
-              margin: '0 0 32px 0',
+              margin: '0 0 28px 0',
               fontFamily: 'Inter, -apple-system, sans-serif',
               fontVariantNumeric: 'tabular-nums',
             }}>
@@ -350,7 +350,7 @@ export default function LandingPage() {
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               color: '#0E1A2B',
-              margin: '0 0 24px 0',
+              margin: '0 0 20px 0',
             }}>
               ESTABLISHED STABILITY
             </p>
@@ -361,7 +361,7 @@ export default function LandingPage() {
               lineHeight: '26px',
               fontWeight: 400,
               color: '#4B5563',
-              margin: '0 0 48px 0',
+              margin: '0 0 40px 0',
             }}>
               Income currently appears stable, though some conditions may weaken income reliability over time.
             </p>
@@ -370,11 +370,11 @@ export default function LandingPage() {
           {/* Condition Grid */}
           <div style={{
             borderTop: '1px solid #E5E7EB',
-            paddingTop: '48px',
+            paddingTop: '40px',
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
-            gap: '48px 64px',
-            marginBottom: '48px',
+            gap: '40px 56px',
+            marginBottom: '40px',
           }}>
             <div>
               <p style={{
@@ -469,13 +469,13 @@ export default function LandingPage() {
           {/* Model Info */}
           <div style={{
             borderTop: '1px solid #E5E7EB',
-            paddingTop: '48px',
+            paddingTop: '40px',
             display: 'grid',
             gridTemplateColumns: '1fr 1fr 1fr',
-            gap: '48px',
+            gap: '40px',
             textAlign: 'center',
           }}>
-            <div style={{ borderRight: '1px solid #E5E7EB', paddingRight: '24px' }}>
+            <div style={{ borderRight: '1px solid #E5E7EB', paddingRight: '20px' }}>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
                 fontSize: '11px',
@@ -483,13 +483,13 @@ export default function LandingPage() {
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
                 color: '#6B7280',
-                margin: '0 0 12px 0',
+                margin: '0 0 8px 0',
               }}>
                 MODEL VERSION
               </p>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '14px',
+                fontSize: '13px',
                 fontWeight: 600,
                 color: '#0E1A2B',
                 margin: '0',
@@ -497,7 +497,7 @@ export default function LandingPage() {
                 RP-2.0
               </p>
             </div>
-            <div style={{ borderRight: '1px solid #E5E7EB', paddingRight: '24px', paddingLeft: '24px' }}>
+            <div style={{ borderRight: '1px solid #E5E7EB', paddingRight: '20px', paddingLeft: '20px' }}>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
                 fontSize: '11px',
@@ -505,13 +505,13 @@ export default function LandingPage() {
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
                 color: '#6B7280',
-                margin: '0 0 12px 0',
+                margin: '0 0 8px 0',
               }}>
                 INTEGRITY
               </p>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '14px',
+                fontSize: '13px',
                 fontWeight: 600,
                 color: '#0E1A2B',
                 margin: '0',
@@ -519,7 +519,7 @@ export default function LandingPage() {
                 Same structure produces same result
               </p>
             </div>
-            <div style={{ paddingLeft: '24px' }}>
+            <div style={{ paddingLeft: '20px' }}>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
                 fontSize: '11px',
@@ -527,13 +527,13 @@ export default function LandingPage() {
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
                 color: '#6B7280',
-                margin: '0 0 12px 0',
+                margin: '0 0 8px 0',
               }}>
                 FRAMEWORK
               </p>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '14px',
+                fontSize: '13px',
                 fontWeight: 600,
                 color: '#0E1A2B',
                 margin: '0',
