@@ -53,25 +53,25 @@ export default function LandingPage() {
   );
 
   const BlueprintIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
       <rect x="5" y="5" width="14" height="14" rx="1" />
-      <rect x="7" y="7" width="2" height="2" />
-      <rect x="15" y="7" width="2" height="2" />
-      <rect x="7" y="15" width="2" height="2" />
-      <rect x="15" y="15" width="2" height="2" />
+      <rect x="8" y="8" width="1.5" height="1.5" />
+      <rect x="14.5" y="8" width="1.5" height="1.5" />
+      <rect x="8" y="14.5" width="1.5" height="1.5" />
+      <rect x="14.5" y="14.5" width="1.5" height="1.5" />
     </svg>
   );
 
   const TargetIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <circle cx="12" cy="12" r="1" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="12" cy="12" r="8" />
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+      <circle cx="12" cy="12" r="1.5" />
+      <circle cx="12" cy="12" r="5" />
+      <circle cx="12" cy="12" r="9" />
     </svg>
   );
 
   const ShieldIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
       <path d="M 12 2 L 20 6 L 20 13 Q 20 18 12 22 Q 4 18 4 13 L 4 6 Z" />
     </svg>
   );
@@ -568,7 +568,7 @@ export default function LandingPage() {
             fontWeight: 400,
             color: '#0E1A2B',
             margin: '0 0 20px 0',
-            maxWidth: '580px',
+            maxWidth: '520px',
           }}>
             Income and income stability are not the same thing.
           </h1>
@@ -653,8 +653,8 @@ export default function LandingPage() {
 
         {/* RIGHT COLUMN - STRUCTURAL STABILITY PROFILE™ */}
         <div style={{
-          backgroundColor: '#FFFFFF',
-          border: '1px solid #E5E7EB',
+          backgroundColor: 'transparent',
+          border: 'none',
           paddingTop: '64px',
           paddingLeft: '64px',
           paddingRight: '64px',
@@ -1008,25 +1008,25 @@ export default function LandingPage() {
             alignItems: 'center',
             gap: '24px',
             paddingRight: '40px',
-            borderRight: '1px solid #E5E7EB',
+            borderRight: 'none',
           }}>
             <div style={{
-              width: '28px',
-              height: '28px',
+              width: '24px',
+              height: '24px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#0E1A2B',
+              color: '#6B7280',
             }}>
               <BlueprintIcon />
             </div>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
+              fontSize: '12px',
               fontWeight: 700,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              color: '#0E1A2B',
+              color: '#6B7280',
               margin: '0',
               textAlign: 'center',
             }}>
@@ -1041,25 +1041,25 @@ export default function LandingPage() {
             gap: '24px',
             paddingLeft: '40px',
             paddingRight: '40px',
-            borderRight: '1px solid #E5E7EB',
+            borderRight: 'none',
           }}>
             <div style={{
-              width: '28px',
-              height: '28px',
+              width: '24px',
+              height: '24px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#0E1A2B',
+              color: '#6B7280',
             }}>
               <TargetIcon />
             </div>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
+              fontSize: '12px',
               fontWeight: 700,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              color: '#0E1A2B',
+              color: '#6B7280',
               margin: '0',
               textAlign: 'center',
             }}>
@@ -1075,22 +1075,22 @@ export default function LandingPage() {
             paddingLeft: '40px',
           }}>
             <div style={{
-              width: '28px',
-              height: '28px',
+              width: '24px',
+              height: '24px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#0E1A2B',
+              color: '#6B7280',
             }}>
               <ShieldIcon />
             </div>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
+              fontSize: '12px',
               fontWeight: 700,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              color: '#0E1A2B',
+              color: '#6B7280',
               margin: '0',
               textAlign: 'center',
             }}>
@@ -1210,7 +1210,7 @@ export default function LandingPage() {
             {/* Profile A */}
             <div data-profile style={{
               paddingRight: '32px',
-              borderRight: '1px solid #E5E7EB',
+              borderRight: 'none',
             }}>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
@@ -1272,6 +1272,7 @@ export default function LandingPage() {
             {/* Profile B */}
             <div data-profile style={{
               paddingLeft: '32px',
+              paddingTop: '0',
             }}>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
@@ -1385,7 +1386,7 @@ export default function LandingPage() {
               lineHeight: '28px',
               fontWeight: 400,
               color: '#4B5563',
-              margin: '0 0 24px 0',
+              margin: '0 0 32px 0',
             }}>
               RunPayway™ evaluates patterns associated with income reliability over time.
             </p>
@@ -1396,17 +1397,17 @@ export default function LandingPage() {
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               color: '#0E1A2B',
-              margin: '0 0 16px 0',
+              margin: '0 0 24px 0',
             }}>
               Including:
             </p>
             <ul style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
               fontSize: '14px',
-              lineHeight: '26px',
+              lineHeight: '32px',
               fontWeight: 400,
               color: '#4B5563',
-              margin: '0 0 32px 0',
+              margin: '0 0 40px 0',
               paddingLeft: '0',
               listStyle: 'none',
             }}>
@@ -1853,12 +1854,12 @@ export default function LandingPage() {
       }}>
         <h2 style={{
           fontFamily: 'Cormorant Garamond, Garamond, serif',
-          fontSize: '72px',
-          lineHeight: '88px',
+          fontSize: '80px',
+          lineHeight: '96px',
           letterSpacing: '-0.03em',
           fontWeight: 400,
           color: '#0E1A2B',
-          margin: '0 0 24px 0',
+          margin: '0 0 32px 0',
           maxWidth: '900px',
           marginLeft: 'auto',
           marginRight: 'auto',
@@ -1870,8 +1871,8 @@ export default function LandingPage() {
           fontSize: '16px',
           lineHeight: '28px',
           fontWeight: 400,
-          color: '#4B5563',
-          margin: '0 0 56px 0',
+          color: '#6B7280',
+          margin: '0 0 80px 0',
         }}>
           Complete your insight in under 2 minutes.
         </p>
@@ -1939,11 +1940,11 @@ export default function LandingPage() {
               }} />
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '11px',
+                fontSize: '10px',
                 fontWeight: 700,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: '#6B7280',
+                color: '#9CA3AF',
                 margin: '0',
               }}>
                 INCOME STABILITY VERIFICATION™
@@ -1966,8 +1967,8 @@ export default function LandingPage() {
                   fontWeight: 700,
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
-                  color: '#0E1A2B',
-                  margin: '0 0 24px 0',
+                  color: '#6B7280',
+                  margin: '0 0 20px 0',
                 }}>
                   How It Works
                 </p>
