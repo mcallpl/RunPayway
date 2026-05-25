@@ -552,29 +552,30 @@ export default function LandingPage() {
 
       {/* HERO SECTION */}
       <section data-section="hero" style={{
-        maxWidth: '1360px',
+        maxWidth: '1320px',
         margin: '0 auto',
-        paddingTop: '80px',
-        paddingBottom: '80px',
+        paddingTop: '112px',
+        paddingBottom: '96px',
         paddingLeft: '48px',
         paddingRight: '48px',
         display: 'grid',
-        gridTemplateColumns: '1.1fr 1.3fr',
-        gap: '48px',
-        alignItems: 'flex-start',
+        gridTemplateColumns: '1fr 1.08fr',
+        gap: '88px',
+        alignItems: 'start',
+        backgroundColor: '#F8F8F6',
       }}>
         {/* LEFT COLUMN */}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {/* H1 - Doctrine Headline */}
           <h1 style={{
-            fontFamily: 'Cormorant Garamond, Garamond, serif',
-            fontSize: '54px',
-            lineHeight: '70px',
+            fontFamily: 'Cormorant Garamond, serif',
+            fontSize: '72px',
+            lineHeight: '0.92',
             letterSpacing: '-0.02em',
             fontWeight: 400,
-            fontStyle: 'italic',
             color: '#0E1A2B',
-            margin: '0 0 24px 0',
+            margin: '0 0 40px 0',
+            maxWidth: '430px',
           }}>
             Income and income stability are not the same thing.
           </h1>
@@ -582,12 +583,13 @@ export default function LandingPage() {
           {/* Supporting Copy */}
           <p style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '15px',
-            lineHeight: '26px',
+            fontSize: '18px',
+            lineHeight: '1.65',
+            letterSpacing: '-0.01em',
             fontWeight: 400,
-            color: '#374151',
-            margin: '0 0 28px 0',
-            maxWidth: '100%',
+            color: '#1E293B',
+            margin: '0 0 36px 0',
+            maxWidth: '360px',
           }}>
             RunPayway™ shows whether your income is actually stable.
           </p>
@@ -595,140 +597,327 @@ export default function LandingPage() {
           {/* CTA Row */}
           <div data-buttons style={{
             display: 'flex',
-            gap: '12px',
+            gap: '16px',
             alignItems: 'center',
-            marginBottom: '16px',
+            marginBottom: '28px',
           }}>
             <button style={{
-              height: '48px',
-              paddingLeft: '28px',
-              paddingRight: '28px',
+              height: '52px',
+              paddingLeft: '24px',
+              paddingRight: '24px',
+              minWidth: '188px',
               backgroundColor: '#0E1A2B',
               color: '#FFFFFF',
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '12px',
-              fontWeight: 700,
-              letterSpacing: '0.03em',
-              textTransform: 'uppercase',
-              border: '1px solid #0E1A2B',
-              borderRadius: '2px',
+              fontSize: '14px',
+              fontWeight: 600,
+              letterSpacing: '-0.01em',
+              border: 'none',
+              borderRadius: '0',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '6px',
-            }}>
-              Check My Income Stability
-              <span style={{ fontSize: '13px' }}>→</span>
+              gap: '8px',
+              transition: 'background-color 0.2s',
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#13233A'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = '#0E1A2B'}
+            >
+              Check My Income Stability →
             </button>
             <button style={{
-              height: '48px',
-              paddingLeft: '28px',
-              paddingRight: '28px',
+              height: '52px',
+              paddingLeft: '24px',
+              paddingRight: '24px',
+              minWidth: '156px',
               backgroundColor: 'transparent',
               color: '#0E1A2B',
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '12px',
-              fontWeight: 700,
-              letterSpacing: '0.03em',
-              textTransform: 'uppercase',
-              border: '1px solid #0E1A2B',
-              borderRadius: '2px',
+              fontSize: '14px',
+              fontWeight: 600,
+              letterSpacing: '-0.01em',
+              border: '1px solid #C7CDD6',
+              borderRadius: '0',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '6px',
-            }}>
-              How It Works
-              <span style={{ fontSize: '13px' }}>→</span>
+              gap: '8px',
+              transition: 'background-color 0.2s',
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(14,26,43,0.03)'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+            >
+              How It Works →
             </button>
           </div>
 
-          {/* Supporting Line */}
-          <p data-support-line style={{
-            fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '12px',
-            fontWeight: 400,
-            color: '#6B7280',
+          {/* Supporting Meta Line */}
+          <div data-support-line style={{
+            display: 'flex',
+            gap: '12px',
+            alignItems: 'center',
             margin: '0',
           }}>
-            Free initial insight · No documents required
-          </p>
+            <span style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '13px',
+              fontWeight: 500,
+              letterSpacing: '-0.01em',
+              color: '#667085',
+            }}>
+              Free initial insight
+            </span>
+            <span style={{
+              width: '3px',
+              height: '3px',
+              borderRadius: '50%',
+              backgroundColor: '#98A2B3',
+            }}></span>
+            <span style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '13px',
+              fontWeight: 500,
+              letterSpacing: '-0.01em',
+              color: '#667085',
+            }}>
+              No documents required
+            </span>
+          </div>
         </div>
 
         {/* RIGHT COLUMN - STRUCTURAL STABILITY PROFILE™ */}
         <div style={{
           backgroundColor: '#FFFFFF',
           border: '1px solid #E5E7EB',
-          borderRadius: '4px',
-          paddingTop: '48px',
-          paddingLeft: '48px',
-          paddingRight: '48px',
-          paddingBottom: '48px',
+          borderRadius: '0',
+          paddingTop: '40px',
+          paddingRight: '36px',
+          paddingBottom: '36px',
+          paddingLeft: '36px',
         }}>
-          {/* Profile Title */}
+          {/* Card Title */}
           <p style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '10px',
+            fontSize: '13px',
             fontWeight: 700,
-            letterSpacing: '0.15em',
+            letterSpacing: '0.18em',
             textTransform: 'uppercase',
-            color: '#1F2937',
-            margin: '0 0 32px 0',
+            color: '#0E1A2B',
+            margin: '0 0 28px 0',
             textAlign: 'center',
           }}>
             STRUCTURAL STABILITY PROFILE™
           </p>
 
-          {/* Score Section */}
-          <div style={{ textAlign: 'center' }}>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '10px',
-              fontWeight: 700,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              color: '#6B7280',
-              margin: '0 0 12px 0',
-            }}>
-              INCOME STABILITY SCORE™
-            </p>
+          {/* Top Divider */}
+          <div style={{
+            height: '1px',
+            backgroundColor: '#E5E7EB',
+            marginBottom: '28px',
+          }}></div>
 
-            <div data-score style={{
-              fontSize: '80px',
-              lineHeight: '1',
-              fontWeight: 700,
-              color: '#0E1A2B',
-              margin: '0 0 16px 0',
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontVariantNumeric: 'tabular-nums',
-            }}>
-              72
+          {/* Profile Grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '0.92fr 1.08fr',
+            gap: '36px',
+          }}>
+            {/* LEFT COLUMN - SCORE */}
+            <div>
+              {/* Score Label */}
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '11px',
+                fontWeight: 700,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: '#344054',
+                margin: '0 0 14px 0',
+              }}>
+                INCOME STABILITY SCORE™
+              </p>
+
+              {/* Score Number */}
+              <div style={{
+                fontSize: '88px',
+                fontWeight: 700,
+                lineHeight: '0.9',
+                letterSpacing: '-0.05em',
+                color: '#0B1F5E',
+                margin: '0 0 18px 0',
+                fontFamily: 'Inter, -apple-system, sans-serif',
+              }}>
+                72
+              </div>
+
+              {/* Score Divider */}
+              <div style={{
+                width: '40px',
+                height: '2px',
+                backgroundColor: '#CBD5E1',
+                margin: '0 0 18px 0',
+              }}></div>
+
+              {/* Stability Label */}
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#0E1A2B',
+                margin: '0 0 18px 0',
+              }}>
+                ESTABLISHED STABILITY
+              </p>
+
+              {/* Description */}
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '13px',
+                lineHeight: '1.75',
+                fontWeight: 400,
+                color: '#475467',
+                margin: '0',
+                maxWidth: '240px',
+              }}>
+                Income currently appears stable, though some conditions may weaken income reliability over time.
+              </p>
             </div>
 
-            <p data-established style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '11px',
-              fontWeight: 700,
-              letterSpacing: '0.10em',
-              textTransform: 'uppercase',
-              color: '#1F2937',
-              margin: '0 0 12px 0',
+            {/* RIGHT COLUMN - METRICS */}
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0',
             }}>
-              ESTABLISHED STABILITY
-            </p>
+              {/* Metric Row 1 */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingBottom: '18px',
+                marginBottom: '18px',
+                borderBottom: '1px solid #ECEFF3',
+              }}>
+                <p style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: '#344054',
+                  margin: '0',
+                }}>
+                  MONTHLY INCOME CONSISTENCY
+                </p>
+                <p style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  letterSpacing: '0.02em',
+                  color: '#0E1A2B',
+                  margin: '0',
+                }}>
+                  MODERATE
+                </p>
+              </div>
 
-            <p data-description style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
-              lineHeight: '22px',
-              fontWeight: 400,
-              color: '#6B7280',
-              margin: '0 0 28px 0',
-            }}>
-              Income currently appears stable, though some conditions may weaken income reliability over time.
-            </p>
+              {/* Metric Row 2 */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingBottom: '18px',
+                marginBottom: '18px',
+                borderBottom: '1px solid #ECEFF3',
+              }}>
+                <p style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: '#344054',
+                  margin: '0',
+                }}>
+                  SOURCE DEPENDENCE
+                </p>
+                <p style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  letterSpacing: '0.02em',
+                  color: '#0E1A2B',
+                  margin: '0',
+                }}>
+                  MANAGEABLE
+                </p>
+              </div>
+
+              {/* Metric Row 3 */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingBottom: '18px',
+                marginBottom: '18px',
+                borderBottom: '1px solid #ECEFF3',
+              }}>
+                <p style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: '#344054',
+                  margin: '0',
+                }}>
+                  RECURRING INCOME
+                </p>
+                <p style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  letterSpacing: '0.02em',
+                  color: '#0E1A2B',
+                  margin: '0',
+                }}>
+                  STRONG
+                </p>
+              </div>
+
+              {/* Metric Row 4 (Last - No Border) */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+                <p style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: '#344054',
+                  margin: '0',
+                }}>
+                  INCOME RELIABILITY PRESSURE
+                </p>
+                <p style={{
+                  fontFamily: 'Inter, -apple-system, sans-serif',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  letterSpacing: '0.02em',
+                  color: '#0E1A2B',
+                  margin: '0',
+                }}>
+                  ELEVATED
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Condition Grid - 3 Column Layout */}
@@ -843,15 +1032,15 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* Model Info */}
-          <div data-model-info style={{
+          {/* Lower Meta Section */}
+          <div style={{
+            marginTop: '30px',
+            paddingTop: '26px',
             borderTop: '1px solid #E5E7EB',
-            paddingTop: '24px',
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
-            gap: '24px',
-            textAlign: 'center',
+            gridTemplateColumns: 'repeat(3, 1fr)',
           }}>
+            {/* Column 1 */}
             <div>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
@@ -859,62 +1048,77 @@ export default function LandingPage() {
                 fontWeight: 700,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: '#6B7280',
+                color: '#667085',
                 margin: '0 0 8px 0',
               }}>
                 MODEL VERSION
               </p>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '13px',
+                fontSize: '14px',
                 fontWeight: 600,
+                lineHeight: '1.5',
                 color: '#0E1A2B',
                 margin: '0',
+                maxWidth: '120px',
               }}>
                 RP-2.0
               </p>
             </div>
-            <div>
+
+            {/* Column 2 */}
+            <div style={{
+              borderLeft: '1px solid #ECEFF3',
+              paddingLeft: '24px',
+            }}>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
                 fontSize: '10px',
                 fontWeight: 700,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: '#6B7280',
+                color: '#667085',
                 margin: '0 0 8px 0',
               }}>
                 INTEGRITY
               </p>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '12px',
+                fontSize: '14px',
                 fontWeight: 600,
-                color: '#4B5563',
+                lineHeight: '1.5',
+                color: '#0E1A2B',
                 margin: '0',
-                lineHeight: '20px',
+                maxWidth: '120px',
               }}>
                 Same structure produces same result
               </p>
             </div>
-            <div>
+
+            {/* Column 3 */}
+            <div style={{
+              borderLeft: '1px solid #ECEFF3',
+              paddingLeft: '24px',
+            }}>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
                 fontSize: '10px',
                 fontWeight: 700,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: '#6B7280',
+                color: '#667085',
                 margin: '0 0 8px 0',
               }}>
                 FRAMEWORK
               </p>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '13px',
+                fontSize: '14px',
                 fontWeight: 600,
+                lineHeight: '1.5',
                 color: '#0E1A2B',
                 margin: '0',
+                maxWidth: '120px',
               }}>
                 Fixed Methodology
               </p>
