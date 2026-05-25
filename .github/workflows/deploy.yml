@@ -32,10 +32,9 @@ jobs:
           echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/id_rsa
-          echo "Testing SSH connection..."
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@64.227.108.128 "echo '✓ SSH connection successful'"
 
-      - name: Deploy to Server
+      - name: Upload Application Files
         env:
           SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
         run: |
@@ -43,16 +42,14 @@ jobs:
           echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          echo "Creating deployment directory..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "rm -rf /var/www/html/RunPayway && mkdir -p /var/www/html/RunPayway"
+          echo "Ensuring app directory exists..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "mkdir -p /var/www/html/RunPayway"
 
-          echo "Transferring project files..."
+          echo "Uploading application files..."
           scp -r -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no \
             .next \
-            node_modules \
             public \
             src \
-            .htaccess \
             package.json \
             package-lock.json \
             next.config.js \
@@ -63,9 +60,7 @@ jobs:
             worker \
             root@64.227.108.128:/var/www/html/RunPayway/
 
-          echo "✓ Project files deployed"
-
-      - name: Deploy Apache Config & Start Application
+      - name: Install Dependencies and Restart Application
         env:
           SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
         run: |
@@ -73,34 +68,13 @@ jobs:
           echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          echo "Enabling Apache proxy modules..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "a2enmod proxy && a2enmod proxy_http && a2enmod rewrite && a2enmod headers && a2enmod ssl"
+          echo "Installing production dependencies on server..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 \
+            "cd /var/www/html/RunPayway && npm ci --omit=dev"
 
-          echo "Deploying Apache VirtualHost configuration..."
-          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no \
-            runpayway.conf \
-            root@64.227.108.128:/etc/apache2/sites-available/
-
-          echo "Enabling RunPayway site..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "a2ensite runpayway.conf && a2dissite 000-default || true"
-
-          echo "Installing/updating certbot..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "apt-get update && apt-get install -y certbot python3-certbot-apache"
-
-          echo "Generating Let's Encrypt certificate..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "certbot certonly --standalone -d runpayway.peoplestar.com -n --agree-tos -m support@peoplestar.com || true"
-
-          echo "Testing Apache configuration..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "apache2ctl configtest"
-
-          echo "Restarting Apache..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "systemctl restart apache2"
-
-          echo "Installing PM2 globally..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "npm install -g pm2"
-
-          echo "Starting RunPayway with PM2..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "cd /var/www/html/RunPayway && pm2 delete runpayway || true && pm2 start 'npm start' --name runpayway -- -p 3000 && pm2 save"
+          echo "Restarting application with PM2..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 \
+            "pm2 restart runpayway || (pm2 start 'npm start' --name runpayway -- -p 3000 && pm2 save)"
 
           sleep 3
 
@@ -115,13 +89,24 @@ jobs:
           echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          echo "Waiting for app to start..."
-          sleep 3
+          echo "Verifying application on localhost:3000..."
+          LOCAL_RESPONSE=$(ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "curl -s http://127.0.0.1:3000/")
+          if echo "$LOCAL_RESPONSE" | grep -q "Income can appear stable"; then
+            echo "✓ localhost:3000 verified"
+          else
+            echo "✗ localhost:3000 failed verification"
+            exit 1
+          fi
 
-          echo "Testing app on localhost:3000..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "curl -s http://127.0.0.1:3000/ | head -c 200"
+          echo "Verifying application on https://runpayway.peoplestar.com..."
+          LIVE_RESPONSE=$(curl -s https://runpayway.peoplestar.com/)
+          if echo "$LIVE_RESPONSE" | grep -q "Income can appear stable"; then
+            echo "✓ https://runpayway.peoplestar.com verified"
+          else
+            echo "✗ https://runpayway.peoplestar.com failed verification"
+            exit 1
+          fi
 
           echo ""
-          echo ""
-          echo "✓ FULL DEPLOYMENT SUCCESSFUL"
+          echo "✓ DEPLOYMENT SUCCESSFUL"
           echo "App running at: https://runpayway.peoplestar.com"
