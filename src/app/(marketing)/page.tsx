@@ -132,31 +132,32 @@ export default function LandingPage() {
             gap: 6px !important;
           }
 
-          /* HERO MOBILE */
+          /* HERO MOBILE - FINAL POLISH */
           [data-section="hero"] {
-            padding-top: 80px !important;
-            padding-bottom: 80px !important;
+            padding-top: 64px !important;
+            padding-bottom: 72px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
             grid-template-columns: 1fr !important;
-            gap: 60px !important;
+            gap: 48px !important;
           }
 
           [data-section="hero"] h1 {
             font-size: 48px !important;
             line-height: 56px !important;
-            margin-bottom: 16px !important;
+            margin-bottom: 14px !important;
             max-width: 100% !important;
           }
 
           [data-section="hero"] > div:first-child p:first-of-type {
             font-size: 16px !important;
-            margin-bottom: 24px !important;
+            line-height: 28px !important;
+            margin-bottom: 20px !important;
           }
 
           [data-section="hero"] [data-buttons] {
             flex-direction: column !important;
-            gap: 12px !important;
+            gap: 10px !important;
             margin-bottom: 16px !important;
           }
 
@@ -173,19 +174,19 @@ export default function LandingPage() {
           }
 
           [data-section="hero"] > div:last-child {
-            padding-top: 56px !important;
+            padding-top: 52px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
-            padding-bottom: 56px !important;
+            padding-bottom: 52px !important;
           }
 
           [data-section="hero"] > div:last-child p:first-child {
-            margin-bottom: 40px !important;
+            margin-bottom: 36px !important;
           }
 
           [data-section="hero"] [data-score] {
             font-size: 64px !important;
-            margin-bottom: 16px !important;
+            margin-bottom: 14px !important;
           }
 
           [data-section="hero"] [data-established] {
@@ -195,18 +196,19 @@ export default function LandingPage() {
 
           [data-section="hero"] [data-description] {
             font-size: 13px !important;
-            margin-bottom: 24px !important;
+            line-height: 24px !important;
+            margin-bottom: 28px !important;
           }
 
           [data-section="hero"] [data-condition-grid] {
-            padding-top: 24px !important;
-            gap: 24px 32px !important;
-            margin-bottom: 24px !important;
+            padding-top: 28px !important;
+            gap: 20px 28px !important;
+            margin-bottom: 28px !important;
           }
 
           [data-section="hero"] [data-model-info] {
-            padding-top: 24px !important;
-            gap: 24px !important;
+            padding-top: 28px !important;
+            gap: 20px !important;
             grid-template-columns: 1fr !important;
           }
 
@@ -215,8 +217,7 @@ export default function LandingPage() {
             border-bottom: 1px solid #E5E7EB !important;
             padding-right: 0 !important;
             padding-left: 0 !important;
-            padding-bottom: 24px !important;
-            text-align: left !important;
+            padding-bottom: 20px !important;
           }
 
           [data-section="hero"] [data-model-info] > div:last-child {
@@ -225,47 +226,48 @@ export default function LandingPage() {
 
           /* COMMON CONDITIONS MOBILE */
           [data-section="conditions"] {
-            padding-top: 120px !important;
-            padding-bottom: 120px !important;
+            padding-top: 100px !important;
+            padding-bottom: 100px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
+            border-top: 1px solid #E5E7EB !important;
           }
 
           [data-section="conditions"] p:first-child {
             font-size: 10px !important;
-            margin-bottom: 40px !important;
+            margin-bottom: 36px !important;
           }
 
           [data-section="conditions"] [data-condition-item] {
             gap: 16px !important;
-            padding-top: 24px !important;
-            padding-bottom: 24px !important;
+            padding-top: 20px !important;
+            padding-bottom: 20px !important;
           }
 
           [data-section="conditions"] h3 {
             font-size: 36px !important;
             line-height: 44px !important;
-            margin-top: 48px !important;
+            margin-top: 40px !important;
           }
 
           /* TRUST STRIP MOBILE */
           [data-section="trust"] {
-            padding-top: 60px !important;
-            padding-bottom: 60px !important;
+            padding-top: 56px !important;
+            padding-bottom: 56px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
           }
 
           [data-section="trust"] > div {
             grid-template-columns: 1fr !important;
-            gap: 40px !important;
+            gap: 32px !important;
           }
 
           [data-section="trust"] > div > div {
             border-right: none !important;
             border-bottom: 1px solid #E5E7EB !important;
             padding-right: 0 !important;
-            padding-bottom: 40px !important;
+            padding-bottom: 32px !important;
           }
 
           [data-section="trust"] > div > div:last-child {
@@ -275,8 +277,8 @@ export default function LandingPage() {
 
           /* MEMETIC TRUTH MOBILE */
           [data-section="memetic"] {
-            padding-top: 120px !important;
-            padding-bottom: 120px !important;
+            padding-top: 100px !important;
+            padding-bottom: 100px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
           }
@@ -284,37 +286,40 @@ export default function LandingPage() {
           [data-section="memetic"] h2 {
             font-size: 40px !important;
             line-height: 48px !important;
+            max-width: 100% !important;
           }
 
           [data-section="memetic"] p {
             font-size: 15px !important;
+            line-height: 26px !important;
           }
 
           /* MODERN INCOME MOBILE */
           [data-section="modern"] {
-            padding-top: 120px !important;
-            padding-bottom: 120px !important;
+            padding-top: 100px !important;
+            padding-bottom: 100px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
             grid-template-columns: 1fr !important;
-            gap: 60px !important;
+            gap: 48px !important;
           }
 
           [data-section="modern"] h3 {
             font-size: 36px !important;
             line-height: 44px !important;
+            max-width: 100% !important;
           }
 
           [data-section="modern"] [data-comparison] {
             grid-template-columns: 1fr !important;
-            gap: 40px !important;
+            gap: 32px !important;
           }
 
           [data-section="modern"] [data-profile] {
             padding-right: 0 !important;
             border-right: none !important;
             border-bottom: 1px solid #E5E7EB !important;
-            padding-bottom: 40px !important;
+            padding-bottom: 32px !important;
           }
 
           [data-section="modern"] [data-profile]:last-child {
@@ -323,28 +328,28 @@ export default function LandingPage() {
           }
 
           [data-section="modern"] [data-compare-text] {
-            padding-top: 40px !important;
+            padding-top: 32px !important;
             border-top: 1px solid #E5E7EB !important;
           }
 
           /* EVALUATES MOBILE */
           [data-section="evaluates"] {
-            padding-top: 120px !important;
-            padding-bottom: 120px !important;
+            padding-top: 100px !important;
+            padding-bottom: 100px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
           }
 
           [data-section="evaluates"] > div {
             grid-template-columns: 1fr !important;
-            gap: 40px !important;
+            gap: 32px !important;
           }
 
           [data-section="evaluates"] > div > div {
             padding-right: 0 !important;
             border-right: none !important;
             border-bottom: 1px solid #E5E7EB !important;
-            padding-bottom: 40px !important;
+            padding-bottom: 32px !important;
           }
 
           [data-section="evaluates"] > div > div:last-child {
@@ -360,8 +365,8 @@ export default function LandingPage() {
 
           /* PROFESSIONAL MOBILE */
           [data-section="professional"] {
-            padding-top: 120px !important;
-            padding-bottom: 120px !important;
+            padding-top: 100px !important;
+            padding-bottom: 100px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
           }
@@ -377,16 +382,16 @@ export default function LandingPage() {
 
           /* FRAMEWORK MOBILE */
           [data-section="framework"] {
-            padding-top: 120px !important;
-            padding-bottom: 120px !important;
+            padding-top: 100px !important;
+            padding-bottom: 100px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
           }
 
           [data-section="framework"] [data-framework-grid] {
             grid-template-columns: 1fr !important;
-            gap: 32px !important;
-            margin-bottom: 60px !important;
+            gap: 28px !important;
+            margin-bottom: 56px !important;
           }
 
           [data-section="framework"] [data-framework-grid] > div {
@@ -402,16 +407,16 @@ export default function LandingPage() {
 
           /* NOTICE MOBILE */
           [data-section="notice"] {
-            padding-top: 120px !important;
-            padding-bottom: 120px !important;
+            padding-top: 100px !important;
+            padding-bottom: 100px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
           }
 
           /* FINAL CTA MOBILE */
           [data-section="final-cta"] {
-            padding-top: 120px !important;
-            padding-bottom: 120px !important;
+            padding-top: 100px !important;
+            padding-bottom: 100px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
           }
@@ -423,6 +428,7 @@ export default function LandingPage() {
 
           [data-section="final-cta"] p {
             font-size: 15px !important;
+            line-height: 26px !important;
           }
 
           [data-section="final-cta"] button {
@@ -431,7 +437,7 @@ export default function LandingPage() {
 
           /* FOOTER MOBILE */
           footer {
-            padding-top: 120px !important;
+            padding-top: 100px !important;
             padding-bottom: 60px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
@@ -439,12 +445,13 @@ export default function LandingPage() {
 
           footer > div:first-child {
             grid-template-columns: 1fr !important;
-            gap: 40px !important;
+            gap: 36px !important;
+            margin-bottom: 60px !important;
           }
 
           footer [data-links] {
             grid-template-columns: 1fr !important;
-            gap: 40px !important;
+            gap: 36px !important;
           }
 
           footer [data-link-section] {
@@ -899,8 +906,8 @@ export default function LandingPage() {
       <section data-section="conditions" style={{
         maxWidth: '1280px',
         margin: '0 auto',
-        paddingTop: '180px',
-        paddingBottom: '180px',
+        paddingTop: '160px',
+        paddingBottom: '160px',
         paddingLeft: '48px',
         paddingRight: '48px',
         borderTop: '1px solid #E5E7EB',
@@ -1097,7 +1104,7 @@ export default function LandingPage() {
       <section data-section="memetic" style={{
         maxWidth: '1280px',
         margin: '0 auto',
-        paddingTop: '240px',
+        paddingTop: '200px',
         paddingBottom: '160px',
         paddingLeft: '48px',
         paddingRight: '48px',
@@ -1138,7 +1145,7 @@ export default function LandingPage() {
         maxWidth: '1280px',
         margin: '0 auto',
         paddingTop: '160px',
-        paddingBottom: '180px',
+        paddingBottom: '160px',
         paddingLeft: '48px',
         paddingRight: '48px',
         display: 'grid',
@@ -1666,8 +1673,8 @@ export default function LandingPage() {
         backgroundColor: '#FFFFFF',
         borderTop: '1px solid #E5E7EB',
         borderBottom: '1px solid #E5E7EB',
-        paddingTop: '180px',
-        paddingBottom: '180px',
+        paddingTop: '160px',
+        paddingBottom: '160px',
       }}>
         <div style={{
           maxWidth: '1280px',
@@ -1794,8 +1801,8 @@ export default function LandingPage() {
       <section data-section="notice" style={{
         maxWidth: '1280px',
         margin: '0 auto',
-        paddingTop: '180px',
-        paddingBottom: '180px',
+        paddingTop: '160px',
+        paddingBottom: '160px',
         paddingLeft: '48px',
         paddingRight: '48px',
       }}>
@@ -1838,8 +1845,8 @@ export default function LandingPage() {
       <section data-section="final-cta" style={{
         maxWidth: '1280px',
         margin: '0 auto',
-        paddingTop: '240px',
-        paddingBottom: '240px',
+        paddingTop: '200px',
+        paddingBottom: '200px',
         paddingLeft: '48px',
         paddingRight: '48px',
         textAlign: 'center',
@@ -1906,7 +1913,7 @@ export default function LandingPage() {
       <footer style={{
         backgroundColor: '#FFFFFF',
         borderTop: '1px solid #E5E7EB',
-        paddingTop: '160px',
+        paddingTop: '140px',
         paddingBottom: '80px',
         paddingLeft: '48px',
         paddingRight: '48px',
