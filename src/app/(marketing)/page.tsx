@@ -82,7 +82,7 @@ export default function LandingPage() {
             gap: '8px',
             marginLeft: 'auto',
           }}>
-            CHECK INCOME STABILITY
+            Check My Income Stability
             <span style={{ fontSize: '14px' }}>→</span>
           </button>
         </div>
@@ -93,7 +93,7 @@ export default function LandingPage() {
         maxWidth: '1280px',
         margin: '0 auto',
         paddingTop: '128px',
-        paddingBottom: '168px',
+        paddingBottom: '80px',
         paddingLeft: '48px',
         paddingRight: '48px',
         display: 'grid',
@@ -111,7 +111,7 @@ export default function LandingPage() {
             letterSpacing: '-0.03em',
             fontWeight: 400,
             color: '#0E1A2B',
-            margin: '0 0 40px 0',
+            margin: '0 0 24px 0',
             maxWidth: '580px',
           }}>
             Income and income stability are not the same thing.
@@ -124,10 +124,10 @@ export default function LandingPage() {
             lineHeight: '28px',
             fontWeight: 400,
             color: '#4B5563',
-            margin: '0 0 48px 0',
+            margin: '0 0 32px 0',
             maxWidth: '520px',
           }}>
-            RunPayway™ shows whether your income is actually stable.
+            RunPayway™ shows how stable your income really appears to be.
           </p>
 
           {/* CTA Row */}
@@ -135,6 +135,7 @@ export default function LandingPage() {
             display: 'flex',
             gap: '16px',
             alignItems: 'center',
+            marginBottom: '32px',
           }}>
             <button style={{
               height: '52px',
@@ -155,7 +156,7 @@ export default function LandingPage() {
               justifyContent: 'center',
               gap: '8px',
             }}>
-              CHECK INCOME STABILITY
+              Check My Income Stability
               <span style={{ fontSize: '14px' }}>→</span>
             </button>
             <button style={{
@@ -177,10 +178,21 @@ export default function LandingPage() {
               justifyContent: 'center',
               gap: '8px',
             }}>
-              HOW IT WORKS
+              How It Works
               <span style={{ fontSize: '14px' }}>→</span>
             </button>
           </div>
+
+          {/* Supporting Line */}
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '13px',
+            fontWeight: 400,
+            color: '#6B7280',
+            margin: '0',
+          }}>
+            Free initial insight · No documents required
+          </p>
         </div>
 
         {/* RIGHT COLUMN - STRUCTURAL STABILITY PROFILE™ */}
@@ -223,7 +235,7 @@ export default function LandingPage() {
             lineHeight: '1',
             fontWeight: 700,
             color: '#0E1A2B',
-            margin: '0 0 20px 0',
+            margin: '0 0 16px 0',
             fontFamily: 'Inter, -apple-system, sans-serif',
             fontVariantNumeric: 'tabular-nums',
           }}>
@@ -237,18 +249,29 @@ export default function LandingPage() {
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
             color: '#0E1A2B',
-            margin: '0 0 32px 0',
+            margin: '0 0 16px 0',
           }}>
             ESTABLISHED STABILITY
+          </p>
+
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '14px',
+            lineHeight: '24px',
+            fontWeight: 400,
+            color: '#4B5563',
+            margin: '0 0 32px 0',
+          }}>
+            Income currently appears stable, though some conditions may weaken income reliability over time.
           </p>
 
           {/* Condition Grid */}
           <div style={{
             borderTop: '1px solid #E5E7EB',
-            paddingTop: '32px',
+            paddingTop: '24px',
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
-            gap: '32px 48px',
+            gap: '24px 48px',
             marginBottom: '32px',
           }}>
             <div>
@@ -344,10 +367,10 @@ export default function LandingPage() {
           {/* Model Info */}
           <div style={{
             borderTop: '1px solid #E5E7EB',
-            paddingTop: '32px',
+            paddingTop: '24px',
             display: 'grid',
             gridTemplateColumns: '1fr 1fr 1fr',
-            gap: '32px',
+            gap: '24px',
           }}>
             <div>
               <p style={{
@@ -419,6 +442,61 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* COMMON INCOME CONDITIONS */}
+      <section style={{
+        maxWidth: '1280px',
+        margin: '0 auto',
+        paddingTop: '160px',
+        paddingBottom: '160px',
+        paddingLeft: '48px',
+        paddingRight: '48px',
+        borderTop: '1px solid #E5E7EB',
+      }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '24px',
+        }}>
+          {[
+            'most income depends on a single client, customer, employer, or source',
+            'income changes significantly from month to month',
+            'income slows quickly when work slows down',
+            'financial obligations continue growing while income remains variable',
+            'future income becomes harder to predict with confidence',
+            'limited backup income exists if current income changes unexpectedly',
+          ].map((condition, index) => (
+            <div key={index} style={{
+              paddingBottom: '24px',
+              borderBottom: index < 5 ? '1px solid #E5E7EB' : 'none',
+            }}>
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '15px',
+                lineHeight: '26px',
+                fontWeight: 400,
+                color: '#4B5563',
+                margin: '0',
+              }}>
+                • {condition}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <p style={{
+          fontFamily: 'Garamond, Sabon, Georgia, serif',
+          fontSize: '48px',
+          lineHeight: '56px',
+          letterSpacing: '-0.02em',
+          fontWeight: 400,
+          color: '#0E1A2B',
+          margin: '64px 0 0 0',
+          maxWidth: '600px',
+        }}>
+          Income can appear stable until conditions change.
+        </p>
+      </section>
+
       {/* TRUST STRIP */}
       <section style={{
         backgroundColor: '#FFFFFF',
@@ -434,7 +512,6 @@ export default function LandingPage() {
           paddingRight: '48px',
           display: 'flex',
           justifyContent: 'center',
-          gap: '96px',
           alignItems: 'center',
         }}>
           <p style={{
@@ -445,9 +522,17 @@ export default function LandingPage() {
             textTransform: 'uppercase',
             color: '#0E1A2B',
             margin: '0',
+            flex: 1,
+            textAlign: 'center',
           }}>
             FIXED METHODOLOGY
           </p>
+          <div style={{
+            width: '1px',
+            height: '24px',
+            backgroundColor: '#E5E7EB',
+            margin: '0 48px',
+          }} />
           <p style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
             fontSize: '13px',
@@ -456,9 +541,17 @@ export default function LandingPage() {
             textTransform: 'uppercase',
             color: '#0E1A2B',
             margin: '0',
+            flex: 1,
+            textAlign: 'center',
           }}>
             CONSISTENT RESULTS
           </p>
+          <div style={{
+            width: '1px',
+            height: '24px',
+            backgroundColor: '#E5E7EB',
+            margin: '0 48px',
+          }} />
           <p style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
             fontSize: '13px',
@@ -467,6 +560,8 @@ export default function LandingPage() {
             textTransform: 'uppercase',
             color: '#0E1A2B',
             margin: '0',
+            flex: 1,
+            textAlign: 'center',
           }}>
             PRIVATE BY DEFAULT
           </p>
@@ -478,7 +573,7 @@ export default function LandingPage() {
         maxWidth: '1280px',
         margin: '0 auto',
         paddingTop: '220px',
-        paddingBottom: '220px',
+        paddingBottom: '100px',
         paddingLeft: '48px',
         paddingRight: '48px',
       }}>
@@ -517,7 +612,7 @@ export default function LandingPage() {
       <section style={{
         maxWidth: '1280px',
         margin: '0 auto',
-        paddingTop: '160px',
+        paddingTop: '100px',
         paddingBottom: '160px',
         paddingLeft: '48px',
         paddingRight: '48px',
@@ -555,7 +650,7 @@ export default function LandingPage() {
             lineHeight: '28px',
             fontWeight: 400,
             color: '#4B5563',
-            margin: '0 0 24px 0',
+            margin: '0',
           }}>
             RunPayway™ identifies conditions that may support or weaken income reliability.
           </p>
@@ -581,7 +676,10 @@ export default function LandingPage() {
             gap: '48px',
           }}>
             {/* Profile A */}
-            <div>
+            <div style={{
+              paddingRight: '24px',
+              borderRight: '1px solid #E5E7EB',
+            }}>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
                 fontSize: '12px',
@@ -638,7 +736,9 @@ export default function LandingPage() {
             </div>
 
             {/* Profile B */}
-            <div>
+            <div style={{
+              paddingLeft: '24px',
+            }}>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
                 fontSize: '12px',
@@ -694,6 +794,19 @@ export default function LandingPage() {
               </p>
             </div>
           </div>
+
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '16px',
+            lineHeight: '28px',
+            fontWeight: 400,
+            color: '#4B5563',
+            margin: '48px 0 0 0',
+            paddingTop: '48px',
+            borderTop: '1px solid #E5E7EB',
+          }}>
+            Income amount alone does not determine income stability.
+          </p>
         </div>
       </section>
 
@@ -715,7 +828,10 @@ export default function LandingPage() {
           gap: '80px',
         }}>
           {/* What RunPayway Evaluates */}
-          <div>
+          <div style={{
+            paddingRight: '24px',
+            borderRight: '1px solid #E5E7EB',
+          }}>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
               fontSize: '13px',
@@ -752,7 +868,7 @@ export default function LandingPage() {
               lineHeight: '24px',
               fontWeight: 400,
               color: '#4B5563',
-              margin: '0',
+              margin: '0 0 24px 0',
               paddingLeft: '0',
               listStyle: 'none',
             }}>
@@ -766,14 +882,18 @@ export default function LandingPage() {
               fontSize: '14px',
               fontWeight: 600,
               color: '#0E1A2B',
-              margin: '24px 0 8px 0',
+              margin: '0',
             }}>
               Evaluated using a fixed, repeatable methodology.
             </p>
           </div>
 
           {/* Free Income Stability Insight */}
-          <div>
+          <div style={{
+            paddingLeft: '24px',
+            paddingRight: '24px',
+            borderRight: '1px solid #E5E7EB',
+          }}>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
               fontSize: '13px',
@@ -790,7 +910,7 @@ export default function LandingPage() {
               fontSize: '48px',
               fontWeight: 700,
               color: '#0E1A2B',
-              margin: '0 0 32px 0',
+              margin: '0 0 16px 0',
             }}>
               $0
             </p>
@@ -823,7 +943,7 @@ export default function LandingPage() {
               gap: '8px',
               marginBottom: '24px',
             }}>
-              START FREE INSIGHT
+              Start Free Insight
               <span style={{ fontSize: '14px' }}>→</span>
             </button>
             <p style={{
@@ -839,7 +959,9 @@ export default function LandingPage() {
           </div>
 
           {/* Full Stability Report */}
-          <div>
+          <div style={{
+            paddingLeft: '24px',
+          }}>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
               fontSize: '13px',
@@ -856,7 +978,7 @@ export default function LandingPage() {
               fontSize: '48px',
               fontWeight: 700,
               color: '#0E1A2B',
-              margin: '0 0 32px 0',
+              margin: '0 0 16px 0',
             }}>
               $69
             </p>
@@ -866,10 +988,37 @@ export default function LandingPage() {
               lineHeight: '28px',
               fontWeight: 400,
               color: '#4B5563',
-              margin: '0 0 32px 0',
+              margin: '0 0 24px 0',
             }}>
               Identify conditions that may strengthen or weaken income reliability.
             </p>
+            <p style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '13px',
+              fontWeight: 700,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: '#0E1A2B',
+              margin: '0 0 16px 0',
+            }}>
+              Includes:
+            </p>
+            <ul style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '14px',
+              lineHeight: '24px',
+              fontWeight: 400,
+              color: '#4B5563',
+              margin: '0 0 32px 0',
+              paddingLeft: '0',
+              listStyle: 'none',
+            }}>
+              <li>✓ Income Stability Score™</li>
+              <li>✓ Stability Scenario Analysis™</li>
+              <li>✓ Income Reliability Signals</li>
+              <li>✓ Industry Context</li>
+              <li>✓ Highest-Impact Stability Opportunities</li>
+            </ul>
             <button style={{
               width: '100%',
               height: '52px',
@@ -889,7 +1038,7 @@ export default function LandingPage() {
               gap: '8px',
               marginBottom: '24px',
             }}>
-              UNLOCK FULL REPORT
+              Unlock Full Report
               <span style={{ fontSize: '14px' }}>→</span>
             </button>
             <p style={{
@@ -908,62 +1057,17 @@ export default function LandingPage() {
 
       {/* FOR PROFESSIONAL REVIEW ENVIRONMENTS */}
       <section style={{
-        maxWidth: '1280px',
-        margin: '0 auto',
-        paddingTop: '160px',
-        paddingBottom: '160px',
-        paddingLeft: '48px',
-        paddingRight: '48px',
-      }}>
-        <p style={{
-          fontFamily: 'Inter, -apple-system, sans-serif',
-          fontSize: '13px',
-          fontWeight: 700,
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase',
-          color: '#0E1A2B',
-          margin: '0 0 32px 0',
-        }}>
-          FOR PROFESSIONAL REVIEW ENVIRONMENTS
-        </p>
-        <p style={{
-          fontFamily: 'Inter, -apple-system, sans-serif',
-          fontSize: '16px',
-          lineHeight: '28px',
-          fontWeight: 400,
-          color: '#4B5563',
-          margin: '0 0 32px 0',
-          maxWidth: '700px',
-        }}>
-          RunPayway™ also supports advisor and organizational review workflows.
-        </p>
-        <a href="#" style={{
-          fontFamily: 'Inter, -apple-system, sans-serif',
-          fontSize: '14px',
-          fontWeight: 600,
-          letterSpacing: '0.03em',
-          color: '#0E1A2B',
-          textDecoration: 'underline',
-          cursor: 'pointer',
-        }}>
-          Explore Professional Verification →
-        </a>
-      </section>
-
-      {/* FRAMEWORK STANDARD */}
-      <section style={{
-        backgroundColor: '#FAFAF8',
-        borderTop: '1px solid #E5E7EB',
-        borderBottom: '1px solid #E5E7EB',
+        backgroundColor: '#FFFFFF',
         paddingTop: '120px',
         paddingBottom: '120px',
+        borderTop: '1px solid #E5E7EB',
+        borderBottom: '1px solid #E5E7EB',
       }}>
         <div style={{
           maxWidth: '1280px',
           margin: '0 auto',
           paddingLeft: '48px',
           paddingRight: '48px',
-          textAlign: 'center',
         }}>
           <p style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
@@ -974,22 +1078,147 @@ export default function LandingPage() {
             color: '#0E1A2B',
             margin: '0 0 32px 0',
           }}>
+            PROFESSIONAL REVIEW ENVIRONMENTS
+          </p>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '16px',
+            lineHeight: '28px',
+            fontWeight: 400,
+            color: '#4B5563',
+            margin: '0 0 32px 0',
+            maxWidth: '700px',
+          }}>
+            RunPayway™ also supports professional review environments for client and operational income evaluations.
+          </p>
+          <a href="#" style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '14px',
+            fontWeight: 600,
+            letterSpacing: '0.03em',
+            color: '#0E1A2B',
+            textDecoration: 'underline',
+            cursor: 'pointer',
+          }}>
+            Explore Professional Verification →
+          </a>
+        </div>
+      </section>
+
+      {/* FRAMEWORK STANDARD */}
+      <section style={{
+        backgroundColor: '#FAFAF8',
+        borderTop: '1px solid #E5E7EB',
+        borderBottom: '1px solid #E5E7EB',
+        paddingTop: '160px',
+        paddingBottom: '160px',
+      }}>
+        <div style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          paddingLeft: '48px',
+          paddingRight: '48px',
+        }}>
+          <p style={{
+            fontFamily: 'Inter, -apple-system, sans-serif',
+            fontSize: '13px',
+            fontWeight: 700,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: '#0E1A2B',
+            margin: '0 0 64px 0',
+            textAlign: 'center',
+          }}>
             FRAMEWORK STANDARD
           </p>
-          <h3 style={{
-            fontFamily: 'Garamond, Sabon, Georgia, serif',
-            fontSize: '48px',
-            lineHeight: '56px',
-            letterSpacing: '-0.02em',
-            fontWeight: 400,
-            color: '#0E1A2B',
-            margin: '0 0 32px 0',
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr 1fr',
+            gap: '48px',
+            marginBottom: '64px',
+          }}>
+            <div style={{
+              paddingRight: '24px',
+              borderRight: '1px solid #E5E7EB',
+            }}>
+              <p style={{
+                fontFamily: 'Garamond, Sabon, Georgia, serif',
+                fontSize: '36px',
+                lineHeight: '44px',
+                letterSpacing: '-0.02em',
+                fontWeight: 400,
+                color: '#0E1A2B',
+                margin: '0',
+              }}>
+                Fixed rules.
+              </p>
+            </div>
+            <div style={{
+              paddingLeft: '24px',
+              paddingRight: '24px',
+              borderRight: '1px solid #E5E7EB',
+            }}>
+              <p style={{
+                fontFamily: 'Garamond, Sabon, Georgia, serif',
+                fontSize: '36px',
+                lineHeight: '44px',
+                letterSpacing: '-0.02em',
+                fontWeight: 400,
+                color: '#0E1A2B',
+                margin: '0',
+              }}>
+                Deterministic results.
+              </p>
+            </div>
+            <div style={{
+              paddingLeft: '24px',
+            }}>
+              <p style={{
+                fontFamily: 'Garamond, Sabon, Georgia, serif',
+                fontSize: '36px',
+                lineHeight: '44px',
+                letterSpacing: '-0.02em',
+                fontWeight: 400,
+                color: '#0E1A2B',
+                margin: '0',
+              }}>
+                Version-locked methodology.
+              </p>
+            </div>
+          </div>
+
+          <div style={{
+            textAlign: 'center',
             maxWidth: '900px',
             marginLeft: 'auto',
             marginRight: 'auto',
+            marginBottom: '64px',
+            paddingBottom: '64px',
+            borderBottom: '1px solid #E5E7EB',
           }}>
-            Fixed rules. Deterministic results. Version-locked methodology.
-          </h3>
+            <p style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '16px',
+              lineHeight: '28px',
+              fontWeight: 400,
+              color: '#4B5563',
+              margin: '0 0 24px 0',
+            }}>
+              RunPayway™ applies the same methodology across all verification environments.
+            </p>
+            <p style={{
+              fontFamily: 'Inter, -apple-system, sans-serif',
+              fontSize: '16px',
+              lineHeight: '28px',
+              fontWeight: 400,
+              color: '#4B5563',
+              margin: '0',
+            }}>
+              Identical structures produce identical outcomes.
+            </p>
+          </div>
+
           <p style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
             fontSize: '13px',
@@ -998,6 +1227,7 @@ export default function LandingPage() {
             textTransform: 'uppercase',
             color: '#0E1A2B',
             margin: '0',
+            textAlign: 'center',
           }}>
             STRUCTURAL STABILITY MODEL RP-2.0
           </p>
@@ -1033,7 +1263,7 @@ export default function LandingPage() {
           margin: '0',
           maxWidth: '900px',
         }}>
-          RunPayway™ evaluates income stability conditions using a fixed methodological framework. Results are informational only and are not financial, legal, tax, lending, insurance, investment, or employment advice. RunPayway™ does not guarantee future outcomes or replace professional judgment.
+          RunPayway™ evaluates income stability conditions using a fixed methodological framework. Results are informational and are not financial, legal, tax, lending, insurance, investment, or employment advice. RunPayway™ does not guarantee future outcomes or replace professional judgment.
         </p>
       </section>
 
@@ -1054,7 +1284,7 @@ export default function LandingPage() {
           letterSpacing: '-0.03em',
           fontWeight: 400,
           color: '#0E1A2B',
-          margin: '0 0 32px 0',
+          margin: '0 0 24px 0',
           maxWidth: '900px',
           marginLeft: 'auto',
           marginRight: 'auto',
@@ -1089,10 +1319,20 @@ export default function LandingPage() {
           alignItems: 'center',
           justifyContent: 'center',
           gap: '8px',
+          marginBottom: '32px',
         }}>
-          CHECK INCOME STABILITY
+          Check My Income Stability
           <span style={{ fontSize: '14px' }}>→</span>
         </button>
+        <p style={{
+          fontFamily: 'Inter, -apple-system, sans-serif',
+          fontSize: '13px',
+          fontWeight: 400,
+          color: '#6B7280',
+          margin: '0',
+        }}>
+          Free initial insight · No documents required
+        </p>
       </section>
 
       {/* FOOTER */}
@@ -1116,12 +1356,24 @@ export default function LandingPage() {
             marginBottom: '64px',
             alignItems: 'flex-start',
           }}>
-            {/* Logo */}
+            {/* Logo & Tagline */}
             <div>
               <img src="/rplogo.png" alt="RunPayway™" style={{
                 height: '40px',
                 width: 'auto',
+                marginBottom: '12px',
               }} />
+              <p style={{
+                fontFamily: 'Inter, -apple-system, sans-serif',
+                fontSize: '12px',
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: '#6B7280',
+                margin: '0',
+              }}>
+                INCOME STABILITY VERIFICATION™
+              </p>
             </div>
 
             {/* Links */}
@@ -1130,7 +1382,10 @@ export default function LandingPage() {
               gridTemplateColumns: 'repeat(4, 1fr)',
               gap: '80px',
             }}>
-              <div>
+              <div style={{
+                paddingRight: '24px',
+                borderRight: '1px solid #E5E7EB',
+              }}>
                 <p style={{
                   fontFamily: 'Inter, -apple-system, sans-serif',
                   fontSize: '13px',
@@ -1156,7 +1411,11 @@ export default function LandingPage() {
                   <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Verification Environments</a></li>
                 </ul>
               </div>
-              <div>
+              <div style={{
+                paddingLeft: '24px',
+                paddingRight: '24px',
+                borderRight: '1px solid #E5E7EB',
+              }}>
                 <p style={{
                   fontFamily: 'Inter, -apple-system, sans-serif',
                   fontSize: '13px',
@@ -1182,7 +1441,11 @@ export default function LandingPage() {
                   <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Contact</a></li>
                 </ul>
               </div>
-              <div>
+              <div style={{
+                paddingLeft: '24px',
+                paddingRight: '24px',
+                borderRight: '1px solid #E5E7EB',
+              }}>
                 <p style={{
                   fontFamily: 'Inter, -apple-system, sans-serif',
                   fontSize: '13px',
@@ -1206,9 +1469,12 @@ export default function LandingPage() {
                 }}>
                   <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Privacy Policy</a></li>
                   <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Terms</a></li>
+                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Accessibility</a></li>
                 </ul>
               </div>
-              <div>
+              <div style={{
+                paddingLeft: '24px',
+              }}>
                 <p style={{
                   fontFamily: 'Inter, -apple-system, sans-serif',
                   fontSize: '13px',
@@ -1231,7 +1497,7 @@ export default function LandingPage() {
                   listStyle: 'none',
                 }}>
                   <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Methodology</a></li>
-                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Model Version</a></li>
+                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Data Security</a></li>
                 </ul>
               </div>
             </div>
@@ -1254,24 +1520,10 @@ export default function LandingPage() {
                 color: '#6B7280',
                 margin: '0',
               }}>
-                © 2026 RunPayway™ · All rights reserved<br />
-                RunPayway™ is a product of PeopleStar Enterprises, Inc.<br />
-                Orange County, California, USA<br />
-                Structural Stability Model RP-2.0
-              </p>
-            </div>
-            <div style={{ textAlign: 'right' }}>
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '12px',
-                lineHeight: '20px',
-                fontWeight: 400,
-                color: '#6B7280',
-                margin: '0',
-              }}>
-                <a href="#" style={{ color: '#6B7280', textDecoration: 'none', marginRight: '24px' }}>Data Security</a>
-                <a href="#" style={{ color: '#6B7280', textDecoration: 'none', marginRight: '24px' }}>System Integrity</a>
-                <a href="#" style={{ color: '#6B7280', textDecoration: 'none' }}>Accessibility</a>
+                © 2026 RunPayway™. All rights reserved.<br />
+                RunPayway™ is a product of PeopleStar Enterprises, INC.<br />
+                Orange County, California, USA.<br />
+                Structural Stability Model RP-2.0.
               </p>
             </div>
           </div>
