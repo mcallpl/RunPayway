@@ -35,7 +35,7 @@ export default function LandingPage() {
             flexShrink: 0,
           }}>
             <img src="/rplogo.png" alt="RunPayway™" style={{
-              height: '48px',
+              height: '54px',
               width: 'auto',
             }} />
           </a>
