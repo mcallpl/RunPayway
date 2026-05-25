@@ -552,15 +552,15 @@ export default function LandingPage() {
 
       {/* HERO SECTION */}
       <section data-section="hero" style={{
-        maxWidth: '1320px',
+        maxWidth: '1360px',
         margin: '0 auto',
         paddingTop: '80px',
         paddingBottom: '80px',
         paddingLeft: '48px',
         paddingRight: '48px',
         display: 'grid',
-        gridTemplateColumns: '0.9fr 1.3fr',
-        gap: '64px',
+        gridTemplateColumns: '1.1fr 1.3fr',
+        gap: '48px',
         alignItems: 'flex-start',
       }}>
         {/* LEFT COLUMN */}
@@ -568,14 +568,13 @@ export default function LandingPage() {
           {/* H1 - Doctrine Headline */}
           <h1 style={{
             fontFamily: 'Cormorant Garamond, Garamond, serif',
-            fontSize: '56px',
-            lineHeight: '72px',
+            fontSize: '54px',
+            lineHeight: '70px',
             letterSpacing: '-0.02em',
             fontWeight: 400,
             fontStyle: 'italic',
             color: '#0E1A2B',
             margin: '0 0 24px 0',
-            maxWidth: '100%',
           }}>
             Income and income stability are not the same thing.
           </h1>
