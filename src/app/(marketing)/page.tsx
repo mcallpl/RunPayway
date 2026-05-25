@@ -150,9 +150,9 @@ export default function LandingPage() {
           }
 
           [data-section="hero"] > div:first-child p:first-of-type {
-            font-size: 16px !important;
-            line-height: 28px !important;
-            margin-bottom: 20px !important;
+            font-size: 17px !important;
+            line-height: 30px !important;
+            margin-bottom: 24px !important;
           }
 
           [data-section="hero"] [data-buttons] {
@@ -226,16 +226,17 @@ export default function LandingPage() {
 
           /* COMMON CONDITIONS MOBILE */
           [data-section="conditions"] {
-            padding-top: 100px !important;
-            padding-bottom: 100px !important;
+            padding-top: 120px !important;
+            padding-bottom: 120px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
             border-top: 1px solid #E5E7EB !important;
           }
 
           [data-section="conditions"] p:first-child {
-            font-size: 10px !important;
-            margin-bottom: 36px !important;
+            font-size: 9px !important;
+            color: #9CA3AF !important;
+            margin-bottom: 48px !important;
           }
 
           [data-section="conditions"] [data-condition-item] {
@@ -252,15 +253,15 @@ export default function LandingPage() {
 
           /* TRUST STRIP MOBILE */
           [data-section="trust"] {
-            padding-top: 56px !important;
-            padding-bottom: 56px !important;
+            padding-top: 80px !important;
+            padding-bottom: 80px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
           }
 
           [data-section="trust"] > div {
             grid-template-columns: 1fr !important;
-            gap: 32px !important;
+            gap: 48px !important;
           }
 
           [data-section="trust"] > div > div {
@@ -437,27 +438,32 @@ export default function LandingPage() {
 
           /* FOOTER MOBILE */
           footer {
-            padding-top: 100px !important;
-            padding-bottom: 60px !important;
+            padding-top: 120px !important;
+            padding-bottom: 80px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
           }
 
           footer > div:first-child {
             grid-template-columns: 1fr !important;
-            gap: 36px !important;
-            margin-bottom: 60px !important;
+            gap: 48px !important;
+            margin-bottom: 80px !important;
           }
 
           footer [data-links] {
             grid-template-columns: 1fr !important;
-            gap: 36px !important;
+            gap: 48px !important;
           }
 
           footer [data-link-section] {
             padding-right: 0 !important;
             border-right: none !important;
             padding-left: 0 !important;
+          }
+
+          footer [data-link-section] p:first-child {
+            color: #9CA3AF !important;
+            font-size: 10px !important;
           }
         }
       `}</style>
@@ -546,7 +552,7 @@ export default function LandingPage() {
 
       {/* HERO SECTION */}
       <section data-section="hero" style={{
-        maxWidth: '1280px',
+        maxWidth: '1320px',
         margin: '0 auto',
         paddingTop: '160px',
         paddingBottom: '120px',
@@ -568,7 +574,7 @@ export default function LandingPage() {
             fontWeight: 400,
             color: '#0E1A2B',
             margin: '0 0 20px 0',
-            maxWidth: '520px',
+            maxWidth: '530px',
           }}>
             Income and income stability are not the same thing.
           </h1>
@@ -904,7 +910,7 @@ export default function LandingPage() {
 
       {/* COMMON INCOME CONDITIONS */}
       <section data-section="conditions" style={{
-        maxWidth: '1280px',
+        maxWidth: '1320px',
         margin: '0 auto',
         paddingTop: '160px',
         paddingBottom: '160px',
@@ -914,11 +920,11 @@ export default function LandingPage() {
       }}>
         <p style={{
           fontFamily: 'Inter, -apple-system, sans-serif',
-          fontSize: '11px',
+          fontSize: '10px',
           fontWeight: 700,
           letterSpacing: '0.12em',
           textTransform: 'uppercase',
-          color: '#0E1A2B',
+          color: '#9CA3AF',
           margin: '0 0 56px 0',
         }}>
           COMMON INCOME CONDITIONS
@@ -1006,27 +1012,27 @@ export default function LandingPage() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '24px',
+            gap: '20px',
             paddingRight: '40px',
             borderRight: 'none',
           }}>
             <div style={{
-              width: '24px',
-              height: '24px',
+              width: '20px',
+              height: '20px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#6B7280',
+              color: '#D1D5DB',
             }}>
               <BlueprintIcon />
             </div>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '12px',
+              fontSize: '11px',
               fontWeight: 700,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              color: '#6B7280',
+              color: '#9CA3AF',
               margin: '0',
               textAlign: 'center',
             }}>
@@ -1038,28 +1044,28 @@ export default function LandingPage() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '24px',
+            gap: '20px',
             paddingLeft: '40px',
             paddingRight: '40px',
             borderRight: 'none',
           }}>
             <div style={{
-              width: '24px',
-              height: '24px',
+              width: '20px',
+              height: '20px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#6B7280',
+              color: '#D1D5DB',
             }}>
               <TargetIcon />
             </div>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '12px',
+              fontSize: '11px',
               fontWeight: 700,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              color: '#6B7280',
+              color: '#9CA3AF',
               margin: '0',
               textAlign: 'center',
             }}>
@@ -1071,26 +1077,26 @@ export default function LandingPage() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '24px',
+            gap: '20px',
             paddingLeft: '40px',
           }}>
             <div style={{
-              width: '24px',
-              height: '24px',
+              width: '20px',
+              height: '20px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#6B7280',
+              color: '#D1D5DB',
             }}>
               <ShieldIcon />
             </div>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '12px',
+              fontSize: '11px',
               fontWeight: 700,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              color: '#6B7280',
+              color: '#9CA3AF',
               margin: '0',
               textAlign: 'center',
             }}>
