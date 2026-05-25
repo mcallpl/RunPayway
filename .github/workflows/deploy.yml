@@ -84,6 +84,12 @@ jobs:
           echo "Enabling RunPayway site..."
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "a2ensite runpayway.conf && a2dissite 000-default || true"
 
+          echo "Installing/updating certbot..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "apt-get update && apt-get install -y certbot python3-certbot-apache"
+
+          echo "Generating Let's Encrypt certificate..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "certbot certonly --standalone -d runpayway.peoplestar.com -n --agree-tos -m support@peoplestar.com || true"
+
           echo "Testing Apache configuration..."
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "apache2ctl configtest"
 
