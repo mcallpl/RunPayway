@@ -68,6 +68,10 @@ jobs:
           echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
+          echo "Cleaning corrupted node_modules on server..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 \
+            "cd /var/www/html/RunPayway && rm -rf node_modules && rm -f package-lock.json && npm cache clean --force"
+
           echo "Installing production dependencies on server..."
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 \
             "cd /var/www/html/RunPayway && npm ci --omit=dev"
