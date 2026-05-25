@@ -554,13 +554,13 @@ export default function LandingPage() {
       <section data-section="hero" style={{
         maxWidth: '1320px',
         margin: '0 auto',
-        paddingTop: '100px',
-        paddingBottom: '100px',
+        paddingTop: '80px',
+        paddingBottom: '80px',
         paddingLeft: '48px',
         paddingRight: '48px',
         display: 'grid',
-        gridTemplateColumns: '1fr 1.1fr',
-        gap: '80px',
+        gridTemplateColumns: '0.9fr 1.3fr',
+        gap: '64px',
         alignItems: 'flex-start',
       }}>
         {/* LEFT COLUMN */}
@@ -732,20 +732,22 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* Condition Grid */}
+          {/* Condition Grid - 3 Column Layout */}
           <div data-condition-grid style={{
             borderTop: '1px solid #E5E7EB',
-            paddingTop: '24px',
+            paddingTop: '20px',
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '20px 32px',
-            marginBottom: '24px',
+            gridTemplateColumns: '1fr 1.2fr 1fr',
+            gap: '0 16px',
+            marginBottom: '20px',
+            rowGap: '14px',
           }}>
+            {/* Row 1 */}
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '10px',
+              fontSize: '9px',
               fontWeight: 700,
-              letterSpacing: '0.12em',
+              letterSpacing: '0.15em',
               textTransform: 'uppercase',
               color: '#6B7280',
               margin: '0',
@@ -754,28 +756,31 @@ export default function LandingPage() {
             </p>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
-              fontWeight: 600,
-              color: '#0E1A2B',
+              fontSize: '9px',
+              fontWeight: 700,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+              color: '#6B7280',
               margin: '0',
-              textAlign: 'right',
             }}>
               MONTHLY INCOME CONSISTENCY
             </p>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
+              fontSize: '12px',
               fontWeight: 600,
               color: '#0E1A2B',
               margin: '0',
             }}>
               MODERATE
             </p>
+            {/* Row 2 */}
+            <p style={{ margin: '0' }}></p>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '10px',
+              fontSize: '9px',
               fontWeight: 700,
-              letterSpacing: '0.12em',
+              letterSpacing: '0.15em',
               textTransform: 'uppercase',
               color: '#6B7280',
               margin: '0',
@@ -784,18 +789,21 @@ export default function LandingPage() {
             </p>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
+              fontSize: '12px',
               fontWeight: 600,
               color: '#0E1A2B',
               margin: '0',
             }}>
               MANAGEABLE
             </p>
+
+            {/* Row 3 */}
+            <p style={{ margin: '0' }}></p>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '10px',
+              fontSize: '9px',
               fontWeight: 700,
-              letterSpacing: '0.12em',
+              letterSpacing: '0.15em',
               textTransform: 'uppercase',
               color: '#6B7280',
               margin: '0',
@@ -804,18 +812,21 @@ export default function LandingPage() {
             </p>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
+              fontSize: '12px',
               fontWeight: 600,
               color: '#0E1A2B',
               margin: '0',
             }}>
               STRONG
             </p>
+
+            {/* Row 4 */}
+            <p style={{ margin: '0' }}></p>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '10px',
+              fontSize: '9px',
               fontWeight: 700,
-              letterSpacing: '0.12em',
+              letterSpacing: '0.15em',
               textTransform: 'uppercase',
               color: '#6B7280',
               margin: '0',
@@ -824,7 +835,7 @@ export default function LandingPage() {
             </p>
             <p style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
+              fontSize: '12px',
               fontWeight: 600,
               color: '#0E1A2B',
               margin: '0',
