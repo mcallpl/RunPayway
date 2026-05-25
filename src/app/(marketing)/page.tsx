@@ -134,12 +134,12 @@ export default function LandingPage() {
 
           /* HERO MOBILE - FINAL POLISH */
           [data-section="hero"] {
-            padding-top: 64px !important;
-            padding-bottom: 72px !important;
+            padding-top: 56px !important;
+            padding-bottom: 64px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
             grid-template-columns: 1fr !important;
-            gap: 48px !important;
+            gap: 40px !important;
           }
 
           [data-section="hero"] h1 {
@@ -226,8 +226,8 @@ export default function LandingPage() {
 
           /* COMMON CONDITIONS MOBILE */
           [data-section="conditions"] {
-            padding-top: 120px !important;
-            padding-bottom: 120px !important;
+            padding-top: 100px !important;
+            padding-bottom: 100px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
             border-top: 1px solid #E5E7EB !important;
@@ -253,8 +253,8 @@ export default function LandingPage() {
 
           /* TRUST STRIP MOBILE */
           [data-section="trust"] {
-            padding-top: 80px !important;
-            padding-bottom: 80px !important;
+            padding-top: 60px !important;
+            padding-bottom: 60px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
           }
@@ -278,8 +278,8 @@ export default function LandingPage() {
 
           /* MEMETIC TRUTH MOBILE */
           [data-section="memetic"] {
-            padding-top: 100px !important;
-            padding-bottom: 100px !important;
+            padding-top: 80px !important;
+            padding-bottom: 80px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
           }
@@ -297,12 +297,12 @@ export default function LandingPage() {
 
           /* MODERN INCOME MOBILE */
           [data-section="modern"] {
-            padding-top: 100px !important;
-            padding-bottom: 100px !important;
+            padding-top: 80px !important;
+            padding-bottom: 80px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
             grid-template-columns: 1fr !important;
-            gap: 48px !important;
+            gap: 40px !important;
           }
 
           [data-section="modern"] h3 {
@@ -335,8 +335,8 @@ export default function LandingPage() {
 
           /* EVALUATES MOBILE */
           [data-section="evaluates"] {
-            padding-top: 100px !important;
-            padding-bottom: 100px !important;
+            padding-top: 80px !important;
+            padding-bottom: 80px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
           }
@@ -366,8 +366,8 @@ export default function LandingPage() {
 
           /* PROFESSIONAL MOBILE */
           [data-section="professional"] {
-            padding-top: 100px !important;
-            padding-bottom: 100px !important;
+            padding-top: 80px !important;
+            padding-bottom: 80px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
           }
@@ -383,8 +383,8 @@ export default function LandingPage() {
 
           /* FRAMEWORK MOBILE */
           [data-section="framework"] {
-            padding-top: 100px !important;
-            padding-bottom: 100px !important;
+            padding-top: 80px !important;
+            padding-bottom: 80px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
           }
@@ -408,16 +408,16 @@ export default function LandingPage() {
 
           /* NOTICE MOBILE */
           [data-section="notice"] {
-            padding-top: 100px !important;
-            padding-bottom: 100px !important;
+            padding-top: 80px !important;
+            padding-bottom: 80px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
           }
 
           /* FINAL CTA MOBILE */
           [data-section="final-cta"] {
-            padding-top: 100px !important;
-            padding-bottom: 100px !important;
+            padding-top: 80px !important;
+            padding-bottom: 80px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
           }
@@ -438,7 +438,7 @@ export default function LandingPage() {
 
           /* FOOTER MOBILE */
           footer {
-            padding-top: 120px !important;
+            padding-top: 100px !important;
             padding-bottom: 80px !important;
             padding-left: 20px !important;
             padding-right: 20px !important;
@@ -446,13 +446,13 @@ export default function LandingPage() {
 
           footer > div:first-child {
             grid-template-columns: 1fr !important;
-            gap: 48px !important;
+            gap: 40px !important;
             margin-bottom: 80px !important;
           }
 
           footer [data-links] {
             grid-template-columns: 1fr !important;
-            gap: 48px !important;
+            gap: 40px !important;
           }
 
           footer [data-link-section] {
@@ -554,13 +554,13 @@ export default function LandingPage() {
       <section data-section="hero" style={{
         maxWidth: '1320px',
         margin: '0 auto',
-        paddingTop: '160px',
-        paddingBottom: '120px',
+        paddingTop: '120px',
+        paddingBottom: '100px',
         paddingLeft: '48px',
         paddingRight: '48px',
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gap: '120px',
+        gap: '100px',
         alignItems: 'flex-start',
       }}>
         {/* LEFT COLUMN */}
@@ -661,10 +661,10 @@ export default function LandingPage() {
         <div style={{
           backgroundColor: 'transparent',
           border: 'none',
-          paddingTop: '80px',
-          paddingLeft: '80px',
-          paddingRight: '80px',
-          paddingBottom: '80px',
+          paddingTop: '64px',
+          paddingLeft: '64px',
+          paddingRight: '64px',
+          paddingBottom: '64px',
         }}>
           {/* Profile Title */}
           <p style={{
@@ -695,7 +695,7 @@ export default function LandingPage() {
             </p>
 
             <div data-score style={{
-              fontSize: '80px',
+              fontSize: '72px',
               lineHeight: '1',
               fontWeight: 700,
               color: '#0E1A2B',
@@ -733,11 +733,11 @@ export default function LandingPage() {
           {/* Condition Grid */}
           <div data-condition-grid style={{
             borderTop: '1px solid #E5E7EB',
-            paddingTop: '40px',
+            paddingTop: '32px',
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
-            gap: '40px 56px',
-            marginBottom: '40px',
+            gap: '32px 48px',
+            marginBottom: '32px',
           }}>
             <div>
               <p style={{
@@ -832,13 +832,13 @@ export default function LandingPage() {
           {/* Model Info */}
           <div data-model-info style={{
             borderTop: '1px solid #E5E7EB',
-            paddingTop: '40px',
+            paddingTop: '32px',
             display: 'grid',
             gridTemplateColumns: '1fr 1fr 1fr',
-            gap: '40px',
+            gap: '32px',
             textAlign: 'center',
           }}>
-            <div style={{ borderRight: '1px solid #E5E7EB', paddingRight: '20px' }}>
+            <div style={{ borderRight: '1px solid #E5E7EB', paddingRight: '16px' }}>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
                 fontSize: '11px',
@@ -860,7 +860,7 @@ export default function LandingPage() {
                 RP-2.0
               </p>
             </div>
-            <div style={{ borderRight: '1px solid #E5E7EB', paddingRight: '20px', paddingLeft: '20px' }}>
+            <div style={{ borderRight: '1px solid #E5E7EB', paddingRight: '16px', paddingLeft: '16px' }}>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
                 fontSize: '11px',
@@ -883,7 +883,7 @@ export default function LandingPage() {
                 Same structure produces same result
               </p>
             </div>
-            <div style={{ paddingLeft: '20px' }}>
+            <div style={{ paddingLeft: '16px' }}>
               <p style={{
                 fontFamily: 'Inter, -apple-system, sans-serif',
                 fontSize: '11px',
@@ -913,8 +913,8 @@ export default function LandingPage() {
       <section data-section="conditions" style={{
         maxWidth: '1320px',
         margin: '0 auto',
-        paddingTop: '160px',
-        paddingBottom: '160px',
+        paddingTop: '120px',
+        paddingBottom: '120px',
         paddingLeft: '48px',
         paddingRight: '48px',
         borderTop: '1px solid #E5E7EB',
@@ -997,8 +997,8 @@ export default function LandingPage() {
         backgroundColor: '#FFFFFF',
         borderTop: '1px solid #E5E7EB',
         borderBottom: '1px solid #E5E7EB',
-        paddingTop: '80px',
-        paddingBottom: '80px',
+        paddingTop: '60px',
+        paddingBottom: '60px',
       }}>
         <div style={{
           maxWidth: '1280px',
@@ -1007,7 +1007,7 @@ export default function LandingPage() {
           paddingRight: '48px',
           display: 'grid',
           gridTemplateColumns: '1fr 1fr 1fr',
-          gap: '80px',
+          gap: '60px',
         }}>
           <div style={{
             display: 'flex',
@@ -1023,7 +1023,7 @@ export default function LandingPage() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#D1D5DB',
+              color: '#9CA3AF',
             }}>
               <BlueprintIcon />
             </div>
@@ -1056,7 +1056,7 @@ export default function LandingPage() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#D1D5DB',
+              color: '#9CA3AF',
             }}>
               <TargetIcon />
             </div>
@@ -1087,7 +1087,7 @@ export default function LandingPage() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#D1D5DB',
+              color: '#9CA3AF',
             }}>
               <ShieldIcon />
             </div>
@@ -1111,8 +1111,8 @@ export default function LandingPage() {
       <section data-section="memetic" style={{
         maxWidth: '1280px',
         margin: '0 auto',
-        paddingTop: '200px',
-        paddingBottom: '200px',
+        paddingTop: '160px',
+        paddingBottom: '160px',
         paddingLeft: '48px',
         paddingRight: '48px',
       }}>
@@ -1151,13 +1151,13 @@ export default function LandingPage() {
       <section data-section="modern" style={{
         maxWidth: '1280px',
         margin: '0 auto',
-        paddingTop: '160px',
-        paddingBottom: '160px',
+        paddingTop: '120px',
+        paddingBottom: '120px',
         paddingLeft: '48px',
         paddingRight: '48px',
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        gap: '120px',
+        gap: '100px',
         alignItems: 'flex-start',
       }}>
         {/* LEFT */}
@@ -1212,7 +1212,7 @@ export default function LandingPage() {
           <div data-comparison style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
-            gap: '64px',
+            gap: '56px',
           }}>
             {/* Profile A */}
             <div data-profile style={{
@@ -1359,8 +1359,8 @@ export default function LandingPage() {
         backgroundColor: '#FFFFFF',
         borderTop: '1px solid #E5E7EB',
         borderBottom: '1px solid #E5E7EB',
-        paddingTop: '200px',
-        paddingBottom: '200px',
+        paddingTop: '160px',
+        paddingBottom: '160px',
       }}>
         <div style={{
           maxWidth: '1280px',
@@ -1369,7 +1369,7 @@ export default function LandingPage() {
           paddingRight: '48px',
           display: 'grid',
           gridTemplateColumns: '1fr 1fr 1fr',
-          gap: '100px',
+          gap: '80px',
         }}>
           {/* What RunPayway Evaluates */}
           <div style={{
@@ -1438,8 +1438,8 @@ export default function LandingPage() {
 
           {/* Free Income Stability Insight */}
           <div style={{
-            paddingLeft: '40px',
-            paddingRight: '40px',
+            paddingLeft: '32px',
+            paddingRight: '32px',
             borderRight: '1px solid #E5E7EB',
             display: 'flex',
             flexDirection: 'column',
@@ -1602,8 +1602,8 @@ export default function LandingPage() {
       {/* PROFESSIONAL REVIEW ENVIRONMENTS */}
       <section data-section="professional" style={{
         backgroundColor: '#FFFFFF',
-        paddingTop: '200px',
-        paddingBottom: '200px',
+        paddingTop: '160px',
+        paddingBottom: '160px',
         borderTop: '1px solid #E5E7EB',
         borderBottom: '1px solid #E5E7EB',
       }}>
@@ -1681,8 +1681,8 @@ export default function LandingPage() {
         backgroundColor: '#FFFFFF',
         borderTop: '1px solid #E5E7EB',
         borderBottom: '1px solid #E5E7EB',
-        paddingTop: '200px',
-        paddingBottom: '200px',
+        paddingTop: '160px',
+        paddingBottom: '160px',
       }}>
         <div style={{
           maxWidth: '1280px',
@@ -1809,8 +1809,8 @@ export default function LandingPage() {
       <section data-section="notice" style={{
         maxWidth: '1280px',
         margin: '0 auto',
-        paddingTop: '160px',
-        paddingBottom: '160px',
+        paddingTop: '120px',
+        paddingBottom: '120px',
         paddingLeft: '48px',
         paddingRight: '48px',
       }}>
@@ -1853,8 +1853,8 @@ export default function LandingPage() {
       <section data-section="final-cta" style={{
         maxWidth: '1280px',
         margin: '0 auto',
-        paddingTop: '200px',
-        paddingBottom: '200px',
+        paddingTop: '160px',
+        paddingBottom: '160px',
         paddingLeft: '48px',
         paddingRight: '48px',
         textAlign: 'center',
@@ -1921,7 +1921,7 @@ export default function LandingPage() {
       <footer style={{
         backgroundColor: '#FFFFFF',
         borderTop: '1px solid #E5E7EB',
-        paddingTop: '140px',
+        paddingTop: '120px',
         paddingBottom: '80px',
         paddingLeft: '48px',
         paddingRight: '48px',
@@ -1934,7 +1934,7 @@ export default function LandingPage() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'auto 1fr',
-            gap: '180px',
+            gap: '160px',
             marginBottom: '80px',
             alignItems: 'flex-start',
           }}>
@@ -1962,7 +1962,7 @@ export default function LandingPage() {
             <div data-links style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '100px',
+              gap: '80px',
             }}>
               <div data-link-section style={{
                 paddingRight: '32px',
