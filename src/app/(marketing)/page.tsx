@@ -104,6 +104,356 @@ export default function LandingPage() {
 
   return (
     <div style={{ width: '100%', backgroundColor: '#FFFFFF' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          * {
+            box-sizing: border-box;
+          }
+
+          header {
+            height: 80px !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+          }
+
+          header img {
+            height: 48px !important;
+          }
+
+          nav {
+            display: none !important;
+          }
+
+          header button {
+            height: 48px !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+            font-size: 11px !important;
+            gap: 6px !important;
+          }
+
+          /* HERO MOBILE */
+          [data-section="hero"] {
+            padding-top: 80px !important;
+            padding-bottom: 80px !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+            grid-template-columns: 1fr !important;
+            gap: 60px !important;
+          }
+
+          [data-section="hero"] h1 {
+            font-size: 48px !important;
+            line-height: 56px !important;
+            margin-bottom: 16px !important;
+            max-width: 100% !important;
+          }
+
+          [data-section="hero"] > div:first-child p:first-of-type {
+            font-size: 16px !important;
+            margin-bottom: 24px !important;
+          }
+
+          [data-section="hero"] [data-buttons] {
+            flex-direction: column !important;
+            gap: 12px !important;
+            margin-bottom: 16px !important;
+          }
+
+          [data-section="hero"] button {
+            height: 52px !important;
+            width: 100% !important;
+            padding-left: 24px !important;
+            padding-right: 24px !important;
+            font-size: 12px !important;
+          }
+
+          [data-section="hero"] [data-support-line] {
+            font-size: 12px !important;
+          }
+
+          [data-section="hero"] > div:last-child {
+            padding-top: 56px !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+            padding-bottom: 56px !important;
+          }
+
+          [data-section="hero"] > div:last-child p:first-child {
+            margin-bottom: 40px !important;
+          }
+
+          [data-section="hero"] [data-score] {
+            font-size: 64px !important;
+            margin-bottom: 16px !important;
+          }
+
+          [data-section="hero"] [data-established] {
+            font-size: 12px !important;
+            margin-bottom: 12px !important;
+          }
+
+          [data-section="hero"] [data-description] {
+            font-size: 13px !important;
+            margin-bottom: 24px !important;
+          }
+
+          [data-section="hero"] [data-condition-grid] {
+            padding-top: 24px !important;
+            gap: 24px 32px !important;
+            margin-bottom: 24px !important;
+          }
+
+          [data-section="hero"] [data-model-info] {
+            padding-top: 24px !important;
+            gap: 24px !important;
+            grid-template-columns: 1fr !important;
+          }
+
+          [data-section="hero"] [data-model-info] > div {
+            border-right: none !important;
+            border-bottom: 1px solid #E5E7EB !important;
+            padding-right: 0 !important;
+            padding-left: 0 !important;
+            padding-bottom: 24px !important;
+            text-align: left !important;
+          }
+
+          [data-section="hero"] [data-model-info] > div:last-child {
+            border-bottom: none !important;
+          }
+
+          /* COMMON CONDITIONS MOBILE */
+          [data-section="conditions"] {
+            padding-top: 120px !important;
+            padding-bottom: 120px !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+          }
+
+          [data-section="conditions"] p:first-child {
+            font-size: 10px !important;
+            margin-bottom: 40px !important;
+          }
+
+          [data-section="conditions"] [data-condition-item] {
+            gap: 16px !important;
+            padding-top: 24px !important;
+            padding-bottom: 24px !important;
+          }
+
+          [data-section="conditions"] h3 {
+            font-size: 36px !important;
+            line-height: 44px !important;
+            margin-top: 48px !important;
+          }
+
+          /* TRUST STRIP MOBILE */
+          [data-section="trust"] {
+            padding-top: 60px !important;
+            padding-bottom: 60px !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+          }
+
+          [data-section="trust"] > div {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+          }
+
+          [data-section="trust"] > div > div {
+            border-right: none !important;
+            border-bottom: 1px solid #E5E7EB !important;
+            padding-right: 0 !important;
+            padding-bottom: 40px !important;
+          }
+
+          [data-section="trust"] > div > div:last-child {
+            border-bottom: none !important;
+            padding-bottom: 0 !important;
+          }
+
+          /* MEMETIC TRUTH MOBILE */
+          [data-section="memetic"] {
+            padding-top: 120px !important;
+            padding-bottom: 120px !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+          }
+
+          [data-section="memetic"] h2 {
+            font-size: 40px !important;
+            line-height: 48px !important;
+          }
+
+          [data-section="memetic"] p {
+            font-size: 15px !important;
+          }
+
+          /* MODERN INCOME MOBILE */
+          [data-section="modern"] {
+            padding-top: 120px !important;
+            padding-bottom: 120px !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+            grid-template-columns: 1fr !important;
+            gap: 60px !important;
+          }
+
+          [data-section="modern"] h3 {
+            font-size: 36px !important;
+            line-height: 44px !important;
+          }
+
+          [data-section="modern"] [data-comparison] {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+          }
+
+          [data-section="modern"] [data-profile] {
+            padding-right: 0 !important;
+            border-right: none !important;
+            border-bottom: 1px solid #E5E7EB !important;
+            padding-bottom: 40px !important;
+          }
+
+          [data-section="modern"] [data-profile]:last-child {
+            border-bottom: none !important;
+            padding-bottom: 0 !important;
+          }
+
+          [data-section="modern"] [data-compare-text] {
+            padding-top: 40px !important;
+            border-top: 1px solid #E5E7EB !important;
+          }
+
+          /* EVALUATES MOBILE */
+          [data-section="evaluates"] {
+            padding-top: 120px !important;
+            padding-bottom: 120px !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+          }
+
+          [data-section="evaluates"] > div {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+          }
+
+          [data-section="evaluates"] > div > div {
+            padding-right: 0 !important;
+            border-right: none !important;
+            border-bottom: 1px solid #E5E7EB !important;
+            padding-bottom: 40px !important;
+          }
+
+          [data-section="evaluates"] > div > div:last-child {
+            border-bottom: none !important;
+            padding-bottom: 0 !important;
+          }
+
+          [data-section="evaluates"] button {
+            width: 100% !important;
+            padding-left: 24px !important;
+            padding-right: 24px !important;
+          }
+
+          /* PROFESSIONAL MOBILE */
+          [data-section="professional"] {
+            padding-top: 120px !important;
+            padding-bottom: 120px !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+          }
+
+          [data-section="professional"] > div {
+            grid-template-columns: 1fr !important;
+            gap: 0 !important;
+          }
+
+          [data-section="professional"] button {
+            width: 100% !important;
+          }
+
+          /* FRAMEWORK MOBILE */
+          [data-section="framework"] {
+            padding-top: 120px !important;
+            padding-bottom: 120px !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+          }
+
+          [data-section="framework"] [data-framework-grid] {
+            grid-template-columns: 1fr !important;
+            gap: 32px !important;
+            margin-bottom: 60px !important;
+          }
+
+          [data-section="framework"] [data-framework-grid] > div {
+            padding-right: 0 !important;
+            border-right: none !important;
+            padding-left: 0 !important;
+          }
+
+          [data-section="framework"] h3 {
+            font-size: 32px !important;
+            line-height: 40px !important;
+          }
+
+          /* NOTICE MOBILE */
+          [data-section="notice"] {
+            padding-top: 120px !important;
+            padding-bottom: 120px !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+          }
+
+          /* FINAL CTA MOBILE */
+          [data-section="final-cta"] {
+            padding-top: 120px !important;
+            padding-bottom: 120px !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+          }
+
+          [data-section="final-cta"] h2 {
+            font-size: 40px !important;
+            line-height: 48px !important;
+          }
+
+          [data-section="final-cta"] p {
+            font-size: 15px !important;
+          }
+
+          [data-section="final-cta"] button {
+            width: 100% !important;
+          }
+
+          /* FOOTER MOBILE */
+          footer {
+            padding-top: 120px !important;
+            padding-bottom: 60px !important;
+            padding-left: 20px !important;
+            padding-right: 20px !important;
+          }
+
+          footer > div:first-child {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+          }
+
+          footer [data-links] {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+          }
+
+          footer [data-link-section] {
+            padding-right: 0 !important;
+            border-right: none !important;
+            padding-left: 0 !important;
+          }
+        }
+      `}</style>
       {/* HEADER */}
       <header style={{
         position: 'sticky',
@@ -188,7 +538,7 @@ export default function LandingPage() {
       </header>
 
       {/* HERO SECTION */}
-      <section style={{
+      <section data-section="hero" style={{
         maxWidth: '1280px',
         margin: '0 auto',
         paddingTop: '160px',
@@ -230,7 +580,7 @@ export default function LandingPage() {
           </p>
 
           {/* CTA Row */}
-          <div style={{
+          <div data-buttons style={{
             display: 'flex',
             gap: '16px',
             alignItems: 'center',
@@ -283,7 +633,7 @@ export default function LandingPage() {
           </div>
 
           {/* Supporting Line */}
-          <p style={{
+          <p data-support-line style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
             fontSize: '14px',
             fontWeight: 400,
@@ -331,7 +681,7 @@ export default function LandingPage() {
               INCOME STABILITY SCORE™
             </p>
 
-            <div style={{
+            <div data-score style={{
               fontSize: '80px',
               lineHeight: '1',
               fontWeight: 700,
@@ -343,7 +693,7 @@ export default function LandingPage() {
               72
             </div>
 
-            <p style={{
+            <p data-established style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
               fontSize: '13px',
               fontWeight: 700,
@@ -355,7 +705,7 @@ export default function LandingPage() {
               ESTABLISHED STABILITY
             </p>
 
-            <p style={{
+            <p data-description style={{
               fontFamily: 'Inter, -apple-system, sans-serif',
               fontSize: '14px',
               lineHeight: '26px',
@@ -368,7 +718,7 @@ export default function LandingPage() {
           </div>
 
           {/* Condition Grid */}
-          <div style={{
+          <div data-condition-grid style={{
             borderTop: '1px solid #E5E7EB',
             paddingTop: '32px',
             display: 'grid',
@@ -467,7 +817,7 @@ export default function LandingPage() {
           </div>
 
           {/* Model Info */}
-          <div style={{
+          <div data-model-info style={{
             borderTop: '1px solid #E5E7EB',
             paddingTop: '32px',
             display: 'grid',
@@ -546,7 +896,7 @@ export default function LandingPage() {
       </section>
 
       {/* COMMON INCOME CONDITIONS */}
-      <section style={{
+      <section data-section="conditions" style={{
         maxWidth: '1280px',
         margin: '0 auto',
         paddingTop: '180px',
@@ -580,7 +930,7 @@ export default function LandingPage() {
             { condition: 'future income becomes harder to predict with confidence', Icon: ChartIcon },
             { condition: 'limited backup income exists if current income changes unexpectedly', Icon: LockIcon },
           ].map((item, index) => (
-            <div key={index} style={{
+            <div key={index} data-condition-item style={{
               display: 'flex',
               gap: '24px',
               paddingTop: index === 0 ? '0' : '32px',
@@ -629,7 +979,7 @@ export default function LandingPage() {
       </section>
 
       {/* TRUST STRIP */}
-      <section style={{
+      <section data-section="trust" style={{
         backgroundColor: '#FFFFFF',
         borderTop: '1px solid #E5E7EB',
         borderBottom: '1px solid #E5E7EB',
@@ -744,7 +1094,7 @@ export default function LandingPage() {
       </section>
 
       {/* MEMETIC TRUTH SECTION */}
-      <section style={{
+      <section data-section="memetic" style={{
         maxWidth: '1280px',
         margin: '0 auto',
         paddingTop: '240px',
@@ -784,7 +1134,7 @@ export default function LandingPage() {
       </section>
 
       {/* MODERN INCOME CHANGED SECTION */}
-      <section style={{
+      <section data-section="modern" style={{
         maxWidth: '1280px',
         margin: '0 auto',
         paddingTop: '160px',
@@ -845,13 +1195,13 @@ export default function LandingPage() {
             SAME INCOME. DIFFERENT STABILITY.
           </p>
 
-          <div style={{
+          <div data-comparison style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
             gap: '56px',
           }}>
             {/* Profile A */}
-            <div style={{
+            <div data-profile style={{
               paddingRight: '32px',
               borderRight: '1px solid #E5E7EB',
             }}>
@@ -913,7 +1263,7 @@ export default function LandingPage() {
             </div>
 
             {/* Profile B */}
-            <div style={{
+            <div data-profile style={{
               paddingLeft: '32px',
             }}>
               <p style={{
@@ -974,7 +1324,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <p style={{
+          <p data-compare-text style={{
             fontFamily: 'Inter, -apple-system, sans-serif',
             fontSize: '16px',
             lineHeight: '28px',
@@ -990,7 +1340,7 @@ export default function LandingPage() {
       </section>
 
       {/* WHAT RUNPAYWAY EVALUATES - THREE COLUMN WITH ICONS */}
-      <section style={{
+      <section data-section="evaluates" style={{
         backgroundColor: '#FFFFFF',
         borderTop: '1px solid #E5E7EB',
         borderBottom: '1px solid #E5E7EB',
@@ -1235,7 +1585,7 @@ export default function LandingPage() {
       </section>
 
       {/* PROFESSIONAL REVIEW ENVIRONMENTS */}
-      <section style={{
+      <section data-section="professional" style={{
         backgroundColor: '#FFFFFF',
         paddingTop: '160px',
         paddingBottom: '160px',
@@ -1312,7 +1662,7 @@ export default function LandingPage() {
       </section>
 
       {/* FRAMEWORK STANDARD */}
-      <section style={{
+      <section data-section="framework" style={{
         backgroundColor: '#FFFFFF',
         borderTop: '1px solid #E5E7EB',
         borderBottom: '1px solid #E5E7EB',
@@ -1338,7 +1688,7 @@ export default function LandingPage() {
             FRAMEWORK STANDARD
           </p>
 
-          <div style={{
+          <div data-framework-grid style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr 1fr',
             gap: '56px',
@@ -1441,7 +1791,7 @@ export default function LandingPage() {
       </section>
 
       {/* STRUCTURAL EVALUATION NOTICE */}
-      <section style={{
+      <section data-section="notice" style={{
         maxWidth: '1280px',
         margin: '0 auto',
         paddingTop: '180px',
@@ -1485,7 +1835,7 @@ export default function LandingPage() {
       </section>
 
       {/* FINAL CTA */}
-      <section style={{
+      <section data-section="final-cta" style={{
         maxWidth: '1280px',
         margin: '0 auto',
         paddingTop: '240px',
@@ -1594,12 +1944,12 @@ export default function LandingPage() {
             </div>
 
             {/* Links */}
-            <div style={{
+            <div data-links style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(4, 1fr)',
               gap: '80px',
             }}>
-              <div style={{
+              <div data-link-section style={{
                 paddingRight: '32px',
                 borderRight: '1px solid #E5E7EB',
               }}>
@@ -1628,7 +1978,7 @@ export default function LandingPage() {
                   <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Verification Environments</a></li>
                 </ul>
               </div>
-              <div style={{
+              <div data-link-section style={{
                 paddingLeft: '32px',
                 paddingRight: '32px',
                 borderRight: '1px solid #E5E7EB',
