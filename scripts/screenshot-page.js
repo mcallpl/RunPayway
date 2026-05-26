@@ -4,6 +4,25 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
 
+async function detectPort() {
+  const http = require('http');
+  for (let port of [3000, 3001, 3002]) {
+    try {
+      await new Promise((resolve, reject) => {
+        const req = http.get(`http://localhost:${port}/`, (res) => {
+          resolve(port);
+        });
+        req.on('error', reject);
+        req.setTimeout(500);
+      });
+      return port;
+    } catch {
+      continue;
+    }
+  }
+  return 3000; // fallback
+}
+
 async function screenshotPage(route) {
   if (!route) {
     console.error('Usage: node scripts/screenshot-page.js <route>');
@@ -14,12 +33,13 @@ async function screenshotPage(route) {
   const browser = await puppeteer.launch({ headless: 'new' });
 
   try {
+    const port = await detectPort();
     const screenshotDir = '/tmp/runpayway-screenshots';
     if (!fs.existsSync(screenshotDir)) {
       fs.mkdirSync(screenshotDir, { recursive: true });
     }
 
-    const url = `http://localhost:3000${route}`;
+    const url = `http://localhost:${port}${route}`;
     const date = new Date().toISOString().split('T')[0];
     const routeName = route === '/' ? 'home' : route.replace(/\//g, '-').substring(1);
 

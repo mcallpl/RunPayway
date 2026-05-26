@@ -2,6 +2,25 @@
 
 const puppeteer = require('puppeteer');
 
+async function detectPort() {
+  const http = require('http');
+  for (let port of [3000, 3001, 3002]) {
+    try {
+      await new Promise((resolve, reject) => {
+        const req = http.get(`http://localhost:${port}/`, (res) => {
+          resolve(port);
+        });
+        req.on('error', reject);
+        req.setTimeout(500);
+      });
+      return port;
+    } catch {
+      continue;
+    }
+  }
+  return 3000; // fallback
+}
+
 async function checkRoute(route) {
   if (!route) {
     console.error('Usage: node scripts/check-route.js <route>');
@@ -12,10 +31,11 @@ async function checkRoute(route) {
   const browser = await puppeteer.launch({ headless: 'new' });
 
   try {
+    const port = await detectPort();
     const page = await browser.newPage();
     await page.setViewport({ width: 1200, height: 800 });
 
-    const url = `http://localhost:3000${route}`;
+    const url = `http://localhost:${port}${route}`;
     console.log(`\n→ Checking: ${url}`);
 
     const response = await page.goto(url, { waitUntil: 'networkidle2', timeout: 10000 });
