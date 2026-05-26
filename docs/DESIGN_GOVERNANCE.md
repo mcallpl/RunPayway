@@ -32,58 +32,99 @@ Pages don't make design decisions—they implement specifications.
 
 ---
 
-## AUTHORITY STRUCTURE
+## GOVERNANCE AUTHORITY HIERARCHY
 
-### Design System (Authoritative)
+Governance documents establish a three-tier authority structure. When documents appear to conflict, follow the highest authority level first.
 
-`/docs/DESIGN_SYSTEM.md` is the source of truth.
+### PRIMARY AUTHORITIES (Immutable Visual System)
 
-- Locked color palette (5 colors)
-- Locked spacing tokens (7 sizes)
-- Locked typography scale (6 sizes)
-- Locked component system (6 primitives)
-- Locked motion rules (3 timings)
-- Locked layout widths (3 sizes)
+**Authority Level 1:**
+- `/docs/DESIGN_SYSTEM.md` — Source of truth for visual system
+- `/docs/DESIGN_GOVERNANCE.md` — Enforcement and anti-pattern rules
 
-**NO EXCEPTIONS.**
+**Controls:**
+- Color palette (5 locked colors)
+- Spacing tokens (7 sizes)
+- Typography scale (6 sizes)
+- Component system (6 reusable primitives)
+- Motion timings (3 standard durations)
+- Layout widths (3 standard sizes)
+- Anti-patterns (forbidden visual approaches)
+- Grid system and responsive breakpoints
+
+**Enforcement:** All pages use only components from `/components/system/` and tokens from `designTokens.ts`. Visual system violations block deployment.
+
+### SECONDARY AUTHORITIES (Strategic Guidance)
+
+**Authority Level 2:**
+- `/docs/PAGE_BLUEPRINTS.md` — Page archetypes and decision-state guidance
+- `/docs/CONTENT_GOVERNANCE.md` — Tone philosophy and copy standards
+- `/docs/NAVIGATION_GOVERNANCE.md` — Header/footer architecture
+- `/docs/SEMANTIC_ARCHITECTURE.md` — Entity hierarchy and terminology
+
+**Controls:**
+- Page strategy and structure
+- Content tone and vocabulary
+- Navigation consistency
+- Semantic authority and internal linking
+- Entity relationships
+
+**Enforcement:** Pages must match approved blueprints, use canonical terminology, follow navigation patterns, and maintain semantic clarity. Secondary authority violations may block deployment depending on severity.
+
+### OPERATIONAL TOOLS (Verification & Compliance)
+
+**Authority Level 3:**
+- `/docs/PRE_BUILD_CHECKLIST.md` — Mandatory page pre-build checklist
+- `/scripts/*` — Verification and deployment scripts
+- `/visual-baselines/*` — Baseline screenshots for regression testing
+
+**Controls:**
+- Build readiness verification
+- Page compliance confirmation
+- Visual regression detection
+- Route health checks
+
+**Enforcement:** All scripts must pass before deployment. Verification tools are gates, not suggestions.
+
+### Conflict Resolution Rule
+
+When governance documents appear to offer different guidance:
+1. Check PRIMARY authorities first (visual system rules)
+2. If conflict is unresolved, check SECONDARY authorities (strategy/tone)
+3. Use OPERATIONAL tools to verify compliance
+4. If still unclear, escalate to governance review
+
+---
+
+## INSTITUTIONAL COMPONENTS
 
 ### Reusable Components (`/components/system/`)
 
-All UI elements come from this directory.
+All UI elements come from this directory:
 
-- SectionContainer
-- SectionLabel
-- PageHero
-- InstitutionalDivider
-- PrimaryButton
-- TextBlock
+- **SectionContainer** — Manages section backgrounds, padding, max-width
+- **SectionLabel** — Uppercase section identifier
+- **PageHero** — Complete hero sections
+- **InstitutionalDivider** — Structural 1px dividers
+- **PrimaryButton** — Navy button with purple hover
+- **TextBlock** — Body text with type/color options
 
-**Pages may NOT:**
-
-- Create custom button styles
-- Invent dividers
-- Build alternate layouts
-- Use custom spacing
-- Define new typography
-- Mix in custom colors
+**Component Usage Rule:** Pages should compose pages from system components. Custom component creation requires design governance approval.
 
 ### Design Tokens (`/components/system/designTokens.ts`)
 
-All tokens imported from here.
+All design values are imported from this single source:
 
-- COLORS
-- SPACING
-- TYPOGRAPHY
-- TRANSITIONS
-- BREAKPOINTS
-- LAYOUT
+```typescript
+export const COLORS = { ... }    // Color palette
+export const SPACING = { ... }   // Spacing scale
+export const TYPOGRAPHY = { ... } // Font sizes & weights
+export const TRANSITIONS = { ... } // Timing values
+export const BREAKPOINTS = { ... } // Responsive widths
+export const LAYOUT = { ... }    // Max-widths and grids
+```
 
-**Pages may NOT:**
-
-- Define colors inline
-- Use hardcoded px values
-- Create custom font sizes
-- Invent motion durations
+**Token Usage Rule:** Pages must use tokens, not hardcoded values. This ensures consistency and makes system-wide changes manageable.
 
 ---
 
@@ -383,9 +424,108 @@ Every page is reviewed for:
 
 **RULE:** No verification script may hardcode `localhost:3000`.
 
-**RULE:** If a script hardcodes any port, it blocks deployment.
+**RULE:** All scripts must use automatic port detection (3000 → 3001 → 3002).
 
-**RULE:** All scripts must use port detection or fail with clear error message.
+**RULE:** Scripts must fail with clear error message if dev server not detected.
+
+---
+
+## VISUAL REGRESSION BASELINE GOVERNANCE
+
+Visual baselines are **reference protection**, not absolute immutability.
+
+### What Baselines Protect Against
+
+✓ Accidental spacing drift
+✓ Unintentional typography changes
+✓ Missing or broken sections
+✓ Layout collapse at breakpoints
+✓ Unauthorized component changes
+✓ Visual regression
+
+### What Baselines Allow
+
+✓ Approved refinement (with documentation)
+✓ Intentional tightening (improved hierarchy)
+✓ Design maturity (thoughtful evolution)
+✓ Page improvement (intentional changes)
+✓ System refinement (baseline updates with approval)
+
+### Baseline Change Process
+
+**If baseline screenshot differs from current page:**
+1. Developer identifies the change (accidental or intentional)
+2. If accidental: Revert the change, re-test
+3. If intentional: Document the reason for change
+4. Update baseline with explicit approval
+5. Include change rationale in commit message
+6. Update DESIGN_GOVERNANCE.md if pattern-level change
+
+**Key principle:** Baselines are managed guardians, not frozen monuments. Thoughtful refinement is allowed and encouraged when documented.
+
+---
+
+## PLATFORM ARCHITECTURE FRAMING
+
+RunPayway™ is no longer being treated as a website project.
+
+It is now a **platform architecture project**.
+
+### Strategic Shift
+
+**From:** Individual page design
+**To:** Institutional infrastructure as a system
+
+Future wins will come from:
+
+- **Stronger visual systems** — Consistency increases user trust
+- **Stronger information architecture** — Semantics support decision-making
+- **Stronger governance** — Scales without decay
+- **Stronger component reuse** — Pages compose from proven patterns
+- **Stronger semantic authority** — Owns institutional territory
+- **Stronger consistency signals** — Feels larger than a startup
+
+### Institutional Positioning
+
+RunPayway™ must increasingly feel like:
+
+- A financial verification infrastructure layer
+- A standards framework
+- A structural methodology system
+- An institutional authority
+- A deterministic platform
+
+**Not:**
+- A SaaS consumer app
+- A fintech startup
+- A marketing-first website
+- An AI product (even if it uses AI)
+
+### Design System's Role in Platform Architecture
+
+The design system is not aesthetic preference.
+
+It is **institutional infrastructure**.
+
+It:
+- Signals authority (consistent, professional, restrained)
+- Supports scalability (components + tokens = 100+ pages)
+- Enables semantic clarity (information architecture)
+- Prevents entropy (governance gates)
+- Builds trust (recognizable, institutional, stable)
+
+Each locked color, spacing token, and component rule exists to serve platform architecture, not personal taste.
+
+### Long-Term Value
+
+As RunPayway™ grows to 100+ pages:
+
+- **Consistency increases**, not decreases (system-driven design)
+- **New pages take less time** (composition over invention)
+- **Maintenance is simpler** (single source of truth)
+- **Visual quality is guaranteed** (governance prevents decay)
+- **Institutional authority increases** (coherent, professional aesthetic)
+- **User trust deepens** (recognizable, stable, predictable)
 
 ---
 
@@ -403,26 +543,76 @@ Waivers are rare and documented.
 
 ---
 
-## FINAL RULE
+## DESIGN SYSTEM PHILOSOPHY
 
 **The design system is not:**
 
-- A starting point
-- A suggestion
-- A framework to improve upon
-- A source of inspiration
+- A starting point for variation
+- A suggestion to interpret loosely
+- A framework to improve individually
+- A source of personal design inspiration
 
 **The design system is:**
 
-- The specification
-- The law
-- The institutional standard
-- The authority
+- The institutional specification
+- The reference authority
+- The consistency standard
+- The foundation for platform architecture
 
-Pages implement it. They do not innovate within it.
+### How Pages Use It
+
+Pages **implement** the system. They do not **innovate within** it.
+
+This is not rigidity. This is institutional maturity.
+
+**The system provides:**
+- Clear constraints (colors, spacing, typography)
+- Proven components (reusable, tested)
+- Semantic guidance (content standards, navigation patterns)
+- Governance framework (approval process for changes)
+
+**Within these constraints, pages have significant freedom:**
+- Layout composition (sections can be arranged)
+- Content strategy (page blueprints guide but don't dictate)
+- Information architecture (semantic clarity matters)
+- Copy and tone (content governance guides but allows voice)
+- Visual hierarchy (typography and spacing can be arranged within tokens)
+
+**But pages do NOT have freedom to:**
+- Create custom colors
+- Invent new button styles
+- Use undocumented spacing values
+- Define new typography sizes
+- Ignore anti-patterns
+- Establish alternative systems
+
+### Institutional Maturity
+
+Constraint is not limitation. **Institutional maturity is choosing constraint.**
+
+Mature systems:
+- Have clear rules (not endless options)
+- Use proven patterns (not invented solutions)
+- Build on foundations (not from scratch)
+- Scale predictably (not chaotically)
+- maintain consistency (not visual entropy)
+
+The design system achieves this through strategic constraint.
 
 ---
 
 **Last Updated:** 2026-05-25  
-**Authority:** RunPayway™ Product & Design Leadership  
-**Status:** LOCKED (Changes require institutional approval)
+**Authority:** RunPayway™ Governance  
+**Status:** Active (Refinements require approval; platform architecture-driven)
+
+---
+
+## GOVERNANCE ECOSYSTEM
+
+This document is part of RunPayway™'s institutional governance:
+
+- **PRIMARY:** DESIGN_SYSTEM.md, DESIGN_GOVERNANCE.md (visual + component rules)
+- **SECONDARY:** PAGE_BLUEPRINTS.md, CONTENT_GOVERNANCE.md, NAVIGATION_GOVERNANCE.md, SEMANTIC_ARCHITECTURE.md
+- **OPERATIONAL:** PRE_BUILD_CHECKLIST.md, scripts, visual baselines
+
+**Read in order:** DESIGN_GOVERNANCE.md (this file) → DESIGN_SYSTEM.md → PAGE_BLUEPRINTS.md → others as needed
