@@ -137,6 +137,9 @@ npm run predeploy
 - ✅ No heredoc commands for file creation
 - ✅ Run `npm run predeploy` before every commit
 - ✅ Run `git status` before every push
+- ✅ **All scripts use automatic port detection (3000→3001→3002)**
+- ✅ **No hardcoded `localhost:3000` anywhere**
+- ✅ **Scripts fail with clear error if dev server not running**
 
 ## Examples
 
@@ -159,13 +162,35 @@ npm run predeploy
 5. Before commit: `npm run predeploy`
 6. Commit and push
 
+## Port Detection
+
+All scripts automatically detect the running dev server port:
+
+- First tries **port 3000**
+- If unavailable, tries **port 3001**
+- If unavailable, tries **port 3002**
+- If none available, returns clear error message
+
+**No hardcoding of ports.** This ensures scripts work whether port 3000 is free or occupied.
+
+If you see:
+```
+Error: Could not connect to dev server
+Make sure to run: npm run dev
+```
+
+Then start the dev server:
+```bash
+npm run dev
+```
+
 ## Troubleshooting
+
+### Scripts fail with "Could not connect to dev server"
+Dev server not running. Start with: `npm run dev`
 
 ### Scripts fail with "Cannot find module 'puppeteer'"
 Ensure puppeteer is installed: `npm install`
-
-### Verification fails with "Cannot connect to localhost:3000"
-Dev server not running. Start with: `npm run dev`
 
 ### Screenshot script times out
 Check that dev server is running and page loads successfully.
@@ -176,6 +201,8 @@ Run it: `npm run cleanup`
 ## Notes
 
 - All scripts are idempotent and safe to run multiple times
+- All scripts auto-detect active dev server port (3000/3001/3002)
 - Screenshots are timestamped (YYYY-MM-DD) and saved to `/tmp/`
 - No authentication required for local scripts
 - Scripts use Puppeteer for accurate page rendering
+- **Never hardcode localhost:3000 in any new script**

@@ -20,7 +20,9 @@ async function detectPort() {
       continue;
     }
   }
-  return 3000; // fallback
+  throw new Error(
+    '\n✗ Dev server not found\n\nMake sure to run: npm run dev\n'
+  );
 }
 
 async function screenshotPage(route) {

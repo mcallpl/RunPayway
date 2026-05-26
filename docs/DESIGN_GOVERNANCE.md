@@ -332,6 +332,44 @@ Every deploy runs:
 - Component audit — Ensures system components only
 - Color audit — Confirms palette compliance
 
+### Verification Script Requirements
+
+All verification scripts (`verify-page.js`, `screenshot-page.js`, `check-route.js`) must:
+
+1. **Auto-detect dev server port** — Never hardcode `localhost:3000`
+   - First check port 3000
+   - If unavailable, check port 3001
+   - If unavailable, check port 3002
+   - If none available, return clear error message
+
+2. **Error messaging** — If dev server not detected:
+   ```
+   Error: Could not connect to dev server
+   Make sure to run: npm run dev
+   ```
+
+3. **Port detection function** — All scripts use `detectPort()`:
+   ```javascript
+   async function detectPort() {
+     const http = require('http');
+     for (let port of [3000, 3001, 3002]) {
+       try {
+         await new Promise((resolve, reject) => {
+           const req = http.get(`http://localhost:${port}/`, (res) => {
+             resolve(port);
+           });
+           req.on('error', reject);
+           req.setTimeout(500);
+         });
+         return port;
+       } catch {
+         continue;
+       }
+     }
+     throw new Error('Dev server not found. Run: npm run dev');
+   }
+   ```
+
 ### Manual Review
 
 Every page is reviewed for:
@@ -340,6 +378,14 @@ Every page is reviewed for:
 - Anti-pattern violations
 - Component consistency
 - Visual integrity
+
+### Script Maintenance Rules
+
+**RULE:** No verification script may hardcode `localhost:3000`.
+
+**RULE:** If a script hardcodes any port, it blocks deployment.
+
+**RULE:** All scripts must use port detection or fail with clear error message.
 
 ---
 
