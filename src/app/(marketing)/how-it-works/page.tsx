@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import MarketingHeader from "@/components/MarketingHeader";
+import MarketingFooter from "@/components/MarketingFooter";
 
 /* ================================================================ */
 /* UTILITIES                                                         */
@@ -462,6 +464,7 @@ function FinalCta() {
 export default function HowItWorksPage() {
   return (
     <div className="overflow-x-hidden">
+      <MarketingHeader />
       <main>
         <HeroSection />
         <WhatTheFrameworkEvaluates />
@@ -473,6 +476,7 @@ export default function HowItWorksPage() {
         <SystemIntegrity />
         <FinalCta />
       </main>
+      <MarketingFooter />
     </div>
   );
 }
