@@ -8,9 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "validate": "tsx tests/engine.test.ts",
-    "verify": "npm run build && node scripts/verify-page.js /how-it-works",
-    "screenshot:how": "node scripts/screenshot-page.js /how-it-works",
-    "predeploy": "node scripts/predeploy-check.js"
+    "verify": "node scripts/verify-page.js",
+    "screenshot": "node scripts/screenshot-page.js",
+    "check:route": "node scripts/check-route.js",
+    "cleanup": "node scripts/cleanup-temp.js",
+    "predeploy": "npm run build && npm run cleanup && npm run verify -- /how-it-works"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.3.2",

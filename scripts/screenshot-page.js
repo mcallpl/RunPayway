@@ -1,11 +1,13 @@
+#!/usr/bin/env node
+
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
 
 async function screenshotPage(route) {
   if (!route) {
-    console.error('Usage: node screenshot-page.js <route>');
-    console.error('Example: node screenshot-page.js /how-it-works');
+    console.error('Usage: node scripts/screenshot-page.js <route>');
+    console.error('Example: node scripts/screenshot-page.js /how-it-works');
     process.exit(1);
   }
 
@@ -18,36 +20,37 @@ async function screenshotPage(route) {
     }
 
     const url = `http://localhost:3000${route}`;
-    const timestamp = new Date().toISOString().split('T')[0];
-    const routeName = route.replace(/\//g, '-').substring(1);
+    const date = new Date().toISOString().split('T')[0];
+    const routeName = route === '/' ? 'home' : route.replace(/\//g, '-').substring(1);
 
-    console.log(`Capturing screenshots for: ${url}`);
+    console.log(`\n→ Capturing screenshots for: ${url}\n`);
 
-    // Desktop screenshot
-    console.log('  → Desktop (1200x800)...');
+    // Desktop
+    console.log('  → Desktop (1200x800)');
     const desktopPage = await browser.newPage();
     await desktopPage.setViewport({ width: 1200, height: 800 });
-    await desktopPage.goto(url, { waitUntil: 'networkidle2' });
-    const desktopPath = path.join(screenshotDir, `${routeName}-desktop-${timestamp}.png`);
+    await desktopPage.goto(url, { waitUntil: 'networkidle2', timeout: 10000 });
+    const desktopPath = path.join(screenshotDir, `${routeName}-desktop-${date}.png`);
     await desktopPage.screenshot({ path: desktopPath, fullPage: true });
     console.log(`     Saved: ${desktopPath}`);
     await desktopPage.close();
 
-    // Mobile screenshot
-    console.log('  → Mobile (375x812)...');
+    // Mobile
+    console.log('  → Mobile (375x812)');
     const mobilePage = await browser.newPage();
     await mobilePage.setViewport({ width: 375, height: 812 });
-    await mobilePage.goto(url, { waitUntil: 'networkidle2' });
-    const mobilePath = path.join(screenshotDir, `${routeName}-mobile-${timestamp}.png`);
+    await mobilePage.goto(url, { waitUntil: 'networkidle2', timeout: 10000 });
+    const mobilePath = path.join(screenshotDir, `${routeName}-mobile-${date}.png`);
     await mobilePage.screenshot({ path: mobilePath, fullPage: true });
     console.log(`     Saved: ${mobilePath}`);
     await mobilePage.close();
 
-    console.log('\n✓ Screenshots captured successfully\n');
+    console.log('\n✓ Screenshots captured\n');
+
     await browser.close();
     process.exit(0);
   } catch (err) {
-    console.error('Screenshot failed:', err.message);
+    console.error(`\n✗ Screenshot failed: ${err.message}\n`);
     await browser.close();
     process.exit(1);
   }

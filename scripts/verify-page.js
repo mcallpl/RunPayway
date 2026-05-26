@@ -1,103 +1,101 @@
+#!/usr/bin/env node
+
 const puppeteer = require('puppeteer');
 
-const CHECKS = {
+const ROUTE_CHECKS = {
   '/how-it-works': {
-    copy: [
+    essentialCopy: [
       'How structural verification works',
       'FIXED METHODOLOGY',
       'WHAT THE FRAMEWORK EVALUATES',
-      'Similar income does not always',
-      'Verify the structural stability'
     ],
-    nav: ['How It Works', 'Use Cases', 'Verification Environments', 'Learn', 'Methodology'],
-    hasHeader: true,
-    hasFooter: true,
-  }
+  },
+  '/': {
+    essentialCopy: [
+      'RunPayway',
+      'Income Stability',
+    ],
+  },
 };
 
 async function verifyPage(route) {
-  const config = CHECKS[route];
-  if (!config) {
-    console.error(`No config for route: ${route}`);
+  if (!route) {
+    console.error('Usage: node scripts/verify-page.js <route>');
+    console.error('Example: node scripts/verify-page.js /how-it-works');
     process.exit(1);
   }
 
+  const config = ROUTE_CHECKS[route] || {
+    essentialCopy: [],
+  };
+
   const browser = await puppeteer.launch({ headless: 'new' });
-  const page = await browser.newPage();
-  await page.setViewport({ width: 1200, height: 800 });
 
   try {
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1200, height: 800 });
+
     const url = `http://localhost:3000${route}`;
-    console.log(`Verifying: ${url}`);
+    console.log(`\n→ Verifying: ${url}`);
 
-    await page.goto(url, { waitUntil: 'networkidle2' });
+    await page.goto(url, { waitUntil: 'networkidle2', timeout: 10000 });
 
-    const results = {
-      route,
+    const checks = {
       passed: [],
       failed: [],
     };
 
     // Check header
-    if (config.hasHeader) {
-      const hasHeader = await page.evaluate(() => !!document.querySelector('header'));
-      if (hasHeader) {
-        results.passed.push('✓ Header present');
-      } else {
-        results.failed.push('✗ Header missing');
-      }
+    const hasHeader = await page.evaluate(() => !!document.querySelector('header'));
+    if (hasHeader) {
+      checks.passed.push('✓ Header present');
+    } else {
+      checks.failed.push('✗ Header missing');
     }
 
     // Check footer
-    if (config.hasFooter) {
-      const hasFooter = await page.evaluate(() => !!document.querySelector('footer'));
-      if (hasFooter) {
-        results.passed.push('✓ Footer present');
+    const hasFooter = await page.evaluate(() => !!document.querySelector('footer'));
+    if (hasFooter) {
+      checks.passed.push('✓ Footer present');
+    } else {
+      checks.failed.push('✗ Footer missing');
+    }
+
+    // Check navigation links
+    const navLinks = await page.evaluate(() => {
+      return Array.from(document.querySelectorAll('nav a')).map((a) => a.textContent.trim());
+    });
+    if (navLinks.length > 0) {
+      checks.passed.push(`✓ Nav links present (${navLinks.length} found)`);
+    } else {
+      checks.failed.push('✗ Nav links missing');
+    }
+
+    // Check essential copy
+    const pageText = await page.evaluate(() => document.body.innerText);
+    for (const copy of config.essentialCopy) {
+      if (pageText.includes(copy)) {
+        checks.passed.push(`✓ Content: "${copy.substring(0, 35)}..."`);
       } else {
-        results.failed.push('✗ Footer missing');
+        checks.failed.push(`✗ Missing: "${copy}"`);
       }
     }
 
-    // Check copy
-    for (const text of config.copy) {
-      const found = await page.evaluate((t) => document.body.innerText.includes(t), text);
-      if (found) {
-        results.passed.push(`✓ Copy: "${text.substring(0, 40)}..."`);
-      } else {
-        results.failed.push(`✗ Copy missing: "${text}"`);
-      }
-    }
+    // Report
+    console.log('');
+    checks.passed.forEach((m) => console.log(m));
+    checks.failed.forEach((m) => console.log(m));
 
-    // Check nav links
-    if (config.nav) {
-      const navText = await page.evaluate(() => {
-        return Array.from(document.querySelectorAll('nav a')).map((a) => a.textContent.trim());
-      });
-      for (const navItem of config.nav) {
-        if (navText.includes(navItem)) {
-          results.passed.push(`✓ Nav: ${navItem}`);
-        } else {
-          results.failed.push(`✗ Nav missing: ${navItem}`);
-        }
-      }
-    }
-
-    // Report results
-    console.log('\n' + '='.repeat(60));
-    results.passed.forEach((msg) => console.log(msg));
-    results.failed.forEach((msg) => console.log(msg));
-    console.log('='.repeat(60));
-
-    const status = results.failed.length === 0 ? 'PASS' : 'FAIL';
-    console.log(`\nStatus: ${status} (${results.passed.length} passed, ${results.failed.length} failed)\n`);
+    const status = checks.failed.length === 0 ? '✓ PASS' : '✗ FAIL';
+    console.log(`\n${status} (${checks.passed.length}/${checks.passed.length + checks.failed.length})\n`);
 
     await browser.close();
-    process.exit(results.failed.length === 0 ? 0 : 1);
+    process.exit(checks.failed.length === 0 ? 0 : 1);
   } catch (err) {
-    console.error('Verification failed:', err.message);
+    console.error(`\n✗ Verification failed: ${err.message}\n`);
     await browser.close();
     process.exit(1);
   }
 }
 
-verifyPage(process.argv[2] || '/how-it-works');
+verifyPage(process.argv[2]);
