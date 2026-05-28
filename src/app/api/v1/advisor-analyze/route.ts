@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { getVocabulary } from "@/lib/industry-vocabulary";
 
 export const dynamic = "force-dynamic";
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || "";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
 const DAILY_LIMIT = 30;
 
 // In-memory rate limiting store: { "record_id|YYYY-MM-DD": count }
@@ -77,7 +77,7 @@ export async function POST(req: Request) {
       }
     }
 
-    if (!ANTHROPIC_API_KEY) {
+    if (!GEMINI_API_KEY) {
       return NextResponse.json(generateFallback(body));
     }
 
@@ -120,18 +120,23 @@ Provide advisor guidance in this format:
 
 Return ONLY this text, no JSON formatting.`;
 
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const url = new URL("https://generativeai.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent");
+    url.searchParams.set("key", GEMINI_API_KEY);
+
+    const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-5-20250514",
-        max_tokens: 800,
-        system: SYSTEM_PROMPT,
-        messages: [{ role: "user", content: userPrompt }],
+        contents: [{
+          parts: [{
+            text: SYSTEM_PROMPT + "\n\n" + userPrompt
+          }]
+        }],
+        generationConfig: {
+          maxOutputTokens: 800,
+        }
       }),
     });
 
@@ -140,7 +145,7 @@ Return ONLY this text, no JSON formatting.`;
     }
 
     const data = await response.json();
-    const guidance = data.content?.[0]?.text || "";
+    const guidance = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
     // Parse the response into paragraphs
     const paragraphs = guidance.split("\n\n").filter((p: string) => p.trim());

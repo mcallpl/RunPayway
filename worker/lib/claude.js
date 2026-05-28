@@ -48,28 +48,33 @@ LENGTH DISCIPLINE:
 `;
 
 export async function callClaude(system, user, env, maxTokens = 600) {
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
+  const url = new URL("https://generativeai.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent");
+  url.searchParams.set("key", env.GEMINI_API_KEY);
+
+  const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": env.ANTHROPIC_API_KEY,
-      "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: maxTokens,
-      system: BRAND_RULES + "\n\n" + system,
-      messages: [{ role: "user", content: user }],
+      contents: [{
+        parts: [{
+          text: BRAND_RULES + "\n\n" + system + "\n\n" + user
+        }]
+      }],
+      generationConfig: {
+        maxOutputTokens: maxTokens,
+      }
     }),
   });
 
   if (!response.ok) {
     const err = await response.text();
-    throw new Error(`Anthropic API ${response.status}: ${err}`);
+    throw new Error(`Gemini API ${response.status}: ${err}`);
   }
 
   const data = await response.json();
-  const text = data.content?.[0]?.text || "";
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
   const jsonMatch = text.match(/\{[\s\S]*\}/);
   if (!jsonMatch) throw new Error("No JSON in response");
   return JSON.parse(jsonMatch[0]);

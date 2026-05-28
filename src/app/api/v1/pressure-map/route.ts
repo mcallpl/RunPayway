@@ -5,7 +5,7 @@
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
-const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || "";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
 
 interface PressureMapRequest {
   industry: string;
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
   try {
     const body: PressureMapRequest = await req.json();
 
-    if (!ANTHROPIC_API_KEY) {
+    if (!GEMINI_API_KEY) {
       // Fallback: return a generic but useful briefing without AI
       return NextResponse.json(generateFallback(body));
     }
@@ -81,18 +81,23 @@ Return EXACTLY three sections in this JSON format:
 
 Return ONLY the JSON object, no other text.`;
 
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const url = new URL("https://generativeai.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent");
+    url.searchParams.set("key", GEMINI_API_KEY);
+
+    const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-5-20250514",
-        max_tokens: 600,
-        system: SYSTEM_PROMPT,
-        messages: [{ role: "user", content: userPrompt }],
+        contents: [{
+          parts: [{
+            text: SYSTEM_PROMPT + "\n\n" + userPrompt
+          }]
+        }],
+        generationConfig: {
+          maxOutputTokens: 600,
+        }
       }),
     });
 
@@ -101,7 +106,7 @@ Return ONLY the JSON object, no other text.`;
     }
 
     const data = await response.json();
-    const text = data.content?.[0]?.text || "";
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
     // Parse the JSON response
     let parsed;
