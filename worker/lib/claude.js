@@ -52,11 +52,11 @@ export async function callClaude(system, user, env, maxTokens = 600) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": env.ANTHROPIC_API_KEY,
+      "x-api-key": env.GEMINI_API_KEY,
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: "claude-haiku-4-5-20251001",
+      model: "gemini-2.0-flash",
       max_tokens: maxTokens,
       system: BRAND_RULES + "\n\n" + system,
       messages: [{ role: "user", content: user }],
