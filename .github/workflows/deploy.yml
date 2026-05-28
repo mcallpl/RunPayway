@@ -24,6 +24,13 @@ jobs:
       - name: Build Next.js
         run: npm run build
 
+      - name: Create .env.local with API keys
+        run: |
+          cat > .env.local << EOF
+          GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
+          NEXT_PUBLIC_STRIPE_CHECKOUT_URL=${{ secrets.NEXT_PUBLIC_STRIPE_CHECKOUT_URL }}
+          EOF
+
       - name: Test SSH Connection
         env:
           SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
@@ -58,6 +65,7 @@ jobs:
             tailwind.config.ts \
             scripts \
             worker \
+            .env.local \
             root@64.227.108.128:/var/www/html/RunPayway/
 
       - name: Install Dependencies and Restart Application
