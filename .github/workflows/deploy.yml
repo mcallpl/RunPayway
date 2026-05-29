@@ -93,6 +93,23 @@ jobs:
           echo "Checking PM2 status..."
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "pm2 status"
 
+      - name: Configure Apache
+        env:
+          SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          echo "Uploading Apache configuration script..."
+          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no \
+            scripts/configure-apache.sh \
+            root@64.227.108.128:/var/www/html/RunPayway/
+
+          echo "Running Apache configuration..."
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 \
+            "bash /var/www/html/RunPayway/scripts/configure-apache.sh"
+
       - name: Verify Application
         env:
           SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
