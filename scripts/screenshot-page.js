@@ -9,7 +9,7 @@ async function detectPort() {
   for (let port of [3000, 3001, 3002]) {
     try {
       await new Promise((resolve, reject) => {
-        const req = http.get(`http://localhost:${port}/`, (res) => {
+        const req = http.get(`${port}/`, (res) => {
           resolve(port);
         });
         req.on('error', reject);
@@ -41,7 +41,7 @@ async function screenshotPage(route) {
       fs.mkdirSync(screenshotDir, { recursive: true });
     }
 
-    const url = `http://localhost:${port}${route}`;
+    const url = `${port}${route}`;
     const date = new Date().toISOString().split('T')[0];
     const routeName = route === '/' ? 'home' : route.replace(/\//g, '-').substring(1);
 

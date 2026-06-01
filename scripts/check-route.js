@@ -7,7 +7,7 @@ async function detectPort() {
   for (let port of [3000, 3001, 3002]) {
     try {
       await new Promise((resolve, reject) => {
-        const req = http.get(`http://localhost:${port}/`, (res) => {
+        const req = http.get(`${port}/`, (res) => {
           resolve(port);
         });
         req.on('error', reject);
@@ -37,7 +37,7 @@ async function checkRoute(route) {
     const page = await browser.newPage();
     await page.setViewport({ width: 1200, height: 800 });
 
-    const url = `http://localhost:${port}${route}`;
+    const url = `${port}${route}`;
     console.log(`\n→ Checking: ${url}`);
 
     const response = await page.goto(url, { waitUntil: 'networkidle2', timeout: 10000 });
