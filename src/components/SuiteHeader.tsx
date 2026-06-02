@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import logoBlue from "../../public/logo.png";
+import logoBlue from "../../public/RunPayway_Logo.svg";
 import CommandPalette from "./CommandPalette";
 
 const C = {

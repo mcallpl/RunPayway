@@ -1,2329 +1,829 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
+
+const COLORS = {
+  navy: '#0E1A2B',
+  teal: '#1F6D7A',
+  purple: '#4B3FAE',
+  sand: '#F4F1EA',
+  white: '#FFFFFF',
+  border: '#E5E7EB',
+};
 
 export default function LandingPage() {
-  // Icon Components
-  const UserIcon = () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <circle cx="12" cy="8" r="4" />
-      <path d="M 6 20 Q 6 15 12 15 Q 18 15 18 20" />
-    </svg>
-  );
-
-  const TrendIcon = () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <polyline points="4 18 8 10 13 15 20 5" />
-      <path d="M 20 5 L 20 8 L 17 8" />
-    </svg>
-  );
-
-  const BuildingIcon = () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <rect x="6" y="4" width="12" height="16" />
-      <line x1="10" y1="8" x2="14" y2="8" />
-      <line x1="10" y1="12" x2="14" y2="12" />
-      <line x1="10" y1="16" x2="14" y2="16" />
-    </svg>
-  );
-
-  const GearIcon = () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <circle cx="12" cy="12" r="3" />
-      <path d="M 12 2 L 13 6 L 17 7 L 14 10 L 15 14 L 12 12 L 9 14 L 10 10 L 7 7 L 11 6 Z" />
-    </svg>
-  );
-
-  const ChartIcon = () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <line x1="4" y1="18" x2="4" y2="6" />
-      <line x1="4" y1="18" x2="20" y2="18" />
-      <rect x="6" y="12" width="3" height="6" />
-      <rect x="11" y="8" width="3" height="10" />
-      <rect x="16" y="10" width="3" height="8" />
-    </svg>
-  );
-
-  const LockIcon = () => (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <rect x="6" y="10" width="12" height="9" rx="1" />
-      <path d="M 8 10 V 6 Q 8 4 10 4 L 14 4 Q 16 4 16 6 V 10" />
-      <line x1="12" y1="14" x2="12" y2="17" />
-    </svg>
-  );
-
-  const BlueprintIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-      <rect x="5" y="5" width="14" height="14" rx="1" />
-      <rect x="8" y="8" width="1.5" height="1.5" />
-      <rect x="14.5" y="8" width="1.5" height="1.5" />
-      <rect x="8" y="14.5" width="1.5" height="1.5" />
-      <rect x="14.5" y="14.5" width="1.5" height="1.5" />
-    </svg>
-  );
-
-  const TargetIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-      <circle cx="12" cy="12" r="1.5" />
-      <circle cx="12" cy="12" r="5" />
-      <circle cx="12" cy="12" r="9" />
-    </svg>
-  );
-
-  const ShieldIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-      <path d="M 12 2 L 20 6 L 20 13 Q 20 18 12 22 Q 4 18 4 13 L 4 6 Z" />
-    </svg>
-  );
-
-  const LineChartIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <polyline points="4 18 8 10 13 15 20 5" />
-    </svg>
-  );
-
-  const DocumentIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <rect x="6" y="2" width="12" height="20" rx="1" />
-      <line x1="9" y1="7" x2="15" y2="7" />
-      <line x1="9" y1="11" x2="15" y2="11" />
-      <line x1="9" y1="15" x2="15" y2="15" />
-    </svg>
-  );
-
-  const PeopleIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <circle cx="8" cy="7" r="2.5" />
-      <circle cx="16" cy="7" r="2.5" />
-      <path d="M 5 10 Q 5 12 8 12 L 12 12" />
-      <path d="M 13 12 L 16 12 Q 19 12 19 10" />
-      <path d="M 4 18 L 4 15 Q 4 13 8 13 Q 12 13 12 15 L 12 18" />
-      <path d="M 12 18 L 12 15 Q 12 13 16 13 Q 20 13 20 15 L 20 18" />
-    </svg>
-  );
-
   return (
-    <div style={{ width: '100%', backgroundColor: '#FFFFFF' }}>
+    <div className="w-full">
       <style>{`
-        @media (max-width: 768px) {
-          * {
-            box-sizing: border-box;
-          }
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
 
-          header {
-            height: 80px !important;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-          }
+        body, html {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
 
-          header img {
-            height: 48px !important;
-          }
+        .rp-header {
+          position: sticky;
+          top: 0;
+          height: 80px;
+          background: white;
+          border-bottom: 1px solid #E5E7EB;
+          display: flex;
+          align-items: center;
+          z-index: 100;
+        }
 
-          nav {
-            display: none !important;
-          }
+        .rp-header-container {
+          width: 100%;
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 0 20px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
 
-          header button {
-            height: 48px !important;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-            font-size: 11px !important;
-            gap: 6px !important;
-          }
+        .rp-nav {
+          display: none;
+        }
 
-          /* HERO MOBILE - FINAL POLISH */
-          [data-section="hero"] {
-            padding-top: 56px !important;
-            padding-bottom: 64px !important;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-            grid-template-columns: 1fr !important;
-            gap: 40px !important;
-          }
-
-          [data-section="hero"] h1 {
-            font-size: 48px !important;
-            line-height: 56px !important;
-            margin-bottom: 14px !important;
-            max-width: 100% !important;
-          }
-
-          [data-section="hero"] > div:first-child p:first-of-type {
-            font-size: 17px !important;
-            line-height: 30px !important;
-            margin-bottom: 28px !important;
-          }
-
-          [data-section="hero"] [data-buttons] {
-            flex-direction: column !important;
-            gap: 12px !important;
-            margin-bottom: 20px !important;
-          }
-
-          [data-section="hero"] button {
-            height: 52px !important;
-            width: 100% !important;
-            padding-left: 24px !important;
-            padding-right: 24px !important;
-            font-size: 12px !important;
-          }
-
-          [data-section="hero"] [data-support-line] {
-            font-size: 12px !important;
-          }
-
-          [data-section="hero"] > div:last-child {
-            padding-top: 52px !important;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-            padding-bottom: 52px !important;
-          }
-
-          [data-section="hero"] > div:last-child p:first-child {
-            margin-bottom: 36px !important;
-          }
-
-          [data-section="hero"] [data-score] {
-            font-size: 64px !important;
-            margin-bottom: 14px !important;
-          }
-
-          [data-section="hero"] [data-established] {
-            font-size: 12px !important;
-            margin-bottom: 12px !important;
-          }
-
-          [data-section="hero"] [data-description] {
-            font-size: 13px !important;
-            line-height: 24px !important;
-            margin-bottom: 28px !important;
-          }
-
-          [data-section="hero"] [data-condition-grid] {
-            padding-top: 28px !important;
-            gap: 20px 28px !important;
-            margin-bottom: 28px !important;
-          }
-
-          [data-section="hero"] [data-model-info] {
-            padding-top: 28px !important;
-            gap: 20px !important;
-            grid-template-columns: 1fr !important;
-          }
-
-          [data-section="hero"] [data-model-info] > div {
-            border-right: none !important;
-            border-bottom: 1px solid #E5E7EB !important;
-            padding-right: 0 !important;
-            padding-left: 0 !important;
-            padding-bottom: 20px !important;
-          }
-
-          [data-section="hero"] [data-model-info] > div:last-child {
-            border-bottom: none !important;
-          }
-
-          /* COMMON CONDITIONS MOBILE */
-          [data-section="conditions"] {
-            padding-top: 100px !important;
-            padding-bottom: 100px !important;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-            border-top: 1px solid #E5E7EB !important;
-          }
-
-          [data-section="conditions"] p:first-child {
-            font-size: 10px !important;
-            color: #9CA3AF !important;
-            margin-bottom: 56px !important;
-          }
-
-          [data-section="conditions"] [data-condition-item] {
-            gap: 16px !important;
-            padding-top: 20px !important;
-            padding-bottom: 20px !important;
-          }
-
-          [data-section="conditions"] h3 {
-            font-size: 36px !important;
-            line-height: 44px !important;
-            margin-top: 40px !important;
-          }
-
-          /* TRUST STRIP MOBILE */
-          [data-section="trust"] {
-            padding-top: 60px !important;
-            padding-bottom: 60px !important;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-          }
-
-          [data-section="trust"] > div {
-            grid-template-columns: 1fr !important;
-            gap: 48px !important;
-          }
-
-          [data-section="trust"] > div > div {
-            border-right: none !important;
-            border-bottom: 1px solid #E5E7EB !important;
-            padding-right: 0 !important;
-            padding-bottom: 32px !important;
-          }
-
-          [data-section="trust"] > div > div:last-child {
-            border-bottom: none !important;
-            padding-bottom: 0 !important;
-          }
-
-          /* MEMETIC TRUTH MOBILE */
-          [data-section="memetic"] {
-            padding-top: 80px !important;
-            padding-bottom: 80px !important;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-          }
-
-          [data-section="memetic"] h2 {
-            font-size: 40px !important;
-            line-height: 48px !important;
-            max-width: 100% !important;
-          }
-
-          [data-section="memetic"] p {
-            font-size: 15px !important;
-            line-height: 26px !important;
-          }
-
-          /* MODERN INCOME MOBILE */
-          [data-section="modern"] {
-            padding-top: 80px !important;
-            padding-bottom: 80px !important;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-            grid-template-columns: 1fr !important;
-            gap: 40px !important;
-          }
-
-          [data-section="modern"] h3 {
-            font-size: 36px !important;
-            line-height: 44px !important;
-            max-width: 100% !important;
-          }
-
-          [data-section="modern"] [data-comparison] {
-            grid-template-columns: 1fr !important;
-            gap: 48px !important;
-          }
-
-          [data-section="modern"] [data-profile] {
-            padding-right: 0 !important;
-            border-right: none !important;
-            border-bottom: 1px solid #E5E7EB !important;
-            padding-bottom: 32px !important;
-          }
-
-          [data-section="modern"] [data-profile]:last-child {
-            border-bottom: none !important;
-            padding-bottom: 0 !important;
-          }
-
-          [data-section="modern"] [data-compare-text] {
-            padding-top: 32px !important;
-            border-top: 1px solid #E5E7EB !important;
-          }
-
-          /* EVALUATES MOBILE */
-          [data-section="evaluates"] {
-            padding-top: 80px !important;
-            padding-bottom: 80px !important;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-          }
-
-          [data-section="evaluates"] > div {
-            grid-template-columns: 1fr !important;
-            gap: 32px !important;
-          }
-
-          [data-section="evaluates"] > div > div {
-            padding-right: 0 !important;
-            border-right: none !important;
-            border-bottom: 1px solid #E5E7EB !important;
-            padding-bottom: 32px !important;
-          }
-
-          [data-section="evaluates"] > div > div:last-child {
-            border-bottom: none !important;
-            padding-bottom: 0 !important;
-          }
-
-          [data-section="evaluates"] button {
-            width: 100% !important;
-            padding-left: 24px !important;
-            padding-right: 24px !important;
-          }
-
-          /* PROFESSIONAL MOBILE */
-          [data-section="professional"] {
-            padding-top: 80px !important;
-            padding-bottom: 80px !important;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-          }
-
-          [data-section="professional"] > div {
-            grid-template-columns: 1fr !important;
-            gap: 0 !important;
-          }
-
-          [data-section="professional"] button {
-            width: 100% !important;
-          }
-
-          /* FRAMEWORK MOBILE */
-          [data-section="framework"] {
-            padding-top: 80px !important;
-            padding-bottom: 80px !important;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-          }
-
-          [data-section="framework"] [data-framework-grid] {
-            grid-template-columns: 1fr !important;
-            gap: 28px !important;
-            margin-bottom: 56px !important;
-          }
-
-          [data-section="framework"] [data-framework-grid] > div {
-            padding-right: 0 !important;
-            border-right: none !important;
-            padding-left: 0 !important;
-          }
-
-          [data-section="framework"] h3 {
-            font-size: 32px !important;
-            line-height: 40px !important;
-          }
-
-          /* NOTICE MOBILE */
-          [data-section="notice"] {
-            padding-top: 80px !important;
-            padding-bottom: 80px !important;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-          }
-
-          /* FINAL CTA MOBILE */
-          [data-section="final-cta"] {
-            padding-top: 80px !important;
-            padding-bottom: 80px !important;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-          }
-
-          [data-section="final-cta"] h2 {
-            font-size: 40px !important;
-            line-height: 48px !important;
-          }
-
-          [data-section="final-cta"] p {
-            font-size: 15px !important;
-            line-height: 26px !important;
-          }
-
-          [data-section="final-cta"] button {
-            width: 100% !important;
-          }
-
-          /* FOOTER MOBILE */
-          footer {
-            padding-top: 100px !important;
-            padding-bottom: 80px !important;
-            padding-left: 20px !important;
-            padding-right: 20px !important;
-          }
-
-          footer > div:first-child {
-            grid-template-columns: 1fr !important;
-            gap: 40px !important;
-            margin-bottom: 80px !important;
-          }
-
-          footer [data-links] {
-            grid-template-columns: 1fr !important;
-            gap: 40px !important;
-          }
-
-          footer [data-link-section] {
-            padding-right: 0 !important;
-            border-right: none !important;
-            padding-left: 0 !important;
-          }
-
-          footer [data-link-section] p:first-child {
-            color: #6B7280 !important;
-            font-size: 11px !important;
+        @media (min-width: 1024px) {
+          .rp-nav {
+            display: flex;
+            gap: 32px;
           }
         }
-      `}</style>
-      {/* HEADER */}
-      <header style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 50,
-        backgroundColor: '#FFFFFF',
-        borderBottom: '1px solid #E5E7EB',
-        height: '104px',
-        display: 'flex',
-        alignItems: 'center',
-        paddingLeft: '48px',
-        paddingRight: '48px',
-      }}>
-        <div style={{
-          maxWidth: '1280px',
-          width: '100%',
-          margin: '0 auto',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-          {/* Logo */}
-          <a href="/" style={{
-            display: 'flex',
-            alignItems: 'center',
-            marginRight: '80px',
-            textDecoration: 'none',
-            flexShrink: 0,
-          }}>
-            <img src="/rplogo.png" alt="RunPayway™" style={{
-              height: '64px',
-              width: 'auto',
-            }} />
-          </a>
 
-          {/* Center Navigation */}
-          <nav style={{
-            display: 'flex',
-            gap: '48px',
-            alignItems: 'center',
-            flex: 1,
-          }}>
-            {['How It Works', 'Use Cases', 'Verification Environments', 'Learn', 'Methodology'].map((item) => (
-              <a key={item} href="#" style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '13px',
-                fontWeight: 600,
-                letterSpacing: '0.03em',
-                color: '#0E1A2B',
-                textDecoration: 'none',
-                cursor: 'pointer',
-              }}>
+        .rp-section {
+          padding: 64px 20px;
+          max-width: 1280px;
+          margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+          .rp-section {
+            padding: 80px 20px;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .rp-section {
+            padding: 120px 20px;
+          }
+        }
+
+        .rp-section.rp-sand {
+          background: ${COLORS.sand};
+        }
+
+        .rp-section.rp-navy {
+          background: ${COLORS.navy};
+          color: white;
+        }
+
+        .rp-grid-2 {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 48px;
+          align-items: center;
+        }
+
+        @media (min-width: 1024px) {
+          .rp-grid-2 {
+            grid-template-columns: 55% 45%;
+          }
+        }
+
+        .rp-grid-comparison {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+
+        @media (min-width: 768px) {
+          .rp-grid-comparison {
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+
+        .rp-grid-3-cards {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+
+        @media (min-width: 768px) {
+          .rp-grid-3-cards {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .rp-grid-3-cards {
+            grid-template-columns: 1fr 1fr 1fr;
+          }
+        }
+
+        .rp-grid-pillars {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+
+        @media (min-width: 1024px) {
+          .rp-grid-pillars {
+            grid-template-columns: 1fr 1fr 1fr;
+          }
+        }
+
+        .rp-grid-footer {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 64px;
+        }
+
+        @media (min-width: 768px) {
+          .rp-grid-footer {
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .rp-grid-footer {
+            grid-template-columns: repeat(4, 1fr);
+          }
+        }
+
+        .rp-button-primary {
+          background: ${COLORS.purple};
+          color: white;
+          border: none;
+          padding: 16px 32px;
+          border-radius: 6px;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+          text-decoration: none;
+          display: inline-block;
+          transition: opacity 0.2s;
+        }
+
+        .rp-button-primary:hover {
+          opacity: 0.9;
+        }
+
+        .rp-button-block {
+          width: 100%;
+          padding: 16px;
+        }
+
+        .rp-card {
+          background: white;
+          border: 1px solid ${COLORS.border};
+          border-radius: 8px;
+          padding: 40px;
+        }
+
+        .rp-card.rp-highlight {
+          border: 2px solid ${COLORS.purple};
+          box-shadow: 0 0 0 1px rgba(75, 63, 174, 0.1);
+        }
+
+        .rp-report {
+          background: white;
+          border: 1px solid ${COLORS.border};
+          border-radius: 8px;
+          padding: 40px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+          color: ${COLORS.navy};
+          font-weight: 700;
+          line-height: 1.2;
+        }
+
+        h1 {
+          font-size: 40px;
+        }
+
+        @media (min-width: 768px) {
+          h1 {
+            font-size: 48px;
+          }
+        }
+
+        h2 {
+          font-size: 32px;
+        }
+
+        @media (min-width: 768px) {
+          h2 {
+            font-size: 40px;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          h2 {
+            font-size: 44px;
+          }
+        }
+
+        h3 {
+          font-size: 24px;
+        }
+
+        h4 {
+          font-size: 18px;
+        }
+
+        p {
+          color: ${COLORS.navy};
+          font-weight: 400;
+          line-height: 1.6;
+        }
+
+        a {
+          color: ${COLORS.teal};
+          text-decoration: none;
+          font-weight: 600;
+          cursor: pointer;
+        }
+
+        a:hover {
+          opacity: 0.8;
+        }
+
+        .rp-navy-text h1, .rp-navy-text h2, .rp-navy-text h3, .rp-navy-text h4, .rp-navy-text h5, .rp-navy-text h6 {
+          color: white;
+        }
+
+        .rp-navy-text p {
+          color: white;
+        }
+
+        .rp-navy-text a {
+          color: white;
+        }
+
+        .rp-report-score {
+          font-size: 52px;
+          font-weight: 700;
+          color: ${COLORS.navy};
+          margin: 0;
+        }
+
+        .rp-report-class {
+          font-size: 20px;
+          font-weight: 700;
+          color: ${COLORS.navy};
+          margin: 0;
+        }
+
+        ul {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+
+        li {
+          margin-bottom: 8px;
+        }
+      `}</style>
+
+      {/* HEADER */}
+      <header className="rp-header">
+        <div className="rp-header-container">
+          {/* Logo */}
+          <div className="flex items-center">
+            <Image
+              src="/RunPayway_Logo.svg"
+              alt="RunPayway™"
+              width={180}
+              height={40}
+              priority
+              style={{ height: 'auto' }}
+            />
+          </div>
+
+          {/* Desktop Navigation */}
+          <nav className="rp-nav">
+            {['How It Works', 'Methodology', 'Learn', 'Solutions'].map((item) => (
+              <a
+                key={item}
+                href="#"
+                className="text-sm font-medium"
+              >
                 {item}
+                {item === 'Solutions' && ' ▼'}
               </a>
             ))}
           </nav>
 
-          {/* Right CTA */}
-          <button style={{
-            height: '60px',
-            paddingLeft: '32px',
-            paddingRight: '32px',
-            backgroundColor: '#0E1A2B',
-            color: '#FFFFFF',
-            fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '13px',
-            fontWeight: 700,
-            letterSpacing: '0.03em',
-            textTransform: 'uppercase',
-            border: '1px solid #0E1A2B',
-            borderRadius: '2px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            marginLeft: 'auto',
-          }}>
-            Check My Income Stability
-            <span style={{ fontSize: '14px' }}>→</span>
-          </button>
+          {/* Right Actions */}
+          <div className="flex gap-4 items-center">
+            <a
+              href="/sign-in"
+              className="text-sm font-medium hidden lg:block"
+            >
+              Sign In
+            </a>
+            <button
+              className="rp-button-primary text-sm"
+              onClick={() => window.location.href = '/assessment'}
+            >
+              Start Assessment →
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* HERO SECTION */}
-      <section data-section="hero" style={{
-        maxWidth: '1320px',
-        margin: '0 auto',
-        paddingTop: '112px',
-        paddingBottom: '96px',
-        paddingLeft: '48px',
-        paddingRight: '48px',
-        display: 'grid',
-        gridTemplateColumns: '1fr 1.08fr',
-        gap: '88px',
-        alignItems: 'start',
-        backgroundColor: '#F8F8F6',
-      }}>
-        {/* LEFT COLUMN */}
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {/* H1 - Doctrine Headline */}
-          <h1 style={{
-            fontFamily: 'Cormorant Garamond, serif',
-            fontSize: '72px',
-            lineHeight: '0.92',
-            letterSpacing: '-0.02em',
-            fontWeight: 400,
-            color: '#0E1A2B',
-            margin: '0 0 40px 0',
-            maxWidth: '430px',
-          }}>
-            Income and income stability are not the same thing.
-          </h1>
-
-          {/* Supporting Copy */}
-          <p style={{
-            fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '18px',
-            lineHeight: '1.65',
-            letterSpacing: '-0.01em',
-            fontWeight: 400,
-            color: '#1E293B',
-            margin: '0 0 36px 0',
-            maxWidth: '360px',
-          }}>
-            RunPayway™ shows whether your income is actually stable.
-          </p>
-
-          {/* CTA Row */}
-          <div data-buttons style={{
-            display: 'flex',
-            gap: '16px',
-            alignItems: 'center',
-            marginBottom: '28px',
-          }}>
-            <button style={{
-              height: '52px',
-              paddingLeft: '24px',
-              paddingRight: '24px',
-              minWidth: '188px',
-              backgroundColor: '#0E1A2B',
-              color: '#FFFFFF',
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '14px',
-              fontWeight: 600,
-              letterSpacing: '-0.01em',
-              border: 'none',
-              borderRadius: '0',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              transition: 'background-color 0.2s',
-            }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#13233A'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#0E1A2B'}
+      {/* HERO */}
+      <section className="rp-section">
+        <div className="rp-grid-2">
+          {/* Left Content */}
+          <div>
+            <h1 className="mb-6">
+              Before relying on income, know its stability.
+            </h1>
+            <p className="text-lg mb-8">
+              RunPayway™ measures the stability of your income using Structural Stability Model RP-2.0.
+            </p>
+            <button
+              className="rp-button-primary mb-6"
+              onClick={() => window.location.href = '/assessment'}
             >
-              Check My Income Stability →
+              Start Assessment →
             </button>
-            <button style={{
-              height: '52px',
-              paddingLeft: '24px',
-              paddingRight: '24px',
-              minWidth: '156px',
-              backgroundColor: 'transparent',
-              color: '#0E1A2B',
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '14px',
-              fontWeight: 600,
-              letterSpacing: '-0.01em',
-              border: '1px solid #C7CDD6',
-              borderRadius: '0',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              transition: 'background-color 0.2s',
-            }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(14,26,43,0.03)'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-            >
-              How It Works →
-            </button>
-          </div>
-
-          {/* Supporting Meta Line */}
-          <div data-support-line style={{
-            display: 'flex',
-            gap: '12px',
-            alignItems: 'center',
-            margin: '0',
-          }}>
-            <span style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
-              fontWeight: 500,
-              letterSpacing: '-0.01em',
-              color: '#667085',
-            }}>
-              Free initial insight
-            </span>
-            <span style={{
-              width: '3px',
-              height: '3px',
-              borderRadius: '50%',
-              backgroundColor: '#98A2B3',
-            }}></span>
-            <span style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
-              fontWeight: 500,
-              letterSpacing: '-0.01em',
-              color: '#667085',
-            }}>
-              No documents required
-            </span>
-          </div>
-        </div>
-
-        {/* RIGHT COLUMN - STRUCTURAL STABILITY PROFILE™ */}
-        <div style={{
-          backgroundColor: '#FFFFFF',
-          border: '1px solid #E5E7EB',
-          borderRadius: '0',
-          paddingTop: '40px',
-          paddingRight: '36px',
-          paddingBottom: '36px',
-          paddingLeft: '36px',
-        }}>
-          {/* Card Title */}
-          <p style={{
-            fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '13px',
-            fontWeight: 700,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: '#0E1A2B',
-            margin: '0 0 28px 0',
-            textAlign: 'center',
-          }}>
-            STRUCTURAL STABILITY PROFILE™
-          </p>
-
-          {/* Top Divider */}
-          <div style={{
-            height: '1px',
-            backgroundColor: '#E5E7EB',
-            marginBottom: '28px',
-          }}></div>
-
-          {/* Profile Grid */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '0.92fr 1.08fr',
-            gap: '36px',
-          }}>
-            {/* LEFT COLUMN - SCORE */}
-            <div>
-              {/* Score Label */}
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '11px',
-                fontWeight: 700,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: '#344054',
-                margin: '0 0 14px 0',
-              }}>
-                INCOME STABILITY SCORE™
-              </p>
-
-              {/* Score Number */}
-              <div style={{
-                fontSize: '88px',
-                fontWeight: 700,
-                lineHeight: '0.9',
-                letterSpacing: '-0.05em',
-                color: '#0B1F5E',
-                margin: '0 0 18px 0',
-                fontFamily: 'Inter, -apple-system, sans-serif',
-              }}>
-                72
-              </div>
-
-              {/* Score Divider */}
-              <div style={{
-                width: '40px',
-                height: '2px',
-                backgroundColor: '#CBD5E1',
-                margin: '0 0 18px 0',
-              }}></div>
-
-              {/* Stability Label */}
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '13px',
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: '#0E1A2B',
-                margin: '0 0 18px 0',
-              }}>
-                ESTABLISHED STABILITY
-              </p>
-
-              {/* Description */}
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '13px',
-                lineHeight: '1.75',
-                fontWeight: 400,
-                color: '#475467',
-                margin: '0',
-                maxWidth: '240px',
-              }}>
-                Income currently appears stable, though some conditions may weaken income reliability over time.
-              </p>
-            </div>
-
-            {/* RIGHT COLUMN - METRICS */}
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0',
-            }}>
-              {/* Metric Row 1 */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingBottom: '18px',
-                marginBottom: '18px',
-                borderBottom: '1px solid #ECEFF3',
-              }}>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  color: '#344054',
-                  margin: '0',
-                }}>
-                  MONTHLY INCOME CONSISTENCY
-                </p>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  letterSpacing: '0.02em',
-                  color: '#0E1A2B',
-                  margin: '0',
-                }}>
-                  MODERATE
-                </p>
-              </div>
-
-              {/* Metric Row 2 */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingBottom: '18px',
-                marginBottom: '18px',
-                borderBottom: '1px solid #ECEFF3',
-              }}>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  color: '#344054',
-                  margin: '0',
-                }}>
-                  SOURCE DEPENDENCE
-                </p>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  letterSpacing: '0.02em',
-                  color: '#0E1A2B',
-                  margin: '0',
-                }}>
-                  MANAGEABLE
-                </p>
-              </div>
-
-              {/* Metric Row 3 */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingBottom: '18px',
-                marginBottom: '18px',
-                borderBottom: '1px solid #ECEFF3',
-              }}>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  color: '#344054',
-                  margin: '0',
-                }}>
-                  RECURRING INCOME
-                </p>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  letterSpacing: '0.02em',
-                  color: '#0E1A2B',
-                  margin: '0',
-                }}>
-                  STRONG
-                </p>
-              </div>
-
-              {/* Metric Row 4 (Last - No Border) */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  color: '#344054',
-                  margin: '0',
-                }}>
-                  INCOME RELIABILITY PRESSURE
-                </p>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '13px',
-                  fontWeight: 700,
-                  letterSpacing: '0.02em',
-                  color: '#0E1A2B',
-                  margin: '0',
-                }}>
-                  ELEVATED
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Condition Grid - 3 Column Layout */}
-          <div data-condition-grid style={{
-            borderTop: '1px solid #E5E7EB',
-            paddingTop: '20px',
-            display: 'grid',
-            gridTemplateColumns: '1fr 1.2fr 1fr',
-            gap: '0 16px',
-            marginBottom: '20px',
-            rowGap: '14px',
-          }}>
-            {/* Row 1 */}
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '9px',
-              fontWeight: 700,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              color: '#6B7280',
-              margin: '0',
-            }}>
-              INCOME STABILITY SCORE™
-            </p>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '9px',
-              fontWeight: 700,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              color: '#6B7280',
-              margin: '0',
-            }}>
-              MONTHLY INCOME CONSISTENCY
-            </p>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '12px',
-              fontWeight: 600,
-              color: '#0E1A2B',
-              margin: '0',
-            }}>
-              MODERATE
-            </p>
-            {/* Row 2 */}
-            <p style={{ margin: '0' }}></p>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '9px',
-              fontWeight: 700,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              color: '#6B7280',
-              margin: '0',
-            }}>
-              SOURCE DEPENDENCE
-            </p>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '12px',
-              fontWeight: 600,
-              color: '#0E1A2B',
-              margin: '0',
-            }}>
-              MANAGEABLE
-            </p>
-
-            {/* Row 3 */}
-            <p style={{ margin: '0' }}></p>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '9px',
-              fontWeight: 700,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              color: '#6B7280',
-              margin: '0',
-            }}>
-              RECURRING INCOME
-            </p>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '12px',
-              fontWeight: 600,
-              color: '#0E1A2B',
-              margin: '0',
-            }}>
-              STRONG
-            </p>
-
-            {/* Row 4 */}
-            <p style={{ margin: '0' }}></p>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '9px',
-              fontWeight: 700,
-              letterSpacing: '0.15em',
-              textTransform: 'uppercase',
-              color: '#6B7280',
-              margin: '0',
-            }}>
-              INCOME RELIABILITY PRESSURE
-            </p>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '12px',
-              fontWeight: 600,
-              color: '#0E1A2B',
-              margin: '0',
-            }}>
-              ELEVATED
+            <p className="text-sm opacity-70">
+              Free • Under 2 Minutes • No Documents Required
             </p>
           </div>
 
-          {/* Lower Meta Section */}
-          <div style={{
-            marginTop: '30px',
-            paddingTop: '26px',
-            borderTop: '1px solid #E5E7EB',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-          }}>
-            {/* Column 1 */}
-            <div>
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '10px',
-                fontWeight: 700,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: '#667085',
-                margin: '0 0 8px 0',
-              }}>
-                MODEL VERSION
-              </p>
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '14px',
-                fontWeight: 600,
-                lineHeight: '1.5',
-                color: '#0E1A2B',
-                margin: '0',
-                maxWidth: '120px',
-              }}>
-                RP-2.0
-              </p>
-            </div>
-
-            {/* Column 2 */}
-            <div style={{
-              borderLeft: '1px solid #ECEFF3',
-              paddingLeft: '24px',
-            }}>
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '10px',
-                fontWeight: 700,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: '#667085',
-                margin: '0 0 8px 0',
-              }}>
-                INTEGRITY
-              </p>
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '14px',
-                fontWeight: 600,
-                lineHeight: '1.5',
-                color: '#0E1A2B',
-                margin: '0',
-                maxWidth: '120px',
-              }}>
-                Same structure produces same result
-              </p>
-            </div>
-
-            {/* Column 3 */}
-            <div style={{
-              borderLeft: '1px solid #ECEFF3',
-              paddingLeft: '24px',
-            }}>
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '10px',
-                fontWeight: 700,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: '#667085',
-                margin: '0 0 8px 0',
-              }}>
-                FRAMEWORK
-              </p>
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '14px',
-                fontWeight: 600,
-                lineHeight: '1.5',
-                color: '#0E1A2B',
-                margin: '0',
-                maxWidth: '120px',
-              }}>
-                Fixed Methodology
-              </p>
-            </div>
-          </div>
+          {/* Right - Report Preview */}
+          <ReportPreview />
         </div>
       </section>
 
-      {/* COMMON INCOME CONDITIONS */}
-      <section data-section="conditions" style={{
-        maxWidth: '1320px',
-        margin: '0 auto',
-        paddingTop: '120px',
-        paddingBottom: '120px',
-        paddingLeft: '48px',
-        paddingRight: '48px',
-        borderTop: '1px solid #E5E7EB',
-      }}>
-        <p style={{
-          fontFamily: 'Inter, -apple-system, sans-serif',
-          fontSize: '11px',
-          fontWeight: 700,
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase',
-          color: '#9CA3AF',
-          margin: '0 0 56px 0',
-        }}>
-          COMMON INCOME CONDITIONS
-        </p>
+      {/* SAME INCOME. DIFFERENT STABILITY. */}
+      <section className="rp-section rp-sand">
+        <h2 className="text-center mb-12">Same Income. Different Stability.</h2>
 
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '0',
-        }}>
-          {[
-            { condition: 'most income depends on a single client, customer, employer, or source', Icon: UserIcon },
-            { condition: 'income changes significantly from month to month', Icon: TrendIcon },
-            { condition: 'income slows quickly when work slows down', Icon: BuildingIcon },
-            { condition: 'financial obligations continue growing while income remains variable', Icon: GearIcon },
-            { condition: 'future income becomes harder to predict with confidence', Icon: ChartIcon },
-            { condition: 'limited backup income exists if current income changes unexpectedly', Icon: LockIcon },
-          ].map((item, index) => (
-            <div key={index} data-condition-item style={{
-              display: 'flex',
-              gap: '24px',
-              paddingTop: index === 0 ? '0' : '32px',
-              paddingBottom: '32px',
-              borderBottom: '1px solid #E5E7EB',
-              alignItems: 'flex-start',
-            }}>
-              <div style={{
-                flexShrink: 0,
-                width: '24px',
-                height: '24px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#0E1A2B',
-              }}>
-                <item.Icon />
-              </div>
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '15px',
-                lineHeight: '26px',
-                fontWeight: 400,
-                color: '#4B5563',
-                margin: '0',
-                flex: 1,
-              }}>
-                {item.condition}
+        {/* Comparison Panels */}
+        <div className="rp-grid-comparison mb-12">
+          {/* Profile A */}
+          <div className="rp-card">
+            <h3 className="text-lg font-semibold mb-6">PROFILE A</h3>
+            <div className="mb-8">
+              <p className="font-semibold mb-4">Income: $150,000</p>
+              <ul className="text-sm">
+                <li>• One primary client</li>
+                <li>• No recurring agreements</li>
+                <li>• Income depends on continued activity</li>
+              </ul>
+            </div>
+            <div className="bg-white bg-opacity-50 p-5 rounded-lg">
+              <p className="text-xs font-semibold mb-2">Income Stability Class</p>
+              <p className="rp-report-class">Developing Stability</p>
+            </div>
+          </div>
+
+          {/* Profile B */}
+          <div className="rp-card">
+            <h3 className="text-lg font-semibold mb-6">PROFILE B</h3>
+            <div className="mb-8">
+              <p className="font-semibold mb-4">Income: $150,000</p>
+              <ul className="text-sm">
+                <li>• Multiple income sources</li>
+                <li>• Recurring income</li>
+                <li>• Lower concentration</li>
+                <li>• More consistent income over time</li>
+              </ul>
+            </div>
+            <div className="bg-white bg-opacity-50 p-5 rounded-lg">
+              <p className="text-xs font-semibold mb-2">Income Stability Class</p>
+              <p className="rp-report-class">Established Stability</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Key Insight */}
+        <div className="rp-card">
+          <p className="font-semibold text-lg mb-4">Key Insight</p>
+          <p className="mb-6">
+            Two people earning the same income can receive different Income Stability classifications.
+          </p>
+          <a href="#">Know the stability of your income →</a>
+        </div>
+      </section>
+
+      {/* EXAMPLE INCOME STABILITY PROFILE */}
+      <section className="rp-section">
+        <h2 className="mb-16">Example Income Stability Profile</h2>
+
+        {/* Report Component */}
+        <div className="mb-20">
+          <ReportProfile />
+        </div>
+
+        {/* Included In The Report */}
+        <div className="mt-16">
+          <h3 className="text-xl font-semibold mb-8">Included In The Report</h3>
+          <div className="grid grid-cols-1 gap-4 mb-8">
+            {[
+              'Income Stability Measurement',
+              'Income Stability Class',
+              'Income Stability Score',
+              'Primary Stability Drivers™',
+              'Stability Pressure Factors™',
+              'Report Verification',
+            ].map((item) => (
+              <p key={item} className="text-base">
+                {item}
               </p>
+            ))}
+          </div>
+          <a href="/sample-report">View Sample Report →</a>
+        </div>
+      </section>
+
+      {/* UNDERSTANDING THE REPORT */}
+      <section className="rp-section rp-sand">
+        <h2 className="mb-16">Understanding the Report</h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
+          {[
+            {
+              title: 'Income Stability Measurement',
+              desc: 'A standardized measurement of Income Stability.',
+            },
+            {
+              title: 'Income Stability Class',
+              desc: 'A classification within the Income Stability framework.',
+            },
+            {
+              title: 'Income Stability Score',
+              desc: 'A standardized score generated using Structural Stability Model RP-2.0.',
+            },
+            {
+              title: 'Primary Stability Drivers™',
+              desc: 'Characteristics contributing most to the result.',
+            },
+            {
+              title: 'Stability Pressure Factors™',
+              desc: 'Characteristics placing pressure on the result.',
+            },
+            {
+              title: 'Report Verification',
+              desc: 'Model version, report identification, and verification details.',
+            },
+          ].map((item) => (
+            <div key={item.title}>
+              <h4 className="mb-3">{item.title}</h4>
+              <p>{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* WHY INCOME STABILITY EXISTS */}
+      <section className="rp-section">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 style={{ fontSize: '44px' }} className="font-semibold">
+            Income Amount And Income Stability Provide Different Information.
+          </h2>
+        </div>
+      </section>
+
+      {/* STRUCTURAL STABILITY MODEL RP-2.0 */}
+      <section className="rp-section">
+        <h2 className="mb-16">Structural Stability Model RP-2.0</h2>
+
+        <div className="rp-grid-pillars mb-12">
+          {['Same Inputs', 'Same Methodology', 'Same Outputs'].map((item) => (
+            <div
+              key={item}
+              className="rp-card text-center"
+            >
+              <p className="text-lg font-semibold">{item}</p>
             </div>
           ))}
         </div>
 
-        <p style={{
-          fontFamily: 'Cormorant Garamond, Garamond, serif',
-          fontSize: '48px',
-          lineHeight: '60px',
-          letterSpacing: '-0.02em',
-          fontWeight: 400,
-          color: '#0E1A2B',
-          margin: '64px 0 0 0',
-          maxWidth: '600px',
-        }}>
-          Income can appear stable until conditions change.
-        </p>
-      </section>
-
-      {/* TRUST STRIP */}
-      <section data-section="trust" style={{
-        backgroundColor: '#FFFFFF',
-        borderTop: '1px solid #E5E7EB',
-        borderBottom: '1px solid #E5E7EB',
-        paddingTop: '60px',
-        paddingBottom: '60px',
-      }}>
-        <div style={{
-          maxWidth: '1280px',
-          margin: '0 auto',
-          paddingLeft: '48px',
-          paddingRight: '48px',
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr 1fr',
-          gap: '60px',
-        }}>
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '20px',
-            paddingRight: '40px',
-            borderRight: 'none',
-          }}>
-            <div style={{
-              width: '20px',
-              height: '20px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#9CA3AF',
-            }}>
-              <BlueprintIcon />
-            </div>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '11px',
-              fontWeight: 700,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: '#9CA3AF',
-              margin: '0',
-              textAlign: 'center',
-            }}>
-              FIXED METHODOLOGY
-            </p>
-          </div>
-
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '20px',
-            paddingLeft: '40px',
-            paddingRight: '40px',
-            borderRight: 'none',
-          }}>
-            <div style={{
-              width: '20px',
-              height: '20px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#9CA3AF',
-            }}>
-              <TargetIcon />
-            </div>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '11px',
-              fontWeight: 700,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: '#9CA3AF',
-              margin: '0',
-              textAlign: 'center',
-            }}>
-              CONSISTENT RESULTS
-            </p>
-          </div>
-
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '20px',
-            paddingLeft: '40px',
-          }}>
-            <div style={{
-              width: '20px',
-              height: '20px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#9CA3AF',
-            }}>
-              <ShieldIcon />
-            </div>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '11px',
-              fontWeight: 700,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: '#9CA3AF',
-              margin: '0',
-              textAlign: 'center',
-            }}>
-              PRIVATE BY DEFAULT
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* MEMETIC TRUTH SECTION */}
-      <section data-section="memetic" style={{
-        maxWidth: '1280px',
-        margin: '0 auto',
-        paddingTop: '160px',
-        paddingBottom: '160px',
-        paddingLeft: '48px',
-        paddingRight: '48px',
-      }}>
-        <h2 style={{
-          fontFamily: 'Cormorant Garamond, Garamond, serif',
-          fontSize: '72px',
-          lineHeight: '88px',
-          letterSpacing: '-0.03em',
-          fontWeight: 400,
-          color: '#0E1A2B',
-          margin: '0 0 40px 0',
-          textAlign: 'center',
-          maxWidth: '900px',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }}>
-          High income does not always mean dependable income.
-        </h2>
-        <p style={{
-          fontFamily: 'Inter, -apple-system, sans-serif',
-          fontSize: '16px',
-          lineHeight: '28px',
-          fontWeight: 400,
-          color: '#4B5563',
-          margin: '0',
-          textAlign: 'center',
-          maxWidth: '700px',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }}>
-          Two people earning the same income can have very different levels of income stability.
-        </p>
-      </section>
-
-      {/* MODERN INCOME CHANGED SECTION */}
-      <section data-section="modern" style={{
-        maxWidth: '1280px',
-        margin: '0 auto',
-        paddingTop: '120px',
-        paddingBottom: '120px',
-        paddingLeft: '48px',
-        paddingRight: '48px',
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '100px',
-        alignItems: 'flex-start',
-      }}>
-        {/* LEFT */}
-        <div>
-          <h3 style={{
-            fontFamily: 'Cormorant Garamond, Garamond, serif',
-            fontSize: '48px',
-            lineHeight: '60px',
-            letterSpacing: '-0.02em',
-            fontWeight: 400,
-            color: '#0E1A2B',
-            margin: '0 0 48px 0',
-          }}>
-            Modern income changed.
-          </h3>
-          <p style={{
-            fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '16px',
-            lineHeight: '28px',
-            fontWeight: 400,
-            color: '#4B5563',
-            margin: '0 0 24px 0',
-          }}>
-            More Americans now rely on variable, independent, or non-traditional income than ever before.
-          </p>
-          <p style={{
-            fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '16px',
-            lineHeight: '28px',
-            fontWeight: 400,
-            color: '#4B5563',
-            margin: '0',
-          }}>
-            RunPayway™ identifies conditions that may support or weaken income reliability.
-          </p>
+        <div className="bg-[#F4F1EA] p-10 rounded-lg mb-8">
+          <p className="text-base mb-4">No human overrides.</p>
+          <p className="text-base mb-4">No subjective scoring.</p>
+          <p className="text-base">No changing standards.</p>
         </div>
 
-        {/* RIGHT - COMPARISON */}
-        <div>
-          <p style={{
-            fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '11px',
-            fontWeight: 700,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: '#0E1A2B',
-            margin: '0 0 64px 0',
-          }}>
-            SAME INCOME. DIFFERENT STABILITY.
-          </p>
+        <a href="/methodology">Learn More About The Methodology →</a>
+      </section>
 
-          <div data-comparison style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '56px',
-          }}>
-            {/* Profile A */}
-            <div data-profile style={{
-              paddingRight: '32px',
-              borderRight: 'none',
-            }}>
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '11px',
-                fontWeight: 700,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: '#0E1A2B',
-                margin: '0 0 24px 0',
-              }}>
-                PROFILE A
-              </p>
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '32px',
-                fontWeight: 700,
-                color: '#0E1A2B',
-                margin: '0 0 8px 0',
-              }}>
-                $150K
-              </p>
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '13px',
-                fontWeight: 600,
-                color: '#6B7280',
-                margin: '0 0 32px 0',
-              }}>
-                Annual Income
-              </p>
-              <ul style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '14px',
-                lineHeight: '26px',
-                fontWeight: 400,
-                color: '#4B5563',
-                margin: '0',
-                paddingLeft: '0',
-                listStyle: 'none',
-              }}>
-                <li>• most income depends on 1 client</li>
-                <li>• income changes month to month</li>
-                <li>• no long-term agreements</li>
-                <li>• income slows quickly if work slows down</li>
+      {/* ACCESS YOUR RESULT */}
+      <section className="rp-section rp-sand">
+        <h2 className="mb-16">Access Your Result</h2>
+
+        <div className="rp-grid-3-cards">
+          {/* Assessment Card */}
+          <div className="rp-card">
+            <h3 className="mb-4">Assessment</h3>
+            <p className="text-base mb-6">Begin the measurement process.</p>
+            <div className="mb-8">
+              <p className="text-xs font-semibold mb-3">Includes:</p>
+              <ul className="text-xs space-y-2">
+                <li>• Assessment Completion</li>
+                <li>• Income Structure Evaluation</li>
+                <li>• Eligibility To Unlock Additional Outputs</li>
               </ul>
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '12px',
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: '#6B7280',
-                margin: '32px 0 0 0',
-              }}>
-                DEVELOPING STABILITY
-              </p>
             </div>
+            <p className="text-xl font-bold text-teal mb-6">FREE</p>
+            <button
+              className="rp-button-primary rp-button-block"
+              onClick={() => window.location.href = '/assessment'}
+            >
+              Start Assessment →
+            </button>
+          </div>
 
-            {/* Profile B */}
-            <div data-profile style={{
-              paddingLeft: '32px',
-              paddingTop: '0',
-            }}>
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '11px',
-                fontWeight: 700,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: '#0E1A2B',
-                margin: '0 0 24px 0',
-              }}>
-                PROFILE B
-              </p>
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '32px',
-                fontWeight: 700,
-                color: '#0E1A2B',
-                margin: '0 0 8px 0',
-              }}>
-                $150K
-              </p>
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '13px',
-                fontWeight: 600,
-                color: '#6B7280',
-                margin: '0 0 32px 0',
-              }}>
-                Annual Income
-              </p>
-              <ul style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '14px',
-                lineHeight: '26px',
-                fontWeight: 400,
-                color: '#4B5563',
-                margin: '0',
-                paddingLeft: '0',
-                listStyle: 'none',
-              }}>
-                <li>• income comes from multiple sources</li>
-                <li>• recurring monthly income</li>
-                <li>• lower reliance on any single source</li>
-                <li>• income remains steadier over time</li>
+          {/* Result Card - HIGHEST EMPHASIS */}
+          <div className="rp-card rp-highlight">
+            <h3 style={{ color: COLORS.purple }} className="mb-4">Result</h3>
+            <p className="text-base mb-6">Receive your Income Stability result.</p>
+            <div className="mb-8">
+              <p className="text-xs font-semibold mb-3">Includes:</p>
+              <ul className="text-xs space-y-2">
+                <li>• Income Stability Measurement</li>
+                <li>• Income Stability Class</li>
+                <li>• Income Stability Score</li>
               </ul>
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '12px',
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: '#17803D',
-                margin: '32px 0 0 0',
-              }}>
-                ESTABLISHED STABILITY
-              </p>
             </div>
-          </div>
-
-          <p data-compare-text style={{
-            fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '16px',
-            lineHeight: '28px',
-            fontWeight: 400,
-            color: '#4B5563',
-            margin: '56px 0 0 0',
-            paddingTop: '56px',
-            borderTop: '1px solid #E5E7EB',
-          }}>
-            Income amount alone does not determine income stability.
-          </p>
-        </div>
-      </section>
-
-      {/* WHAT RUNPAYWAY EVALUATES - THREE COLUMN WITH ICONS */}
-      <section data-section="evaluates" style={{
-        backgroundColor: '#FFFFFF',
-        borderTop: '1px solid #E5E7EB',
-        borderBottom: '1px solid #E5E7EB',
-        paddingTop: '160px',
-        paddingBottom: '160px',
-      }}>
-        <div style={{
-          maxWidth: '1280px',
-          margin: '0 auto',
-          paddingLeft: '48px',
-          paddingRight: '48px',
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr 1fr',
-          gap: '80px',
-        }}>
-          {/* What RunPayway Evaluates */}
-          <div style={{
-            paddingRight: '40px',
-            borderRight: '1px solid #E5E7EB',
-          }}>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '11px',
-              fontWeight: 700,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: '#0E1A2B',
-              margin: '0 0 40px 0',
-            }}>
-              WHAT RUNPAYWAY EVALUATES
-            </p>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '16px',
-              lineHeight: '28px',
-              fontWeight: 400,
-              color: '#4B5563',
-              margin: '0 0 32px 0',
-            }}>
-              RunPayway™ evaluates patterns associated with income reliability over time.
-            </p>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: '#0E1A2B',
-              margin: '0 0 24px 0',
-            }}>
-              Including:
-            </p>
-            <ul style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '14px',
-              lineHeight: '32px',
-              fontWeight: 400,
-              color: '#4B5563',
-              margin: '0 0 40px 0',
-              paddingLeft: '0',
-              listStyle: 'none',
-            }}>
-              <li>• source dependence</li>
-              <li>• monthly income consistency</li>
-              <li>• reliance on continued activity</li>
-              <li>• recurring income behavior</li>
-            </ul>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: '#0E1A2B',
-              margin: '0',
-            }}>
-              Evaluated using a fixed, repeatable methodology.
-            </p>
-          </div>
-
-          {/* Free Income Stability Insight */}
-          <div style={{
-            paddingLeft: '32px',
-            paddingRight: '32px',
-            borderRight: '1px solid #E5E7EB',
-            display: 'flex',
-            flexDirection: 'column',
-          }}>
-            <div style={{
-              width: '32px',
-              height: '32px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#0E1A2B',
-              marginBottom: '32px',
-            }}>
-              <LineChartIcon />
-            </div>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '11px',
-              fontWeight: 700,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: '#0E1A2B',
-              margin: '0 0 32px 0',
-            }}>
-              FREE INCOME STABILITY INSIGHT
-            </p>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '16px',
-              lineHeight: '28px',
-              fontWeight: 400,
-              color: '#4B5563',
-              margin: '0 0 48px 0',
-              flex: 1,
-            }}>
-              See how stable your income appears today.
-            </p>
-            <button style={{
-              height: '52px',
-              backgroundColor: '#0E1A2B',
-              color: '#FFFFFF',
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
-              fontWeight: 700,
-              letterSpacing: '0.03em',
-              textTransform: 'uppercase',
-              border: '1px solid #0E1A2B',
-              borderRadius: '2px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-            }}>
-              Start Free Insight
-              <span style={{ fontSize: '14px' }}>→</span>
+            <p style={{ color: COLORS.purple }} className="text-xl font-bold mb-6">$9</p>
+            <button
+              className="rp-button-primary rp-button-block"
+              onClick={() => window.location.href = '/assessment'}
+            >
+              Reveal My Result →
             </button>
           </div>
 
-          {/* Full Stability Report */}
-          <div style={{
-            paddingLeft: '32px',
-            display: 'flex',
-            flexDirection: 'column',
-          }}>
-            <div style={{
-              width: '32px',
-              height: '32px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#0E1A2B',
-              marginBottom: '32px',
-            }}>
-              <DocumentIcon />
+          {/* Analysis Card */}
+          <div className="rp-card">
+            <h3 className="mb-4">Analysis</h3>
+            <p className="text-base mb-6">Receive the complete Income Stability analysis.</p>
+            <div className="mb-8">
+              <p className="text-xs font-semibold mb-3">Includes everything in Result plus:</p>
+              <ul className="text-xs space-y-2">
+                <li>• Expanded Result Explanation</li>
+                <li>• Stability Contributors</li>
+                <li>• Stability Pressure Factors™</li>
+                <li>• Review Areas</li>
+                <li>• Industry Context™</li>
+                <li>• Analysis Observations™</li>
+              </ul>
             </div>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '11px',
-              fontWeight: 700,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: '#0E1A2B',
-              margin: '0 0 32px 0',
-            }}>
-              FULL STABILITY REPORT
-            </p>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '48px',
-              fontWeight: 700,
-              color: '#0E1A2B',
-              margin: '0 0 12px 0',
-              lineHeight: '1',
-            }}>
-              $69
-            </p>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '16px',
-              lineHeight: '28px',
-              fontWeight: 400,
-              color: '#4B5563',
-              margin: '0 0 32px 0',
-              flex: 1,
-            }}>
-              Identify conditions that may strengthen or weaken income reliability.
-            </p>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
-              fontWeight: 700,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: '#0E1A2B',
-              margin: '0 0 16px 0',
-            }}>
-              Includes:
-            </p>
-            <ul style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '14px',
-              lineHeight: '26px',
-              fontWeight: 400,
-              color: '#4B5563',
-              margin: '0 0 32px 0',
-              paddingLeft: '0',
-              listStyle: 'none',
-            }}>
-              <li>✓ Income Stability Score™</li>
-              <li>✓ Stability Scenario Analysis™</li>
-              <li>✓ Income Reliability Signals</li>
-              <li>✓ Industry Context</li>
-              <li>✓ Highest-Impact Stability Opportunities</li>
-            </ul>
-            <button style={{
-              height: '52px',
-              backgroundColor: '#0E1A2B',
-              color: '#FFFFFF',
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
-              fontWeight: 700,
-              letterSpacing: '0.03em',
-              textTransform: 'uppercase',
-              border: '1px solid #0E1A2B',
-              borderRadius: '2px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-            }}>
-              Unlock Full Report
-              <span style={{ fontSize: '14px' }}>→</span>
+            <p className="text-xl font-bold mb-6">$69</p>
+            <button
+              className="rp-button-primary rp-button-block"
+              onClick={() => window.location.href = '/assessment'}
+            >
+              Understand My Income Stability →
             </button>
           </div>
-        </div>
-      </section>
-
-      {/* PROFESSIONAL REVIEW ENVIRONMENTS */}
-      <section data-section="professional" style={{
-        backgroundColor: '#FFFFFF',
-        paddingTop: '160px',
-        paddingBottom: '160px',
-        borderTop: '1px solid #E5E7EB',
-        borderBottom: '1px solid #E5E7EB',
-      }}>
-        <div style={{
-          maxWidth: '1280px',
-          margin: '0 auto',
-          paddingLeft: '48px',
-          paddingRight: '48px',
-          display: 'grid',
-          gridTemplateColumns: 'auto 1fr',
-          gap: '80px',
-          alignItems: 'flex-start',
-        }}>
-          <div style={{
-            width: '32px',
-            height: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#0E1A2B',
-            flexShrink: 0,
-          }}>
-            <PeopleIcon />
-          </div>
-          <div>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '11px',
-              fontWeight: 700,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: '#0E1A2B',
-              margin: '0 0 24px 0',
-            }}>
-              PROFESSIONAL REVIEW ENVIRONMENTS
-            </p>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '16px',
-              lineHeight: '28px',
-              fontWeight: 400,
-              color: '#4B5563',
-              margin: '0 0 24px 0',
-              maxWidth: '600px',
-            }}>
-              RunPayway™ also supports professional review environments for client and operational income evaluations.
-            </p>
-            <button style={{
-              height: '52px',
-              paddingLeft: '28px',
-              paddingRight: '28px',
-              backgroundColor: '#0E1A2B',
-              color: '#FFFFFF',
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '13px',
-              fontWeight: 700,
-              letterSpacing: '0.03em',
-              textTransform: 'uppercase',
-              border: '1px solid #0E1A2B',
-              borderRadius: '2px',
-              cursor: 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}>
-              Explore Professional Verification
-              <span style={{ fontSize: '14px' }}>→</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* FRAMEWORK STANDARD */}
-      <section data-section="framework" style={{
-        backgroundColor: '#FFFFFF',
-        borderTop: '1px solid #E5E7EB',
-        borderBottom: '1px solid #E5E7EB',
-        paddingTop: '160px',
-        paddingBottom: '160px',
-      }}>
-        <div style={{
-          maxWidth: '1280px',
-          margin: '0 auto',
-          paddingLeft: '48px',
-          paddingRight: '48px',
-        }}>
-          <p style={{
-            fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '11px',
-            fontWeight: 700,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: '#0E1A2B',
-            margin: '0 0 80px 0',
-            textAlign: 'center',
-          }}>
-            FRAMEWORK STANDARD
-          </p>
-
-          <div data-framework-grid style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
-            gap: '56px',
-            marginBottom: '80px',
-          }}>
-            <div style={{
-              paddingRight: '40px',
-              borderRight: '1px solid #E5E7EB',
-            }}>
-              <p style={{
-                fontFamily: 'Cormorant Garamond, Garamond, serif',
-                fontSize: '40px',
-                lineHeight: '52px',
-                letterSpacing: '-0.02em',
-                fontWeight: 400,
-                color: '#0E1A2B',
-                margin: '0',
-              }}>
-                Fixed rules.
-              </p>
-            </div>
-            <div style={{
-              paddingLeft: '40px',
-              paddingRight: '40px',
-              borderRight: '1px solid #E5E7EB',
-            }}>
-              <p style={{
-                fontFamily: 'Cormorant Garamond, Garamond, serif',
-                fontSize: '40px',
-                lineHeight: '52px',
-                letterSpacing: '-0.02em',
-                fontWeight: 400,
-                color: '#0E1A2B',
-                margin: '0',
-              }}>
-                Deterministic results.
-              </p>
-            </div>
-            <div style={{
-              paddingLeft: '40px',
-            }}>
-              <p style={{
-                fontFamily: 'Cormorant Garamond, Garamond, serif',
-                fontSize: '40px',
-                lineHeight: '52px',
-                letterSpacing: '-0.02em',
-                fontWeight: 400,
-                color: '#0E1A2B',
-                margin: '0',
-              }}>
-                Version-locked methodology.
-              </p>
-            </div>
-          </div>
-
-          <div style={{
-            textAlign: 'center',
-            maxWidth: '900px',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            marginBottom: '80px',
-            paddingBottom: '80px',
-            borderBottom: '1px solid #E5E7EB',
-          }}>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '16px',
-              lineHeight: '28px',
-              fontWeight: 400,
-              color: '#4B5563',
-              margin: '0 0 24px 0',
-            }}>
-              RunPayway™ applies the same methodology across all verification environments.
-            </p>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '16px',
-              lineHeight: '28px',
-              fontWeight: 400,
-              color: '#4B5563',
-              margin: '0',
-            }}>
-              Identical structures produce identical outcomes.
-            </p>
-          </div>
-
-          <p style={{
-            fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '11px',
-            fontWeight: 700,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: '#0E1A2B',
-            margin: '0',
-            textAlign: 'center',
-          }}>
-            STRUCTURAL STABILITY MODEL RP-2.0
-          </p>
-        </div>
-      </section>
-
-      {/* STRUCTURAL EVALUATION NOTICE */}
-      <section data-section="notice" style={{
-        maxWidth: '1280px',
-        margin: '0 auto',
-        paddingTop: '120px',
-        paddingBottom: '120px',
-        paddingLeft: '48px',
-        paddingRight: '48px',
-      }}>
-        <div style={{
-          display: 'flex',
-          gap: '24px',
-          alignItems: 'flex-start',
-        }}>
-          <div style={{
-            width: '24px',
-            height: '24px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#6B7280',
-            flexShrink: 0,
-            paddingTop: '2px',
-          }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="16" x2="12" y2="12" />
-              <line x1="12" y1="8" x2="12.01" y2="8" />
-            </svg>
-          </div>
-          <p style={{
-            fontFamily: 'Inter, -apple-system, sans-serif',
-            fontSize: '15px',
-            lineHeight: '28px',
-            fontWeight: 400,
-            color: '#4B5563',
-            margin: '0',
-            maxWidth: '900px',
-          }}>
-            RunPayway™ evaluates income stability conditions using a fixed methodological framework. Results are informational and are not financial, legal, tax, lending, insurance, investment, or employment advice. RunPayway™ does not guarantee future outcomes or replace professional judgment.
-          </p>
         </div>
       </section>
 
       {/* FINAL CTA */}
-      <section data-section="final-cta" style={{
-        maxWidth: '1280px',
-        margin: '0 auto',
-        paddingTop: '160px',
-        paddingBottom: '160px',
-        paddingLeft: '48px',
-        paddingRight: '48px',
-        textAlign: 'center',
-      }}>
-        <h2 style={{
-          fontFamily: 'Cormorant Garamond, Garamond, serif',
-          fontSize: '80px',
-          lineHeight: '96px',
-          letterSpacing: '-0.03em',
-          fontWeight: 400,
-          color: '#0E1A2B',
-          margin: '0 0 32px 0',
-          maxWidth: '900px',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }}>
-          Check how stable your income is.
-        </h2>
-        <p style={{
-          fontFamily: 'Inter, -apple-system, sans-serif',
-          fontSize: '16px',
-          lineHeight: '28px',
-          fontWeight: 400,
-          color: '#6B7280',
-          margin: '0 0 80px 0',
-        }}>
-          Complete your insight in under 2 minutes.
-        </p>
-        <button style={{
-          height: '52px',
-          paddingLeft: '28px',
-          paddingRight: '28px',
-          backgroundColor: '#0E1A2B',
-          color: '#FFFFFF',
-          fontFamily: 'Inter, -apple-system, sans-serif',
-          fontSize: '13px',
-          fontWeight: 700,
-          letterSpacing: '0.03em',
-          textTransform: 'uppercase',
-          border: '1px solid #0E1A2B',
-          borderRadius: '2px',
-          cursor: 'pointer',
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '8px',
-          marginBottom: '32px',
-        }}>
-          Check My Income Stability
-          <span style={{ fontSize: '14px' }}>→</span>
-        </button>
-        <p style={{
-          fontFamily: 'Inter, -apple-system, sans-serif',
-          fontSize: '13px',
-          fontWeight: 400,
-          color: '#6B7280',
-          margin: '0',
-        }}>
-          Free initial insight · No documents required
-        </p>
+      <section className="rp-section rp-navy rp-navy-text">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="mb-6">Before relying on income, know its stability.</h2>
+          <p className="text-xl font-medium mb-12">Start Your Income Stability Assessment.</p>
+          <button
+            className="rp-button-primary mb-6"
+            onClick={() => window.location.href = '/assessment'}
+          >
+            Start Assessment →
+          </button>
+          <p className="text-sm opacity-90">
+            Free • Under 2 Minutes • No Documents Required
+          </p>
+        </div>
+      </section>
+
+      {/* SYSTEM CLARIFICATION */}
+      <section className="rp-section">
+        <div className="max-w-2xl mx-auto">
+          <p className="text-base mb-4">
+            RunPayway™ measures the stability of your income using Structural Stability Model RP-2.0.
+          </p>
+          <p className="text-base mb-4">
+            RunPayway™ is not a credit score, lending decision, investment recommendation, financial plan, employment evaluation, or prediction of future income.
+          </p>
+          <p className="text-base mb-4">
+            Results provide a standardized measurement generated from information supplied during the assessment.
+          </p>
+          <p className="text-base mb-4">Model Version: RP-2.0</p>
+          <p className="text-base">Verification Available On Issued Reports.</p>
+        </div>
       </section>
 
       {/* FOOTER */}
-      <footer style={{
-        backgroundColor: '#FFFFFF',
-        borderTop: '1px solid #E5E7EB',
-        paddingTop: '120px',
-        paddingBottom: '80px',
-        paddingLeft: '48px',
-        paddingRight: '48px',
-      }}>
-        <div style={{
-          maxWidth: '1280px',
-          margin: '0 auto',
-        }}>
-          {/* Footer Top */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'auto 1fr',
-            gap: '160px',
-            marginBottom: '80px',
-            alignItems: 'flex-start',
-          }}>
-            {/* Logo & Tagline */}
-            <div style={{ flexShrink: 0 }}>
-              <img src="/rplogo.png" alt="RunPayway™" style={{
-                height: '40px',
-                width: 'auto',
-                marginBottom: '16px',
-              }} />
-              <p style={{
-                fontFamily: 'Inter, -apple-system, sans-serif',
-                fontSize: '11px',
-                fontWeight: 700,
-                letterSpacing: '0.12em',
-                textTransform: 'uppercase',
-                color: '#9CA3AF',
-                margin: '0',
-              }}>
-                INCOME STABILITY VERIFICATION™
-              </p>
+      <footer style={{ backgroundColor: COLORS.navy }} className="text-white py-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="rp-grid-footer mb-20">
+            {/* Product */}
+            <div>
+              <h4 className="text-xs font-bold mb-5 uppercase tracking-wider text-white">Product</h4>
+              <ul className="space-y-4">
+                {['Income Stability Assessment', 'How It Works', 'Methodology', 'Verify Report'].map(
+                  (link) => (
+                    <li key={link}>
+                      <a href="#" className="text-sm font-normal text-white hover:opacity-80">
+                        {link}
+                      </a>
+                    </li>
+                  )
+                )}
+              </ul>
             </div>
 
-            {/* Links */}
-            <div data-links style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: '80px',
-            }}>
-              <div data-link-section style={{
-                paddingRight: '32px',
-                borderRight: '1px solid #E5E7EB',
-              }}>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: '#6B7280',
-                  margin: '0 0 20px 0',
-                }}>
-                  How It Works
-                </p>
-                <ul style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '14px',
-                  lineHeight: '28px',
-                  fontWeight: 400,
-                  color: '#4B5563',
-                  margin: '0',
-                  paddingLeft: '0',
-                  listStyle: 'none',
-                }}>
-                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Use Cases</a></li>
-                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Verification Environments</a></li>
-                </ul>
-              </div>
-              <div data-link-section style={{
-                paddingLeft: '32px',
-                paddingRight: '32px',
-                borderRight: '1px solid #E5E7EB',
-              }}>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: '#0E1A2B',
-                  margin: '0 0 24px 0',
-                }}>
-                  Learn
-                </p>
-                <ul style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '14px',
-                  lineHeight: '28px',
-                  fontWeight: 400,
-                  color: '#4B5563',
-                  margin: '0',
-                  paddingLeft: '0',
-                  listStyle: 'none',
-                }}>
-                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Learn</a></li>
-                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Contact</a></li>
-                </ul>
-              </div>
-              <div style={{
-                paddingLeft: '32px',
-                paddingRight: '32px',
-                borderRight: '1px solid #E5E7EB',
-              }}>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: '#0E1A2B',
-                  margin: '0 0 24px 0',
-                }}>
-                  Legal
-                </p>
-                <ul style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '14px',
-                  lineHeight: '28px',
-                  fontWeight: 400,
-                  color: '#4B5563',
-                  margin: '0',
-                  paddingLeft: '0',
-                  listStyle: 'none',
-                }}>
-                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Privacy Policy</a></li>
-                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Terms</a></li>
-                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Accessibility</a></li>
-                </ul>
-              </div>
-              <div style={{
-                paddingLeft: '32px',
-              }}>
-                <p style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: '#0E1A2B',
-                  margin: '0 0 24px 0',
-                }}>
-                  System Integrity
-                </p>
-                <ul style={{
-                  fontFamily: 'Inter, -apple-system, sans-serif',
-                  fontSize: '14px',
-                  lineHeight: '28px',
-                  fontWeight: 400,
-                  color: '#4B5563',
-                  margin: '0',
-                  paddingLeft: '0',
-                  listStyle: 'none',
-                }}>
-                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Methodology</a></li>
-                  <li><a href="#" style={{ color: '#4B5563', textDecoration: 'none' }}>Data Security</a></li>
-                </ul>
-              </div>
+            {/* Solutions */}
+            <div>
+              <h4 className="text-xs font-bold mb-5 uppercase tracking-wider text-white">Solutions</h4>
+              <ul className="space-y-4">
+                {['Individuals', 'Advisors', 'Organizations'].map((link) => (
+                  <li key={link}>
+                    <a href="#" className="text-sm font-normal text-white hover:opacity-80">
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Learn */}
+            <div>
+              <h4 className="text-xs font-bold mb-5 uppercase tracking-wider text-white">Learn</h4>
+              <ul className="space-y-4">
+                {[
+                  'What Is Income Stability?',
+                  'Income Stability vs Income',
+                  'Why Income Stability Matters',
+                  'Learn',
+                ].map((link) => (
+                  <li key={link}>
+                    <a href="#" className="text-sm font-normal text-white hover:opacity-80">
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Company */}
+            <div>
+              <h4 className="text-xs font-bold mb-5 uppercase tracking-wider text-white">Company</h4>
+              <ul className="space-y-4">
+                {['About', 'Contact', 'Privacy', 'Terms', 'Accessibility'].map((link) => (
+                  <li key={link}>
+                    <a href="#" className="text-sm font-normal text-white hover:opacity-80">
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 
-          {/* Footer Bottom */}
-          <div style={{
-            borderTop: '1px solid #E5E7EB',
-            paddingTop: '56px',
-          }}>
-            <p style={{
-              fontFamily: 'Inter, -apple-system, sans-serif',
-              fontSize: '12px',
-              lineHeight: '20px',
-              fontWeight: 400,
-              color: '#6B7280',
-              margin: '0',
-            }}>
-              © 2026 RunPayway™. All rights reserved.<br />
-              RunPayway™ is a product of PeopleStar Enterprises, INC.<br />
-              Orange County, California, USA.<br />
-              Structural Stability Model RP-2.0.
-            </p>
+          {/* Bottom Footer */}
+          <div
+            className="border-t pt-10 text-center"
+            style={{ borderTopColor: 'rgba(255,255,255,0.1)' }}
+          >
+            <p className="text-xs opacity-70 mb-4">Income Stability Measurement</p>
+            <p className="text-xs opacity-70 mb-2">© 2026 RunPayway™. All rights reserved.</p>
+            <p className="text-xs opacity-70 mb-2">RunPayway™ is a product of PeopleStar Enterprises, LLC.</p>
+            <p className="text-xs opacity-70 mb-2">Orange County, California, USA.</p>
+            <p className="text-xs opacity-70">Structural Stability Model RP-2.0.</p>
           </div>
         </div>
       </footer>
+    </div>
+  );
+}
+
+// Report Preview Component for Hero
+function ReportPreview() {
+  return (
+    <div className="rp-report">
+      <div className="mb-8">
+        <p className="text-xs font-semibold mb-2">Income Stability Score</p>
+        <p className="rp-report-score">72</p>
+      </div>
+
+      <div className="mb-8 border-b pb-8" style={{ borderBottomColor: COLORS.border }}>
+        <p className="text-xs font-semibold mb-2">Income Stability Class</p>
+        <p className="rp-report-class">Established Stability</p>
+      </div>
+
+      <div className="mb-8">
+        <h4 className="text-xs font-bold mb-3 uppercase tracking-wider">Primary Stability Drivers™</h4>
+        <ul className="text-xs space-y-2">
+          <li>• Recurring Income</li>
+          <li>• Income Diversification</li>
+          <li>• Income Continuity</li>
+        </ul>
+      </div>
+
+      <div className="mb-8 border-b pb-8" style={{ borderBottomColor: COLORS.border }}>
+        <h4 className="text-xs font-bold mb-3 uppercase tracking-wider">Stability Pressure Factors™</h4>
+        <ul className="text-xs space-y-2">
+          <li>• Income Concentration</li>
+          <li>• Activity Dependency</li>
+        </ul>
+      </div>
+
+      <div>
+        <p className="text-xs font-bold mb-3 uppercase tracking-wider">VERIFIED REPORT</p>
+        <div className="grid grid-cols-2 gap-6 text-xs mb-4">
+          <div>
+            <p className="opacity-70 mb-1">Verification Status:</p>
+            <p className="font-semibold">Verified</p>
+          </div>
+          <div>
+            <p className="opacity-70 mb-1">Report ID:</p>
+            <p className="font-semibold">RP2-2026-0048127</p>
+          </div>
+          <div>
+            <p className="opacity-70 mb-1">Model Version:</p>
+            <p className="font-semibold">RP-2.0</p>
+          </div>
+          <div>
+            <p className="opacity-70 mb-1">Generated:</p>
+            <p className="font-semibold">June 2, 2026</p>
+          </div>
+        </div>
+        <p className="text-xs opacity-70">Verification Available On All Issued Reports</p>
+      </div>
+    </div>
+  );
+}
+
+// Report Profile Component for Example Section
+function ReportProfile() {
+  return (
+    <div className="rp-report" style={{ padding: '60px' }}>
+      <div className="mb-12">
+        <p className="text-xs font-semibold mb-2">Income Stability Score</p>
+        <p style={{ fontSize: '52px', fontWeight: '700', margin: '0' }}>72</p>
+      </div>
+
+      <div className="mb-12 border-b pb-12" style={{ borderBottomColor: COLORS.border }}>
+        <p className="text-xs font-semibold mb-2">Income Stability Class</p>
+        <p className="rp-report-class">Established Stability</p>
+      </div>
+
+      <div className="mb-12">
+        <h4 className="text-xs font-bold mb-4 uppercase tracking-wider">Primary Stability Drivers™</h4>
+        <ul className="text-xs space-y-3">
+          <li>• Recurring Income</li>
+          <li>• Income Diversification</li>
+          <li>• Income Continuity</li>
+        </ul>
+      </div>
+
+      <div className="mb-12 border-b pb-12" style={{ borderBottomColor: COLORS.border }}>
+        <h4 className="text-xs font-bold mb-4 uppercase tracking-wider">Stability Pressure Factors™</h4>
+        <ul className="text-xs space-y-3">
+          <li>• Income Concentration</li>
+          <li>• Activity Dependency</li>
+        </ul>
+      </div>
+
+      <div>
+        <p className="text-xs font-bold mb-4 uppercase tracking-wider">VERIFIED REPORT</p>
+        <div className="grid grid-cols-2 gap-10 text-xs mb-6">
+          <div>
+            <p className="opacity-70 mb-1">Verification Status:</p>
+            <p className="font-semibold">Verified</p>
+          </div>
+          <div>
+            <p className="opacity-70 mb-1">Report ID:</p>
+            <p className="font-semibold">RP2-2026-0048127</p>
+          </div>
+          <div>
+            <p className="opacity-70 mb-1">Model Version:</p>
+            <p className="font-semibold">RP-2.0</p>
+          </div>
+          <div>
+            <p className="opacity-70 mb-1">Generated:</p>
+            <p className="font-semibold">June 2, 2026</p>
+          </div>
+        </div>
+        <p className="text-xs opacity-70">Verification Available On All Issued Reports</p>
+      </div>
     </div>
   );
 }
