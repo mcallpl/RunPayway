@@ -161,7 +161,7 @@ export default function LandingPage() {
           background: #4B3FAE;
           color: white;
           border: none;
-          padding: 16px 36px;
+          padding: 14px 32px;
           border-radius: 8px;
           font-size: 16px;
           font-weight: 600;
@@ -402,10 +402,10 @@ export default function LandingPage() {
         .rp-profile-list li:last-child { margin-bottom: 0; }
 
         .rp-class-box {
-          background: #F4F1EA;
-          border: 1px solid #E5E7EB;
+          background: white;
+          border: 2px solid #4B3FAE;
           border-radius: 8px;
-          padding: 20px;
+          padding: 12px 20px;
           text-align: center;
         }
 
@@ -413,7 +413,7 @@ export default function LandingPage() {
           font-size: 11px;
           font-weight: 600;
           color: #6B7280;
-          margin-bottom: 10px;
+          margin-bottom: 6px;
           text-transform: uppercase;
         }
 
@@ -421,10 +421,6 @@ export default function LandingPage() {
           font-size: 16px;
           font-weight: 700;
           color: #4B3FAE;
-          border: 2px solid #4B3FAE;
-          border-radius: 6px;
-          padding: 10px 20px;
-          display: inline-block;
         }
 
         .rp-key-insight {
@@ -599,11 +595,15 @@ export default function LandingPage() {
         }
 
         .rp-pillar-icon {
-          font-size: 40px;
-          height: 48px;
+          width: 56px;
+          height: 56px;
           display: flex;
           align-items: center;
           justify-content: center;
+          margin: 0 auto;
+          background: #F0F0F0;
+          border-radius: 50%;
+          font-size: 24px;
         }
 
         .rp-pillar-text {
@@ -675,8 +675,15 @@ export default function LandingPage() {
         }
 
         .rp-card-icon {
-          font-size: 40px;
+          width: 56px;
+          height: 56px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           margin-bottom: 20px;
+          background: #F0F0F0;
+          border-radius: 8px;
+          font-size: 24px;
         }
 
         .rp-card h3 {
@@ -725,15 +732,28 @@ export default function LandingPage() {
         }
 
         .rp-card-btn {
-          background: #4B3FAE;
-          color: white;
           border: none;
-          padding: 14px 20px;
+          padding: 12px 20px;
           border-radius: 8px;
           font-size: 14px;
           font-weight: 600;
           cursor: pointer;
           width: 100%;
+        }
+
+        .rp-card-btn-assessment {
+          background: #4B3FAE;
+          color: white;
+        }
+
+        .rp-card-btn-result {
+          background: #1F6D7A;
+          color: white;
+        }
+
+        .rp-card-btn-analysis {
+          background: #8B3A3A;
+          color: white;
         }
 
         .rp-card-btn:hover { opacity: 0.9; }
@@ -1132,7 +1152,7 @@ export default function LandingPage() {
               <li>• Eligibility To Unlock Additional Outputs</li>
             </ul>
             <p className="rp-card-price">FREE</p>
-            <button className="rp-card-btn" onClick={() => window.location.href = '/assessment'}>
+            <button className="rp-card-btn rp-card-btn-assessment" onClick={() => window.location.href = '/assessment'}>
               Start Assessment →
             </button>
           </div>
@@ -1148,7 +1168,7 @@ export default function LandingPage() {
               <li>• Income Stability Score</li>
             </ul>
             <p className="rp-card-price">$9</p>
-            <button className="rp-card-btn" onClick={() => window.location.href = '/assessment'}>
+            <button className="rp-card-btn rp-card-btn-result" onClick={() => window.location.href = '/assessment'}>
               Reveal My Result →
             </button>
           </div>
@@ -1167,7 +1187,7 @@ export default function LandingPage() {
               <li>• Analysis Observations™</li>
             </ul>
             <p className="rp-card-price">$69</p>
-            <button className="rp-card-btn" onClick={() => window.location.href = '/assessment'}>
+            <button className="rp-card-btn rp-card-btn-analysis" onClick={() => window.location.href = '/assessment'}>
               Understand My Income Stability →
             </button>
           </div>
