@@ -14,7 +14,7 @@ export default function LandingPage() {
         .rp-header {
           position: sticky;
           top: 0;
-          height: 80px;
+          height: 88px;
           background: white;
           border-bottom: 1px solid #E5E7EB;
           display: flex;
@@ -24,7 +24,7 @@ export default function LandingPage() {
         }
 
         @media (max-width: 768px) {
-          .rp-header { padding: 0 20px; height: 70px; }
+          .rp-header { padding: 0 24px; height: 72px; }
         }
 
         .rp-header-container {
@@ -97,24 +97,26 @@ export default function LandingPage() {
 
         /* HERO SECTION */
         .rp-hero {
-          padding: 140px 48px;
-          max-width: 1280px;
+          padding: 96px 48px;
+          max-width: 1440px;
           margin: 0 auto;
         }
 
         @media (max-width: 1023px) {
-          .rp-hero { padding: 100px 20px; }
+          .rp-hero { padding: 96px 48px; }
         }
 
         @media (max-width: 768px) {
-          .rp-hero { padding: 80px 20px; }
+          .rp-hero { padding: 40px 24px 48px 24px; }
         }
 
         .rp-hero-grid {
           display: grid;
-          grid-template-columns: 55% 45%;
-          gap: 100px;
-          align-items: center;
+          grid-template-columns: 52% 48%;
+          gap: 80px;
+          align-items: flex-start;
+          max-width: 1280px;
+          margin: 0 auto;
         }
 
         @media (max-width: 1023px) {
@@ -126,24 +128,36 @@ export default function LandingPage() {
 
         @media (max-width: 768px) {
           .rp-hero-grid {
-            gap: 48px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
           }
         }
 
         .rp-hero-left h1 {
-          font-size: 56px;
+          font-size: 72px;
           font-weight: 700;
-          line-height: 1.2;
+          line-height: 1.05;
           margin-bottom: 32px;
           color: #0E1A2B;
+          max-width: 640px;
         }
 
         @media (max-width: 1023px) {
-          .rp-hero-left h1 { font-size: 48px; margin-bottom: 28px; }
+          .rp-hero-left h1 { font-size: 56px; margin-bottom: 28px; }
         }
 
         @media (max-width: 768px) {
-          .rp-hero-left h1 { font-size: 40px; margin-bottom: 24px; }
+          .rp-hero-left h1 { font-size: 44px; margin-bottom: 24px; max-width: 100%; }
+        }
+
+        .rp-hero-left {
+          display: flex;
+          flex-direction: column;
+        }
+
+        @media (max-width: 768px) {
+          .rp-hero-left { order: 1; }
         }
 
         .rp-hero-left p {
@@ -155,7 +169,7 @@ export default function LandingPage() {
         }
 
         @media (max-width: 768px) {
-          .rp-hero-left p { font-size: 14px; margin-bottom: 32px; }
+          .rp-hero-left p { font-size: 20px; margin-bottom: 40px; line-height: 1.6; }
         }
 
         .rp-hero-cta {
@@ -163,6 +177,11 @@ export default function LandingPage() {
           flex-direction: column;
           gap: 20px;
           margin-bottom: 32px;
+          display: none;
+        }
+
+        @media (max-width: 768px) {
+          .rp-hero-cta { display: flex; order: 3; margin-top: 48px; }
         }
 
         .rp-btn-hero {
@@ -184,6 +203,11 @@ export default function LandingPage() {
           font-size: 12px;
           font-weight: 400;
           color: #6B7280;
+          display: none;
+        }
+
+        @media (max-width: 768px) {
+          .rp-microcopy { display: block; order: 4; margin-top: 0; }
         }
 
         /* REPORT CARD */
@@ -196,7 +220,7 @@ export default function LandingPage() {
         }
 
         @media (max-width: 768px) {
-          .rp-report { padding: 36px; }
+          .rp-report { padding: 36px; margin-top: 40px; order: 2; }
         }
 
         .rp-report-score {
@@ -208,7 +232,7 @@ export default function LandingPage() {
         }
 
         @media (max-width: 768px) {
-          .rp-report-score { font-size: 64px; }
+          .rp-report-score { font-size: 96px; }
         }
 
         .rp-report-label {
@@ -227,6 +251,10 @@ export default function LandingPage() {
           margin-bottom: 40px;
           padding-bottom: 40px;
           border-bottom: 1px solid #E5E7EB;
+        }
+
+        @media (max-width: 768px) {
+          .rp-report-class { font-size: 32px; }
         }
 
         .rp-drivers {
@@ -973,12 +1001,6 @@ export default function LandingPage() {
           <div className="rp-hero-left">
             <h1>Before relying on income, know its stability.</h1>
             <p>RunPayway™ measures the stability of your income using Structural Stability Model RP-2.0.</p>
-            <div className="rp-hero-cta">
-              <button className="rp-btn-hero" onClick={() => window.location.href = '/assessment'}>
-                Start Assessment →
-              </button>
-            </div>
-            <p className="rp-microcopy">Free • Under 2 Minutes • No Documents Required</p>
           </div>
 
           <div className="rp-report">
@@ -1025,6 +1047,13 @@ export default function LandingPage() {
             </div>
             <p className="rp-verification-note">Verification Available On All Issued Reports</p>
           </div>
+
+          <div className="rp-hero-cta">
+            <button className="rp-btn-hero" onClick={() => window.location.href = '/assessment'}>
+              Start Assessment →
+            </button>
+          </div>
+          <p className="rp-microcopy">Free • Under 2 Minutes • No Documents Required</p>
         </div>
       </section>
 
