@@ -23,6 +23,10 @@ export default function LandingPage() {
           padding: 0 48px;
         }
 
+        @media (max-width: 768px) {
+          .rp-header { padding: 0 20px; height: 70px; }
+        }
+
         .rp-header-container {
           width: 100%;
           max-width: 1280px;
@@ -32,13 +36,13 @@ export default function LandingPage() {
           align-items: center;
         }
 
-        .rp-logo { height: 40px; }
+        .rp-logo { height: 32px; width: auto; }
 
         .rp-nav {
           display: none;
-          gap: 48px;
+          gap: 32px;
           flex: 1;
-          margin-left: 80px;
+          margin-left: 60px;
         }
 
         @media (min-width: 1024px) {
@@ -46,7 +50,7 @@ export default function LandingPage() {
         }
 
         .rp-nav a {
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 500;
           color: #0E1A2B;
           text-decoration: none;
@@ -55,15 +59,15 @@ export default function LandingPage() {
 
         .rp-header-right {
           display: flex;
-          gap: 24px;
+          gap: 20px;
           align-items: center;
           margin-left: auto;
         }
 
         .rp-sign-in {
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 600;
-          color: #4B3FAE;
+          color: #1F3FAE;
           text-decoration: none;
           display: none;
         }
@@ -72,53 +76,57 @@ export default function LandingPage() {
           .rp-sign-in { display: block; }
         }
 
-        .rp-btn-primary {
-          background: #4B3FAE;
+        .rp-btn-header {
+          background: #1F3FAE;
           color: white;
           border: none;
-          padding: 12px 24px;
-          border-radius: 8px;
-          font-size: 14px;
+          padding: 10px 20px;
+          border-radius: 6px;
+          font-size: 13px;
           font-weight: 600;
           cursor: pointer;
           transition: opacity 0.2s;
+          display: none;
         }
 
-        .rp-btn-primary:hover { opacity: 0.9; }
+        @media (min-width: 1024px) {
+          .rp-btn-header { display: inline-block; }
+        }
+
+        .rp-btn-header:hover { opacity: 0.9; }
 
         /* HERO SECTION */
         .rp-hero {
-          padding: 120px 48px;
+          padding: 140px 48px;
           max-width: 1280px;
           margin: 0 auto;
         }
 
         @media (max-width: 1023px) {
-          .rp-hero { padding: 80px 20px; }
-          .rp-header { padding: 0 20px; }
+          .rp-hero { padding: 100px 20px; }
         }
 
         @media (max-width: 768px) {
-          .rp-hero { padding: 64px 20px; }
+          .rp-hero { padding: 80px 20px; }
         }
 
         .rp-hero-grid {
           display: grid;
           grid-template-columns: 55% 45%;
-          gap: 80px;
+          gap: 100px;
           align-items: center;
         }
 
         @media (max-width: 1023px) {
           .rp-hero-grid {
             grid-template-columns: 1fr;
-            gap: 48px;
+            gap: 60px;
           }
         }
 
         @media (max-width: 768px) {
           .rp-hero-grid {
-            gap: 32px;
+            gap: 48px;
           }
         }
 
@@ -135,11 +143,11 @@ export default function LandingPage() {
         }
 
         @media (max-width: 768px) {
-          .rp-hero-left h1 { font-size: 40px; }
+          .rp-hero-left h1 { font-size: 40px; margin-bottom: 24px; }
         }
 
         .rp-hero-left p {
-          font-size: 18px;
+          font-size: 16px;
           font-weight: 400;
           line-height: 1.6;
           margin-bottom: 40px;
@@ -147,23 +155,23 @@ export default function LandingPage() {
         }
 
         @media (max-width: 768px) {
-          .rp-hero-left p { font-size: 16px; margin-bottom: 32px; }
+          .rp-hero-left p { font-size: 14px; margin-bottom: 32px; }
         }
 
         .rp-hero-cta {
           display: flex;
           flex-direction: column;
-          gap: 24px;
+          gap: 20px;
           margin-bottom: 32px;
         }
 
         .rp-btn-hero {
-          background: #4B3FAE;
+          background: #1F3FAE;
           color: white;
           border: none;
           padding: 14px 32px;
           border-radius: 8px;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 600;
           cursor: pointer;
           width: fit-content;
@@ -173,7 +181,7 @@ export default function LandingPage() {
         .rp-btn-hero:hover { opacity: 0.9; }
 
         .rp-microcopy {
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 400;
           color: #6B7280;
         }
@@ -181,7 +189,7 @@ export default function LandingPage() {
         /* REPORT CARD */
         .rp-report {
           background: white;
-          border: 1px solid #E5E7EB;
+          border: 1px solid #D1D5DB;
           border-radius: 12px;
           padding: 48px;
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -194,8 +202,8 @@ export default function LandingPage() {
         .rp-report-score {
           font-size: 80px;
           font-weight: 700;
-          color: #0E1A2B;
-          margin: 0 0 12px 0;
+          color: #1F3FAE;
+          margin: 0 0 8px 0;
           line-height: 1;
         }
 
@@ -204,31 +212,36 @@ export default function LandingPage() {
         }
 
         .rp-report-label {
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 600;
           color: #6B7280;
-          margin-bottom: 32px;
+          margin-bottom: 20px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
 
         .rp-report-class {
-          font-size: 20px;
+          font-size: 18px;
           font-weight: 700;
-          color: #0E1A2B;
+          color: #1F3FAE;
           margin-bottom: 40px;
           padding-bottom: 40px;
           border-bottom: 1px solid #E5E7EB;
         }
 
         .rp-drivers {
-          margin-bottom: 40px;
+          margin-bottom: 32px;
+          float: left;
+          width: 48%;
+          margin-right: 2%;
         }
 
         .rp-drivers-title {
-          font-size: 11px;
+          font-size: 10px;
           font-weight: 700;
           text-transform: uppercase;
           color: #0E1A2B;
-          margin-bottom: 16px;
+          margin-bottom: 12px;
           letter-spacing: 0.5px;
         }
 
@@ -239,10 +252,10 @@ export default function LandingPage() {
         }
 
         .rp-drivers-list li {
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 400;
           color: #0E1A2B;
-          margin-bottom: 8px;
+          margin-bottom: 6px;
           line-height: 1.5;
         }
 
@@ -250,44 +263,51 @@ export default function LandingPage() {
 
         .rp-pressure {
           margin-bottom: 40px;
-          padding-bottom: 40px;
-          border-bottom: 1px solid #E5E7EB;
+          float: right;
+          width: 48%;
+          margin-left: 2%;
+          padding-bottom: 0;
+          border-bottom: none;
         }
 
         .rp-pressure-title {
-          font-size: 11px;
+          font-size: 10px;
           font-weight: 700;
           text-transform: uppercase;
           color: #D32F2F;
-          margin-bottom: 16px;
+          margin-bottom: 12px;
           letter-spacing: 0.5px;
         }
 
         .rp-verification {
-          font-size: 11px;
+          clear: both;
+          font-size: 10px;
           font-weight: 700;
           text-transform: uppercase;
           color: #0E1A2B;
-          margin-bottom: 20px;
+          margin-bottom: 16px;
+          margin-top: 40px;
+          padding-top: 40px;
+          border-top: 1px solid #E5E7EB;
           letter-spacing: 0.5px;
         }
 
         .rp-verification-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 24px;
+          gap: 20px;
           font-size: 12px;
         }
 
         .rp-verification-item {
-          margin-bottom: 12px;
+          margin-bottom: 0;
         }
 
         .rp-verification-label {
           font-weight: 600;
           color: #0E1A2B;
-          margin-bottom: 4px;
-          font-size: 12px;
+          margin-bottom: 3px;
+          font-size: 11px;
         }
 
         .rp-verification-value {
@@ -297,25 +317,30 @@ export default function LandingPage() {
         }
 
         .rp-verification-note {
-          font-size: 12px;
-          color: #6B7280;
+          font-size: 11px;
+          color: #1F6D7A;
           margin-top: 16px;
           text-align: center;
+          font-weight: 500;
         }
 
         /* SECTIONS */
         .rp-section {
-          padding: 120px 48px;
+          padding: 140px 48px;
           max-width: 1280px;
           margin: 0 auto;
         }
 
         @media (max-width: 1023px) {
-          .rp-section { padding: 80px 20px; }
+          .rp-section { padding: 100px 20px; }
         }
 
         @media (max-width: 768px) {
-          .rp-section { padding: 64px 20px; }
+          .rp-section { padding: 80px 20px; }
+        }
+
+        .rp-section-bg-white {
+          background: #FFFFFF;
         }
 
         .rp-section-bg-sand {
@@ -330,112 +355,120 @@ export default function LandingPage() {
         .rp-section h2 {
           font-size: 40px;
           font-weight: 700;
-          margin-bottom: 64px;
+          margin-bottom: 80px;
           color: inherit;
           text-align: center;
           line-height: 1.3;
         }
 
         @media (max-width: 1023px) {
-          .rp-section h2 { font-size: 32px; margin-bottom: 48px; }
+          .rp-section h2 { font-size: 32px; margin-bottom: 60px; }
         }
 
         @media (max-width: 768px) {
-          .rp-section h2 { font-size: 28px; margin-bottom: 40px; }
+          .rp-section h2 { font-size: 28px; margin-bottom: 48px; }
         }
 
         .rp-comparison-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 40px;
-          margin-bottom: 48px;
+          gap: 48px;
+          margin-bottom: 64px;
         }
 
         @media (max-width: 768px) {
           .rp-comparison-grid {
             grid-template-columns: 1fr;
-            gap: 32px;
-            margin-bottom: 40px;
+            gap: 40px;
+            margin-bottom: 48px;
           }
         }
 
         .rp-profile-card {
           background: white;
-          border: 1px solid #E5E7EB;
+          border: 1px solid #D1D5DB;
           border-radius: 12px;
-          padding: 40px;
+          padding: 44px;
         }
 
         @media (max-width: 768px) {
-          .rp-profile-card { padding: 32px; }
+          .rp-profile-card { padding: 36px; }
         }
 
         .rp-profile-header {
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 700;
-          color: #4B3FAE;
+          color: #1F3FAE;
           margin-bottom: 20px;
           text-transform: uppercase;
           letter-spacing: 0.5px;
         }
 
         .rp-profile-income {
-          font-size: 20px;
+          font-size: 18px;
           font-weight: 700;
           color: #0E1A2B;
-          margin-bottom: 20px;
+          margin-bottom: 28px;
         }
 
         .rp-profile-list {
           list-style: none;
-          margin: 0 0 32px 0;
+          margin: 0 0 40px 0;
           padding: 0;
-          font-size: 14px;
+          font-size: 13px;
           color: #0E1A2B;
-          line-height: 1.6;
+          line-height: 1.7;
         }
 
         .rp-profile-list li {
-          margin-bottom: 10px;
+          margin-bottom: 12px;
         }
 
         .rp-profile-list li:last-child { margin-bottom: 0; }
 
         .rp-class-box {
           background: white;
-          border: 2px solid #4B3FAE;
+          border: 2px solid #1F3FAE;
           border-radius: 8px;
-          padding: 12px 20px;
+          padding: 16px 20px;
           text-align: center;
         }
 
+        .rp-class-box.teal {
+          border-color: #1F6D7A;
+        }
+
         .rp-class-label {
-          font-size: 11px;
+          font-size: 10px;
           font-weight: 600;
           color: #6B7280;
-          margin-bottom: 6px;
+          margin-bottom: 8px;
           text-transform: uppercase;
         }
 
         .rp-class-value {
-          font-size: 16px;
+          font-size: 15px;
           font-weight: 700;
-          color: #4B3FAE;
+          color: #1F3FAE;
+        }
+
+        .rp-class-value.teal {
+          color: #1F6D7A;
         }
 
         .rp-key-insight {
           background: white;
-          border: 1px solid #E5E7EB;
+          border: 1px solid #D1D5DB;
           border-radius: 12px;
-          padding: 40px;
+          padding: 44px;
         }
 
         @media (max-width: 768px) {
-          .rp-key-insight { padding: 32px; }
+          .rp-key-insight { padding: 36px; }
         }
 
         .rp-insight-title {
-          font-size: 14px;
+          font-size: 11px;
           font-weight: 700;
           color: #0E1A2B;
           margin-bottom: 20px;
@@ -447,14 +480,14 @@ export default function LandingPage() {
           font-size: 16px;
           font-weight: 400;
           color: #0E1A2B;
-          margin-bottom: 24px;
+          margin-bottom: 28px;
           line-height: 1.6;
         }
 
         .rp-insight-link {
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 600;
-          color: #4B3FAE;
+          color: #1F3FAE;
           text-decoration: none;
           cursor: pointer;
         }
@@ -463,22 +496,22 @@ export default function LandingPage() {
         .rp-example-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 64px;
+          gap: 80px;
           align-items: flex-start;
-          margin-bottom: 64px;
+          margin-bottom: 80px;
         }
 
         @media (max-width: 768px) {
           .rp-example-grid {
             grid-template-columns: 1fr;
-            gap: 48px;
-            margin-bottom: 48px;
+            gap: 60px;
+            margin-bottom: 60px;
           }
         }
 
         .rp-large-report {
           background: white;
-          border: 1px solid #E5E7EB;
+          border: 1px solid #D1D5DB;
           border-radius: 12px;
           padding: 48px;
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -493,9 +526,9 @@ export default function LandingPage() {
         }
 
         .rp-included-section h3 {
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 700;
-          margin-bottom: 24px;
+          margin-bottom: 28px;
           color: #0E1A2B;
         }
 
@@ -503,34 +536,34 @@ export default function LandingPage() {
           list-style: none;
           margin: 0;
           padding: 0;
-          font-size: 14px;
+          font-size: 13px;
           color: #0E1A2B;
-          line-height: 1.7;
+          line-height: 1.8;
         }
 
         .rp-included-list li {
-          margin-bottom: 12px;
+          margin-bottom: 14px;
           display: flex;
           align-items: center;
           gap: 12px;
         }
 
         .rp-included-list li:before {
-          content: "○";
-          color: #4B3FAE;
+          content: "●";
+          color: #1F3FAE;
           font-weight: bold;
           min-width: 16px;
         }
 
         .rp-view-sample {
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 600;
-          color: #4B3FAE;
+          color: #1F3FAE;
           text-decoration: none;
           cursor: pointer;
           display: inline-block;
-          margin-top: 28px;
-          border: 2px solid #4B3FAE;
+          margin-top: 36px;
+          border: 2px solid #1F3FAE;
           padding: 12px 20px;
           border-radius: 6px;
         }
@@ -539,25 +572,25 @@ export default function LandingPage() {
         .rp-understanding-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 64px;
+          gap: 80px;
         }
 
         @media (max-width: 768px) {
           .rp-understanding-grid {
             grid-template-columns: 1fr;
-            gap: 48px;
+            gap: 60px;
           }
         }
 
         .rp-understanding-item h4 {
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 700;
-          color: #0E1A2B;
+          color: #1F3FAE;
           margin-bottom: 16px;
         }
 
         .rp-understanding-item p {
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 400;
           color: #0E1A2B;
           line-height: 1.7;
@@ -567,43 +600,56 @@ export default function LandingPage() {
         .rp-pillars-grid {
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
-          gap: 32px;
-          margin-bottom: 48px;
+          gap: 40px;
+          margin-bottom: 64px;
         }
 
         @media (max-width: 768px) {
           .rp-pillars-grid {
             grid-template-columns: 1fr;
-            gap: 24px;
-            margin-bottom: 40px;
+            gap: 32px;
+            margin-bottom: 48px;
           }
         }
 
         .rp-pillar {
           background: white;
-          border: 1px solid #E5E7EB;
+          border: 1px solid #D1D5DB;
           border-radius: 12px;
-          padding: 40px 32px;
+          padding: 44px 32px;
           text-align: center;
           display: flex;
           flex-direction: column;
-          gap: 20px;
+          gap: 24px;
+          align-items: center;
         }
 
         @media (max-width: 768px) {
-          .rp-pillar { padding: 32px 24px; }
+          .rp-pillar { padding: 36px 24px; }
         }
 
         .rp-pillar-icon {
-          width: 56px;
-          height: 56px;
+          width: 68px;
+          height: 68px;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 0 auto;
-          background: #F0F0F0;
+          background: #E8ECFF;
           border-radius: 50%;
-          font-size: 24px;
+          font-size: 32px;
+          border: 2px solid #1F3FAE;
+        }
+
+        .rp-pillar-icon.check {
+          background: #E8F5F7;
+          border-color: #1F6D7A;
+          color: #1F6D7A;
+        }
+
+        .rp-pillar-icon.chart {
+          background: #E8ECF8;
+          border-color: #4B3FAE;
+          color: #4B3FAE;
         }
 
         .rp-pillar-text {
@@ -613,17 +659,17 @@ export default function LandingPage() {
         }
 
         .rp-pillar-description {
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 400;
           color: #6B7280;
           line-height: 1.6;
-          margin-top: 8px;
+          margin: 0;
         }
 
         .rp-methodology-link {
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 600;
-          color: #4B3FAE;
+          color: #1F3FAE;
           text-decoration: none;
           cursor: pointer;
           display: inline-block;
@@ -632,77 +678,90 @@ export default function LandingPage() {
         /* CENTERPIECE STATEMENT */
         .rp-centerpiece {
           text-align: center;
-          padding: 120px 48px;
-          font-size: 32px;
+          padding: 160px 48px;
+          font-size: 36px;
           font-weight: 700;
           color: #0E1A2B;
           line-height: 1.4;
         }
 
         @media (max-width: 1023px) {
-          .rp-centerpiece { padding: 80px 20px; font-size: 28px; }
+          .rp-centerpiece { padding: 120px 20px; font-size: 32px; }
         }
 
         @media (max-width: 768px) {
-          .rp-centerpiece { padding: 64px 20px; font-size: 24px; }
+          .rp-centerpiece { padding: 100px 20px; font-size: 28px; }
         }
 
         /* ACCESS YOUR RESULT */
         .rp-cards-grid {
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
-          gap: 32px;
+          gap: 40px;
         }
 
         @media (max-width: 1023px) {
           .rp-cards-grid {
             grid-template-columns: 1fr;
-            gap: 24px;
+            gap: 32px;
           }
         }
 
         .rp-card {
           background: white;
-          border: 1px solid #E5E7EB;
+          border: 1px solid #D1D5DB;
           border-radius: 12px;
-          padding: 40px;
+          padding: 44px;
           display: flex;
           flex-direction: column;
         }
 
         @media (max-width: 768px) {
-          .rp-card { padding: 32px; }
+          .rp-card { padding: 36px; }
         }
 
         .rp-card-icon {
-          width: 56px;
-          height: 56px;
+          width: 64px;
+          height: 64px;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-bottom: 20px;
-          background: #F0F0F0;
+          margin-bottom: 28px;
+          background: #E8ECFF;
           border-radius: 8px;
-          font-size: 24px;
+          font-size: 28px;
+          border: 2px solid #1F3FAE;
+        }
+
+        .rp-card-icon.teal {
+          background: #E8F5F7;
+          border-color: #1F6D7A;
+          color: #1F6D7A;
+        }
+
+        .rp-card-icon.red {
+          background: #F5E8E8;
+          border-color: #8B3838;
+          color: #8B3838;
         }
 
         .rp-card h3 {
-          font-size: 18px;
+          font-size: 16px;
           font-weight: 700;
           color: #0E1A2B;
           margin-bottom: 16px;
         }
 
         .rp-card-desc {
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 400;
           color: #6B7280;
-          margin-bottom: 24px;
+          margin-bottom: 28px;
           line-height: 1.6;
         }
 
         .rp-card-includes {
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 700;
           color: #0E1A2B;
           margin-bottom: 16px;
@@ -712,11 +771,11 @@ export default function LandingPage() {
 
         .rp-card-list {
           list-style: none;
-          margin: 0 0 28px 0;
+          margin: 0 0 36px 0;
           padding: 0;
-          font-size: 13px;
+          font-size: 12px;
           color: #0E1A2B;
-          line-height: 1.6;
+          line-height: 1.7;
         }
 
         .rp-card-list li {
@@ -724,25 +783,25 @@ export default function LandingPage() {
         }
 
         .rp-card-price {
-          font-size: 24px;
+          font-size: 28px;
           font-weight: 700;
           color: #0E1A2B;
-          margin-bottom: 24px;
+          margin-bottom: 28px;
           margin-top: auto;
         }
 
         .rp-card-btn {
           border: none;
-          padding: 12px 20px;
+          padding: 14px 24px;
           border-radius: 8px;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 600;
           cursor: pointer;
           width: 100%;
         }
 
         .rp-card-btn-assessment {
-          background: #4B3FAE;
+          background: #1F3FAE;
           color: white;
         }
 
@@ -752,41 +811,41 @@ export default function LandingPage() {
         }
 
         .rp-card-btn-analysis {
-          background: #8B3A3A;
+          background: #8B3838;
           color: white;
         }
 
         .rp-card-btn:hover { opacity: 0.9; }
 
         .rp-card.result {
-          border: 2px solid #4B3FAE;
-          box-shadow: 0 4px 12px rgba(75, 63, 174, 0.15);
+          border: 2px solid #1F3FAE;
+          box-shadow: 0 6px 20px rgba(31, 63, 174, 0.12);
         }
 
         /* FOOTER */
         .rp-footer {
           background: #0E1A2B;
           color: white;
-          padding: 120px 48px 48px;
+          padding: 140px 48px 60px;
         }
 
         @media (max-width: 768px) {
-          .rp-footer { padding: 80px 20px 40px; }
+          .rp-footer { padding: 100px 20px 48px; }
         }
 
         .rp-footer-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 80px;
+          gap: 100px;
           max-width: 1280px;
-          margin: 0 auto 80px;
+          margin: 0 auto 100px;
         }
 
         @media (max-width: 768px) {
           .rp-footer-grid {
             grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            margin-bottom: 60px;
+            gap: 60px;
+            margin-bottom: 80px;
           }
         }
 
@@ -794,7 +853,7 @@ export default function LandingPage() {
           font-size: 11px;
           font-weight: 700;
           text-transform: uppercase;
-          margin-bottom: 28px;
+          margin-bottom: 32px;
           letter-spacing: 0.5px;
         }
 
@@ -805,11 +864,11 @@ export default function LandingPage() {
         }
 
         .rp-footer-links li {
-          margin-bottom: 16px;
+          margin-bottom: 20px;
         }
 
         .rp-footer-links a {
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 400;
           color: white;
           text-decoration: none;
@@ -821,7 +880,7 @@ export default function LandingPage() {
         .rp-footer-bottom {
           max-width: 1280px;
           margin: 0 auto;
-          padding-top: 48px;
+          padding-top: 60px;
           border-top: 1px solid rgba(255, 255, 255, 0.1);
           text-align: center;
         }
@@ -829,39 +888,39 @@ export default function LandingPage() {
         .rp-footer-bottom p {
           font-size: 11px;
           color: rgba(255, 255, 255, 0.6);
-          margin-bottom: 6px;
-          line-height: 1.5;
+          margin-bottom: 8px;
+          line-height: 1.6;
         }
 
         .rp-footer-bottom p:last-child { margin-bottom: 0; }
 
-        /* FINAL CTA SECTION SPACING */
+        /* FINAL CTA SECTION */
         .rp-final-cta {
-          padding: 120px 48px;
+          padding: 160px 48px;
         }
 
         @media (max-width: 1023px) {
-          .rp-final-cta { padding: 80px 20px; }
+          .rp-final-cta { padding: 120px 20px; }
         }
 
         @media (max-width: 768px) {
-          .rp-final-cta { padding: 64px 20px; }
+          .rp-final-cta { padding: 100px 20px; }
         }
 
         .rp-final-cta h2 {
-          margin-bottom: 28px;
+          margin-bottom: 32px;
         }
 
         .rp-final-cta-subtitle {
-          font-size: 20px;
-          font-weight: 500;
+          font-size: 18px;
+          font-weight: 400;
           color: white;
-          margin-bottom: 40px;
+          margin-bottom: 48px;
         }
 
-        /* CLARIFICATION SECTION SPACING */
+        /* CLARIFICATION SECTION */
         .rp-clarification {
-          padding: 120px 48px;
+          padding: 100px 48px;
         }
 
         @media (max-width: 1023px) {
@@ -873,8 +932,8 @@ export default function LandingPage() {
         }
 
         .rp-clarification p {
-          font-size: 13px;
-          margin-bottom: 20px;
+          font-size: 12px;
+          margin-bottom: 16px;
           line-height: 1.7;
           color: #0E1A2B;
         }
@@ -901,7 +960,7 @@ export default function LandingPage() {
           </nav>
           <div className="rp-header-right">
             <a href="/sign-in" className="rp-sign-in">Sign In</a>
-            <button className="rp-btn-primary" onClick={() => window.location.href = '/assessment'}>
+            <button className="rp-btn-header" onClick={() => window.location.href = '/assessment'}>
               Start Assessment →
             </button>
           </div>
@@ -945,7 +1004,7 @@ export default function LandingPage() {
               </ul>
             </div>
 
-            <p className="rp-verification">VERIFIED REPORT</p>
+            <p className="rp-verification">Verified Report</p>
             <div className="rp-verification-grid">
               <div className="rp-verification-item">
                 <p className="rp-verification-label">Verification Status:</p>
@@ -996,22 +1055,22 @@ export default function LandingPage() {
               <li>• Lower concentration</li>
               <li>• More consistent income over time</li>
             </ul>
-            <div className="rp-class-box">
+            <div className="rp-class-box teal">
               <p className="rp-class-label">Income Stability Class</p>
-              <p className="rp-class-value">Established Stability</p>
+              <p className="rp-class-value teal">Established Stability</p>
             </div>
           </div>
         </div>
 
         <div className="rp-key-insight">
           <p className="rp-insight-title">KEY INSIGHT</p>
-          <p className="rp-insight-text">Two people earning the same income can receive different Income Stability classifications.</p>
+          <p className="rp-insight-text">Two people earning the same income can receive different income stability classifications.</p>
           <a href="#" className="rp-insight-link">Know the stability of your income →</a>
         </div>
       </section>
 
       {/* EXAMPLE PROFILE & UNDERSTANDING */}
-      <section className="rp-section">
+      <section className="rp-section rp-section-bg-white">
         <h2>Example Income Stability Profile</h2>
         <div className="rp-example-grid">
           <div className="rp-large-report">
@@ -1057,11 +1116,9 @@ export default function LandingPage() {
               </div>
             </div>
             <p className="rp-verification-note">Verification Available On All Issued Reports</p>
-          </div>
 
-          <div>
-            <div className="rp-included-section">
-              <h3>Included In The Report</h3>
+            <div style={{ marginTop: '48px', paddingTop: '48px', borderTop: '1px solid #E5E7EB' }}>
+              <p className="rp-insight-title" style={{ textAlign: 'left' }}>Included In The Report</p>
               <ul className="rp-included-list">
                 <li>Income Stability Measurement</li>
                 <li>Income Stability Class</li>
@@ -1073,42 +1130,41 @@ export default function LandingPage() {
               <a href="/sample-report" className="rp-view-sample">View Sample Report →</a>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* UNDERSTANDING THE REPORT */}
-      <section className="rp-section rp-section-bg-sand">
-        <h2>Understanding The Report</h2>
-        <div className="rp-understanding-grid">
-          <div className="rp-understanding-item">
-            <h4>Income Stability Measurement</h4>
-            <p>A standardized measurement of Income Stability.</p>
-          </div>
-          <div className="rp-understanding-item">
-            <h4>Income Stability Class</h4>
-            <p>A classification within the Income Stability framework.</p>
-          </div>
-          <div className="rp-understanding-item">
-            <h4>Income Stability Score</h4>
-            <p>A standardized score generated using Structural Stability Model RP-2.0.</p>
-          </div>
-          <div className="rp-understanding-item">
-            <h4>Primary Stability Drivers™</h4>
-            <p>Characteristics contributing most to the result.</p>
-          </div>
-          <div className="rp-understanding-item">
-            <h4>Stability Pressure Factors™</h4>
-            <p>Characteristics placing pressure on the result.</p>
-          </div>
-          <div className="rp-understanding-item">
-            <h4>Report Verification</h4>
-            <p>Model version, report identification, and verification details.</p>
+          <div>
+            <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '48px', color: '#0E1A2B' }}>Understanding The Report</h3>
+            <div className="rp-understanding-grid">
+              <div className="rp-understanding-item">
+                <h4>Income Stability Measurement</h4>
+                <p>A standardized measurement of Income Stability.</p>
+              </div>
+              <div className="rp-understanding-item">
+                <h4>Income Stability Class</h4>
+                <p>A classification within the Income Stability framework.</p>
+              </div>
+              <div className="rp-understanding-item">
+                <h4>Income Stability Score</h4>
+                <p>A standardized score generated using Structural Stability Model RP-2.0.</p>
+              </div>
+              <div className="rp-understanding-item">
+                <h4>Primary Stability Drivers™</h4>
+                <p>Characteristics contributing most to the result.</p>
+              </div>
+              <div className="rp-understanding-item">
+                <h4>Stability Pressure Factors™</h4>
+                <p>Characteristics placing pressure on the result.</p>
+              </div>
+              <div className="rp-understanding-item">
+                <h4>Report Verification</h4>
+                <p>Model version, report identification, and verification details.</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* STRUCTURAL STABILITY MODEL */}
-      <section className="rp-section">
+      <section className="rp-section rp-section-bg-white">
         <h2>Structural Stability Model RP-2.0</h2>
         <div className="rp-pillars-grid">
           <div className="rp-pillar">
@@ -1117,12 +1173,12 @@ export default function LandingPage() {
             <p className="rp-pillar-description">No human overrides.</p>
           </div>
           <div className="rp-pillar">
-            <div className="rp-pillar-icon">✓</div>
+            <div className="rp-pillar-icon check">✓</div>
             <p className="rp-pillar-text">Same Methodology</p>
             <p className="rp-pillar-description">No subjective scoring.</p>
           </div>
           <div className="rp-pillar">
-            <div className="rp-pillar-icon">📊</div>
+            <div className="rp-pillar-icon chart">📊</div>
             <p className="rp-pillar-text">Same Outputs</p>
             <p className="rp-pillar-description">No changing standards.</p>
           </div>
@@ -1158,7 +1214,7 @@ export default function LandingPage() {
           </div>
 
           <div className="rp-card result">
-            <div className="rp-card-icon">📄</div>
+            <div className="rp-card-icon teal">📄</div>
             <h3>Result</h3>
             <p className="rp-card-desc">Receive your Income Stability result.</p>
             <p className="rp-card-includes">Includes:</p>
@@ -1174,7 +1230,7 @@ export default function LandingPage() {
           </div>
 
           <div className="rp-card">
-            <div className="rp-card-icon">📊</div>
+            <div className="rp-card-icon red">📊</div>
             <h3>Analysis</h3>
             <p className="rp-card-desc">Receive the complete Income Stability analysis.</p>
             <p className="rp-card-includes">Includes everything in Result plus:</p>
@@ -1199,7 +1255,7 @@ export default function LandingPage() {
         <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
           <h2 style={{ color: 'white' }}>Before relying on income, know its stability.</h2>
           <p className="rp-final-cta-subtitle">Start Your Income Stability Assessment.</p>
-          <button className="rp-btn-hero" style={{ background: '#4B3FAE', marginBottom: '28px' }} onClick={() => window.location.href = '/assessment'}>
+          <button className="rp-btn-hero" style={{ background: '#1F3FAE', marginBottom: '28px' }} onClick={() => window.location.href = '/assessment'}>
             Start Assessment →
           </button>
           <p className="rp-microcopy" style={{ color: 'rgba(255,255,255,0.85)' }}>
