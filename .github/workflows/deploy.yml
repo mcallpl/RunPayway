@@ -93,23 +93,6 @@ jobs:
           echo "Checking PM2 status..."
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "pm2 status"
 
-      - name: Configure Apache
-        env:
-          SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-          echo "Uploading Apache configuration script..."
-          scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no \
-            scripts/configure-apache.sh \
-            root@64.227.108.128:/var/www/html/RunPayway/
-
-          echo "Running Apache configuration..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 \
-            "bash /var/www/html/RunPayway/scripts/configure-apache.sh"
-
       - name: Verify Application
         env:
           SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
@@ -118,24 +101,68 @@ jobs:
           echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          echo "Verifying application on localhost:3000..."
-          LOCAL_RESPONSE=$(ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "curl -s http://127.0.0.1:3000/")
-          if echo "$LOCAL_RESPONSE" | grep -q "Income and income stability are not the same thing"; then
-            echo "✓ localhost:3000 verified"
-          else
-            echo "✗ localhost:3000 failed verification"
-            exit 1
-          fi
+          echo "=== PM2 STATUS ==="
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "pm2 status"
 
-          echo "Verifying application on https://runpayway.peoplestar.com..."
-          LIVE_RESPONSE=$(curl -s https://runpayway.peoplestar.com/)
-          if echo "$LIVE_RESPONSE" | grep -q "Income and income stability are not the same thing"; then
-            echo "✓ https://runpayway.peoplestar.com verified"
+          echo ""
+          echo "=== NGINX HTTP VERIFICATION ==="
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://runpayway.peoplestar.com/)
+          if [ "$HTTP_STATUS" = "200" ]; then
+            echo "✓ HTTP 200 OK from https://runpayway.peoplestar.com"
           else
-            echo "✗ https://runpayway.peoplestar.com failed verification"
+            echo "✗ HTTP $HTTP_STATUS (expected 200)"
             exit 1
           fi
 
           echo ""
+          echo "=== LOCKED PALETTE VERIFICATION ==="
+          LIVE_RESPONSE=$(curl -s https://runpayway.peoplestar.com/)
+
+          # Verify locked RunPayway palette colors are present
+          if echo "$LIVE_RESPONSE" | grep -q "#4B3FAE"; then
+            echo "✓ Diagnostic Purple #4B3FAE present"
+          else
+            echo "✗ Diagnostic Purple #4B3FAE missing"
+            exit 1
+          fi
+
+          if echo "$LIVE_RESPONSE" | grep -q "#0E1A2B"; then
+            echo "✓ Structural Navy #0E1A2B present"
+          else
+            echo "✗ Structural Navy #0E1A2B missing"
+            exit 1
+          fi
+
+          if echo "$LIVE_RESPONSE" | grep -q "#1F6D7A"; then
+            echo "✓ Structural Teal #1F6D7A present"
+          else
+            echo "✗ Structural Teal #1F6D7A missing"
+            exit 1
+          fi
+
+          if echo "$LIVE_RESPONSE" | grep -q "#F4F1EA"; then
+            echo "✓ Warm Sand #F4F1EA present"
+          else
+            echo "✗ Warm Sand #F4F1EA missing"
+            exit 1
+          fi
+
+          echo ""
+          echo "=== UNAUTHORIZED COLORS VERIFICATION ==="
+          if echo "$LIVE_RESPONSE" | grep -q "#1F3FAE"; then
+            echo "✗ Unauthorized color #1F3FAE found"
+            exit 1
+          else
+            echo "✓ #1F3FAE absent"
+          fi
+
+          if echo "$LIVE_RESPONSE" | grep -q "#8B3838"; then
+            echo "✗ Unauthorized color #8B3838 found"
+            exit 1
+          else
+            echo "✓ #8B3838 absent"
+          fi
+
+          echo ""
           echo "✓ DEPLOYMENT SUCCESSFUL"
-          echo "App running at: https://runpayway.peoplestar.com"
+          echo "App running at: https://runpayway.peoplestar.com with locked RunPayway™ palette"
