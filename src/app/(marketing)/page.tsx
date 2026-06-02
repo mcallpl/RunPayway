@@ -36,7 +36,7 @@ export default function LandingPage() {
 
         .rp-nav {
           display: none;
-          gap: 32px;
+          gap: 48px;
           flex: 1;
           margin-left: 80px;
         }
@@ -55,14 +55,14 @@ export default function LandingPage() {
 
         .rp-header-right {
           display: flex;
-          gap: 16px;
+          gap: 24px;
           align-items: center;
           margin-left: auto;
         }
 
         .rp-sign-in {
           font-size: 14px;
-          font-weight: 500;
+          font-weight: 600;
           color: #4B3FAE;
           text-decoration: none;
           display: none;
@@ -88,62 +88,80 @@ export default function LandingPage() {
 
         /* HERO SECTION */
         .rp-hero {
-          padding: 80px 48px;
+          padding: 120px 48px;
           max-width: 1280px;
           margin: 0 auto;
         }
 
         @media (max-width: 1023px) {
-          .rp-hero { padding: 48px 20px; }
+          .rp-hero { padding: 80px 20px; }
           .rp-header { padding: 0 20px; }
+        }
+
+        @media (max-width: 768px) {
+          .rp-hero { padding: 64px 20px; }
         }
 
         .rp-hero-grid {
           display: grid;
           grid-template-columns: 55% 45%;
-          gap: 48px;
+          gap: 80px;
           align-items: center;
         }
 
         @media (max-width: 1023px) {
           .rp-hero-grid {
             grid-template-columns: 1fr;
+            gap: 48px;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .rp-hero-grid {
             gap: 32px;
           }
         }
 
         .rp-hero-left h1 {
-          font-size: 48px;
+          font-size: 56px;
           font-weight: 700;
           line-height: 1.2;
-          margin-bottom: 24px;
+          margin-bottom: 32px;
           color: #0E1A2B;
         }
 
         @media (max-width: 1023px) {
+          .rp-hero-left h1 { font-size: 48px; margin-bottom: 28px; }
+        }
+
+        @media (max-width: 768px) {
           .rp-hero-left h1 { font-size: 40px; }
         }
 
         .rp-hero-left p {
-          font-size: 16px;
+          font-size: 18px;
           font-weight: 400;
           line-height: 1.6;
-          margin-bottom: 32px;
+          margin-bottom: 40px;
           color: #0E1A2B;
+        }
+
+        @media (max-width: 768px) {
+          .rp-hero-left p { font-size: 16px; margin-bottom: 32px; }
         }
 
         .rp-hero-cta {
           display: flex;
           flex-direction: column;
-          gap: 16px;
-          margin-bottom: 24px;
+          gap: 24px;
+          margin-bottom: 32px;
         }
 
         .rp-btn-hero {
           background: #4B3FAE;
           color: white;
           border: none;
-          padding: 14px 32px;
+          padding: 16px 36px;
           border-radius: 8px;
           font-size: 16px;
           font-weight: 600;
@@ -155,7 +173,7 @@ export default function LandingPage() {
         .rp-btn-hero:hover { opacity: 0.9; }
 
         .rp-microcopy {
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 400;
           color: #6B7280;
         }
@@ -165,36 +183,44 @@ export default function LandingPage() {
           background: white;
           border: 1px solid #E5E7EB;
           border-radius: 12px;
-          padding: 40px;
+          padding: 48px;
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
+        @media (max-width: 768px) {
+          .rp-report { padding: 36px; }
+        }
+
         .rp-report-score {
-          font-size: 72px;
+          font-size: 80px;
           font-weight: 700;
           color: #0E1A2B;
-          margin: 0 0 8px 0;
+          margin: 0 0 12px 0;
           line-height: 1;
+        }
+
+        @media (max-width: 768px) {
+          .rp-report-score { font-size: 64px; }
         }
 
         .rp-report-label {
           font-size: 12px;
           font-weight: 600;
           color: #6B7280;
-          margin-bottom: 24px;
+          margin-bottom: 32px;
         }
 
         .rp-report-class {
-          font-size: 18px;
-          font-weight: 600;
+          font-size: 20px;
+          font-weight: 700;
           color: #0E1A2B;
-          margin-bottom: 32px;
-          padding-bottom: 32px;
+          margin-bottom: 40px;
+          padding-bottom: 40px;
           border-bottom: 1px solid #E5E7EB;
         }
 
         .rp-drivers {
-          margin-bottom: 32px;
+          margin-bottom: 40px;
         }
 
         .rp-drivers-title {
@@ -202,7 +228,7 @@ export default function LandingPage() {
           font-weight: 700;
           text-transform: uppercase;
           color: #0E1A2B;
-          margin-bottom: 12px;
+          margin-bottom: 16px;
           letter-spacing: 0.5px;
         }
 
@@ -213,17 +239,18 @@ export default function LandingPage() {
         }
 
         .rp-drivers-list li {
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 400;
           color: #0E1A2B;
-          margin-bottom: 6px;
+          margin-bottom: 8px;
+          line-height: 1.5;
         }
 
         .rp-drivers-list li:last-child { margin-bottom: 0; }
 
         .rp-pressure {
-          margin-bottom: 32px;
-          padding-bottom: 32px;
+          margin-bottom: 40px;
+          padding-bottom: 40px;
           border-bottom: 1px solid #E5E7EB;
         }
 
@@ -232,7 +259,7 @@ export default function LandingPage() {
           font-weight: 700;
           text-transform: uppercase;
           color: #D32F2F;
-          margin-bottom: 12px;
+          margin-bottom: 16px;
           letter-spacing: 0.5px;
         }
 
@@ -241,48 +268,54 @@ export default function LandingPage() {
           font-weight: 700;
           text-transform: uppercase;
           color: #0E1A2B;
-          margin-bottom: 16px;
+          margin-bottom: 20px;
           letter-spacing: 0.5px;
         }
 
         .rp-verification-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 16px;
+          gap: 24px;
           font-size: 12px;
         }
 
         .rp-verification-item {
-          margin-bottom: 8px;
+          margin-bottom: 12px;
         }
 
         .rp-verification-label {
           font-weight: 600;
           color: #0E1A2B;
-          margin-bottom: 2px;
+          margin-bottom: 4px;
+          font-size: 12px;
         }
 
         .rp-verification-value {
           color: #6B7280;
-          font-size: 11px;
+          font-size: 12px;
+          font-weight: 500;
         }
 
         .rp-verification-note {
-          font-size: 11px;
+          font-size: 12px;
           color: #6B7280;
-          margin-top: 12px;
+          margin-top: 16px;
           text-align: center;
         }
 
         /* SECTIONS */
         .rp-section {
-          padding: 80px 48px;
+          padding: 120px 48px;
           max-width: 1280px;
           margin: 0 auto;
         }
 
         @media (max-width: 1023px) {
-          .rp-section { padding: 48px 20px; }
+          .rp-section { padding: 80px 20px; }
+        }
+
+        @media (max-width: 768px) {
+          .rp-section { padding: 64px 20px; }
         }
 
         .rp-section-bg-sand {
@@ -295,61 +328,75 @@ export default function LandingPage() {
         }
 
         .rp-section h2 {
-          font-size: 36px;
+          font-size: 40px;
           font-weight: 700;
-          margin-bottom: 48px;
+          margin-bottom: 64px;
           color: inherit;
           text-align: center;
+          line-height: 1.3;
         }
 
         @media (max-width: 1023px) {
-          .rp-section h2 { font-size: 28px; }
+          .rp-section h2 { font-size: 32px; margin-bottom: 48px; }
+        }
+
+        @media (max-width: 768px) {
+          .rp-section h2 { font-size: 28px; margin-bottom: 40px; }
         }
 
         .rp-comparison-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 32px;
-          margin-bottom: 32px;
+          gap: 40px;
+          margin-bottom: 48px;
         }
 
         @media (max-width: 768px) {
-          .rp-comparison-grid { grid-template-columns: 1fr; }
+          .rp-comparison-grid {
+            grid-template-columns: 1fr;
+            gap: 32px;
+            margin-bottom: 40px;
+          }
         }
 
         .rp-profile-card {
           background: white;
           border: 1px solid #E5E7EB;
           border-radius: 12px;
-          padding: 32px;
+          padding: 40px;
+        }
+
+        @media (max-width: 768px) {
+          .rp-profile-card { padding: 32px; }
         }
 
         .rp-profile-header {
           font-size: 14px;
           font-weight: 700;
           color: #4B3FAE;
-          margin-bottom: 16px;
+          margin-bottom: 20px;
           text-transform: uppercase;
           letter-spacing: 0.5px;
         }
 
         .rp-profile-income {
-          font-size: 18px;
+          font-size: 20px;
           font-weight: 700;
           color: #0E1A2B;
-          margin-bottom: 16px;
+          margin-bottom: 20px;
         }
 
         .rp-profile-list {
           list-style: none;
-          margin: 0 0 24px 0;
+          margin: 0 0 32px 0;
           padding: 0;
           font-size: 14px;
           color: #0E1A2B;
+          line-height: 1.6;
         }
 
         .rp-profile-list li {
-          margin-bottom: 8px;
+          margin-bottom: 10px;
         }
 
         .rp-profile-list li:last-child { margin-bottom: 0; }
@@ -358,7 +405,7 @@ export default function LandingPage() {
           background: #F4F1EA;
           border: 1px solid #E5E7EB;
           border-radius: 8px;
-          padding: 16px;
+          padding: 20px;
           text-align: center;
         }
 
@@ -366,7 +413,7 @@ export default function LandingPage() {
           font-size: 11px;
           font-weight: 600;
           color: #6B7280;
-          margin-bottom: 8px;
+          margin-bottom: 10px;
           text-transform: uppercase;
         }
 
@@ -376,7 +423,7 @@ export default function LandingPage() {
           color: #4B3FAE;
           border: 2px solid #4B3FAE;
           border-radius: 6px;
-          padding: 8px 16px;
+          padding: 10px 20px;
           display: inline-block;
         }
 
@@ -384,21 +431,27 @@ export default function LandingPage() {
           background: white;
           border: 1px solid #E5E7EB;
           border-radius: 12px;
-          padding: 32px;
+          padding: 40px;
+        }
+
+        @media (max-width: 768px) {
+          .rp-key-insight { padding: 32px; }
         }
 
         .rp-insight-title {
           font-size: 14px;
           font-weight: 700;
           color: #0E1A2B;
-          margin-bottom: 16px;
+          margin-bottom: 20px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
 
         .rp-insight-text {
-          font-size: 14px;
+          font-size: 16px;
           font-weight: 400;
           color: #0E1A2B;
-          margin-bottom: 16px;
+          margin-bottom: 24px;
           line-height: 1.6;
         }
 
@@ -414,15 +467,16 @@ export default function LandingPage() {
         .rp-example-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 48px;
+          gap: 64px;
           align-items: flex-start;
-          margin-bottom: 48px;
+          margin-bottom: 64px;
         }
 
         @media (max-width: 768px) {
           .rp-example-grid {
             grid-template-columns: 1fr;
-            gap: 32px;
+            gap: 48px;
+            margin-bottom: 48px;
           }
         }
 
@@ -434,14 +488,18 @@ export default function LandingPage() {
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
+        @media (max-width: 768px) {
+          .rp-large-report { padding: 36px; }
+        }
+
         .rp-large-report .rp-report-score {
-          font-size: 64px;
+          font-size: 72px;
         }
 
         .rp-included-section h3 {
           font-size: 14px;
           font-weight: 700;
-          margin-bottom: 16px;
+          margin-bottom: 24px;
           color: #0E1A2B;
         }
 
@@ -449,21 +507,23 @@ export default function LandingPage() {
           list-style: none;
           margin: 0;
           padding: 0;
-          font-size: 13px;
+          font-size: 14px;
           color: #0E1A2B;
+          line-height: 1.7;
         }
 
         .rp-included-list li {
           margin-bottom: 12px;
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 12px;
         }
 
         .rp-included-list li:before {
           content: "○";
           color: #4B3FAE;
           font-weight: bold;
+          min-width: 16px;
         }
 
         .rp-view-sample {
@@ -473,9 +533,9 @@ export default function LandingPage() {
           text-decoration: none;
           cursor: pointer;
           display: inline-block;
-          margin-top: 16px;
+          margin-top: 28px;
           border: 2px solid #4B3FAE;
-          padding: 10px 16px;
+          padding: 12px 20px;
           border-radius: 6px;
         }
 
@@ -483,13 +543,13 @@ export default function LandingPage() {
         .rp-understanding-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 48px;
+          gap: 64px;
         }
 
         @media (max-width: 768px) {
           .rp-understanding-grid {
             grid-template-columns: 1fr;
-            gap: 32px;
+            gap: 48px;
           }
         }
 
@@ -497,27 +557,29 @@ export default function LandingPage() {
           font-size: 14px;
           font-weight: 700;
           color: #0E1A2B;
-          margin-bottom: 12px;
+          margin-bottom: 16px;
         }
 
         .rp-understanding-item p {
           font-size: 14px;
           font-weight: 400;
           color: #0E1A2B;
-          line-height: 1.6;
+          line-height: 1.7;
         }
 
         /* STRUCTURAL MODEL */
         .rp-pillars-grid {
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
-          gap: 24px;
-          margin-bottom: 32px;
+          gap: 32px;
+          margin-bottom: 48px;
         }
 
         @media (max-width: 768px) {
           .rp-pillars-grid {
             grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
           }
         }
 
@@ -525,15 +587,19 @@ export default function LandingPage() {
           background: white;
           border: 1px solid #E5E7EB;
           border-radius: 12px;
-          padding: 32px;
+          padding: 40px 32px;
           text-align: center;
           display: flex;
           flex-direction: column;
-          gap: 16px;
+          gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+          .rp-pillar { padding: 32px 24px; }
         }
 
         .rp-pillar-icon {
-          font-size: 32px;
+          font-size: 40px;
           height: 48px;
           display: flex;
           align-items: center;
@@ -541,13 +607,13 @@ export default function LandingPage() {
         }
 
         .rp-pillar-text {
-          font-size: 14px;
+          font-size: 16px;
           font-weight: 700;
           color: #0E1A2B;
         }
 
         .rp-pillar-description {
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 400;
           color: #6B7280;
           line-height: 1.6;
@@ -560,35 +626,38 @@ export default function LandingPage() {
           color: #4B3FAE;
           text-decoration: none;
           cursor: pointer;
+          display: inline-block;
         }
 
         /* CENTERPIECE STATEMENT */
         .rp-centerpiece {
           text-align: center;
-          padding: 80px 48px;
-          font-size: 28px;
+          padding: 120px 48px;
+          font-size: 32px;
           font-weight: 700;
           color: #0E1A2B;
           line-height: 1.4;
         }
 
+        @media (max-width: 1023px) {
+          .rp-centerpiece { padding: 80px 20px; font-size: 28px; }
+        }
+
         @media (max-width: 768px) {
-          .rp-centerpiece {
-            padding: 48px 20px;
-            font-size: 24px;
-          }
+          .rp-centerpiece { padding: 64px 20px; font-size: 24px; }
         }
 
         /* ACCESS YOUR RESULT */
         .rp-cards-grid {
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
-          gap: 24px;
+          gap: 32px;
         }
 
         @media (max-width: 1023px) {
           .rp-cards-grid {
             grid-template-columns: 1fr;
+            gap: 24px;
           }
         }
 
@@ -596,55 +665,62 @@ export default function LandingPage() {
           background: white;
           border: 1px solid #E5E7EB;
           border-radius: 12px;
-          padding: 32px;
+          padding: 40px;
           display: flex;
           flex-direction: column;
         }
 
+        @media (max-width: 768px) {
+          .rp-card { padding: 32px; }
+        }
+
         .rp-card-icon {
-          font-size: 36px;
-          margin-bottom: 16px;
+          font-size: 40px;
+          margin-bottom: 20px;
         }
 
         .rp-card h3 {
-          font-size: 16px;
+          font-size: 18px;
           font-weight: 700;
           color: #0E1A2B;
-          margin-bottom: 12px;
+          margin-bottom: 16px;
         }
 
         .rp-card-desc {
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 400;
           color: #6B7280;
-          margin-bottom: 20px;
+          margin-bottom: 24px;
           line-height: 1.6;
         }
 
         .rp-card-includes {
           font-size: 12px;
-          font-weight: 600;
+          font-weight: 700;
           color: #0E1A2B;
-          margin-bottom: 12px;
+          margin-bottom: 16px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
 
         .rp-card-list {
           list-style: none;
-          margin: 0 0 20px 0;
+          margin: 0 0 28px 0;
           padding: 0;
-          font-size: 12px;
+          font-size: 13px;
           color: #0E1A2B;
+          line-height: 1.6;
         }
 
         .rp-card-list li {
-          margin-bottom: 6px;
+          margin-bottom: 8px;
         }
 
         .rp-card-price {
-          font-size: 20px;
+          font-size: 24px;
           font-weight: 700;
           color: #0E1A2B;
-          margin-bottom: 16px;
+          margin-bottom: 24px;
           margin-top: auto;
         }
 
@@ -652,9 +728,9 @@ export default function LandingPage() {
           background: #4B3FAE;
           color: white;
           border: none;
-          padding: 12px 20px;
+          padding: 14px 20px;
           border-radius: 8px;
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 600;
           cursor: pointer;
           width: 100%;
@@ -671,25 +747,26 @@ export default function LandingPage() {
         .rp-footer {
           background: #0E1A2B;
           color: white;
-          padding: 80px 48px 40px;
+          padding: 120px 48px 48px;
         }
 
         @media (max-width: 768px) {
-          .rp-footer { padding: 48px 20px 32px; }
+          .rp-footer { padding: 80px 20px 40px; }
         }
 
         .rp-footer-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 64px;
+          gap: 80px;
           max-width: 1280px;
-          margin: 0 auto 60px;
+          margin: 0 auto 80px;
         }
 
         @media (max-width: 768px) {
           .rp-footer-grid {
             grid-template-columns: 1fr 1fr;
-            gap: 32px;
+            gap: 48px;
+            margin-bottom: 60px;
           }
         }
 
@@ -697,7 +774,7 @@ export default function LandingPage() {
           font-size: 11px;
           font-weight: 700;
           text-transform: uppercase;
-          margin-bottom: 20px;
+          margin-bottom: 28px;
           letter-spacing: 0.5px;
         }
 
@@ -708,7 +785,7 @@ export default function LandingPage() {
         }
 
         .rp-footer-links li {
-          margin-bottom: 12px;
+          margin-bottom: 16px;
         }
 
         .rp-footer-links a {
@@ -716,6 +793,7 @@ export default function LandingPage() {
           font-weight: 400;
           color: white;
           text-decoration: none;
+          line-height: 1.6;
         }
 
         .rp-footer-links a:hover { opacity: 0.7; }
@@ -723,7 +801,7 @@ export default function LandingPage() {
         .rp-footer-bottom {
           max-width: 1280px;
           margin: 0 auto;
-          padding-top: 40px;
+          padding-top: 48px;
           border-top: 1px solid rgba(255, 255, 255, 0.1);
           text-align: center;
         }
@@ -731,10 +809,57 @@ export default function LandingPage() {
         .rp-footer-bottom p {
           font-size: 11px;
           color: rgba(255, 255, 255, 0.6);
-          margin-bottom: 4px;
+          margin-bottom: 6px;
+          line-height: 1.5;
         }
 
         .rp-footer-bottom p:last-child { margin-bottom: 0; }
+
+        /* FINAL CTA SECTION SPACING */
+        .rp-final-cta {
+          padding: 120px 48px;
+        }
+
+        @media (max-width: 1023px) {
+          .rp-final-cta { padding: 80px 20px; }
+        }
+
+        @media (max-width: 768px) {
+          .rp-final-cta { padding: 64px 20px; }
+        }
+
+        .rp-final-cta h2 {
+          margin-bottom: 28px;
+        }
+
+        .rp-final-cta-subtitle {
+          font-size: 20px;
+          font-weight: 500;
+          color: white;
+          margin-bottom: 40px;
+        }
+
+        /* CLARIFICATION SECTION SPACING */
+        .rp-clarification {
+          padding: 120px 48px;
+        }
+
+        @media (max-width: 1023px) {
+          .rp-clarification { padding: 80px 20px; }
+        }
+
+        @media (max-width: 768px) {
+          .rp-clarification { padding: 64px 20px; }
+        }
+
+        .rp-clarification p {
+          font-size: 13px;
+          margin-bottom: 20px;
+          line-height: 1.7;
+          color: #0E1A2B;
+        }
+
+        .rp-clarification p:last-child { margin-bottom: 0; }
       `}</style>
 
       {/* HEADER */}
@@ -1050,39 +1175,27 @@ export default function LandingPage() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="rp-section rp-section-bg-navy">
-        <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-          <h2 style={{ color: 'white', marginBottom: '24px' }}>Before relying on income, know its stability.</h2>
-          <p style={{ fontSize: '18px', fontWeight: '500', color: 'white', marginBottom: '32px' }}>
-            Start Your Income Stability Assessment.
-          </p>
-          <button className="rp-btn-hero" style={{ background: '#4B3FAE', marginBottom: '24px' }} onClick={() => window.location.href = '/assessment'}>
+      <section className="rp-section-bg-navy rp-final-cta">
+        <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
+          <h2 style={{ color: 'white' }}>Before relying on income, know its stability.</h2>
+          <p className="rp-final-cta-subtitle">Start Your Income Stability Assessment.</p>
+          <button className="rp-btn-hero" style={{ background: '#4B3FAE', marginBottom: '28px' }} onClick={() => window.location.href = '/assessment'}>
             Start Assessment →
           </button>
-          <p className="rp-microcopy" style={{ color: 'rgba(255,255,255,0.8)' }}>
+          <p className="rp-microcopy" style={{ color: 'rgba(255,255,255,0.85)' }}>
             Free • Under 2 Minutes • No Documents Required
           </p>
         </div>
       </section>
 
       {/* SYSTEM CLARIFICATION */}
-      <section className="rp-section">
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <p style={{ fontSize: '13px', marginBottom: '12px', lineHeight: '1.6' }}>
-            RunPayway™ measures the stability of your income using Structural Stability Model RP-2.0.
-          </p>
-          <p style={{ fontSize: '13px', marginBottom: '12px', lineHeight: '1.6' }}>
-            RunPayway™ is not a credit score, lending decision, investment recommendation, financial plan, employment evaluation, or prediction of future income.
-          </p>
-          <p style={{ fontSize: '13px', marginBottom: '12px', lineHeight: '1.6' }}>
-            Results provide a standardized measurement generated from information supplied during the assessment.
-          </p>
-          <p style={{ fontSize: '13px', marginBottom: '12px' }}>
-            Model Version: RP-2.0
-          </p>
-          <p style={{ fontSize: '13px' }}>
-            Verification Available On Issued Reports.
-          </p>
+      <section className="rp-clarification">
+        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+          <p>RunPayway™ measures the stability of your income using Structural Stability Model RP-2.0.</p>
+          <p>RunPayway™ is not a credit score, lending decision, investment recommendation, financial plan, employment evaluation, or prediction of future income.</p>
+          <p>Results provide a standardized measurement generated from information supplied during the assessment.</p>
+          <p>Model Version: RP-2.0</p>
+          <p>Verification Available On Issued Reports.</p>
         </div>
       </section>
 
