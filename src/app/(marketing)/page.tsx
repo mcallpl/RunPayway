@@ -67,7 +67,7 @@ export default function LandingPage() {
         .rp-sign-in {
           font-size: 13px;
           font-weight: 600;
-          color: #1F3FAE;
+          color: #4B3FAE;
           text-decoration: none;
           display: none;
         }
@@ -77,7 +77,7 @@ export default function LandingPage() {
         }
 
         .rp-btn-header {
-          background: #1F3FAE;
+          background: #4B3FAE;
           color: white;
           border: none;
           padding: 10px 20px;
@@ -166,7 +166,7 @@ export default function LandingPage() {
         }
 
         .rp-btn-hero {
-          background: #1F3FAE;
+          background: #4B3FAE;
           color: white;
           border: none;
           padding: 14px 32px;
@@ -202,7 +202,7 @@ export default function LandingPage() {
         .rp-report-score {
           font-size: 80px;
           font-weight: 700;
-          color: #1F3FAE;
+          color: #4B3FAE;
           margin: 0 0 8px 0;
           line-height: 1;
         }
@@ -223,7 +223,7 @@ export default function LandingPage() {
         .rp-report-class {
           font-size: 18px;
           font-weight: 700;
-          color: #1F3FAE;
+          color: #4B3FAE;
           margin-bottom: 40px;
           padding-bottom: 40px;
           border-bottom: 1px solid #E5E7EB;
@@ -398,7 +398,7 @@ export default function LandingPage() {
         .rp-profile-header {
           font-size: 12px;
           font-weight: 700;
-          color: #1F3FAE;
+          color: #4B3FAE;
           margin-bottom: 20px;
           text-transform: uppercase;
           letter-spacing: 0.5px;
@@ -428,7 +428,7 @@ export default function LandingPage() {
 
         .rp-class-box {
           background: white;
-          border: 2px solid #1F3FAE;
+          border: 2px solid #4B3FAE;
           border-radius: 8px;
           padding: 16px 20px;
           text-align: center;
@@ -449,7 +449,7 @@ export default function LandingPage() {
         .rp-class-value {
           font-size: 15px;
           font-weight: 700;
-          color: #1F3FAE;
+          color: #4B3FAE;
         }
 
         .rp-class-value.teal {
@@ -487,7 +487,7 @@ export default function LandingPage() {
         .rp-insight-link {
           font-size: 13px;
           font-weight: 600;
-          color: #1F3FAE;
+          color: #4B3FAE;
           text-decoration: none;
           cursor: pointer;
         }
@@ -550,7 +550,7 @@ export default function LandingPage() {
 
         .rp-included-list li:before {
           content: "●";
-          color: #1F3FAE;
+          color: #4B3FAE;
           font-weight: bold;
           min-width: 16px;
         }
@@ -558,12 +558,12 @@ export default function LandingPage() {
         .rp-view-sample {
           font-size: 13px;
           font-weight: 600;
-          color: #1F3FAE;
+          color: #4B3FAE;
           text-decoration: none;
           cursor: pointer;
           display: inline-block;
           margin-top: 36px;
-          border: 2px solid #1F3FAE;
+          border: 2px solid #4B3FAE;
           padding: 12px 20px;
           border-radius: 6px;
         }
@@ -585,7 +585,7 @@ export default function LandingPage() {
         .rp-understanding-item h4 {
           font-size: 13px;
           font-weight: 700;
-          color: #1F3FAE;
+          color: #4B3FAE;
           margin-bottom: 16px;
         }
 
@@ -637,7 +637,7 @@ export default function LandingPage() {
           background: #E8ECFF;
           border-radius: 50%;
           font-size: 32px;
-          border: 2px solid #1F3FAE;
+          border: 2px solid #4B3FAE;
         }
 
         .rp-pillar-icon.check {
@@ -669,7 +669,7 @@ export default function LandingPage() {
         .rp-methodology-link {
           font-size: 13px;
           font-weight: 600;
-          color: #1F3FAE;
+          color: #4B3FAE;
           text-decoration: none;
           cursor: pointer;
           display: inline-block;
@@ -730,7 +730,7 @@ export default function LandingPage() {
           background: #E8ECFF;
           border-radius: 8px;
           font-size: 28px;
-          border: 2px solid #1F3FAE;
+          border: 2px solid #4B3FAE;
         }
 
         .rp-card-icon.teal {
@@ -741,8 +741,8 @@ export default function LandingPage() {
 
         .rp-card-icon.red {
           background: #F5E8E8;
-          border-color: #8B3838;
-          color: #8B3838;
+          border-color: #0E1A2B;
+          color: #0E1A2B;
         }
 
         .rp-card h3 {
@@ -801,7 +801,7 @@ export default function LandingPage() {
         }
 
         .rp-card-btn-assessment {
-          background: #1F3FAE;
+          background: #4B3FAE;
           color: white;
         }
 
@@ -811,14 +811,14 @@ export default function LandingPage() {
         }
 
         .rp-card-btn-analysis {
-          background: #8B3838;
+          background: #0E1A2B;
           color: white;
         }
 
         .rp-card-btn:hover { opacity: 0.9; }
 
         .rp-card.result {
-          border: 2px solid #1F3FAE;
+          border: 2px solid #4B3FAE;
           box-shadow: 0 6px 20px rgba(31, 63, 174, 0.12);
         }
 
@@ -1255,7 +1255,7 @@ export default function LandingPage() {
         <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
           <h2 style={{ color: 'white' }}>Before relying on income, know its stability.</h2>
           <p className="rp-final-cta-subtitle">Start Your Income Stability Assessment.</p>
-          <button className="rp-btn-hero" style={{ background: '#1F3FAE', marginBottom: '28px' }} onClick={() => window.location.href = '/assessment'}>
+          <button className="rp-btn-hero" style={{ background: '#4B3FAE', marginBottom: '28px' }} onClick={() => window.location.href = '/assessment'}>
             Start Assessment →
           </button>
           <p className="rp-microcopy" style={{ color: 'rgba(255,255,255,0.85)' }}>
