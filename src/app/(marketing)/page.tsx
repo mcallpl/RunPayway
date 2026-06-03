@@ -1013,129 +1013,92 @@ export default function LandingPage() {
         <h2>Sample Income Stability Profile</h2>
 
         <div className="showcase-report">
-          {/* TOP SECTION: Score & Class */}
-          <div style={{ marginBottom: '32px', paddingBottom: '32px', borderBottom: '1px solid #6A7485' }}>
-            <div className="showcase-score">72</div>
-            <div style={{ fontSize: '20px', fontWeight: 600, color: '#0B1730', marginBottom: '16px' }}>Income Stability Score</div>
-            <div className="showcase-class">Established Stability</div>
-            <div style={{ fontSize: '14px', color: '#6A7485', fontWeight: 400, marginTop: '16px' }}>Based on Structural Stability Model RP-2.0</div>
-          </div>
-
-          {/* SECOND SECTION: Supporting Drivers & Pressure Factors */}
-          <div style={{ marginBottom: '32px', paddingBottom: '32px', borderBottom: '1px solid #6A7485' }}>
-            <div style={{ marginBottom: '24px' }}>
-              <div className="section-title">Supporting Drivers</div>
-              <ul className="report-list teal">
-                <li>✓ Income Concentration</li>
-                <li>✓ Income Diversity</li>
-              </ul>
-            </div>
-            <div>
-              <div className="section-title">Stability Pressure Factors</div>
-              <ul className="report-list">
-                <li>△ Forward Visibility</li>
-                <li>△ Continuity Strength</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* INTERPRETATION */}
-          <div style={{ marginBottom: '32px', paddingBottom: '32px', borderBottom: '1px solid #6A7485', fontSize: '14px', color: '#0B1730', lineHeight: '24px', fontWeight: 400 }}>
-            This profile reflects an income structure with several established stability characteristics and a small number of areas placing pressure on overall stability.
-          </div>
-
-          {/* THIRD SECTION: Factor Breakdown with Color Coding */}
+          {/* SCORE SUMMARY */}
           <div style={{ marginBottom: '48px', paddingBottom: '48px', borderBottom: '1px solid #6A7485' }}>
-            <div style={{ fontSize: '12px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '24px' }}>Factor Breakdown</div>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '24px' }}>
+              <div style={{ fontSize: '72px', fontWeight: 700, color: '#1B6873', fontFamily: "'IBM Plex Mono', monospace", lineHeight: '1' }}>72</div>
+              <div style={{ fontSize: '16px', fontWeight: 600, color: '#0B1730' }}>Income Stability Score™</div>
+            </div>
+            <div style={{ fontSize: '28px', fontWeight: 600, color: '#1B6873', marginBottom: '24px' }}>Established Stability</div>
+            <div style={{ fontSize: '14px', color: '#0B1730', lineHeight: '24px', fontWeight: 400 }}>Established Stability reflects an income structure with several characteristics that support stability while maintaining a limited number of pressure areas.</div>
+          </div>
 
-            {/* Teal Indicators (Positive) */}
+          {/* WHAT STRENGTHENED STABILITY */}
+          <div style={{ marginBottom: '48px', paddingBottom: '48px', borderBottom: '1px solid #6A7485' }}>
+            <div style={{ fontSize: '12px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '24px' }}>What Strengthened Stability</div>
+
             <div style={{ marginBottom: '32px' }}>
-              <div style={{ fontSize: '13px', fontWeight: 600, color: '#1B6873', marginBottom: '12px' }}>Positive Indicators</div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', fontSize: '13px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ color: '#0B1730' }}>Income Concentration</div>
-                  <div style={{ fontSize: '32px', fontWeight: 700, color: '#1B6873', fontFamily: "'IBM Plex Mono', monospace" }}>82</div>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ color: '#0B1730' }}>Income Diversity</div>
-                  <div style={{ fontSize: '32px', fontWeight: 700, color: '#1B6873', fontFamily: "'IBM Plex Mono', monospace" }}>76</div>
-                </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730' }}>Income Concentration</div>
+                <div style={{ fontSize: '28px', fontWeight: 700, color: '#1B6873', fontFamily: "'IBM Plex Mono', monospace" }}>82</div>
               </div>
+              <div style={{ fontSize: '13px', color: '#6A7485', fontWeight: 400 }}>Strong contributor to stability.</div>
             </div>
 
-            {/* Slate Indicators (Neutral) */}
-            <div style={{ marginBottom: '32px' }}>
-              <div style={{ fontSize: '13px', fontWeight: 600, color: '#6A7485', marginBottom: '12px' }}>Neutral Indicators</div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px' }}>
-                <div style={{ color: '#0B1730' }}>Stability Pattern</div>
-                <div style={{ fontSize: '32px', fontWeight: 700, color: '#6A7485', fontFamily: "'IBM Plex Mono', monospace" }}>68</div>
-              </div>
-            </div>
-
-            {/* Navy Indicators (Standard) */}
             <div>
-              <div style={{ fontSize: '13px', fontWeight: 600, color: '#0B1730', marginBottom: '12px' }}>Standard Indicators</div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', fontSize: '13px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ color: '#0B1730' }}>Forward Visibility</div>
-                  <div style={{ fontSize: '32px', fontWeight: 700, color: '#0B1730', fontFamily: "'IBM Plex Mono', monospace" }}>41</div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730' }}>Income Diversity</div>
+                <div style={{ fontSize: '28px', fontWeight: 700, color: '#1B6873', fontFamily: "'IBM Plex Mono', monospace" }}>76</div>
+              </div>
+              <div style={{ fontSize: '13px', color: '#6A7485', fontWeight: 400 }}>Strong contributor to stability.</div>
+            </div>
+          </div>
+
+          {/* WHAT CREATED PRESSURE */}
+          <div style={{ marginBottom: '48px', paddingBottom: '48px', borderBottom: '1px solid #6A7485' }}>
+            <div style={{ fontSize: '12px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '24px' }}>What Created Pressure</div>
+
+            <div style={{ marginBottom: '32px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730' }}>Forward Visibility</div>
+                <div style={{ fontSize: '28px', fontWeight: 700, color: '#0B1730', fontFamily: "'IBM Plex Mono', monospace" }}>41</div>
+              </div>
+              <div style={{ fontSize: '13px', color: '#6A7485', fontWeight: 400 }}>Limited visibility into future income commitments.</div>
+            </div>
+
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730' }}>Continuity Strength</div>
+                <div style={{ fontSize: '28px', fontWeight: 700, color: '#0B1730', fontFamily: "'IBM Plex Mono', monospace" }}>55</div>
+              </div>
+              <div style={{ fontSize: '13px', color: '#6A7485', fontWeight: 400 }}>Moderate continuity in income relationships.</div>
+            </div>
+          </div>
+
+          {/* ADDITIONAL STRUCTURAL FACTORS */}
+          <div style={{ marginBottom: '48px', paddingBottom: '48px', borderBottom: '1px solid #6A7485' }}>
+            <div style={{ fontSize: '12px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '24px' }}>Additional Structural Factors</div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730' }}>Stability Pattern</div>
+                  <div style={{ fontSize: '28px', fontWeight: 700, color: '#6A7485', fontFamily: "'IBM Plex Mono', monospace" }}>68</div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ color: '#0B1730' }}>Continuity Strength</div>
-                  <div style={{ fontSize: '32px', fontWeight: 700, color: '#0B1730', fontFamily: "'IBM Plex Mono', monospace" }}>55</div>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ color: '#0B1730' }}>Dependency Exposure</div>
-                  <div style={{ fontSize: '32px', fontWeight: 700, color: '#0B1730', fontFamily: "'IBM Plex Mono', monospace" }}>71</div>
+              </div>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730' }}>Dependency Exposure</div>
+                  <div style={{ fontSize: '28px', fontWeight: 700, color: '#0B1730', fontFamily: "'IBM Plex Mono', monospace" }}>71</div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* VERIFICATION BAR */}
+          {/* VERIFICATION */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px', fontSize: '12px' }}>
             <div>
-              <div style={{ fontSize: '11px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', marginBottom: '4px', letterSpacing: '0.5px' }}>Verification Status</div>
-              <div style={{ fontSize: '13px', color: '#1B6873', fontWeight: 500 }}>Verified</div>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', marginBottom: '4px', letterSpacing: '0.5px' }}>Model Version</div>
+              <div style={{ fontSize: '13px', color: '#0B1730', fontWeight: 500 }}>RP-2.0</div>
             </div>
             <div>
               <div style={{ fontSize: '11px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', marginBottom: '4px', letterSpacing: '0.5px' }}>Report ID</div>
               <div style={{ fontSize: '13px', color: '#0B1730', fontWeight: 500, fontFamily: "'IBM Plex Mono', monospace" }}>RP2-2026-00012874</div>
             </div>
             <div>
-              <div style={{ fontSize: '11px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', marginBottom: '4px', letterSpacing: '0.5px' }}>Model Version</div>
-              <div style={{ fontSize: '13px', color: '#0B1730', fontWeight: 500 }}>RP-2.0</div>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', marginBottom: '4px', letterSpacing: '0.5px' }}>Verification</div>
+              <div style={{ fontSize: '13px', color: '#1B6873', fontWeight: 500 }}>Verified</div>
             </div>
-          </div>
-
-          <div className="explanation-box">
-            <h4>Why This Score?</h4>
-            <p>Your Income Stability Score is generated from the factors that make up your Income Stability Profile.</p>
-            <p>Strong diversification and concentration characteristics contribute positively to the result.</p>
-            <p>Forward Visibility remains the largest source of stability pressure. The score represents the combined profile, not a standalone measurement.</p>
-          </div>
-
-          <div className="explanation-box">
-            <h4>What This Means</h4>
-            <p>Your income demonstrates Established Stability with effective diversification across multiple income sources.</p>
-            <p>Your strongest characteristics are concentration management and income diversity. Your primary pressure point is Forward Visibility. While current income appears stable, limited visibility into future income commitments reduces overall structural strength.</p>
-            <p>Improving visibility and continuity may strengthen long-term Income Stability.</p>
-          </div>
-
-          <div className="explanation-box">
-            <h4>Improvement Opportunities</h4>
-            <p style={{ fontWeight: 600 }}>Primary Focus Area:</p>
-            <p>Forward Visibility</p>
-            <p style={{ fontWeight: 600 }}>Structural Observation:</p>
-            <p>A meaningful portion of income lacks confirmed visibility beyond the current period.</p>
-            <p style={{ fontWeight: 600 }}>Potential Improvement Pathway:</p>
-            <p>Increasing recurring agreements, longer-term contracts, or future income commitments may strengthen Forward Visibility and overall Income Stability.</p>
-          </div>
-
-          <div className="full-analysis">
-            <h4>Full Analysis Delivers</h4>
-            <p>Not just a score.</p>
-            <p style={{ fontWeight: 400 }}>A complete explanation of the profile, what it means, and where opportunities for improvement may exist.</p>
           </div>
         </div>
       </section>
