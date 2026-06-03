@@ -10,7 +10,6 @@ export default function LandingPage() {
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { overflow-x: hidden; }
 
-        /* HEADER - 88px */
         .header {
           position: sticky;
           top: 0;
@@ -77,16 +76,14 @@ export default function LandingPage() {
           flex-shrink: 0;
         }
 
-        .sign-in {
+        .header-right a {
           font-size: 14px;
           font-weight: 500;
           color: #0B1730;
           text-decoration: none;
         }
 
-        @media (max-width: 768px) {
-          .sign-in { display: none; }
-        }
+        .header-right a:hover { color: #6A7485; }
 
         .btn {
           background: #0B1730;
@@ -104,7 +101,6 @@ export default function LandingPage() {
 
         .btn:hover { background: #1a2a4a; }
 
-        /* HERO - 60/40 layout */
         .hero {
           padding: 80px 48px;
           max-width: 1600px;
@@ -169,7 +165,6 @@ export default function LandingPage() {
           color: #6A7485;
         }
 
-        /* REPORT CARD */
         .report {
           background: #FCFCFB;
           border: 1px solid #0B1730;
@@ -306,7 +301,6 @@ export default function LandingPage() {
           margin-bottom: 4px;
         }
 
-        /* SECTIONS */
         .section {
           padding: 160px 48px;
           max-width: 1600px;
@@ -345,7 +339,6 @@ export default function LandingPage() {
           color: inherit;
         }
 
-        /* COMPARISON */
         .comparison-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -425,7 +418,7 @@ export default function LandingPage() {
         }
 
         .insight-box p {
-          font-size: 18px;
+          font-size: 16px;
           font-weight: 400;
           line-height: 28px;
           color: #0B1730;
@@ -442,7 +435,6 @@ export default function LandingPage() {
           margin-top: 24px;
         }
 
-        /* THREE COLUMN */
         .three-col {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
@@ -472,7 +464,6 @@ export default function LandingPage() {
           color: inherit;
         }
 
-        /* SAMPLE PROFILE SECTION */
         .sample-profile {
           background: #FCFCFB;
           border: 2px solid #0B1730;
@@ -533,37 +524,6 @@ export default function LandingPage() {
           text-align: right;
         }
 
-        /* EXPLANATION BOXES */
-        .explanation {
-          background: #FCFCFB;
-          border: 1px solid #6A7485;
-          padding: 32px;
-          margin-bottom: 32px;
-        }
-
-        @media (max-width: 768px) {
-          .explanation { padding: 24px; }
-        }
-
-        .explanation h4 {
-          font-size: 14px;
-          font-weight: 600;
-          color: #0B1730;
-          text-transform: uppercase;
-          margin-bottom: 12px;
-          letter-spacing: 0.5px;
-        }
-
-        .explanation p {
-          font-size: 14px;
-          color: #0B1730;
-          line-height: 24px;
-          font-weight: 400;
-        }
-
-        .explanation p:not(:last-child) { margin-bottom: 12px; }
-
-        /* ACCESS CARDS */
         .access-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
@@ -653,12 +613,10 @@ export default function LandingPage() {
 
         .card-btn:hover { background: #1a2a4a; }
 
-        /* CONSISTENCY STATEMENT */
         .consistency {
           background: #0B1730;
           color: #FCFCFB;
           padding: 64px;
-          border-radius: 0;
         }
 
         @media (max-width: 768px) {
@@ -681,7 +639,6 @@ export default function LandingPage() {
           margin: 16px 0;
         }
 
-        /* SYSTEM CLARIFICATION */
         .clarification {
           padding: 0;
           max-width: 760px;
@@ -712,7 +669,6 @@ export default function LandingPage() {
 
         .clarification p:last-child { margin-bottom: 0; }
 
-        /* FINAL CTA */
         .final-cta {
           padding: 160px 48px;
           background: #0B1730;
@@ -753,7 +709,6 @@ export default function LandingPage() {
           margin-top: 24px;
         }
 
-        /* FOOTER */
         .footer {
           background: #0B1730;
           color: #FCFCFB;
@@ -841,7 +796,7 @@ export default function LandingPage() {
             <a href="#learn">Learn</a>
           </nav>
           <div className="header-right">
-            <a href="#sign-in" className="sign-in">Sign In</a>
+            <a href="#sign-in">Sign In</a>
             <button className="btn" onClick={() => window.location.href = '/assessment'}>Start Assessment →</button>
           </div>
         </div>
@@ -852,7 +807,8 @@ export default function LandingPage() {
         <div className="hero-grid">
           <div className="hero-left">
             <h1>Before relying on income, know your Income Stability.</h1>
-            <p>RunPayway™ measures Income Stability. Income Stability measures the structure supporting income.</p>
+            <p>RunPayway™ measures Income Stability.</p>
+            <p>Income Stability measures the structure supporting income.</p>
             <div className="cta-group">
               <button className="btn" onClick={() => window.location.href = '/assessment'}>Start Assessment →</button>
               <a className="btn" style={{ background: 'transparent', color: '#0B1730', border: 'none', padding: 0, textDecoration: 'underline', borderRadius: 0 }} href="#how-it-works">See How It Works</a>
@@ -943,7 +899,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION 1: INCOME VS STABILITY */}
+      {/* SECTION 1 */}
       <section className="section section-white">
         <h2>Income and Income Stability are not the same thing.</h2>
 
@@ -985,7 +941,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION 2: COMMON SITUATIONS */}
+      {/* SECTION 2 */}
       <section className="section section-white">
         <h2>Common Situations Where People Rely On Income</h2>
         <p className="intro-text">Two people can earn the same income and face very different levels of stability. Income Stability helps reveal structural differences that income amount alone may not show.</p>
@@ -1006,7 +962,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION 3: SAMPLE PROFILE */}
+      {/* SECTION 3 */}
       <section className="section section-white">
         <h2>Sample Income Stability Profile™</h2>
 
@@ -1075,17 +1031,17 @@ export default function LandingPage() {
           <div style={{ marginBottom: '32px', paddingBottom: '32px', borderBottom: '1px solid #6A7485' }}>
             <h4 style={{ fontSize: '14px', fontWeight: '600', color: '#0B1730', marginBottom: '12px', textTransform: 'uppercase' }}>What This Means</h4>
             <p style={{ fontSize: '14px', color: '#0B1730', lineHeight: '24px', marginBottom: '12px' }}>Your income demonstrates Established Stability™ with effective diversification across multiple income sources.</p>
-            <p style={{ fontSize: '14px', color: '#0B1730', lineHeight: '24px', marginBottom: '12px' }}>Your strongest characteristics are concentration management and income diversity. Your primary pressure point is Forward Visibility.</p>
-            <p style={{ fontSize: '14px', color: '#0B1730', lineHeight: '24px' }}>While current income appears stable, limited visibility into future income commitments reduces overall structural strength. Improving visibility and continuity may strengthen long-term Income Stability.</p>
+            <p style={{ fontSize: '14px', color: '#0B1730', lineHeight: '24px', marginBottom: '12px' }}>Your strongest characteristics are concentration management and income diversity. Your primary pressure point is Forward Visibility. While current income appears stable, limited visibility into future income commitments reduces overall structural strength.</p>
+            <p style={{ fontSize: '14px', color: '#0B1730', lineHeight: '24px' }}>Improving visibility and continuity may strengthen long-term Income Stability.</p>
           </div>
 
           <div>
             <h4 style={{ fontSize: '14px', fontWeight: '600', color: '#0B1730', marginBottom: '12px', textTransform: 'uppercase' }}>Improvement Opportunities™</h4>
-            <p style={{ fontSize: '13px', fontWeight: '600', color: '#0B1730', marginBottom: '4px' }}>Primary Focus Area:</p>
+            <p style={{ fontSize: '13px', fontWeight: '600', color: '#0B1730', marginBottom: '8px' }}>Primary Focus Area:</p>
             <p style={{ fontSize: '13px', color: '#0B1730', marginBottom: '12px' }}>Forward Visibility</p>
-            <p style={{ fontSize: '13px', fontWeight: '600', color: '#0B1730', marginBottom: '4px' }}>Structural Observation:</p>
+            <p style={{ fontSize: '13px', fontWeight: '600', color: '#0B1730', marginBottom: '8px' }}>Structural Observation:</p>
             <p style={{ fontSize: '13px', color: '#0B1730', marginBottom: '12px' }}>A meaningful portion of income lacks confirmed visibility beyond the current period.</p>
-            <p style={{ fontSize: '13px', fontWeight: '600', color: '#0B1730', marginBottom: '4px' }}>Potential Improvement Pathway:</p>
+            <p style={{ fontSize: '13px', fontWeight: '600', color: '#0B1730', marginBottom: '8px' }}>Potential Improvement Pathway:</p>
             <p style={{ fontSize: '13px', color: '#0B1730' }}>Increasing recurring agreements, longer-term contracts, or future income commitments may strengthen Forward Visibility and overall Income Stability.</p>
           </div>
         </div>
@@ -1097,7 +1053,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION 4: UNDERSTANDING */}
+      {/* SECTION 4 */}
       <section className="section section-white">
         <h2>Understanding Your Income Stability Profile™</h2>
 
@@ -1116,8 +1072,8 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div style={{ marginTop: '64px', background: '#FCFCFB', border: '1px solid #0B1730', padding: '48px', borderRadius: 0 }}>
-          <h4 style={{ fontSize: '14px', fontWeight: '600', color: '#0B1730', marginBottom: '24px', textTransform: 'uppercase' }}>Why This Matters</h4>
+        <div style={{ marginTop: '64px', background: '#FCFCFB', border: '1px solid #0B1730', padding: '48px' }}>
+          <h4 style={{ fontSize: '14px', fontWeight: '600', color: '#0B1730', marginBottom: '12px', textTransform: 'uppercase' }}>Why This Matters</h4>
           <p style={{ fontSize: '16px', fontWeight: '400', color: '#0B1730', lineHeight: '28px', marginBottom: '12px' }}>The profile explains the score.</p>
           <p style={{ fontSize: '16px', fontWeight: '400', color: '#0B1730', lineHeight: '28px', marginBottom: '12px' }}>The score summarizes the profile.</p>
           <p style={{ fontSize: '16px', fontWeight: '400', color: '#0B1730', lineHeight: '28px', marginBottom: '24px' }}>Together they provide a clearer understanding of Income Stability.</p>
@@ -1125,18 +1081,18 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION 5: WHAT RUNPAYWAY EVALUATES */}
+      {/* SECTION 5 */}
       <section className="section section-white">
         <h2>What RunPayway™ Evaluates</h2>
-        <p className="intro-text">RunPayway™ evaluates structural factors that contribute to Income Stability.</p>
+        <p style={{ fontSize: '16px', fontWeight: '400', lineHeight: '28px', marginBottom: '64px', color: '#0B1730' }}>RunPayway™ evaluates structural factors that contribute to Income Stability.</p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '48px', marginBottom: '64px' }}>
-          <div><h4 style={{ fontSize: '16px', fontWeight: '600', color: '#0B1730' }}>Income Concentration</h4></div>
-          <div><h4 style={{ fontSize: '16px', fontWeight: '600', color: '#0B1730' }}>Income Diversity</h4></div>
-          <div><h4 style={{ fontSize: '16px', fontWeight: '600', color: '#0B1730' }}>Forward Visibility</h4></div>
-          <div><h4 style={{ fontSize: '16px', fontWeight: '600', color: '#0B1730' }}>Stability Pattern</h4></div>
-          <div><h4 style={{ fontSize: '16px', fontWeight: '600', color: '#0B1730' }}>Continuity Strength</h4></div>
-          <div><h4 style={{ fontSize: '16px', fontWeight: '600', color: '#0B1730' }}>Dependency Exposure</h4></div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '48px', marginBottom: '80px' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#0B1730' }}>Income Concentration</h3>
+          <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#0B1730' }}>Income Diversity</h3>
+          <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#0B1730' }}>Forward Visibility</h3>
+          <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#0B1730' }}>Stability Pattern</h3>
+          <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#0B1730' }}>Continuity Strength</h3>
+          <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#0B1730' }}>Dependency Exposure</h3>
         </div>
 
         <div className="consistency">
@@ -1148,7 +1104,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION 6: ACCESS LEVELS */}
+      {/* SECTION 6 */}
       <section className="section section-white">
         <h2>Understanding Income Stability™</h2>
 
@@ -1201,7 +1157,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* SECTION 7: CONSISTENCY */}
+      {/* SECTION 7 */}
       <section className="section section-navy">
         <h2 style={{ color: '#FCFCFB' }}>Why Results Remain Consistent</h2>
 
@@ -1211,8 +1167,11 @@ export default function LandingPage() {
           <div className="indicator">✓ Same Methodology</div>
           <div className="indicator">✓ Same Outputs</div>
           <div className="indicator">✓ Verifiable Reports</div>
-          <p style={{ marginTop: '32px' }}>No human overrides. No subjective scoring. No changing standards.</p>
-          <p style={{ marginTop: '16px' }}>Income measures amount. RunPayway™ measures stability.</p>
+          <p style={{ marginTop: '32px' }}>No human overrides.</p>
+          <p>No subjective scoring.</p>
+          <p>No changing standards.</p>
+          <p style={{ marginTop: '16px' }}>Income measures amount.</p>
+          <p>RunPayway™ measures stability.</p>
           <div style={{ fontSize: '14px', fontWeight: '600', color: '#1B6873', cursor: 'pointer', marginTop: '32px' }}>Learn More About The Methodology →</div>
         </div>
       </section>
@@ -1220,12 +1179,14 @@ export default function LandingPage() {
       {/* SYSTEM CLARIFICATION */}
       <div style={{ background: '#FCFCFB', paddingBottom: '160px' }}>
         <div className="section clarification">
-          <h3>SYSTEM CLARIFICATION™</h3>
-          <p>RunPayway™ measures Income Stability using a standardized methodology. Income measures amount. RunPayway™ measures stability.</p>
+          <h3>System Clarification™</h3>
+          <p>RunPayway™ measures Income Stability using a standardized methodology.</p>
+          <p>Income measures amount.</p>
+          <p>RunPayway™ measures stability.</p>
           <p>RunPayway™ is not a credit score, lending decision, investment recommendation, financial plan, employment evaluation, or prediction of future income.</p>
           <p>Results are generated using Structural Stability Model RP-2.0 and are intended to provide a consistent measurement of Income Stability based on information supplied during the assessment.</p>
-          <p style={{ marginTop: '24px' }}><strong>Model Version:</strong> RP-2.0</p>
-          <p><strong>Report Verification:</strong> Available on all issued reports</p>
+          <p style={{ marginTop: '12px' }}>Model Version: RP-2.0</p>
+          <p>Report Verification: Available on all issued reports</p>
         </div>
       </div>
 
@@ -1241,7 +1202,7 @@ export default function LandingPage() {
       <footer className="footer">
         <div className="footer-grid">
           <div className="footer-col">
-            <h4>PRODUCT</h4>
+            <h4>Product</h4>
             <ul className="footer-links">
               <li><a href="#how-it-works">How It Works</a></li>
               <li><a href="#methodology">Methodology</a></li>
@@ -1252,7 +1213,7 @@ export default function LandingPage() {
             </ul>
           </div>
           <div className="footer-col">
-            <h4>SOLUTIONS</h4>
+            <h4>Solutions</h4>
             <ul className="footer-links">
               <li><a href="#individuals">Individuals</a></li>
               <li><a href="#advisors">Advisors</a></li>
@@ -1260,7 +1221,7 @@ export default function LandingPage() {
             </ul>
           </div>
           <div className="footer-col">
-            <h4>LEARN</h4>
+            <h4>Learn</h4>
             <ul className="footer-links">
               <li><a href="#what-is">What Is Income Stability?</a></li>
               <li><a href="#vs-income">Income Stability vs Income</a></li>
@@ -1269,7 +1230,7 @@ export default function LandingPage() {
             </ul>
           </div>
           <div className="footer-col">
-            <h4>COMPANY</h4>
+            <h4>Company</h4>
             <ul className="footer-links">
               <li><a href="#about">About RunPayway™</a></li>
               <li><a href="#contact">Contact</a></li>
@@ -1281,8 +1242,10 @@ export default function LandingPage() {
         </div>
         <div className="footer-bottom">
           <p>© 2026 RunPayway™. All rights reserved.</p>
-          <p>RunPayway™ is a product of PeopleStar Enterprises, INC. Orange County, California, USA.</p>
-          <p>Structural Stability Model RP-2.0. Accessibility: WCAG 2.1 AA Compliant</p>
+          <p>RunPayway™ is a product of PeopleStar Enterprises, INC.</p>
+          <p>Orange County, California, USA.</p>
+          <p>Structural Stability Model RP-2.0.</p>
+          <p>Accessibility: WCAG 2.1 AA Compliant</p>
         </div>
       </footer>
     </div>
