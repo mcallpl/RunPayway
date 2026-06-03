@@ -885,50 +885,49 @@ export default function LandingPage() {
               <button className="btn" onClick={() => window.location.href = '/assessment'}>Start Assessment →</button>
               <button className="btn-secondary" onClick={() => window.location.href = '/#'}>See How It Works</button>
             </div>
-            <p className="trust-line">Free structural insight · No documents required · Under 2 minutes</p>
           </div>
 
           <div className="report-card">
             {/* METADATA BAR */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', fontSize: '12px', marginBottom: '32px', paddingBottom: '32px', borderBottom: '1px solid #6A7485' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', fontSize: '11px', marginBottom: '48px', paddingBottom: '24px', borderBottom: '1px solid #6A7485' }}>
               <div>
-                <div style={{ fontSize: '11px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', marginBottom: '4px', letterSpacing: '0.5px' }}>Report ID</div>
-                <div style={{ fontSize: '13px', color: '#0B1730', fontWeight: 500, fontFamily: "'IBM Plex Mono', monospace" }}>RP2-2026-00012874</div>
+                <div style={{ fontSize: '9px', fontWeight: 600, color: '#6A7485', textTransform: 'uppercase', marginBottom: '3px', letterSpacing: '0.5px' }}>Report ID</div>
+                <div style={{ fontSize: '11px', color: '#6A7485', fontWeight: 500, fontFamily: "'IBM Plex Mono', monospace" }}>RP2-2026-00012874</div>
               </div>
               <div>
-                <div style={{ fontSize: '11px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', marginBottom: '4px', letterSpacing: '0.5px' }}>Model</div>
-                <div style={{ fontSize: '13px', color: '#0B1730', fontWeight: 500 }}>RP-2.0</div>
+                <div style={{ fontSize: '9px', fontWeight: 600, color: '#6A7485', textTransform: 'uppercase', marginBottom: '3px', letterSpacing: '0.5px' }}>Model</div>
+                <div style={{ fontSize: '11px', color: '#6A7485', fontWeight: 500 }}>RP-2.0</div>
               </div>
               <div>
-                <div style={{ fontSize: '11px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', marginBottom: '4px', letterSpacing: '0.5px' }}>Verification</div>
-                <div style={{ fontSize: '13px', color: '#1B6873', fontWeight: 500 }}>Verified</div>
+                <div style={{ fontSize: '9px', fontWeight: 600, color: '#6A7485', textTransform: 'uppercase', marginBottom: '3px', letterSpacing: '0.5px' }}>Verification</div>
+                <div style={{ fontSize: '11px', color: '#1B6873', fontWeight: 500 }}>Verified</div>
               </div>
               <div>
-                <div style={{ fontSize: '11px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', marginBottom: '4px', letterSpacing: '0.5px' }}>Issued</div>
-                <div style={{ fontSize: '13px', color: '#0B1730', fontWeight: 500 }}>06/03/2026</div>
+                <div style={{ fontSize: '9px', fontWeight: 600, color: '#6A7485', textTransform: 'uppercase', marginBottom: '3px', letterSpacing: '0.5px' }}>Issued</div>
+                <div style={{ fontSize: '11px', color: '#6A7485', fontWeight: 500 }}>06/03/2026</div>
               </div>
             </div>
 
             {/* SCORE BLOCK */}
-            <div style={{ marginBottom: '32px', paddingBottom: '32px', borderBottom: '1px solid #6A7485' }}>
-              <div style={{ fontSize: '72px', fontWeight: 700, color: '#0B1730', fontFamily: "'IBM Plex Mono', monospace", marginBottom: '16px', lineHeight: '1' }}>72</div>
-              <div style={{ fontSize: '20px', fontWeight: 600, color: '#0B1730', marginBottom: '16px' }}>Income Stability Score™</div>
-              <div style={{ fontSize: '28px', fontWeight: 600, color: '#0B1730', marginBottom: '24px' }}>Established Stability</div>
-              <div style={{ fontSize: '14px', color: '#0B1730', lineHeight: '24px', fontWeight: 400 }}>Several structural characteristics are supporting Income Stability.</div>
+            <div style={{ marginBottom: '56px', paddingBottom: '48px', borderBottom: '1px solid #6A7485' }}>
+              <div style={{ fontSize: '96px', fontWeight: 700, color: '#1B6873', fontFamily: "'IBM Plex Mono', monospace", marginBottom: '12px', lineHeight: '1' }}>72</div>
+              <div style={{ fontSize: '18px', fontWeight: 600, color: '#0B1730', marginBottom: '12px' }}>Income Stability Score™</div>
+              <div style={{ fontSize: '32px', fontWeight: 600, color: '#1B6873', marginBottom: '32px' }}>Established Stability</div>
+              <div style={{ fontSize: '15px', color: '#0B1730', lineHeight: '28px', fontWeight: 400 }}>Several structural characteristics are supporting Income Stability.</div>
             </div>
 
             {/* DRIVERS & PRESSURE FACTORS */}
-            <div style={{ marginBottom: '32px', paddingBottom: '32px', borderBottom: '1px solid #6A7485' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
-                <div>
-                  <div className="section-title">Supporting Drivers</div>
+            <div style={{ marginBottom: '48px', paddingBottom: '0' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px' }}>
+                <div style={{ paddingBottom: '48px', borderRight: '1px solid #6A7485' }}>
+                  <div className="section-title" style={{ color: '#1B6873', marginBottom: '20px' }}>Supporting Drivers</div>
                   <ul className="report-list teal">
                     <li>✓ Income Concentration</li>
                     <li>✓ Income Diversity</li>
                   </ul>
                 </div>
-                <div>
-                  <div className="section-title">Stability Pressure Factors</div>
+                <div style={{ paddingBottom: '48px' }}>
+                  <div className="section-title" style={{ color: '#0B1730', marginBottom: '20px' }}>Stability Pressure Factors</div>
                   <ul className="report-list">
                     <li>△ Forward Visibility</li>
                     <li>△ Continuity Strength</li>
@@ -938,8 +937,8 @@ export default function LandingPage() {
             </div>
 
             {/* CTA */}
-            <div style={{ textAlign: 'center' }}>
-              <a href="/#" style={{ fontSize: '14px', fontWeight: 600, color: '#1B6873', textDecoration: 'none', display: 'inline-block' }}>View Example Income Stability Profile™ →</a>
+            <div style={{ textAlign: 'center', paddingTop: '16px', borderTop: '1px solid #6A7485' }}>
+              <a href="/#" style={{ fontSize: '14px', fontWeight: 600, color: '#1B6873', textDecoration: 'none', display: 'inline-block', paddingTop: '24px' }}>View Example Income Stability Profile™ →</a>
             </div>
           </div>
         </div>
