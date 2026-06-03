@@ -888,25 +888,28 @@ export default function LandingPage() {
           </div>
 
           <div className="report-card">
-            {/* METADATA BAR */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', fontSize: '11px', marginBottom: '48px', paddingBottom: '24px', borderBottom: '1px solid #6A7485' }}>
+            {/* METADATA BAR - CHANGE #3: Reduced prominence */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', fontSize: '10px', marginBottom: '36px', paddingBottom: '16px', borderBottom: '1px solid rgba(106, 116, 133, 0.3)' }}>
               <div>
-                <div style={{ fontSize: '9px', fontWeight: 600, color: '#6A7485', textTransform: 'uppercase', marginBottom: '3px', letterSpacing: '0.5px' }}>Report ID</div>
-                <div style={{ fontSize: '11px', color: '#6A7485', fontWeight: 500, fontFamily: "'IBM Plex Mono', monospace" }}>RP2-2026-00012874</div>
+                <div style={{ fontSize: '8px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', marginBottom: '2px', letterSpacing: '0.4px' }}>Report ID</div>
+                <div style={{ fontSize: '10px', color: '#9CA3AF', fontWeight: 400, fontFamily: "'IBM Plex Mono', monospace" }}>RP2-2026-00012874</div>
               </div>
               <div>
-                <div style={{ fontSize: '9px', fontWeight: 600, color: '#6A7485', textTransform: 'uppercase', marginBottom: '3px', letterSpacing: '0.5px' }}>Model</div>
-                <div style={{ fontSize: '11px', color: '#6A7485', fontWeight: 500 }}>RP-2.0</div>
+                <div style={{ fontSize: '8px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', marginBottom: '2px', letterSpacing: '0.4px' }}>Model</div>
+                <div style={{ fontSize: '10px', color: '#9CA3AF', fontWeight: 400 }}>RP-2.0</div>
               </div>
               <div>
-                <div style={{ fontSize: '9px', fontWeight: 600, color: '#6A7485', textTransform: 'uppercase', marginBottom: '3px', letterSpacing: '0.5px' }}>Verification</div>
-                <div style={{ fontSize: '11px', color: '#1B6873', fontWeight: 500 }}>Verified</div>
+                <div style={{ fontSize: '8px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', marginBottom: '2px', letterSpacing: '0.4px' }}>Verification</div>
+                <div style={{ fontSize: '10px', color: '#1B6873', fontWeight: 400 }}>Verified</div>
               </div>
               <div>
-                <div style={{ fontSize: '9px', fontWeight: 600, color: '#6A7485', textTransform: 'uppercase', marginBottom: '3px', letterSpacing: '0.5px' }}>Issued</div>
-                <div style={{ fontSize: '11px', color: '#6A7485', fontWeight: 500 }}>06/03/2026</div>
+                <div style={{ fontSize: '8px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', marginBottom: '2px', letterSpacing: '0.4px' }}>Issued</div>
+                <div style={{ fontSize: '10px', color: '#9CA3AF', fontWeight: 400 }}>06/03/2026</div>
               </div>
             </div>
+
+            {/* CHANGE #4: Category reinforcement */}
+            <div style={{ fontSize: '10px', fontWeight: 600, color: '#6A7485', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: '24px' }}>A standardized measurement of Income Stability.</div>
 
             {/* SCORE BLOCK */}
             <div style={{ marginBottom: '56px', paddingBottom: '48px', borderBottom: '1px solid #6A7485' }}>
@@ -916,29 +919,47 @@ export default function LandingPage() {
               <div style={{ fontSize: '15px', color: '#0B1730', lineHeight: '28px', fontWeight: 400 }}>Several structural characteristics are supporting Income Stability.</div>
             </div>
 
-            {/* DRIVERS & PRESSURE FACTORS */}
+            {/* CHANGE #2: Why This Result heading + STRUCTURE CHANGE: Interpreted format without symbols */}
             <div style={{ marginBottom: '48px', paddingBottom: '0' }}>
+              <div style={{ fontSize: '12px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '32px', fontFamily: "'IBM Plex Mono', sans-serif" }}>Why This Result</div>
+
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px' }}>
+                {/* What Strengthened This Result */}
                 <div style={{ paddingBottom: '48px', borderRight: '1px solid #6A7485' }}>
-                  <div className="section-title" style={{ color: '#1B6873', marginBottom: '20px' }}>Supporting Drivers</div>
-                  <ul className="report-list teal">
-                    <li>✓ Income Concentration</li>
-                    <li>✓ Income Diversity</li>
-                  </ul>
+                  <div style={{ fontSize: '12px', fontWeight: 600, color: '#1B6873', marginBottom: '24px' }}>What Strengthened This Result</div>
+                  <div style={{ marginBottom: '20px' }}>
+                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730', marginBottom: '4px' }}>Income Concentration</div>
+                    <div style={{ fontSize: '13px', color: '#6A7485', fontWeight: 400 }}>Strong contributor to stability.</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730', marginBottom: '4px' }}>Income Diversity</div>
+                    <div style={{ fontSize: '13px', color: '#6A7485', fontWeight: 400 }}>Strong contributor to stability.</div>
+                  </div>
                 </div>
+
+                {/* What Created Pressure */}
                 <div style={{ paddingBottom: '48px' }}>
-                  <div className="section-title" style={{ color: '#0B1730', marginBottom: '20px' }}>Stability Pressure Factors</div>
-                  <ul className="report-list">
-                    <li>△ Forward Visibility</li>
-                    <li>△ Continuity Strength</li>
-                  </ul>
+                  <div style={{ fontSize: '12px', fontWeight: 600, color: '#0B1730', marginBottom: '24px' }}>What Created Pressure</div>
+                  <div style={{ marginBottom: '20px' }}>
+                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730', marginBottom: '4px' }}>Forward Visibility</div>
+                    <div style={{ fontSize: '13px', color: '#6A7485', fontWeight: 400 }}>Limited future income visibility.</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730', marginBottom: '4px' }}>Continuity Strength</div>
+                    <div style={{ fontSize: '13px', color: '#6A7485', fontWeight: 400 }}>Moderate continuity of income relationships.</div>
+                  </div>
                 </div>
               </div>
             </div>
 
+            {/* CHANGE #1: Institutional statement replacing trust line */}
+            <div style={{ textAlign: 'center', paddingTop: '24px', borderTop: '1px solid #6A7485', fontSize: '11px', color: '#6A7485', fontWeight: 400 }}>
+              Standardized measurement using Structural Stability Model RP-2.0
+            </div>
+
             {/* CTA */}
-            <div style={{ textAlign: 'center', paddingTop: '16px', borderTop: '1px solid #6A7485' }}>
-              <a href="/#" style={{ fontSize: '14px', fontWeight: 600, color: '#1B6873', textDecoration: 'none', display: 'inline-block', paddingTop: '24px' }}>View Example Income Stability Profile™ →</a>
+            <div style={{ textAlign: 'center', paddingTop: '24px' }}>
+              <a href="/#" style={{ fontSize: '14px', fontWeight: 600, color: '#1B6873', textDecoration: 'none', display: 'inline-block' }}>View Example Income Stability Profile™ →</a>
             </div>
           </div>
         </div>
