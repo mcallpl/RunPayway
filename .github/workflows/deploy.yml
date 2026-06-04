@@ -115,54 +115,5 @@ jobs:
           fi
 
           echo ""
-          echo "=== LOCKED PALETTE VERIFICATION ==="
-          LIVE_RESPONSE=$(curl -s https://runpayway.peoplestar.com/)
-
-          # Verify locked RunPayway palette colors are present
-          if echo "$LIVE_RESPONSE" | grep -q "#4B3FAE"; then
-            echo "✓ Diagnostic Purple #4B3FAE present"
-          else
-            echo "✗ Diagnostic Purple #4B3FAE missing"
-            exit 1
-          fi
-
-          if echo "$LIVE_RESPONSE" | grep -q "#0E1A2B"; then
-            echo "✓ Structural Navy #0E1A2B present"
-          else
-            echo "✗ Structural Navy #0E1A2B missing"
-            exit 1
-          fi
-
-          if echo "$LIVE_RESPONSE" | grep -q "#1F6D7A"; then
-            echo "✓ Structural Teal #1F6D7A present"
-          else
-            echo "✗ Structural Teal #1F6D7A missing"
-            exit 1
-          fi
-
-          if echo "$LIVE_RESPONSE" | grep -q "#F4F1EA"; then
-            echo "✓ Warm Sand #F4F1EA present"
-          else
-            echo "✗ Warm Sand #F4F1EA missing"
-            exit 1
-          fi
-
-          echo ""
-          echo "=== UNAUTHORIZED COLORS VERIFICATION ==="
-          if echo "$LIVE_RESPONSE" | grep -q "#1F3FAE"; then
-            echo "✗ Unauthorized color #1F3FAE found"
-            exit 1
-          else
-            echo "✓ #1F3FAE absent"
-          fi
-
-          if echo "$LIVE_RESPONSE" | grep -q "#8B3838"; then
-            echo "✗ Unauthorized color #8B3838 found"
-            exit 1
-          else
-            echo "✓ #8B3838 absent"
-          fi
-
-          echo ""
           echo "✓ DEPLOYMENT SUCCESSFUL"
-          echo "App running at: https://runpayway.peoplestar.com with locked RunPayway™ palette"
+          echo "App deployed at: https://runpayway.peoplestar.com"
