@@ -478,7 +478,7 @@ function DashboardContent() {
       if (ps.plan_key && ps.plan_key !== "free") {
         setIsPaid(true);
       } else if (ps.plan_key === "free" && stored) {
-        window.location.replace("/RunPayway/free-score");
+        window.location.replace("/free-score");
         return;
       }
     } catch { /* */ }

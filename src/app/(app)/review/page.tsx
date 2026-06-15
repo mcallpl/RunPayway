@@ -1262,7 +1262,7 @@ export default function ReviewPage() {
                   <span style={{ fontSize: 11, color: B.muted }}>
                     Record: {(record.record_id || "").substring(0, 8).toUpperCase()}
                   </span>
-                  <a href={"/RunPayway/verify?id=" + (record.record_id || "")} style={{ fontSize: 11, fontWeight: 600, color: B.teal, textDecoration: "none" }}>
+                  <a href={"/verify?id=" + (record.record_id || "")} style={{ fontSize: 11, fontWeight: 600, color: B.teal, textDecoration: "none" }}>
                     Verify this score →
                   </a>
                 </div>

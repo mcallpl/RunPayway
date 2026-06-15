@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     google: "5m6xwNlo1Wihest8Qlgi8TEClC93pxwzzTdiMLsH4ZA",
   },
   icons: {
-    icon: [{ url: "/RunPayway/favicon.svg", type: "image/svg+xml" }],
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
   },
   openGraph: {
     title: "RunPayway™ — Income Stability Score",
@@ -80,7 +80,7 @@ export default function RootLayout({
         <ErrorReporter />
         <script dangerouslySetInnerHTML={{ __html: `
           if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/RunPayway/sw.js').catch(() => {});
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
           }
         ` }} />
         <Providers>{children}</Providers>

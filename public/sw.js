@@ -1,11 +1,11 @@
 const CACHE_VERSION = "rp-v1";
 const APP_SHELL = [
-  "/RunPayway/",
-  "/RunPayway/diagnostic-portal/",
-  "/RunPayway/diagnostic/",
-  "/RunPayway/free-score/",
-  "/RunPayway/dashboard/",
-  "/RunPayway/review/",
+  "/",
+  "/diagnostic-portal/",
+  "/diagnostic/",
+  "/free-score/",
+  "/dashboard/",
+  "/review/",
 ];
 
 // Install: pre-cache app shell

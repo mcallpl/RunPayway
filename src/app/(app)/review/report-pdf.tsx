@@ -136,7 +136,7 @@ async function loadFonts(doc: jsPDF) {
   try {
     for (const f of fonts) {
       let r: Response;
-      try { r = await fetch(`/RunPayway/fonts/${f.file}`); if (!r.ok) throw 0; }
+      try { r = await fetch(`/fonts/${f.file}`); if (!r.ok) throw 0; }
       catch { r = await fetch(`/fonts/${f.file}`); }
       const b = new Uint8Array(await r.arrayBuffer());
       let s = ""; for (let i = 0; i < b.length; i++) s += String.fromCharCode(b[i]);

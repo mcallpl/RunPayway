@@ -91,7 +91,7 @@ export default function GlobalError({
                 Try Again
               </button>
               <button
-                onClick={() => window.location.href = "/RunPayway/"}
+                onClick={() => window.location.href = "/"}
                 style={{
                   padding: "10px 24px",
                   fontSize: 14,
