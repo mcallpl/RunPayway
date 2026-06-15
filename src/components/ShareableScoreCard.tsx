@@ -20,7 +20,7 @@ interface ShareableScoreCardProps {
 /*  CONSTANTS                                                          */
 /* ================================================================== */
 
-const BASE_URL = "https://peoplestar.com/RunPayway";
+const BASE_URL = "/RunPayway";
 
 function bandColorFromLabel(band: string): string {
   const b = band.toLowerCase();

@@ -112,7 +112,7 @@ function buildReportEmailHtml(data: ReportEmailData): string {
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="padding-bottom:28px; border-bottom:1px solid ${sand};">
-                    <img src="https://peoplestar.com/RunPayway/logo.png" alt="RunPayway™" width="160" height="19" style="display:inline-block; height:auto;" />
+                    <img src="/RunPayway/logo.png" alt="RunPayway™" width="160" height="19" style="display:inline-block; height:auto;" />
                     <span style="font-size:11px; color:${light}; margin-left:8px;">Income Stability Assessment</span>
                   </td>
                 </tr>
@@ -185,14 +185,14 @@ function buildReportEmailHtml(data: ReportEmailData): string {
                     <p style="font-size:12px; color:${muted}; line-height:1.6; margin:0 0 16px;">
                       The $69 diagnostic includes a personalized action plan, risk scenarios, a 12-week roadmap with your actual numbers, and ready-to-use negotiation scripts. Full refund if it doesn't reveal something new.
                     </p>
-                    <a href="https://peoplestar.com/RunPayway/pricing" style="display:inline-block; padding:10px 24px; background-color:${brandNavy}; color:#ffffff; font-size:13px; font-weight:600; text-decoration:none; border-radius:12px;">See What the Diagnostic Includes</a>
+                    <a href="/RunPayway/pricing" style="display:inline-block; padding:10px 24px; background-color:${brandNavy}; color:#ffffff; font-size:13px; font-weight:600; text-decoration:none; border-radius:12px;">See What the Diagnostic Includes</a>
                     ` : `
                     <p style="font-size:13px; font-weight:600; color:${brandNavy}; margin:0 0 6px;">Your full report is ready</p>
                     ${data.primaryConstraintLabel ? `<p style="font-size:12px; color:${brandNavy}; line-height:1.6; margin:0 0 12px; font-weight:500;">Your biggest opportunity: ${data.primaryConstraintLabel.toLowerCase()}. See your full report for the specific changes that would raise your score the most.</p>` : ""}
                     <p style="font-size:12px; color:${muted}; line-height:1.6; margin:0 0 16px;">
                       Your diagnostic report includes an interactive stability simulator, risk scenarios, projected improvements, an action plan with specific targets and ready-to-use scripts, and tradeoff analysis.
                     </p>
-                    <a href="https://peoplestar.com/RunPayway/review" style="display:inline-block; padding:10px 24px; background-color:${brandNavy}; color:#ffffff; font-size:13px; font-weight:600; text-decoration:none; border-radius:12px;">View Full Report</a>
+                    <a href="/RunPayway/review" style="display:inline-block; padding:10px 24px; background-color:${brandNavy}; color:#ffffff; font-size:13px; font-weight:600; text-decoration:none; border-radius:12px;">View Full Report</a>
                     `}
                   </td>
                 </tr>
@@ -219,7 +219,7 @@ function buildReportEmailHtml(data: ReportEmailData): string {
                 RunPayway™ · Income Stability Score™ · Model RP-2.0
               </p>
               <p style="font-size:10px; color:${light}; margin:0;">
-                Confidential — Prepared for ${data.assessmentTitle || "Assessment Subject"} · <a href="https://peoplestar.com/RunPayway/contact" style="color:${light}; text-decoration:none;">Contact Us</a>
+                Confidential — Prepared for ${data.assessmentTitle || "Assessment Subject"} · <a href="/RunPayway/contact" style="color:${light}; text-decoration:none;">Contact Us</a>
               </p>
             </td>
           </tr>

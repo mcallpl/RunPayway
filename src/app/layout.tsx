@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://peoplestar.com/RunPayway/og-image.svg",
+        url: "/RunPayway/og-image.svg",
         width: 1200,
         height: 630,
       },
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "RunPayway™ — Income Stability Score",
     description: "Measure how stable your income structure actually is. Deterministic scoring.",
-    images: ["https://peoplestar.com/RunPayway/og-image.svg"],
+    images: ["/RunPayway/og-image.svg"],
   },
 };
 
@@ -67,7 +67,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Organization",
               name: "RunPayway\u2122",
-              url: "https://peoplestar.com/RunPayway",
+              url: "/RunPayway",
               description:
                 "RunPayway measures how stable your income structure actually is. Deterministic scoring built for consultants, contractors, freelancers, and business owners.",
               brand: {
