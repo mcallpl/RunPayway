@@ -33,7 +33,7 @@ export default function MarketingFooter() {
           {/* Logo & Tagline */}
           <div style={{ flexShrink: 0 }}>
             <img
-              src="/rplogo.png"
+              src="/RunPayway_Logo.svg"
               alt="RunPayway™"
               style={{
                 height: "40px",

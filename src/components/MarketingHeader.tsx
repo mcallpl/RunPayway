@@ -51,7 +51,7 @@ export default function MarketingHeader() {
           }}
         >
           <img
-            src="/rplogo.png"
+            src="/RunPayway_Logo.svg"
             alt="RunPayway™"
             style={{
               height: "64px",

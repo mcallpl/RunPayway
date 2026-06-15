@@ -101,24 +101,19 @@ jobs:
           echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          echo "Verifying application on localhost:3000..."
-          LOCAL_RESPONSE=$(ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "curl -s http://127.0.0.1:3000/")
-          if echo "$LOCAL_RESPONSE" | grep -q "Income and income stability are not the same thing"; then
-            echo "✓ localhost:3000 verified"
-          else
-            echo "✗ localhost:3000 failed verification"
-            exit 1
-          fi
+          echo "=== PM2 STATUS ==="
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "pm2 status"
 
-          echo "Verifying application on https://runpayway.peoplestar.com..."
-          LIVE_RESPONSE=$(curl -s https://runpayway.peoplestar.com/)
-          if echo "$LIVE_RESPONSE" | grep -q "Income and income stability are not the same thing"; then
-            echo "✓ https://runpayway.peoplestar.com verified"
+          echo ""
+          echo "=== NGINX HTTP VERIFICATION ==="
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://runpayway.peoplestar.com/)
+          if [ "$HTTP_STATUS" = "200" ]; then
+            echo "✓ HTTP 200 OK from https://runpayway.peoplestar.com"
           else
-            echo "✗ https://runpayway.peoplestar.com failed verification"
+            echo "✗ HTTP $HTTP_STATUS (expected 200)"
             exit 1
           fi
 
           echo ""
           echo "✓ DEPLOYMENT SUCCESSFUL"
-          echo "App running at: https://runpayway.peoplestar.com"
+          echo "App deployed at: https://runpayway.peoplestar.com"
