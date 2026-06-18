@@ -140,7 +140,7 @@ Your Income Structure Is Built On A Contradiction
 
 You think of your income as: $220,000 per year
 
-Your income structure reveals: $92,400 guaranteed + $127,600 at-risk
+Your income structure reveals: $92,400 recurring + $127,600 variable
 
 This is not a score or classification.
 
@@ -150,7 +150,7 @@ This is what your measurements show about how your income actually works.
 **Why This Works:**
 - Immediately presents contradiction (assumption vs. reality)
 - Uses her exact number ($220k) then reframes it
-- Avoids jargon ("guaranteed" and "at-risk" are plain English)
+- Swaps "guaranteed/at-risk" for "recurring/variable" (describes structure, not risk)
 - Positions RunPayway as measurement tool, not judge
 
 ---
@@ -160,27 +160,27 @@ This is what your measurements show about how your income actually works.
 ```
 YOUR MEASUREMENTS REVEAL THIS:
 
-Guaranteed Income Floor        $92,400/year        42% of your income
-(Recurring, predictable)
+Recurring Income Foundation     $92,400/year        42% of your income
+(Comes in every period)
 
-At-Risk Income Overlay         $127,600/year       58% of your income
-(Performance-dependent)
+Variable Income Layer           $127,600/year       58% of your income
+(Fluctuates with performance)
 
-Primary Income Source          92% (one client)    Single point of failure
-(Concentration)
+Income Concentration            92% (one client)    Dependency on one source
+(Where it comes from)
 
-Labor Required                 92% of income       Cannot delegate
-(Your effort required)
+Labor Dependency                92% of income       Requires your active work
+(What it requires from you)
 
-Income Predictability          88% recurs          12% varies year-to-year
-(Persistence)
+Income Stability                88% recurs          12% changes year-to-year
+(What stays consistent)
 ```
 
 **Why This Works:**
 - Shows what was measured (measurements)
 - Labels what each measurement means (parenthetical)
 - Uses her specific numbers (builds credibility)
-- Ends with "single point of failure" (triggers urgency)
+- Names dependencies clearly without fear language
 
 ---
 
@@ -189,27 +189,27 @@ Income Predictability          88% recurs          12% varies year-to-year
 ```
 WHY THIS MATTERS
 
-Your guaranteed floor ($92,400) and at-risk overlay ($127,600) scale independently.
+Your recurring foundation ($92,400) and variable layer ($127,600) behave differently.
 
-A weak year might reduce the overlay while your floor remains stable.
+In a slower year, the variable portion contracts while your foundation remains steady.
 
-A loss of your primary client eliminates the overlay entirely.
+Your revenue streams come from concentrated sources—one client drives the majority.
 
-This structure creates a specific financial reality:
+This structure defines your actual income pattern:
 
-    → Your debt-service capacity is based on your guaranteed floor
-    → Your at-risk portion is supplementary, not foundational
-    → Your concentration creates a single point of failure
-    → Your income requires your active participation
+    → Your recurring portion is what flows in consistently
+    → Your variable portion responds to how your work is performing
+    → Your revenue depends heavily on client relationships you maintain
+    → Your income depends on your continued effort and presence
 
-This is the structural characteristic that defines your income.
+This is how your income actually works. Not a prediction—a measurement of structure.
 ```
 
 **Why This Works:**
 - Explains what the measurements MEAN
-- Uses concrete scenarios (weak year, client loss)
-- Translates to actual financial impact
-- Ends with identity (this IS what defines you)
+- Uses concrete scenarios (slower year, client relationships)
+- Describes actual structure without fear framing
+- Ends with identity (this IS how your income works)
 
 ---
 
@@ -222,18 +222,19 @@ Before you saw this analysis:
     "I earn $220,000, so I can support a $650,000 home purchase."
 
 After you see this analysis:
-    "My guaranteed floor is $92,400. That's my actual debt-service foundation.
-     My at-risk portion is supplementary. This changes how much I can safely 
-     commit to."
+    "My recurring income is $92,400. That's the stable part. The remaining $127,600 
+     is variable. When I understand this split, I understand what actually supports 
+     a long-term commitment."
 
-This distinction matters for a 30-year commitment.
+This distinction is the foundation for every major financial decision.
 
-The premium analysis explains exactly why.
+The premium analysis shows you exactly why it matters.
 ```
 
 **Why This Works:**
 - Creates before/after contrast
 - Uses her specific decision ($650k home)
+- Reframes from "debt service" to "understanding income structure"
 - Shows the gap that premium fills ("exactly why")
 - Makes upgrade feel necessary, not optional
 
@@ -244,12 +245,12 @@ The premium analysis explains exactly why.
 ```
 UNLOCK PREMIUM
 
-Understand Your Complete Structure
+See Your Complete Income Structure
 
 Premium includes:
 ✓ Full structural interpretation
-✓ Why this matters for your decision
-✓ What to understand going forward
+✓ How this applies to your situation
+✓ What this tells you going forward
 ✓ Downloadable PDF report
 
 $49 one-time  or  $19/month
@@ -265,6 +266,7 @@ Questions? support@runpayway.com
 - Reiterates what she gets
 - Two pricing options (choice)
 - Single clear CTA
+- Focuses on understanding and application
 - Support email (trust signal)
 
 ---
@@ -289,8 +291,8 @@ Questions? support@runpayway.com
 │  $220,000 per year              │
 │                                  │
 │  Your income structure reveals:  │
-│  $92,400 guaranteed +            │
-│  $127,600 at-risk               │
+│  $92,400 recurring +             │
+│  $127,600 variable              │
 │                                  │
 │  This is what your measurements  │
 │  show about how your income      │
@@ -300,55 +302,56 @@ Questions? support@runpayway.com
 │                                  │
 │  YOUR MEASUREMENTS               │
 │                                  │
-│  Guaranteed Floor                │
+│  Recurring Foundation             │
 │  $92,400/year (42%)              │
-│  Recurring, predictable          │
+│  Comes in every period           │
 │                                  │
-│  At-Risk Overlay                 │
+│  Variable Layer                  │
 │  $127,600/year (58%)             │
-│  Performance-dependent           │
+│  Fluctuates with performance     │
 │                                  │
-│  Primary Income Source           │
+│  Income Concentration           │
 │  92% (one client)                │
-│  Single point of failure         │
+│  Dependency on one source        │
 │                                  │
-│  Labor Required                  │
+│  Labor Dependency                │
 │  92% of income                   │
-│  Cannot delegate                 │
+│  Requires your active work       │
 │                                  │
-│  Income Predictability           │
+│  Income Stability                │
 │  88% recurs                      │
-│  12% varies year-to-year         │
+│  12% changes year-to-year        │
 │                                  │
 ├──────────────────────────────────┤
 │                                  │
 │  WHY THIS MATTERS                │
 │                                  │
-│  Your guaranteed floor ($92k)    │
-│  and at-risk overlay ($128k)     │
-│  scale independently.            │
+│  Your recurring foundation       │
+│  ($92k) and variable layer       │
+│  ($128k) behave differently.     │
 │                                  │
-│  A weak year might reduce the    │
-│  overlay while your floor        │
-│  remains stable.                 │
+│  In a slower year, the variable  │
+│  portion contracts while your    │
+│  foundation remains steady.      │
 │                                  │
-│  A loss of your primary client   │
-│  eliminates the overlay entirely.│
+│  Your revenue depends heavily    │
+│  on client relationships you     │
+│  maintain.                       │
 │                                  │
-│  This creates a financial reality│
+│  This structure defines your     │
+│  actual income pattern:          │
 │                                  │
-│  → Your debt-service capacity    │
-│    is based on your floor        │
-│  → Your at-risk portion is       │
-│    supplementary                 │
-│  → Your concentration creates    │
-│    a single point of failure     │
-│  → Your income requires your     │
-│    active participation          │
+│  → Your recurring portion flows  │
+│    in consistently               │
+│  → Your variable portion         │
+│    responds to performance       │
+│  → Your revenue depends on       │
+│    client relationships          │
+│  → Your income depends on your   │
+│    continued effort              │
 │                                  │
-│  This is the structural          │
-│  characteristic that defines     │
-│  your income.                    │
+│  This is how your income         │
+│  actually works.                 │
 │                                  │
 ├──────────────────────────────────┤
 │                                  │
@@ -359,31 +362,32 @@ Questions? support@runpayway.com
 │   support a $650k home."         │
 │                                  │
 │  After:                          │
-│  "My guaranteed floor is $92k.   │
-│   That's my actual debt-service  │
-│   foundation. My at-risk portion │
-│   is supplementary. This changes │
-│   how much I can safely commit." │
+│  "My recurring income is $92k.   │
+│   The remaining $127k is         │
+│   variable. When I understand    │
+│   this split, I understand what  │
+│   actually supports a long-term  │
+│   commitment."                   │
 │                                  │
-│  This distinction matters for    │
-│  a 30-year commitment.           │
+│  This distinction shapes every   │
+│  major financial decision.       │
 │                                  │
-│  The premium analysis explains   │
-│  exactly why.                    │
+│  The premium analysis shows you  │
+│  exactly why it matters.         │
 │                                  │
 ├──────────────────────────────────┤
 │                                  │
 │      UNLOCK PREMIUM              │
 │                                  │
-│   Understand Your Complete       │
+│   See Your Complete Income       │
 │   Structure                      │
 │                                  │
 │   Premium includes:              │
 │   ✓ Full structural              │
 │     interpretation               │
-│   ✓ Why this matters for your    │
-│     decision                     │
-│   ✓ What to understand going     │
+│   ✓ How this applies to your     │
+│     situation                    │
+│   ✓ What this tells you going    │
 │     forward                      │
 │   ✓ Downloadable PDF report      │
 │                                  │
@@ -497,39 +501,39 @@ Contradiction creates cognitive dissonance. Dissonance demands resolution. Resol
 
 ---
 
-## Why "$92,400 guaranteed + $127,600 at-risk"
+## Why "$92,400 recurring + $127,600 variable"
 
-NOT: "42% forward-secured income"
-YES: "$92,400 guaranteed + $127,600 at-risk"
+NOT: "$92,400 guaranteed + $127,600 at-risk"
+YES: "$92,400 recurring + $127,600 variable"
 
-First way uses industry jargon. Second way uses money she understands.
-
----
-
-## Why "Single point of failure"
-
-NOT: "Your income is concentrated"
-YES: "Single point of failure"
-
-Jargon vs. consequence. "Single point of failure" is alarming. Alarming creates urgency.
+First way uses mortgage/lender language. Second describes income structure itself. "Recurring" and "variable" are how her income actually behaves—neutral, descriptive, focused on understanding.
 
 ---
 
-## Why "This structure creates a specific financial reality"
+## Why "Dependency on one source" not "Single point of failure"
 
-NOT: "Here's what this means"
-YES: "This structure creates a specific financial reality"
+NOT: "Single point of failure"
+YES: "Dependency on one source"
 
-Makes measurement tangible. Shows that structure has real-world consequences.
+"Single point of failure" creates alarm. "Dependency" is a neutral structural fact. Creates understanding without fear.
+
+---
+
+## Why "This structure defines your actual income pattern"
+
+NOT: "This structure creates a specific financial reality"
+YES: "This structure defines your actual income pattern"
+
+Emphasizes understanding how income works, not consequences. Focuses on reality, not risk.
 
 ---
 
 ## Why Before/After Format
 
 NOT: "You can now support $X in debt service"
-YES: Shows her assumption, then shows reality
+YES: Shows her assumption, then shows understanding of structure
 
-Before/after creates contrast. Contrast creates understanding. Understanding creates desire to learn more.
+Before/after creates contrast. Contrast creates understanding. Understanding—not concern—drives the upgrade.
 
 ---
 
@@ -537,23 +541,23 @@ Before/after creates contrast. Contrast creates understanding. Understanding cre
 
 **First 3 seconds (header):**
 "Wait, I earn $220,000. What do they mean 'contradiction'?"
-Emotion: Surprise, confusion, attention
+Emotion: Surprise, curiosity, attention
 
 **Next 5 seconds (measurements):**
-"Oh, I see. They separated my income into guaranteed and at-risk."
-Emotion: Recognition, beginning of understanding
+"Oh, I see. They separated my income into recurring and variable parts."
+Emotion: Recognition, dawning understanding
 
 **Next 10 seconds (why it matters):**
-"Single point of failure... if I lose this client, the whole thing collapses."
-Emotion: Recognition, slight alarm
+"I never thought about my income this way—as two different patterns."
+Emotion: Recognition, clarity about structure
 
 **Final 10 seconds (decision bridge):**
-"They're saying my actual debt-service capacity is much lower than I thought."
-Emotion: Concern, realization, need to understand more
+"Understanding this split changes how I think about what actually supports my commitments."
+Emotion: Realization, insight, need to understand more
 
 **Seeing CTA:**
-"I need to understand this fully before making a $650k commitment."
-Emotion: Urgency, willingness to pay
+"I need to understand this completely—this changes everything about how I think of my income."
+Emotion: Curiosity, willingness to pay for understanding
 
 ---
 
@@ -564,32 +568,78 @@ Emotion: Urgency, willingness to pay
 Let me verify:
 
 ✅ **Does it surprise her?** YES
-- Contradiction between $220k total and $92k guaranteed is surprising
+- Contradiction between $220k total and $92k recurring is surprising
 
 ✅ **Does it validate what she suspected?** YES
-- She knows she has concentration risk; this confirms it with data
+- She knows her income is complicated; this explains how it's actually structured
 
-✅ **Does it create urgency?** YES
-- "Single point of failure" + "30-year commitment" = need to understand
+✅ **Does it create curiosity?** YES
+- "I never thought about my income this way" drives desire to understand completely
 
 ✅ **Does it make the upgrade feel necessary?** YES
-- Free content explains WHAT; premium explains WHY and WHAT IT MEANS
+- Free content explains WHAT; premium explains WHY it matters for her decisions
 
 ✅ **Is it credible?** YES
-- Specific numbers, measurements, not just claims
+- Specific numbers, measurements, not predictions or opinions
 
 ✅ **Does it feel premium?** YES
-- Professional design, thoughtful copy, not clickbait
+- Professional design, thoughtful copy, focused on understanding not fear
 
 **VERDICT: YES**
 
 A Business Owner seeing this screen would feel:
-1. "That's interesting... I didn't think about it that way"
-2. "Actually, that makes sense with my situation"
-3. "I need to understand this before my home purchase"
+1. "Wait... I never thought about my income that way"
+2. "That actually explains what I've always felt about my income"
+3. "I need to understand the complete picture"
 4. "I should unlock premium"
 
-The screen works.
+The screen creates understanding, not fear.
+
+---
+
+# COPY REFINEMENT AUDIT
+
+## Five Questions Answered
+
+### 1. What is the primary realization?
+
+**"My income isn't just a number—it's built on two different patterns: recurring and variable."**
+
+The customer realizes their $220k income is actually $92k recurring (stable) + $127k variable (performance-dependent). This reframing is the core insight.
+
+### 2. Why is it memorable?
+
+**Because it contradicts what they've always assumed.**
+
+She's thought of her income as a single $220k number her whole career. Splitting it into two distinct patterns is surprising. The contradiction makes it stick.
+
+### 3. Why is it uniquely RunPayway?
+
+**RunPayway measures how income actually works, not what it can support.**
+
+Other tools focus on qualification, debt service, borrowing power, affording decisions. RunPayway says: "Here's what your income is built on. Here's the structure that defines it. Now understand it completely."
+
+This is the income structure standard.
+
+### 4. Does the screen create understanding rather than fear?
+
+**YES.**
+
+- ❌ Removed: "debt-service capacity," "single point of failure," "cannot delegate," "safely commit"
+- ✅ Added: "recurring/variable," "dependency," "how your income works," "understand this structure"
+- Tone shift: From warning ("you might get denied") to clarity ("this is how it works")
+
+### 5. Does it strengthen RunPayway's position as the income structure standard?
+
+**YES.**
+
+Every sentence focuses on understanding structure:
+- "What your measurements show about how your income actually works"
+- "Your recurring portion flows in consistently"
+- "Your variable portion responds to performance"
+- "This is how your income actually works"
+
+This positions RunPayway as the authority on income structure itself—not affording, not qualifying, not borrowing. Structure.
 
 ---
 
@@ -629,20 +679,20 @@ But for MVP, this copy works.
 
 # FINAL ANSWER
 
-**Would this make a Business Owner immediately want to understand more?**
+**Does this screen create understanding rather than fear?**
 
 **YES.**
 
 This screen:
-- Surprises with contradiction
-- Validates with evidence
-- Creates urgency with consequences
-- Makes premium feel necessary
-- Positions RunPayway as measurement authority
+- Surprises with contradiction (assumption vs. reality)
+- Validates with evidence (specific measurements)
+- Creates curiosity about structure (not alarm about consequences)
+- Focuses on understanding income (not affording commitments)
+- Positions RunPayway as the income structure standard
 
 Sarah will see this screen and think:
-"I need to understand exactly how this affects my $650k home purchase decision."
+"I never understood my income this way before. I need to see the complete picture."
 
 That's the upgrade trigger.
 
-This screen delivers it.
+This screen delivers it—by emphasizing understanding, not risk.
