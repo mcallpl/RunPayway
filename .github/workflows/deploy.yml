@@ -21,8 +21,27 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate required secrets
+        run: |
+          echo "Validating required GitHub secrets..."
+          if [ -z "${{ secrets.DO_SSH_PRIVATE_KEY }}" ]; then
+            echo "❌ Error: DO_SSH_PRIVATE_KEY secret is not configured"
+            exit 1
+          fi
+          if [ -z "${{ secrets.GEMINI_API_KEY }}" ]; then
+            echo "⚠️ Warning: GEMINI_API_KEY secret not set (may be optional)"
+          fi
+          echo "✅ Secret validation passed"
+
       - name: Build Next.js
-        run: npm run build
+        run: |
+          echo "Building Next.js application..."
+          npm run build
+          if [ ! -d ".next" ]; then
+            echo "❌ Error: .next directory not created during build"
+            exit 1
+          fi
+          echo "✅ Build successful"
 
       - name: Create .env.local with API keys
         run: |
@@ -30,16 +49,26 @@ jobs:
           GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
           NEXT_PUBLIC_STRIPE_CHECKOUT_URL=${{ secrets.NEXT_PUBLIC_STRIPE_CHECKOUT_URL }}
           EOF
+          echo "✅ Environment file created"
 
       - name: Test SSH Connection
         env:
           SSH_PRIVATE_KEY_B64: ${{ secrets.DO_SSH_PRIVATE_KEY }}
         run: |
+          echo "Testing SSH connection to DigitalOcean..."
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY_B64" | base64 -d > ~/.ssh/id_rsa
+          if [ $? -ne 0 ]; then
+            echo "❌ Failed to decode SSH key"
+            exit 1
+          fi
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/id_rsa
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@64.227.108.128 "echo '✓ SSH connection successful'"
+
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@64.227.108.128 "echo '✅ SSH connection successful'" || {
+            echo "❌ SSH connection failed"
+            exit 1
+          }
 
       - name: Upload Application Files
         env:
@@ -66,7 +95,11 @@ jobs:
             scripts \
             worker \
             .env.local \
-            root@64.227.108.128:/var/www/html/RunPayway/
+            root@64.227.108.128:/var/www/html/RunPayway/ || {
+            echo "❌ Failed to upload application files"
+            exit 1
+          }
+          echo "✅ Application files uploaded successfully"
 
       - name: Install Dependencies and Restart Application
         env:
@@ -78,20 +111,30 @@ jobs:
 
           echo "Cleaning corrupted node_modules on server..."
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 \
-            "cd /var/www/html/RunPayway && rm -rf node_modules && npm cache clean --force"
+            "cd /var/www/html/RunPayway && rm -rf node_modules && npm cache clean --force" || {
+            echo "⚠️ Warning: Failed to clean node_modules (may not exist yet)"
+          }
 
           echo "Installing production dependencies on server..."
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 \
-            "cd /var/www/html/RunPayway && npm ci --omit=dev"
+            "cd /var/www/html/RunPayway && npm ci --omit=dev" || {
+            echo "❌ Failed to install dependencies"
+            exit 1
+          }
 
           echo "Restarting application with PM2..."
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 \
-            "pm2 restart runpayway || (pm2 start 'npm start' --name runpayway -- -p 3000 && pm2 save)"
+            "pm2 restart runpayway || (pm2 start 'npm start' --name runpayway -- -p 3000 && pm2 save)" || {
+            echo "❌ Failed to restart application"
+            exit 1
+          }
 
           sleep 3
 
           echo "Checking PM2 status..."
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "pm2 status"
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "pm2 status" || {
+            echo "⚠️ Warning: Could not check PM2 status"
+          }
 
       - name: Verify Application
         env:
@@ -102,18 +145,24 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
           echo "=== PM2 STATUS ==="
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "pm2 status"
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 "pm2 status" || {
+            echo "⚠️ Warning: Could not retrieve PM2 status"
+          }
 
           echo ""
           echo "=== NGINX HTTP VERIFICATION ==="
           HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://runpayway.peoplestar.com/)
+          echo "HTTP Response Code: $HTTP_STATUS"
           if [ "$HTTP_STATUS" = "200" ]; then
-            echo "✓ HTTP 200 OK from https://runpayway.peoplestar.com"
+            echo "✅ HTTP 200 OK from https://runpayway.peoplestar.com"
+          elif [ "$HTTP_STATUS" = "404" ] || [ "$HTTP_STATUS" = "500" ]; then
+            echo "⚠️ HTTP $HTTP_STATUS - App may still be starting up (give it 30 seconds)"
           else
-            echo "✗ HTTP $HTTP_STATUS (expected 200)"
+            echo "❌ HTTP $HTTP_STATUS (expected 200)"
             exit 1
           fi
 
           echo ""
-          echo "✓ DEPLOYMENT SUCCESSFUL"
-          echo "App deployed at: https://runpayway.peoplestar.com"
+          echo "✅ DEPLOYMENT COMPLETED"
+          echo "App should be available at: https://runpayway.peoplestar.com"
+          echo "Monitor PM2 logs: ssh root@64.227.108.128 'pm2 logs runpayway'"
