@@ -1,8 +1,9 @@
 # Compared With Generation Standard™ v1.1
 
-**Status**: READY FOR AUDIT  
+**Status**: LOCKED  
 **Version**: 1.1 (Revised)  
 **Date**: June 19, 2026  
+**Lock Date**: June 19, 2026  
 **Previous Version**: v1.0 (superseded)  
 
 ---
@@ -43,6 +44,20 @@ Translation: "Home purchases supported primarily by stable employment income wit
 ```
 
 The customer immediately understands: "I'm being compared to others with employment + variable commission structure."
+
+---
+
+## GOVERNANCE CLARIFICATION
+
+**Comparison Translation Archetypes™** are implementation-layer translation constructs used exclusively for Compared With™ generation.
+
+They do not replace, modify, supersede, or redefine the locked Support Structure Archetype™ framework.
+
+**Support Structure Archetypes™ remain the governing measurement standard.**
+
+Comparison Translation Archetypes™ exist solely to translate measurement outputs into consumer-readable comparison language.
+
+The 7 archetypes in this standard (Employment Dominant, Stable Base With Earned Overlay, etc.) are translation labels that map 1:1 to Support Structure Archetypes™ for communication purposes only.
 
 ---
 
