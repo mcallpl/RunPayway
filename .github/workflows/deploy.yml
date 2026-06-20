@@ -163,6 +163,14 @@ jobs:
           fi
 
           echo ""
+          echo "=== DEPLOYMENT VALIDATION ==="
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@64.227.108.128 \
+            "bash /var/www/html/RunPayway/deploy/validate-deployment.sh" || {
+            echo "⚠️ Warning: Some validation checks failed (check logs for details)"
+          }
+
+          echo ""
           echo "✅ DEPLOYMENT COMPLETED"
           echo "App should be available at: https://runpayway.peoplestar.com"
+          echo "Health check: curl https://runpayway.peoplestar.com/api/health"
           echo "Monitor PM2 logs: ssh root@64.227.108.128 'pm2 logs runpayway'"
