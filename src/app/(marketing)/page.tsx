@@ -1,11 +1,24 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
+import Link from 'next/link';
+
+// ================================================================
+// RUNPAYWAY PRODUCTION LANDING PAGE
+// Final Landing Page Information Architecture Blueprint™ v1.0
+// Category Protection Standard™ Compliant
+// ================================================================
 
 export default function LandingPage() {
   return (
-    <div style={{ fontFamily: "'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif", backgroundColor: '#FCFCFB', color: '#0B1730' }}>
+    <div style={{
+      fontFamily: "'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      backgroundColor: '#FCFCFB',
+      color: '#0B1730',
+      margin: 0,
+      padding: 0,
+      overflow: 'hidden'
+    }}>
       <style>{`
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { overflow-x: hidden; }
@@ -13,9 +26,9 @@ export default function LandingPage() {
         .header {
           position: sticky;
           top: 0;
-          height: 88px;
-          background: #FCFCFB;
-          border-bottom: 1px solid #6A7485;
+          height: 80px;
+          background: #FFFFFF;
+          border-bottom: 1px solid #E5E7EB;
           display: flex;
           align-items: center;
           z-index: 100;
@@ -23,11 +36,11 @@ export default function LandingPage() {
         }
 
         @media (max-width: 1024px) { .header { padding: 0 32px; } }
-        @media (max-width: 768px) { .header { padding: 0 24px; height: 72px; } }
+        @media (max-width: 768px) { .header { padding: 0 24px; height: 64px; } }
 
         .header-content {
           width: 100%;
-          max-width: 1600px;
+          max-width: 1400px;
           margin: 0 auto;
           display: flex;
           justify-content: space-between;
@@ -35,14 +48,23 @@ export default function LandingPage() {
           gap: 48px;
         }
 
-        .logo { height: 32px; width: auto; flex-shrink: 0; }
+        .logo { height: 40px; width: auto; flex-shrink: 0; }
+
+        .logo-text {
+          font-size: 14px;
+          font-weight: 600;
+          color: #0B1730;
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
 
         .nav {
           display: flex;
-          gap: 48px;
+          gap: 40px;
           align-items: center;
           flex: 1;
-          justify-content: center;
         }
 
         @media (max-width: 768px) { .nav { display: none; } }
@@ -52,1270 +74,1239 @@ export default function LandingPage() {
           font-weight: 500;
           color: #0B1730;
           text-decoration: none;
+          position: relative;
+          transition: color 200ms;
         }
 
-        .nav a:hover { color: #6A7485; }
+        .nav a:hover { color: #4B3FAE; }
+
+        .nav-dropdown {
+          position: relative;
+          display: inline-block;
+        }
+
+        .nav-dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: white;
+          min-width: 180px;
+          box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+          padding: 8px 0;
+          z-index: 1;
+          border: 1px solid #E5E7EB;
+          border-radius: 4px;
+          top: 100%;
+          left: 0;
+        }
+
+        .nav-dropdown:hover .nav-dropdown-content {
+          display: block;
+        }
+
+        .nav-dropdown-content a {
+          color: #0B1730;
+          padding: 8px 16px;
+          text-decoration: none;
+          display: block;
+          font-size: 13px;
+          font-weight: 400;
+        }
+
+        .nav-dropdown-content a:hover {
+          background-color: #F3F4F6;
+          color: #4B3FAE;
+        }
 
         .header-right {
           display: flex;
           gap: 24px;
           align-items: center;
           flex-shrink: 0;
+          margin-left: auto;
         }
 
-        .header-right a {
-          font-size: 14px;
-          font-weight: 500;
-          color: #0B1730;
-          text-decoration: none;
-        }
-
-        .btn {
+        .header-cta {
           background: #0B1730;
           color: #FCFCFB;
-          border: none;
+          border: 1px solid #0B1730;
           padding: 12px 28px;
-          border-radius: 6px;
-          font-size: 14px;
-          font-weight: 600;
+          border-radius: 2px;
+          font-size: 12px;
+          font-weight: 700;
           cursor: pointer;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          transition: all 150ms;
         }
 
-        .btn:hover { background: #1a2a4a; }
+        .header-cta:hover {
+          background: #4B3FAE;
+          border-color: #4B3FAE;
+        }
 
-        .hero {
+        .section {
           padding: 80px 48px;
-          max-width: 1600px;
+          max-width: 1400px;
           margin: 0 auto;
         }
 
-        @media (max-width: 768px) { .hero { padding: 48px 24px; } }
+        @media (max-width: 1024px) { .section { padding: 64px 32px; } }
+        @media (max-width: 768px) { .section { padding: 48px 24px; } }
 
-        .hero-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 80px;
-          align-items: flex-start;
-        }
-
-        @media (max-width: 1024px) { .hero-grid { gap: 64px; } }
-        @media (max-width: 768px) { .hero-grid { grid-template-columns: 1fr; gap: 48px; } }
-
-        .hero-left h1 {
-          font-size: 72px;
-          font-weight: 700;
-          line-height: 84px;
-          margin-bottom: 32px;
-          color: #0B1730;
-        }
-
-        @media (max-width: 768px) { .hero-left h1 { font-size: 48px; line-height: 56px; margin-bottom: 24px; } }
-
-        .hero-left p {
-          font-size: 20px;
-          font-weight: 400;
-          line-height: 32px;
-          margin-bottom: 16px;
-          color: #0B1730;
-        }
-
-        .cta-group {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-          margin-top: 32px;
-          margin-bottom: 32px;
-        }
-
-        .btn-secondary {
-          background: transparent;
-          color: #0B1730;
-          border: none;
-          padding: 0;
-          font-size: 14px;
+        .section-title {
+          font-size: 40px;
           font-weight: 600;
-          cursor: pointer;
-          text-decoration: underline;
+          line-height: 1.2;
+          color: #0B1730;
+          margin-bottom: 32px;
+          letter-spacing: -0.03em;
         }
 
-        .trust-line {
-          font-size: 14px;
+        .section-subtitle {
+          font-size: 18px;
           font-weight: 500;
-          color: #6A7485;
-          margin-top: 24px;
+          color: #6B7280;
+          line-height: 1.6;
+          margin-bottom: 40px;
         }
 
-        .report-card {
-          background: #FCFCFB;
-          border: 2px solid #0B1730;
-          padding: 48px;
+        .hero-title {
+          font-size: 56px;
+          font-weight: 600;
+          line-height: 1.1;
+          color: #0B1730;
+          margin-bottom: 20px;
+          letter-spacing: -0.04em;
         }
 
-        @media (max-width: 768px) { .report-card { padding: 36px; } }
+        .hero-subheading {
+          font-size: 18px;
+          font-weight: 400;
+          color: #6B7280;
+          line-height: 1.6;
+          margin-bottom: 40px;
+          max-width: 600px;
+        }
 
-        .report-metadata {
+        .cta-button {
           background: #0B1730;
           color: #FCFCFB;
-          padding: 16px 24px;
-          margin: -48px -48px 32px -48px;
-          display: grid;
-          grid-template-columns: repeat(5, 1fr);
-          gap: 24px;
-          font-size: 11px;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        @media (max-width: 768px) { .report-metadata { margin: -36px -36px 24px -36px; padding: 12px 20px; grid-template-columns: repeat(2, 1fr); } }
-
-        .metadata-item label {
-          display: block;
-          margin-bottom: 4px;
-          opacity: 0.8;
-        }
-
-        .metadata-item {
-          font-size: 12px;
-          font-weight: 400;
-          text-transform: none;
-        }
-
-        .report-factors {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 32px;
-          margin-bottom: 48px;
-          padding-bottom: 48px;
-          border-bottom: 1px solid #6A7485;
-        }
-
-        @media (max-width: 768px) { .report-factors { grid-template-columns: 1fr; gap: 24px; } }
-
-        .factor {
-          padding-bottom: 24px;
-          border-bottom: 1px solid #6A7485;
-        }
-
-        .factor:last-child { border-bottom: none; padding-bottom: 0; }
-
-        .factor-name {
-          font-size: 16px;
-          font-weight: 600;
-          color: #0B1730;
-          margin-bottom: 4px;
-        }
-
-        .factor-desc {
+          border: none;
+          padding: 16px 32px;
+          border-radius: 2px;
           font-size: 13px;
-          color: #6A7485;
-          font-weight: 400;
+          font-weight: 700;
+          cursor: pointer;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          transition: all 150ms;
+          letter-spacing: 0.03em;
+        }
+
+        .cta-button:hover {
+          background: #4B3FAE;
+        }
+
+        .secondary-cta {
+          background: transparent;
+          color: #0B1730;
+          border: 1px solid #0B1730;
+          padding: 14px 28px;
+          margin-left: 16px;
+        }
+
+        .secondary-cta:hover {
+          background: #F3F4F6;
+          border-color: #4B3FAE;
+          color: #4B3FAE;
+        }
+
+        .four-column-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 32px;
+          margin-top: 40px;
+        }
+
+        @media (max-width: 1024px) { .four-column-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .four-column-grid { grid-template-columns: 1fr; } }
+
+        .feature-card {
+          background: #FFFFFF;
+          border: 1px solid #E5E7EB;
+          padding: 32px;
+          border-radius: 4px;
+          transition: all 200ms;
+        }
+
+        .feature-card:hover {
+          border-color: #4B3FAE;
+          box-shadow: 0 4px 12px rgba(75, 63, 174, 0.08);
+        }
+
+        .feature-label {
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: #1F6D7A;
+          text-transform: uppercase;
           margin-bottom: 12px;
         }
 
-        .factor-score {
-          font-size: 56px;
-          font-weight: 700;
+        .feature-title {
+          font-size: 18px;
+          font-weight: 600;
           color: #0B1730;
-          font-family: 'IBM Plex Mono', monospace;
+          margin-bottom: 12px;
+          line-height: 1.3;
+        }
+
+        .feature-description {
+          font-size: 15px;
+          color: #6B7280;
+          line-height: 1.6;
+          margin: 0;
+        }
+
+        .report-preview {
+          background: #FFFFFF;
+          border: 1px solid #E5E7EB;
+          border-radius: 4px;
+          padding: 40px;
+          margin: 40px 0;
         }
 
         .report-section {
           margin-bottom: 32px;
           padding-bottom: 32px;
-          border-bottom: 1px solid #6A7485;
+          border-bottom: 1px solid #E5E7EB;
         }
 
-        .report-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .report-section:last-child {
+          border-bottom: none;
+          margin-bottom: 0;
+          padding-bottom: 0;
+        }
 
-        .section-title {
+        .report-label {
           font-size: 12px;
-          font-weight: 600;
-          color: #0B1730;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          margin-bottom: 12px;
-        }
-
-        .report-list {
-          list-style: none;
-          margin: 0 0 12px 0;
-          padding: 0;
-          font-size: 13px;
-        }
-
-        .report-list li {
-          margin-bottom: 6px;
-        }
-
-        .report-list.teal li { color: #1B6873; }
-        .report-list li { color: #0B1730; }
-
-        .section-desc {
-          font-size: 12px;
-          color: #6A7485;
-          font-weight: 400;
-        }
-
-        .section {
-          padding: 160px 48px;
-          max-width: 1600px;
-          margin: 0 auto;
-          border-top: 1px solid #6A7485;
-        }
-
-        @media (max-width: 768px) { .section { padding: 80px 24px; } }
-
-        .section-number {
-          font-size: 14px;
-          font-weight: 600;
-          color: #6A7485;
-          font-family: 'IBM Plex Mono', monospace;
-          margin-bottom: 24px;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        .section h2 {
-          font-size: 48px;
-          font-weight: 600;
-          line-height: 56px;
-          margin-bottom: 64px;
-          color: #0B1730;
-        }
-
-        @media (max-width: 768px) { .section h2 { font-size: 36px; line-height: 44px; margin-bottom: 48px; } }
-
-        .section-white { background: #FCFCFB; color: #0B1730; }
-        .section-navy { background: #0B1730; color: #FCFCFB; }
-
-        .intro-text {
-          font-size: 20px;
-          font-weight: 400;
-          line-height: 32px;
-          margin-bottom: 64px;
-          color: inherit;
-        }
-
-        .comparison-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 48px;
-          margin-bottom: 64px;
-        }
-
-        @media (max-width: 768px) { .comparison-grid { grid-template-columns: 1fr; gap: 40px; } }
-
-        .profile-card {
-          background: #FCFCFB;
-          border: 2px solid #0B1730;
-          padding: 48px;
-        }
-
-        @media (max-width: 768px) { .profile-card { padding: 36px; } }
-
-        .profile-label {
-          font-size: 13px;
-          font-weight: 600;
-          color: #6A7485;
-          text-transform: uppercase;
-          margin-bottom: 12px;
-          letter-spacing: 0.5px;
-        }
-
-        .profile-income {
-          font-size: 20px;
           font-weight: 700;
-          color: #0B1730;
-          margin-bottom: 24px;
-        }
-
-        .profile-list {
-          list-style: none;
-          margin: 0 0 32px 0;
-          padding: 0;
-          font-size: 16px;
-          color: #0B1730;
-          line-height: 28px;
-        }
-
-        .profile-list li { margin-bottom: 12px; }
-
-        .profile-class {
-          font-size: 20px;
-          font-weight: 600;
-          color: #0B1730;
-          margin-top: 32px;
-          padding-top: 32px;
-          border-top: 1px solid #6A7485;
-        }
-
-        .insight-box {
-          background: #FCFCFB;
-          border: 2px solid #0B1730;
-          padding: 48px;
-          margin-top: 64px;
-        }
-
-        @media (max-width: 768px) { .insight-box { padding: 36px; margin-top: 48px; } }
-
-        .insight-box h3 {
-          font-size: 14px;
-          font-weight: 600;
-          color: #0B1730;
-          margin-bottom: 16px;
+          letter-spacing: 0.08em;
+          color: #1F6D7A;
           text-transform: uppercase;
-        }
-
-        .insight-box p {
-          font-size: 16px;
-          font-weight: 400;
-          line-height: 28px;
-          color: #0B1730;
-          margin-bottom: 16px;
-        }
-
-        .insight-box p:last-child { margin-bottom: 0; }
-
-        .insight-cta {
-          font-size: 14px;
-          font-weight: 600;
-          color: #5146A8;
-          cursor: pointer;
-          margin-top: 24px;
-        }
-
-        .three-col {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 48px;
-        }
-
-        @media (max-width: 768px) { .three-col { grid-template-columns: 1fr; gap: 32px; } }
-
-        .col-item h3 {
-          font-size: 20px;
-          font-weight: 600;
-          color: inherit;
-          margin-bottom: 12px;
-        }
-
-        .col-item p {
-          font-size: 16px;
-          font-weight: 400;
-          line-height: 28px;
-          color: inherit;
-        }
-
-        .showcase-section {
-          padding: 280px 48px;
-          max-width: 1600px;
-          margin: 0 auto;
-          border-top: 1px solid #6A7485;
-        }
-
-        @media (max-width: 768px) { .showcase-section { padding: 160px 24px; } }
-
-        .showcase-section h2 {
-          font-size: 48px;
-          font-weight: 600;
-          line-height: 56px;
-          margin-bottom: 64px;
-          color: #0B1730;
-        }
-
-        .showcase-report {
-          background: #FCFCFB;
-          border: 2px solid #0B1730;
-          padding: 64px;
-          margin-bottom: 64px;
-        }
-
-        @media (max-width: 768px) { .showcase-report { padding: 48px; } }
-
-        .showcase-score {
-          font-size: 72px;
-          font-weight: 700;
-          color: #0B1730;
-          font-family: 'IBM Plex Mono', monospace;
           margin-bottom: 8px;
         }
 
-        .showcase-class {
-          font-size: 28px;
-          font-weight: 600;
+        .report-content {
+          font-size: 15px;
           color: #0B1730;
-          margin-bottom: 48px;
-          padding-bottom: 48px;
-          border-bottom: 1px solid #6A7485;
-        }
-
-        .showcase-factors {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 48px;
-          margin-bottom: 48px;
-          padding-bottom: 48px;
-          border-bottom: 1px solid #6A7485;
-        }
-
-        @media (max-width: 768px) { .showcase-factors { grid-template-columns: 1fr; gap: 24px; } }
-
-        .showcase-factor {
-          padding-bottom: 24px;
-          border-bottom: 1px solid #6A7485;
-        }
-
-        .showcase-factor:last-child { border-bottom: none; }
-
-        .showcase-factor-name {
-          font-size: 16px;
-          font-weight: 600;
-          color: #0B1730;
-          margin-bottom: 4px;
-        }
-
-        .showcase-factor-desc {
-          font-size: 13px;
-          color: #6A7485;
-          font-weight: 400;
-          margin-bottom: 12px;
-        }
-
-        .showcase-factor-score {
-          font-size: 48px;
-          font-weight: 700;
-          color: #0B1730;
-          font-family: 'IBM Plex Mono', monospace;
-        }
-
-        .explanation-box {
-          margin-bottom: 32px;
-          padding-bottom: 32px;
-          border-bottom: 1px solid #6A7485;
-        }
-
-        .explanation-box:last-child { border-bottom: none; }
-
-        .explanation-box h4 {
-          font-size: 14px;
-          font-weight: 600;
-          color: #0B1730;
-          margin-bottom: 12px;
-          text-transform: uppercase;
-        }
-
-        .explanation-box p {
-          font-size: 14px;
-          color: #0B1730;
-          line-height: 24px;
-          font-weight: 400;
-          margin-bottom: 12px;
-        }
-
-        .explanation-box p:last-child { margin-bottom: 0; }
-
-        .full-analysis {
-          background: #0B1730;
-          color: #FCFCFB;
-          padding: 48px;
-          margin-top: 64px;
-        }
-
-        .full-analysis h4 {
-          font-size: 14px;
-          font-weight: 600;
-          color: #FCFCFB;
-          margin-bottom: 16px;
-          text-transform: uppercase;
-        }
-
-        .full-analysis p {
-          font-size: 16px;
-          font-weight: 700;
-          color: #FCFCFB;
-          margin-bottom: 8px;
-          line-height: 24px;
-        }
-
-        .full-analysis p:last-child { margin-bottom: 0; font-weight: 400; }
-
-        .horizontal-explanation {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 48px;
-          margin-bottom: 64px;
-        }
-
-        @media (max-width: 768px) { .horizontal-explanation { grid-template-columns: 1fr; gap: 32px; } }
-
-        .explanation-item h3 {
-          font-size: 20px;
-          font-weight: 600;
-          color: #0B1730;
-          margin-bottom: 12px;
-        }
-
-        .explanation-item p {
-          font-size: 16px;
-          font-weight: 400;
-          line-height: 28px;
-          color: #0B1730;
-        }
-
-        .why-matters-box {
-          background: #FCFCFB;
-          border: 2px solid #0B1730;
-          padding: 48px;
-        }
-
-        @media (max-width: 768px) { .why-matters-box { padding: 36px; } }
-
-        .why-matters-box h4 {
-          font-size: 14px;
-          font-weight: 600;
-          color: #0B1730;
-          margin-bottom: 24px;
-          text-transform: uppercase;
-        }
-
-        .why-matters-box p {
-          font-size: 16px;
-          font-weight: 400;
-          line-height: 28px;
-          color: #0B1730;
-          margin-bottom: 12px;
-        }
-
-        .why-matters-box p:last-child { margin-bottom: 0; }
-
-        .framework-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 48px;
-          margin-bottom: 64px;
-        }
-
-        @media (max-width: 768px) { .framework-grid { grid-template-columns: 1fr; gap: 32px; } }
-
-        .framework-item h3 {
-          font-size: 16px;
-          font-weight: 600;
-          color: #0B1730;
-        }
-
-        .navy-section {
-          background: #0B1730;
-          color: #FCFCFB;
-          padding: 48px;
-          margin-top: 64px;
-        }
-
-        .navy-section h4 {
-          font-size: 14px;
-          font-weight: 600;
-          color: #FCFCFB;
-          margin-bottom: 24px;
-          text-transform: uppercase;
-        }
-
-        .navy-section p {
-          font-size: 16px;
-          font-weight: 400;
-          line-height: 28px;
-          color: #FCFCFB;
-          margin-bottom: 16px;
-        }
-
-        .navy-section p:last-child { margin-bottom: 0; }
-
-        .vertical-access {
-          max-width: 600px;
-          margin: 0 auto;
-        }
-
-        .access-tier {
-          background: #FCFCFB;
-          border: 2px solid #0B1730;
-          padding: 48px;
-          margin-bottom: 32px;
-        }
-
-        @media (max-width: 768px) { .access-tier { padding: 36px; } }
-
-        .tier-name {
-          font-size: 28px;
-          font-weight: 600;
-          color: #0B1730;
-          margin-bottom: 8px;
-        }
-
-        .tier-price {
-          font-size: 16px;
-          font-weight: 600;
-          color: #6A7485;
-          margin-bottom: 16px;
-        }
-
-        .tier-desc {
-          font-size: 14px;
-          color: #0B1730;
-          font-weight: 400;
-          margin-bottom: 24px;
-        }
-
-        .tier-includes {
-          font-size: 11px;
-          font-weight: 600;
-          color: #0B1730;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          margin-bottom: 12px;
-        }
-
-        .tier-list {
-          list-style: none;
-          margin: 0 0 24px 0;
-          padding: 0;
-          font-size: 13px;
-          color: #0B1730;
-          line-height: 20px;
-        }
-
-        .tier-list li { margin-bottom: 8px; }
-        .tier-list li:last-child { margin-bottom: 0; }
-
-        .tier-btn {
-          background: #0B1730;
-          color: #FCFCFB;
-          border: none;
-          padding: 14px 24px;
-          font-size: 14px;
-          font-weight: 600;
-          cursor: pointer;
-          width: 100%;
-        }
-
-        .tier-btn:hover { background: #1a2a4a; }
-
-        .arrow-divider {
-          text-align: center;
-          font-size: 24px;
-          color: #6A7485;
-          margin: 16px 0;
-        }
-
-        .institutional-rows {
-          margin-top: 64px;
-          background: #0B1730;
-          color: #FCFCFB;
-          padding: 48px;
-        }
-
-        .institutional-rows p {
-          font-size: 16px;
-          font-weight: 400;
-          line-height: 28px;
-          margin-bottom: 16px;
-        }
-
-        .institutional-rows p:last-child { margin-bottom: 0; }
-
-        .row-item {
-          font-size: 14px;
-          font-weight: 600;
-          color: #FCFCFB;
-          margin-top: 12px;
-          margin-bottom: 12px;
-          padding-bottom: 12px;
-          border-bottom: 1px solid rgba(252, 252, 251, 0.2);
-        }
-
-        .row-item:last-child { border-bottom: none; }
-
-        .clarification-section {
-          padding: 160px 48px;
-          max-width: 760px;
-          margin: 0 auto;
-          border-top: 1px solid #6A7485;
-        }
-
-        @media (max-width: 768px) { .clarification-section { padding: 80px 24px; } }
-
-        .clarification-section h3 {
-          font-size: 14px;
-          font-weight: 600;
-          color: #0B1730;
-          text-transform: uppercase;
-          margin-bottom: 24px;
-          letter-spacing: 0.5px;
-        }
-
-        .clarification-section p {
-          font-size: 14px;
-          color: #0B1730;
-          line-height: 24px;
-          font-weight: 400;
-          margin-bottom: 12px;
-        }
-
-        .clarification-section p:last-child { margin-bottom: 0; }
-
-        .final-cta {
-          padding: 160px 48px;
-          background: #0B1730;
-          color: #FCFCFB;
-          text-align: center;
-          border-top: 1px solid #6A7485;
-        }
-
-        @media (max-width: 768px) { .final-cta { padding: 80px 24px; } }
-
-        .final-cta h2 {
-          font-size: 48px;
-          font-weight: 600;
-          line-height: 56px;
-          margin-bottom: 32px;
-        }
-
-        @media (max-width: 768px) { .final-cta h2 { font-size: 36px; line-height: 44px; } }
-
-        .final-subtitle {
-          font-size: 20px;
-          font-weight: 400;
-          line-height: 32px;
-          margin-bottom: 48px;
-        }
-
-        .final-trust {
-          font-size: 14px;
+          line-height: 1.6;
           font-weight: 500;
-          color: rgba(252, 252, 251, 0.8);
-          margin-top: 24px;
+        }
+
+        .report-description {
+          font-size: 14px;
+          color: #6B7280;
+          line-height: 1.6;
+          margin-top: 4px;
+        }
+
+        .comparison-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 32px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+          padding: 16px;
+          text-align: left;
+          border-bottom: 1px solid #E5E7EB;
+          font-size: 14px;
+        }
+
+        .comparison-table th {
+          background: #F9FAFB;
+          font-weight: 700;
+          color: #0B1730;
+        }
+
+        .comparison-table tr:last-child td {
+          border-bottom: none;
+        }
+
+        .decision-carousel {
+          display: flex;
+          gap: 24px;
+          overflow-x: auto;
+          padding: 20px 0;
+          margin: 40px 0;
+          scroll-behavior: smooth;
+        }
+
+        @media (max-width: 768px) { .decision-carousel { margin: 24px -24px; padding: 20px 24px; } }
+
+        .decision-card {
+          background: #FFFFFF;
+          border: 1px solid #E5E7EB;
+          padding: 32px;
+          border-radius: 4px;
+          flex-shrink: 0;
+          width: 320px;
+          transition: all 200ms;
+        }
+
+        @media (max-width: 768px) { .decision-card { width: 280px; } }
+
+        .decision-card:hover {
+          border-color: #4B3FAE;
+          box-shadow: 0 4px 12px rgba(75, 63, 174, 0.08);
+        }
+
+        .decision-title {
+          font-size: 16px;
+          font-weight: 700;
+          color: #0B1730;
+          margin-bottom: 16px;
+          text-transform: uppercase;
+          letter-spacing: 0.03em;
+        }
+
+        .decision-item {
+          font-size: 14px;
+          color: #6B7280;
+          line-height: 1.6;
+          margin-bottom: 12px;
+          padding-left: 20px;
+          position: relative;
+        }
+
+        .decision-item:before {
+          content: '•';
+          position: absolute;
+          left: 0;
+          color: #1F6D7A;
+          font-weight: bold;
+        }
+
+        .three-step-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 40px;
+          margin: 40px 0;
+        }
+
+        @media (max-width: 1024px) { .three-step-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; } }
+        @media (max-width: 768px) { .three-step-grid { grid-template-columns: 1fr; gap: 24px; } }
+
+        .step-card {
+          text-align: center;
+        }
+
+        .step-number {
+          font-size: 48px;
+          font-weight: 700;
+          color: #4B3FAE;
+          line-height: 1;
+          margin-bottom: 20px;
+        }
+
+        .step-title {
+          font-size: 18px;
+          font-weight: 600;
+          color: #0B1730;
+          margin-bottom: 12px;
+          line-height: 1.3;
+        }
+
+        .step-description {
+          font-size: 15px;
+          color: #6B7280;
+          line-height: 1.6;
+          margin: 0;
+        }
+
+        .commitment-spectrum {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 16px;
+          margin: 40px 0;
+        }
+
+        @media (max-width: 768px) { .commitment-spectrum { grid-template-columns: repeat(2, 1fr); } }
+
+        .commitment-level {
+          background: #FFFFFF;
+          border: 1px solid #E5E7EB;
+          padding: 24px;
+          border-radius: 4px;
+          text-align: center;
+          transition: all 200ms;
+        }
+
+        .commitment-level:hover {
+          border-color: #4B3FAE;
+          box-shadow: 0 4px 12px rgba(75, 63, 174, 0.08);
+        }
+
+        .commitment-badge {
+          display: inline-block;
+          background: #F3F4F6;
+          padding: 8px 12px;
+          border-radius: 2px;
+          font-size: 12px;
+          font-weight: 700;
+          color: #0B1730;
+          margin-bottom: 12px;
+          letter-spacing: 0.03em;
+        }
+
+        .commitment-label {
+          font-size: 14px;
+          font-weight: 600;
+          color: #0B1730;
+          margin-bottom: 8px;
+          line-height: 1.3;
+        }
+
+        .commitment-description {
+          font-size: 13px;
+          color: #6B7280;
+          line-height: 1.5;
+        }
+
+        .what-is-not-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 48px;
+          margin: 40px 0;
+        }
+
+        @media (max-width: 768px) { .what-is-not-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+        .what-is-item {
+          display: flex;
+          gap: 16px;
+          margin-bottom: 20px;
+        }
+
+        .what-is-check {
+          font-size: 20px;
+          color: #1F6D7A;
+          flex-shrink: 0;
+          font-weight: 700;
+          width: 24px;
+          text-align: center;
+        }
+
+        .what-is-text {
+          font-size: 15px;
+          color: #0B1730;
+          line-height: 1.6;
+          font-weight: 500;
         }
 
         .footer {
-          background: #0B1730;
-          color: #FCFCFB;
-          padding: 160px 48px 64px;
-          border-top: 1px solid #6A7485;
+          background: #FFFFFF;
+          border-top: 1px solid #E5E7EB;
+          padding: 80px 48px 40px;
+          margin-top: 80px;
         }
 
-        @media (max-width: 768px) { .footer { padding: 80px 24px 48px; } }
+        @media (max-width: 1024px) { .footer { padding: 64px 32px 32px; } }
+        @media (max-width: 768px) { .footer { padding: 48px 24px 24px; } }
+
+        .footer-content {
+          max-width: 1400px;
+          margin: 0 auto;
+        }
 
         .footer-grid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 96px;
-          max-width: 1600px;
-          margin: 0 auto 96px;
+          grid-template-columns: repeat(7, 1fr);
+          gap: 40px;
+          margin-bottom: 40px;
+          padding-bottom: 40px;
+          border-bottom: 1px solid #E5E7EB;
         }
 
-        @media (max-width: 1024px) { .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 64px; margin-bottom: 80px; } }
-        @media (max-width: 768px) { .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 48px; margin-bottom: 64px; } }
+        @media (max-width: 1024px) { .footer-grid { grid-template-columns: repeat(3, 1fr); gap: 32px; } }
+        @media (max-width: 768px) { .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; } }
 
-        .footer-col h4 {
-          font-size: 11px;
-          font-weight: 600;
+        .footer-column h3 {
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
-          margin-bottom: 24px;
-          letter-spacing: 0.5px;
+          color: #0B1730;
+          margin-bottom: 16px;
+        }
+
+        .footer-column p {
+          font-size: 14px;
+          color: #6B7280;
+          line-height: 1.6;
+          margin-bottom: 12px;
+        }
+
+        .footer-column a {
+          display: block;
+          font-size: 14px;
+          color: #6B7280;
+          text-decoration: none;
+          margin-bottom: 12px;
+          transition: color 200ms;
+        }
+
+        .footer-column a:hover {
+          color: #1F6D7A;
+        }
+
+        .footer-bottom {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 24px;
+        }
+
+        @media (max-width: 768px) { .footer-bottom { flex-direction: column; align-items: flex-start; } }
+
+        .footer-copyright {
+          font-size: 13px;
+          color: #6B7280;
         }
 
         .footer-links {
-          list-style: none;
-          margin: 0;
-          padding: 0;
+          display: flex;
+          gap: 24px;
+          flex-wrap: wrap;
         }
 
-        .footer-links li { margin-bottom: 16px; }
         .footer-links a {
           font-size: 13px;
-          font-weight: 400;
-          color: #FCFCFB;
+          color: #6B7280;
           text-decoration: none;
+          transition: color 200ms;
         }
 
-        .footer-links a:hover { opacity: 0.7; }
-
-        .footer-bottom {
-          max-width: 1600px;
-          margin: 0 auto;
-          padding-top: 64px;
-          border-top: 1px solid rgba(252, 252, 251, 0.2);
-          text-align: center;
+        .footer-links a:hover {
+          color: #1F6D7A;
         }
 
-        .footer-bottom p {
-          font-size: 12px;
-          color: rgba(252, 252, 251, 0.7);
-          margin-bottom: 8px;
-          line-height: 18px;
+        .microcopy {
+          font-size: 13px;
+          color: #6B7280;
+          margin-top: 16px;
         }
-
-        .footer-bottom p:last-child { margin-bottom: 0; }
       `}</style>
 
-      {/* HEADER */}
+      {/* ================================================================ */}
+      {/* HEADER - LOCKED STRUCTURE */}
+      {/* ================================================================ */}
       <header className="header">
         <div className="header-content">
-          <Image src="/RunPayway_Logo.svg" alt="RunPayway" width={160} height={32} className="logo" priority />
+          {/* Logo */}
+          <Link href="/" className="logo-text">
+            <span style={{ fontSize: '16px', fontWeight: '700', color: '#0B1730' }}>RunPayway™</span>
+          </Link>
+
+          {/* Navigation */}
           <nav className="nav">
-            <a href="#how-it-works">How It Works</a>
-            <a href="#methodology">Methodology</a>
-            <a href="#when-it-matters">When It Matters</a>
-            <a href="#solutions">Solutions</a>
-            <a href="#learn">Learn</a>
+            <Link href="/how-it-works">How It Works</Link>
+
+            <div className="nav-dropdown">
+              <a href="#" style={{ cursor: 'pointer' }}>Applications ▼</a>
+              <div className="nav-dropdown-content">
+                <a href="#">Home Purchase</a>
+                <a href="#">Vehicle Purchase</a>
+                <a href="#">Career Change</a>
+                <a href="#">Retirement</a>
+                <a href="#">Business Launch</a>
+                <a href="#">Business Acquisition</a>
+                <a href="#">Business Expansion</a>
+                <a href="#">Employee Hire</a>
+                <a href="#">Investment Property</a>
+              </div>
+            </div>
+
+            <div className="nav-dropdown">
+              <a href="#" style={{ cursor: 'pointer' }}>Solutions ▼</a>
+              <div className="nav-dropdown-content">
+                <a href="/advisors">Advisor</a>
+                <a href="/organizations">Organization</a>
+                <a href="#">Enterprise</a>
+              </div>
+            </div>
+
+            <Link href="/methodology">Methodology</Link>
+            <Link href="/learn">Learn</Link>
+            <Link href="/about">About</Link>
           </nav>
+
+          {/* Right CTA */}
           <div className="header-right">
-            <a href="#sign-in">Sign In</a>
-            <button className="btn" onClick={() => window.location.href = '/assessment'}>Start Assessment →</button>
+            <Link href="/begin" className="header-cta">
+              Decision Check™
+              <span>→</span>
+            </Link>
           </div>
         </div>
       </header>
 
-      {/* HERO */}
-      <section className="hero">
-        <div className="hero-grid">
-          <div className="hero-left">
-            <h1>Before relying on income, know your Income Stability.</h1>
-            <p>RunPayway™ measures Income Stability.</p>
-            <p>Income Stability measures the structure supporting income.</p>
-            <div className="cta-group">
-              <button className="btn" onClick={() => window.location.href = '/assessment'}>Start Assessment →</button>
-              <button className="btn-secondary" onClick={() => window.location.href = '/#'}>See How It Works</button>
+      {/* ================================================================ */}
+      {/* SECTION 1: HERO */}
+      {/* ================================================================ */}
+      <section className="section" style={{ paddingTop: '120px', paddingBottom: '80px' }}>
+        <h1 className="hero-title">Know What Your Decision Depends On</h1>
+        <p className="hero-subheading">
+          Professional assessment of what must continue to go right for your major financial commitment—before you make it.
+        </p>
+        <div>
+          <Link href="/begin" className="cta-button">
+            Understand Your Decision Dependencies
+            <span>→</span>
+          </Link>
+          <Link href="#sample-report" className="cta-button secondary-cta">
+            View a Sample Report
+          </Link>
+        </div>
+        <p className="microcopy">
+          $29 professional assessment. Takes 10 minutes. You'll get your report in 24 hours.
+        </p>
+      </section>
+
+      {/* ================================================================ */}
+      {/* SECTION 2: WHAT YOU GET */}
+      {/* ================================================================ */}
+      <section className="section">
+        <h2 className="section-title">What Your Decision Check™ Report Includes</h2>
+        <p className="section-subtitle">When you complete your assessment, you'll receive a professional report showing:</p>
+
+        <div className="four-column-grid">
+          <div className="feature-card">
+            <div className="feature-label">Dependence</div>
+            <h3 className="feature-title">What Your Decision Depends On</h3>
+            <p className="feature-description">
+              Clear identification of the specific conditions your decision requires to work as expected.
+            </p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-label">Classification</div>
+            <h3 className="feature-title">Your Dependence Level</h3>
+            <p className="feature-description">
+              Categorized as Low, Moderate, Elevated, High, or Critical based on how heavily it depends on supporting conditions.
+            </p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-label">Comparison</div>
+            <h3 className="feature-title">How You Compare</h3>
+            <p className="feature-description">
+              Shows where you sit relative to the typical range for decisions like yours.
+            </p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-label">Understanding</div>
+            <h3 className="feature-title">What to Understand Going Forward</h3>
+            <p className="feature-description">
+              Clear explanation of what the decision relies on and what represents concentrated dependence.
+            </p>
+          </div>
+        </div>
+
+        <p style={{ marginTop: '40px', fontSize: '15px', color: '#6B7280', lineHeight: '1.6' }}>
+          The entire report is written in plain language. No jargon. No recommendations. Just clear assessment of what your decision is built on.
+        </p>
+      </section>
+
+      {/* ================================================================ */}
+      {/* SECTION 3: SAMPLE REPORT PREVIEW */}
+      {/* ================================================================ */}
+      <section className="section" id="sample-report">
+        <h2 className="section-title">Sample Decision Check™ Report</h2>
+
+        <div className="report-preview">
+          <div style={{ marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid #E5E7EB' }}>
+            <p style={{ fontSize: '14px', color: '#6B7280', margin: '0 0 8px 0' }}>EXAMPLE</p>
+            <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#0B1730', margin: 0 }}>Home Purchase — Jane and Michael</h3>
+          </div>
+
+          <div className="report-section">
+            <div className="report-label">Measurement</div>
+            <div className="report-content">Elevated Commitment Pressure</div>
+          </div>
+
+          <div className="report-section">
+            <div className="report-label">Position</div>
+            <div className="report-content">Higher Than Typical</div>
+          </div>
+
+          <div className="report-section">
+            <div className="report-label">Compared With</div>
+            <div className="report-content">Home purchases supported by employment income with variable commission.</div>
+          </div>
+
+          <div className="report-section">
+            <div className="report-label">Interpretation</div>
+            <div className="report-content">
+              This home purchase relies on the continued strength of the structure supporting it. Commission income must persist at expected levels throughout the 30-year mortgage term.
             </div>
           </div>
 
-          <div className="report-card">
-            {/* METADATA BAR - CHANGE #3: Reduced prominence */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', fontSize: '10px', marginBottom: '36px', paddingBottom: '16px', borderBottom: '1px solid rgba(106, 116, 133, 0.3)' }}>
-              <div>
-                <div style={{ fontSize: '8px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', marginBottom: '2px', letterSpacing: '0.4px' }}>Report ID</div>
-                <div style={{ fontSize: '10px', color: '#9CA3AF', fontWeight: 400, fontFamily: "'IBM Plex Mono', monospace" }}>RP2-2026-00012874</div>
-              </div>
-              <div>
-                <div style={{ fontSize: '8px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', marginBottom: '2px', letterSpacing: '0.4px' }}>Model</div>
-                <div style={{ fontSize: '10px', color: '#9CA3AF', fontWeight: 400 }}>RP-2.0</div>
-              </div>
-              <div>
-                <div style={{ fontSize: '8px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', marginBottom: '2px', letterSpacing: '0.4px' }}>Verification</div>
-                <div style={{ fontSize: '10px', color: '#1B6873', fontWeight: 400 }}>Verified</div>
-              </div>
-              <div>
-                <div style={{ fontSize: '8px', fontWeight: 600, color: '#9CA3AF', textTransform: 'uppercase', marginBottom: '2px', letterSpacing: '0.4px' }}>Issued</div>
-                <div style={{ fontSize: '10px', color: '#9CA3AF', fontWeight: 400 }}>06/03/2026</div>
-              </div>
+          <div className="report-section">
+            <div className="report-label">Primary Drivers</div>
+            <div style={{ marginTop: '8px' }}>
+              <div className="decision-item" style={{ marginBottom: '8px' }}>Support depends on variable income continuation (commission-based)</div>
+              <div className="decision-item" style={{ marginBottom: '8px' }}>Long-term horizon (30 years) extends dependence on sustained income</div>
+              <div className="decision-item" style={{ marginBottom: '8px' }}>Loss of commission income would affect mortgage payment capacity</div>
+              <div className="decision-item">Employment income alone insufficient to cover full mortgage obligation</div>
             </div>
+          </div>
 
-            {/* CHANGE #4: Category reinforcement */}
-            <div style={{ fontSize: '10px', fontWeight: 600, color: '#6A7485', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: '24px' }}>A standardized measurement of Income Stability.</div>
-
-            {/* SCORE BLOCK */}
-            <div style={{ marginBottom: '56px', paddingBottom: '48px', borderBottom: '1px solid #6A7485' }}>
-              <div style={{ fontSize: '96px', fontWeight: 700, color: '#1B6873', fontFamily: "'IBM Plex Mono', monospace", marginBottom: '12px', lineHeight: '1' }}>72</div>
-              <div style={{ fontSize: '18px', fontWeight: 600, color: '#0B1730', marginBottom: '12px' }}>Income Stability Score™</div>
-              <div style={{ fontSize: '32px', fontWeight: 600, color: '#1B6873', marginBottom: '32px' }}>Established Stability</div>
-              <div style={{ fontSize: '15px', color: '#0B1730', lineHeight: '28px', fontWeight: 400 }}>Several structural characteristics are supporting Income Stability.</div>
+          <div className="report-section">
+            <div className="report-label">Implications</div>
+            <div className="report-content">
+              Several important things must continue to be true for this home purchase to remain supported.
             </div>
+          </div>
 
-            {/* CHANGE #2: Why This Result heading + STRUCTURE CHANGE: Interpreted format without symbols */}
-            <div style={{ marginBottom: '48px', paddingBottom: '0' }}>
-              <div style={{ fontSize: '12px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '32px', fontFamily: "'IBM Plex Mono', sans-serif" }}>Why This Result</div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '48px' }}>
-                {/* What Strengthened This Result */}
-                <div style={{ paddingBottom: '48px', borderRight: '1px solid #6A7485' }}>
-                  <div style={{ fontSize: '12px', fontWeight: 600, color: '#1B6873', marginBottom: '24px' }}>What Strengthened This Result</div>
-                  <div style={{ marginBottom: '20px' }}>
-                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730', marginBottom: '4px' }}>Income Concentration</div>
-                    <div style={{ fontSize: '13px', color: '#6A7485', fontWeight: 400 }}>Strong contributor to stability.</div>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730', marginBottom: '4px' }}>Income Diversity</div>
-                    <div style={{ fontSize: '13px', color: '#6A7485', fontWeight: 400 }}>Strong contributor to stability.</div>
-                  </div>
-                </div>
-
-                {/* What Created Pressure */}
-                <div style={{ paddingBottom: '48px' }}>
-                  <div style={{ fontSize: '12px', fontWeight: 600, color: '#0B1730', marginBottom: '24px' }}>What Created Pressure</div>
-                  <div style={{ marginBottom: '20px' }}>
-                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730', marginBottom: '4px' }}>Forward Visibility</div>
-                    <div style={{ fontSize: '13px', color: '#6A7485', fontWeight: 400 }}>Limited future income visibility.</div>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730', marginBottom: '4px' }}>Continuity Strength</div>
-                    <div style={{ fontSize: '13px', color: '#6A7485', fontWeight: 400 }}>Moderate continuity of income relationships.</div>
-                  </div>
-                </div>
-              </div>
+          <div className="report-section">
+            <div className="report-label">Typical Range</div>
+            <div className="report-content">
+              Most home purchases supported by employment income with commission fall between Moderate and Elevated Commitment Pressure.
             </div>
+          </div>
 
-            {/* CHANGE #1: Institutional statement replacing trust line */}
-            <div style={{ textAlign: 'center', paddingTop: '24px', borderTop: '1px solid #6A7485', fontSize: '11px', color: '#6A7485', fontWeight: 400 }}>
-              Standardized measurement using Structural Stability Model RP-2.0
+          <div className="report-section" style={{ borderBottom: 'none' }}>
+            <div className="report-label">Technical Classification</div>
+            <div className="report-content" style={{ fontSize: '16px', fontFamily: 'monospace' }}>CPE</div>
+          </div>
+        </div>
+
+        <div style={{ marginTop: '40px', padding: '24px', backgroundColor: '#F9FAFB', borderRadius: '4px', borderLeft: '4px solid #1F6D7A' }}>
+          <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#0B1730', marginBottom: '12px' }}>What This Report Shows</h4>
+          <div style={{ fontSize: '14px', color: '#6B7280', lineHeight: '1.6' }}>
+            <p style={{ margin: '0 0 8px 0' }}>• If commission continues as expected, the decision remains supported</p>
+            <p style={{ margin: '0 0 8px 0' }}>• The decision depends on continued commission income at current levels</p>
+            <p style={{ margin: '0 0 8px 0' }}>• If commission stops, the decision would lack adequate support</p>
+            <p style={{ margin: '0 0 8px 0' }}>• Similar situations with commission-based income typically show Elevated Commitment Pressure</p>
+            <p style={{ margin: '0' }}>• Commission income stability is what this decision relies on most heavily</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ================================================================ */}
+      {/* SECTION 4: WHY IT MATTERS */}
+      {/* ================================================================ */}
+      <section className="section">
+        <h2 className="section-title">Before a Major Decision, Know What It Depends On</h2>
+
+        <div style={{ maxWidth: '800px' }}>
+          <p style={{ fontSize: '16px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
+            Most people think about financial decisions in terms of affordability.
+          </p>
+
+          <div style={{ background: '#F9FAFB', padding: '24px', borderRadius: '4px', marginBottom: '32px' }}>
+            <p style={{ fontSize: '15px', color: '#0B1730', lineHeight: '1.6', margin: '0 0 8px 0' }}>
+              "Can I afford the monthly payment?"
+            </p>
+            <p style={{ fontSize: '15px', color: '#0B1730', lineHeight: '1.6', margin: '0 0 8px 0' }}>
+              "Do I have enough savings?"
+            </p>
+            <p style={{ fontSize: '15px', color: '#0B1730', lineHeight: '1.6', margin: 0 }}>
+              "Is my income sufficient?"
+            </p>
+          </div>
+
+          <p style={{ fontSize: '16px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
+            But there's another question that matters equally:
+          </p>
+
+          <div style={{ background: '#1F6D7A', padding: '24px', borderRadius: '4px', marginBottom: '32px' }}>
+            <p style={{ fontSize: '16px', color: '#FFFFFF', lineHeight: '1.6', margin: 0, fontWeight: '500' }}>
+              "What must continue to go right for this decision to work?"
+            </p>
+          </div>
+
+          <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
+            A $300,000 home purchase seems affordable. But what if your income drops 30%? What if you need extended leave? What if your partner's income changes?
+          </p>
+
+          <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
+            Professional decision-makers—financial advisors, business owners, investors—always evaluate this question. They just do it subjectively, based on experience.
+          </p>
+
+          <p style={{ fontSize: '15px', color: '#0B1730', lineHeight: '1.8', fontWeight: '500' }}>
+            Decision Check™ systematizes that evaluation. So you get the same clarity professionals rely on.
+          </p>
+        </div>
+      </section>
+
+      {/* ================================================================ */}
+      {/* SECTION 5: APPLICATIONS/DECISION TYPES */}
+      {/* ================================================================ */}
+      <section className="section">
+        <h2 className="section-title">What Might Your Decision Depend On?</h2>
+        <p className="section-subtitle">These are conditions different decisions require. That's what we measure.</p>
+
+        <div className="decision-carousel">
+          <div className="decision-card">
+            <h3 className="decision-title">Buying a Home</h3>
+            <div className="decision-item">Sustained income to cover mortgage payments</div>
+            <div className="decision-item">Stability in your employment or business</div>
+            <div className="decision-item">Absence of major unexpected expenses</div>
+            <div className="decision-item">Continued access to credit/refinancing</div>
+            <div className="decision-item">Stability in property value (for equity)</div>
+          </div>
+
+          <div className="decision-card">
+            <h3 className="decision-title">Changing Careers</h3>
+            <div className="decision-item">Sufficient savings to cover the transition period</div>
+            <div className="decision-item">Ability to find work in the new field</div>
+            <div className="decision-item">Income stability during the transition</div>
+            <div className="decision-item">Support from family/dependents</div>
+            <div className="decision-item">Timeline flexibility for the transition</div>
+          </div>
+
+          <div className="decision-card">
+            <h3 className="decision-title">Retiring</h3>
+            <div className="decision-item">Sustained income (pension, portfolio, Social Security)</div>
+            <div className="decision-item">Stability of income sources over 30-40 years</div>
+            <div className="decision-item">No major unexpected expenses</div>
+            <div className="decision-item">Health and longevity as expected</div>
+            <div className="decision-item">No major market disruptions</div>
+          </div>
+
+          <div className="decision-card">
+            <h3 className="decision-title">Launching a Business</h3>
+            <div className="decision-item">Runway to cover personal expenses during startup phase</div>
+            <div className="decision-item">Time to customer acquisition and revenue</div>
+            <div className="decision-item">Ability to sustain on reduced income temporarily</div>
+            <div className="decision-item">Support from family/dependents</div>
+            <div className="decision-item">Market timing and customer demand</div>
+          </div>
+
+          <div className="decision-card">
+            <h3 className="decision-title">Acquiring a Business</h3>
+            <div className="decision-item">Client/revenue retention during integration</div>
+            <div className="decision-item">Ability to service acquisition debt</div>
+            <div className="decision-item">Continued market demand for acquired business</div>
+            <div className="decision-item">Success of integration and operations</div>
+            <div className="decision-item">No major surprises in business operations</div>
+          </div>
+
+          <div className="decision-card">
+            <h3 className="decision-title">Investment Property</h3>
+            <div className="decision-item">Rental income at projected levels</div>
+            <div className="decision-item">Tenant retention and occupancy rates</div>
+            <div className="decision-item">No major property damage or repairs</div>
+            <div className="decision-item">Real estate market stability</div>
+            <div className="decision-item">Ability to cover gaps if vacancy occurs</div>
+          </div>
+        </div>
+      </section>
+
+      {/* ================================================================ */}
+      {/* SECTION 6: PRICING */}
+      {/* ================================================================ */}
+      <section className="section" style={{ textAlign: 'center' }}>
+        <h2 className="section-title">Simple Pricing</h2>
+        <p className="section-subtitle">One Product. One Price. One Standard.</p>
+
+        <div style={{
+          background: '#FFFFFF',
+          border: '1px solid #E5E7EB',
+          borderRadius: '4px',
+          padding: '48px',
+          maxWidth: '400px',
+          margin: '40px auto'
+        }}>
+          <div style={{ fontSize: '48px', fontWeight: '700', color: '#0B1730', marginBottom: '8px' }}>$29</div>
+          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#0B1730', marginBottom: '16px', margin: '16px 0' }}>Decision Check™</h3>
+          <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: '1.6', marginBottom: '24px' }}>
+            One-time standardized professional assessment
+          </p>
+          <Link href="/begin" className="cta-button" style={{ width: '100%', justifyContent: 'center' }}>
+            Get Your Report
+          </Link>
+          <p className="microcopy" style={{ marginTop: '20px' }}>
+            Takes 10 minutes. Report delivered in 24 hours.
+          </p>
+        </div>
+      </section>
+
+      {/* ================================================================ */}
+      {/* SECTION 7: HOW IT WORKS */}
+      {/* ================================================================ */}
+      <section className="section">
+        <h2 className="section-title">Three Simple Steps</h2>
+
+        <div className="three-step-grid">
+          <div className="step-card">
+            <div className="step-number">1</div>
+            <h3 className="step-title">Choose Your Decision</h3>
+            <p className="step-description">
+              Select the financial decision you're evaluating: buying a home, changing careers, retiring, launching a business, or another major commitment.
+            </p>
+          </div>
+
+          <div className="step-card">
+            <div className="step-number">2</div>
+            <h3 className="step-title">Answer Structured Questions</h3>
+            <p className="step-description">
+              You'll answer straightforward questions about your situation: income sources, savings, timeline, and what conditions your decision requires.
+            </p>
+          </div>
+
+          <div className="step-card">
+            <div className="step-number">3</div>
+            <h3 className="step-title">Receive Your Report</h3>
+            <p className="step-description">
+              Within 24 hours, you'll receive your Decision Check™ report with professional assessment and clear explanation of what your decision depends on.
+            </p>
+          </div>
+        </div>
+
+        <p style={{
+          fontSize: '14px',
+          color: '#6B7280',
+          marginTop: '40px',
+          textAlign: 'center'
+        }}>
+          Takes about 10 minutes. All your information stays private and encrypted.
+        </p>
+      </section>
+
+      {/* ================================================================ */}
+      {/* SECTION 8: DECISION CHECK™ INTRODUCTION */}
+      {/* ================================================================ */}
+      <section className="section">
+        <h2 className="section-title">Decision Check™ Is Your Professional Assessment</h2>
+
+        <div style={{ maxWidth: '800px', margin: '40px auto' }}>
+          <p style={{ fontSize: '16px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
+            Decision Check™ is a professional assessment that answers one simple question:
+          </p>
+
+          <div style={{ background: '#F9FAFB', padding: '24px', borderRadius: '4px', marginBottom: '32px', borderLeft: '4px solid #1F6D7A' }}>
+            <p style={{ fontSize: '16px', color: '#0B1730', lineHeight: '1.8', margin: 0, fontWeight: '500' }}>
+              How much does my major financial decision depend on supporting conditions remaining intact?
+            </p>
+          </div>
+
+          <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
+            When you complete your assessment, you get a standardized report that shows what your decision is built on, how typical your situation is, and what you need to understand going forward.
+          </p>
+
+          <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
+            Think of it like a home inspection. An inspection doesn't tell you whether to buy the house. It tells you what the house is built on and what condition it's in. You decide what to do with that information.
+          </p>
+
+          <p style={{ fontSize: '15px', color: '#0B1730', lineHeight: '1.8', fontWeight: '500' }}>
+            Decision Check™ works the same way. It doesn't recommend yes or no. It shows you what your decision is built on so you can decide confidently.
+          </p>
+        </div>
+      </section>
+
+      {/* ================================================================ */}
+      {/* SECTION 9: COMMITMENT PRESSURE™ INTRODUCTION */}
+      {/* ================================================================ */}
+      <section className="section">
+        <h2 className="section-title">Understanding Your Commitment Pressure™ Classification</h2>
+        <p className="section-subtitle">
+          Every Decision Check™ report includes a Commitment Pressure™ classification that measures how much your financial decision depends on specific conditions continuing to happen.
+        </p>
+
+        <div className="commitment-spectrum">
+          <div className="commitment-level">
+            <div className="commitment-badge">CPL</div>
+            <h4 className="commitment-label">Low Commitment Pressure</h4>
+            <p className="commitment-description">
+              Few important things must continue to go right. Your decision has flexibility to absorb change.
+            </p>
+          </div>
+
+          <div className="commitment-level">
+            <div className="commitment-badge">CPM</div>
+            <h4 className="commitment-label">Moderate Commitment Pressure</h4>
+            <p className="commitment-description">
+              Several things must continue to go right. Your decision requires stability in key areas but has some flexibility.
+            </p>
+          </div>
+
+          <div className="commitment-level">
+            <div className="commitment-badge">CPE</div>
+            <h4 className="commitment-label">Elevated Commitment Pressure</h4>
+            <p className="commitment-description">
+              Several important things must continue to go right. Your decision requires more stability and has limited flexibility.
+            </p>
+          </div>
+
+          <div className="commitment-level">
+            <div className="commitment-badge">CPH</div>
+            <h4 className="commitment-label">High Commitment Pressure</h4>
+            <p className="commitment-description">
+              Many important things must continue to go right. Your decision is dependent on sustained stability across multiple areas.
+            </p>
+          </div>
+
+          <div className="commitment-level">
+            <div className="commitment-badge">CPC</div>
+            <h4 className="commitment-label">Critical Commitment Pressure</h4>
+            <p className="commitment-description">
+              Most key things must continue to go right. Your decision has minimal flexibility and depends on nearly everything staying the same.
+            </p>
+          </div>
+        </div>
+
+        <p style={{
+          fontSize: '15px',
+          color: '#0B1730',
+          marginTop: '40px',
+          textAlign: 'center',
+          fontWeight: '500'
+        }}>
+          Your classification shows you where you sit—and what you actually depend on.
+        </p>
+      </section>
+
+      {/* ================================================================ */}
+      {/* SECTION 10: WHAT IT IS / IS NOT */}
+      {/* ================================================================ */}
+      <section className="section">
+        <h2 className="section-title">What Decision Check™ Actually Is</h2>
+
+        <div className="what-is-not-grid">
+          <div>
+            <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#0B1730', marginBottom: '20px' }}>What It Is</h3>
+            <div className="what-is-item">
+              <div className="what-is-check">✓</div>
+              <div className="what-is-text">Professional assessment of what your decision depends on</div>
             </div>
+            <div className="what-is-item">
+              <div className="what-is-check">✓</div>
+              <div className="what-is-text">Standardized measurement of decision dependencies</div>
+            </div>
+            <div className="what-is-item">
+              <div className="what-is-check">✓</div>
+              <div className="what-is-text">Plain-language report showing your situation's structure</div>
+            </div>
+            <div className="what-is-item">
+              <div className="what-is-check">✓</div>
+              <div className="what-is-text">Comparison to typical situations like yours</div>
+            </div>
+            <div className="what-is-item">
+              <div className="what-is-check">✓</div>
+              <div className="what-is-text">Classification of your decision's dependence level</div>
+            </div>
+            <div className="what-is-item">
+              <div className="what-is-check">✓</div>
+              <div className="what-is-text">Professional clarity before commitment</div>
+            </div>
+          </div>
 
-            {/* CTA */}
-            <div style={{ textAlign: 'center', paddingTop: '24px' }}>
-              <a href="/#" style={{ fontSize: '14px', fontWeight: 600, color: '#1B6873', textDecoration: 'none', display: 'inline-block' }}>View Example Income Stability Profile™ →</a>
+          <div>
+            <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#0B1730', marginBottom: '20px' }}>What It Is Not</h3>
+            <div className="what-is-item">
+              <div className="what-is-check">✗</div>
+              <div className="what-is-text">Financial advice ("you should do this")</div>
+            </div>
+            <div className="what-is-item">
+              <div className="what-is-check">✗</div>
+              <div className="what-is-text">Affordability approval or denial</div>
+            </div>
+            <div className="what-is-item">
+              <div className="what-is-check">✗</div>
+              <div className="what-is-text">Risk scoring or prediction</div>
+            </div>
+            <div className="what-is-item">
+              <div className="what-is-check">✗</div>
+              <div className="what-is-text">Credit score or credit assessment</div>
+            </div>
+            <div className="what-is-item">
+              <div className="what-is-check">✗</div>
+              <div className="what-is-text">AI insights or algorithmic recommendation</div>
+            </div>
+            <div className="what-is-item">
+              <div className="what-is-check">✗</div>
+              <div className="what-is-text">Budgeting or expense tracking</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 01 */}
-      <section className="section section-white">
-        <div className="section-number">01</div>
-        <h2>Income and Income Stability are not the same thing.</h2>
+      {/* ================================================================ */}
+      {/* SECTION 11: METHODOLOGY PREVIEW (Optional) */}
+      {/* ================================================================ */}
+      <section className="section">
+        <h2 className="section-title">How This Measurement Works</h2>
+        <p className="section-subtitle">
+          Decision Check™ uses a systematic framework to evaluate decision dependencies.
+        </p>
 
-        <div style={{ marginBottom: '64px' }}>
-          <h3 style={{ fontSize: '20px', fontWeight: 600, color: '#0B1730', marginBottom: '48px' }}>Same Income. Different Stability.</h3>
-          <div className="comparison-grid">
-            <div className="profile-card">
-              <div className="profile-label">Profile A</div>
-              <div className="profile-income">$150,000 Income</div>
-              <ul className="profile-list">
-                <li>One primary client</li>
-                <li>No recurring agreements</li>
-                <li>Income varies month to month</li>
-                <li>Income depends on continued activity</li>
-              </ul>
-              <div className="profile-class">Developing Stability</div>
-            </div>
-            <div className="profile-card">
-              <div className="profile-label">Profile B</div>
-              <div className="profile-income">$150,000 Income</div>
-              <ul className="profile-list">
-                <li>Multiple income sources</li>
-                <li>Recurring monthly income</li>
-                <li>Lower reliance on any single source</li>
-                <li>More consistent income over time</li>
-              </ul>
-              <div className="profile-class">Established Stability</div>
-            </div>
+        <div className="four-column-grid">
+          <div className="feature-card">
+            <div className="feature-label">Step 1</div>
+            <h3 className="feature-title">Structural Analysis</h3>
+            <p className="feature-description">
+              We analyze your specific situation against your decision type to identify supporting conditions.
+            </p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-label">Step 2</div>
+            <h3 className="feature-title">Comparison Framework</h3>
+            <p className="feature-description">
+              We compare your situation to the typical range for similar decisions in your category.
+            </p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-label">Step 3</div>
+            <h3 className="feature-title">Dependence Classification</h3>
+            <p className="feature-description">
+              We classify your dependence level using the Commitment Pressure™ scale (Low to Critical).
+            </p>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-label">Step 4</div>
+            <h3 className="feature-title">Clear Reporting</h3>
+            <p className="feature-description">
+              We generate a clear, standardized report showing what you depend on and what that means.
+            </p>
           </div>
         </div>
 
-        <div className="insight-box">
-          <h3>Key Insight</h3>
-          <p>Two people can earn the same income and have very different levels of Income Stability.</p>
-          <p>Income amount alone does not tell the whole story.</p>
-          <div className="insight-cta">See My Income Stability →</div>
-        </div>
+        <p style={{ marginTop: '40px', fontSize: '15px', color: '#6B7280', lineHeight: '1.6', textAlign: 'center' }}>
+          This approach is consistent, comparable, and transparent. <Link href="/methodology" style={{ color: '#1F6D7A', textDecoration: 'none', fontWeight: '600' }}>Learn more about our methodology →</Link>
+        </p>
       </section>
 
-      {/* SECTION 02 */}
-      <section className="section section-white">
-        <div className="section-number">02</div>
-        <h2>Common Situations Where People Rely On Income</h2>
-        <p className="intro-text">Two people can earn the same income and face very different levels of stability. Income Stability helps reveal structural differences that income amount alone may not show.</p>
-        <div className="three-col">
-          <div className="col-item">
-            <h3>Buying a Home</h3>
-            <p>A mortgage may last decades. Understanding the stability of the income supporting that commitment may provide additional context before you buy.</p>
-          </div>
-          <div className="col-item">
-            <h3>Leaving a Job</h3>
-            <p>A career change often means replacing one income structure with another. Understanding Income Stability may provide additional context before making that transition.</p>
-          </div>
-          <div className="col-item">
-            <h3>Starting a Business</h3>
-            <p>Many entrepreneurs transition away from existing income sources. Understanding Income Stability may provide additional context before making that change.</p>
-          </div>
-        </div>
+      {/* ================================================================ */}
+      {/* SECTION 12: FINAL CTA */}
+      {/* ================================================================ */}
+      <section className="section" style={{ textAlign: 'center', paddingBottom: '120px' }}>
+        <h2 className="section-title">Before You Commit, Get Clarity</h2>
+        <p className="section-subtitle" style={{ maxWidth: '600px', margin: '20px auto 40px' }}>
+          Your major financial decision deserves professional assessment of what it depends on.
+        </p>
+
+        <p style={{ fontSize: '16px', color: '#0B1730', lineHeight: '1.8', marginBottom: '40px', fontWeight: '500' }}>
+          Not advice. Not approval. Just clear understanding of what your decision is built on.
+        </p>
+
+        <Link href="/begin" className="cta-button" style={{ fontSize: '14px', padding: '16px 40px' }}>
+          Get Your Decision Check™ Report
+          <span>→</span>
+        </Link>
+
+        <p className="microcopy">
+          Takes 10 minutes. Report delivered in 24 hours.<br />Used by financial advisors and professionals.
+        </p>
       </section>
 
-      {/* SECTION 03 - SHOWCASE */}
-      <section className="showcase-section" style={{ backgroundColor: '#FCFCFB' }}>
-        <div className="section-number" style={{ marginBottom: '24px' }}>03</div>
-        <h2>Sample Income Stability Profile</h2>
-
-        <div className="showcase-report">
-          {/* SCORE SUMMARY */}
-          <div style={{ marginBottom: '48px', paddingBottom: '48px', borderBottom: '1px solid #6A7485' }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '24px' }}>
-              <div style={{ fontSize: '72px', fontWeight: 700, color: '#1B6873', fontFamily: "'IBM Plex Mono', monospace", lineHeight: '1' }}>72</div>
-              <div style={{ fontSize: '16px', fontWeight: 600, color: '#0B1730' }}>Income Stability Score™</div>
-            </div>
-            <div style={{ fontSize: '28px', fontWeight: 600, color: '#1B6873', marginBottom: '24px' }}>Established Stability</div>
-            <div style={{ fontSize: '14px', color: '#0B1730', lineHeight: '24px', fontWeight: 400 }}>Established Stability reflects an income structure with several characteristics that support stability while maintaining a limited number of pressure areas.</div>
-          </div>
-
-          {/* WHAT STRENGTHENED STABILITY */}
-          <div style={{ marginBottom: '48px', paddingBottom: '48px', borderBottom: '1px solid #6A7485' }}>
-            <div style={{ fontSize: '12px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '24px' }}>What Strengthened Stability</div>
-
-            <div style={{ marginBottom: '32px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730' }}>Income Concentration</div>
-                <div style={{ fontSize: '28px', fontWeight: 700, color: '#1B6873', fontFamily: "'IBM Plex Mono', monospace" }}>82</div>
-              </div>
-              <div style={{ fontSize: '13px', color: '#6A7485', fontWeight: 400 }}>Strong contributor to stability.</div>
-            </div>
-
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730' }}>Income Diversity</div>
-                <div style={{ fontSize: '28px', fontWeight: 700, color: '#1B6873', fontFamily: "'IBM Plex Mono', monospace" }}>76</div>
-              </div>
-              <div style={{ fontSize: '13px', color: '#6A7485', fontWeight: 400 }}>Strong contributor to stability.</div>
-            </div>
-          </div>
-
-          {/* WHAT CREATED PRESSURE */}
-          <div style={{ marginBottom: '48px', paddingBottom: '48px', borderBottom: '1px solid #6A7485' }}>
-            <div style={{ fontSize: '12px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '24px' }}>What Created Pressure</div>
-
-            <div style={{ marginBottom: '32px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730' }}>Forward Visibility</div>
-                <div style={{ fontSize: '28px', fontWeight: 700, color: '#0B1730', fontFamily: "'IBM Plex Mono', monospace" }}>41</div>
-              </div>
-              <div style={{ fontSize: '13px', color: '#6A7485', fontWeight: 400 }}>Limited visibility into future income commitments.</div>
-            </div>
-
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730' }}>Continuity Strength</div>
-                <div style={{ fontSize: '28px', fontWeight: 700, color: '#0B1730', fontFamily: "'IBM Plex Mono', monospace" }}>55</div>
-              </div>
-              <div style={{ fontSize: '13px', color: '#6A7485', fontWeight: 400 }}>Moderate continuity in income relationships.</div>
-            </div>
-          </div>
-
-          {/* ADDITIONAL STRUCTURAL FACTORS */}
-          <div style={{ marginBottom: '48px', paddingBottom: '48px', borderBottom: '1px solid #6A7485' }}>
-            <div style={{ fontSize: '12px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '24px' }}>Additional Structural Factors</div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
-                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730' }}>Stability Pattern</div>
-                  <div style={{ fontSize: '28px', fontWeight: 700, color: '#6A7485', fontFamily: "'IBM Plex Mono', monospace" }}>68</div>
-                </div>
-              </div>
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '8px' }}>
-                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B1730' }}>Dependency Exposure</div>
-                  <div style={{ fontSize: '28px', fontWeight: 700, color: '#0B1730', fontFamily: "'IBM Plex Mono', monospace" }}>71</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* VERIFICATION */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px', fontSize: '12px' }}>
-            <div>
-              <div style={{ fontSize: '11px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', marginBottom: '4px', letterSpacing: '0.5px' }}>Model Version</div>
-              <div style={{ fontSize: '13px', color: '#0B1730', fontWeight: 500 }}>RP-2.0</div>
-            </div>
-            <div>
-              <div style={{ fontSize: '11px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', marginBottom: '4px', letterSpacing: '0.5px' }}>Report ID</div>
-              <div style={{ fontSize: '13px', color: '#0B1730', fontWeight: 500, fontFamily: "'IBM Plex Mono', monospace" }}>RP2-2026-00012874</div>
-            </div>
-            <div>
-              <div style={{ fontSize: '11px', fontWeight: 600, color: '#0B1730', textTransform: 'uppercase', marginBottom: '4px', letterSpacing: '0.5px' }}>Verification</div>
-              <div style={{ fontSize: '13px', color: '#1B6873', fontWeight: 500 }}>Verified</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 04 */}
-      <section className="section section-white">
-        <div className="section-number">04</div>
-        <h2>Understanding Your Income Stability Profile</h2>
-        <div className="horizontal-explanation">
-          <div className="explanation-item">
-            <h3>Income Stability Profile</h3>
-            <p>The structural factors that influence Income Stability.</p>
-          </div>
-          <div className="explanation-item">
-            <h3>Income Stability Score</h3>
-            <p>A standardized measurement of Income Stability.</p>
-          </div>
-          <div className="explanation-item">
-            <h3>Stability Class</h3>
-            <p>A classification that helps place the result into context.</p>
-          </div>
-        </div>
-        <div className="why-matters-box">
-          <h4>Why This Matters</h4>
-          <p>The profile explains the score.</p>
-          <p>The score summarizes the profile.</p>
-          <p>Together they provide a clearer understanding of Income Stability.</p>
-          <button className="btn" onClick={() => window.location.href = '/assessment'} style={{ marginTop: '24px' }}>Reveal My Result →</button>
-        </div>
-      </section>
-
-      {/* SECTION 05 */}
-      <section className="section section-white">
-        <div className="section-number">05</div>
-        <h2>What RunPayway Evaluates</h2>
-        <p style={{ fontSize: '16px', fontWeight: 400, lineHeight: '28px', marginBottom: '64px', color: '#0B1730' }}>RunPayway™ evaluates structural factors that contribute to Income Stability.</p>
-        <div className="framework-grid">
-          <div className="framework-item"><h3>Income Concentration</h3></div>
-          <div className="framework-item"><h3>Income Diversity</h3></div>
-          <div className="framework-item"><h3>Forward Visibility</h3></div>
-          <div className="framework-item"><h3>Stability Pattern</h3></div>
-          <div className="framework-item"><h3>Continuity Strength</h3></div>
-          <div className="framework-item"><h3>Dependency Exposure</h3></div>
-        </div>
-        <div className="navy-section">
-          <h4>Why This Matters</h4>
-          <p>Income measures amount.</p>
-          <p>RunPayway™ measures stability.</p>
-          <p>Income amount alone may not reveal these structural characteristics. RunPayway™ evaluates them using a consistent methodology.</p>
-          <div style={{ fontSize: '14px', fontWeight: 600, color: '#1B6873', cursor: 'pointer', marginTop: '32px' }}>Learn More About The Methodology →</div>
-        </div>
-      </section>
-
-      {/* SECTION 06 */}
-      <section className="section section-white">
-        <div className="section-number">06</div>
-        <h2>Understanding Income Stability</h2>
-        <div className="vertical-access">
-          <div className="access-tier">
-            <div className="tier-name">Assessment</div>
-            <div className="tier-price">FREE</div>
-            <div className="tier-desc">Discover your result.</div>
-            <div className="tier-includes">Includes:</div>
-            <ul className="tier-list">
-              <li>Assessment Completion</li>
-              <li>Income Structure Evaluation</li>
-              <li>Eligibility to Unlock Your Result</li>
-            </ul>
-            <button className="tier-btn" onClick={() => window.location.href = '/assessment'}>Start Assessment →</button>
-          </div>
-
-          <div className="arrow-divider">↓</div>
-
-          <div className="access-tier">
-            <div className="tier-name">Result</div>
-            <div className="tier-price">$9</div>
-            <div className="tier-desc">See where you stand.</div>
-            <div className="tier-includes">Includes:</div>
-            <ul className="tier-list">
-              <li>Income Stability Profile</li>
-              <li>Stability Class</li>
-              <li>Income Stability Score</li>
-              <li>Supporting Drivers</li>
-              <li>Stability Pressure Factors</li>
-            </ul>
-            <button className="tier-btn" onClick={() => window.location.href = '/unlock'}>Reveal My Result →</button>
-          </div>
-
-          <div className="arrow-divider">↓</div>
-
-          <div className="access-tier">
-            <div className="tier-name">Analysis</div>
-            <div className="tier-price">$69</div>
-            <div className="tier-desc">Understand why.</div>
-            <div className="tier-includes">Includes everything in the Result plus:</div>
-            <ul className="tier-list">
-              <li>Why This Score?</li>
-              <li>What This Means</li>
-              <li>Improvement Opportunities</li>
-              <li>What's Supporting Stability</li>
-              <li>What May Be Affecting Stability</li>
-              <li>Areas Worth Reviewing</li>
-              <li>Industry Context</li>
-              <li>Analysis Observations</li>
-            </ul>
-            <button className="tier-btn" onClick={() => window.location.href = '/analysis'}>Understand My Income Stability →</button>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 07 */}
-      <section className="section section-navy">
-        <div className="section-number" style={{ color: '#FCFCFB' }}>07</div>
-        <h2 style={{ color: '#FCFCFB' }}>Why Results Remain Consistent</h2>
-        <div className="institutional-rows">
-          <p>Results are generated using Structural Stability Model RP-2.0.</p>
-          <div className="row-item">Same Inputs</div>
-          <div className="row-item">Same Methodology</div>
-          <div className="row-item">Same Outputs</div>
-          <div className="row-item">Verifiable Reports</div>
-          <p style={{ marginTop: '32px' }}>No human overrides.</p>
-          <p>No subjective scoring.</p>
-          <p>No changing standards.</p>
-          <p style={{ marginTop: '16px' }}>Income measures amount.</p>
-          <p>RunPayway™ measures stability.</p>
-          <div style={{ fontSize: '14px', fontWeight: 600, color: '#1B6873', cursor: 'pointer', marginTop: '32px' }}>Learn More About The Methodology →</div>
-        </div>
-      </section>
-
-      {/* SYSTEM CLARIFICATION */}
-      <div className="clarification-section">
-        <h3>System Clarification</h3>
-        <p>RunPayway™ measures Income Stability using a standardized methodology.</p>
-        <p>Income measures amount.</p>
-        <p>RunPayway™ measures stability.</p>
-        <p>RunPayway™ is not a credit score, lending decision, investment recommendation, financial plan, employment evaluation, or prediction of future income.</p>
-        <p>Results are generated using Structural Stability Model RP-2.0 and are intended to provide a consistent measurement of Income Stability based on information supplied during the assessment.</p>
-        <p style={{ marginTop: '12px' }}>Model Version: RP-2.0</p>
-        <p>Report Verification: Available on all issued reports</p>
-      </div>
-
-      {/* FINAL CTA */}
-      <section className="final-cta">
-        <h2>Before relying on income, know your Income Stability.</h2>
-        <p className="final-subtitle">Start your Income Stability Assessment in under 2 minutes.</p>
-        <button className="btn" onClick={() => window.location.href = '/assessment'}>Start Assessment →</button>
-        <p className="final-trust">Free structural insight · No documents required</p>
-      </section>
-
-      {/* FOOTER */}
+      {/* ================================================================ */}
+      {/* FOOTER - LOCKED STRUCTURE */}
+      {/* ================================================================ */}
       <footer className="footer">
-        <div className="footer-grid">
-          <div className="footer-col">
-            <h4>Product</h4>
-            <ul className="footer-links">
-              <li><a href="#how-it-works">How It Works</a></li>
-              <li><a href="#methodology">Methodology</a></li>
-              <li><a href="#profile">Income Stability Profile</a></li>
-              <li><a href="#score">Income Stability Score</a></li>
-              <li><a href="#analysis">Income Stability Analysis</a></li>
-              <li><a href="#verify">Verify A Report</a></li>
-            </ul>
+        <div className="footer-content">
+          <div className="footer-grid">
+            {/* Column 1 - Brand */}
+            <div className="footer-column">
+              <h3>RunPayway™</h3>
+              <p>Measure what must continue to go right.</p>
+              <p style={{ fontSize: '13px', marginTop: '12px' }}>Standardized measurement of how heavily financial decisions depend on supporting conditions remaining intact.</p>
+              <p style={{ fontSize: '12px', color: '#999', marginTop: '12px' }}>Product of PeopleStar Enterprises Inc.</p>
+            </div>
+
+            {/* Column 2 - Product */}
+            <div className="footer-column">
+              <h3>Product</h3>
+              <a href="/begin">Decision Check™</a>
+              <a href="/how-it-works">How It Works</a>
+              <a href="#sample-report">Sample Report</a>
+              <a href="/pricing">Pricing</a>
+              <a href="/faq">FAQ</a>
+              <a href="/verify">Verify Report</a>
+            </div>
+
+            {/* Column 3 - Applications */}
+            <div className="footer-column">
+              <h3>Applications</h3>
+              <a href="#">Home Purchase</a>
+              <a href="#">Vehicle Purchase</a>
+              <a href="#">Career Change</a>
+              <a href="#">Retirement</a>
+              <a href="#">Business Launch</a>
+              <a href="#">Business Acquisition</a>
+              <a href="#">Business Expansion</a>
+              <a href="#">Employee Hire</a>
+              <a href="#">Investment Property</a>
+            </div>
+
+            {/* Column 4 - Solutions */}
+            <div className="footer-column">
+              <h3>Solutions</h3>
+              <a href="/advisors">Advisor</a>
+              <a href="/organizations">Organization</a>
+              <a href="#">Enterprise</a>
+            </div>
+
+            {/* Column 5 - Methodology */}
+            <div className="footer-column">
+              <h3>Methodology</h3>
+              <a href="/methodology">Methodology</a>
+              <a href="/methodology#commitment-pressure">Commitment Pressure™</a>
+              <a href="/methodology#decision-check">Decision Check™</a>
+              <a href="/methodology#typical-range">Typical Range™</a>
+              <a href="/methodology#compared-with">Compared With™</a>
+              <a href="/learn">Glossary</a>
+            </div>
+
+            {/* Column 6 - Company */}
+            <div className="footer-column">
+              <h3>Company</h3>
+              <a href="/about">About</a>
+              <a href="/contact">Contact</a>
+              <a href="/accessibility">Accessibility</a>
+              <a href="/careers">Careers</a>
+              <a href="/press">Press</a>
+            </div>
+
+            {/* Column 7 - Legal */}
+            <div className="footer-column">
+              <h3>Legal</h3>
+              <a href="/privacy-policy">Privacy Policy</a>
+              <a href="/terms-of-use">Terms of Service</a>
+              <a href="/disclaimer">Disclaimer</a>
+              <a href="/cookie-policy">Cookie Policy</a>
+              <a href="/accessibility">Accessibility Statement</a>
+              <a href="/report-use-policy">Report Use Policy</a>
+            </div>
           </div>
-          <div className="footer-col">
-            <h4>Solutions</h4>
-            <ul className="footer-links">
-              <li><a href="#individuals">Individuals</a></li>
-              <li><a href="#advisors">Advisors</a></li>
-              <li><a href="#organizations">Organizations</a></li>
-            </ul>
+
+          {/* Footer Bottom */}
+          <div className="footer-bottom">
+            <div className="footer-copyright">
+              © RunPayway™ • Product of PeopleStar Enterprises Inc.<br />
+              Decision Check™ Report Standard™ • Commitment Pressure Classification™<br />
+              Accessibility: WCAG 2.1 AA Compliant
+            </div>
+            <div className="footer-links">
+              <a href="/privacy-policy">Privacy</a>
+              <a href="/terms-of-use">Terms</a>
+              <a href="/accessibility">Accessibility</a>
+              <a href="/contact">Contact</a>
+            </div>
           </div>
-          <div className="footer-col">
-            <h4>Learn</h4>
-            <ul className="footer-links">
-              <li><a href="#what-is">What Is Income Stability?</a></li>
-              <li><a href="#vs-income">Income Stability vs Income</a></li>
-              <li><a href="#why-matters">Why Income Stability Matters</a></li>
-              <li><a href="#learn">Learn</a></li>
-            </ul>
-          </div>
-          <div className="footer-col">
-            <h4>Company</h4>
-            <ul className="footer-links">
-              <li><a href="#about">About RunPayway</a></li>
-              <li><a href="#contact">Contact</a></li>
-              <li><a href="#privacy">Privacy Policy</a></li>
-              <li><a href="#terms">Terms of Use</a></li>
-              <li><a href="#accessibility">Accessibility</a></li>
-            </ul>
-          </div>
-        </div>
-        <div className="footer-bottom">
-          <p>© 2026 RunPayway™. All rights reserved.</p>
-          <p>RunPayway™ is a product of PeopleStar Enterprises, INC.</p>
-          <p>Orange County, California, USA.</p>
-          <p>Structural Stability Model RP-2.0.</p>
-          <p>Accessibility: WCAG 2.1 AA Compliant</p>
         </div>
       </footer>
     </div>
