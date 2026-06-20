@@ -664,7 +664,7 @@ export default function LandingPage() {
       <section className="section" style={{ paddingTop: '120px', paddingBottom: '80px' }}>
         <h1 className="hero-title">Know What Your Decision Depends On</h1>
         <p className="hero-subheading">
-          Professional assessment of what must continue to go right for your major financial commitment—before you make it.
+          Standardized measurement of what conditions must remain in place for your major financial commitment—before you commit.
         </p>
         <div>
           <Link href="/begin" className="cta-button">
@@ -840,11 +840,11 @@ export default function LandingPage() {
           </p>
 
           <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
-            Professional decision-makers—financial advisors, business owners, investors—always evaluate this question. They just do it subjectively, based on experience.
+            Professional decision-makers—financial advisors, business owners, investors—always evaluate this question. They just do it subjectively, based on experience. Different professionals may evaluate the same decision structure differently, depending on their expertise and perspective.
           </p>
 
           <p style={{ fontSize: '15px', color: '#0B1730', lineHeight: '1.8', fontWeight: '500' }}>
-            Decision Check™ systematizes that evaluation. So you get the same clarity professionals rely on.
+            Decision Check™ applies standardized measurement to that evaluation. Same decision structure always produces the same assessment. The clarity comes from consistency—fixed rules, not subjective judgment.
           </p>
         </div>
       </section>
@@ -991,8 +991,16 @@ export default function LandingPage() {
         <h2 className="section-title">Decision Check™ Is Your Professional Assessment</h2>
 
         <div style={{ maxWidth: '800px', margin: '40px auto' }}>
+          <p style={{ fontSize: '15px', color: '#0B1730', lineHeight: '1.8', marginBottom: '24px', fontWeight: '500' }}>
+            Decision Check™ is built on the Decision Dependence™ standard.
+          </p>
+
+          <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
+            Decision Dependence™ measures how heavily a financial decision depends on supporting conditions remaining intact.
+          </p>
+
           <p style={{ fontSize: '16px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
-            Decision Check™ is a professional assessment that answers one simple question:
+            When you complete your Decision Check™ assessment, you get a standardized report that shows what your decision is built on, how typical your situation is, and what you need to understand going forward:
           </p>
 
           <div style={{ background: '#F9FAFB', padding: '24px', borderRadius: '4px', marginBottom: '32px', borderLeft: '4px solid #1F6D7A' }}>
@@ -1000,10 +1008,6 @@ export default function LandingPage() {
               How much does my major financial decision depend on supporting conditions remaining intact?
             </p>
           </div>
-
-          <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
-            When you complete your assessment, you get a standardized report that shows what your decision is built on, how typical your situation is, and what you need to understand going forward.
-          </p>
 
           <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
             Think of it like a home inspection. An inspection doesn't tell you whether to buy the house. It tells you what the house is built on and what condition it's in. You decide what to do with that information.
@@ -1223,7 +1227,12 @@ export default function LandingPage() {
             <div className="footer-column">
               <h3>RunPayway™</h3>
               <p>Measure what must continue to go right.</p>
-              <p style={{ fontSize: '13px', marginTop: '12px' }}>Standardized measurement of how heavily financial decisions depend on supporting conditions remaining intact.</p>
+              <div style={{ marginTop: '12px' }}>
+                <p style={{ fontSize: '12px', fontWeight: '700', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#1F6D7A', marginBottom: '8px' }}>
+                  Decision Dependence™
+                </p>
+                <p style={{ fontSize: '13px', margin: 0 }}>Standardized measurement of how heavily financial decisions depend on supporting conditions remaining intact.</p>
+              </div>
               <p style={{ fontSize: '12px', color: '#999', marginTop: '12px' }}>Product of PeopleStar Enterprises Inc.</p>
             </div>
 
