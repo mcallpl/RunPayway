@@ -44,10 +44,10 @@ The customer should understand in 3 seconds:
 **Required Inputs**:
 
 1. **Decision Type™** (from report)
-   - Home Purchase, Vehicle Purchase, Retirement, etc.
+   - Home Purchase, Vehicle Purchase, Retirement, Career Change, Business Launch, Business Acquisition, Business Expansion, Employee Hire, Investment Property, Other Financial Commitment
 
 2. **Support Structure Archetype™** (from report)
-   - Primary and Secondary archetypes
+   - Primary and Secondary archetypes (assigned by Support Structure Archetype Standard™)
 
 3. **Compared With™ Framework** (from Compared With™ standard)
    - The peer group definition
@@ -60,6 +60,14 @@ The customer should understand in 3 seconds:
 - Geographic region (if relevant)
 
 **All inputs are deterministic. Same input produces same Typical Range output.**
+
+---
+
+## DEMAND PROFILE ALIGNMENT NOTE
+
+**Typical Range™ is generated using locked Demand Profiles™.** Demand Profiles™ define the typical support requirements associated with each Decision Type™. Typical Range™ consumes Demand Profiles™; it does not redefine them.
+
+Typical Range depends on Demand Profile inputs. If Demand Profiles are updated, Typical Range calibrations may require revalidation.
 
 ---
 
@@ -280,31 +288,237 @@ These are base ranges per archetype and decision type combination. Individual ca
 
 ---
 
+### VEHICLE PURCHASE TYPICAL RANGES
+
+#### Employment Dominant
+- **Typical Range**: Low (CPL)
+- **Why**: Stable income, shorter duration (5-7 years vs. 30 years for home). Low pressure.
+- **Public Statement**: "Most vehicle purchases supported by employment income fall at Low Commitment Pressure."
+
+#### Stable Base With Earned Overlay
+- **Typical Range**: Low to Moderate (CPL – CPM)
+- **Why**: Base supports vehicle payment; earned portion is upside. Shorter duration creates low-to-moderate pressure.
+- **Public Statement**: "Most vehicle purchases supported by a base salary with variable earning potential fall between Low and Moderate Commitment Pressure."
+
+#### Recurring-Plus-Project
+- **Typical Range**: Low to Moderate (CPL – CPM)
+- **Why**: Recurring base supports vehicle payment. 5-7 year duration creates low-to-moderate pressure.
+- **Public Statement**: "Most vehicle purchases supported by recurring client base with project-based income fall between Low and Moderate Commitment Pressure."
+
+#### Multi-Component Hybrid
+- **Typical Range**: Low (CPL)
+- **Why**: Multiple income sources + shorter duration = low pressure.
+- **Public Statement**: "Most vehicle purchases supported by multiple forms of income from a single source fall at Low Commitment Pressure."
+
+#### Transaction Dominant
+- **Typical Range**: Moderate (CPM)
+- **Why**: Variable income for 5-7 year vehicle loan creates moderate pressure.
+- **Public Statement**: "Most vehicle purchases supported by variable, transaction-based income fall at Moderate Commitment Pressure."
+
+#### Single-Client Transaction Dependent
+- **Typical Range**: Moderate to Elevated (CPM – CPE)
+- **Why**: Single client + transactions for 5-7 year vehicle duration creates moderate-to-elevated pressure.
+- **Public Statement**: "Most vehicle purchases supported by revenue concentrated with a single primary client fall between Moderate and Elevated Commitment Pressure."
+
+#### Platform-Mediated Gig
+- **Typical Range**: Moderate (CPM)
+- **Why**: Platform income for 5-7 year vehicle loan creates moderate pressure.
+- **Public Statement**: "Most vehicle purchases supported by gig economy or platform-mediated income fall at Moderate Commitment Pressure."
+
+---
+
+### BUSINESS ACQUISITION TYPICAL RANGES
+
+#### Employment Dominant
+- **Typical Range**: Low to Moderate (CPL – CPM)
+- **Why**: Personal employment income provides runway; existing business revenue funds acquisition. Low-to-moderate pressure.
+- **Public Statement**: "Most business acquisitions supported by employment income fall between Low and Moderate Commitment Pressure."
+
+#### Stable Base With Earned Overlay
+- **Typical Range**: Moderate (CPM)
+- **Why**: Base provides runway; existing business handles acquisition debt. Moderate pressure.
+- **Public Statement**: "Most business acquisitions supported by a base salary with variable earning potential fall at Moderate Commitment Pressure."
+
+#### Recurring-Plus-Project
+- **Typical Range**: Low (CPL)
+- **Why**: Existing recurring client revenue can fund acquisition. Established income reduces pressure.
+- **Public Statement**: "Most business acquisitions supported by recurring client base with project-based income fall at Low Commitment Pressure."
+
+#### Multi-Component Hybrid
+- **Typical Range**: Low to Moderate (CPL – CPM)
+- **Why**: Multiple income sources + existing business provide acquisition runway. Low-to-moderate pressure.
+- **Public Statement**: "Most business acquisitions supported by multiple forms of income from a single source fall between Low and Moderate Commitment Pressure."
+
+#### Transaction Dominant
+- **Typical Range**: Moderate to Elevated (CPM – CPE)
+- **Why**: Variable income must support acquisition debt + integration period (18-36 months). Moderate-to-elevated pressure.
+- **Public Statement**: "Most business acquisitions supported by variable, transaction-based income fall between Moderate and Elevated Commitment Pressure."
+
+#### Single-Client Transaction Dependent
+- **Typical Range**: Elevated to High (CPE – CPH)
+- **Why**: Single client + acquisition debt + 18-36 month integration = high pressure.
+- **Public Statement**: "Most business acquisitions supported by revenue concentrated with a single primary client fall between Elevated and High Commitment Pressure."
+
+#### Platform-Mediated Gig
+- **Typical Range**: Elevated (CPE)
+- **Why**: Platform income must support acquisition debt + integration period. Elevated pressure.
+- **Public Statement**: "Most business acquisitions supported by gig economy or platform-mediated income fall at Elevated Commitment Pressure."
+
+---
+
+### BUSINESS EXPANSION TYPICAL RANGES
+
+#### Employment Dominant
+- **Typical Range**: Low (CPL)
+- **Why**: Personal employment provides runway; existing business funds expansion. Low pressure.
+- **Public Statement**: "Most business expansions supported by employment income fall at Low Commitment Pressure."
+
+#### Stable Base With Earned Overlay
+- **Typical Range**: Low to Moderate (CPL – CPM)
+- **Why**: Base provides safety net; existing business funds expansion. Low-to-moderate pressure.
+- **Public Statement**: "Most business expansions supported by a base salary with variable earning potential fall between Low and Moderate Commitment Pressure."
+
+#### Recurring-Plus-Project
+- **Typical Range**: Low (CPL)
+- **Why**: Established recurring revenue can fund expansion. Existing income provides stability.
+- **Public Statement**: "Most business expansions supported by recurring client base with project-based income fall at Low Commitment Pressure."
+
+#### Multi-Component Hybrid
+- **Typical Range**: Low (CPL)
+- **Why**: Multiple income sources + existing business = strong runway.
+- **Public Statement**: "Most business expansions supported by multiple forms of income from a single source fall at Low Commitment Pressure."
+
+#### Transaction Dominant
+- **Typical Range**: Moderate (CPM)
+- **Why**: Variable income must support expansion period (12-24 months to payback). Moderate pressure.
+- **Public Statement**: "Most business expansions supported by variable, transaction-based income fall at Moderate Commitment Pressure."
+
+#### Single-Client Transaction Dependent
+- **Typical Range**: Elevated (CPE)
+- **Why**: Single client + expansion funding = concentrated risk.
+- **Public Statement**: "Most business expansions supported by revenue concentrated with a single primary client fall at Elevated Commitment Pressure."
+
+#### Platform-Mediated Gig
+- **Typical Range**: Moderate to Elevated (CPM – CPE)
+- **Why**: Platform income must support expansion period (12-24 months). Moderate-to-elevated pressure.
+- **Public Statement**: "Most business expansions supported by gig economy or platform-mediated income fall between Moderate and Elevated Commitment Pressure."
+
+---
+
+### INVESTMENT PROPERTY TYPICAL RANGES
+
+#### Employment Dominant
+- **Typical Range**: Moderate (CPM)
+- **Why**: Stable income, but 20-30 year mortgage requires sustained employment. Moderate pressure from duration.
+- **Public Statement**: "Most investment properties supported by employment income fall at Moderate Commitment Pressure."
+
+#### Stable Base With Earned Overlay
+- **Typical Range**: Moderate to Elevated (CPM – CPE)
+- **Why**: Base covers mortgage, but earned portion may not sustain 20-30 year hold. Moderate-to-elevated pressure.
+- **Public Statement**: "Most investment properties supported by a base salary with variable earning potential fall between Moderate and Elevated Commitment Pressure."
+
+#### Recurring-Plus-Project
+- **Typical Range**: Moderate (CPM)
+- **Why**: Recurring base sustains mortgage; projects provide excess cash flow. 20-30 year duration creates moderate pressure.
+- **Public Statement**: "Most investment properties supported by recurring client base with project-based income fall at Moderate Commitment Pressure."
+
+#### Multi-Component Hybrid
+- **Typical Range**: Low to Moderate (CPL – CPM)
+- **Why**: Multiple income sources diversify risk; 20-30 year duration still requires support. Low-to-moderate pressure.
+- **Public Statement**: "Most investment properties supported by multiple forms of income from a single source fall between Low and Moderate Commitment Pressure."
+
+#### Transaction Dominant
+- **Typical Range**: Elevated to High (CPE – CPH)
+- **Why**: Transaction-based income cannot reliably sustain 20-30 year mortgage. Elevated-to-high pressure.
+- **Public Statement**: "Most investment properties supported by variable, transaction-based income fall between Elevated and High Commitment Pressure."
+
+#### Single-Client Transaction Dependent
+- **Typical Range**: High to Critical (CPH – CPC)
+- **Why**: Single client + transactions for 20-30 year mortgage = extreme dependence.
+- **Public Statement**: "Most investment properties supported by revenue concentrated with a single primary client fall between High and Critical Commitment Pressure."
+
+#### Platform-Mediated Gig
+- **Typical Range**: High (CPH)
+- **Why**: Platform-dependent income cannot sustain 20-30 year mortgage. High pressure.
+- **Public Statement**: "Most investment properties supported by gig economy or platform-mediated income fall at High Commitment Pressure."
+
+---
+
+### EMPLOYEE HIRE TYPICAL RANGES
+
+#### Employment Dominant
+- **Typical Range**: Low (CPL)
+- **Why**: Stable income supports new employee payroll (12-24 month ROI period). Low pressure.
+- **Public Statement**: "Most employee hires supported by employment income fall at Low Commitment Pressure."
+
+#### Stable Base With Earned Overlay
+- **Typical Range**: Low to Moderate (CPL – CPM)
+- **Why**: Base supports payroll; earned portion helps offset costs. Low-to-moderate pressure.
+- **Public Statement**: "Most employee hires supported by a base salary with variable earning potential fall between Low and Moderate Commitment Pressure."
+
+#### Recurring-Plus-Project
+- **Typical Range**: Low (CPL)
+- **Why**: Recurring revenue supports payroll (12-24 month ROI). Low pressure.
+- **Public Statement**: "Most employee hires supported by recurring client base with project-based income fall at Low Commitment Pressure."
+
+#### Multi-Component Hybrid
+- **Typical Range**: Low (CPL)
+- **Why**: Multiple income sources support payroll. Low pressure.
+- **Public Statement**: "Most employee hires supported by multiple forms of income from a single source fall at Low Commitment Pressure."
+
+#### Transaction Dominant
+- **Typical Range**: Moderate (CPM)
+- **Why**: Variable income must support payroll for 12-24 month ROI period. Moderate pressure.
+- **Public Statement**: "Most employee hires supported by variable, transaction-based income fall at Moderate Commitment Pressure."
+
+#### Single-Client Transaction Dependent
+- **Typical Range**: Elevated (CPE)
+- **Why**: Single client + employee payroll for ROI period = concentrated risk.
+- **Public Statement**: "Most employee hires supported by revenue concentrated with a single primary client fall at Elevated Commitment Pressure."
+
+#### Platform-Mediated Gig
+- **Typical Range**: Moderate (CPM)
+- **Why**: Platform income must support payroll (12-24 month ROI). Moderate pressure.
+- **Public Statement**: "Most employee hires supported by gig economy or platform-mediated income fall at Moderate Commitment Pressure."
+
+---
+
+### OTHER FINANCIAL COMMITMENT TYPICAL RANGES
+
+For decisions not fitting the defined categories, Typical Range should be determined from the applicable Decision Type™, Support Structure Archetype™, and Demand Profile™ using the same structural reasoning applied to defined decision types.
+
+**Public Statement Template**:
+"Most [commitment type] supported by [archetype translation] fall at [typical range in plain language]."
+
+---
+
 ## SECONDARY ARCHETYPE ADJUSTMENT
 
-When a secondary archetype is present, it may adjust the Typical Range up or down from the base.
+**Secondary archetype adjustments should be applied only when the Secondary Archetype™ is already assigned by the locked Support Structure Archetype Standard™. Typical Range™ does not determine whether a secondary archetype exists.**
 
-**Adjustment Rules**:
+When a secondary archetype is present, it may adjust the Typical Range up or down from the base through the following qualitative guidance:
 
 ### If Secondary Archetype "Reinforces" Primary (Uses "With" Modifier)
 
-Secondary income reinforces and stabilizes primary. Typical Range may shift **lower**.
+Secondary income reinforces and stabilizes primary. Typical Range typically shifts **lower**.
 
 **Example**:
 - Base: Employment Dominant (CPM for home purchase)
 - Secondary: Stable Base With Earned Overlay (commission)
-- Adjustment: Commission enhances stability → Range may shift to CPL-CPM instead of CPM-CPE
+- Adjustment: Commission enhances stability → Range shifts to CPL-CPM instead of CPM-CPE
 - Result: "Most home purchases supported primarily by employment income with variable commission support fall between Low and Moderate Commitment Pressure."
 
 ### If Secondary Archetype is Independent (Uses "And" Modifier)
 
-Secondary income is parallel/independent. Typical Range reflects combined support.
+Secondary income is parallel/independent. Typical Range reflects combined support. Range typically shifts **lower** due to diversification.
 
 **Example**:
 - Base: Employment Dominant (CPM for retirement)
 - Secondary: Multi-Component Hybrid (portfolio)
-- Adjustment: Portfolio diversifies retirement → Range may shift lower to CPL-CPM instead of CPM
+- Adjustment: Portfolio diversifies retirement → Range shifts lower to CPL-CPM instead of CPM
 - Result: "Most retirement decisions supported by employment income and portfolio assets fall between Low and Moderate Commitment Pressure."
+
+**Note**: Specific adjustment application determined during implementation based on measured data and the relative strength of secondary support.
 
 ---
 
