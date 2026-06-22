@@ -94,10 +94,13 @@ export const operatorRegistry: Record<Operator, OperatorFunction> = {
   },
 
   [Operator.IN]: (operands: any[]): boolean => {
-    if (operands.length < 2) {
-      throw new Error("IN requires at least 2 operands");
+    if (operands.length !== 2) {
+      throw new Error("IN requires exactly 2 operands: value and array");
     }
-    const [value, ...list] = operands;
+    const [value, list] = operands;
+    if (!Array.isArray(list)) {
+      throw new Error("IN operator requires second operand to be an array");
+    }
     return list.includes(value);
   },
 

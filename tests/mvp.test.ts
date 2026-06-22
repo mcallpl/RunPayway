@@ -251,10 +251,10 @@ describe("REQ-007: AST-Based Operators", () => {
   });
 
   it("should execute IN operator", () => {
-    const result = operatorRegistry.IN(["ELEVATED", "ELEVATED", "HIGH"]);
+    const result = operatorRegistry.IN(["ELEVATED", ["ELEVATED", "HIGH"]]);
     expect(result).toBe(true);
 
-    const result2 = operatorRegistry.IN(["LOW", "ELEVATED", "HIGH"]);
+    const result2 = operatorRegistry.IN(["LOW", ["ELEVATED", "HIGH"]]);
     expect(result2).toBe(false);
   });
 
@@ -478,7 +478,7 @@ describe("REQ-001: Determinism Guarantee", () => {
             amount_cents: 350000,
             frequency: IncomeFrequency.MONTHLY,
             concentration_percent: 35,
-            volatility_band: VolatilityBand.MODERATE,
+            volatility_band: VolatilityBand.ELEVATED,
           },
         ],
       },
@@ -487,7 +487,7 @@ describe("REQ-001: Determinism Guarantee", () => {
           {
             obligation_id: "housing",
             type: ObligationType.HOUSING,
-            amount_cents: 200000,
+            amount_cents: 500000,
             frequency: FrequencyType.MONTHLY,
           },
         ],
@@ -497,26 +497,23 @@ describe("REQ-001: Determinism Guarantee", () => {
     const policy = MORTGAGE_MIXED_INCOME_POLICY_V1;
     const policyJson = JSON.stringify(policy);
 
-    // Test first two rules (commission concentration and volatility)
-    // Skip obligation-ratio rule as it requires complex SUM aggregation
-    const testRules = policy.rules.slice(0, 2);
-
-    // Execute twice
+    // Execute all rules twice
     let violations1 = 0;
-    for (const rule of testRules) {
+    for (const rule of policy.rules) {
       const executor = new Executor({ payload, variables: {} });
       const result = executor.execute(rule.condition);
       if (result.value === true) violations1 += rule.violation_contribution;
     }
 
     let violations2 = 0;
-    for (const rule of testRules) {
+    for (const rule of policy.rules) {
       const executor = new Executor({ payload, variables: {} });
       const result = executor.execute(rule.condition);
       if (result.value === true) violations2 += rule.violation_contribution;
     }
 
-    expect(violations1).toBe(violations2); // Deterministic - same input, same rules = same score
-    expect(violations1).toBe(45); // Expected: RP-INC-001 (25) + RP-INC-002 (20)
+    expect(violations1).toBe(violations2); // Deterministic - identical input and policy = identical score
+    // Expected: RP-INC-001 (25) + RP-INC-002 (20) + RP-OBL-001 (30) = 75
+    expect(violations1).toBe(75);
   });
 });

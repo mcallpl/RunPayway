@@ -55,24 +55,14 @@ export const MORTGAGE_MIXED_INCOME_POLICY_V1: Policy = {
           left: {
             type: "aggregate",
             operator: Operator.SUM,
-            inputs: [
-              {
-                type: "terminal",
-                kind: "path",
-                path: "obligations.recurring_obligations",
-              },
-            ],
+            source_path: "obligations.recurring_obligations",
+            value_path: "amount_cents",
           },
           right: {
             type: "aggregate",
             operator: Operator.SUM,
-            inputs: [
-              {
-                type: "terminal",
-                kind: "path",
-                path: "income_structure.income_sources",
-              },
-            ],
+            source_path: "income_structure.income_sources",
+            value_path: "amount_cents",
           },
         },
         right: {

@@ -96,7 +96,30 @@ export class Executor {
   }
 
   private evaluateAggregate(node: AggregateOp): ExecutionResult {
-    const operands = node.inputs.map((input) => this.evaluateNode(input).value);
+    let operands: any[];
+
+    // New style: source_path and value_path extraction
+    if (node.source_path && node.value_path) {
+      const sourceArray = this.resolvePath(node.source_path);
+      if (!Array.isArray(sourceArray)) {
+        throw new Error(`Source path must resolve to array: ${node.source_path}`);
+      }
+      operands = sourceArray.map((item) => {
+        const value = item[node.value_path!];
+        if (typeof value !== "number") {
+          throw new Error(
+            `Value path must extract numeric value: ${node.value_path} from ${node.source_path}`
+          );
+        }
+        return value;
+      });
+    } else if (node.inputs) {
+      // Legacy style: inputs array
+      operands = node.inputs.map((input) => this.evaluateNode(input).value);
+    } else {
+      throw new Error("Aggregate node must have either inputs or source_path/value_path");
+    }
+
     const result = executeOperator(node.operator, [operands]);
 
     return {

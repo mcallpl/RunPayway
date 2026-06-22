@@ -25,7 +25,9 @@ export interface TerminalNode {
 export interface AggregateOp {
   type: "aggregate";
   operator: Operator;
-  inputs: ASTNode[];
+  inputs?: ASTNode[];
+  source_path?: string;
+  value_path?: string;
 }
 
 export interface ClassifyOp {

@@ -209,8 +209,20 @@ export class SafetyCompiler {
       return;
     }
 
+    // New style: source_path and value_path extraction
+    if (node.source_path && node.value_path) {
+      if (typeof node.source_path !== "string") {
+        this.errors.push("Aggregate source_path must be string");
+      }
+      if (typeof node.value_path !== "string") {
+        this.errors.push("Aggregate value_path must be string");
+      }
+      return;
+    }
+
+    // Legacy style: inputs array
     if (!Array.isArray(node.inputs)) {
-      this.errors.push(`Aggregate operator missing inputs array: ${node.operator}`);
+      this.errors.push(`Aggregate operator must have inputs array or source_path/value_path: ${node.operator}`);
       return;
     }
 
