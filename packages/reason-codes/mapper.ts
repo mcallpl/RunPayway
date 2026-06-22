@@ -23,13 +23,17 @@ export class ReasonCodeMapper {
   }
 
   getAllMappings(): ReasonCodeMapping[] {
-    return Array.from(this.mappings.values());
+    const result: ReasonCodeMapping[] = [];
+    this.mappings.forEach((mapping) => {
+      result.push(mapping);
+    });
+    return result;
   }
 
   validateAllMappings(): { valid: boolean; errors: string[] } {
     const errors: string[] = [];
 
-    for (const mapping of this.mappings.values()) {
+    this.mappings.forEach((mapping) => {
       if (!validateReasonCode(mapping.reason_code)) {
         errors.push(`Rule ${mapping.rule_id}: unknown reason code ${mapping.reason_code}`);
       }
@@ -37,7 +41,7 @@ export class ReasonCodeMapper {
       if (mapping.violation_contribution < 0) {
         errors.push(`Rule ${mapping.rule_id}: violation contribution must be non-negative`);
       }
-    }
+    });
 
     return {
       valid: errors.length === 0,

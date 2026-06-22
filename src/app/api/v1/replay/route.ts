@@ -159,8 +159,8 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Helper function to register audit record (for testing)
-export function registerAuditRecord(auditId: string, input: any, policy: any, resultHash: string) {
+// Helper function to register audit record (for testing - not exported for Next.js route)
+function registerAuditRecord(auditId: string, input: any, policy: any, resultHash: string) {
   const policyJson = JSON.stringify(policy);
   const policyHash = createHash("sha256")
     .update(policyJson)
