@@ -1,4 +1,21 @@
-import { Operator } from "./ast";
+export enum Operator {
+  AND = "AND",
+  OR = "OR",
+  NOT = "NOT",
+  GT = "GT",
+  GTE = "GTE",
+  LT = "LT",
+  LTE = "LTE",
+  EQ = "EQ",
+  IN = "IN",
+  EXISTS = "EXISTS",
+  SUM = "SUM",
+  RATIO = "RATIO",
+  COUNT = "COUNT",
+  BAND = "BAND",
+  CLASSIFY = "CLASSIFY",
+  REASON = "REASON",
+}
 
 export type OperatorFunction = (operands: any[]) => any;
 

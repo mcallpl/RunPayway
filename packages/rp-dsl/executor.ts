@@ -53,10 +53,6 @@ export class Executor {
       return this.evaluateClassify(node);
     }
 
-    if (isReason(node)) {
-      return this.evaluateTerminal(node);
-    }
-
     throw new Error(`Unknown node type`);
   }
 

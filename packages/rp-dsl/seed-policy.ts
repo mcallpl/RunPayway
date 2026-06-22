@@ -1,4 +1,5 @@
 import { Policy } from "./ast";
+import { Operator } from "./operators";
 
 export const MORTGAGE_MIXED_INCOME_POLICY_V1: Policy = {
   policy_id: "policy_mortgage_mixed_income",
@@ -9,7 +10,7 @@ export const MORTGAGE_MIXED_INCOME_POLICY_V1: Policy = {
       rule_id: "commission-concentration",
       condition: {
         type: "binary",
-        operator: "GTE",
+        operator: Operator.GTE,
         left: {
           type: "terminal",
           kind: "path",
@@ -28,7 +29,7 @@ export const MORTGAGE_MIXED_INCOME_POLICY_V1: Policy = {
       rule_id: "commission-volatility",
       condition: {
         type: "binary",
-        operator: "IN",
+        operator: Operator.IN,
         left: {
           type: "terminal",
           kind: "path",
@@ -47,13 +48,13 @@ export const MORTGAGE_MIXED_INCOME_POLICY_V1: Policy = {
       rule_id: "obligation-ratio",
       condition: {
         type: "binary",
-        operator: "GT",
+        operator: Operator.GT,
         left: {
           type: "binary",
-          operator: "RATIO",
+          operator: Operator.RATIO,
           left: {
             type: "aggregate",
-            operator: "SUM",
+            operator: Operator.SUM,
             inputs: [
               {
                 type: "terminal",
@@ -64,7 +65,7 @@ export const MORTGAGE_MIXED_INCOME_POLICY_V1: Policy = {
           },
           right: {
             type: "aggregate",
-            operator: "SUM",
+            operator: Operator.SUM,
             inputs: [
               {
                 type: "terminal",

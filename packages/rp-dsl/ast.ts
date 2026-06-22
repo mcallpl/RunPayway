@@ -1,21 +1,4 @@
-export enum Operator {
-  AND = "AND",
-  OR = "OR",
-  NOT = "NOT",
-  GT = "GT",
-  GTE = "GTE",
-  LT = "LT",
-  LTE = "LTE",
-  EQ = "EQ",
-  IN = "IN",
-  EXISTS = "EXISTS",
-  SUM = "SUM",
-  RATIO = "RATIO",
-  COUNT = "COUNT",
-  BAND = "BAND",
-  CLASSIFY = "CLASSIFY",
-  REASON = "REASON",
-}
+import { Operator } from "./operators";
 
 export type ASTNode = BinaryOp | UnaryOp | TerminalNode | AggregateOp | ClassifyOp | ReasonOp;
 
@@ -35,7 +18,7 @@ export interface UnaryOp {
 export interface TerminalNode {
   type: "terminal";
   kind: "literal" | "path" | "constant";
-  value: any;
+  value?: any;
   path?: string;
 }
 

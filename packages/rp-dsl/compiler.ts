@@ -1,5 +1,5 @@
-import { ASTNode, Operator, isBinaryOp, isUnaryOp, isTerminal, isAggregate, isClassify } from "./ast";
-import { operatorRegistry } from "./operators";
+import { ASTNode, isBinaryOp, isUnaryOp, isTerminal, isAggregate, isClassify } from "./ast";
+import { Operator, operatorRegistry } from "./operators";
 import { validateReasonCode } from "../reason-codes/registry";
 import { hashPolicy } from "../audit/hash";
 
