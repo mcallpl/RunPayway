@@ -29,20 +29,21 @@ Every decision must be:
   "evaluation_id": "uuid",
   "subject_id": "string",
   "cohort_key": "string",
+  "policy_id": "uuid",
   "policy_version": 3,
   "policy_hash": "sha256_hash",
   "payload_hash": "sha256_hash",
-  "result": "PASS",
-  "triggered_reason_codes": ["RC001", "RC002"],
+  "result_hash": "sha256_hash",
   "classification": "PASS",
-  "violation_score": 5,
   "timestamp": "ISO8601_nanoseconds"
 }
 ```
 
+**Storage Strategy:** audit_events.details stores event references and evidence metadata (hashes, classifications), not full duplicated evaluation records. Full data lives in evaluations table; audit_events maintains chain integrity and event history.
+
 **When:** Every evaluation created (required for audit trail)  
 **Logged by:** Evaluation service  
-**Impact:** Creates audit trail entry
+**Impact:** Creates audit trail entry with chain link to prior event
 
 **EVALUATION_REPLAYED**
 ```json
@@ -364,6 +365,11 @@ ORDER BY p.policy_id, p.version DESC;
 | Tax (if applicable) | 7 years | Decision evidence |
 
 **Recommendation:** 7-year minimum retention for all audit events
+
+### Storage Schedule (Audit Events)
+- **Hot Storage:** 0-3 years (PostgreSQL, full ACID, real-time queries, all indexes)
+- **Warm Storage:** 3-7 years (Compressed archive, compliance queries, key indexes)
+- **Cold Storage:** 7+ years (Tape backup, immutable, regulatory hold)
 
 ### Retention Implementation
 ```sql

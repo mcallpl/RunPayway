@@ -323,12 +323,46 @@ ORDER BY p.policy_id, p.version DESC;
 
 ## Constraints & Immutability
 
+### Hash Chain Algorithm
+
+The audit_hash field maintains a cryptographic chain for tamper detection:
+
+```sql
+-- Hash chain computation function
+CREATE OR REPLACE FUNCTION compute_audit_hash(
+  prev_audit_id UUID,
+  event_payload_hash CHAR(64),
+  event_timestamp TIMESTAMP(6) WITH TIME ZONE,
+  event_type VARCHAR(64)
+) RETURNS CHAR(64) AS $$
+SELECT encode(
+  digest(
+    concat(
+      COALESCE(prev_audit_id::text, ''),
+      event_payload_hash,
+      extract(epoch from event_timestamp)::text,
+      event_type
+    ),
+    'sha256'
+  ),
+  'hex'
+) AS audit_hash;
+$$ LANGUAGE SQL;
+
+-- Usage: Each audit event computes hash as:
+-- audit_hash = SHA256(prior_audit_id + current_payload_hash + timestamp + event_type)
+-- This creates an unbreakable chain where tampering any event would break all subsequent hashes.
+```
+
+**Verification:** To detect tampering, recalculate all hashes and verify each matches stored value.
+
 ### Database-Level Enforcement
 
 1. **Immutable Triggers:** All tables have `BEFORE UPDATE OR DELETE` triggers that raise exceptions
 2. **Primary Keys:** Never reused, ever
 3. **Foreign Keys:** Cascading deletes disabled (prevent accidents)
 4. **Check Constraints:** Status enums, timestamp NOT NULL
+5. **Hash Chain:** Each audit event links to prior event via hash computation
 
 ### Application-Level Enforcement
 

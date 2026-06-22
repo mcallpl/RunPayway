@@ -104,12 +104,21 @@
 
 **Implementation Steps:**
 1. Create audit_events table (append-only)
-2. Implement hash chain cryptography
+2. Implement hash chain cryptography (see PERSISTENCE_SCHEMA_V1.md compute_audit_hash function)
 3. Create immutability enforcement
 4. Build audit logging service
 5. Integrate audit logging into evaluate, replay endpoints
 6. Create audit query endpoints
 7. Implement audit event types (EVALUATION_CREATED, REPLAY, POLICY_*, etc.)
+
+**Replay Policy Retrieval Detail:**
+When replaying an evaluation:
+1. Retrieve evaluation record: `SELECT * FROM evaluations WHERE evaluation_id = $1`
+2. Extract composite key: `policy_id` (UUID) + `policy_version` (INTEGER)
+3. Look up policy version: `SELECT * FROM policy_versions WHERE policy_id = $1 AND version = $2`
+4. Use policy_versions.source_definition for re-execution
+5. Compare result hashes to verify determinism
+6. Log EVALUATION_REPLAYED audit event with chain hash
 
 **Risk Level:** MEDIUM-HIGH
 - Audit trail must be complete and trustworthy

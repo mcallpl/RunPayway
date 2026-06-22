@@ -104,7 +104,8 @@ POST /api/v1/evaluate
     result,
     triggered_reason_codes,
     classification,
-    issued_timestamp
+    issued_timestamp,
+    audit_hash
   }
 ```
 
@@ -189,7 +190,8 @@ POST /api/v1/evaluate
 evaluation_id (UUID, primary key)
 subject_id (string, indexed)
 cohort_key (string, indexed)
-policy_version (UUID, foreign key → Policy)
+policy_id (UUID, composite key component)
+policy_version (INTEGER, composite key component → policy_versions)
 policy_hash (SHA-256 of policy)
 evaluation_timestamp (nanosecond precision)
 payload_hash (SHA-256 of input)
