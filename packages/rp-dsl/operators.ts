@@ -114,10 +114,20 @@ export const operatorRegistry: Record<Operator, OperatorFunction> = {
     }
     const values = operands[0] as any[];
     return values.reduce((sum, v) => {
-      if (typeof v !== "number") {
-        throw new Error("SUM operands must be numeric");
+      if (typeof v === "number") {
+        return sum + v;
       }
-      return sum + v;
+      // If v is an object, try to find a numeric property
+      if (typeof v === "object" && v !== null) {
+        // Look for amount_cents (financial data) or value properties
+        if (typeof v.amount_cents === "number") {
+          return sum + v.amount_cents;
+        }
+        if (typeof v.value === "number") {
+          return sum + v.value;
+        }
+      }
+      throw new Error("SUM: cannot extract numeric value from operand");
     }, 0);
   },
 

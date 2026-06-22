@@ -110,23 +110,39 @@ export class Executor {
   }
 
   private resolvePath(path: string): any {
-    const parts = path.split(".");
-
     let current: any = this.context.payload;
+    let remaining = path;
 
-    for (const part of parts) {
-      if (current === null || current === undefined) {
-        return undefined;
+    while (remaining.length > 0) {
+      // Check for array index notation (e.g., "[0]")
+      const arrayMatch = remaining.match(/^\[(\d+)\]/);
+      if (arrayMatch) {
+        const index = parseInt(arrayMatch[1], 10);
+        current = current[index];
+        remaining = remaining.slice(arrayMatch[0].length);
+        if (remaining.startsWith(".")) {
+          remaining = remaining.slice(1);
+        }
+        continue;
       }
 
-      if (part.startsWith("[") && part.endsWith("]")) {
-        const index = parseInt(part.slice(1, -1), 10);
-        if (isNaN(index)) {
-          throw new Error(`Invalid array index: ${part}`);
-        }
-        current = current[index];
-      } else {
-        current = current[part];
+      // Get the next property name
+      const propMatch = remaining.match(/^([^.\[]+)/);
+      if (!propMatch) {
+        break;
+      }
+
+      const prop = propMatch[1];
+      current = current[prop];
+      remaining = remaining.slice(prop.length);
+
+      // Skip the dot if present
+      if (remaining.startsWith(".")) {
+        remaining = remaining.slice(1);
+      }
+
+      if (current === null || current === undefined) {
+        return undefined;
       }
     }
 

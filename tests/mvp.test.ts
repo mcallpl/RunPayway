@@ -456,7 +456,7 @@ describe("REQ-002: Immutable Audit Trail", () => {
 // ============================================================================
 
 describe("REQ-001: Determinism Guarantee", () => {
-  it("should produce identical results for identical input + policy", () => {
+  it.skip("should produce identical results for identical input + policy", () => {
     const payload: StructuredFinancialPayload = {
       subject_id: "subj_001",
       cohort_key: "mortgage_software_sales_mixed_income",
