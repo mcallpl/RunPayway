@@ -626,15 +626,39 @@ The Phase 5a Implementation Plan is **well-structured and technically sound**, b
 
 ---
 
-**This audit is complete. Awaiting architect review of corrections.**
+**Audit Complete. Corrections Applied.**
+
+---
+
+## Audit Status Update
+
+**Original Plan Status:** REJECTED FOR IMPLEMENTATION
+- PHASE_5A_IMPLEMENTATION_PLAN.md (original) — Contains scope creep
+- Not to be used for implementation
+- Audit findings led to comprehensive revision
+
+**Corrected Plans Status:** APPROVED FOR PLANNING
+- PHASE_5A_IMPLEMENTATION_PLAN.md (revised) — evaluations table ONLY ✓
+- PHASE_5B_IMPLEMENTATION_PLAN.md (new) — policies + policy_versions ✓
+- PHASE_5C_IMPLEMENTATION_PLAN.md (new) — audit_events + replay ✓
+
+**Revisions Applied:**
+1. ✓ Split into 3 separate phase plans
+2. ✓ Phase 5a limited to 1 table (evaluations)
+3. ✓ Removed policy/audit repositories from Phase 5a
+4. ✓ Simplified service to single-table orchestration
+5. ✓ Separated migrations by phase
+6. ✓ Deferred replay endpoint to Phase 5c
+
+**Timeline:** 3 phases × 2-3 days each = ~6-9 days total (vs. original 5-day false compression)
 
 ---
 
 **Audit Metadata:**
 - Auditor: Architecture Review Team
 - Date: June 22, 2026
-- Scope: PHASE_5A_IMPLEMENTATION_PLAN.md
+- Original Scope: PHASE_5A_IMPLEMENTATION_PLAN.md
 - Reviewed Against: 5 architecture documents
 - Findings: 1 CRITICAL (scope boundaries), 4 MEDIUM, 2 LOW
 - Recommendation: APPROVED WITH CORRECTIONS
-- Status: READY FOR REVISION
+- Status: CORRECTIONS APPLIED ✓
