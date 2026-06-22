@@ -8,67 +8,79 @@
 
 ## Executive Summary
 
-RunPayway is transitioning from a hybrid consumer/academic framework to a **pure enterprise deterministic policy execution engine**. This plan identifies and classifies terminology that belongs to the old conceptual layer (CAFM, basis-sets, cognitive mass, version-space) versus the core execution primitives that must be preserved.
+RunPayway is transitioning from a hybrid consumer/academic framework to a **pure enterprise deterministic policy execution engine**. This document archives and classifies historical architecture terminology (legacy consumer product branding, mathematical abstractions, academic frameworks) to facilitate governance-driven cleanup of documentation and comments.
 
-**This is a planning document only. No changes will be executed without explicit authorization.**
+**This is a planning and reference document. Terminology documented here represents historical/legacy architecture and should not appear in new code or updated documentation.**
 
 ---
 
 ## Terminology Classification
 
-### REMOVE — Legacy Abstractions
+### ARCHIVE — Historical Architecture (Do Not Use in New Work)
 
-#### 1. CAFM References
-**What:** Compliance and Financial Management framework language  
-**Context:** Consumer-product era terminology; incompatible with enterprise determinism  
-**Examples:**
+#### 1. Legacy Consumer Product Branding
+**What:** "CAFM" — Compliance and Financial Management  
+**Historical Context:** Consumer-product era; replaced by "Income Stability Score™" enterprise branding  
+**Incompatibility:** Belongs to legacy consumer product surface, not enterprise determinism  
+**Examples of historical usage:**
 - "CAFM model", "CAFM evaluation"
-- "compliance scoring", "compliance assessment" (when used in context of CAFM)
-- "financial stability model" (when phrased as consumer product brand)
+- "compliance scoring", "compliance assessment" (in consumer context)
+- "financial stability model" (as consumer product brand)
 
-**Scope:** Comments, documentation, variable names, class names, function names  
-**Risk:** Low (CAFM is legacy branding, not core logic)  
-**Effort:** Medium (scattered across ~50+ files)
+**Current Replacement Language:**
+- Use: "Income Stability Score™ Structural Assessment" or "Deterministic Policy Evaluation"
+- Scope for cleanup: Comments, documentation (NOT production code)  
+**Risk:** Low (legacy branding only)  
+**Effort:** Low (already removed from active codebase)
 
-#### 2. Basis-Set Terminology
-**What:** Mathematical framework language from legacy model; used to describe input dimensions  
-**Context:** Conceptual abstraction layer no longer needed  
-**Examples:**
+#### 2. Historical Mathematical Abstractions
+**What:** "Basis Set" terminology from legacy model  
+**Historical Context:** Academic mathematical framework for describing input dimensions  
+**Superseded By:** Deterministic policy execution model using "inputs", "normalized_inputs"  
+**Examples of historical usage:**
 - "basis set", "basis dimension"
-- "dimensional space" (when referring to input space as abstract mathematical concept)
-- "basis vector" (legacy terminology for input variables)
+- "dimensional space" (in abstract mathematical context)
+- "basis vector" (for input variables)
 - "basis transformation"
 
-**Scope:** Comments, documentation, variable names in policy execution  
-**Risk:** Low (replaced by "inputs", "normalized_inputs")  
-**Effort:** Medium (~30 files, mostly in engine and types)
+**Current Replacement Language:**
+- Use: "Input factors", "Assessment inputs", "Input normalization"
+- Scope for cleanup: Comments, documentation only  
+**Risk:** Low (abstract framework, not operational)  
+**Effort:** Low (already removed from active codebase)
 
-#### 3. Cognitive Mass Terminology
-**What:** Academic language referring to interpretive/explanatory burden  
-**Context:** Product marketing/academic paper language; not operational  
-**Examples:**
+#### 3. Historical Academic Interpretation Framework
+**What:** "Cognitive Mass" terminology from academic framing  
+**Historical Context:** Product marketing language; referred to interpretability and explanatory burden  
+**Not Operational:** This framework does not affect code behavior or determinism  
+**Examples of historical usage:**
 - "cognitive load"
 - "interpretive overhead"
 - "explanation complexity"
 - "user comprehension burden"
-- References to "reducing cognitive friction"
+- "reducing cognitive friction"
 
-**Scope:** Comments, documentation, feature descriptions  
-**Risk:** Low (non-operational)  
-**Effort:** Low (~10 files, mostly in docs and comments)
+**Current Replacement Language:**
+- Use: "Operational clarity", "Understandability", "Output complexity"
+- Scope for cleanup: Comments, documentation only  
+**Risk:** Low (non-operational terminology)  
+**Effort:** Low (already removed from active codebase)
 
-#### 4. Version-Space Terminology
-**What:** Machine learning model-selection framework language  
-**Context:** Legacy hypothesis-space search; not in deterministic engine  
-**Examples:**
+#### 4. Historical Model-Selection Framework
+**What:** "Version Space" terminology from ML model-selection theory  
+**Historical Context:** Legacy hypothesis-space search framework; not part of deterministic engine  
+**Superseded By:** Deterministic policy execution model (single canonical policy per context)  
+**Examples of historical usage:**
 - "version space", "hypothesis space"
-- "model selection", "model search" (when used in context of version space)
+- "model selection", "model search" (in version space context)
 - "candidate model set"
 - "version search algorithm"
 
-**Scope:** Comments, documentation, archived design docs  
+**Current Replacement Language:**
+- Use: "Policy selection", "Algorithm optimization", "Policy variation"
+- Scope for cleanup: Comments, archived design docs only  
 **Risk:** Low (no runtime code uses this)  
-**Effort:** Low (~5 files, mostly docs)
+**Effort:** Low (already removed from active codebase)
 
 #### 5. Other Academic Abstractions
 **What:** Residual terms from academic framing that obscure operational reality  
@@ -113,100 +125,95 @@ These terms are **core to the enterprise MVP** and must be retained as-is:
 
 ## Cleanup Phases
 
-### Phase 0: Planning (CURRENT — No Code Changes)
+### Phase 0: Planning (✓ COMPLETE)
 - ✓ Identify all instances of legacy terminology
 - ✓ Map implications of removal
 - ✓ Document preservation requirements
-- ✓ Create this cleanup plan
+- ✓ Create terminology cleanup plan
+- ✓ Create impact analysis report
 
-### Phase 1: Documentation & Comments (When Authorized)
-**Effort:** 2-3 hours  
-**Files affected:** ~80 files (mostly comments, docstrings, README)  
-**Files with logic changes:** 0 (comments only)
+### Phase 1: Documentation Cleanup (AUTHORIZED — IN PROGRESS)
+**Scope:** Governance and planning documentation files ONLY  
+**Effort:** 1-2 hours  
+**Files affected:** 2 governance files (docs/LOCALIZATION_FREEZE_V1.md, docs/TERMINOLOGY_CLEANUP_PLAN_V1.md)  
+**Files with code changes:** 0 (documentation only)  
+**Strict Restrictions:**
+- ✗ NO source code changes
+- ✗ NO enum changes (ASNC preserved as operational status)
+- ✗ NO API changes
+- ✗ NO schema changes
+- ✗ NO test changes
 
 Actions:
-- Replace CAFM references with "Income Stability Score™ Structural Assessment" or "deterministic evaluation"
-- Replace "basis set / basis dimension" with "input factors" or "assessment inputs"
-- Replace "cognitive mass" language with "operational clarity" or remove entirely
-- Replace "version space" references with "policy selection" or "algorithm selection"
-- Remove academic framing; use direct operational language
+- Update governance documents to reframe legacy terminology as historical architecture
+- Replace CAFM references with "Income Stability Score™ Engine" or reference to legacy branding
+- Clarify that basis-set, cognitive-mass, version-space are historical abstractions (not in current codebase)
+- Preserve ASNC as operational status code
+- Use enterprise terminology (deterministic evaluation, policy execution) consistently
 
-Risk: Low (no logic changes; documentation clarity improves)
+Risk: LOW (documentation and governance files only; zero impact on production code)
 
-### Phase 2: Variable & Function Names (When Authorized)
+### Phase 2: Source Code Comments (Future Authorization Required)
+**Status:** NOT AUTHORIZED  
 **Effort:** 4-6 hours  
-**Files affected:** ~40 files (types, engine, components)  
-**Testing required:** Full suite (changes affect identifiers)
+**Files affected:** ~40 files (comments in engine, types, components)  
+**Testing required:** Full suite (verification only; no code changes)
 
-Examples of changes:
-```typescript
-// Before
-const basisDimensions = [...]
-const cafmScore = calculate()
-const versionSpaceSearch = () => {}
-const cognitiveLoad = analyzeExplanation()
+Actions (if/when authorized):
+- Update code comments to remove historical terminology references
+- Clarify comments using enterprise terminology
+- Link to this governance document for historical context
 
-// After
-const assessmentInputs = [...]
-const stabilityScore = calculate()
-const policySelection = () => {}
-const explanationComplexity = analyzeExplanation()  // or just remove/rename
-```
+Risk: Low (comments only; no logic changes)
 
-Risk: Medium (refactoring touches types, may cascade)  
-Mitigation: Run full test suite, typecheck after each file
+### Phase 3: Variable & Function Names (Future Authorization Required)
+**Status:** NOT AUTHORIZED  
+**Effort:** 4-6 hours  
+**Files affected:** ~20 files (if necessary)  
+**Testing required:** Full suite (identifier changes may cascade)
 
-### Phase 3: Type Definitions & Architecture (When Authorized)
+Risk: Medium (requires careful refactoring with full regression testing)
+
+### Phase 4: API & Type Definitions (Future Authorization Required)
+**Status:** NOT AUTHORIZED  
 **Effort:** 6-10 hours  
-**Files affected:** ~15 core files (types, engine interfaces)  
-**Testing required:** Full suite, regression testing
+**Files affected:** Core type definitions, API routes
 
-Actions:
-- Rename type/interface names that embed legacy terminology
-- Update type comments and JSDoc
-- Ensure deterministic evaluation primitives are named clearly
-- No logic changes; pure renaming and documentation
+**CRITICAL:** ASNC is an operational status code (not a legacy abstraction).
+- Do NOT change ASNC without explicit business case
+- ASNC changes break API contracts and require versioning/migration planning
+- Historical terminology (basis-set, cognitive-mass, version-space) should NOT affect types
 
-Risk: Medium-High (types cascade throughout codebase)  
-Mitigation: Typecheck after each type rename; batch-test related components
-
-### Phase 4: Backward Compatibility & API Surfaces (When Authorized)
-**Effort:** 2-4 hours  
-**Files affected:** API routes, exports, public interfaces
-
-Actions:
-- Decide whether to maintain compatibility aliases (recommended for enterprise APIs)
-- Update OpenAPI/GraphQL schema documentation (if applicable)
-- Deprecation notices (if breaking changes)
-
-Risk: Low-Medium (depends on public API scope)  
-Mitigation: Version API endpoints; provide migration guide
+Risk: High (breaks API contracts; cascades throughout system)
 
 ---
 
-## Execution Blockers (Do Not Start Until)
+## Phase 1 Blockers (CLEARED)
 
-- [ ] Explicit user authorization received
-- [ ] All typecheck, tests, build green
-- [ ] Localization freeze documented and committed ✓
-- [ ] CAFM cleanup plan reviewed and approved
-- [ ] Repository backed up / branch strategy defined
+- [x] Explicit user authorization received (Phase 1 documentation cleanup)
+- [x] All typecheck, tests, build green
+- [x] Localization freeze documented and committed
+- [x] Repository ready (working tree clean)
 
 ---
 
-## Validation Checklist (After Execution)
+## Phase 1 Validation Checklist (Documentation Cleanup)
 
-- [ ] npm run typecheck = 0 errors
-- [ ] npm run test = all MVP tests pass
-- [ ] npm run build = succeeds
-- [ ] git status = clean
-- [ ] No CAFM / basis-set / cognitive-mass / version-space terminology in:
-  - [ ] src/ (code + comments)
-  - [ ] docs/ (except this history file)
-  - [ ] README.md
-  - [ ] API documentation
-- [ ] All deterministic execution primitives preserved and correctly named
-- [ ] Commit message references this plan's approval
+- [ ] npm run typecheck = 0 errors (no code changes, should remain 0)
+- [ ] npm run test = all MVP tests pass (no code changes, should pass)
+- [ ] npm run build = succeeds (no code changes, should succeed)
+- [ ] git status = clean after commit
+- [ ] Governance documents updated:
+  - [ ] LOCALIZATION_FREEZE_V1.md — CAFM language replaced
+  - [ ] TERMINOLOGY_CLEANUP_PLAN_V1.md — Reframed as historical architecture
+- [ ] Phase 1 scope restrictions maintained:
+  - [x] NO source code changes
+  - [x] NO enum changes (ASNC preserved)
+  - [x] NO API changes
+  - [x] NO schema changes
+  - [x] NO test changes
+- [ ] ASNC status preserved and documented as operational code
+- [ ] Commit message references Phase 1 authorization
 
 ---
 

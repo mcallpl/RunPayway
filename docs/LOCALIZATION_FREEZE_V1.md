@@ -95,9 +95,9 @@ Non-English locales are preserved for future strategic review and potential re-a
 
 ---
 
-## Transition Path: CAFM Terminology Cleanup
+## Transition Path: Legacy Terminology Cleanup
 
-Once this localization freeze is documented and committed, the next phase may begin: removal of legacy CAFM terminology and residual cognitive-mass abstractions from the codebase.
+Once this localization freeze is documented and committed, the next phase may begin: removal of legacy product abstractions and academic terminology from documentation and comments.
 
 That cleanup **must not begin until**:
 1. ✓ This localization freeze is documented
