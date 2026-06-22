@@ -48,7 +48,7 @@ export default function SimulatorTeaser({ variant = "default" }: { variant?: "de
         ].map(col => (
           <div key={col.label} style={{ flex: 1, background: "rgba(244,241,234,0.04)", padding: isCompact ? "8px 6px" : "10px 8px", textAlign: "center" }}>
             <div style={{ fontSize: 6, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.25)", marginBottom: 3 }}>{col.label}</div>
-            <div style={{ fontSize: isCompact ? 16 : 18, fontWeight: 300, color: col.color, fontWeight: 600, lineHeight: 1 }}>{col.value}</div>
+            <div style={{ fontSize: isCompact ? 16 : 18, fontWeight: 600, color: col.color, lineHeight: 1 }}>{col.value}</div>
           </div>
         ))}
       </div>

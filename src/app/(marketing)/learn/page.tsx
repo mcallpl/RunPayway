@@ -369,9 +369,6 @@ function IndustryScenarios({ m }: { m: boolean }) {
                   borderLeftColor: s.color,
                   cursor: "pointer",
                   transition: "all 200ms ease",
-                  ":hover": {
-                    backgroundColor: L.panelFill,
-                  },
                 }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: isOpen ? 12 : 0, gap: 12 }}>
                   <div style={{ flex: 1 }}>

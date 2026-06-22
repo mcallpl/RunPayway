@@ -103,8 +103,7 @@ CURRENT SITUATION:
   * Labor Dependence (passive income): ${body.dimensions.labor_dependence_pct || 0}%
 
 INDUSTRY CONTEXT:
-${vocab?.operating_structure || ""} operating model is typical for ${body.industry}.
-${vocab?.income_model || ""} income model is standard.
+They work in the ${body.industry} industry.
 
 ${roadmapContext}
 

@@ -552,6 +552,7 @@ function DashboardContent() {
     if (!advisorGoal.trim()) return;
     setAdvisorLoading(true);
     try {
+      const ni = (record?._v2 as any)?.normalized_inputs as Record<string, any> | undefined;
       const res = await fetch("/api/v1/advisor-analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -562,12 +563,12 @@ function DashboardContent() {
           band: band,
           record_id: (record?.record_id as string) || "",
           dimensions: {
-            persistence_pct: i?.income_persistence_pct || 0,
-            source_diversity_count: i?.source_diversity_count || 0,
-            forward_secured_pct: i?.forward_secured_pct || 0,
-            largest_source_pct: i?.largest_source_pct || 0,
-            earnings_variability: i?.income_variability_level || "moderate",
-            labor_dependence_pct: i?.labor_dependence_pct || 0,
+            persistence_pct: ni?.income_persistence_pct || 0,
+            source_diversity_count: ni?.source_diversity_count || 0,
+            forward_secured_pct: ni?.forward_secured_pct || 0,
+            largest_source_pct: ni?.largest_source_pct || 0,
+            earnings_variability: ni?.income_variability_level || "moderate",
+            labor_dependence_pct: ni?.labor_dependence_pct || 0,
           },
           roadmapSteps: roadmap.map(s => ({ action: s.action, lift: s.lift, desc: s.desc })),
         }),
@@ -1815,7 +1816,7 @@ function DashboardContent() {
                   return (
                     <div key={i} style={{ flex: 1, textAlign: "center" as const }}>
                       <div style={{ fontSize: 11, color: B.taupe, marginBottom: 6 }}>
-                        {new Date(a.assessment_date_utc || a.issued_timestamp_utc).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+                        {new Date(a.assessment_date_utc || a.issued_timestamp_utc || Date.now()).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
                       </div>
                       <div style={{ height: barH, backgroundColor: isLatest ? aColor : `${aColor}40`, borderRadius: 6, margin: "0 auto", width: mobile ? "100%" : 56, display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: 8, transition: "height 600ms ease" }}>
                         <span style={{ fontFamily: mono, fontSize: isLatest ? 20 : 16, fontWeight: isLatest ? 700 : 400, color: isLatest ? "#FFF" : aColor }}>{a.final_score}</span>
@@ -1855,8 +1856,8 @@ function DashboardContent() {
               {(() => {
                 const first = assessments[assessments.length - 1];
                 const latest = assessments[0];
-                const fNi = first._v2?.normalized_inputs as Record<string, number> | undefined;
-                const lNi = latest._v2?.normalized_inputs as Record<string, number> | undefined;
+                const fNi = (first as any)?._v2?.normalized_inputs as Record<string, number> | undefined;
+                const lNi = (latest as any)?._v2?.normalized_inputs as Record<string, number> | undefined;
                 if (!fNi || !lNi) return null;
                 const factors = [
                   { key: "income_persistence_pct", label: "Income That Repeats" },
@@ -1891,8 +1892,8 @@ function DashboardContent() {
               {(() => {
                 const first = assessments[assessments.length - 1];
                 const latest = assessments[0];
-                const fBm = first._v2?.benchmarks as { peer_percentile?: number } | undefined;
-                const lBm = latest._v2?.benchmarks as { peer_percentile?: number } | undefined;
+                const fBm = (first as any)?._v2?.benchmarks as { peer_percentile?: number } | undefined;
+                const lBm = (latest as any)?._v2?.benchmarks as { peer_percentile?: number } | undefined;
                 if (!fBm?.peer_percentile || !lBm?.peer_percentile) return null;
                 const pDelta = Math.round(lBm.peer_percentile - fBm.peer_percentile);
                 return (

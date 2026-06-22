@@ -42,7 +42,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Extract normalized inputs from v2 engine data
-    const v2 = (record as Record<string, unknown>)._v2 as Record<string, unknown> | undefined;
+    const r = record as any;
+    const v2 = r._v2 as Record<string, unknown> | undefined;
     const ni = v2?.normalized_inputs as Record<string, unknown> | undefined;
 
     if (!ni) {
@@ -51,12 +52,12 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      record_id: record.record_id,
-      assessment_title: record.assessment_title || "",
-      industry_sector: record.industry_sector || "",
-      primary_income_model: record.primary_income_model || "",
-      final_score: record.final_score,
-      stability_band: record.stability_band,
+      record_id: r.record_id,
+      assessment_title: r.assessment_title || "",
+      industry_sector: r.industry_sector || "",
+      primary_income_model: r.primary_income_model || "",
+      final_score: r.final_score,
+      stability_band: r.stability_band,
       normalized_inputs: {
         income_persistence_pct: ni.income_persistence_pct,
         largest_source_pct: ni.largest_source_pct,

@@ -622,13 +622,13 @@ export default function ReviewPage() {
   const v2Benchmarks = v2?.benchmarks ?? null;
 
   // ── Strategic insight data (RP-2.1) ──
-  const v2SurprisingInsights = v2?.surprising_insights ?? null;
-  const v2TradeoffNarratives = v2?.tradeoff_narratives ?? null;
-  const v2OneThingThatMatters = v2?.one_thing_that_matters ?? null;
-  const v2PredictiveWarnings = v2?.predictive_warnings ?? null;
-  const v2NormalizedInputs = v2?.normalized_inputs ?? null;
-  const aiPlan = v2?.ai_action_plan as Record<string, string> | undefined;
-  const actionPlan = v2?.action_plan as { primary_opportunity?: string; top_moves?: Array<{ rank: number; source_action_id: string; action_title: string; selected_because: string; target_metric: string; first_step: string; avoid_first: string; estimated_score_lift: number; reassess_when: string; action_confidence: string }>; first_recommended_shift?: string; avoid_first?: string; reassessment_trigger?: string } | undefined;
+  const v2SurprisingInsights = (v2 as any)?.surprising_insights ?? null;
+  const v2TradeoffNarratives = (v2 as any)?.tradeoff_narratives ?? null;
+  const v2OneThingThatMatters = (v2 as any)?.one_thing_that_matters ?? null;
+  const v2PredictiveWarnings = (v2 as any)?.predictive_warnings ?? null;
+  const v2NormalizedInputs = (v2 as any)?.normalized_inputs ?? null;
+  const aiPlan = (v2 as any)?.ai_action_plan as Record<string, string> | undefined;
+  const actionPlan = (v2 as any)?.action_plan as { primary_opportunity?: string; top_moves?: Array<{ rank: number; source_action_id: string; action_title: string; selected_because: string; target_metric: string; first_step: string; avoid_first: string; estimated_score_lift: number; reassess_when: string; action_confidence: string }>; first_recommended_shift?: string; avoid_first?: string; reassessment_trigger?: string } | undefined;
 
   // ── Outcome layer ──
   const ol = v2?.outcome_layer;
@@ -640,11 +640,11 @@ export default function ReviewPage() {
   const olIndustryLabel = ol?.industry_refinement_profile?.industry_label ?? null;
 
   // ── Deep engine data for rich personalization ──
-  const v2Explainability = v2?.explainability as { why_this_score?: string; why_not_higher?: string; strongest_supports?: string[]; strongest_suppressors?: string[]; best_lift_explanation?: string; fragility_explanation?: string; interaction_summary?: string } | undefined;
-  const v2BehavioralInsights = v2?.behavioral_insights as Array<{ pattern: string; consequence: string; reframe: string }> | undefined;
-  const v2ExecutionRoadmap = v2?.execution_roadmap as Array<{ week: string; action: string; detail: string; success_metric: string }> | undefined;
-  const v2Indicators = v2?.indicators as Array<{ key: string; label: string; raw_value: number; normalized_value: number; level: string }> | undefined;
-  const olSelectedScenarios = ol?.selected_scenarios as Array<{ scenario_id: string; label: string; description: string; severity: string; why_it_matters: string }> | undefined;
+  const v2Explainability = (v2 as any)?.explainability as { why_this_score?: string; why_not_higher?: string; strongest_supports?: string[]; strongest_suppressors?: string[]; best_lift_explanation?: string; fragility_explanation?: string; interaction_summary?: string } | undefined;
+  const v2BehavioralInsights = (v2 as any)?.behavioral_insights as Array<{ pattern: string; consequence: string; reframe: string }> | undefined;
+  const v2ExecutionRoadmap = (v2 as any)?.execution_roadmap as Array<{ week: string; action: string; detail: string; success_metric: string }> | undefined;
+  const v2Indicators = (v2 as any)?.indicators as Array<{ key: string; label: string; raw_value: number; normalized_value: number; level: string }> | undefined;
+  const olSelectedScenarios = (ol as any)?.selected_scenarios as Array<{ scenario_id: string; label: string; description: string; severity: string; why_it_matters: string }> | undefined;
 
   // ── Outcome layer explanations override profileConstraintAdvice when available ──
   if (olExplanations) {
@@ -694,6 +694,16 @@ export default function ReviewPage() {
 
   // ── Industry-tailored copy (no API — deterministic) ──
   const v2ni = v2?.normalized_inputs as Record<string, number | string> | undefined;
+
+  // ── Access code payload for sharing ──
+  const v2q = ((v2 as Record<string, unknown>)?.quality as Record<string, number>)?.quality_score ?? 5;
+  const accessCodePayload = v2ni ? btoa(JSON.stringify({
+    p: v2ni.income_persistence_pct, c: v2ni.largest_source_pct, s: v2ni.source_diversity_count,
+    f: v2ni.forward_secured_pct, v: v2ni.income_variability_level, l: v2ni.labor_dependence_pct,
+    q: v2q, n: record.assessment_title || "", i: record.industry_sector || "", m: record.primary_income_model || "",
+    o: record.final_score || 0, b: record.stability_band || "",
+  })) : "";
+
   const tailored = generateTailoredCopy({
     industry: industrySector,
     structure: structureDesc,
@@ -865,16 +875,6 @@ export default function ReviewPage() {
     setDownloading(true);
     setDownloadError(null);
     try {
-      // Build access code
-      const v2ni = (record._v2 as Record<string, unknown>)?.normalized_inputs as Record<string, number | string> | undefined;
-      const v2q = ((record._v2 as Record<string, unknown>)?.quality as Record<string, number>)?.quality_score ?? 5;
-      const accessCodePayload = v2ni ? btoa(JSON.stringify({
-        p: v2ni.income_persistence_pct, c: v2ni.largest_source_pct, s: v2ni.source_diversity_count,
-        f: v2ni.forward_secured_pct, v: v2ni.income_variability_level, l: v2ni.labor_dependence_pct,
-        q: v2q, n: record.assessment_title || "", i: record.industry_sector || "", m: record.primary_income_model || "",
-        o: record.final_score || 0, b: record.stability_band || "",
-      })) : "";
-
       // Build ranked factors
       const rankedFactors = (v2Indicators || []).sort((a, b) => a.normalized_value - b.normalized_value).slice(0, 3).map((ind, i) => ({
         role: i === 0 ? "WEAKEST FACTOR" : i === 1 ? "MOST DANGEROUS" : "STRONGEST FACTOR",
@@ -937,13 +937,13 @@ export default function ReviewPage() {
         bandDistance,
         bandDistanceText: "",
         score,
-        pressureMap: record.pressure_map ? {
-          operatingStructure: (record.pressure_map as Record<string, string>).operating_structure || "",
-          incomeModel: (record.pressure_map as Record<string, string>).income_model || "",
-          industry: (record.pressure_map as Record<string, string>).industry || "",
-          pressure: (record.pressure_map as Record<string, string>).pressure || "",
-          tailwind: (record.pressure_map as Record<string, string>).tailwind || "",
-          leverageMove: (record.pressure_map as Record<string, string>).leverage_move || "",
+        pressureMap: (record as any).pressure_map ? {
+          operatingStructure: ((record as any).pressure_map as Record<string, string>).operating_structure || "",
+          incomeModel: ((record as any).pressure_map as Record<string, string>).income_model || "",
+          industry: ((record as any).pressure_map as Record<string, string>).industry || "",
+          pressure: ((record as any).pressure_map as Record<string, string>).pressure || "",
+          tailwind: ((record as any).pressure_map as Record<string, string>).tailwind || "",
+          leverageMove: ((record as any).pressure_map as Record<string, string>).leverage_move || "",
         } : undefined,
         killerLine: tailored.killerLine,
         activeIncome: record.active_income_level,
@@ -966,7 +966,7 @@ export default function ReviewPage() {
         actionCategories,
         combinedLift: v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 ? (() => {
           const proj = v2Lift.combined_top_two.projected_score;
-          const cur = v2Lift.combined_top_two.original_score;
+          const cur = (v2Lift.combined_top_two as any).original_score || v2Lift.combined_top_two.projected_score;
           const nextBandMin = cur < 30 ? 30 : cur < 50 ? 50 : cur < 75 ? 75 : null;
           const bandShiftVal = v2Lift.combined_top_two.band_shift;
           const projBand = v2Lift.combined_top_two.projected_band;
@@ -1247,7 +1247,7 @@ export default function ReviewPage() {
         {/* Access code + footer */}
         <div style={{ padding: mobile ? "16px 24px 20px" : "20px 40px 24px" }}>
           {(() => {
-            const v2Cover = (record as Record<string, unknown>)._v2 as Record<string, unknown> | undefined;
+            const v2Cover = ((record as unknown) as Record<string, unknown>)._v2 as Record<string, unknown> | undefined;
             const niCover = v2Cover?.normalized_inputs as Record<string, number | string> | undefined;
             if (!niCover) return null;
             const payload = { p: niCover.income_persistence_pct, c: niCover.largest_source_pct, s: niCover.source_diversity_count, f: niCover.forward_secured_pct, v: niCover.income_variability_level, l: niCover.labor_dependence_pct, q: (v2Cover?.quality as Record<string, number>)?.quality_score ?? 5, n: record.assessment_title || "", i: record.industry_sector || "", m: record.primary_income_model || "" };
@@ -1410,7 +1410,7 @@ export default function ReviewPage() {
         {/* Impact block — navy footer */}
         {v2Lift?.combined_top_two && v2Lift.combined_top_two.lift > 0 && (() => {
           const proj = v2Lift.combined_top_two.projected_score;
-          const cur = v2Lift.combined_top_two.original_score;
+          const cur = (v2Lift.combined_top_two as any).original_score || v2Lift.combined_top_two.projected_score;
           return (
             <div style={{ backgroundColor: B.navy, padding: mobile ? "24px 24px" : "28px 40px", textAlign: "center" }}>
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.10em", color: "rgba(244,241,234,0.35)", marginBottom: 12 }}>IF IMPLEMENTED TOGETHER</div>

@@ -75,7 +75,6 @@ export async function POST(request: NextRequest) {
         final_score: result.scores.overall_score,
         stability_band: result.bands.primary_band,
         registry_status: "Active",
-        input_checksum: result.integrity.input_checksum,
       } as Parameters<typeof storage.saveRecord>[0]);
     } catch {
       // Storage failure should not block the response

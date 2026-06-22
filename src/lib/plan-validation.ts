@@ -9,11 +9,11 @@ export type AllPlanKey = PlanKey | AdvisorPlanKey;
 
 // Validation functions
 export function isValidPlanKey(key: unknown): key is PlanKey {
-  return key !== null && key !== undefined && key in PLANS;
+  return key !== null && key !== undefined && (key as PropertyKey) in PLANS;
 }
 
 export function isValidAdvisorPlanKey(key: unknown): key is AdvisorPlanKey {
-  return key !== null && key !== undefined && key in ADVISOR_PLANS;
+  return key !== null && key !== undefined && (key as PropertyKey) in ADVISOR_PLANS;
 }
 
 export function isValidPaymentPlanKey(key: unknown): key is "single_assessment" | "annual_monitoring" {
