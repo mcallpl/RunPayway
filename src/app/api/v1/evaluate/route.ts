@@ -7,6 +7,9 @@ import { classifyScore } from "../../../../../packages/rp-dsl/executor";
 import { computeAuditHashes, generateAuditId } from "../../../../../packages/audit/hash";
 import { getReasonCode, validateReasonCode } from "../../../../../packages/reason-codes/registry";
 import { EvaluationStatus } from "../../../../../packages/domain/types";
+import { PrismaClient } from "@prisma/client";
+import { EvaluationRepository } from "../../../../../src/lib/persistence/evaluation-repository";
+import { EvaluationPersistenceService } from "../../../../../src/lib/persistence/evaluation-persistence-service";
 
 export async function POST(request: NextRequest) {
   try {
@@ -162,23 +165,27 @@ export async function POST(request: NextRequest) {
       result
     );
 
-    // Step 9: Create audit record (REQ-002, REQ-003)
-    const evaluationId = `eval_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
-    const auditId = generateAuditId();
+    // Step 9: Persist evaluation (Phase 5a - Core Evaluation Persistence)
+    const prisma = new PrismaClient();
+    const evaluationRepository = new EvaluationRepository(prisma);
+    const persistenceService = new EvaluationPersistenceService(evaluationRepository);
 
-    // TODO: In production, store in database
-    // await prisma.auditRecord.create({
-    //   data: {
-    //     audit_id: auditId,
-    //     evaluation_request_id: evaluationId,
-    //     organization_id,
-    //     input_hash: auditHashes.input_hash,
-    //     policy_hash: auditHashes.policy_hash,
-    //     result_hash: auditHashes.result_hash,
-    //     evaluator_version: "1.0.0",
-    //     replayable: true,
-    //   }
-    // });
+    const persistedEvaluation = await persistenceService.persistEvaluation({
+      subject_id: organization_id,
+      cohort_key,
+      policy_id: policy.policy_id,
+      policy_version: 1,
+      policy_hash: auditHashes.policy_hash,
+      evaluation_timestamp: new Date(),
+      payload: payloadValidation.data.payload,
+      result,
+      classification,
+      violation_score: violationScore,
+      triggered_reason_codes: triggeredReasonCodes,
+    });
+
+    const evaluationId = persistedEvaluation.evaluation_id;
+    const auditId = generateAuditId();
 
     // Step 10: Return structured JSON (REQ-002, API_STANDARD)
     return NextResponse.json(

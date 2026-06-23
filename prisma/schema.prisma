@@ -103,3 +103,27 @@ model AuditRecord {
 
   @@map("audit_records")
 }
+
+model Evaluation {
+  evaluation_id           String   @id @default(cuid())
+  subject_id              String
+  cohort_key              String
+  policy_id               String
+  policy_version          Int
+  policy_hash             String
+  evaluation_timestamp    DateTime @db.DateTime()
+  payload_hash            String
+  result_hash             String
+  classification          String
+  violation_score         Int      @default(0)
+  triggered_reason_codes  String[] @default([])
+  created_at              DateTime @default(now())
+
+  @@index([subject_id])
+  @@index([cohort_key])
+  @@index([evaluation_timestamp])
+  @@index([created_at])
+  @@index([result_hash])
+  @@map("evaluations")
+}
+
