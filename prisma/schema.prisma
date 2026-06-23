@@ -141,3 +141,36 @@ model PolicyVersion {
   @@map("policy_versions")
 }
 
+model AuditEvent {
+  audit_id         String   @id @default(cuid())
+  sequence_number  Int      @unique @default(autoincrement())
+  previous_hash    String?
+  audit_hash       String   @unique
+
+  event_type       String
+  event_timestamp  DateTime
+  created_at       DateTime @default(now())
+
+  actor_id         String?
+  subject_type     String
+  subject_id       String
+
+  evaluation_id    String?
+  policy_id        String?
+  policy_version   Int?
+
+  details          String
+
+  @@index([sequence_number])
+  @@index([event_type])
+  @@index([subject_type, subject_id])
+  @@index([evaluation_id])
+  @@index([policy_id, policy_version])
+  @@index([actor_id])
+  @@index([event_timestamp])
+  @@index([created_at])
+  @@index([audit_hash])
+
+  @@map("audit_events")
+}
+

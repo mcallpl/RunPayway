@@ -10,6 +10,7 @@ import { EvaluationStatus } from "../../../../../packages/domain/types";
 import { prisma } from "../../../../../src/lib/prisma";
 import { EvaluationRepository } from "../../../../../src/lib/persistence/evaluation-repository";
 import { EvaluationPersistenceService } from "../../../../../src/lib/persistence/evaluation-persistence-service";
+import { AuditService } from "../../../../../src/lib/persistence/audit-service";
 
 export async function POST(request: NextRequest) {
   try {
@@ -185,6 +186,14 @@ export async function POST(request: NextRequest) {
 
     const evaluationId = persistedEvaluation.evaluation_id;
     const auditId = generateAuditId();
+
+    // Step 9.5: Log EVALUATION_CREATED audit event (Phase 5C - Audit Ledger)
+    try {
+      const auditService = new AuditService(prisma);
+      await auditService.logEvaluationCreated(persistedEvaluation, payloadValidation.data.payload);
+    } catch (auditErr) {
+      console.error('Failed to log audit event:', auditErr);
+    }
 
     // Step 10: Return structured JSON (REQ-002, API_STANDARD)
     return NextResponse.json(
