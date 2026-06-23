@@ -35,3 +35,13 @@ export {
   PolicyVersionGovernanceRepository,
   governanceRepository,
 } from "./governance-repository";
+
+export {
+  GovernanceService,
+  governanceService,
+} from "./governance-service";
+
+export {
+  AuthorizationHelper,
+  authorizationHelper,
+} from "./authorization-helper";
