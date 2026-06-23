@@ -127,3 +127,17 @@ model Evaluation {
   @@map("evaluations")
 }
 
+model PolicyVersion {
+  policy_id         String
+  version           Int
+  source_definition String
+  compiled_hash     String
+  effective_date    DateTime?
+  created_at        DateTime   @default(now())
+  created_by        String?
+
+  @@id([policy_id, version])
+  @@index([created_at])
+  @@map("policy_versions")
+}
+
