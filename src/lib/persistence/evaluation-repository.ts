@@ -12,7 +12,7 @@ export interface CreateEvaluationInput {
   result_hash: string;
   classification: string;
   violation_score: number;
-  triggered_reason_codes: string[];
+  triggered_reason_codes: string[] | string;
 }
 
 export interface Evaluation extends CreateEvaluationInput {
@@ -23,6 +23,10 @@ export class EvaluationRepository {
   constructor(private prisma: PrismaClient) {}
 
   async create(input: CreateEvaluationInput): Promise<Evaluation> {
+    const reasonCodes = typeof input.triggered_reason_codes === 'string'
+      ? input.triggered_reason_codes
+      : JSON.stringify(input.triggered_reason_codes);
+
     const evaluation = await this.prisma.evaluation.create({
       data: {
         evaluation_id: input.evaluation_id,
@@ -36,7 +40,7 @@ export class EvaluationRepository {
         result_hash: input.result_hash,
         classification: input.classification,
         violation_score: input.violation_score,
-        triggered_reason_codes: input.triggered_reason_codes,
+        triggered_reason_codes: reasonCodes,
         created_at: new Date(),
       },
     });

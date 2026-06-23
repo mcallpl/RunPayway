@@ -7,7 +7,7 @@ import { classifyScore } from "../../../../../packages/rp-dsl/executor";
 import { computeAuditHashes, generateAuditId } from "../../../../../packages/audit/hash";
 import { getReasonCode, validateReasonCode } from "../../../../../packages/reason-codes/registry";
 import { EvaluationStatus } from "../../../../../packages/domain/types";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../../../../../src/lib/prisma";
 import { EvaluationRepository } from "../../../../../src/lib/persistence/evaluation-repository";
 import { EvaluationPersistenceService } from "../../../../../src/lib/persistence/evaluation-persistence-service";
 
@@ -166,7 +166,6 @@ export async function POST(request: NextRequest) {
     );
 
     // Step 9: Persist evaluation (Phase 5a - Core Evaluation Persistence)
-    const prisma = new PrismaClient();
     const evaluationRepository = new EvaluationRepository(prisma);
     const persistenceService = new EvaluationPersistenceService(evaluationRepository);
 

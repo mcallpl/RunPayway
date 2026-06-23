@@ -26,7 +26,7 @@ model Policy {
   policy_version  String
   policy_hash     String
   cohort_key      String
-  rules           String                  @db.Text
+  rules           String
   organization_id String
   created_at      DateTime                @default(now())
   updated_at      DateTime                @updatedAt
@@ -58,7 +58,7 @@ model EvaluationRequest {
   organization_id String
   cohort_key      String
   policy_id       String
-  payload         String   @db.Text
+  payload         String
   input_hash      String
   created_at      DateTime @default(now())
   organization    Organization @relation(fields: [organization_id], references: [id])
@@ -77,7 +77,7 @@ model EvaluationResult {
   compliance_classification String
   violation_score           Int
   reason_codes              String
-  rule_results              String   @db.Text
+  rule_results              String
   result_hash               String
   evaluator_version         String
   created_at                DateTime @default(now())
@@ -111,12 +111,12 @@ model Evaluation {
   policy_id               String
   policy_version          Int
   policy_hash             String
-  evaluation_timestamp    DateTime @db.DateTime()
+  evaluation_timestamp    DateTime
   payload_hash            String
   result_hash             String
   classification          String
   violation_score         Int      @default(0)
-  triggered_reason_codes  String[] @default([])
+  triggered_reason_codes  String   @default("[]")
   created_at              DateTime @default(now())
 
   @@index([subject_id])
