@@ -59,7 +59,7 @@ policies (
 
 ## Question 3: Fields in `policy_versions` Table
 
-**Purpose:** Immutable, versioned policy storage with lifecycle metadata
+**Purpose:** Immutable, versioned policy storage (persistence only, no governance)
 
 **Field Definition:**
 
@@ -68,18 +68,13 @@ policy_versions (
   policy_id (UUID, composite FK → policies.policy_id)
   version (INTEGER)
   
-  status (VARCHAR(32): DRAFT|APPROVED|ACTIVE|RETIRED, default DRAFT)
-  
   source_definition (TEXT, immutable after creation)
   compiled_hash (CHAR(64), SHA-256)
   
   effective_date (DATE, optional)
   
   created_at (TIMESTAMP, default NOW(), immutable)
-  created_by (VARCHAR(255))
-  
-  approved_at (TIMESTAMP, optional, Phase 6 - NOT SET IN PHASE 5B)
-  approved_by (VARCHAR(255), optional, Phase 6 - NOT SET IN PHASE 5B)
+  created_by (VARCHAR(255), optional)
 )
 ```
 
@@ -88,19 +83,18 @@ policy_versions (
 - FOREIGN KEY: policy_id → policies.policy_id
 - No UPDATE allowed (immutable)
 - No DELETE allowed (immutable)
-- Unique ACTIVE version per policy_id (UNIQUE INDEX WHERE status='ACTIVE')
 
 **Indexes:**
 - Composite PK index (policy_id, version)
-- Unique active version constraint: UNIQUE(policy_id) WHERE status='ACTIVE'
-- Index on status for active policy lookups
 - Index on created_at for time-based queries
 
 **Rationale:**
-- Composite key enables exact policy version retrieval for replay (Phase 5c)
+- Composite key enables exact policy version retrieval for deterministic replay (Phase 5c)
 - Immutability enforced at DB level
-- Single active version constraint prevents ambiguity
-- Status field enables lifecycle (even though transitions not in Phase 5b)
+- Minimal schema: identity, definition, hashes for verification
+- NO status field (governance deferred to Phase 6)
+- NO approval fields (governance deferred to Phase 6)
+- NO lifecycle state machine (governance deferred to Phase 6)
 - Hashes stored for determinism verification (Phase 5c)
 
 ---
@@ -113,16 +107,16 @@ policy_versions (
 PRIMARY KEY (policy_id UUID, version INTEGER)
 ```
 
-**Usage Pattern:**
+**Query Patterns in Phase 5B:**
 - Lookup specific version: `SELECT * FROM policy_versions WHERE policy_id = $1 AND version = $2`
-- Lookup active version: `SELECT * FROM policy_versions WHERE policy_id = $1 AND status = 'ACTIVE'`
 - List all versions: `SELECT * FROM policy_versions WHERE policy_id = $1 ORDER BY version DESC`
+- Lookup latest version: `SELECT * FROM policy_versions WHERE policy_id = $1 ORDER BY version DESC LIMIT 1`
 
 **Why Composite?**
 - Same policy_id can have multiple versions (v1, v2, v3, ...)
-- Evaluation record stores BOTH policy_id + policy_version
-- Enables deterministic replay: retrieve exact policy version used
-- Prevents accidental polymorphism (two rows with same policy_id, different versions confusing)
+- Evaluation record stores BOTH policy_id + policy_version (immutable reference)
+- Enables deterministic replay: retrieve exact policy version executed
+- Allows historical queries: see all policy versions for an evaluation
 
 **Foreign Key Constraint:**
 ```sql
@@ -142,7 +136,7 @@ evaluations table has:
   policy_id (UUID)
   policy_version (INTEGER)
 
-These are stored as VALUES, but no FK constraint yet.
+These are stored as immutable references, no FK yet.
 ```
 
 **Phase 5b Change:**
@@ -152,27 +146,32 @@ Add composite FK constraint to evaluations:
     REFERENCES policy_versions(policy_id, version)
 ```
 
-**Mapping in Practice:**
+**Deterministic Lookup Pattern:**
 
-1. **Evaluate endpoint** (Phase 5a code, unchanged):
-   - Executes policy
+1. **Evaluate endpoint** (Phase 5a - unchanged):
+   - Executes policy (source_definition from some policy source)
    - Persists evaluation with policy_id + policy_version
    
-2. **New PolicyLookupService** (Phase 5b):
+2. **PolicyRepository** (Phase 5b):
    - Query: `SELECT * FROM policy_versions WHERE policy_id = ? AND version = ?`
-   - Returns: Full policy definition for that version
-   - Used by evaluate endpoint to get active policy
+   - Returns: Full policy definition (source_definition, compiled_hash) for that exact version
+   - No lifecycle state required (deterministic by identity only)
    
-3. **Replay endpoint** (Phase 5c, not in this phase):
+3. **Lookup latest version** (optional in Phase 5b):
+   - Query: `SELECT * FROM policy_versions WHERE policy_id = ? ORDER BY version DESC LIMIT 1`
+   - Returns: Most recent version
+   - No "ACTIVE" status required (deterministic by version ordering)
+   
+4. **Replay endpoint** (Phase 5c, not in this phase):
    - Retrieves evaluation record
    - Extracts policy_id + policy_version
    - Calls: `SELECT * FROM policy_versions WHERE policy_id = ? AND version = ?`
-   - Re-executes with original policy version
+   - Re-executes with original policy version (deterministic reconstruction)
 
 **FK Constraint Validation:**
 - Insert to evaluations will fail if referenced policy_version doesn't exist
-- Prevents orphaned evaluations
-- Database enforces referential integrity
+- Prevents orphaned evaluations (referential integrity)
+- Database enforces consistency
 
 ---
 
@@ -209,13 +208,27 @@ REFERENCES policy_versions(policy_id, version);
 
 ## Question 7: What is Explicitly Out of Scope?
 
-### NOT IN PHASE 5B:
+### NOT IN PHASE 5B (Governance & Lifecycle - Deferred to Phase 6):
 
-❌ **Governance Workflow**
-- No approval endpoint
+❌ **Status Field**
+- No `status` column in policy_versions
+- No DRAFT|APPROVED|ACTIVE|RETIRED encoding
+- Deferred to Phase 6 (not needed for Phase 5b persistence)
+
+❌ **Approval Workflow**
+- No `approved_at` field
+- No `approved_by` field
 - No approval state machine
 - No rejection workflow
 - No change request workflow
+- Deferred to Phase 6a/6b
+
+❌ **Activation Workflow**
+- No activation concept
+- No "ACTIVE" version constraint
+- No "single active version per policy_id" enforcement
+- No promotion from APPROVED to ACTIVE
+- No retirement workflow
 - Deferred to Phase 6a/6b
 
 ❌ **Audit Infrastructure**
@@ -231,16 +244,10 @@ REFERENCES policy_versions(policy_id, version);
 - No result hash comparison
 - Deferred to Phase 5c
 
-❌ **Activation Workflow**
-- No activation endpoint
-- No promotion from APPROVED to ACTIVE
-- No retirement workflow
-- No state transitions
-- Deferred to Phase 6a/6b
-
 ❌ **RBAC**
 - No role-based access control
 - No Developer/Reviewer/Approver roles
+- No permission enforcement
 - Deferred to Phase 6c
 
 ❌ **Policy Creation/Mutation Endpoints**
@@ -251,14 +258,15 @@ REFERENCES policy_versions(policy_id, version);
 
 ### IN SCOPE (Phase 5b ONLY):
 
-✓ Policies table (metadata)
-✓ Policy_versions table (versioned policies)
-✓ Composite key (policy_id, version)
-✓ PolicyRepository (read-only queries)
-✓ PolicyLookupService (for evaluate endpoint)
-✓ Composite FK constraint from evaluations
-✓ Integration path for policy lookup
-✓ Tests for policy queries and composite keys
+✓ Policies table (metadata, immutable)
+✓ Policy_versions table (versioned policies, immutable, governance-free)
+✓ Composite key (policy_id, version) for deterministic lookup
+✓ PolicyRepository (read-only queries only)
+✓ PolicyLookupService (deterministic lookup by explicit policy_id + version)
+✓ Composite FK constraint from evaluations (referential integrity)
+✓ Integration path: evaluations → policy_versions via composite key
+✓ Tests for policy queries and composite key integrity
+✓ Deterministic version lookup (by version number, not lifecycle state)
 
 ---
 
@@ -312,39 +320,93 @@ REFERENCES policy_versions(policy_id, version);
 
 ---
 
-## Scope Lock Validation
+## Scope Lock Validation - REVISED (Governance Leakage Corrected)
 
 **Consistency Checks:**
 
-✓ Phase 5B scope aligns with PHASE_5B_IMPLEMENTATION_PLAN.md  
+✓ Phase 5b scope aligns with PHASE_5B_IMPLEMENTATION_PLAN.md  
 ✓ Composite key matches PERSISTENCE_SCHEMA_V1.md definition  
-✓ No governance work (deferred to Phase 6)  
+✓ NO status field (governance removed - Phase 6 work)  
+✓ NO approval fields (governance removed - Phase 6 work)  
+✓ NO lifecycle state machine (governance removed - Phase 6 work)  
+✓ NO "ACTIVE" version constraint (governance removed - Phase 6 work)  
+✓ Deterministic lookup only (by policy_id + version)  
+✓ No governance workflow (deferred to Phase 6a/6b)  
 ✓ No audit work (deferred to Phase 5c)  
 ✓ Evaluations table only modified with FK constraint  
 ✓ All tables immutable (enforced at DB level)  
 ✓ Migration-governed approach maintained  
 ✓ Prisma ORM governance maintained  
 
+**Governance Leakage Corrected:**
+
+Previously included (now removed):
+- ❌ status field (DRAFT|APPROVED|ACTIVE|RETIRED)
+- ❌ approved_at field
+- ❌ approved_by field
+- ❌ lifecycle state machine language
+
+Now corrected to:
+- ✓ Persistence-only schema (policy identity + versions)
+- ✓ Deterministic lookup (by explicit policy_id + version)
+- ✓ No governance concepts encoded
+- ✓ Clean Phase 5b boundary
+
 **Architecture Compliance:**
 
 ✓ Matches ENTERPRISE_PLATFORM_ARCHITECTURE_V1.md policy registry section  
-✓ Matches POLICY_REGISTRY_ARCHITECTURE_V1.md schema design  
-✓ Matches IMPLEMENTATION_ROADMAP_PHASES_5_7.md Phase 5b definition  
+✓ Matches POLICY_REGISTRY_ARCHITECTURE_V1.md schema design (Phase 6 activation/approval removed)  
+✓ Matches IMPLEMENTATION_ROADMAP_PHASES_5_7.md Phase 5b definition (persistence only)  
+✓ CORRECTED: No governance/lifecycle leakage into Phase 5b  
+
+---
+
+## Correction Summary
+
+**Governance Leakage Removed:**
+
+The original scope lock included governance/lifecycle fields that belong to Phase 6, not Phase 5b:
+- status (DRAFT|APPROVED|ACTIVE|RETIRED) → REMOVED
+- approved_at → REMOVED
+- approved_by → REMOVED
+- Lifecycle state machine concepts → REMOVED
+- "Single active version per policy_id" constraint → REMOVED
+
+**Corrected to Phase 5b Persistence-Only:**
+
+Policy_versions now contains ONLY:
+- policy_id (UUID, identity)
+- version (INTEGER, identity)
+- source_definition (TEXT, the actual policy)
+- compiled_hash (CHAR(64), for verification)
+- effective_date (DATE, optional)
+- created_at (TIMESTAMP, immutable)
+- created_by (VARCHAR, optional)
+
+**Lookup Pattern Corrected to Deterministic:**
+
+Phase 5b lookup is now deterministic by identity, not by lifecycle state:
+- Query specific version: `WHERE policy_id = ? AND version = ?`
+- Query latest version: `WHERE policy_id = ? ORDER BY version DESC LIMIT 1`
+- No "ACTIVE" version lookup (Phase 6 work)
+- No "current policy" concept (Phase 6 work)
 
 ---
 
 ## Authorization to Proceed
 
-**This scope lock is frozen and approved for implementation.**
+**This scope lock is corrected and frozen for implementation.**
 
 Implementation will begin immediately after user confirmation.
 
-No deviations from this scope lock without explicit authorization.
+No deviations from this corrected scope lock without explicit authorization.
 
 All 8 questions answered and validated against architecture documents.
+
+Governance/lifecycle leakage removed. Phase 5b boundary clean.
 
 **Ready for Phase 5B coding phase.**
 
 ---
 
-**Scope Lock Status: APPROVED ✓**
+**Scope Lock Status: CORRECTED AND APPROVED ✓**
