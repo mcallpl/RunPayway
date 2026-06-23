@@ -21,6 +21,12 @@ out/
 .DS_Store
 Thumbs.db
 
+# Local SQLite database files (Prisma dev)
+prisma/dev.db
+prisma/dev.db-journal
+*.db
+*.db-journal
+
 # IDE
 .vscode/
 .idea/
