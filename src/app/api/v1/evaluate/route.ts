@@ -190,7 +190,22 @@ export async function POST(request: NextRequest) {
     // Step 9.5: Log EVALUATION_CREATED audit event (Phase 5C - Audit Ledger)
     try {
       const auditService = new AuditService(prisma);
-      await auditService.logEvaluationCreated(persistedEvaluation, payloadValidation.data.payload);
+      const evaluation = {
+        evaluation_id: evaluationId,
+        subject_id: organization_id,
+        cohort_key,
+        policy_id: policy.policy_id,
+        policy_version: 1,
+        policy_hash: auditHashes.policy_hash,
+        evaluation_timestamp: new Date(),
+        payload_hash: auditHashes.input_hash,
+        result_hash: auditHashes.result_hash,
+        classification,
+        violation_score: violationScore,
+        triggered_reason_codes: JSON.stringify(triggeredReasonCodes),
+        created_at: persistedEvaluation.created_at,
+      };
+      await auditService.logEvaluationCreated(evaluation, payloadValidation.data.payload);
     } catch (auditErr) {
       console.error('Failed to log audit event:', auditErr);
     }
