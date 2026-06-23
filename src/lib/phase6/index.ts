@@ -1,6 +1,6 @@
 /**
  * Phase 6: Policy Governance Layer
- * Barrel export for all governance-related types and services
+ * Barrel export for all governance-related types, services, and repositories
  */
 
 export {
@@ -30,3 +30,8 @@ export {
   isGovernanceAction,
   isGovernanceRole,
 } from "./governance-types";
+
+export {
+  PolicyVersionGovernanceRepository,
+  governanceRepository,
+} from "./governance-repository";
