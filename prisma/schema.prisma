@@ -174,3 +174,42 @@ model AuditEvent {
   @@map("audit_events")
 }
 
+// ============================================================================
+// PHASE 6: GOVERNANCE LAYER
+// Policy lifecycle management (draft → review → approved → active → retired/superseded)
+// Separate from immutable PolicyVersion (Phase 5B)
+// ============================================================================
+
+model PolicyVersionGovernance {
+  // Composite key: same as PolicyVersion
+  policy_id         String
+  version           Int
+
+  // Governance state (String for SQLite compatibility)
+  // Valid values: DRAFT, PENDING_REVIEW, APPROVED, ACTIVE, RETIRED, SUPERSEDED, REJECTED
+  current_state     String                @default("DRAFT")
+  previous_state    String?
+
+  // Timestamps
+  created_at        DateTime              @default(now())
+  state_changed_at  DateTime              @default(now())
+  last_actor_id     String?
+  last_action       String?  // CREATED, SUBMITTED_FOR_REVIEW, APPROVED, REJECTED, ACTIVATED, RETIRED, SUPERSEDED
+
+  // History tracking
+  transition_count  Int                   @default(0)
+
+  // Audit
+  created_by        String?
+  last_modified_by  String?
+
+  // Unique constraint: one governance record per policy version
+  @@id([policy_id, version])
+  @@index([policy_id])
+  @@index([current_state])
+  @@index([state_changed_at])
+  @@index([policy_id, current_state])
+
+  @@map("policy_version_governance")
+}
+
