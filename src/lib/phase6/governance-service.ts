@@ -7,11 +7,11 @@
  * - Role-based authorization (3 roles)
  * - Active-only policy selection (fail-closed, no fallback)
  * - Single-ACTIVE invariant (only one ACTIVE version per policy_id)
+ * - Atomic state transitions with audit event creation
  *
  * Does NOT:
- * - Mutate Phase 5 tables (Evaluation, PolicyVersion, AuditEvent)
+ * - Mutate Phase 5 tables (Evaluation, PolicyVersion, existing AuditEvent records)
  * - Introduce broad RBAC storage or user management
- * - Handle audit event creation (separate service, Block 5)
  */
 
 import { prisma } from "../prisma";
@@ -33,6 +33,7 @@ import {
   GOVERNANCE_ACTION_TO_EVENT_TYPE,
 } from "./governance-types";
 import { AuthorizationHelper } from "./authorization-helper";
+import { auditService, GovernanceAuditEventService } from "./governance-audit-event-service";
 
 /**
  * GovernanceService
@@ -44,13 +45,16 @@ import { AuthorizationHelper } from "./authorization-helper";
 export class GovernanceService {
   private repository: PolicyVersionGovernanceRepository;
   private authHelper: AuthorizationHelper;
+  private auditService: GovernanceAuditEventService;
 
   constructor(
     repository: PolicyVersionGovernanceRepository = governanceRepository,
     authHelper: AuthorizationHelper = new AuthorizationHelper(),
+    auditSvc: GovernanceAuditEventService = auditService,
   ) {
     this.repository = repository;
     this.authHelper = authHelper;
+    this.auditService = auditSvc;
   }
 
   /**
@@ -102,6 +106,9 @@ export class GovernanceService {
   /**
    * Submit policy for review (DRAFT → PENDING_REVIEW)
    *
+   * Atomic transaction: state change + audit event
+   * Both succeed or both fail; no partial commits.
+   *
    * Requires: POLICY_CREATOR role
    *
    * @param policy_id Policy identifier
@@ -116,32 +123,53 @@ export class GovernanceService {
     version: number,
     context: GovernanceContext,
   ): Promise<PolicyVersionGovernance> {
+    // Validate before transaction (read-only)
     const current = await this.getState(policy_id, version);
     if (!current) {
       throw new Error(`Policy version not found: ${policy_id} v${version}`);
     }
 
-    // Validate transition
     if (!isValidTransition(current.current_state, PolicyLifecycleState.PENDING_REVIEW, GovernanceRole.POLICY_CREATOR)) {
       throw new InvalidStateTransitionError(current.current_state, PolicyLifecycleState.PENDING_REVIEW);
     }
 
-    // Validate authorization
     if (!this.authHelper.canTransition(current.current_state, PolicyLifecycleState.PENDING_REVIEW, context)) {
       throw new UnauthorizedGovernanceActionError("submitForReview", context.role);
     }
 
-    return this.repository.updateState(
-      policy_id,
-      version,
-      PolicyLifecycleState.PENDING_REVIEW,
-      GovernanceAction.SUBMITTED_FOR_REVIEW,
-      context.actor_id,
-    );
+    // Atomic transaction: state change + audit event
+    return prisma.$transaction(async (tx) => {
+      const updated = await this.repository.updateState(
+        policy_id,
+        version,
+        PolicyLifecycleState.PENDING_REVIEW,
+        GovernanceAction.SUBMITTED_FOR_REVIEW,
+        context.actor_id,
+        tx,
+      );
+
+      await this.auditService.createEvent(
+        {
+          policy_id,
+          version,
+          previous_state: current.current_state,
+          next_state: PolicyLifecycleState.PENDING_REVIEW,
+          action: GovernanceAction.SUBMITTED_FOR_REVIEW,
+          actor_id: context.actor_id,
+          timestamp: new Date(),
+        },
+        tx,
+      );
+
+      return updated;
+    });
   }
 
   /**
    * Approve policy (PENDING_REVIEW → APPROVED)
+   *
+   * Atomic transaction: state change + audit event
+   * Both succeed or both fail; no partial commits.
    *
    * Requires: POLICY_REVIEWER role
    * APPROVED means eligible for activation, NOT usable for evaluation
@@ -163,27 +191,46 @@ export class GovernanceService {
       throw new Error(`Policy version not found: ${policy_id} v${version}`);
     }
 
-    // Validate transition
     if (!isValidTransition(current.current_state, PolicyLifecycleState.APPROVED, GovernanceRole.POLICY_REVIEWER)) {
       throw new InvalidStateTransitionError(current.current_state, PolicyLifecycleState.APPROVED);
     }
 
-    // Validate authorization
     if (!this.authHelper.canTransition(current.current_state, PolicyLifecycleState.APPROVED, context)) {
       throw new UnauthorizedGovernanceActionError("approve", context.role);
     }
 
-    return this.repository.updateState(
-      policy_id,
-      version,
-      PolicyLifecycleState.APPROVED,
-      GovernanceAction.APPROVED,
-      context.actor_id,
-    );
+    return prisma.$transaction(async (tx) => {
+      const updated = await this.repository.updateState(
+        policy_id,
+        version,
+        PolicyLifecycleState.APPROVED,
+        GovernanceAction.APPROVED,
+        context.actor_id,
+        tx,
+      );
+
+      await this.auditService.createEvent(
+        {
+          policy_id,
+          version,
+          previous_state: current.current_state,
+          next_state: PolicyLifecycleState.APPROVED,
+          action: GovernanceAction.APPROVED,
+          actor_id: context.actor_id,
+          timestamp: new Date(),
+        },
+        tx,
+      );
+
+      return updated;
+    });
   }
 
   /**
    * Reject policy (PENDING_REVIEW → REJECTED or APPROVED → REJECTED)
+   *
+   * Atomic transaction: state change + audit event
+   * Both succeed or both fail; no partial commits.
    *
    * Requires: POLICY_REVIEWER role
    * Rejected policies cannot be resubmitted (forces new version)
@@ -205,7 +252,6 @@ export class GovernanceService {
       throw new Error(`Policy version not found: ${policy_id} v${version}`);
     }
 
-    // Validate transition (from PENDING_REVIEW or APPROVED only)
     if (
       current.current_state !== PolicyLifecycleState.PENDING_REVIEW &&
       current.current_state !== PolicyLifecycleState.APPROVED
@@ -213,22 +259,42 @@ export class GovernanceService {
       throw new InvalidStateTransitionError(current.current_state, PolicyLifecycleState.REJECTED);
     }
 
-    // Validate authorization
     if (!this.authHelper.canTransition(current.current_state, PolicyLifecycleState.REJECTED, context)) {
       throw new UnauthorizedGovernanceActionError("reject", context.role);
     }
 
-    return this.repository.updateState(
-      policy_id,
-      version,
-      PolicyLifecycleState.REJECTED,
-      GovernanceAction.REJECTED,
-      context.actor_id,
-    );
+    return prisma.$transaction(async (tx) => {
+      const updated = await this.repository.updateState(
+        policy_id,
+        version,
+        PolicyLifecycleState.REJECTED,
+        GovernanceAction.REJECTED,
+        context.actor_id,
+        tx,
+      );
+
+      await this.auditService.createEvent(
+        {
+          policy_id,
+          version,
+          previous_state: current.current_state,
+          next_state: PolicyLifecycleState.REJECTED,
+          action: GovernanceAction.REJECTED,
+          actor_id: context.actor_id,
+          timestamp: new Date(),
+        },
+        tx,
+      );
+
+      return updated;
+    });
   }
 
   /**
    * Activate policy (APPROVED → ACTIVE)
+   *
+   * Atomic transaction: state change + audit event
+   * Both succeed or both fail; no partial commits.
    *
    * Requires: POLICY_ADMIN role
    * ACTIVE is the only state usable for new evaluations
@@ -256,17 +322,15 @@ export class GovernanceService {
       throw new Error(`Policy version not found: ${policy_id} v${version}`);
     }
 
-    // Validate transition
     if (!isValidTransition(current.current_state, PolicyLifecycleState.ACTIVE, GovernanceRole.POLICY_ADMIN)) {
       throw new InvalidStateTransitionError(current.current_state, PolicyLifecycleState.ACTIVE);
     }
 
-    // Validate authorization
     if (!this.authHelper.canTransition(current.current_state, PolicyLifecycleState.ACTIVE, context)) {
       throw new UnauthorizedGovernanceActionError("activate", context.role);
     }
 
-    // Preserve single-ACTIVE invariant
+    // Preserve single-ACTIVE invariant (before transaction)
     const existingActive = await this.repository.findActiveVersion(policy_id);
     if (existingActive && existingActive.version !== version) {
       throw new Error(
@@ -275,17 +339,38 @@ export class GovernanceService {
       );
     }
 
-    return this.repository.updateState(
-      policy_id,
-      version,
-      PolicyLifecycleState.ACTIVE,
-      GovernanceAction.ACTIVATED,
-      context.actor_id,
-    );
+    return prisma.$transaction(async (tx) => {
+      const updated = await this.repository.updateState(
+        policy_id,
+        version,
+        PolicyLifecycleState.ACTIVE,
+        GovernanceAction.ACTIVATED,
+        context.actor_id,
+        tx,
+      );
+
+      await this.auditService.createEvent(
+        {
+          policy_id,
+          version,
+          previous_state: current.current_state,
+          next_state: PolicyLifecycleState.ACTIVE,
+          action: GovernanceAction.ACTIVATED,
+          actor_id: context.actor_id,
+          timestamp: new Date(),
+        },
+        tx,
+      );
+
+      return updated;
+    });
   }
 
   /**
    * Retire policy (ACTIVE → RETIRED)
+   *
+   * Atomic transaction: state change + audit event
+   * Both succeed or both fail; no partial commits.
    *
    * Requires: POLICY_ADMIN role
    * Archives an active policy (no longer usable for new evaluations)
@@ -307,27 +392,46 @@ export class GovernanceService {
       throw new Error(`Policy version not found: ${policy_id} v${version}`);
     }
 
-    // Validate transition (ACTIVE → RETIRED only)
     if (current.current_state !== PolicyLifecycleState.ACTIVE) {
       throw new InvalidStateTransitionError(current.current_state, PolicyLifecycleState.RETIRED);
     }
 
-    // Validate authorization
     if (!this.authHelper.canTransition(current.current_state, PolicyLifecycleState.RETIRED, context)) {
       throw new UnauthorizedGovernanceActionError("retire", context.role);
     }
 
-    return this.repository.updateState(
-      policy_id,
-      version,
-      PolicyLifecycleState.RETIRED,
-      GovernanceAction.RETIRED,
-      context.actor_id,
-    );
+    return prisma.$transaction(async (tx) => {
+      const updated = await this.repository.updateState(
+        policy_id,
+        version,
+        PolicyLifecycleState.RETIRED,
+        GovernanceAction.RETIRED,
+        context.actor_id,
+        tx,
+      );
+
+      await this.auditService.createEvent(
+        {
+          policy_id,
+          version,
+          previous_state: current.current_state,
+          next_state: PolicyLifecycleState.RETIRED,
+          action: GovernanceAction.RETIRED,
+          actor_id: context.actor_id,
+          timestamp: new Date(),
+        },
+        tx,
+      );
+
+      return updated;
+    });
   }
 
   /**
    * Supersede policy (ACTIVE/APPROVED → SUPERSEDED)
+   *
+   * Atomic transaction: state change + audit event
+   * Both succeed or both fail; no partial commits.
    *
    * Requires: POLICY_ADMIN role
    * Replaces an active or approved policy with a newer version
@@ -355,29 +459,46 @@ export class GovernanceService {
       throw new Error(`Policy version not found: ${policy_id} v${version}`);
     }
 
-    // Validate transition (from ACTIVE or APPROVED only)
     if (current.current_state !== PolicyLifecycleState.ACTIVE && current.current_state !== PolicyLifecycleState.APPROVED) {
       throw new InvalidStateTransitionError(current.current_state, PolicyLifecycleState.SUPERSEDED);
     }
 
-    // Validate authorization
     if (!this.authHelper.canTransition(current.current_state, PolicyLifecycleState.SUPERSEDED, context)) {
       throw new UnauthorizedGovernanceActionError("supersede", context.role);
     }
 
-    // Verify superseding version exists
+    // Verify superseding version exists (before transaction)
     const supersedingVersion = await this.getState(policy_id, superseded_by_version);
     if (!supersedingVersion) {
       throw new Error(`Superseding version not found: ${policy_id} v${superseded_by_version}`);
     }
 
-    return this.repository.updateState(
-      policy_id,
-      version,
-      PolicyLifecycleState.SUPERSEDED,
-      GovernanceAction.SUPERSEDED,
-      context.actor_id,
-    );
+    return prisma.$transaction(async (tx) => {
+      const updated = await this.repository.updateState(
+        policy_id,
+        version,
+        PolicyLifecycleState.SUPERSEDED,
+        GovernanceAction.SUPERSEDED,
+        context.actor_id,
+        tx,
+      );
+
+      await this.auditService.createEvent(
+        {
+          policy_id,
+          version,
+          previous_state: current.current_state,
+          next_state: PolicyLifecycleState.SUPERSEDED,
+          action: GovernanceAction.SUPERSEDED,
+          actor_id: context.actor_id,
+          timestamp: new Date(),
+          superseded_by_version,
+        },
+        tx,
+      );
+
+      return updated;
+    });
   }
 }
 

@@ -45,3 +45,8 @@ export {
   AuthorizationHelper,
   authorizationHelper,
 } from "./authorization-helper";
+
+export {
+  GovernanceAuditEventService,
+  auditService,
+} from "./governance-audit-event-service";

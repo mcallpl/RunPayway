@@ -189,9 +189,12 @@ export class PolicyVersionGovernanceRepository {
     newState: PolicyLifecycleState,
     action: GovernanceAction,
     actor_id?: string,
+    tx?: any, // Optional Prisma transaction context
   ): Promise<PolicyVersionGovernance> {
+    const prismaClient = tx || prisma;
+
     // Fetch current record to get previous_state
-    const current = await prisma.policyVersionGovernance.findUnique({
+    const current = await prismaClient.policyVersionGovernance.findUnique({
       where: {
         policy_id_version: { policy_id, version },
       },
@@ -201,7 +204,7 @@ export class PolicyVersionGovernanceRepository {
       throw new GovernanceRecordNotFoundError(policy_id, version);
     }
 
-    const updated = await prisma.policyVersionGovernance.update({
+    const updated = await prismaClient.policyVersionGovernance.update({
       where: {
         policy_id_version: { policy_id, version },
       },
