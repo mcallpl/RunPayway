@@ -47,14 +47,21 @@ async function createTestPolicy(
 
 /**
  * Test cleanup: Remove all test data
+ * Wrapped in try/catch to handle SQLite locking issues
  */
 async function cleanupTestData(policy_id: string) {
-  await prisma.policyVersionGovernance.deleteMany({
-    where: { policy_id },
-  });
-  await prisma.policyVersion.deleteMany({
-    where: { policy_id },
-  });
+  try {
+    await prisma.policyVersionGovernance.deleteMany({
+      where: { policy_id },
+    });
+    await prisma.policyVersion.deleteMany({
+      where: { policy_id },
+    });
+  } catch (error) {
+    // Ignore cleanup errors (SQLite locking, etc.)
+    // Fresh test.db is created before all tests anyway
+    console.warn(`Cleanup warning for ${policy_id}:`, error);
+  }
 }
 
 // ============================================================================
