@@ -53,8 +53,12 @@ describe("Phase 6: Governance Audit Event Service", () => {
   const basePolicy = "audit_test_";
   let testCount = 0;
 
-  afterEach(async () => {
+  // Clean audit events before all tests in this suite (other tests may have created events)
+  beforeEach(async () => {
     await cleanupAuditEvents();
+  });
+
+  afterEach(async () => {
     await cleanupTestPolicy(basePolicy + testCount);
   });
 
