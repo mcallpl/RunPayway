@@ -73,38 +73,17 @@ export function extractConstraintCount(record: AssessmentRecord): number {
 /**
  * Extract concentration_factor from AssessmentRecord.
  *
- * Source: record.normalized_inputs.largest_source_pct
+ * Source: record.normalized_inputs.largest_source_pct (structural input)
  * Expected range: 0 to 1 (percentage of revenue from largest source)
  * Returns: 0 to 1 (clamped defensively)
  *
- * Falls back to: concentration_resilience_score (inverse) if primary unavailable
- *
- * Independent from: final_score, stability_band
+ * Independent from: final_score, stability_band, scores
  */
 export function extractConcentrationFactor(record: AssessmentRecord): number {
-  // Primary source: largest_source_pct from normalized inputs
-  if (
-    record.normalized_inputs &&
-    record.normalized_inputs.largest_source_pct !== undefined
-  ) {
-    const pct = record.normalized_inputs.largest_source_pct;
-    // Normalize 0-100 percentage to 0-1 if needed
-    const normalized = pct > 1 ? pct / 100 : pct;
-    return clamp(normalized, 0, 1);
-  }
-
-  // Fallback: Use concentration_resilience_score as proxy (inverse relationship)
-  // Higher resilience = lower concentration pressure
-  // Map: 1 - resilience_score (if resilience is 0-1)
-  if (record.scores?.concentration_resilience_score !== undefined) {
-    const resilience = record.scores.concentration_resilience_score;
-    const normalized = resilience > 1 ? resilience / 100 : resilience;
-    const concentration = 1 - clamp(normalized, 0, 1);
-    return clamp(concentration, 0, 1);
-  }
-
-  // Final fallback: assume moderate concentration
-  return 0.5;
+  const pct = record.normalized_inputs?.largest_source_pct ?? 0.5;
+  // Normalize 0-100 percentage to 0-1 if needed
+  const normalized = pct > 1 ? pct / 100 : pct;
+  return clamp(normalized, 0, 1);
 }
 
 /**
