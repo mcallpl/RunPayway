@@ -20,7 +20,7 @@ export interface CommitmentPressureOutput {
   };
 }
 
-function getLabelForClass(classification: CPCClass): string {
+export function getLabelForClass(classification: CPCClass): string {
   const labels: Record<CPCClass, string> = {
     CPL: "Low Pressure",
     CPM: "Moderate Pressure",
@@ -31,11 +31,11 @@ function getLabelForClass(classification: CPCClass): string {
   return labels[classification];
 }
 
-function getMeasurementString(classification: CPCClass, label: string): string {
+export function getMeasurementString(classification: CPCClass, label: string): string {
   return `Commitment Pressure Classification: ${label} (${classification})`;
 }
 
-function getInterpretationForClass(classification: CPCClass): string {
+export function getInterpretationForClass(classification: CPCClass): string {
   const interpretations: Record<CPCClass, string> = {
     CPL: "The classification reflects low reliance on the support structure sustaining the commitment.",
     CPM: "The classification reflects moderate reliance on the support structure sustaining the commitment.",
@@ -64,7 +64,7 @@ function getDimensionName(name: string): string {
   return names[name] || name;
 }
 
-function getPrimaryDrivers(normalized: CPCNormalizedInputs): string[] {
+export function getPrimaryDrivers(normalized: CPCNormalizedInputs): string[] {
   interface Dimension {
     value: number;
     name: string;
@@ -108,7 +108,7 @@ function getPrimaryDrivers(normalized: CPCNormalizedInputs): string[] {
   return drivers;
 }
 
-function getImplicationsForClass(classification: CPCClass): string[] {
+export function getImplicationsForClass(classification: CPCClass): string[] {
   const implications: Record<CPCClass, string[]> = {
     CPL: [
       "The commitment is less dependent on any single supporting condition.",
