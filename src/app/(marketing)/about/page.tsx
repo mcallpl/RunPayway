@@ -92,13 +92,13 @@ function HeroSection() {
           ABOUT
         </div>
         <h1 style={{ fontSize: m ? 30 : 64, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
-          The Standard for Measuring{m ? " " : <br />}Income Stability
+          The Standard for Complex-Income{m ? " " : <br />}Measurement
         </h1>
         <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: narrowW, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
-          RunPayway™ produces the Income Stability Score™&mdash;a consistent, fixed measurement of how your income is built and how it holds under&nbsp;pressure.
+          RunPayway™ is the governed standard for complex-income measurement. It measures how an income structure is built and how it holds under change, the same way every&nbsp;time.
         </p>
         <p style={{ fontSize: m ? 18 : 22, fontWeight: 600, color: C.teal, ...fadeIn(visible, 150) }}>
-          Not how much you earn. How your income behaves under change.
+          Not how much income. How the income structure behaves, measured consistently.
         </p>
       </div>
     </header>
@@ -144,10 +144,10 @@ function Declaration() {
             But not how income is built.
           </p>
           <p style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 8 }}>
-            RunPayway™ is the first system built to measure it.
+            RunPayway™ is the governed standard built to measure it.
           </p>
           <p style={{ fontSize: 16, fontWeight: 500, color: C.teal }}>
-            This is the standard for income stability.
+            This is the standard for complex-income measurement.
           </p>
         </div>
       </div>
@@ -170,31 +170,31 @@ function WhatWeMeasure() {
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24, ...fadeIn(visible) }}>
-          What we measure &mdash; and&nbsp;why.
+          What we measure, and&nbsp;why.
         </h2>
         <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 16, ...fadeIn(visible, 60) }}>
-          Credit scores measure borrowing behavior. Advisors manage accumulated assets. But nobody measures how income itself is&nbsp;built.
+          Credit scores measure borrowing behavior. Other tools track accumulated assets. But nobody measures how income itself is&nbsp;built.
         </p>
         <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24, ...fadeIn(visible, 80) }}>
-          RunPayway™ evaluates six key dimensions of income and produces a score from 0&ndash;100 that shows how it behaves under real-world conditions:
+          RunPayway™ measures the structural dimensions of income under approved rules and produces a governed, external-safe classification of how the structure behaves under real-world conditions:
         </p>
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: m ? 12 : 16, marginBottom: 32, ...fadeIn(visible, 120) }}>
           {[
             { label: "Disruption", desc: "A client leaves or a contract ends", color: "#C74634" },
             { label: "Delay", desc: "Pipeline stalls or payments are late", color: "#D0A23A" },
             { label: "Dependency", desc: "Too much relies on one source", color: "#4B3FAE" },
-            { label: "Inactivity", desc: "You step away or can\u2019t work", color: C.teal },
+            { label: "Inactivity", desc: "A source goes inactive or pauses", color: C.teal },
           ].map((item, i) => (
             <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "14px 18px", borderRadius: 12, backgroundColor: C.white, borderLeft: `4px solid ${item.color}`, marginBottom: m ? 8 : 0, boxShadow: "0 2px 8px rgba(14,26,43,0.04)" }}>
               <div>
                 <span style={{ fontSize: 16, fontWeight: 600, color: C.navy }}>{item.label}</span>
-                <span style={{ fontSize: 15, color: C.textSecondary }}> &mdash; {item.desc}</span>
+                <span style={{ fontSize: 15, color: C.textSecondary }}>. {item.desc}</span>
               </div>
             </div>
           ))}
         </div>
         <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, ...fadeIn(visible, 180) }}>
-          Every result is produced under fixed rules. Same inputs, same score. Every&nbsp;time.
+          Every output is produced under approved rules. Same inputs, measured the same way. Every&nbsp;time.
         </p>
       </div>
     </section>
@@ -218,20 +218,20 @@ function WhoItsFor() {
         <div style={{ marginBottom: m ? 32 : 0, ...fadeIn(visible) }}>
           <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>WHO IT&rsquo;S FOR</div>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy }}>
-            For Income That Depends{m ? " " : <br />}on Decisions &mdash;{m ? " " : <br />}Not Guarantees.
+            For Organizations Where{m ? " " : <br />}Complex Income Affects{m ? " " : <br />}the Decision.
           </h2>
         </div>
         <div style={{ ...fadeIn(visible, 100) }}>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 24 }}>
-            RunPayway™ is designed for individuals whose income is not fixed:
+            RunPayway™ is built for organizations, platforms, and institutions that measure complex income:
           </p>
           <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, marginBottom: 32 }}>
             {[
-              "Consultants",
-              "Business owners",
-              "Freelancers",
-              "Commission-based professionals",
-              "Operators with variable income",
+              "Lenders and finance teams needing consistent income-structure outputs",
+              "Workforce and gig platforms reviewing complex-income participants",
+              "Specialty finance and leasing applying approved measurement rules",
+              "Benefits and insurance teams measuring income structure",
+              "Compliance and operational review teams where income affects downstream systems",
             ].map((item, i) => (
               <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginTop: 4 }}><path d="M20 6L9 17l-5-5"/></svg>
@@ -240,7 +240,7 @@ function WhoItsFor() {
             ))}
           </div>
           <p style={{ fontSize: 16, fontWeight: 600, color: C.navy }}>
-            If your income changes based on what you do, this applies to you.
+            Wherever complex income affects a decision, RunPayway™ measures it the same way every time.
           </p>
         </div>
       </div>
@@ -269,7 +269,7 @@ function SystemIntegrity() {
             System Integrity: Same Rules, Every Time
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted }}>
-            RunPayway™ is a fixed-system model&mdash;no machine learning, no advisor judgment, no randomness.
+            RunPayway™ is a governed measurement standard. No machine learning, no subjective judgment, no randomness.
           </p>
         </div>
 
@@ -280,14 +280,14 @@ function SystemIntegrity() {
               <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: `${C.teal}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round"><path d="M9 12l2 2 4-4" /><circle cx="12" cy="12" r="10" /></svg>
               </div>
-              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal }}>WHAT THE MODEL GUARANTEES</div>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: C.teal }}>WHAT THE STANDARD GUARANTEES</div>
             </div>
             {[
-              "Same inputs always produce the same score",
-              "No human override in scoring",
-              "Nothing outside your answers affects the result",
-              "Every assessment stamped with model version",
-              "Scores under the same version are directly comparable",
+              "Same inputs are measured the same way every time",
+              "No human override in measurement",
+              "Nothing outside the accepted inputs affects the output",
+              "Every output stamped with its approved rule version",
+              "Outputs under the same rule version are directly comparable",
             ].map((item, i) => (
               <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 14 }}>
                 <span style={{ color: C.teal, fontSize: 14, flexShrink: 0, marginTop: 1 }}>&#10003;</span>
@@ -302,14 +302,15 @@ function SystemIntegrity() {
               <div style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.04)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(244,241,234,0.50)" strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
               </div>
-              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.40)" }}>WHAT THE MODEL DOES NOT DO</div>
+              <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: "rgba(244,241,234,0.40)" }}>WHAT THE STANDARD DOES NOT DO</div>
             </div>
             {[
-              "Access bank accounts or financial data",
+              "Make eligibility decisions or replace institutional policy",
               "Use machine learning or probability-based models",
               "Apply subjective judgment at any stage",
-              "Make predictive claims about future income",
+              "Issue recommendations or predict future income",
               "Provide financial, legal, or investment advice",
+              "Expose a public numeric score",
             ].map((item, i) => (
               <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 14 }}>
                 <span style={{ color: "rgba(244,241,234,0.25)", fontSize: 14, flexShrink: 0, marginTop: 1 }}>&times;</span>
@@ -338,7 +339,7 @@ function Positioning() {
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 72 : 120, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: 680, margin: "0 auto" }}>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 16, ...fadeIn(visible) }}>
-          RunPayway™ is a measurement system &mdash;{m ? " " : <br />}not a financial product.
+          RunPayway™ is a governed measurement standard,{m ? " " : <br />}not a financial product.
         </h2>
         <p style={{ fontSize: 18, fontWeight: 500, lineHeight: 1.6, color: C.teal, marginBottom: 24, ...fadeIn(visible, 60) }}>
           It measures what others assume.
@@ -348,9 +349,10 @@ function Positioning() {
         </p>
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 10, marginBottom: 32, ...fadeIn(visible, 140) }}>
           {[
-            "Make decisions for you",
+            "Make eligibility decisions",
             "Provide financial advice",
-            "Interpret outcomes",
+            "Issue recommendations",
+            "Replace institutional policy",
           ].map((line, i) => (
             <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(14,26,43,0.30)" strokeWidth="2" strokeLinecap="round" style={{ flexShrink: 0, marginTop: 4 }}><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
@@ -359,7 +361,7 @@ function Positioning() {
           ))}
         </div>
         <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, ...fadeIn(visible, 200) }}>
-          You own your score. You decide what to do with it.
+          Organizations own the decision. RunPayway™ provides the governed measurement.
         </p>
       </div>
     </section>
@@ -381,13 +383,16 @@ function FinalCta() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m, t), paddingRight: sectionPx(m, t) }}>
       <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center" }}>
         <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.45, color: C.sandMuted, marginBottom: 12, ...fadeIn(visible) }}>
-          Your income already has a structure.
+          Every income structure already has a shape.
         </p>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 32, ...fadeIn(visible, 60) }}>
-          Now you can see how it behaves&mdash;{m ? " " : <br />}and decide what to do next.
+          Now organizations can measure it{m ? " " : <br />}the same way every time.
         </h2>
+        <p style={{ fontSize: m ? 15 : 16, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted, maxWidth: 560, margin: "0 auto 28px", ...fadeIn(visible, 100) }}>
+          RunPayway™ does not make eligibility decisions, replace institutional policy, issue recommendations, or provide financial advice. It measures income structure according to approved rules and publishes approved outputs to connected systems.
+        </p>
         <div style={{ display: "flex", flexDirection: m ? "column" : "row", alignItems: "center", gap: m ? 12 : 16, justifyContent: "center", ...fadeIn(visible, 160) }}>
-          <Link href="/begin" style={{
+          <Link href="/organizations" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: m ? 56 : 60, width: m ? "100%" : "auto",
             padding: m ? "0 28px" : "0 32px",
@@ -399,9 +404,9 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get My Stability Class — Free
+            Request Enterprise Briefing
           </Link>
-          <a href="https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05" style={{
+          <Link href="/organizations" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: m ? 56 : 60, width: m ? "100%" : "auto",
             padding: m ? "0 28px" : "0 32px",
@@ -413,11 +418,11 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
-            Get Your Full Report — $69
-          </a>
+            See it for organizations
+          </Link>
         </div>
         <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 20, textAlign: "center" }}>
-          Free analysis under 2 minutes | Paid report includes roadmap & scripts
+          Governed measurement for organizations, platforms, and institutions.
         </p>
       </div>
     </section>
