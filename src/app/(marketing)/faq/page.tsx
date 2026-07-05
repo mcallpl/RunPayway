@@ -83,79 +83,77 @@ interface FaqItem {
 }
 
 const FAQ_DATA: FaqItem[] = [
-  // --- Income Stability Score™ ---
-  { id: "score-measure", category: "score", categoryLabel: "Income Stability Score™\u2122", question: "What does the Income Stability Score™\u2122 measure?", answer: "It measures how your income is built\u2014and how it holds under change. The score reflects structure, stability, and continuity. Not income size.", keywords: ["score meaning", "what is score", "income stability", "structure", "rating", "number"] },
-  { id: "score-factors", category: "score", categoryLabel: "Income Stability Score™\u2122", question: "What factors influence the score?", answer: "The score is determined by six structural dimensions:\n\n\u2022 Recurring Income\n\u2022 Source Reliance\n\u2022 Number of Sources\n\u2022 Income Locked In\n\u2022 Month-to-Month Steadiness\n\u2022 Income Without You\n\nEach dimension is scored independently, then combined into your final result.", keywords: ["factors", "dimensions", "what affects score", "how calculated", "six areas"] },
-  { id: "score-good", category: "score", categoryLabel: "Income Stability Score™\u2122", question: "What does a good score look like?", answer: "A good score reflects a stable income structure\u2014one that can absorb disruptions and adapt.\n\n0\u201329: Limited Stability\u2014one disruption could impact income significantly.\n30\u201349: Developing Stability\u2014income is not yet protected.\n50\u201374: Established Stability\u2014can handle most disruptions.\n75\u2013100: High Stability\u2014holds up even under sustained pressure.", keywords: ["good score", "high score", "best score", "what is good", "range", "bands"] },
-  { id: "score-predict", category: "score", categoryLabel: "Income Stability Score™\u2122", question: "Does the score predict future income?", answer: "No. It evaluates how your income is structured\u2014not what will happen.", keywords: ["predict", "future", "forecast", "guarantee"] },
+  // --- The Standard ---
+  { id: "std-what", category: "standard", categoryLabel: "The Standard", question: "What is RunPayway™?", answer: "RunPayway™ is the governed standard for complex-income measurement. It measures how an income structure is built and produces approved, external-safe outputs, measured the same way every time.", keywords: ["what is runpayway", "standard", "complex income", "measurement", "governed"] },
+  { id: "std-cim", category: "standard", categoryLabel: "The Standard", question: "What is complex-income measurement?", answer: "It is the consistent measurement of income structure when a business decision depends on it, applied the same way across teams, systems, policies, and time.", keywords: ["complex income", "measurement", "definition", "consistent"] },
+  { id: "std-structure", category: "standard", categoryLabel: "The Standard", question: "What is income structure?", answer: "How income is built, how it behaves, what it depends on, and how it should be measured. RunPayway™ measures the structure, not just the amount.", keywords: ["income structure", "structure", "definition"] },
+  { id: "std-why", category: "standard", categoryLabel: "The Standard", question: "Why do organizations need governed measurement?", answer: "Complex income is often measured differently across teams, systems, and policies, which causes inconsistent outputs and drift over time. A governed standard makes measurement consistent, approved, and replayable.", keywords: ["why", "organizations", "governed", "consistency", "drift"] },
 
-  // --- Assessment ---
-  { id: "assess-time", category: "assessment", categoryLabel: "Assessment", question: "How long does the assessment take?", answer: "Under 2 minutes.", keywords: ["how long", "time", "duration", "minutes"] },
-  { id: "assess-info", category: "assessment", categoryLabel: "Assessment", question: "What information is required?", answer: "You describe how your income works: sources, concentration, variability, and continuity. No financial documents are required.", keywords: ["what info", "required", "documents", "bank", "information needed"] },
-  { id: "assess-retake", category: "assessment", categoryLabel: "Assessment", question: "Can I retake the assessment?", answer: "Yes. Each assessment reflects the inputs at that time.", keywords: ["retake", "again", "redo", "repeat"] },
+  // --- Approved Rules and Governance ---
+  { id: "rules-what", category: "rules", categoryLabel: "Approved Rules and Governance", question: "What are approved measurement rules?", answer: "The rules that define how income structure is measured. They are defined, reviewed, and approved before they affect any connected system.", keywords: ["approved rules", "measurement rules", "governance", "rules"] },
+  { id: "rules-version", category: "rules", categoryLabel: "Approved Rules and Governance", question: "How are measurement-rule changes versioned?", answer: "Every rule change creates a new, immutable rule version. Approved outputs are stamped with the rule version that produced them, so they stay comparable and replayable.", keywords: ["versioning", "rule version", "changes", "immutable"] },
+  { id: "rules-drift", category: "rules", categoryLabel: "Approved Rules and Governance", question: "How does RunPayway™ prevent rule drift?", answer: "Rules are governed centrally rather than reimplemented across systems, so the same income structure is measured the same way every time.", keywords: ["drift", "consistency", "central", "governance"] },
 
-  // --- Report ---
-  { id: "report-included", category: "report", categoryLabel: "Assessment Report", question: "What is included in the report?", answer: "Score and stability classification, structural breakdown, biggest risk, stress testing, and action plan. Each section is generated from your inputs.", keywords: ["report contents", "what is included", "report sections", "what do I get"] },
-  { id: "report-calculated", category: "report", categoryLabel: "Assessment Report", question: "How is the score calculated?", answer: "Using consistent rules defined in a fixed scoring system. The same inputs always produce the same score.", keywords: ["how calculated", "calculation", "formula", "method", "consistent"] },
+  // --- Testing and Replay ---
+  { id: "test-sim", category: "testing", categoryLabel: "Testing and Replay", question: "What is the Measurement Impact Simulator?", answer: "A pre-launch testing layer. Organizations can test proposed measurement-rule changes against historical income cases before those changes go live.", keywords: ["simulator", "impact", "test", "before launch", "pre-launch"] },
+  { id: "test-why", category: "testing", categoryLabel: "Testing and Replay", question: "Why test changes before launch?", answer: "So teams can see what would change before a new rule affects reviews, exceptions, or downstream outputs. Value is created before anything is replaced.", keywords: ["test changes", "before launch", "why test", "wedge"] },
+  { id: "test-replay", category: "testing", categoryLabel: "Testing and Replay", question: "What is Measurement Replay?", answer: "The ability to reconstruct a past measurement: the approved rule version, accepted inputs, and approved output, so past measurements can be replayed and explained.", keywords: ["replay", "provenance", "history", "reconstruct", "past measurements"] },
 
-  // --- Dashboard ---
-  { id: "cc-what", category: "command-center", categoryLabel: "Dashboard", question: "What is the Dashboard?", answer: "A structured interface for applying your results.", keywords: ["command center", "dashboard", "what is it"] },
-  { id: "cc-playbook", category: "command-center", categoryLabel: "Dashboard", question: "What is the Negotiation Playbook?", answer: "Scripts based on your income structure to reduce dependency and improve stability.", keywords: ["negotiation", "playbook", "scripts", "what to say"] },
-  { id: "cc-thisweek", category: "command-center", categoryLabel: "Dashboard", question: "What is the \u2018This Week\u2019 briefing?", answer: "A short set of actions based on your highest-impact change.", keywords: ["this week", "briefing", "weekly", "actions"] },
-  { id: "cc-roadmap", category: "command-center", categoryLabel: "Dashboard", question: "How are roadmap milestones personalized?", answer: "They are generated directly from your inputs\u2014not templates.", keywords: ["roadmap", "milestones", "personalized", "12 week"] },
-  { id: "cc-pressuremap", category: "command-center", categoryLabel: "Dashboard", question: "What is PressureMap\u2122?", answer: "A structured view of where your income is most exposed.", keywords: ["pressuremap", "pressure", "exposure", "risk map"] },
+  // --- Approved Outputs and Classification ---
+  { id: "out-what", category: "outputs", categoryLabel: "Approved Outputs and Classification", question: "What is an approved output?", answer: "A governed, external-safe result that RunPayway™ publishes. It exposes approved fields only and protects internal measurement logic.", keywords: ["approved output", "output", "external-safe"] },
+  { id: "out-safe", category: "outputs", categoryLabel: "Approved Outputs and Classification", question: "What is external-safe output?", answer: "Output designed to be published to connected systems without exposing internal logic, internal fields, or proprietary methodology.", keywords: ["external-safe", "connected systems", "publish", "internal logic"] },
+  { id: "out-class", category: "outputs", categoryLabel: "Approved Outputs and Classification", question: "What do Stable, Moderate, and Volatile mean?", answer: "They are the external-safe classification of how dependent an income structure is on its sources. Stable has room to absorb change, Moderate relies on stability across key sources, and Volatile depends heavily on the continued strength of its sources.", keywords: ["stable", "moderate", "volatile", "classification", "bands"] },
+  { id: "out-noscore", category: "outputs", categoryLabel: "Approved Outputs and Classification", question: "Does RunPayway™ expose a public numeric score?", answer: "No. RunPayway™ exposes external-safe classification language. It does not expose a public numeric score.", keywords: ["numeric score", "public score", "no score", "classification"] },
+  { id: "out-publish", category: "outputs", categoryLabel: "Approved Outputs and Classification", question: "How are approved outputs published to connected systems?", answer: "Through governed integration, so connected systems can consume approved outputs without exposing internal methodology.", keywords: ["publish", "connected systems", "integration", "consume"] },
 
-  // --- Privacy ---
-  { id: "privacy-data", category: "privacy", categoryLabel: "Privacy and Data", question: "How is my data handled?", answer: "Your inputs are used only to generate your score and report.", keywords: ["data", "privacy", "how used", "what happens to data"] },
-  { id: "privacy-shared", category: "privacy", categoryLabel: "Privacy and Data", question: "Is my information shared?", answer: "No. RunPayway\u2122 does not sell or share your data.", keywords: ["shared", "sold", "third party", "sell data"] },
+  // --- Boundaries ---
+  { id: "bnd-elig", category: "boundaries", categoryLabel: "Boundaries", question: "Does RunPayway™ make eligibility decisions?", answer: "No. RunPayway™ measures income structure according to approved rules. It does not make eligibility, approval, or underwriting decisions.", keywords: ["eligibility", "decisions", "underwriting", "approval"] },
+  { id: "bnd-advice", category: "boundaries", categoryLabel: "Boundaries", question: "Is RunPayway™ financial advice?", answer: "No. RunPayway™ does not provide financial, legal, or investment advice, and does not issue recommendations.", keywords: ["financial advice", "advice", "recommendations"] },
+  { id: "bnd-policy", category: "boundaries", categoryLabel: "Boundaries", question: "Does RunPayway™ replace institutional policy?", answer: "No. Organizations own the decision. RunPayway™ provides the governed measurement that sits beside existing policy and systems.", keywords: ["policy", "replace", "institutional", "decision"] },
+  { id: "bnd-predict", category: "boundaries", categoryLabel: "Boundaries", question: "Does RunPayway™ predict future income?", answer: "No. It measures how an income structure is built and how it would behave if conditions changed, not what will happen next.", keywords: ["predict", "future", "forecast"] },
 
-  // --- Pricing ---
-  { id: "pricing-diff", category: "pricing", categoryLabel: "Pricing", question: "What is the difference between the free assessment and the $69 full report?", answer: "The free assessment gives you your score, stability class, constraint breakdown, 12-week plan, industry comparison, and dashboard access. The $69 full report adds lifetime dashboard access, email delivery, PressureMap\u2122 narrative, action scripts, and the scenario simulator.", keywords: ["free vs paid", "difference", "what do I get", "pricing", "cost", "stability class"] },
-  { id: "pricing-account", category: "pricing", categoryLabel: "Pricing", question: "Do I need an account?", answer: "Not for the free assessment or the $69 full report\u2014those work without an account. The $149/year Monitoring plan requires a sign-in so your three annual assessments can be tracked and compared over time.", keywords: ["account", "sign up", "registration", "login", "sign in", "monitoring"] },
+  // --- Who It Is For ---
+  { id: "who-for", category: "audience", categoryLabel: "Who It Is For", question: "Who is RunPayway™ for?", answer: "Organizations, institutions, and platforms with complex-income measurement needs, where income affects approvals, reviews, exceptions, eligibility, pricing, funding, compliance, or downstream systems.", keywords: ["who is it for", "organizations", "institutions", "platforms", "audience"] },
+  { id: "who-multi", category: "audience", categoryLabel: "Who It Is For", question: "Can RunPayway™ measure many income structures at once?", answer: "Yes. The same approved rules can measure many income structures, so outputs stay consistent across a team or platform.", keywords: ["multiple", "batch", "volume", "team", "platform"] },
 
-  // --- Enterprise ---
-  { id: "ent-multiple", category: "enterprise", categoryLabel: "Enterprise", question: "Can RunPayway\u2122 assess multiple income profiles?", answer: "Yes. The system can evaluate multiple individuals using the same model.", keywords: ["multiple", "team", "bulk", "organization"] },
-  { id: "ent-volume", category: "enterprise", categoryLabel: "Enterprise", question: "Does RunPayway\u2122 offer volume access?", answer: "Yes. Structured access can be provided for teams and organizations.", keywords: ["volume", "enterprise", "team access", "organization"] },
-  { id: "ent-share", category: "enterprise", categoryLabel: "Enterprise", question: "Can assessment records be shared?", answer: "Yes. Reports can be shared at the discretion of the individual.", keywords: ["share", "send", "export", "advisor"] },
-  { id: "ent-integrate", category: "enterprise", categoryLabel: "Enterprise", question: "Can we integrate RunPayway\u2122 into workflows?", answer: "Integration options can be discussed for enterprise use.", keywords: ["integrate", "api", "workflow", "embed"] },
+  // --- Security and Compliance ---
+  { id: "comp-data", category: "compliance", categoryLabel: "Security and Compliance", question: "How is data handled?", answer: "Inputs are used only to produce approved measurement outputs. RunPayway™ does not sell or share data.", keywords: ["data", "privacy", "handled", "sell", "share"] },
+  { id: "comp-soc2", category: "compliance", categoryLabel: "Security and Compliance", question: "Is RunPayway™ SOC 2 compliant?", answer: "RunPayway™ security controls are designed around SOC 2 Type II Trust Services Criteria: security, availability, processing integrity, confidentiality, and privacy. Formal certification is on our roadmap. Enterprise buyers may request security documentation through our contact form.", keywords: ["soc 2", "soc2", "compliance", "security", "certified", "audit", "trust services"] },
+  { id: "comp-iso27001", category: "compliance", categoryLabel: "Security and Compliance", question: "Does RunPayway™ align with ISO 27001?", answer: "RunPayway™ security practices are informed by the ISO 27001 framework, including risk assessment, access control, and continuous improvement. Formal certification is part of our compliance roadmap.", keywords: ["iso 27001", "iso", "information security", "isms", "framework"] },
+  { id: "comp-gdpr", category: "compliance", categoryLabel: "Security and Compliance", question: "Is RunPayway™ GDPR ready?", answer: "RunPayway™ is designed with GDPR principles in mind. We publish a Data Processing Agreement, identify legal bases for processing, support data subject rights (access, rectification, erasure, portability, restriction, objection), implement Standard Contractual Clauses for international transfers, and maintain a 72-hour breach notification commitment.", keywords: ["gdpr", "european", "data protection", "dpa", "eu", "eea"] },
+  { id: "comp-ccpa", category: "compliance", categoryLabel: "Security and Compliance", question: "Does RunPayway™ comply with CCPA/CPRA?", answer: "RunPayway™ supports California privacy rights as outlined in our Privacy Policy. We do not sell personal information, do not share data for cross-context behavioral advertising, and provide mechanisms for access, deletion, correction, and opt-out requests.", keywords: ["ccpa", "cpra", "california", "privacy rights"] },
+  { id: "comp-dpa", category: "compliance", categoryLabel: "Security and Compliance", question: "Does RunPayway™ offer a Data Processing Agreement?", answer: "Yes. A standard Data Processing Agreement is published on our website and available at /data-processing-agreement. Enterprise customers requiring custom DPA terms may contact us through the contact form.", keywords: ["dpa", "data processing", "agreement", "contract", "enterprise"] },
 
-  // --- Compliance ---
-  { id: "comp-soc2", category: "compliance", categoryLabel: "Compliance", question: "Is RunPayway SOC 2 compliant?", answer: "RunPayway\u2122 security controls are designed around SOC 2 Type II Trust Services Criteria — security, availability, processing integrity, confidentiality, and privacy. Formal certification is on our roadmap. Enterprise customers may request security documentation through our contact form.", keywords: ["soc 2", "soc2", "compliance", "security", "certified", "audit", "trust services"] },
-  { id: "comp-iso27001", category: "compliance", categoryLabel: "Compliance", question: "Does RunPayway align with ISO 27001?", answer: "RunPayway\u2122 security practices are informed by the ISO 27001 framework, including risk assessment, access control, and continuous improvement. Formal certification is part of our compliance roadmap.", keywords: ["iso 27001", "iso", "information security", "isms", "framework"] },
-  { id: "comp-gdpr", category: "compliance", categoryLabel: "Compliance", question: "Is RunPayway GDPR ready?", answer: "RunPayway\u2122 is designed with GDPR principles in mind. We publish a Data Processing Agreement, identify legal bases for processing, support data subject rights (access, rectification, erasure, portability, restriction, objection), implement Standard Contractual Clauses for international transfers, and maintain a 72-hour breach notification commitment.", keywords: ["gdpr", "european", "data protection", "dpa", "eu", "eea"] },
-  { id: "comp-ccpa", category: "compliance", categoryLabel: "Compliance", question: "Does RunPayway comply with CCPA/CPRA?", answer: "RunPayway\u2122 supports California privacy rights as outlined in our Privacy Policy. We do not sell personal information, do not share data for cross-context behavioral advertising, and provide mechanisms for access, deletion, correction, and opt-out requests.", keywords: ["ccpa", "cpra", "california", "privacy rights"] },
-  { id: "comp-dpa", category: "compliance", categoryLabel: "Compliance", question: "Does RunPayway\u2122 offer a Data Processing Agreement?", answer: "Yes. A standard Data Processing Agreement is published on our website and available at /data-processing-agreement. Enterprise customers requiring custom DPA terms may contact us through the contact form.", keywords: ["dpa", "data processing", "agreement", "contract", "enterprise"] },
-
-  // --- Licensing ---
-  { id: "lic-score", category: "licensing", categoryLabel: "Licensing", question: "Can the score be licensed?", answer: "Yes. Licensing options are available for organizations.", keywords: ["license", "licensing", "use score"] },
-  { id: "lic-api", category: "licensing", categoryLabel: "Licensing", question: "How does licensing differ from API access?", answer: "Licensing defines usage rights. API access enables system integration.", keywords: ["license vs api", "api", "difference", "access"] },
-  { id: "lic-whitelabel", category: "licensing", categoryLabel: "Licensing", question: "Is white-label reporting available?", answer: "Options may be available depending on use case.", keywords: ["white label", "whitelabel", "branded", "custom"] },
-  { id: "lic-enterprise", category: "licensing", categoryLabel: "Licensing", question: "What does an enterprise license include?", answer: "Enterprise licensing governs authorized use cases, volume limits, data handling obligations, attribution requirements, and compliance with applicable data protection regulations. Terms are defined per agreement.", keywords: ["enterprise license", "what includes", "terms", "commercial"] },
-  { id: "lic-compliance", category: "licensing", categoryLabel: "Licensing", question: "Does the license require compliance with data protection laws?", answer: "Yes. Enterprise licensees are expected to comply with applicable data protection regulations, including GDPR and CCPA/CPRA, when processing data obtained through the RunPayway\u2122 platform.", keywords: ["compliance", "data protection", "gdpr", "ccpa", "licensee", "obligations"] },
+  // --- Integration and Licensing ---
+  { id: "int-integrate", category: "licensing", categoryLabel: "Integration and Licensing", question: "Can we integrate RunPayway™ into our workflows?", answer: "Yes. Integration options are available so approved, external-safe outputs can be published to connected systems.", keywords: ["integrate", "api", "workflow", "embed", "connected systems"] },
+  { id: "lic-outputs", category: "licensing", categoryLabel: "Integration and Licensing", question: "Can approved outputs be licensed?", answer: "Yes. Licensing options for approved outputs are available for organizations.", keywords: ["license", "licensing", "outputs"] },
+  { id: "lic-api", category: "licensing", categoryLabel: "Integration and Licensing", question: "How does licensing differ from API access?", answer: "Licensing defines usage rights. API access enables system integration.", keywords: ["license vs api", "api", "difference", "access"] },
+  { id: "lic-whitelabel", category: "licensing", categoryLabel: "Integration and Licensing", question: "Is white-label reporting available?", answer: "Options may be available depending on use case.", keywords: ["white label", "whitelabel", "branded", "custom"] },
+  { id: "lic-enterprise", category: "licensing", categoryLabel: "Integration and Licensing", question: "What does an enterprise license include?", answer: "Enterprise licensing governs authorized use cases, volume limits, data handling obligations, attribution requirements, and compliance with applicable data protection regulations. Terms are defined per agreement.", keywords: ["enterprise license", "what includes", "terms", "commercial"] },
+  { id: "lic-compliance", category: "licensing", categoryLabel: "Integration and Licensing", question: "Does the license require compliance with data protection laws?", answer: "Yes. Enterprise licensees are expected to comply with applicable data protection regulations, including GDPR and CCPA/CPRA, when processing data obtained through RunPayway™.", keywords: ["compliance", "data protection", "gdpr", "ccpa", "licensee", "obligations"] },
 ];
 
 const CATEGORIES = [
-  { key: "score", label: "Income Stability Score™\u2122" },
-  { key: "assessment", label: "Assessment" },
-  { key: "report", label: "Report" },
-  { key: "command-center", label: "Dashboard" },
-  { key: "privacy", label: "Privacy" },
-  { key: "pricing", label: "Pricing" },
-  { key: "enterprise", label: "Enterprise" },
-  { key: "compliance", label: "Compliance" },
-  { key: "licensing", label: "Licensing" },
+  { key: "standard", label: "The Standard" },
+  { key: "rules", label: "Approved Rules and Governance" },
+  { key: "testing", label: "Testing and Replay" },
+  { key: "outputs", label: "Approved Outputs and Classification" },
+  { key: "boundaries", label: "Boundaries" },
+  { key: "audience", label: "Who It Is For" },
+  { key: "compliance", label: "Security and Compliance" },
+  { key: "licensing", label: "Integration and Licensing" },
 ];
 
 const SYNONYMS: Record<string, string[]> = {
-  score: ["rating", "number", "result"],
+  measurement: ["measure", "measuring", "assessment", "evaluation"],
   income: ["earnings", "revenue", "money"],
-  stability: ["reliability", "consistency"],
   structure: ["setup", "composition", "build"],
-  report: ["document", "pdf", "output"],
-  assessment: ["test", "quiz", "evaluation"],
-  privacy: ["data", "security", "information"],
-  cost: ["price", "pricing", "fee", "charge"],
+  classification: ["stable", "moderate", "volatile", "class", "band"],
+  rules: ["rule", "governance", "approved", "version", "versioning"],
+  output: ["outputs", "result", "report", "document"],
+  replay: ["provenance", "history", "audit"],
   compliance: ["certification", "certified", "audit", "regulation", "soc", "iso", "gdpr", "ccpa"],
+  integration: ["api", "connect", "connected", "webhook", "embed"],
 };
 
 
@@ -195,10 +193,10 @@ function HeroSection({ searchValue, onSearch, inputRef }: { searchValue: string;
           Frequently Asked Questions
         </h1>
         <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary, maxWidth: 620, margin: "0 auto 16px", ...fadeIn(visible, 100) }}>
-          Clear answers about the Income Stability Score™™, how it&rsquo;s generated, and how it&rsquo;s used.
+          Clear answers about complex-income measurement, how RunPayway™ produces approved outputs, and how organizations use them.
         </p>
         <p style={{ fontSize: m ? 15 : 16, fontWeight: 600, color: C.navy, marginBottom: 0, ...fadeIn(visible, 140) }}>
-          All answers reflect the system as it is defined&mdash;not interpreted.
+          All answers reflect the governed standard as it is defined, not interpreted.
         </p>
       </div>
 
@@ -301,7 +299,7 @@ function SearchResults({ results, query }: { results: FaqItem[]; query: string }
       )}
 
       <p style={{ fontSize: 13, color: C.textMuted, textAlign: "center", marginTop: 48 }}>
-        All answers reflect the system as defined — not interpreted.
+        All answers reflect the governed standard as defined, not interpreted.
       </p>
     </div>
   );
@@ -443,7 +441,7 @@ function FooterStrip() {
   return (
     <div style={{ backgroundColor: C.sand, padding: m ? "40px 20px" : "48px 48px", textAlign: "center" }}>
       <p style={{ fontSize: 13, fontWeight: 400, color: C.textMuted, margin: 0, letterSpacing: "0.02em" }}>
-        Income Stability Score™™ &bull; Powered by fixed scoring system RP-2.0
+        RunPayway™ &bull; The governed standard for complex-income measurement
       </p>
     </div>
   );
@@ -463,10 +461,10 @@ function FinalCta() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center" }}>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 32, ...fadeIn(visible) }}>
-          See how your income is built.
+          Measure complex income the same way every time.
         </h2>
         <div style={{ display: "flex", flexDirection: m ? "column" : "row", alignItems: "center", gap: m ? 12 : 16, justifyContent: "center", ...fadeIn(visible, 160) }}>
-          <Link href="/begin" style={{
+          <Link href="/organizations" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: m ? 56 : 60, width: m ? "100%" : "auto",
             padding: m ? "0 28px" : "0 32px",
@@ -478,9 +476,9 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get My Stability Class — Free
+            Request Enterprise Briefing
           </Link>
-          <a href="https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05" style={{
+          <a href="/organizations" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: m ? 56 : 60, width: m ? "100%" : "auto",
             padding: m ? "0 28px" : "0 32px",
@@ -492,11 +490,11 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
-            Get Your Full Report — $69
+            See it for organizations
           </a>
         </div>
         <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 20, textAlign: "center" }}>
-          Free analysis under 2 minutes | Paid report includes roadmap & scripts
+          Governed measurement for organizations, platforms, and institutions.
         </p>
       </div>
     </section>
