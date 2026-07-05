@@ -118,9 +118,9 @@ function ProblemSection() {
   const fadeIn = useFadeIn();
 
   const cards = [
-    { title: "Lending", desc: "Underwriters assess income manually. Different analysts reach different conclusions on the same applicant." },
-    { title: "Workforce", desc: "HR teams have no standardized way to assess the income stability of contractors, freelancers, or gig workers." },
-    { title: "Advisory", desc: "Financial advisors evaluate client risk subjectively. Two advisors looking at the same client see different things." },
+    { title: "Lending", desc: "Complex income is measured manually. Different analysts measure the same applicant differently, so outputs drift across the team." },
+    { title: "Workforce", desc: "Platforms have no standardized way to measure income structure for contract, project-based, or multi-client income across onboarding and renewal." },
+    { title: "Advisory", desc: "Income is measured subjectively across the organization. Two teams measuring the same client reach different conclusions." },
   ];
 
   return (
@@ -131,7 +131,7 @@ function ProblemSection() {
             The Problem: Everyone Evaluates{m ? " " : <br />}Income Differently
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
-            Different teams, different people, different conclusions — on the same applicant. RunPayway™ gives everyone the same ruler.
+            Different teams, different people, different conclusions on the same applicant. RunPayway™ gives everyone the same ruler.
           </p>
         </div>
 
@@ -160,8 +160,8 @@ function SystemSection() {
 
   const attrs = [
     { title: "Consistent", desc: "Identical inputs always produce identical results. No variability, no exceptions." },
-    { title: "Version-Controlled", desc: "Every model version is locked and immutable. Scores are always traceable to their methodology." },
-    { title: "Auditable", desc: "Every assessment is stamped with model version, timestamp, and authentication code. Fully traceable." },
+    { title: "Version-Controlled", desc: "Every rule version is locked and immutable. Every output is traceable to the approved rules that produced it." },
+    { title: "Auditable", desc: "Every measurement is stamped with rule version, timestamp, and verification code. Fully replayable." },
     { title: "Private by Default", desc: "No bank accounts. No credit pull. No financial data required. Assessment inputs only." },
   ];
 
@@ -173,7 +173,7 @@ function SystemSection() {
             One System. One Answer.{m ? " " : <br />}Every Time.
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
-            The Income Stability Score™ uses the same fixed rules for every assessment — no machine learning, no judgment. The same inputs always produce the same score.
+            RunPayway™ applies the same approved rules to every measurement. No machine learning, no judgment. The same inputs are measured the same way every time.
           </p>
         </div>
 
@@ -201,8 +201,8 @@ function IntegrationSection() {
   const fadeIn = useFadeIn();
 
   const items = [
-    { num: "01", title: "API Access", desc: "Programmatically access scoring and income breakdowns. Send inputs via API, receive scores, bands, and risk factors as JSON." },
-    { num: "02", title: "Batch Assessment", desc: "Assess hundreds of income profiles at once using the fixed model. Upload inputs, receive standardized, comparable results." },
+    { num: "01", title: "API Access", desc: "Programmatically access approved income-structure measurement. Send inputs via API, receive approved, external-safe outputs as JSON, ready for your connected systems." },
+    { num: "02", title: "Batch Measurement", desc: "Measure hundreds of income structures at once using the same approved rules. Upload inputs, receive standardized, comparable outputs." },
     { num: "03", title: "White-Label Reporting", desc: "Generate branded reports with your organization\u2019s identity. Same data, same methodology, your brand. Powered by RunPayway\u2122." },
   ];
 
@@ -322,10 +322,10 @@ function UseCasesSection() {
   const fadeIn = useFadeIn();
 
   const cases = [
-    { title: "Lending & Underwriting", color: C.navy, icon: "\u{1F3E6}", desc: "Integrate an income stability layer into credit decisions. Standardize income assessment across different analysts and eliminate subjective variation." },
-    { title: "Workforce Platforms", color: C.teal, icon: "\u{1F465}", desc: "Quickly assess contractor and freelancer income stability at onboarding and renewal. One consistent standard across your entire platform." },
-    { title: "Advisory Platforms", color: purple, icon: "\u{1F4CA}", desc: "Give financial advisors a standardized tool to evaluate client income risk, making assessments consistent across your entire client base." },
-    { title: "Benefits & Insurance", color: "#2D6A4F", icon: "\u{1F6E1}", desc: "Use income structure evaluation for eligibility determination, risk pricing, or coverage decisions. Replace subjective review with fixed methodology." },
+    { title: "Lending & Underwriting", color: C.navy, icon: "\u{1F3E6}", desc: "Add a governed income-structure measurement layer beneath your existing credit decisions. Measure complex income the same way across every analyst and remove subjective variation." },
+    { title: "Workforce Platforms", color: C.teal, icon: "\u{1F465}", desc: "Measure contract and multi-client income structure consistently at onboarding and renewal. One approved standard across your entire platform." },
+    { title: "Advisory Platforms", color: purple, icon: "\u{1F4CA}", desc: "Give client-facing teams a standardized way to measure complex-income structure, keeping measurements consistent across your entire client base." },
+    { title: "Benefits & Insurance", color: "#2D6A4F", icon: "\u{1F6E1}", desc: "Feed consistent income-structure measurement into your existing eligibility, pricing, or coverage workflows. RunPayway™ measures income structure with approved rules; your policies still make the decisions." },
   ];
 
   return (

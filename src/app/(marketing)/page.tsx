@@ -432,7 +432,7 @@ export default function LandingPage() {
 
         .commitment-spectrum {
           display: grid;
-          grid-template-columns: repeat(5, 1fr);
+          grid-template-columns: repeat(3, 1fr);
           gap: 16px;
           margin: 40px 0;
         }
@@ -618,40 +618,16 @@ export default function LandingPage() {
           {/* Navigation */}
           <nav className="nav">
             <Link href="/how-it-works">How It Works</Link>
-
-            <div className="nav-dropdown">
-              <a href="#" style={{ cursor: 'pointer' }}>Applications ▼</a>
-              <div className="nav-dropdown-content">
-                <a href="#">Home Purchase</a>
-                <a href="#">Vehicle Purchase</a>
-                <a href="#">Career Change</a>
-                <a href="#">Retirement</a>
-                <a href="#">Business Launch</a>
-                <a href="#">Business Acquisition</a>
-                <a href="#">Business Expansion</a>
-                <a href="#">Employee Hire</a>
-                <a href="#">Investment Property</a>
-              </div>
-            </div>
-
-            <div className="nav-dropdown">
-              <a href="#" style={{ cursor: 'pointer' }}>Solutions ▼</a>
-              <div className="nav-dropdown-content">
-                <a href="/advisors">Advisor</a>
-                <a href="/organizations">Organization</a>
-                <a href="#">Enterprise</a>
-              </div>
-            </div>
-
             <Link href="/methodology">Methodology</Link>
+            <Link href="/organizations">Organizations</Link>
             <Link href="/learn">Learn</Link>
             <Link href="/about">About</Link>
           </nav>
 
           {/* Right CTA */}
           <div className="header-right">
-            <Link href="/begin" className="header-cta">
-              Decision Check™
+            <Link href="/organizations" className="header-cta">
+              Request Enterprise Briefing
               <span>→</span>
             </Link>
           </div>
@@ -662,21 +638,21 @@ export default function LandingPage() {
       {/* SECTION 1: HERO */}
       {/* ================================================================ */}
       <section className="section" style={{ paddingTop: '120px', paddingBottom: '80px' }}>
-        <h1 className="hero-title">Know What Your Decision Depends On</h1>
+        <h1 className="hero-title">Complex income. Measured consistently.</h1>
         <p className="hero-subheading">
-          Standardized measurement of what conditions must remain in place for your major financial commitment—before you commit.
+          RunPayway™ is the governed standard for complex-income measurement. It helps organizations measure income structure the same way every time, across teams, systems, policies, and time.
         </p>
         <div>
-          <Link href="/begin" className="cta-button">
-            Understand Your Decision Dependencies
+          <Link href="/organizations" className="cta-button">
+            Request Enterprise Briefing
             <span>→</span>
           </Link>
           <Link href="#sample-report" className="cta-button secondary-cta">
-            View a Sample Report
+            View a Sample Output
           </Link>
         </div>
         <p className="microcopy">
-          $29 professional assessment. Takes 10 minutes. You'll get your report in 24 hours.
+          Governed measurement. Approved rules. Approved outputs published to connected systems.
         </p>
       </section>
 
@@ -684,45 +660,45 @@ export default function LandingPage() {
       {/* SECTION 2: WHAT YOU GET */}
       {/* ================================================================ */}
       <section className="section">
-        <h2 className="section-title">What Your Decision Check™ Report Includes</h2>
-        <p className="section-subtitle">When you complete your assessment, you'll receive a professional report showing:</p>
+        <h2 className="section-title">What RunPayway™ Measures</h2>
+        <p className="section-subtitle">RunPayway™ measures the structure behind income, not just the amount. Every measurement produces an approved, external-safe output:</p>
 
         <div className="four-column-grid">
           <div className="feature-card">
-            <div className="feature-label">Dependence</div>
-            <h3 className="feature-title">What Your Decision Depends On</h3>
+            <div className="feature-label">Structure</div>
+            <h3 className="feature-title">Income Structure</h3>
             <p className="feature-description">
-              Clear identification of the specific conditions your decision requires to work as expected.
+              How income is built, how it behaves, and what it depends on, measured under approved rules.
             </p>
           </div>
 
           <div className="feature-card">
             <div className="feature-label">Classification</div>
-            <h3 className="feature-title">Your Dependence Level</h3>
+            <h3 className="feature-title">Approved Classification</h3>
             <p className="feature-description">
-              Categorized as Low, Moderate, Elevated, High, or Critical based on how heavily it depends on supporting conditions.
+              An external-safe classification of income structure: Stable, Moderate, or Volatile. No public numeric score.
             </p>
           </div>
 
           <div className="feature-card">
-            <div className="feature-label">Comparison</div>
-            <h3 className="feature-title">How You Compare</h3>
+            <div className="feature-label">Consistency</div>
+            <h3 className="feature-title">Measured the Same Way Every Time</h3>
             <p className="feature-description">
-              Shows where you sit relative to the typical range for decisions like yours.
+              The same inputs are measured the same way every time, across teams, systems, policies, and time.
             </p>
           </div>
 
           <div className="feature-card">
-            <div className="feature-label">Understanding</div>
-            <h3 className="feature-title">What to Understand Going Forward</h3>
+            <div className="feature-label">Provenance</div>
+            <h3 className="feature-title">Replayable Output</h3>
             <p className="feature-description">
-              Clear explanation of what the decision relies on and what represents concentrated dependence.
+              Every measurement records the approved rule version used, so past measurements can be replayed and explained.
             </p>
           </div>
         </div>
 
         <p style={{ marginTop: '40px', fontSize: '15px', color: '#6B7280', lineHeight: '1.6' }}>
-          The entire report is written in plain language. No jargon. No recommendations. Just clear assessment of what your decision is built on.
+          Every output is external-safe by design. RunPayway™ does not issue recommendations or provide financial advice. It measures income structure according to approved rules.
         </p>
       </section>
 
@@ -730,74 +706,62 @@ export default function LandingPage() {
       {/* SECTION 3: SAMPLE REPORT PREVIEW */}
       {/* ================================================================ */}
       <section className="section" id="sample-report">
-        <h2 className="section-title">Sample Decision Check™ Report</h2>
+        <h2 className="section-title">Sample RunPayway™ Output</h2>
 
         <div className="report-preview">
           <div style={{ marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid #E5E7EB' }}>
-            <p style={{ fontSize: '14px', color: '#6B7280', margin: '0 0 8px 0' }}>EXAMPLE</p>
-            <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#0B1730', margin: 0 }}>Home Purchase — Jane and Michael</h3>
+            <p style={{ fontSize: '14px', color: '#6B7280', margin: '0 0 8px 0' }}>EXAMPLE — APPROVED OUTPUT</p>
+            <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#0B1730', margin: 0 }}>Commission-Based Income, Measured for a Lending Platform</h3>
           </div>
 
           <div className="report-section">
             <div className="report-label">Measurement</div>
-            <div className="report-content">Elevated Commitment Pressure</div>
-          </div>
-
-          <div className="report-section">
-            <div className="report-label">Position</div>
-            <div className="report-content">Higher Than Typical</div>
+            <div className="report-content">Income-Structure Classification</div>
           </div>
 
           <div className="report-section">
             <div className="report-label">Compared With</div>
-            <div className="report-content">Home purchases supported by employment income with variable commission.</div>
+            <div className="report-content">Income structures built on variable, commission-based sources.</div>
           </div>
 
           <div className="report-section">
             <div className="report-label">Interpretation</div>
             <div className="report-content">
-              This home purchase relies on the continued strength of the structure supporting it. Commission income must persist at expected levels throughout the 30-year mortgage term.
+              This income structure depends heavily on a variable, commission-based source continuing at expected levels. Measured under the approved rules in effect, it shows higher dependence on that single source persisting.
             </div>
           </div>
 
           <div className="report-section">
             <div className="report-label">Primary Drivers</div>
             <div style={{ marginTop: '8px' }}>
-              <div className="decision-item" style={{ marginBottom: '8px' }}>Support depends on variable income continuation (commission-based)</div>
-              <div className="decision-item" style={{ marginBottom: '8px' }}>Long-term horizon (30 years) extends dependence on sustained income</div>
-              <div className="decision-item" style={{ marginBottom: '8px' }}>Loss of commission income would affect mortgage payment capacity</div>
-              <div className="decision-item">Employment income alone insufficient to cover full mortgage obligation</div>
+              <div className="decision-item" style={{ marginBottom: '8px' }}>Income depends on variable, commission-based continuation</div>
+              <div className="decision-item" style={{ marginBottom: '8px' }}>A single source carries most of the structure</div>
+              <div className="decision-item" style={{ marginBottom: '8px' }}>Limited recurring or contracted income sits underneath</div>
+              <div className="decision-item">Continuity drops if the primary source pauses</div>
             </div>
           </div>
 
           <div className="report-section">
             <div className="report-label">Implications</div>
             <div className="report-content">
-              Several important things must continue to be true for this home purchase to remain supported.
-            </div>
-          </div>
-
-          <div className="report-section">
-            <div className="report-label">Typical Range</div>
-            <div className="report-content">
-              Most home purchases supported by employment income with commission fall between Moderate and Elevated Commitment Pressure.
+              Several conditions must hold for this income structure to remain stable. The approved output makes that dependence explicit for the connected system.
             </div>
           </div>
 
           <div className="report-section" style={{ borderBottom: 'none' }}>
-            <div className="report-label">Technical Classification</div>
-            <div className="report-content" style={{ fontSize: '16px', fontFamily: 'monospace' }}>CPE</div>
+            <div className="report-label">Classification</div>
+            <div className="report-content" style={{ fontSize: '16px' }}>Volatile</div>
           </div>
         </div>
 
         <div style={{ marginTop: '40px', padding: '24px', backgroundColor: '#F9FAFB', borderRadius: '4px', borderLeft: '4px solid #1F6D7A' }}>
-          <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#0B1730', marginBottom: '12px' }}>What This Report Shows</h4>
+          <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#0B1730', marginBottom: '12px' }}>What This Output Shows</h4>
           <div style={{ fontSize: '14px', color: '#6B7280', lineHeight: '1.6' }}>
-            <p style={{ margin: '0 0 8px 0' }}>• If commission continues as expected, the decision remains supported</p>
-            <p style={{ margin: '0 0 8px 0' }}>• The decision depends on continued commission income at current levels</p>
-            <p style={{ margin: '0 0 8px 0' }}>• If commission stops, the decision would lack adequate support</p>
-            <p style={{ margin: '0 0 8px 0' }}>• Similar situations with commission-based income typically show Elevated Commitment Pressure</p>
-            <p style={{ margin: '0' }}>• Commission income stability is what this decision relies on most heavily</p>
+            <p style={{ margin: '0 0 8px 0' }}>• The classification reflects how dependent this income structure is on its primary source</p>
+            <p style={{ margin: '0 0 8px 0' }}>• It is measured under approved rules, the same way every time</p>
+            <p style={{ margin: '0 0 8px 0' }}>• The output is external-safe: no internal logic and no numeric score are exposed</p>
+            <p style={{ margin: '0 0 8px 0' }}>• Similar variable, commission-based structures typically classify as Volatile</p>
+            <p style={{ margin: '0' }}>• The approved output can be published to connected systems</p>
           </div>
         </div>
       </section>
@@ -806,45 +770,45 @@ export default function LandingPage() {
       {/* SECTION 4: WHY IT MATTERS */}
       {/* ================================================================ */}
       <section className="section">
-        <h2 className="section-title">Before a Major Decision, Know What It Depends On</h2>
+        <h2 className="section-title">Complex Income Is Measured Differently Everywhere</h2>
 
         <div style={{ maxWidth: '800px' }}>
           <p style={{ fontSize: '16px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
-            Most people think about financial decisions in terms of affordability.
+            Organizations make decisions where income matters. But complex income is rarely measured the same way twice.
           </p>
 
           <div style={{ background: '#F9FAFB', padding: '24px', borderRadius: '4px', marginBottom: '32px' }}>
             <p style={{ fontSize: '15px', color: '#0B1730', lineHeight: '1.6', margin: '0 0 8px 0' }}>
-              "Can I afford the monthly payment?"
+              One analyst measures it one way.
             </p>
             <p style={{ fontSize: '15px', color: '#0B1730', lineHeight: '1.6', margin: '0 0 8px 0' }}>
-              "Do I have enough savings?"
+              Another team applies a different rule.
             </p>
             <p style={{ fontSize: '15px', color: '#0B1730', lineHeight: '1.6', margin: 0 }}>
-              "Is my income sufficient?"
+              A third system records something else entirely.
             </p>
           </div>
 
           <p style={{ fontSize: '16px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
-            But there's another question that matters equally:
+            The result is inconsistency across teams, systems, policies, and time. The question that stays unanswered is:
           </p>
 
           <div style={{ background: '#1F6D7A', padding: '24px', borderRadius: '4px', marginBottom: '32px' }}>
             <p style={{ fontSize: '16px', color: '#FFFFFF', lineHeight: '1.6', margin: 0, fontWeight: '500' }}>
-              "What must continue to go right for this decision to work?"
+              "How should this income structure be measured, and will it be measured the same way next time?"
             </p>
           </div>
 
           <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
-            A $300,000 home purchase seems affordable. But what if your income drops 30%? What if you need extended leave? What if your partner's income changes?
+            Income may come from business revenue, commissions, contracts, platform payouts, seasonal work, or several sources at once. That is a measurement problem, not a math problem.
           </p>
 
           <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
-            Professional decision-makers—financial advisors, business owners, investors—always evaluate this question. They just do it subjectively, based on experience. Different professionals may evaluate the same decision structure differently, depending on their expertise and perspective.
+            Today, organizations measure it subjectively, and results drift over time. The same income structure can be measured differently by different teams, systems, and policies.
           </p>
 
           <p style={{ fontSize: '15px', color: '#0B1730', lineHeight: '1.8', fontWeight: '500' }}>
-            Decision Check™ applies standardized measurement to that evaluation. Same decision structure always produces the same assessment. The clarity comes from consistency—fixed rules, not subjective judgment.
+            RunPayway™ applies approved rules so the same income structure is measured the same way every time. The consistency comes from a governed standard, not subjective judgment.
           </p>
         </div>
       </section>
@@ -853,62 +817,62 @@ export default function LandingPage() {
       {/* SECTION 5: APPLICATIONS/DECISION TYPES */}
       {/* ================================================================ */}
       <section className="section">
-        <h2 className="section-title">What Might Your Decision Depend On?</h2>
-        <p className="section-subtitle">These are conditions different decisions require. That's what we measure.</p>
+        <h2 className="section-title">What RunPayway™ Measures Across Organizations</h2>
+        <p className="section-subtitle">Wherever complex income affects a decision, RunPayway™ measures its structure consistently.</p>
 
         <div className="decision-carousel">
           <div className="decision-card">
-            <h3 className="decision-title">Buying a Home</h3>
-            <div className="decision-item">Sustained income to cover mortgage payments</div>
-            <div className="decision-item">Stability in your employment or business</div>
-            <div className="decision-item">Absence of major unexpected expenses</div>
-            <div className="decision-item">Continued access to credit/refinancing</div>
-            <div className="decision-item">Stability in property value (for equity)</div>
+            <h3 className="decision-title">Commission-Based Income</h3>
+            <div className="decision-item">How much depends on a single commission source</div>
+            <div className="decision-item">Whether recurring income sits underneath</div>
+            <div className="decision-item">Continuity if the pipeline slows</div>
+            <div className="decision-item">Approved classification for connected systems</div>
+            <div className="decision-item">Measured the same way every time</div>
           </div>
 
           <div className="decision-card">
-            <h3 className="decision-title">Changing Careers</h3>
-            <div className="decision-item">Sufficient savings to cover the transition period</div>
-            <div className="decision-item">Ability to find work in the new field</div>
-            <div className="decision-item">Income stability during the transition</div>
-            <div className="decision-item">Support from family/dependents</div>
-            <div className="decision-item">Timeline flexibility for the transition</div>
+            <h3 className="decision-title">Multi-Source Income</h3>
+            <div className="decision-item">How many sources carry the income</div>
+            <div className="decision-item">Concentration in any single source</div>
+            <div className="decision-item">How sources behave together under change</div>
+            <div className="decision-item">Consistent measurement across teams</div>
+            <div className="decision-item">External-safe output for downstream systems</div>
           </div>
 
           <div className="decision-card">
-            <h3 className="decision-title">Retiring</h3>
-            <div className="decision-item">Sustained income (pension, portfolio, Social Security)</div>
-            <div className="decision-item">Stability of income sources over 30-40 years</div>
-            <div className="decision-item">No major unexpected expenses</div>
-            <div className="decision-item">Health and longevity as expected</div>
-            <div className="decision-item">No major market disruptions</div>
+            <h3 className="decision-title">Contractor & Project-Based Income</h3>
+            <div className="decision-item">Dependence on active projects</div>
+            <div className="decision-item">Gaps between contracts</div>
+            <div className="decision-item">Recurring versus one-time work</div>
+            <div className="decision-item">Replayable measurement history</div>
+            <div className="decision-item">Approved rules applied every time</div>
           </div>
 
           <div className="decision-card">
-            <h3 className="decision-title">Launching a Business</h3>
-            <div className="decision-item">Runway to cover personal expenses during startup phase</div>
-            <div className="decision-item">Time to customer acquisition and revenue</div>
-            <div className="decision-item">Ability to sustain on reduced income temporarily</div>
-            <div className="decision-item">Support from family/dependents</div>
-            <div className="decision-item">Market timing and customer demand</div>
+            <h3 className="decision-title">Owner-Dependent Business Income</h3>
+            <div className="decision-item">Reliance on the owner's activity</div>
+            <div className="decision-item">Revenue continuity if the owner steps back</div>
+            <div className="decision-item">Structure beneath headline revenue</div>
+            <div className="decision-item">Approved, external-safe output</div>
+            <div className="decision-item">One standard across the organization</div>
           </div>
 
           <div className="decision-card">
-            <h3 className="decision-title">Acquiring a Business</h3>
-            <div className="decision-item">Client/revenue retention during integration</div>
-            <div className="decision-item">Ability to service acquisition debt</div>
-            <div className="decision-item">Continued market demand for acquired business</div>
-            <div className="decision-item">Success of integration and operations</div>
-            <div className="decision-item">No major surprises in business operations</div>
+            <h3 className="decision-title">Platform & Multi-Client Income</h3>
+            <div className="decision-item">Reliance on one client or platform</div>
+            <div className="decision-item">Spread across clients</div>
+            <div className="decision-item">Onboarding and renewal consistency</div>
+            <div className="decision-item">One approved standard across the platform</div>
+            <div className="decision-item">Published to connected systems</div>
           </div>
 
           <div className="decision-card">
-            <h3 className="decision-title">Investment Property</h3>
-            <div className="decision-item">Rental income at projected levels</div>
-            <div className="decision-item">Tenant retention and occupancy rates</div>
-            <div className="decision-item">No major property damage or repairs</div>
-            <div className="decision-item">Real estate market stability</div>
-            <div className="decision-item">Ability to cover gaps if vacancy occurs</div>
+            <h3 className="decision-title">Seasonal & Variable Income</h3>
+            <div className="decision-item">Month-to-month steadiness</div>
+            <div className="decision-item">Peak versus off-peak dependence</div>
+            <div className="decision-item">Locked-in versus variable portions</div>
+            <div className="decision-item">Measured the same way every time</div>
+            <div className="decision-item">Replayable under the approved rule version</div>
           </div>
         </div>
       </section>
@@ -917,27 +881,26 @@ export default function LandingPage() {
       {/* SECTION 6: PRICING */}
       {/* ================================================================ */}
       <section className="section" style={{ textAlign: 'center' }}>
-        <h2 className="section-title">Simple Pricing</h2>
-        <p className="section-subtitle">One Product. One Price. One Standard.</p>
+        <h2 className="section-title">Built for Organizations</h2>
+        <p className="section-subtitle">One governed standard, deployed across your teams and connected systems.</p>
 
         <div style={{
           background: '#FFFFFF',
           border: '1px solid #E5E7EB',
           borderRadius: '4px',
           padding: '48px',
-          maxWidth: '400px',
+          maxWidth: '480px',
           margin: '40px auto'
         }}>
-          <div style={{ fontSize: '48px', fontWeight: '700', color: '#0B1730', marginBottom: '8px' }}>$29</div>
-          <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#0B1730', marginBottom: '16px', margin: '16px 0' }}>Decision Check™</h3>
+          <h3 style={{ fontSize: '20px', fontWeight: '600', color: '#0B1730', marginBottom: '16px', margin: '0 0 16px' }}>RunPayway™ for Organizations</h3>
           <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: '1.6', marginBottom: '24px' }}>
-            One-time standardized professional assessment
+            Governed complex-income measurement, approved rules, replayable outputs, and approved outputs published to your connected systems.
           </p>
-          <Link href="/begin" className="cta-button" style={{ width: '100%', justifyContent: 'center' }}>
-            Get Your Report
+          <Link href="/organizations" className="cta-button" style={{ width: '100%', justifyContent: 'center' }}>
+            Request Enterprise Briefing
           </Link>
           <p className="microcopy" style={{ marginTop: '20px' }}>
-            Takes 10 minutes. Report delivered in 24 hours.
+            For organizations, platforms, and institutions. We follow up within two business days.
           </p>
         </div>
       </section>
@@ -946,30 +909,30 @@ export default function LandingPage() {
       {/* SECTION 7: HOW IT WORKS */}
       {/* ================================================================ */}
       <section className="section">
-        <h2 className="section-title">Three Simple Steps</h2>
+        <h2 className="section-title">How RunPayway™ Works</h2>
 
         <div className="three-step-grid">
           <div className="step-card">
             <div className="step-number">1</div>
-            <h3 className="step-title">Choose Your Decision</h3>
+            <h3 className="step-title">Measure Income Structure</h3>
             <p className="step-description">
-              Select the financial decision you're evaluating: buying a home, changing careers, retiring, launching a business, or another major commitment.
+              RunPayway™ measures the structure behind income, not just the amount, using approved rules applied the same way every time.
             </p>
           </div>
 
           <div className="step-card">
             <div className="step-number">2</div>
-            <h3 className="step-title">Answer Structured Questions</h3>
+            <h3 className="step-title">Apply Approved Rules</h3>
             <p className="step-description">
-              You'll answer straightforward questions about your situation: income sources, savings, timeline, and what conditions your decision requires.
+              Measurement rules are defined, versioned, and approved before they affect any connected system. Test measurement-rule changes before launch with the Measurement Impact Simulator.
             </p>
           </div>
 
           <div className="step-card">
             <div className="step-number">3</div>
-            <h3 className="step-title">Receive Your Report</h3>
+            <h3 className="step-title">Publish Approved Outputs</h3>
             <p className="step-description">
-              Within 24 hours, you'll receive your Decision Check™ report with professional assessment and clear explanation of what your decision depends on.
+              RunPayway™ publishes an approved, external-safe output to your connected systems, and preserves it for Measurement Replay.
             </p>
           </div>
         </div>
@@ -980,7 +943,7 @@ export default function LandingPage() {
           marginTop: '40px',
           textAlign: 'center'
         }}>
-          Takes about 10 minutes. All your information stays private and encrypted.
+          Approved rules in, approved outputs out. Internal measurement logic stays internal.
         </p>
       </section>
 
@@ -988,33 +951,33 @@ export default function LandingPage() {
       {/* SECTION 8: DECISION CHECK™ INTRODUCTION */}
       {/* ================================================================ */}
       <section className="section">
-        <h2 className="section-title">Decision Check™ Is Your Professional Assessment</h2>
+        <h2 className="section-title">RunPayway™ Is the Governed Standard for Complex-Income Measurement</h2>
 
         <div style={{ maxWidth: '800px', margin: '40px auto' }}>
           <p style={{ fontSize: '15px', color: '#0B1730', lineHeight: '1.8', marginBottom: '24px', fontWeight: '500' }}>
-            Decision Check™ is built on the Decision Dependence™ standard.
+            RunPayway™ is a governed measurement layer for complex income.
           </p>
 
           <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
-            Decision Dependence™ measures how heavily a financial decision depends on supporting conditions remaining intact.
+            It measures how income is built, applies approved rules, and publishes approved outputs to connected systems.
           </p>
 
           <p style={{ fontSize: '16px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
-            When you complete your Decision Check™ assessment, you get a standardized report that shows what your decision is built on, how typical your situation is, and what you need to understand going forward:
+            Complex income is often measured differently across teams, systems, policies, and time. RunPayway™ answers a single governed question:
           </p>
 
           <div style={{ background: '#F9FAFB', padding: '24px', borderRadius: '4px', marginBottom: '32px', borderLeft: '4px solid #1F6D7A' }}>
             <p style={{ fontSize: '16px', color: '#0B1730', lineHeight: '1.8', margin: 0, fontWeight: '500' }}>
-              How much does my major financial decision depend on supporting conditions remaining intact?
+              How should this income structure be measured, and will it be measured the same way every time?
             </p>
           </div>
 
           <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: '1.8', marginBottom: '24px' }}>
-            Think of it like a home inspection. An inspection doesn't tell you whether to buy the house. It tells you what the house is built on and what condition it's in. You decide what to do with that information.
+            Think of it like a measurement standard. It does not decide what an organization does with the result. It ensures the measurement itself is consistent, governed, and replayable.
           </p>
 
           <p style={{ fontSize: '15px', color: '#0B1730', lineHeight: '1.8', fontWeight: '500' }}>
-            Decision Check™ works the same way. It doesn't recommend yes or no. It shows you what your decision is built on so you can decide confidently.
+            RunPayway™ does not make the decision. It measures income structure the same way every time, so teams and systems work from one standard.
           </p>
         </div>
       </section>
@@ -1023,49 +986,33 @@ export default function LandingPage() {
       {/* SECTION 9: COMMITMENT PRESSURE™ INTRODUCTION */}
       {/* ================================================================ */}
       <section className="section">
-        <h2 className="section-title">Understanding Your Commitment Pressure™ Classification</h2>
+        <h2 className="section-title">Understanding the Income-Structure Classification</h2>
         <p className="section-subtitle">
-          Every Decision Check™ report includes a Commitment Pressure™ classification that measures how much your financial decision depends on specific conditions continuing to happen.
+          Every RunPayway™ output includes an external-safe classification of how dependent an income structure is on the continued strength of its sources.
         </p>
 
         <div className="commitment-spectrum">
           <div className="commitment-level">
-            <div className="commitment-badge">CPL</div>
-            <h4 className="commitment-label">Low Commitment Pressure</h4>
+            <div className="commitment-badge">Stable</div>
+            <h4 className="commitment-label">Stable</h4>
             <p className="commitment-description">
-              Few important things must continue to go right. Your decision has flexibility to absorb change.
+              Few conditions must hold. The income structure has room to absorb change in its sources.
             </p>
           </div>
 
           <div className="commitment-level">
-            <div className="commitment-badge">CPM</div>
-            <h4 className="commitment-label">Moderate Commitment Pressure</h4>
+            <div className="commitment-badge">Moderate</div>
+            <h4 className="commitment-label">Moderate</h4>
             <p className="commitment-description">
-              Several things must continue to go right. Your decision requires stability in key areas but has some flexibility.
+              Several conditions must hold. The income structure relies on stability across key sources.
             </p>
           </div>
 
           <div className="commitment-level">
-            <div className="commitment-badge">CPE</div>
-            <h4 className="commitment-label">Elevated Commitment Pressure</h4>
+            <div className="commitment-badge">Volatile</div>
+            <h4 className="commitment-label">Volatile</h4>
             <p className="commitment-description">
-              Several important things must continue to go right. Your decision requires more stability and has limited flexibility.
-            </p>
-          </div>
-
-          <div className="commitment-level">
-            <div className="commitment-badge">CPH</div>
-            <h4 className="commitment-label">High Commitment Pressure</h4>
-            <p className="commitment-description">
-              Many important things must continue to go right. Your decision is dependent on sustained stability across multiple areas.
-            </p>
-          </div>
-
-          <div className="commitment-level">
-            <div className="commitment-badge">CPC</div>
-            <h4 className="commitment-label">Critical Commitment Pressure</h4>
-            <p className="commitment-description">
-              Most key things must continue to go right. Your decision has minimal flexibility and depends on nearly everything staying the same.
+              Many conditions must hold. The income structure depends heavily on the continued strength of its sources.
             </p>
           </div>
         </div>
@@ -1077,7 +1024,7 @@ export default function LandingPage() {
           textAlign: 'center',
           fontWeight: '500'
         }}>
-          Your classification shows you where you sit—and what you actually depend on.
+          The classification is external-safe. It is published to connected systems without exposing internal logic or any numeric score.
         </p>
       </section>
 
@@ -1085,34 +1032,34 @@ export default function LandingPage() {
       {/* SECTION 10: WHAT IT IS / IS NOT */}
       {/* ================================================================ */}
       <section className="section">
-        <h2 className="section-title">What Decision Check™ Actually Is</h2>
+        <h2 className="section-title">What RunPayway™ Is, and Is Not</h2>
 
         <div className="what-is-not-grid">
           <div>
             <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#0B1730', marginBottom: '20px' }}>What It Is</h3>
             <div className="what-is-item">
               <div className="what-is-check">✓</div>
-              <div className="what-is-text">Professional assessment of what your decision depends on</div>
+              <div className="what-is-text">A governed standard for complex-income measurement</div>
             </div>
             <div className="what-is-item">
               <div className="what-is-check">✓</div>
-              <div className="what-is-text">Standardized measurement of decision dependencies</div>
+              <div className="what-is-text">A measurement of income structure, not just income amount</div>
             </div>
             <div className="what-is-item">
               <div className="what-is-check">✓</div>
-              <div className="what-is-text">Plain-language report showing your situation's structure</div>
+              <div className="what-is-text">Approved rules, versioned and testable before launch</div>
             </div>
             <div className="what-is-item">
               <div className="what-is-check">✓</div>
-              <div className="what-is-text">Comparison to typical situations like yours</div>
+              <div className="what-is-text">Replayable measurements with recorded rule versions</div>
             </div>
             <div className="what-is-item">
               <div className="what-is-check">✓</div>
-              <div className="what-is-text">Classification of your decision's dependence level</div>
+              <div className="what-is-text">External-safe outputs published to connected systems</div>
             </div>
             <div className="what-is-item">
               <div className="what-is-check">✓</div>
-              <div className="what-is-text">Professional clarity before commitment</div>
+              <div className="what-is-text">One standard across teams, systems, policies, and time</div>
             </div>
           </div>
 
@@ -1120,27 +1067,27 @@ export default function LandingPage() {
             <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#0B1730', marginBottom: '20px' }}>What It Is Not</h3>
             <div className="what-is-item">
               <div className="what-is-check">✗</div>
-              <div className="what-is-text">Financial advice ("you should do this")</div>
+              <div className="what-is-text">Financial, legal, or investment advice</div>
             </div>
             <div className="what-is-item">
               <div className="what-is-check">✗</div>
-              <div className="what-is-text">Affordability approval or denial</div>
+              <div className="what-is-text">An eligibility, approval, or underwriting decision</div>
             </div>
             <div className="what-is-item">
               <div className="what-is-check">✗</div>
-              <div className="what-is-text">Risk scoring or prediction</div>
+              <div className="what-is-text">A public stability score or numeric score</div>
             </div>
             <div className="what-is-item">
               <div className="what-is-check">✗</div>
-              <div className="what-is-text">Credit score or credit assessment</div>
+              <div className="what-is-text">A recommendation or safe-or-unsafe judgment</div>
             </div>
             <div className="what-is-item">
               <div className="what-is-check">✗</div>
-              <div className="what-is-text">AI insights or algorithmic recommendation</div>
+              <div className="what-is-text">AI decisioning or credit-default prediction</div>
             </div>
             <div className="what-is-item">
               <div className="what-is-check">✗</div>
-              <div className="what-is-text">Budgeting or expense tracking</div>
+              <div className="what-is-text">A replacement for institutional policy</div>
             </div>
           </div>
         </div>
@@ -1150,47 +1097,47 @@ export default function LandingPage() {
       {/* SECTION 11: METHODOLOGY PREVIEW (Optional) */}
       {/* ================================================================ */}
       <section className="section">
-        <h2 className="section-title">How This Measurement Works</h2>
+        <h2 className="section-title">How the Measurement Works</h2>
         <p className="section-subtitle">
-          Decision Check™ uses a systematic framework to evaluate decision dependencies.
+          RunPayway™ uses a governed, versioned framework to measure income structure.
         </p>
 
         <div className="four-column-grid">
           <div className="feature-card">
             <div className="feature-label">Step 1</div>
-            <h3 className="feature-title">Structural Analysis</h3>
+            <h3 className="feature-title">Structural Measurement</h3>
             <p className="feature-description">
-              We analyze your specific situation against your decision type to identify supporting conditions.
+              RunPayway™ measures how income is built and how it behaves under change.
             </p>
           </div>
 
           <div className="feature-card">
             <div className="feature-label">Step 2</div>
-            <h3 className="feature-title">Comparison Framework</h3>
+            <h3 className="feature-title">Approved Rules</h3>
             <p className="feature-description">
-              We compare your situation to the typical range for similar decisions in your category.
+              Measurement rules are versioned and approved. Test measurement-rule changes before launch with the Measurement Impact Simulator.
             </p>
           </div>
 
           <div className="feature-card">
             <div className="feature-label">Step 3</div>
-            <h3 className="feature-title">Dependence Classification</h3>
+            <h3 className="feature-title">Approved Classification</h3>
             <p className="feature-description">
-              We classify your dependence level using the Commitment Pressure™ scale (Low to Critical).
+              The output includes an external-safe classification: Stable, Moderate, or Volatile.
             </p>
           </div>
 
           <div className="feature-card">
             <div className="feature-label">Step 4</div>
-            <h3 className="feature-title">Clear Reporting</h3>
+            <h3 className="feature-title">Replay and Publish</h3>
             <p className="feature-description">
-              We generate a clear, standardized report showing what you depend on and what that means.
+              Every measurement is replayable, and approved outputs publish to connected systems.
             </p>
           </div>
         </div>
 
         <p style={{ marginTop: '40px', fontSize: '15px', color: '#6B7280', lineHeight: '1.6', textAlign: 'center' }}>
-          This approach is consistent, comparable, and transparent. <Link href="/methodology" style={{ color: '#1F6D7A', textDecoration: 'none', fontWeight: '600' }}>Learn more about our methodology →</Link>
+          Consistent, governed, and replayable. <Link href="/methodology" style={{ color: '#1F6D7A', textDecoration: 'none', fontWeight: '600' }}>Explore the measurement standard →</Link>
         </p>
       </section>
 
@@ -1198,22 +1145,22 @@ export default function LandingPage() {
       {/* SECTION 12: FINAL CTA */}
       {/* ================================================================ */}
       <section className="section" style={{ textAlign: 'center', paddingBottom: '120px' }}>
-        <h2 className="section-title">Before You Commit, Get Clarity</h2>
+        <h2 className="section-title">One Standard for Complex-Income Measurement</h2>
         <p className="section-subtitle" style={{ maxWidth: '600px', margin: '20px auto 40px' }}>
-          Your major financial decision deserves professional assessment of what it depends on.
+          If income affects the decision, the income structure needs to be measured the same way every time.
         </p>
 
         <p style={{ fontSize: '16px', color: '#0B1730', lineHeight: '1.8', marginBottom: '40px', fontWeight: '500' }}>
-          Not advice. Not approval. Just clear understanding of what your decision is built on.
+          RunPayway™ does not make eligibility decisions, replace institutional policy, issue recommendations, or provide financial advice. It measures income structure according to approved rules and publishes approved outputs to connected systems.
         </p>
 
-        <Link href="/begin" className="cta-button" style={{ fontSize: '14px', padding: '16px 40px' }}>
-          Get Your Decision Check™ Report
+        <Link href="/organizations" className="cta-button" style={{ fontSize: '14px', padding: '16px 40px' }}>
+          Request Enterprise Briefing
           <span>→</span>
         </Link>
 
         <p className="microcopy">
-          Takes 10 minutes. Report delivered in 24 hours.<br />Used by financial advisors and professionals.
+          Governed measurement for organizations, platforms, and institutions.
         </p>
       </section>
 
@@ -1226,12 +1173,12 @@ export default function LandingPage() {
             {/* Column 1 - Brand */}
             <div className="footer-column">
               <h3>RunPayway™</h3>
-              <p>Measure what must continue to go right.</p>
+              <p>The governed standard for complex-income measurement.</p>
               <div style={{ marginTop: '12px' }}>
                 <p style={{ fontSize: '12px', fontWeight: '700', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#1F6D7A', marginBottom: '8px' }}>
-                  Decision Dependence™
+                  Complex-Income Measurement
                 </p>
-                <p style={{ fontSize: '13px', margin: 0 }}>Standardized measurement of how heavily financial decisions depend on supporting conditions remaining intact.</p>
+                <p style={{ fontSize: '13px', margin: 0 }}>Measure income structure consistently across teams, systems, policies, and time.</p>
               </div>
               <p style={{ fontSize: '12px', color: '#999', marginTop: '12px' }}>Product of PeopleStar Enterprises Inc.</p>
             </div>
@@ -1239,44 +1186,38 @@ export default function LandingPage() {
             {/* Column 2 - Product */}
             <div className="footer-column">
               <h3>Product</h3>
-              <a href="/begin">Decision Check™</a>
+              <a href="/organizations">For Organizations</a>
               <a href="/how-it-works">How It Works</a>
-              <a href="#sample-report">Sample Report</a>
-              <a href="/pricing">Pricing</a>
+              <a href="#sample-report">Sample Output</a>
               <a href="/faq">FAQ</a>
-              <a href="/verify">Verify Report</a>
+              <a href="/verify">Verify Output</a>
             </div>
 
-            {/* Column 3 - Applications */}
+            {/* Column 3 - What We Measure */}
             <div className="footer-column">
-              <h3>Applications</h3>
-              <a href="#">Home Purchase</a>
-              <a href="#">Vehicle Purchase</a>
-              <a href="#">Career Change</a>
-              <a href="#">Retirement</a>
-              <a href="#">Business Launch</a>
-              <a href="#">Business Acquisition</a>
-              <a href="#">Business Expansion</a>
-              <a href="#">Employee Hire</a>
-              <a href="#">Investment Property</a>
+              <h3>What We Measure</h3>
+              <a href="#">Commission-Based Income</a>
+              <a href="#">Multi-Source Income</a>
+              <a href="#">Contractor Income</a>
+              <a href="#">Owner-Dependent Business Income</a>
+              <a href="#">Platform & Multi-Client Income</a>
+              <a href="#">Seasonal & Variable Income</a>
             </div>
 
-            {/* Column 4 - Solutions */}
+            {/* Column 4 - For */}
             <div className="footer-column">
-              <h3>Solutions</h3>
-              <a href="/advisors">Advisor</a>
-              <a href="/organizations">Organization</a>
+              <h3>For</h3>
+              <a href="/organizations">Organizations</a>
+              <a href="#">Platforms</a>
               <a href="#">Enterprise</a>
             </div>
 
-            {/* Column 5 - Methodology */}
+            {/* Column 5 - Standard */}
             <div className="footer-column">
-              <h3>Methodology</h3>
+              <h3>Standard</h3>
               <a href="/methodology">Methodology</a>
-              <a href="/methodology#commitment-pressure">Commitment Pressure™</a>
-              <a href="/methodology#decision-check">Decision Check™</a>
-              <a href="/methodology#typical-range">Typical Range™</a>
-              <a href="/methodology#compared-with">Compared With™</a>
+              <a href="#">Approved Rules</a>
+              <a href="#">Measurement Replay</a>
               <a href="/learn">Glossary</a>
             </div>
 
@@ -1306,7 +1247,7 @@ export default function LandingPage() {
           <div className="footer-bottom">
             <div className="footer-copyright">
               © RunPayway™ • Product of PeopleStar Enterprises Inc.<br />
-              Decision Check™ Report Standard™ • Commitment Pressure Classification™<br />
+              The governed standard for complex-income measurement • External-safe outputs<br />
               Accessibility: WCAG 2.1 AA Compliant
             </div>
             <div className="footer-links">
