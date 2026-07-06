@@ -52,7 +52,7 @@ export default function MarketingFooter() {
                 margin: "0",
               }}
             >
-              INCOME STABILITY VERIFICATION™
+              COMPLEX-INCOME MEASUREMENT
             </p>
           </div>
 
@@ -116,7 +116,7 @@ export default function MarketingFooter() {
                 </li>
                 <li>
                   <Link
-                    href="/use-cases"
+                    href="/organizations"
                     style={{
                       color: "#4B5563",
                       textDecoration: "none",
@@ -129,12 +129,12 @@ export default function MarketingFooter() {
                       e.currentTarget.style.color = "#4B5563";
                     }}
                   >
-                    Use Cases
+                    Organizations
                   </Link>
                 </li>
                 <li>
                   <Link
-                    href="/verification-environments"
+                    href="/faq"
                     style={{
                       color: "#4B5563",
                       textDecoration: "none",
@@ -147,7 +147,7 @@ export default function MarketingFooter() {
                       e.currentTarget.style.color = "#4B5563";
                     }}
                   >
-                    Verification Environments
+                    FAQ
                   </Link>
                 </li>
               </ul>
@@ -277,8 +277,8 @@ export default function MarketingFooter() {
                   </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/terms-of-use"
                     style={{
                       color: "#4B5563",
                       textDecoration: "none",
@@ -292,11 +292,11 @@ export default function MarketingFooter() {
                     }}
                   >
                     Terms
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/accessibility"
                     style={{
                       color: "#4B5563",
                       textDecoration: "none",
@@ -310,7 +310,7 @@ export default function MarketingFooter() {
                     }}
                   >
                     Accessibility
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

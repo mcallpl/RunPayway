@@ -7,11 +7,11 @@ export default function MarketingHeader() {
   const pathname = usePathname();
 
   const navItems = [
+    { label: "Organizations", href: "/organizations" },
     { label: "How It Works", href: "/how-it-works" },
-    { label: "Use Cases", href: "/use-cases" },
-    { label: "Verification Environments", href: "/verification-environments" },
-    { label: "Learn", href: "/learn" },
     { label: "Methodology", href: "/methodology" },
+    { label: "FAQ", href: "/faq" },
+    { label: "About", href: "/about" },
   ];
 
   return (
@@ -98,7 +98,7 @@ export default function MarketingHeader() {
 
         {/* Right CTA */}
         <Link
-          href="/begin"
+          href="/organizations"
           style={{
             height: "60px",
             paddingLeft: "32px",
@@ -129,7 +129,7 @@ export default function MarketingHeader() {
             e.currentTarget.style.borderColor = "#0E1A2B";
           }}
         >
-          Check My Income Stability
+          Request Enterprise Briefing
           <span style={{ fontSize: "14px" }}>→</span>
         </Link>
       </div>
