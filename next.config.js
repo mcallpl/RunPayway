@@ -63,6 +63,13 @@ const nextConfig = {
         },
       }
     : {}),
+  // Governed redirects — retire legacy consumer/advisor surfaces
+  async redirects() {
+    return [
+      { source: "/plans", destination: "/pricing", permanent: true },
+      { source: "/advisors", destination: "/organizations", permanent: true },
+    ];
+  },
 };
 
 module.exports = nextConfig;
