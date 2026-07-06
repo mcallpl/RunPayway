@@ -84,18 +84,18 @@ function HeroSection() {
     <header ref={ref} style={{ backgroundColor: C.white, paddingTop: sectionPy(m) + 20, paddingBottom: sectionPy(m), paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto", textAlign: "center" }}>
         <h1 style={{ fontSize: m ? 36 : 56, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, fontFamily: '"Cormorant Garamond", "Georgia", serif' }}>
-          How structural verification works
+          How RunPayway™ works
         </h1>
         <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 620, margin: "0 auto 32px", ...fadeIn(visible, 80) }}>
-          RunPayway™ evaluates income structure using a fixed verification methodology, then returns a version-stamped result generated under the same structural framework every time.
+          RunPayway™ measures income structure under approved rules, then returns an approved, external-safe output generated the same way every time.
         </p>
         <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 8, marginBottom: 32, ...fadeIn(visible, 140) }}>
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal }}>
-            THE SAME INPUTS PRODUCE THE SAME RESULT
+            MEASURED THE SAME WAY EVERY TIME
           </div>
         </div>
         <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 16, ...fadeIn(visible, 180) }}>
-          <Link href="/begin" style={{
+          <Link href="/organizations" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: m ? 56 : 60, width: m ? "100%" : "auto",
             padding: m ? "0 28px" : "0 32px",
@@ -105,10 +105,10 @@ function HeroSection() {
           }}
             onMouseEnter={e => { e.currentTarget.style.backgroundColor = C.purple; }}
             onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.navy; }}>
-            Start Income Stability Verification →
+            Request Enterprise Briefing →
           </Link>
           <p style={{ fontSize: 13, fontWeight: 500, color: C.textMuted }}>
-            Under 2 minutes · Private by default · Version-stamped results
+            Governed measurement · Approved rules · External-safe outputs
           </p>
         </div>
       </div>
@@ -139,13 +139,13 @@ function WhatTheFrameworkEvaluates() {
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         <div style={{ marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
           <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 12 }}>
-            WHAT THE FRAMEWORK EVALUATES
+            STEP 1 · DEFINE THE INCOME STRUCTURE
           </div>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.2, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24, fontFamily: '"Cormorant Garamond", "Georgia", serif' }}>
-            Structural conditions evaluated during verification
+            Define the income structure
           </h2>
           <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary }}>
-            RunPayway™ evaluates six structural conditions associated with income stability:
+            RunPayway™ measures the structural conditions that define how income is built:
           </p>
         </div>
 
@@ -190,11 +190,11 @@ function WhyStructureMatters() {
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: sectionPy(m), paddingBottom: sectionPy(m), paddingLeft: sectionPx(m), paddingRight: sectionPx(m), borderTop: `1px solid ${C.divider}` }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.2, letterSpacing: "-0.028em", color: C.navy, marginBottom: 32, fontFamily: '"Cormorant Garamond", "Georgia", serif', ...fadeIn(visible) }}>
-          Similar income does not always mean similar stability
+          Apply the same approved rules every time
         </h2>
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 20, ...fadeIn(visible, 80) }}>
           <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.7, color: C.textSecondary }}>
-            Two individuals or organizations may report similar income levels while operating under fundamentally different structural conditions.
+            Two organizations may report similar income levels while operating under fundamentally different structural conditions.
           </p>
           <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.7, color: C.textSecondary }}>
             One structure may rely heavily on a single client, contract, or revenue source.
@@ -203,7 +203,7 @@ function WhyStructureMatters() {
             Another may operate across diversified recurring income with stronger continuity conditions.
           </p>
           <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.7, color: C.textSecondary }}>
-            RunPayway™ evaluates those structural differences using the same fixed methodology every time.
+            RunPayway™ measures those structural differences using the same approved rules every time, so outputs stay consistent across teams, systems, and policies.
           </p>
         </div>
       </div>
@@ -221,24 +221,19 @@ function DecisionContext() {
   const fadeIn = useFadeIn();
 
   const contexts = [
-    "Mortgage qualification",
-    "Business expansion",
-    "Career transitions",
-    "Investment decisions",
-    "Retirement planning",
-    "Self-employment growth",
-    "Commission-based income",
-    "Contract-dependent revenue",
+    "Stable: room to absorb change in its sources",
+    "Moderate: relies on stability across key sources",
+    "Volatile: depends heavily on continued source strength",
   ];
 
   return (
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: sectionPy(m), paddingBottom: sectionPy(m), paddingLeft: sectionPx(m), paddingRight: sectionPx(m), borderTop: `1px solid ${C.divider}` }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.2, letterSpacing: "-0.028em", color: C.navy, marginBottom: 32, fontFamily: '"Cormorant Garamond", "Georgia", serif', ...fadeIn(visible) }}>
-          Structural visibility before major financial decisions
+          Produce an external-safe classification
         </h2>
         <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 32, ...fadeIn(visible, 80) }}>
-          Income structure may become especially important during periods involving:
+          RunPayway™ produces a governed, external-safe classification of how dependent the income structure is on its sources:
         </p>
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr", gap: m ? 0 : 32, ...fadeIn(visible, 140) }}>
@@ -250,7 +245,7 @@ function DecisionContext() {
         </div>
 
         <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginTop: 32, ...fadeIn(visible, 180) }}>
-          RunPayway™ provides structural visibility before those decisions are made.
+          The classification is external-safe. No public numeric score is exposed, and it can be published to connected systems.
         </p>
       </div>
     </section>
@@ -267,19 +262,19 @@ function TheResult() {
   const fadeIn = useFadeIn();
 
   const items = [
-    "Income Stability Score™",
-    "Stability Classification™",
-    "Structural Exposure Indicators™",
-    "Industry Stability Context™",
-    "Structural Scenario Analysis",
-    "Structural Stability Priorities™",
+    "Test proposed rule changes",
+    "Run against historical income cases",
+    "See the output delta before launch",
+    "Review affected segments",
+    "Check connected-system impact",
+    "Approve or roll back",
   ];
 
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: sectionPy(m), paddingBottom: sectionPy(m), paddingLeft: sectionPx(m), paddingRight: sectionPx(m), borderTop: `1px solid ${C.divider}` }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.2, letterSpacing: "-0.028em", color: C.navy, marginBottom: 32, fontFamily: '"Cormorant Garamond", "Georgia", serif', ...fadeIn(visible) }}>
-          What the Full Structural Verification™ includes
+          Test measurement-rule changes before launch
         </h2>
 
         <div style={{ display: m ? "flex" : "grid", gridTemplateColumns: "1fr 1fr", flexDirection: m ? "column" as const : undefined, gap: 24, marginBottom: 32, ...fadeIn(visible, 80) }}>
@@ -291,7 +286,7 @@ function TheResult() {
         </div>
 
         <p style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 160) }}>
-          The report is generated using the same methodological framework applied across all submitted profiles.
+          The Measurement Impact Simulator shows what would change before a new approved rule affects any connected system.
         </p>
       </div>
     </section>
@@ -308,21 +303,22 @@ function IndustryContext() {
   const fadeIn = useFadeIn();
 
   const industries = [
-    "Real Estate", "Healthcare", "Legal", "Consulting", "Sales",
-    "Technology", "Financial Services", "Construction", "Hospitality",
-    "Entertainment", "Transportation", "Retail", "Manufacturing",
-    "Education", "Insurance", "Freelance / Contract", "Home Services",
-    "Media", "Nonprofit"
+    "Measurement ID",
+    "Accepted inputs",
+    "Approved rule version",
+    "Measurement path",
+    "Approved output",
+    "Replay verification",
   ];
 
   return (
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: sectionPy(m), paddingBottom: sectionPy(m), paddingLeft: sectionPx(m), paddingRight: sectionPx(m), borderTop: `1px solid ${C.divider}` }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.2, letterSpacing: "-0.028em", color: C.navy, marginBottom: 32, fontFamily: '"Cormorant Garamond", "Georgia", serif', ...fadeIn(visible) }}>
-          Structural context across income environments
+          Replay past measurements
         </h2>
         <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 32, ...fadeIn(visible, 80) }}>
-          The methodology remains consistent across all verification environments. Industry context provides additional structural reference conditions commonly associated with specific income patterns and revenue environments.
+          Measurement Replay reconstructs a past measurement from what produced it, so it can be replayed and explained:
         </p>
 
         <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : "repeat(auto-fit, minmax(140px, 1fr))", gap: 16, ...fadeIn(visible, 140) }}>
@@ -347,19 +343,19 @@ function VerificationEnvironments() {
   const fadeIn = useFadeIn();
 
   const envs = [
-    "Individual Verification",
-    "Advisor Verification",
-    "Organizational Verification",
+    "Approved output schema",
+    "External-safe output boundary",
+    "Connected-system publishing",
   ];
 
   return (
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: sectionPy(m), paddingBottom: sectionPy(m), paddingLeft: sectionPx(m), paddingRight: sectionPx(m), borderTop: `1px solid ${C.divider}` }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto" }}>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.2, letterSpacing: "-0.028em", color: C.navy, marginBottom: 32, fontFamily: '"Cormorant Garamond", "Georgia", serif', ...fadeIn(visible) }}>
-          Verification environments
+          Publish approved outputs to connected systems
         </h2>
         <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 32, ...fadeIn(visible, 80) }}>
-          The same structural methodology operates across:
+          Approved outputs are published to your connected systems through governed integration:
         </p>
 
         <div style={{ display: m ? "flex" : "grid", gridTemplateColumns: "1fr 1fr 1fr", flexDirection: m ? "column" as const : undefined, gap: 24, marginBottom: 32, ...fadeIn(visible, 140) }}>
@@ -371,7 +367,7 @@ function VerificationEnvironments() {
         </div>
 
         <p style={{ fontSize: 15, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 200) }}>
-          The framework remains methodologically consistent across all verification environments.
+          Connected systems consume approved outputs without exposing internal measurement logic.
         </p>
       </div>
     </section>
@@ -388,8 +384,8 @@ function SystemIntegrity() {
   const fadeIn = useFadeIn();
 
   const statements = [
-    "FIXED METHODOLOGY",
-    "DETERMINISTIC RESULTS",
+    "APPROVED RULES",
+    "DETERMINISTIC OUTPUTS",
     "VERSION-STAMPED OUTPUTS",
   ];
 
@@ -406,13 +402,13 @@ function SystemIntegrity() {
 
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 20, ...fadeIn(visible, 80) }}>
           <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.7, color: C.sandText }}>
-            RunPayway™ does not forecast future outcomes.
+            RunPayway™ does not make eligibility decisions, replace institutional policy, issue recommendations, or provide financial advice.
           </p>
           <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.7, color: C.sandText }}>
-            It evaluates structural stability conditions under a fixed methodological framework.
+            It measures income structure according to approved rules and does not forecast future outcomes.
           </p>
           <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.7, color: C.sandText }}>
-            The same inputs produce the same result every time.
+            The same inputs are measured the same way every time.
           </p>
         </div>
       </div>
@@ -433,13 +429,13 @@ function FinalCta() {
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: sectionPy(m), paddingBottom: sectionPy(m), paddingLeft: sectionPx(m), paddingRight: sectionPx(m), borderTop: `1px solid ${C.divider}` }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto", textAlign: "center" }}>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.2, letterSpacing: "-0.028em", color: C.navy, marginBottom: 24, fontFamily: '"Cormorant Garamond", "Georgia", serif', ...fadeIn(visible) }}>
-          Verify the structural stability of income before major financial decisions.
+          One governed standard for complex-income measurement.
         </h2>
         <p style={{ fontSize: 16, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 32, ...fadeIn(visible, 80) }}>
-          Initial structural visibility is provided at no cost.<br />Full Structural Verification™ available for $69.
+          RunPayway™ measures income structure according to approved rules and publishes approved outputs to connected systems.
         </p>
         <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 16, ...fadeIn(visible, 160) }}>
-          <Link href="/begin" style={{
+          <Link href="/organizations" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: m ? 56 : 60, width: m ? "100%" : "auto",
             padding: m ? "0 28px" : "0 32px",
@@ -449,7 +445,7 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.backgroundColor = C.purple; }}
             onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.navy; }}>
-            Start Income Stability Verification →
+            Request Enterprise Briefing →
           </Link>
         </div>
       </div>
