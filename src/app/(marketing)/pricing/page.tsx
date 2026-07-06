@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { trackPurchaseClick } from "@/lib/analytics";
 
 /* ================================================================ */
 /* UTILITIES                                                         */
@@ -77,8 +76,6 @@ const explanatoryW = 640;
 const sectionPx = (m: boolean) => m ? 24 : 48;
 const cardShadow = "0 10px 30px rgba(14,26,43,0.06)";
 const ctaShadow = "0 8px 24px rgba(14,26,43,0.12)";
-const STRIPE = process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL || "https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05";
-const STRIPE_ANNUAL = process.env.NEXT_PUBLIC_STRIPE_ANNUAL_URL || "https://buy.stripe.com/14A14fbB67MIcZQ3EB2Nq06";
 
 
 /* ================================================================ */
@@ -95,19 +92,19 @@ function HeroSection() {
     <header ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 104 : 148, paddingBottom: m ? 48 : 72, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto", textAlign: "center" }}>
         <div style={{ fontSize: m ? 13 : 14, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16, ...fadeIn(visible) }}>
-          PRICING
+          ENTERPRISE ACCESS
         </div>
         <h1 style={{ fontSize: m ? 32 : 64, fontWeight: 700, lineHeight: 1.1, letterSpacing: "-0.035em", color: C.navy, marginBottom: 24, ...fadeIn(visible, 50) }}>
-          Start with the score.{m ? " " : <br />}Understand what defines it.
+          The governed standard for{m ? " " : <br />}complex-income measurement.
         </h1>
         <p style={{ fontSize: m ? 18 : 24, fontWeight: 400, lineHeight: 1.45, color: C.textSecondary, maxWidth: 680, margin: "0 auto 8px", ...fadeIn(visible, 100) }}>
-          RunPayway™ reveals how your income is built&mdash;and whether it holds under pressure.
+          This is not consumer checkout pricing. Enterprise access is scoped to how your organization measures complex income.
         </p>
         <p style={{ fontSize: m ? 16 : 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 620, margin: "0 auto 24px", ...fadeIn(visible, 120) }}>
-          The score is a fixed result. The diagnostic reveals what defines it.
+          Request an enterprise briefing to scope access for your teams, systems, and connected systems.
         </p>
         <div style={{ display: "flex", flexWrap: "wrap" as const, justifyContent: "center", gap: m ? 12 : 24, ...fadeIn(visible, 160) }}>
-          {["No financial accounts", "No credit pull", "Private by default"].map((item, i) => (
+          {["Approved rules", "External-safe outputs", "Measured the same way every time"].map((item, i) => (
             <span key={i} style={{ fontSize: 14, fontWeight: 600, color: C.textMuted }}>{item}</span>
           ))}
         </div>
@@ -131,19 +128,19 @@ function Declaration() {
     <section ref={ref} style={{ backgroundColor: C.white, paddingTop: m ? 56 : 96, paddingBottom: m ? 56 : 96, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: narrowW, margin: "0 auto", textAlign: "center" }}>
         <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy, marginBottom: 12, ...fadeIn(visible) }}>
-          No interpretation. No exceptions.
+          Governed access, not consumer checkout.
         </h2>
         <p style={{ fontSize: m ? 20 : 24, fontWeight: 600, lineHeight: 1.3, color: C.teal, marginBottom: 32, ...fadeIn(visible, 60) }}>
-          Same rules. Every time.
+          Approved rules. Measured the same way every time.
         </p>
         <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, marginBottom: 28, ...fadeIn(visible, 100) }}>
-          RunPayway™ measures your income under fixed rules applied consistently every time. What changes is how deeply you can see:
+          RunPayway™ measures income structure under approved rules applied consistently every time. Enterprise access is scoped to what your organization needs:
         </p>
         <div style={{ display: m ? "flex" : "grid", flexDirection: m ? "column" as const : undefined, gridTemplateColumns: m ? undefined : "1fr 1fr 1fr", gap: 12, maxWidth: m ? 420 : 680, margin: "0 auto", ...fadeIn(visible, 160) }}>
           {[
-            "What defines your score",
-            "What limits your score",
-            "What moves it forward",
+            "Organizational use case",
+            "Measurement volume",
+            "Deployment scope",
           ].map((line, i) => (
             <div key={i} style={{ display: "flex", gap: 10, alignItems: "center", justifyContent: m ? "center" : "flex-start", backgroundColor: "rgba(14,26,43,0.02)", borderRadius: 12, padding: "16px 20px" }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2.5" strokeLinecap="round" style={{ flexShrink: 0 }}><path d="M20 6 9 17l-5-5"/></svg>
@@ -158,7 +155,7 @@ function Declaration() {
 
 
 /* ================================================================ */
-/* SECTION 3 — PRICING CARDS                                         */
+/* SECTION 3 — ENTERPRISE ACCESS FACTORS                             */
 /* ================================================================ */
 
 function PricingCards() {
@@ -167,222 +164,66 @@ function PricingCards() {
   const t = useTablet();
   const fadeIn = useFadeIn();
 
-  const check = (text: string, color = C.teal) => (
+  const factors = [
+    { title: "Use case and volume", items: ["Organizational use case", "Measurement volume", "Number of teams and systems"] },
+    { title: "Integration and deployment", items: ["Integration needs", "Connected-system requirements", "Deployment scope"] },
+    { title: "Governance and replay", items: ["Governance requirements", "Approved-rule management needs", "Replay and audit requirements"] },
+  ];
+
+  const check = (label: string) => (
     <div style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 12 }}>
-      <span style={{ color, fontSize: 13, flexShrink: 0, marginTop: 2 }}>&#10003;</span>
-      <span style={{ fontSize: 14, fontWeight: 400, lineHeight: 1.5, color: "inherit" }}>{text}</span>
+      <span style={{ color: C.teal, fontSize: 13, flexShrink: 0, marginTop: 2 }}>&#10003;</span>
+      <span style={{ fontSize: 14, fontWeight: 400, lineHeight: 1.5, color: C.textSecondary }}>{label}</span>
     </div>
   );
 
   const cardBase: React.CSSProperties = {
     backgroundColor: C.white,
     borderRadius: 18,
-    padding: m ? 28 : 28,
+    padding: 28,
     border: `1px solid rgba(14,26,43,0.07)`,
     display: "flex",
     flexDirection: "column",
   };
 
-  /* ── Tier 1: Free ── */
-  const freeCard = () => (
-    <div style={cardBase}>
-      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>
-        Free
-      </div>
-      <div style={{ marginBottom: 2 }}>
-        <span style={{ fontSize: 30, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$0</span>
-      </div>
-      <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 16 }}>Always available</div>
-      <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 16, marginBottom: 16, flex: 1, color: C.textSecondary }}>
-        {check("Stability class (Limited / Developing / Established / High)")}
-        {check("Primary structural risk")}
-        {check("Distance to next class")}
-        {check("Industry context")}
-      </div>
-      <Link href="/begin" style={{
-        display: "flex", alignItems: "center", justifyContent: "center",
-        height: 52, borderRadius: 14,
-        backgroundColor: C.white, color: C.navy,
-        border: `1.5px solid ${C.teal}`,
-        fontSize: 15, fontWeight: 600, textDecoration: "none",
-        transition: "background-color 200ms",
-      }}
-        onMouseEnter={e => { e.currentTarget.style.backgroundColor = `${C.teal}08`; }}
-        onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; }}>
-        Get My Stability Class — Free
-      </Link>
-      <p style={{ fontSize: 12, color: C.textMuted, textAlign: "center", marginTop: 10, marginBottom: 0 }}>
-        No account required
-      </p>
-    </div>
-  );
-
-  /* ── Tier 2: Full Report $69 (featured) ── */
-  const diagnosticCard = () => (
-    <div style={{
-      ...cardBase,
-      padding: m ? 28 : 32,
-      boxShadow: "0 20px 48px rgba(14,26,43,0.12)",
-      border: `1.5px solid rgba(14,26,43,0.16)`,
-      position: "relative" as const, overflow: "hidden",
-    }}>
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, backgroundColor: C.teal }} />
-
-      <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 14, backgroundColor: "rgba(31,109,122,0.08)", padding: "5px 12px", borderRadius: 20, alignSelf: "flex-start" as const }}>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2.5" strokeLinecap="round"><path d="M20 6 9 17l-5-5"/></svg>
-        <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: C.teal, textTransform: "uppercase" as const }}>Most Popular</span>
-      </div>
-
-      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.navy, marginBottom: 16 }}>
-        Full Report + Dashboard
-      </div>
-      <div style={{ marginBottom: 2 }}>
-        <span style={{ fontSize: 34, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$69</span>
-      </div>
-      <div style={{ fontSize: 13, fontWeight: 500, color: C.textMuted, marginBottom: 16 }}>One-time · Lifetime access</div>
-
-      <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 16, marginBottom: 16, flex: 1, color: C.textSecondary }}>
-        {check("Income Stability Score™™ (0\u2013100)")}
-        {check("Constraint breakdown — what\u2019s limiting your score")}
-        {check("Stress test — what changes if your largest source disappears")}
-        {check("12-week action plan")}
-        {check("PressureMap\u2122 narrative")}
-        {check("Action scripts for income conversations")}
-        {check("Scenario simulator")}
-        {check("Lifetime dashboard access + email delivery")}
-      </div>
-
-      <a href={STRIPE} onClick={() => trackPurchaseClick("diagnostic_69")} style={{
-        display: "flex", alignItems: "center", justifyContent: "center",
-        height: 52, borderRadius: 14, width: "100%",
-        backgroundColor: C.navy, color: C.white,
-        fontSize: 15, fontWeight: 600, textDecoration: "none",
-        boxShadow: ctaShadow,
-        transition: "transform 200ms, box-shadow 200ms",
-      }}
-        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
-        onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = ctaShadow; }}>
-        Get Your Full Report &mdash; $69
-      </a>
-      <p style={{ fontSize: 13, fontWeight: 600, color: C.teal, textAlign: "center", marginTop: 10, marginBottom: 0 }}>
-        If it doesn&rsquo;t reveal something new, full refund.
-      </p>
-    </div>
-  );
-
-  /* ── Tier 3: Annual Monitoring $149 ── */
-  const monitoringCard = () => (
-    <div style={cardBase}>
-      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.navy, marginBottom: 16 }}>
-        Annual Monitoring
-      </div>
-      <div style={{ marginBottom: 2 }}>
-        <span style={{ fontSize: 30, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$149</span>
-        <span style={{ fontSize: 13, color: C.textMuted, marginLeft: 6 }}>/ year</span>
-      </div>
-      <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 16 }}>3 assessments per year</div>
-
-      <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 16, marginBottom: 16, flex: 1, color: C.textSecondary }}>
-        <div style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", color: C.textMuted, marginBottom: 10 }}>EVERYTHING IN $69, PLUS</div>
-        {check("3 annual reassessments")}
-        {check("Track how your score moves over time")}
-        {check("See what improved — and what didn\u2019t")}
-        {check("Reassessment reminders")}
-      </div>
-
-      <a href={STRIPE_ANNUAL} onClick={() => trackPurchaseClick("monitoring_149")} style={{
-        display: "flex", alignItems: "center", justifyContent: "center",
-        height: 52, borderRadius: 14,
-        backgroundColor: C.navy, color: C.white,
-        fontSize: 15, fontWeight: 600, textDecoration: "none",
-        boxShadow: ctaShadow,
-        transition: "transform 200ms, box-shadow 200ms",
-      }}
-        onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
-        onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = ctaShadow; }}>
-        Start Monitoring &mdash; $149/yr
-      </a>
-      <p style={{ fontSize: 12, color: C.textMuted, textAlign: "center", marginTop: 10, marginBottom: 0 }}>
-        Best for variable income earners
-      </p>
-    </div>
-  );
-
-  /* ── Tier 4: For Advisors ── */
-  const advisorCard = () => (
-    <div style={{ ...cardBase, backgroundColor: "rgba(14,26,43,0.02)", border: `1px solid rgba(14,26,43,0.08)` }}>
-      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.purple, marginBottom: 16 }}>
-        For Advisors
-      </div>
-      <div style={{ marginBottom: 2 }}>
-        <span style={{ fontSize: 30, fontWeight: 700, fontFamily: mono, color: C.navy, lineHeight: 1 }}>$15</span>
-        <span style={{ fontSize: 13, color: C.textMuted, marginLeft: 6 }}>/ report</span>
-      </div>
-      <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 16 }}>Volume pricing available</div>
-
-      <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 16, marginBottom: 16, flex: 1, color: C.textSecondary }}>
-        {check("Run assessments for clients", C.purple)}
-        {check("Advisor portal dashboard", C.purple)}
-        {check("Client management tools", C.purple)}
-        {check("Branded client-facing reports", C.purple)}
-        {check("Tiered volume pricing", C.purple)}
-      </div>
-
-      <Link href="/advisors" style={{
-        display: "flex", alignItems: "center", justifyContent: "center",
-        height: 52, borderRadius: 14,
-        backgroundColor: C.white, color: C.navy,
-        border: `1.5px solid ${C.purple}`,
-        fontSize: 15, fontWeight: 600, textDecoration: "none",
-        transition: "background-color 200ms",
-      }}
-        onMouseEnter={e => { e.currentTarget.style.backgroundColor = `rgba(75,63,174,0.04)`; }}
-        onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; }}>
-        Learn About Advisor Access
-      </Link>
-      <p style={{ fontSize: 12, color: C.textMuted, textAlign: "center", marginTop: 10, marginBottom: 0 }}>
-        Manual pilot pricing — contact us to start
-      </p>
-    </div>
-  );
-
   return (
     <section ref={ref} style={{ backgroundColor: C.sand, paddingTop: m ? 48 : 96, paddingBottom: m ? 72 : 120, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: innerW, margin: "0 auto" }}>
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: m ? "1fr" : t ? "1fr 1fr" : "1fr 1.15fr 1fr 1fr",
-          gap: 20,
-          alignItems: "stretch",
-          ...fadeIn(visible),
-        }}>
-          {m ? (
-            <>
-              {diagnosticCard()}
-              {freeCard()}
-              {monitoringCard()}
-              {advisorCard()}
-            </>
-          ) : t ? (
-            <>
-              {diagnosticCard()}
-              {freeCard()}
-              {monitoringCard()}
-              {advisorCard()}
-            </>
-          ) : (
-            <>
-              {freeCard()}
-              {diagnosticCard()}
-              {monitoringCard()}
-              {advisorCard()}
-            </>
-          )}
+        <div style={{ textAlign: "center", marginBottom: m ? 32 : 48, ...fadeIn(visible) }}>
+          <h2 style={{ fontSize: m ? 26 : 36, fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.028em", color: C.navy, marginBottom: 12 }}>What shapes enterprise access</h2>
+          <p style={{ fontSize: 17, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, maxWidth: 640, margin: "0 auto" }}>
+            There are no published tiers and no checkout. Access is scoped to your organization during an enterprise briefing.
+          </p>
         </div>
 
-        <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, textAlign: "center", marginTop: m ? 32 : 44, lineHeight: 1.6 }}>
-          Every assessment uses the same fixed scoring system.{m ? " " : <br />}Only your level of access changes.
-        </p>
+        <div style={{ display: "grid", gridTemplateColumns: m ? "1fr" : t ? "1fr 1fr" : "1fr 1fr 1fr", gap: 20, alignItems: "stretch", ...fadeIn(visible, 100) }}>
+          {factors.map((f, i) => (
+            <div key={i} style={cardBase}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: C.teal, marginBottom: 16 }}>{f.title}</div>
+              <div style={{ borderTop: `1px solid rgba(14,26,43,0.06)`, paddingTop: 16, flex: 1 }}>
+                {f.items.map((it) => check(it))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", marginTop: m ? 36 : 48, ...fadeIn(visible, 180) }}>
+          <Link href="/organizations" style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            height: 60, padding: "0 32px",
+            borderRadius: 16, backgroundColor: C.navy, color: C.white,
+            fontSize: 16, fontWeight: 600, textDecoration: "none",
+            boxShadow: ctaShadow,
+            transition: "transform 200ms, box-shadow 200ms",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = ctaShadow; }}>
+            Request Enterprise Briefing
+          </Link>
+          <p style={{ fontSize: 14, fontWeight: 500, color: C.textMuted, textAlign: "center", marginTop: 14, marginBottom: 0 }}>
+            For organizations, institutions, and platforms. We follow up within two business days.
+          </p>
+        </div>
       </div>
     </section>
   );
@@ -410,10 +251,10 @@ function PositioningStrip() {
             <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.06em", color: C.sand }}>SYSTEM INTEGRITY</span>
           </div>
           <h2 style={{ fontSize: m ? 24 : 32, fontWeight: 600, lineHeight: 1.12, letterSpacing: "-0.028em", color: C.sandText, marginBottom: 12 }}>
-            This is not a subscription to software.
+            Governed measurement, not a software subscription.
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.sandMuted, margin: 0 }}>
-            RunPayway™ is a measurement system &mdash; fixed rules. Consistent results. Every time.
+            RunPayway™ is the governed standard for complex-income measurement. Approved rules. Consistent, external-safe outputs. Every time.
           </p>
         </div>
       </div>
@@ -423,7 +264,7 @@ function PositioningStrip() {
 
 
 /* ================================================================ */
-/* SECTION 5 — WHAT YOU'RE ACTUALLY BUYING                           */
+/* SECTION 5 — WHAT ENTERPRISE ACCESS DELIVERS                       */
 /* ================================================================ */
 
 function OutcomesSection() {
@@ -433,15 +274,10 @@ function OutcomesSection() {
   const fadeIn = useFadeIn();
 
   const outcomeAccents = [C.teal, C.purple, C.navy];
-  const outcomeIcons = [
-    /* Clarity — eye */ <svg key="ic0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.teal} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
-    /* Structure — layers */ <svg key="ic1" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.purple} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
-    /* Control — sliders */ <svg key="ic2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.navy} strokeWidth="2" strokeLinecap="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>,
-  ];
   const outcomes = [
-    { title: "Clarity", desc: "You see how your income behaves under pressure." },
-    { title: "Structure", desc: "You understand what defines your stability." },
-    { title: "Control", desc: "You know exactly what to change \u2014 and in what order." },
+    { title: "Consistency", desc: "Complex income is measured the same way every time, across teams, systems, policies, and time." },
+    { title: "Governance", desc: "Approved rules are versioned. Test measurement-rule changes before launch with the Measurement Impact Simulator." },
+    { title: "Replay", desc: "Past measurements can be replayed and explained with Measurement Replay." },
   ];
 
   return (
@@ -449,25 +285,23 @@ function OutcomesSection() {
       <div style={{ maxWidth: 960, margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: m ? 40 : 56, ...fadeIn(visible) }}>
           <h2 style={{ fontSize: m ? 28 : 40, fontWeight: 600, lineHeight: 1.08, letterSpacing: "-0.028em", color: C.navy }}>
-            What the Dashboard gives you
+            What enterprise access delivers
           </h2>
         </div>
 
         <div style={{ display: m ? "block" : "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24, ...fadeIn(visible, 100) }}>
           {outcomes.map((item, i) => (
             <div key={i} style={{ padding: m ? 28 : 32, borderRadius: 18, backgroundColor: C.white, boxShadow: cardShadow, marginBottom: m ? 16 : 0, borderLeft: `4px solid ${outcomeAccents[i]}` }}>
-              <div style={{ marginBottom: 12 }}>{outcomeIcons[i]}</div>
               <div style={{ fontSize: 18, fontWeight: 600, color: C.navy, marginBottom: 12, lineHeight: 1.35 }}>{item.title}</div>
               <p style={{ fontSize: 16, color: C.textSecondary, lineHeight: 1.6, margin: 0 }}>{item.desc}</p>
             </div>
           ))}
         </div>
 
-        {/* Price justification */}
         <div style={{ textAlign: "center", marginTop: m ? 40 : 56, ...fadeIn(visible, 180) }}>
-          <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 8 }}>One decision can cost more than this.</p>
+          <p style={{ fontSize: 16, fontWeight: 600, color: C.navy, marginBottom: 8 }}>Approved outputs, published to connected systems.</p>
           <p style={{ fontSize: 15, color: C.textMuted, lineHeight: 1.6, maxWidth: explanatoryW, margin: "0 auto 24px" }}>
-            Understanding how your income works before acting prevents mistakes that cost far more than $69.
+            RunPayway™ measures income structure according to approved rules and publishes approved outputs to connected systems. It does not make eligibility decisions, replace institutional policy, issue recommendations, or provide financial advice.
           </p>
         </div>
       </div>
@@ -477,7 +311,7 @@ function OutcomesSection() {
 
 
 /* ================================================================ */
-/* SECTION 7 — FAQ                                                   */
+/* SECTION 6 — FAQ                                                   */
 /* ================================================================ */
 
 function FaqSection() {
@@ -488,14 +322,14 @@ function FaqSection() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const faqs = [
-    { q: "What do I get for free?", a: "A complete structural score and classification. No cost. No account required." },
-    { q: "What does the $69 unlock?", a: "The Dashboard — a full breakdown of what defines your score, personalized scripts, a 12-week roadmap, and the exact actions that change it." },
-    { q: "What is the Negotiation Playbook?", a: "Scripts based on how your income actually works, designed to improve stability." },
-    { q: "How are roadmap milestones personalized?", a: "They are generated directly from your inputs — not templates or assumptions." },
-    { q: "What does Monitoring include?", a: "Multiple assessments, change tracking, and visibility over time." },
-    { q: "How is the score calculated?", a: "Using fixed rules applied consistently to your answers." },
-    { q: "Do you access my bank or credit?", a: "No. RunPayway™ does not connect to financial accounts." },
-    { q: "What if it doesn\u2019t reveal anything new?", a: "You receive a full refund." },
+    { q: "Is this consumer checkout pricing?", a: "No. There are no published tiers, no checkout, and no consumer plans. Enterprise access is scoped during a briefing." },
+    { q: "How is enterprise access priced?", a: "By organizational use case, measurement volume, integration needs, governance requirements, and deployment scope." },
+    { q: "Can we test rule changes before launch?", a: "Yes. The Measurement Impact Simulator tests proposed measurement-rule changes against historical income cases before they go live." },
+    { q: "Can we replay past measurements?", a: "Yes. Measurement Replay reconstructs the approved rule version, accepted inputs, and approved output so past measurements can be replayed and explained." },
+    { q: "How are approved outputs delivered?", a: "Approved, external-safe outputs are published to your connected systems through governed integration." },
+    { q: "Does RunPayway™ make decisions?", a: "No. RunPayway™ does not make eligibility decisions, replace institutional policy, issue recommendations, or provide financial advice." },
+    { q: "Is a public numeric score exposed?", a: "No. RunPayway™ exposes external-safe classification language, not a public numeric score." },
+    { q: "How do we get started?", a: "Request an enterprise briefing and we scope access to your organization." },
   ];
 
   return (
@@ -517,7 +351,7 @@ function FaqSection() {
                     <path d="M8 3v10" stroke={C.navy} strokeWidth="1.5" strokeLinecap="round" />
                   </svg>
                 </button>
-                <div style={{ maxHeight: isOpen ? 200 : 0, overflow: "hidden", transition: "max-height 300ms ease" }}>
+                <div style={{ maxHeight: isOpen ? 220 : 0, overflow: "hidden", transition: "max-height 300ms ease" }}>
                   <p style={{ fontSize: 15, color: C.textSecondary, lineHeight: 1.65, margin: 0, paddingBottom: 24 }}>{faq.a}</p>
                 </div>
               </div>
@@ -532,7 +366,7 @@ function FaqSection() {
 
 
 /* ================================================================ */
-/* SECTION 8 — FINAL CTA                                             */
+/* SECTION 7 — FINAL CTA                                             */
 /* ================================================================ */
 
 function FinalCta() {
@@ -544,14 +378,14 @@ function FinalCta() {
     <section ref={ref} style={{ backgroundColor: C.navy, paddingTop: m ? 88 : 128, paddingBottom: m ? 88 : 128, paddingLeft: sectionPx(m), paddingRight: sectionPx(m) }}>
       <div style={{ maxWidth: explanatoryW, margin: "0 auto", textAlign: "center" }}>
         <h2 style={{ fontSize: m ? 28 : 52, fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.035em", color: C.sandText, marginBottom: 20, ...fadeIn(visible) }}>
-          Know your income{m ? " " : <br />}before you rely on it.
+          Measure complex income{m ? " " : <br />}the same way every time.
         </h2>
         <p style={{ fontSize: m ? 18 : 22, fontWeight: 400, lineHeight: 1.45, color: C.sandMuted, marginBottom: 32, ...fadeIn(visible, 80) }}>
-          Measure how your income is built&mdash;and whether it holds when it matters.
+          RunPayway™ measures income structure according to approved rules and publishes approved outputs to connected systems.
         </p>
 
         <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", ...fadeIn(visible, 120) }}>
-          <Link href="/begin" style={{
+          <Link href="/organizations" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: m ? 56 : 60, width: m ? "100%" : "auto",
             padding: m ? "0 28px" : "0 32px",
@@ -563,10 +397,10 @@ function FinalCta() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Get My Stability Class — Free
+            Request Enterprise Briefing
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: C.sandLight, marginTop: 16 }}>
-            Under 2 minutes | Instant result | Private by default
+            For organizations, institutions, and platforms.
           </p>
         </div>
       </div>
