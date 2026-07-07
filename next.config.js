@@ -68,6 +68,10 @@ const nextConfig = {
     return [
       { source: "/plans", destination: "/pricing", permanent: true },
       { source: "/advisors", destination: "/organizations", permanent: true },
+      { source: "/coming-soon", destination: "/organizations", permanent: true },
+      { source: "/sample-report", destination: "/organizations", permanent: true },
+      { source: "/blog", destination: "/organizations", permanent: true },
+      { source: "/blog/:slug*", destination: "/organizations", permanent: true },
     ];
   },
 };

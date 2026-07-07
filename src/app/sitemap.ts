@@ -12,13 +12,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Main marketing pages
     { url: `${BASE}/how-it-works`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/pricing`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE}/sample-report`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/faq`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/organizations`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/methodology`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${BASE}/coming-soon`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.6 },
 
     // Legal pages
     { url: `${BASE}/privacy-policy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.4 },
@@ -73,12 +71,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: slug.startsWith("income-stability-vs") || slug === "what-is-income-stability" || slug === "how-to-measure-income-stability" ? 0.8 : 0.7,
     })),
-
-    // Blog pages
-    { url: `${BASE}/blog`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
-    { url: `${BASE}/blog/the-income-stability-gap`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${BASE}/blog/what-is-income-stability`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
-    { url: `${BASE}/blog/hidden-risk-in-commission-income`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
-    { url: `${BASE}/blog/recurring-revenue-for-service-businesses`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
   ];
 }

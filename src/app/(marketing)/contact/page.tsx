@@ -278,7 +278,7 @@ export default function ContactPage() {
             {t.contact.closingSubtitle}
           </h2>
           <div style={{ display: "flex", flexDirection: mobile ? "column" : "row", alignItems: "center", gap: mobile ? 12 : 16, justifyContent: "center" }}>
-            <Link href="/begin" style={{
+            <Link href="/organizations" style={{
               display: "inline-flex", alignItems: "center", justifyContent: "center",
               height: mobile ? 56 : 60, width: mobile ? "100%" : "auto",
               padding: mobile ? "0 28px" : "0 32px",
@@ -290,26 +290,9 @@ export default function ContactPage() {
             }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.12)"; }}
               onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-              Get My Stability Class — Free
+              For organizations
             </Link>
-            <a href="https://buy.stripe.com/9B66oz48EaYU2lc4IF2Nq05" style={{
-              display: "inline-flex", alignItems: "center", justifyContent: "center",
-              height: mobile ? 56 : 60, width: mobile ? "100%" : "auto",
-              padding: mobile ? "0 28px" : "0 32px",
-              borderRadius: 16, backgroundColor: C.navy, color: C.white,
-              fontSize: 16, fontWeight: 600, textDecoration: "none",
-              boxShadow: "0 8px 24px rgba(14,26,43,0.12)",
-              border: `1px solid ${C.navy}`,
-              transition: "transform 200ms, box-shadow 200ms",
-            }}
-              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(14,26,43,0.18)"; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.12)"; }}>
-              Get Your Full Report — $69
-            </a>
           </div>
-          <p style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.40)", marginTop: 20, textAlign: "center" }}>
-            Free analysis under 2 minutes | Paid report includes roadmap & scripts
-          </p>
           <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 24, letterSpacing: "0.04em" }}>
             {t.contact.poweredBy}
           </p>
