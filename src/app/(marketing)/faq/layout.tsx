@@ -3,18 +3,18 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "FAQ | RunPayway™",
   description:
-    "Answers about the Income Stability Score, assessment process, reports, pricing, privacy, and enterprise licensing.",
+    "Answers about RunPayway™ complex-income measurement: approved measurement rules, approved outputs, external-safe output, privacy, and organization licensing.",
   openGraph: {
     title: "FAQ | RunPayway™",
     description:
-      "Answers about the Income Stability Score, assessment process, reports, pricing, privacy, and enterprise licensing.",
+      "Answers about RunPayway™ complex-income measurement: approved measurement rules, approved outputs, external-safe output, privacy, and organization licensing.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "FAQ | RunPayway™",
     description:
-      "Answers about the Income Stability Score, assessment process, reports, pricing, privacy, and enterprise licensing.",
+      "Answers about RunPayway™ complex-income measurement: approved measurement rules, approved outputs, external-safe output, privacy, and organization licensing.",
   },
 };
 

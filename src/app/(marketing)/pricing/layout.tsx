@@ -3,18 +3,18 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Pricing | RunPayway™",
   description:
-    "Free Income Stability Score in 90 seconds. Full report with action plan for $69. No subscription required.",
+    "RunPayway™ is the governed standard for complex-income measurement. Licensing for organizations, institutions, and platforms. Approved, external-safe outputs for connected systems.",
   openGraph: {
     title: "Pricing | RunPayway™",
     description:
-      "Free Income Stability Score in 90 seconds. Full report with action plan for $69. No subscription required.",
+      "RunPayway™ is the governed standard for complex-income measurement. Licensing for organizations, institutions, and platforms. Approved, external-safe outputs for connected systems.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Pricing | RunPayway™",
     description:
-      "Free Income Stability Score in 90 seconds. Full report with action plan for $69. No subscription required.",
+      "RunPayway™ is the governed standard for complex-income measurement. Licensing for organizations, institutions, and platforms. Approved, external-safe outputs for connected systems.",
   },
 };
 

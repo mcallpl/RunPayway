@@ -3,18 +3,18 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "How It Works | RunPayway™",
   description:
-    "Six structural questions. Deterministic scoring. See how the Income Stability Score measures how your income is built — not how much you earn.",
+    "How RunPayway™ measures the structure behind complex income using approved measurement rules, producing approved, external-safe outputs measured the same way every time.",
   openGraph: {
     title: "How It Works | RunPayway™",
     description:
-      "Six structural questions. Deterministic scoring. See how the Income Stability Score measures how your income is built.",
+      "How RunPayway™ measures the structure behind complex income using approved measurement rules, producing approved, external-safe outputs measured the same way every time.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "How It Works | RunPayway™",
     description:
-      "Six structural questions. Deterministic scoring. See how the Income Stability Score measures how your income is built.",
+      "How RunPayway™ measures the structure behind complex income using approved measurement rules, producing approved, external-safe outputs measured the same way every time.",
   },
 };
 

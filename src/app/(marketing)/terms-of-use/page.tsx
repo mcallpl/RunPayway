@@ -150,7 +150,7 @@ export default function TermsOfUsePage() {
           <p style={{ fontSize: mobile ? 16 : 18, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 32 }}>
             {t.termsOfUse.closingSubtitle}
           </p>
-          <Link href="/begin" style={{
+          <Link href="/organizations" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             height: mobile ? 56 : 60, width: mobile ? "100%" : "auto",
             padding: mobile ? "0 28px" : "0 32px",
@@ -162,10 +162,10 @@ export default function TermsOfUsePage() {
           }}
             onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(244,241,234,0.15)"; }}
             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(14,26,43,0.08)"; }}>
-            Start Your Free Assessment
+            For organizations
           </Link>
           <p style={{ fontSize: 14, fontWeight: 500, color: "rgba(244,241,234,0.40)", marginTop: 16 }}>
-            Under 2 minutes | Instant result | Private by default
+            Governed measurement | Approved, external-safe outputs | Private by default
           </p>
           <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 24, letterSpacing: "0.04em" }}>
             {t.termsOfUse.closingPowered}
