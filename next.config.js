@@ -74,6 +74,7 @@ const nextConfig = {
       { source: "/blog/:slug*", destination: "/organizations", permanent: true },
       { source: "/create-account", destination: "/organizations", permanent: true },
       { source: "/begin", destination: "/organizations", permanent: true },
+      { source: "/free-assessment", destination: "/organizations", permanent: true },
     ];
   },
 };
