@@ -72,6 +72,7 @@ const nextConfig = {
       { source: "/sample-report", destination: "/organizations", permanent: true },
       { source: "/blog", destination: "/organizations", permanent: true },
       { source: "/blog/:slug*", destination: "/organizations", permanent: true },
+      { source: "/create-account", destination: "/organizations", permanent: true },
     ];
   },
 };
