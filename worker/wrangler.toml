@@ -4,6 +4,9 @@ compatibility_date = "2024-01-01"
 
 [vars]
 ALLOWED_ORIGIN = "*"
+# EMAIL KILL SWITCH — all outgoing email is paused during the RunPayway rework.
+# Set to "true" (and redeploy) to resume sending. Only the exact string "true" enables email.
+EMAILS_ENABLED = "false"
 
 [[d1_databases]]
 binding = "DB"
@@ -11,5 +14,10 @@ database_name = "runpayway-records"
 database_id = "311e5994-7568-4461-b54f-447414737053"
 
 # Follow-up email cron — runs daily at 9am EST (14:00 UTC)
+# DISABLED during the RunPayway rework (email is paused). The scheduled()
+# handlers are also guarded by the EMAIL KILL SWITCH, so even if a cron is
+# re-added they will no-op until EMAILS_ENABLED = "true". Restore the line
+# below to re-enable the daily trigger.
 [triggers]
-crons = ["0 14 * * *"]
+crons = []
+# crons = ["0 14 * * *"]

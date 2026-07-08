@@ -3,10 +3,31 @@
 import { sanitizeString, sanitizeEmail, sanitizeInteger } from "./sanitize.js";
 
 // ══════════════════════════════════════════════════════════
+// EMAIL KILL SWITCH — TEMPORARY
+// ──────────────────────────────────────────────────────────
+// All outgoing email is paused while RunPayway is being reworked.
+// Nothing is sent via Resend from any endpoint or cron until this is
+// re-enabled. To turn email back on in the future, set the worker var
+// EMAILS_ENABLED = "true" in worker/wrangler.toml (and redeploy).
+//
+// Fail-safe: only the exact string "true" enables sending. A missing or
+// any other value keeps email OFF.
+// ══════════════════════════════════════════════════════════
+
+function emailsEnabled(env) {
+  return env && env.EMAILS_ENABLED === "true";
+}
+
+// ══════════════════════════════════════════════════════════
 // SEND EMAIL (via Resend)
 // ══════════════════════════════════════════════════════════
 
 export async function handleSendEmail(body, env, corsHeaders) {
+  // EMAIL KILL SWITCH — email paused during rework. No-op, report success.
+  if (!emailsEnabled(env)) {
+    return new Response(JSON.stringify({ success: true, disabled: true }), { headers: corsHeaders });
+  }
+
   const toEmail = sanitizeEmail(body.to);
   const score = sanitizeInteger(body.score, 0, 100, 0);
 
@@ -260,6 +281,11 @@ ${actionFirst ? `
 // ══════════════════════════════════════════════════════════
 
 export async function handleContact(body, env, corsHeaders) {
+  // EMAIL KILL SWITCH — email paused during rework. No admin notice / no nurture enrollment.
+  if (!emailsEnabled(env)) {
+    return new Response(JSON.stringify({ success: true, disabled: true }), { headers: corsHeaders });
+  }
+
   const contactName = sanitizeString(body.name, 200);
   const contactEmail = sanitizeEmail(body.email);
   const contactMessage = sanitizeString(body.message, 5000);
@@ -405,6 +431,11 @@ export async function ensureNurtureTable(env) {
 
 // Process the nurture queue — called by cron trigger daily at 2pm UTC
 export async function processNurtureQueue(env) {
+  // EMAIL KILL SWITCH — email paused during rework. Skip the whole run.
+  if (!emailsEnabled(env)) {
+    console.log("[Nurture Cron] EMAILS_ENABLED not true — email paused, skipping");
+    return;
+  }
   if (!env.RESEND_API_KEY) {
     console.log("[Nurture Cron] No RESEND_API_KEY configured, skipping");
     return;
@@ -539,6 +570,11 @@ export async function processNurtureQueue(env) {
 // ══════════════════════════════════════════════════════════
 
 export async function handleNurture(body, env, corsHeaders) {
+  // EMAIL KILL SWITCH — email paused during rework. No-op, report success.
+  if (!emailsEnabled(env)) {
+    return new Response(JSON.stringify({ success: true, disabled: true }), { headers: corsHeaders });
+  }
+
   const email = sanitizeEmail(body.email);
   const name = sanitizeString(body.name, 200);
   const score = sanitizeInteger(body.score, 0, 100, 0);
@@ -631,6 +667,11 @@ export async function handleNurture(body, env, corsHeaders) {
 // followup_sent bitmask: 0=none, 1=day7, 2=day30, 4=day90
 
 export async function handleFollowUpCron(env) {
+  // EMAIL KILL SWITCH — email paused during rework. Skip the whole run.
+  if (!emailsEnabled(env)) {
+    console.log("[Follow-up Cron] EMAILS_ENABLED not true — email paused, skipping");
+    return;
+  }
   if (!env.RESEND_API_KEY) return;
   const fromEmail = env.FROM_EMAIL || "RunPayway <reports@peoplestar.com>";
 
