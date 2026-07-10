@@ -4,6 +4,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createStorageBackend } from "@/lib/engine";
+import { assertNoDeniedFields } from "@/contracts/public-dto/public-dto-enforcer";
 
 export const dynamic = "force-dynamic";
 export async function POST(request: NextRequest) {
@@ -34,18 +35,27 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ valid_record: false });
     }
 
-    return NextResponse.json({
+    // ── Segment B2a: subtractive public-leakage removal ──
+    // The former success response leaked prohibited fields (record_id,
+    // model_version, final_score, stability_band, issued_timestamp) and retired
+    // income-stability model language in its statement. Those are removed here.
+    //
+    // BLOCKER (documented, not faked): the full locked seven-field public DTO
+    // (classification, primary_drivers, interpretation, compared_with) cannot be
+    // emitted from the verification store, which persists only score/band/date
+    // fields. Producing those fields would require storage/schema changes that
+    // are OUT OF SCOPE for this segment. Until separately authorized, this
+    // endpoint returns only a safe, bounded, non-leaking confirmation.
+    const response = {
       valid_record: true,
-      record_id: record.record_id,
-      model_version: record.model_version,
-      final_score: record.final_score,
-      stability_band: record.stability_band,
       assessment_date: record.assessment_date_utc,
-      issued_timestamp: record.issued_timestamp_utc,
       verified_at: new Date().toISOString(),
-      verification_statement:
-        "This record matches a RunPayway™-issued Income Stability Assessment.",
-    });
+    };
+
+    // Defense-in-depth: fail closed if any denied field ever slips in.
+    assertNoDeniedFields(response);
+
+    return NextResponse.json(response);
   } catch {
     return NextResponse.json({ valid_record: false }, { status: 500 });
   }
