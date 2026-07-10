@@ -10,9 +10,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "RunPayway™ — Income Stability Score",
+  title: "RunPayway™ — Complex-Income Measurement Infrastructure",
   description:
-    "Measure how stable your income structure actually is. Six structural factors. 90 seconds. Consistent scoring. Built for consultants, contractors, freelancers, and business owners.",
+    "RunPayway™ is the governed standard for complex-income measurement. It helps organizations measure income structure consistently — applying approved rules, testing changes with the Measurement Impact Simulator, replaying past measurements, and publishing approved, external-safe outputs to connected systems.",
   verification: {
     google: "5m6xwNlo1Wihest8Qlgi8TEClC93pxwzzTdiMLsH4ZA",
   },
@@ -20,8 +20,8 @@ export const metadata: Metadata = {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
   },
   openGraph: {
-    title: "RunPayway™ — Income Stability Score",
-    description: "The structural assessment that reveals income weakness before disruption makes it obvious.",
+    title: "RunPayway™ — Complex-Income Measurement Infrastructure",
+    description: "The governed standard for measuring income structure consistently when business decisions depend on it — approved rules, approved outputs, connected systems.",
     siteName: "RunPayway",
     type: "website",
     images: [
@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "RunPayway™ — Income Stability Score",
-    description: "Measure how stable your income structure actually is. Deterministic scoring.",
+    title: "RunPayway™ — Complex-Income Measurement Infrastructure",
+    description: "The governed standard for complex-income measurement. Approved rules, external-safe outputs, connected systems.",
     images: ["https://runpayway.peoplestar.com/og-image.svg"],
   },
 };
@@ -69,7 +69,7 @@ export default function RootLayout({
               name: "RunPayway\u2122",
               url: "https://runpayway.peoplestar.com",
               description:
-                "RunPayway measures how stable your income structure actually is. Deterministic scoring built for consultants, contractors, freelancers, and business owners.",
+                "RunPayway\u2122 is Enterprise Complex-Income Measurement Infrastructure. It helps organizations measure income structure consistently by applying approved rules, testing changes before launch, replaying past measurements, and publishing approved outputs to connected systems.",
               brand: {
                 "@type": "Brand",
                 name: "RunPayway\u2122",
