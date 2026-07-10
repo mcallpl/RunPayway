@@ -1190,7 +1190,6 @@ export default function LandingPage() {
               <a href="/how-it-works">How It Works</a>
               <a href="#sample-report">Sample Output</a>
               <a href="/faq">FAQ</a>
-              <a href="/verify">Verify Output</a>
             </div>
 
             {/* Column 3 - What We Measure */}
@@ -1227,8 +1226,6 @@ export default function LandingPage() {
               <a href="/about">About</a>
               <a href="/contact">Contact</a>
               <a href="/accessibility">Accessibility</a>
-              <a href="/careers">Careers</a>
-              <a href="/press">Press</a>
             </div>
 
             {/* Column 7 - Legal */}
@@ -1236,10 +1233,7 @@ export default function LandingPage() {
               <h3>Legal</h3>
               <a href="/privacy-policy">Privacy Policy</a>
               <a href="/terms-of-use">Terms of Service</a>
-              <a href="/disclaimer">Disclaimer</a>
-              <a href="/cookie-policy">Cookie Policy</a>
               <a href="/accessibility">Accessibility Statement</a>
-              <a href="/report-use-policy">Report Use Policy</a>
             </div>
           </div>
 
