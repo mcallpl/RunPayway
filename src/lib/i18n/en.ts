@@ -1402,12 +1402,12 @@ export const en: Translations = {
 
   // ── Verify page ──
   verifyPage: {
-    heroTag: "Score Verification",
-    heroTitle: "Verify a Score",
-    heroSubtitle: "Confirm that an Income Stability Score™ was generated using the official RunPayway™ model.",
+    heroTag: "Record Verification",
+    heroTitle: "Verify a Record",
+    heroSubtitle: "Confirm that a submitted record matches an assessment issued by RunPayway™.",
     heroNote: "Enter the Record ID and Authorization Code from an issued assessment.",
     formTitle: "Record Verification",
-    formSubtitle: "Verify a RunPayway™-issued Income Stability Assessment record.",
+    formSubtitle: "Confirm that a record matches a RunPayway™-issued assessment.",
     recordIdLabel: "Record ID",
     recordIdPlaceholder: "UUID v4 format",
     authCodeLabel: "Authorization Code",
@@ -1415,7 +1415,7 @@ export const en: Translations = {
     verifying: "Verifying...",
     verifyButton: "Verify Record",
     verifiedBadge: "Verified",
-    verificationStatement: "This record matches a RunPayway™-issued Income Stability Assessment.",
+    verificationStatement: "This record matches a RunPayway™-issued assessment.",
     labelRecordId: "Record ID",
     labelModelVersion: "Model Version",
     labelScore: "Income Stability Score™",
@@ -1428,8 +1428,8 @@ export const en: Translations = {
     errorText: "Verification request failed.",
     howTitle: "How Verification Works",
     howStep1: "Each completed assessment receives a unique Record ID and Authorization Code.",
-    howStep2: "Enter both credentials above to verify that a score was generated using the official RunPayway™ model.",
-    howStep3: "Verification confirms the record exists and returns the score, classification band, and issuance details without exposing internal assessment data.",
+    howStep2: "Enter both credentials above to confirm that the record matches an assessment issued by RunPayway™.",
+    howStep3: "Verification confirms whether the record matches an issued assessment and returns only the assessment date and the time of verification. No score, classification, or internal assessment data is disclosed.",
     closingPowered: "Model RP-2.0",
   },
 };
