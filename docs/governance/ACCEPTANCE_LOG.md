@@ -1530,3 +1530,72 @@ B1f-impl-1 is accepted and locked as Entry 16 in the canonical RunPayway Accepta
 ### Final Lock Statement
 
 ADR-006 Enterprise Product Identity is accepted and locked, and WO-G Enterprise Complex-Income Measurement Standard and Engine Conformance is accepted and opened, as Entry 17 in the canonical RunPayway Acceptance Log. RunPayway™ is recorded as enterprise-only Enterprise Complex-Income Measurement Infrastructure and as the governed standard for complex-income measurement, enterprise and organization-facing. The consumer product framing is superseded as the controlling product model and remains only as historical audit context, prohibited-exposure safeguard, separately governed compatibility obligation, or explicitly retained technical concept. Entry 10 is superseded in part: the consumer public-migration objective is superseded while its prohibited-exposure and boundary-safety safeguards are preserved. Entry 11 and docs/governance/TWO_LANE_BUILD_CONTEXT.md are reclassified as historical governance context and safeguard reference; the consumer lane no longer controls product direction and the document is preserved for audit history and boundary discipline. WO-F is reclassified as an enterprise external-boundary safeguard workstream; its accepted increments, Entries 12 through 16, remain valid; S-C remains blocked and unauthorized and may be reopened only through separate future change control. The seven-field public DTO is retained as an accepted prohibited-exposure and external-boundary safety contract and authorizes no S-C emission. Commitment Pressure is recorded as INTERNAL PENDING DEFINITION and is PROHIBITED FROM PUBLIC EXPOSURE WITHOUT EXPRESS AUTHORIZATION; it is not declared permanently retired, permanently required, or the new enterprise measurement standard. ADR-001 through ADR-005 and the locked standards remain preserved and controlling within their accepted scopes. This entry does not authorize WO-G implementation and grants no Prisma, schema, database, persistence, staging, commit, push, or deployment authority; WO-G implementation requires a separate Gate 2 authorization granted after this acceptance and lock. Entries 1 through 16 remain unchanged, and Entry 5 remains PASS WITH CONCERNS. Any future change requires formal change control and Human Administrator approval.
+
+---
+
+## Entry 18
+
+- **Entry Number:** Entry 18
+- **Date:** 2026-07-10
+- **Work Order:** WO-G Slice 1
+- **Title:** WO-G Slice 1 Measurement-Standard Structural Frame and RP-2.0 Historical Characterization Baseline
+- **Workstream:** Enterprise Complex-Income Measurement Standard and Engine Conformance (Slice 1)
+- **Entry Type:** BOUNDED ACCEPTANCE AND LOCK
+- **Scope Classification:** Bounded governance acceptance (accepted-and-locked structural frame and historical characterization baseline; not the completed enterprise measurement standard; not Gate 3)
+- **Accepted By:** Human Administrator
+- **Status:** ACCEPTED AND LOCKED
+
+### Purpose
+
+Record Human Administrator acceptance and lock of WO-G Slice 1. Slice 1 establishes a governed, accepted-and-locked structural frame for the future RunPayway Complex-Income Measurement Standard and binds a first RP-2.0 historical characterization baseline for governance review. This entry records acceptance and lock only. It defines no measurement semantics, adopts no normative enterprise measurement standard, and begins no implementation gate.
+
+### Artifacts Accepted
+
+1. `docs/COMPLEX_INCOME_MEASUREMENT_STANDARD_V1.md` (accepted-and-locked structural frame). It establishes identity, governing authority, scope boundaries, deferral statements, versioning, and a companion-test reference only. It remains a structural frame and is not the completed enterprise measurement standard.
+2. `tests/conformance/engine-baseline.conformance.test.ts` (RP-2.0 historical characterization conformance artifact). It records the current engine behavior against a fixed input vector as historical characterization evidence only. It is not a normative conformance standard and adopts no measurement semantics.
+
+### Independent Acceptance Re-Review Basis
+
+1. An independent acceptance re-review concluded that both WO-G Slice 1 artifacts satisfy the WO-G Slice 1 criteria.
+2. No Category 1 issues remain.
+3. No Category 2 issues remain.
+4. Both WO-G Slice 1 artifacts contain zero U+2014 em dash characters.
+5. The isolated conformance test passes: 1 test file passed and 3 tests passed.
+6. Whitespace checks are clean and import boundaries are compliant.
+7. Commitment Pressure remains INTERNAL PENDING DEFINITION.
+8. No normative enterprise measurement semantics were adopted.
+9. The companion conformance test remains historical characterization evidence only.
+
+### Verification / Closeout Basis
+
+1. Isolated conformance run: `tests/conformance/engine-baseline.conformance.test.ts` reported 1 test file passed and 3 tests passed.
+2. Zero U+2014 em dash characters were present in both WO-G Slice 1 artifacts.
+3. The conformance test logic, expected values, and fixed input vector were not altered.
+4. No engine code, types, DSL code, WO-F code, public DTO, verify-public, Prisma, persistence, database, API, marketing, configuration, or package files were modified for this acceptance.
+5. This acceptance edited only the canonical Acceptance Log; the accepted structural-frame artifact was not modified, consistent with the established pattern in which acceptance and lock are recorded in this log rather than stamped into the accepted artifact.
+6. No git staging, commit, push, merge, deployment, or live validation was performed.
+
+### Non-Authorizations
+
+Entry 18 does not authorize:
+
+1. Adoption of RP-2.0 as the enterprise measurement standard of record.
+2. Any measurement semantics or normative standard content.
+3. Any definition of Commitment Pressure.
+4. WO-F expansion or reopening.
+5. Any public DTO expansion or public emission surface.
+6. Gate 3 or any implementation gate.
+7. Staging, commit, push, merge, deployment, or live validation.
+8. Any change to the conformance test, engine, types, DSL, Prisma, persistence, database, APIs, or configuration.
+
+### HOLD and Pending Items Preserved
+
+1. The completed enterprise measurement standard does not yet exist; only an accepted-and-locked structural frame exists.
+2. RP-2.0 remains historical characterization only and is not the authoritative standard of record.
+3. Commitment Pressure remains INTERNAL PENDING DEFINITION and is not defined by this entry.
+4. Gate 3 has not begun and remains unauthorized.
+5. WO-F and the seven-field public DTO remain unchanged and are not expanded.
+
+### Final Lock Statement
+
+WO-G Slice 1 is accepted and locked as Entry 18 in the canonical RunPayway Acceptance Log. The accepted scope is limited to the accepted-and-locked structural frame `docs/COMPLEX_INCOME_MEASUREMENT_STANDARD_V1.md` and the RP-2.0 historical characterization conformance artifact `tests/conformance/engine-baseline.conformance.test.ts`, confirmed by an independent acceptance re-review with no remaining Category 1 issues and no remaining Category 2 issues, an isolated conformance result of 1 test file passed and 3 tests passed, and zero U+2014 em dash characters in both artifacts. The structural frame is accepted and locked as a structural frame only and is not the completed enterprise measurement standard; the completed enterprise measurement standard does not yet exist. The conformance artifact is historical characterization only, and RP-2.0 is not adopted as the enterprise measurement standard and is not the authoritative standard of record. Commitment Pressure remains INTERNAL PENDING DEFINITION and is not defined by this entry. This entry authorizes no WO-F expansion, no public DTO expansion, no Gate 3 authority, and no staging, commit, push, merge, deployment, or live validation; Gate 3 remains unauthorized and has not begun, and the two artifacts have not been committed or promoted. Entries 1 through 17 remain unchanged, and Entry 5 remains PASS WITH CONCERNS. Any future change requires formal change control and Human Administrator re-acceptance.
