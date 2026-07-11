@@ -1599,3 +1599,61 @@ Entry 18 does not authorize:
 ### Final Lock Statement
 
 WO-G Slice 1 is accepted and locked as Entry 18 in the canonical RunPayway Acceptance Log. The accepted scope is limited to the accepted-and-locked structural frame `docs/COMPLEX_INCOME_MEASUREMENT_STANDARD_V1.md` and the RP-2.0 historical characterization conformance artifact `tests/conformance/engine-baseline.conformance.test.ts`, confirmed by an independent acceptance re-review with no remaining Category 1 issues and no remaining Category 2 issues, an isolated conformance result of 1 test file passed and 3 tests passed, and zero U+2014 em dash characters in both artifacts. The structural frame is accepted and locked as a structural frame only and is not the completed enterprise measurement standard; the completed enterprise measurement standard does not yet exist. The conformance artifact is historical characterization only, and RP-2.0 is not adopted as the enterprise measurement standard and is not the authoritative standard of record. Commitment Pressure remains INTERNAL PENDING DEFINITION and is not defined by this entry. This entry authorizes no WO-F expansion, no public DTO expansion, no Gate 3 authority, and no staging, commit, push, merge, deployment, or live validation; Gate 3 remains unauthorized and has not begun, and the two artifacts have not been committed or promoted. Entries 1 through 17 remain unchanged, and Entry 5 remains PASS WITH CONCERNS. Any future change requires formal change control and Human Administrator re-acceptance.
+
+---
+
+## Entry 19
+
+- **Entry Number:** Entry 19
+- **Date:** 2026-07-10
+- **Work Order:** RunPayway™ Wrangler Agent Governance Artifacts (bounded refinement)
+- **Title:** RunPayway™ Wrangler Agent Operating Charter, Reporting Template, and Regression Scenarios Acceptance and Lock
+- **Workstream:** RunPayway™ Wrangler Agent Governance Definition
+- **Entry Type:** BOUNDED ACCEPTANCE AND LOCK
+- **Scope Classification:** Bounded governance acceptance (acceptance and lock of three Wrangler Agent governance-reference artifacts; not Gate 2 implementation authorization; not Gate 3; not deployment authorization)
+- **Accepted By:** Human Administrator
+- **Status:** ACCEPTED AND LOCKED
+
+### Purpose
+
+Record Human Administrator acceptance and lock of the three RunPayway™ Wrangler Agent governance artifacts following the concluded independent acceptance re-review. This entry records acceptance and lock only. It authorizes no product-code change, no schema change, no implementation gate, and no deployment.
+
+### Artifacts Accepted
+
+1. `docs/governance/agents/RUNPAYWAY_WRANGLER_AGENT/WRANGLER_AGENT.md` (RunPayway™ Wrangler Agent Operating Charter). It codifies the agent identity, authorization boundaries, evidence ladder, gate lexicon, accepted-artifact preservation discipline, and reporting discipline.
+2. `docs/governance/agents/RUNPAYWAY_WRANGLER_AGENT/REPORTING_TEMPLATE.md` (RunPayway™ Wrangler Agent Reporting Template). It defines the required structure of every Wrangler Agent report, including the mandatory final-report self-check.
+3. `docs/governance/agents/RUNPAYWAY_WRANGLER_AGENT/REGRESSION_SCENARIOS.md` (RunPayway™ Wrangler Agent Regression Scenarios). It defines the twelve behavioral regression scenarios that operationalize the operating charter.
+
+### Independent Acceptance Re-Review Basis
+
+1. An independent acceptance re-review concluded that the bounded refinement is accepted and ready for separate acceptance-and-lock authorization.
+2. No Category 1 issues remain.
+3. No Category 2 issues remain.
+4. All three artifacts contain zero U+2014 em dash characters.
+5. RunPayway™ trademark usage is correct. The sole bare `RunPayway` token is a literal test example inside the regression-scenario trademark-check description and legitimately omits the symbol.
+6. Whitespace checks are clean and each artifact ends with a single final newline.
+
+### Verification / Closeout Basis
+
+1. Repository baseline verified before the bounded edits: branch main at HEAD eae95e74ac6946cc7e649541e78b3808ddbd412d, local main equal to origin/main after fetch, zero staged files, zero modified tracked files, and the three intended artifacts present as the only untracked Markdown files in scope.
+2. This acceptance and lock is recorded externally in this canonical Acceptance Log entry, consistent with the established RunPayway™ convention. The three artifact files themselves remain unchanged from the independently reviewed bounded refinement, and acceptance and lock are not stamped into the artifacts. Each artifact intentionally retains its `DRAFT: PENDING INDEPENDENT ACCEPTANCE REVIEW` status line and its `1.0.0-draft` version metadata, because acceptance and lock are recorded here in the Acceptance Log rather than inside the accepted artifacts. Consistent with Entry 18, this acceptance edited only the log and left the reviewed artifacts unmodified.
+3. This acceptance appended this Entry 19 to the canonical Acceptance Log and altered no prior entry.
+4. The machine-local file `docs/governance/agents/RUNPAYWAY_WRANGLER_AGENT/.claude/settings.local.json` remained ignored, untouched, outside the accepted artifact set, and excluded from every staging proposal.
+5. No engine code, types, DSL code, WO-F code, public DTO, verify-public, Prisma, persistence, database, API, marketing, hooks, schemas, tests, configuration, or deployment files were modified for this acceptance.
+6. No U+2014 em dash character and no prohibited substitute dash character were introduced into any changed content.
+7. No git staging, commit, push, merge, deployment, or live validation was performed.
+
+### Non-Authorizations
+
+Entry 19 does not authorize:
+
+1. Gate 2 implementation authorization for any Wrangler Agent capability.
+2. Gate 3 or any implementation gate.
+3. Any product-code, schema, hook, test, or configuration change.
+4. Any deployment, restart, staging, commit, push, or merge.
+5. Creation of Entry 20 or any additional acceptance record.
+6. Any change to prior Acceptance Log entries, ADRs, or work orders.
+
+### Final Lock Statement
+
+The three RunPayway™ Wrangler Agent governance artifacts, `docs/governance/agents/RUNPAYWAY_WRANGLER_AGENT/WRANGLER_AGENT.md`, `docs/governance/agents/RUNPAYWAY_WRANGLER_AGENT/REPORTING_TEMPLATE.md`, and `docs/governance/agents/RUNPAYWAY_WRANGLER_AGENT/REGRESSION_SCENARIOS.md`, are accepted and locked as Entry 19 in the canonical RunPayway Acceptance Log, following a concluded independent acceptance re-review with no remaining Category 1 issues and no remaining Category 2 issues and zero U+2014 em dash characters in all three artifacts. The acceptance and lock are recorded externally in this Acceptance Log entry under the established RunPayway™ convention, and the three artifact files remain unchanged from the independently reviewed bounded refinement; their retained `DRAFT: PENDING INDEPENDENT ACCEPTANCE REVIEW` status and `1.0.0-draft` version metadata are intentional because acceptance and lock are not stamped into the artifacts. The accepted operating charter, reporting template, and regression scenarios remain governance-reference documents and authorize no product-code change on their own. This entry authorizes no Gate 2 implementation, no Gate 3, no deployment, and no staging, commit, push, merge, or live validation; those actions remain unauthorized and were not performed. The machine-local `.claude/settings.local.json` file remains ignored and untouched. Entries 1 through 18 remain unchanged, and Entry 5 remains PASS WITH CONCERNS. Any future change requires formal change control and Human Administrator approval.
