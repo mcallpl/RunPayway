@@ -411,7 +411,7 @@ function RequestAccessSection() {
             Request Your Enterprise Briefing
           </h2>
           <p style={{ fontSize: 18, fontWeight: 400, lineHeight: 1.6, color: C.textSecondary, ...fadeIn(visible, 50) }}>
-            Gain access to a customized demo and detailed insights for applying RunPayway™ to your organization. We&#8217;ll follow up within two business days.
+            Gain access to a customized demo and detailed insights for applying RunPayway™ to your organization. We&#8217;ll follow up within five business days.
           </p>
         </div>
 
