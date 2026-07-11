@@ -1513,3 +1513,20 @@ Entry 16 does not authorize:
 ### Final Lock Statement
 
 B1f-impl-1 is accepted and locked as Entry 16 in the canonical RunPayway Acceptance Log. The accepted scope is limited to the pure internal public DTO adapter `assessmentRecordToPublicDto()` (whitelist projection through `toPublicDto()`), the locked classification-keyed interpretation templates (verbatim from Entry 15), the ratified sector-only allowlisted public segment label map (18 named sectors; `other` omitted and fails closed; no "General" fallback; no "professionals" suffix; no mechanical transformation), and the associated boundary tests, verified by 108 passing targeted boundary tests and 0 TypeScript errors. This is an internal adapter only; it creates no public HTTP route or emission endpoint and is wired to no existing endpoint. This entry does not close WO-F and does not achieve full B1/B2 conformance. The public HTTP emission surface, verify-public full DTO emission, v2/score migration, badge/v1 conformance, schema/storage changes, the governed primary_drivers factor-to-public-label map, the Option B compared_with.size source, and a public label for `other` all remain HOLD. CPC remains internal/enterprise-only. Step 7B remains closed. Entries 1 through 15 remain unchanged, and Entry 5 remains PASS WITH CONCERNS. Any future change requires formal change control and Human Administrator approval.
+
+---
+
+## Entry 17
+
+- **Entry Number:** Entry 17
+- **Date:** 2026-07-10
+- **Work Order:** ADR-006 / WO-G
+- **Workstream:** Enterprise Product Identity and Measurement-Standard Opening
+- **Entry Type:** ACCEPTED AND LOCKED
+- **Scope Classification:** Governance-artifact
+- **Accepted By:** Human Administrator
+- **Status:** ACCEPTED AND LOCKED
+
+### Final Lock Statement
+
+ADR-006 Enterprise Product Identity is accepted and locked, and WO-G Enterprise Complex-Income Measurement Standard and Engine Conformance is accepted and opened, as Entry 17 in the canonical RunPayway Acceptance Log. RunPayway™ is recorded as enterprise-only Enterprise Complex-Income Measurement Infrastructure and as the governed standard for complex-income measurement, enterprise and organization-facing. The consumer product framing is superseded as the controlling product model and remains only as historical audit context, prohibited-exposure safeguard, separately governed compatibility obligation, or explicitly retained technical concept. Entry 10 is superseded in part: the consumer public-migration objective is superseded while its prohibited-exposure and boundary-safety safeguards are preserved. Entry 11 and docs/governance/TWO_LANE_BUILD_CONTEXT.md are reclassified as historical governance context and safeguard reference; the consumer lane no longer controls product direction and the document is preserved for audit history and boundary discipline. WO-F is reclassified as an enterprise external-boundary safeguard workstream; its accepted increments, Entries 12 through 16, remain valid; S-C remains blocked and unauthorized and may be reopened only through separate future change control. The seven-field public DTO is retained as an accepted prohibited-exposure and external-boundary safety contract and authorizes no S-C emission. Commitment Pressure is recorded as INTERNAL PENDING DEFINITION and is PROHIBITED FROM PUBLIC EXPOSURE WITHOUT EXPRESS AUTHORIZATION; it is not declared permanently retired, permanently required, or the new enterprise measurement standard. ADR-001 through ADR-005 and the locked standards remain preserved and controlling within their accepted scopes. This entry does not authorize WO-G implementation and grants no Prisma, schema, database, persistence, staging, commit, push, or deployment authority; WO-G implementation requires a separate Gate 2 authorization granted after this acceptance and lock. Entries 1 through 16 remain unchanged, and Entry 5 remains PASS WITH CONCERNS. Any future change requires formal change control and Human Administrator approval.
