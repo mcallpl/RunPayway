@@ -57,14 +57,8 @@ const gradient = C.navy;
 
 interface VerificationResult {
   valid_record: boolean;
-  record_id?: string;
-  model_version?: string;
-  final_score?: number;
-  stability_band?: string;
   assessment_date?: string;
-  issued_timestamp?: string;
   verified_at?: string;
-  verification_statement?: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -103,11 +97,7 @@ export default function VerifyPage() {
       const stored: Array<{
         record_id: string;
         authorization_code: string;
-        model_version: string;
-        final_score: number;
-        stability_band: string;
         assessment_date_utc: string;
-        issued_timestamp_utc: string;
       }> = JSON.parse(localStorage.getItem("rp_records") || "[]");
 
       let match = stored.find(
@@ -130,15 +120,8 @@ export default function VerifyPage() {
       if (match) {
         setResult({
           valid_record: true,
-          record_id: match.record_id,
-          model_version: match.model_version,
-          final_score: match.final_score,
-          stability_band: match.stability_band,
           assessment_date: match.assessment_date_utc,
-          issued_timestamp: match.issued_timestamp_utc,
           verified_at: new Date().toISOString(),
-          verification_statement:
-            "This record matches a RunPayway\u2122-issued Income Stability Assessment.",
         });
         return;
       }
@@ -152,21 +135,15 @@ export default function VerifyPage() {
 
       if (res.ok) {
         const data = await res.json();
-        if (data.valid_record) {
-          setResult(data);
-        } else {
-          // Check URL params for embedded data
-          const params = new URLSearchParams(window.location.search);
-          const urlScore = params.get("s");
-          const urlBand = params.get("b");
-          const urlDate = params.get("d");
-          const urlModel = params.get("m");
-          if (urlScore && urlBand) {
-            setResult({ valid_record: true, record_id: trimmedId, model_version: urlModel || "RP-2.0", final_score: parseInt(urlScore, 10), stability_band: urlBand, assessment_date: urlDate || "", issued_timestamp: urlDate || "", verified_at: new Date().toISOString(), verification_statement: "This record matches a RunPayway\u2122-issued Income Stability Assessment." });
-          } else {
-            setResult({ valid_record: false });
-          }
-        }
+        setResult(
+          data.valid_record
+            ? {
+                valid_record: true,
+                assessment_date: data.assessment_date,
+                verified_at: data.verified_at,
+              }
+            : { valid_record: false }
+        );
       } else {
         setResult({ valid_record: false });
       }
@@ -199,15 +176,15 @@ export default function VerifyPage() {
         // Check local storage first
         let localMatch: typeof result = null;
         try {
-          const stored: Array<{ record_id: string; authorization_code: string; model_version: string; final_score: number; stability_band: string; assessment_date_utc: string; issued_timestamp_utc: string }> = JSON.parse(localStorage.getItem("rp_records") || "[]");
+          const stored: Array<{ record_id: string; authorization_code: string; assessment_date_utc: string }> = JSON.parse(localStorage.getItem("rp_records") || "[]");
           const match = stored.find((r) => r.record_id === trimmedId && r.authorization_code === trimmedAuth);
           if (match) {
-            localMatch = { valid_record: true, record_id: match.record_id, model_version: match.model_version, final_score: match.final_score, stability_band: match.stability_band, assessment_date: match.assessment_date_utc, issued_timestamp: match.issued_timestamp_utc, verified_at: new Date().toISOString(), verification_statement: "This record matches a RunPayway\u2122-issued Income Stability Assessment." };
+            localMatch = { valid_record: true, assessment_date: match.assessment_date_utc, verified_at: new Date().toISOString() };
           }
           if (!localMatch) {
             const sr = JSON.parse(sessionStorage.getItem("rp_record") || "null");
             if (sr && sr.record_id === trimmedId && sr.authorization_code === trimmedAuth) {
-              localMatch = { valid_record: true, record_id: sr.record_id, model_version: sr.model_version, final_score: sr.final_score, stability_band: sr.stability_band, assessment_date: sr.assessment_date_utc, issued_timestamp: sr.issued_timestamp_utc, verified_at: new Date().toISOString(), verification_statement: "This record matches a RunPayway\u2122-issued Income Stability Assessment." };
+              localMatch = { valid_record: true, assessment_date: sr.assessment_date_utc, verified_at: new Date().toISOString() };
             }
           }
         } catch { /* ignore */ }
@@ -224,52 +201,18 @@ export default function VerifyPage() {
           })
             .then((res) => res.ok ? res.json() : { valid_record: false })
             .then((data) => {
-              if (data.valid_record) {
-                setResult(data);
-              } else {
-                // Check for embedded score data in URL params (QR code carries this)
-                const urlScore = params.get("s");
-                const urlBand = params.get("b");
-                const urlDate = params.get("d");
-                const urlModel = params.get("m");
-                if (urlScore && urlBand) {
-                  setResult({
-                    valid_record: true,
-                    record_id: trimmedId,
-                    model_version: urlModel || "RP-2.0",
-                    final_score: parseInt(urlScore, 10),
-                    stability_band: urlBand,
-                    assessment_date: urlDate || "",
-                    issued_timestamp: urlDate || "",
-                    verified_at: new Date().toISOString(),
-                    verification_statement: "This record matches a RunPayway\u2122-issued Income Stability Assessment.",
-                  });
-                } else {
-                  setResult({ valid_record: false });
-                }
-              }
+              setResult(
+                data.valid_record
+                  ? {
+                      valid_record: true,
+                      assessment_date: data.assessment_date,
+                      verified_at: data.verified_at,
+                    }
+                  : { valid_record: false }
+              );
             })
             .catch(() => {
-              // Server unreachable — try URL-embedded data
-              const urlScore = params.get("s");
-              const urlBand = params.get("b");
-              const urlDate = params.get("d");
-              const urlModel = params.get("m");
-              if (urlScore && urlBand) {
-                setResult({
-                  valid_record: true,
-                  record_id: trimmedId,
-                  model_version: urlModel || "RP-2.0",
-                  final_score: parseInt(urlScore, 10),
-                  stability_band: urlBand,
-                  assessment_date: urlDate || "",
-                  issued_timestamp: urlDate || "",
-                  verified_at: new Date().toISOString(),
-                  verification_statement: "This record matches a RunPayway\u2122-issued Income Stability Assessment.",
-                });
-              } else {
-                setError("Verification failed");
-              }
+              setError(t.verifyPage.errorText);
             })
             .finally(() => setLoading(false));
         }
@@ -581,12 +524,7 @@ export default function VerifyPage() {
                   {/* Record details */}
                   <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
                     {[
-                      [t.verifyPage.labelRecordId, result.record_id],
-                      [t.verifyPage.labelModelVersion, result.model_version],
-                      [t.verifyPage.labelScore, String(result.final_score)],
-                      [t.verifyPage.labelBand, result.stability_band],
                       [t.verifyPage.labelAssessmentDate, result.assessment_date],
-                      [t.verifyPage.labelIssued, result.issued_timestamp],
                       [t.verifyPage.labelVerifiedAt, result.verified_at],
                     ].map(([label, value]) => (
                       <div
