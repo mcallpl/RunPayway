@@ -104,10 +104,10 @@ export default function AssessmentRegistryPage() {
             ASSESSMENT REGISTRY
           </div>
           <h1 style={{ fontSize: mobile ? 38 : 64, fontWeight: 700, color: C.navy, letterSpacing: "-0.035em", lineHeight: 1.05, marginBottom: 16 }}>
-            Score Verification &amp; Record Integrity
+            Record Registration and Verification
           </h1>
           <p style={{ fontSize: mobile ? 16 : 18, color: muted, lineHeight: 1.6, maxWidth: 680, margin: "0 auto" }}>
-            Every assessment issued by RunPayway is registered, hashed, and independently verifiable.
+            A registered RunPayway&#8482; assessment record can be confirmed with its identifier and authorization code.
           </p>
         </div>
       </header>
@@ -119,41 +119,41 @@ export default function AssessmentRegistryPage() {
           {/* 1. What Gets Registered */}
           <div ref={s1.ref}>
             <Section number="1." title="What Gets Registered" mobile={mobile} visible={s1.visible}>
-              <P>Every assessment produces a permanent record containing your score, stability band, model version, and assessment date. Each record has a unique identifier and an authorization code for verification.</P>
-              <P style={{ marginBottom: 0 }}>These fields form the canonical record. The record is immutable once issued \u2014 it cannot be changed after the fact.</P>
+              <P>When an assessment is registered, it produces a record stamped with the model version and assessment date under which it was issued. Each registered record carries an opaque assessment identifier and an authorization code for verification.</P>
+              <P style={{ marginBottom: 0 }}>These fields form the canonical record. Once written, a record's assessment content is retained as issued; a new assessment produces a new record rather than altering an existing one.</P>
             </Section>
           </div>
 
           {/* 2. Integrity Verification */}
           <div ref={s2.ref}>
-            <Section number="2." title="Integrity Verification" mobile={mobile} visible={s2.visible}>
-              <P>Every assessment record is cryptographically signed at the time of issuance. If any part of the record were changed after the fact \u2014 the inputs, the score, or the model version \u2014 the signature would not match and verification would fail.</P>
-              <P style={{ marginBottom: 0 }}>This makes tampering detectable. The record you receive is the record that was issued.</P>
+            <Section number="2." title="Record Integrity" mobile={mobile} visible={s2.visible}>
+              <P>Records are written to the registry once and retained as issued. The application does not edit the assessment content of a record after it is written; a new assessment creates a new record rather than altering an existing one.</P>
+              <P style={{ marginBottom: 0 }}>Some issuance paths also store a SHA-256 checksum of the assessment inputs, which gives those records an additional content fingerprint. A record's lifecycle status can change, for example from Active to Superseded, while its assessment content is retained as issued.</P>
             </Section>
           </div>
 
           {/* 3. Public Verification */}
           <div ref={s3.ref}>
             <Section number="3." title="Public Verification" mobile={mobile} visible={s3.visible}>
-              <P>Any record can be verified at <Code>/verify</Code> using the record ID and authorization code. No login is required.</P>
-              <P>Verification confirms that the score is authentic, shows when the assessment was completed, and confirms the model version used.</P>
-              <P style={{ marginBottom: 0 }}>Verification is available to anyone the user shares their code with \u2014 employers, lenders, partners, or advisors. The user controls who sees their results.</P>
+              <P>Any record can be looked up at <Code>/verify</Code> using the assessment identifier and authorization code. No login is required.</P>
+              <P>This confirms that the identifier and authorization code correspond to a registered record and returns the assessment date on which it was issued. It does not recompute the assessment, verify a signature, or require sharing the underlying assessment inputs.</P>
+              <P style={{ marginBottom: 0 }}>Lookup is available to any party the authorization code is shared with, including connected systems, lenders, platforms, and partners. The party that holds the code controls who can confirm that the record is registered.</P>
             </Section>
           </div>
 
           {/* 4. Record Lifecycle */}
           <div ref={s4.ref}>
             <Section number="4." title="Record Lifecycle" mobile={mobile} visible={s4.visible}>
-              <P><strong>Active</strong> \u2014 the most recent assessment. Only one assessment per profile can be Active at any time.</P>
-              <P><strong>Superseded</strong> \u2014 a prior assessment that has been replaced by a newer one. Superseded records remain fully verifiable but are marked as historical.</P>
-              <P style={{ marginBottom: 0 }}>When you take a new assessment, your previous record transitions to Superseded automatically.</P>
+              <P><strong>Active</strong> is the most recent assessment. Only one assessment per profile can be Active at any time.</P>
+              <P><strong>Superseded</strong> marks a prior assessment that has been replaced by a newer one. Superseded records remain fully verifiable but are marked as historical.</P>
+              <P style={{ marginBottom: 0 }}>When a new assessment is issued for a profile, the previous record transitions to Superseded automatically.</P>
             </Section>
           </div>
 
           {/* 5. Data Storage */}
           <div ref={s5.ref}>
             <Section number="5." title="Data Storage" mobile={mobile} visible={s5.visible}>
-              <P>Records are stored on secure production infrastructure. A local copy is available in your browser for offline access.</P>
+              <P>Records are stored on secure production infrastructure. A local copy is available in the browser for offline access.</P>
               <P style={{ marginBottom: 0 }}>The server record is authoritative. If the local copy and server copy disagree, the server copy is correct.</P>
             </Section>
           </div>
@@ -161,13 +161,13 @@ export default function AssessmentRegistryPage() {
           {/* 6. Access Codes */}
           <div ref={s6.ref}>
             <Section number="6." title="Access Codes" mobile={mobile} visible={s6.visible}>
-              <P>Each assessment generates an access code you can share with others. Access codes provide a portable, self-contained snapshot of your assessment results.</P>
+              <P>Each assessment generates an access code that can be shared with authorized recipients. Access codes provide a portable, self-contained snapshot of the approved assessment output.</P>
               <Bullet items={[
                 "Access codes do not expire",
-                "Access codes provide read-only access to the assessment results",
+                "Access codes provide read-only access to the approved assessment output",
                 "The same assessment always produces the same code",
               ]} />
-              <P style={{ marginBottom: 0 }}>You can share your results via any channel \u2014 email, text, or printed \u2014 without worrying about expiration.</P>
+              <P style={{ marginBottom: 0 }}>The approved output can be shared through any channel, including email, secure message, or print, without expiration.</P>
             </Section>
           </div>
 
@@ -201,7 +201,7 @@ export default function AssessmentRegistryPage() {
             Governed measurement | Approved, external-safe outputs | Private by default
           </p>
           <p style={{ fontSize: 13, color: "rgba(244,241,234,0.30)", marginTop: 24, letterSpacing: "0.04em" }}>
-            RUNPAYWAY ASSESSMENT REGISTRY
+            RUNPAYWAY&#8482; ASSESSMENT REGISTRY
           </p>
         </div>
       </section>
