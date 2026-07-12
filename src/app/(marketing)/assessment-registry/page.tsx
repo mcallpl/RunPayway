@@ -181,7 +181,7 @@ export default function AssessmentRegistryPage() {
             Transparent by design.
           </h2>
           <p style={{ fontSize: mobile ? 16 : 18, color: "rgba(244,241,234,0.50)", lineHeight: 1.6, marginBottom: 32 }}>
-            Every measurement is verifiable. Every record is tamper-evident. No black boxes.
+            Every measurement is verifiable. Every record is retained as issued. No black boxes.
           </p>
           <Link href="/organizations" style={{
             display: "inline-flex", alignItems: "center", justifyContent: "center",
