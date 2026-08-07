@@ -17,7 +17,13 @@ export const metadata: Metadata = {
     google: "5m6xwNlo1Wihest8Qlgi8TEClC93pxwzzTdiMLsH4ZA",
   },
   icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png" }],
   },
   openGraph: {
     title: "RunPayway™ — Complex-Income Measurement Infrastructure",
@@ -26,7 +32,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://runpayway.peoplestar.com/og-image.svg",
+        url: "https://runpayway.peoplestar.com/og-image.png",
         width: 1200,
         height: 630,
       },
@@ -36,7 +42,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "RunPayway™ — Complex-Income Measurement Infrastructure",
     description: "The governed standard for complex-income measurement. Approved rules, external-safe outputs, connected systems.",
-    images: ["https://runpayway.peoplestar.com/og-image.svg"],
+    images: ["https://runpayway.peoplestar.com/og-image.png"],
   },
 };
 
